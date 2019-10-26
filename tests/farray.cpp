@@ -32,8 +32,8 @@
 
 TEST_CASE("default")
 {
-    auto fa = bsl::ifarray();
-    auto ifa = bsl::ifarray();
+    auto fa = bsl::ifarray<>();
+    auto ifa = bsl::ifarray<>();
 
     CHECK(fa.empty());
     CHECK(ifa.empty());
@@ -41,7 +41,7 @@ TEST_CASE("default")
 
 TEST_CASE("does not exist")
 {
-    CHECK_THROWS(bsl::ifarray("this_file_does_not_exist"));
+    CHECK_THROWS(bsl::ifarray<>("this_file_does_not_exist"));
 }
 
 TEST_CASE("success")

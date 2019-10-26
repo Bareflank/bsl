@@ -19,26 +19,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-cmake_minimum_required(VERSION 3.13)
-project(dynarray CXX)
+include_directories(SYSTEM ${CMAKE_SOURCE_DIR}/include)
 
-set(CMAKE_CXX_STANDARD 17)
+add_executable(dynarray dynarray.cpp)
+add_executable(farray farray.cpp)
 
-# ------------------------------------------------------------------------------
-# Initial Setup
-# ------------------------------------------------------------------------------
-
-option(BUILD_EXAMPLES "Build example programs" ON)
-option(BUILD_TESTS "Build test programs" ON)
-
-# ------------------------------------------------------------------------------
-# Sub Directories
-# ------------------------------------------------------------------------------
-
-if(BUILD_TESTS)
-    add_subdirectory(examples)
-endif()
-
-if(BUILD_TESTS)
-    add_subdirectory(tests)
-endif()
+target_compile_definitions(farray PRIVATE
+    FILENAME="${CMAKE_SOURCE_DIR}/include/bsl.h"
+)

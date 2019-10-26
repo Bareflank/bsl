@@ -22,8 +22,6 @@
 include(ExternalProject)
 enable_testing()
 
-set(CMAKE_CXX_STANDARD 17)
-
 # ------------------------------------------------------------------------------
 # Tests
 # ------------------------------------------------------------------------------
@@ -56,7 +54,7 @@ set(CMAKE_LINKER_FLAGS_UBSAN "-fsanitize=undefined -g")
 # Clang Tidy
 # ------------------------------------------------------------------------------
 
-if(BUILD_TESTS AND NOT CMAKE_CXX_CLANG_TIDY)
+if(NOT CMAKE_CXX_CLANG_TIDY)
     set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
 endif()
 

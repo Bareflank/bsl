@@ -1,0 +1,1042 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="support library used by our various projects">
+      
+      
+      
+        <meta name="author" content="Assured Information Security, Inc.">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.3">
+    
+    
+      
+        <title>APIs - Bareflank Support Library</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.30686662.css">
+      
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.74668098.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#application-programming-interfaces-apis" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href=".." title="Bareflank Support Library" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              Bareflank Support Library
+            </span>
+            <span class="md-header-nav__topic">
+              
+                APIs
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/Bareflank/bsl/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href=".." title="Bareflank Support Library" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    Bareflank Support Library
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/Bareflank/bsl/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="About" class="md-nav__link">
+      About
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../getting_started/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../examples/" title="Examples" class="md-nav__link">
+      Examples
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        APIs
+      </label>
+    
+    <a href="./" title="APIs" class="md-nav__link md-nav__link--active">
+      APIs
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bsl-contracts" class="md-nav__link">
+    BSL Contracts
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dynamic-array" class="md-nav__link">
+    Dynamic Array
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-constructor" class="md-nav__link">
+    Default constructor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pointercount-constructor" class="md-nav__link">
+    Pointer/count constructor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pointercount-constructor-with-custom-l-value-deleter" class="md-nav__link">
+    Pointer/count constructor with custom l-value deleter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pointercount-constructor-with-custom-r-value-deleter" class="md-nav__link">
+    Pointer/count constructor with custom r-value deleter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#move-constructor" class="md-nav__link">
+    Move constructor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#destructor" class="md-nav__link">
+    Destructor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#move-assignment" class="md-nav__link">
+    Move assignment
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../contributing/" title="Contributing" class="md-nav__link">
+      Contributing
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../help/" title="Help" class="md-nav__link">
+      Help
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../license/" title="License" class="md-nav__link">
+      License
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bsl-contracts" class="md-nav__link">
+    BSL Contracts
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dynamic-array" class="md-nav__link">
+    Dynamic Array
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-constructor" class="md-nav__link">
+    Default constructor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pointercount-constructor" class="md-nav__link">
+    Pointer/count constructor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pointercount-constructor-with-custom-l-value-deleter" class="md-nav__link">
+    Pointer/count constructor with custom l-value deleter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pointercount-constructor-with-custom-r-value-deleter" class="md-nav__link">
+    Pointer/count constructor with custom r-value deleter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#move-constructor" class="md-nav__link">
+    Move constructor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#destructor" class="md-nav__link">
+    Destructor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#move-assignment" class="md-nav__link">
+    Move assignment
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/Bareflank/bsl/edit/master/docs/apis.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="application-programming-interfaces-apis"><strong>Application Programming Interfaces (APIs)</strong><a class="headerlink" href="#application-programming-interfaces-apis" title="Permanent link">&para;</a></h1>
+<p>The following documents all of the APIs that the BSL provides.</p>
+<h2 id="bsl-contracts"><strong>BSL Contracts</strong><a class="headerlink" href="#bsl-contracts" title="Permanent link">&para;</a></h2>
+<p>Like the Guideline Support Library, the BSL provides the following contract macros for validating the inputs and outputs of a function.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">bfexpects</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+<span class="n">bfensures</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<p>For example:</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span>
+<span class="nf">foo</span><span class="p">(</span><span class="kt">int</span> <span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">int</span>
+<span class="p">{</span>
+    <span class="n">bfexpects</span><span class="p">(</span><span class="n">val</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">==</span> <span class="mi">42</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">val</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">bfensures</span><span class="p">(</span><span class="n">ret</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>If the test case given to <code class="codehilite"><span class="n">bfexpects</span><span class="p">()</span></code> or <code class="codehilite"><span class="n">bfensures</span><span class="p">()</span></code> is found to be false, by default, nothing happens (the contract violation is ignored). To enable contract violations, you must first define the following:</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="cp">#define BAREFLANK_CORE_GUIDELINE_COMPLIANT</span>
+</pre></div>
+</td></tr></table>
+
+<p>By default, contract violations are ignored, even though they are enabled using the above definition. To detect contract violations, you must also tell the BSL how you wish to handle them. The two options are:</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="cp">#define BAREFLANK_THROW_ON_CONTRACT_VIOLATION</span>
+</pre></div>
+</td></tr></table>
+
+<p>which tells the BLS to throw an exception on contract violations while the following:</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="cp">#define BAREFLANK_TERMINATE_ON_CONTRACT_VIOLATION</span>
+</pre></div>
+</td></tr></table>
+
+<p>tells the BLS to execute <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code> on contract violations.</p>
+<div class="admonition warning">
+<p class="admonition-title">Note</p>
+<p>The above definitions must be defined prior to including the BSL to ensure      they function properly. Alternatively, you can define them on the command       line.</p>
+</div>
+<p>In addition to <code class="codehilite"><span class="n">bfexpects</span><span class="p">()</span></code> and <code class="codehilite"><span class="n">bfensures</span><span class="p">()</span></code>, the BSL also provides the following</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">bfexpects_if</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">cond</span><span class="p">)</span>
+<span class="n">bfensures_if</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">cond</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<p>Both of these act the same as their non-if counterparts, with the addition of a conditional if statement that is removed when contract violations are disabled, ensuring the compiler doesn't inadvertently leave an if statement in the resulting code (e.g., when optimizations are disabled).</p>
+<p>The BSL also provides "terminate" versions of these functions as follows:</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">bfexpects_terminate</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+<span class="n">bfensures_terminate</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+<span class="n">bfexpects_if_terminate</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">cond</span><span class="p">)</span>
+<span class="n">bfensures_if_terminate</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">cond</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<p>These versions always call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code>, even if contracts are told to throw on violations. This is helpful when a function must labeled as <code class="codehilite"><span class="n">noexcept</span></code>, as any attempt to throw on a violation would call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code> anyways. If you wish to conditionally label a function as <code class="codehilite"><span class="n">noexcept</span></code> based on the contract violation policy, the BSL als provides the following macro:</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">BFNOEXCEPT</span>
+</pre></div>
+</td></tr></table>
+
+<p>If contracts are set to throw on violations, this macro is defined as empty. If contracts are set to terminate on violations, this macro is defined as <code class="codehilite"><span class="n">noexcept</span></code>. This is helpful if you wish to throw exceptions while unit testing and call std::terminate() in "Release" mode, ensuring the full benefits of <code class="codehilite"><span class="n">noexcept</span></code> can still be realized.</p>
+<h2 id="dynamic-array"><strong>Dynamic Array</strong><a class="headerlink" href="#dynamic-array" title="Permanent link">&para;</a></h2>
+<p>The C++ Standard Library currently does not have support for dynamic arrays. Currently, the best options are:</p>
+<ul>
+<li><code class="codehilite"><span class="n">std</span><span class="p">::</span><span class="n">vector</span></code></li>
+<li><code class="codehilite"><span class="n">std</span><span class="p">::</span><span class="n">unique_ptr</span></code></li>
+</ul>
+<p>The <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">vector</span></code> is likely the best option, with the downside that there is no ability to control the size of the internal memory that a <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">vector</span></code> creates (the count based constructors only state the minimum size a <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">vector</span></code> allocates, not the actual size), and a <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">vector</span></code> will always value-initialize the memory it allocates. When working with really large buffers, this can be problematic. The <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">vector</span></code> can also be copied, which could lead to accidental copies when moves are intended.
+Finally, the <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">vector</span></code> uses the allocator model, which is not well
+suited for mapping operations (like mapping in memory or files).</p>
+<p>The <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span></code> has an array type, and solves most of the above problems, but it is not Core Guideline Compliant, does not store the size of the array you allocate, and does not provide support for iterators, or other types of accessors like <code class="codehilite"><span class="n">at</span><span class="p">()</span></code>.</p>
+<p>The BSL dynamic array is modeled after the <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span></code> with the following changes:
+- The size of the array is stored along with the pointer. Empty base optimizations are still leveraged to ensure the minimal possible size storage requirements (similar to a <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span></code>).
+- The deleter is given both the pointer and the size, providing support for <code class="codehilite"><span class="n">free</span><span class="p">()</span></code> and <code class="codehilite"><span class="n">unmap</span><span class="p">()</span></code> style functions that require both the pointer and the size without the deleter having to duplicate this storage.
+- Iterators are provided (random access), including support for ranged based for-loops.
+- Accessors like <code class="codehilite"><span class="n">front</span><span class="p">()</span></code>, <code class="codehilite"><span class="n">back</span><span class="p">()</span></code>, <code class="codehilite"><span class="p">[]</span></code> and <code class="codehilite"><span class="n">at</span><span class="p">()</span></code> are provided along with some other convenience functions.
+- Core Guideline compliance is an optional feature that can be enabled to ensure out-of-range errors are detectable.</p>
+<div class="admonition note">
+<p class="admonition-title">Template Parameters</p>
+<details class="summary"><summary>T</summary><p>The element type to store in the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code>. There are little to           no restrictions on what type T can be.</p>
+</details>
+<details class="summary"><summary>Deleter</summary><p>The deleter type the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> should use to delete the array
+when the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> loses scope. By default, the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code>
+provides a default deleter that calls <code class="codehilite"><span class="k">delete</span> <span class="p">[]</span></code>. If a custom deleter
+is provided, it will be default constructed unless one of the l-value
+or r-value constructors are used to pass in a non-default constructed
+deleter. The requirements for the deleter depend on which constructor
+is used, but in general, the deleter should be nothrow movable.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>We currently do not support reference or pointer Deleter types.</p>
+</div>
+</details>
+</div>
+<details class="note"><summary>Member Types</summary><div class="admonition summary">
+<p class="admonition-title">value_type = T</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">element_type = T</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">index_type = std::size_t</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">difference_type = std::ptrdiff_t</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">reference = T &amp;</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">const_reference = const T &amp;</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">pointer = T *</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">const_pointer = const T *</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">deleter_type = Deleter</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">const_deleter_type = const Deleter</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">iterator = random_access_iterator</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">const_iterator = random_access_iterator</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">reverse_iterator = std::reverse_iterator</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">const_reverse_iterator = std::reverse_iterator</p>
+</div>
+</details>
+<h3 id="default-constructor"><strong>Default constructor</strong><a class="headerlink" href="#default-constructor" title="Permanent link">&para;</a></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">constexpr</span> <span class="nf">dynarray</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
+</pre></div>
+</td></tr></table>
+
+<p>Creates a default initialized <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code>. When called, <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> will
+return a null pointer, and <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> will return 0.</p>
+<details class="note"><summary>Parameters</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Return</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li><code class="codehilite"><span class="n">empty</span><span class="p">()</span></code> == true</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">();</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<hr />
+<h3 id="pointercount-constructor"><strong>Pointer/count constructor</strong><a class="headerlink" href="#pointercount-constructor" title="Permanent link">&para;</a></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">explicit</span> <span class="nf">dynarray</span><span class="p">(</span><span class="n">pointer</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">index_type</span> <span class="n">count</span><span class="p">)</span> <span class="n">BFNOEXCEPT</span><span class="p">;</span>
+</pre></div>
+</td></tr></table>
+
+<p>Creates a value initialized <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> that owns an array at ptr, of count
+elements of T. When called, <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> will return ptr and <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> will return count.</p>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>ptr</summary><p>a pointer to the array (a continuous memory block) the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code>          will manage. If the default deleter is used, this memory must be                allocated using the <code class="codehilite"><span class="k">new</span> <span class="p">[]</span></code> operator.</p>
+</details>
+<details class="summary"><summary>count</summary><p>the number of elements in the array.</p>
+<div class="admonition warning">
+<p class="admonition-title">Note</p>
+<p>the count does not refer to the number of bytes, but rather the                 total number of elements.</p>
+</div>
+</details>
+</details>
+<details class="note"><summary>Return</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li><code class="codehilite"><span class="n">ptr</span></code> must not be a null pointer</li>
+<li><code class="codehilite"><span class="k">count</span></code> must be larger than 0.</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li><code class="codehilite"><span class="n">empty</span><span class="p">()</span></code> == false</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<details class="warning"><summary>Warning</summary><p>This function will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
+and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
+the BSL when a contract violation occurs. Otherwise, this function will
+call <code class="codehilite"><span class="n">std</span><span class="p">::</span><span class="k">terminate</span><span class="p">()</span></code> on such violations.</p>
+</details>
+<hr />
+<h3 id="pointercount-constructor-with-custom-l-value-deleter"><strong>Pointer/count constructor with custom l-value deleter</strong><a class="headerlink" href="#pointercount-constructor-with-custom-l-value-deleter" title="Permanent link">&para;</a></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">explicit</span> <span class="nf">dynarray</span><span class="p">(</span>
+    <span class="n">pointer</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">index_type</span> <span class="n">count</span><span class="p">,</span> <span class="k">const</span> <span class="n">deleter_type</span> <span class="o">&amp;</span><span class="n">d</span><span class="p">)</span> <span class="n">BFNOEXCEPT</span><span class="p">;</span>
+</pre></div>
+</td></tr></table>
+
+<p>Creates a value initialized <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> that owns an array at ptr, of count
+elements of T. When called, <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> will return ptr and <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> will return count. This version of the pointer/count constructor allows you to provide your own l-value deleter instead of the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> default-initializing the deleter for you.</p>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>ptr</summary><p>a pointer to the array (a continuous memory block) the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code>          will manage. If the default deleter is used, this memory must be                allocated using the <code class="codehilite"><span class="k">new</span> <span class="p">[]</span></code> operator.</p>
+</details>
+<details class="summary"><summary>count</summary><p>the number of elements in the array.</p>
+<div class="admonition warning">
+<p class="admonition-title">Note</p>
+<p>the count does not refer to the number of bytes, but rather the                 total number of elements.</p>
+</div>
+</details>
+<details class="summary"><summary>deleter</summary><p>an l-value reference to a custom deleter. The <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> will
+create a copy of this deleter and use it to delete the pointer when
+the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> loses scope.</p>
+</details>
+</details>
+<details class="note"><summary>Return</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li><code class="codehilite"><span class="n">ptr</span></code> must not be a null pointer</li>
+<li><code class="codehilite"><span class="k">count</span></code> must be larger than 0.</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li><code class="codehilite"><span class="n">empty</span><span class="p">()</span></code> == false</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">my_deleter</span>
+<span class="p">{</span>
+    <span class="k">auto</span>
+    <span class="k">operator</span><span class="p">()(</span><span class="n">T</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">size</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">void</span>
+    <span class="p">{</span>
+        <span class="k">delete</span><span class="p">[]</span> <span class="n">ptr</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">auto</span> <span class="n">d</span> <span class="o">=</span> <span class="n">my_deleter</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<details class="warning"><summary>Warning</summary><p>This function will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
+and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
+the BSL when a contract violation occurs. Otherwise, this function will
+call <code class="codehilite"><span class="n">std</span><span class="p">::</span><span class="k">terminate</span><span class="p">()</span></code> on such violations.</p>
+</details>
+<hr />
+<h3 id="pointercount-constructor-with-custom-r-value-deleter"><strong>Pointer/count constructor with custom r-value deleter</strong><a class="headerlink" href="#pointercount-constructor-with-custom-r-value-deleter" title="Permanent link">&para;</a></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">explicit</span> <span class="n">dynarray</span><span class="p">(</span>
+    <span class="n">pointer</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">index_type</span> <span class="n">count</span><span class="p">,</span> <span class="n">deleter_type</span> <span class="o">&amp;&amp;</span><span class="n">d</span><span class="p">)</span> <span class="n">BFNOEXCEPT</span>
+</pre></div>
+</td></tr></table>
+
+<p>Creates a value initialized <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> that owns an array at ptr, of count
+elements of T. When called, <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> will return ptr and <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> will return count. This version of the pointer/count constructor allows you to provide your own r-value deleter instead of the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> default-initializing the deleter for you.</p>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>ptr</summary><p>a pointer to the array (a continuous memory block) the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code>          will manage. If the default deleter is used, this memory must be                allocated using the <code class="codehilite"><span class="k">new</span> <span class="p">[]</span></code> operator.</p>
+</details>
+<details class="summary"><summary>count</summary><p>the number of elements in the array.</p>
+<div class="admonition warning">
+<p class="admonition-title">Note</p>
+<p>the count does not refer to the number of bytes, but rather the                 total number of elements.</p>
+</div>
+</details>
+<details class="summary"><summary>deleter</summary><p>an r-value reference to a custom deleter. The <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> will
+move this deleter and use it to delete the pointer when the                     <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> loses scope.</p>
+</details>
+</details>
+<details class="note"><summary>Return</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li><code class="codehilite"><span class="n">ptr</span></code> must not be a null pointer</li>
+<li><code class="codehilite"><span class="k">count</span></code> must be larger than 0.</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li><code class="codehilite"><span class="n">empty</span><span class="p">()</span></code> == false</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">my_deleter</span>
+<span class="p">{</span>
+    <span class="k">auto</span>
+    <span class="k">operator</span><span class="p">()(</span><span class="n">T</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">size</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">void</span>
+    <span class="p">{</span>
+        <span class="k">delete</span><span class="p">[]</span> <span class="n">ptr</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">my_deleter</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">());</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<details class="warning"><summary>Warning</summary><p>This function will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
+and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
+the BSL when a contract violation occurs. Otherwise, this function will
+call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code> on such violations.</p>
+</details>
+<hr />
+<h3 id="move-constructor"><strong>Move constructor</strong><a class="headerlink" href="#move-constructor" title="Permanent link">&para;</a></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">explicit</span> <span class="n">dynarray</span><span class="p">(</span><span class="n">dynarray</span> <span class="o">&amp;&amp;</span><span class="n">u</span><span class="p">)</span> <span class="k">noexcept</span>
+</pre></div>
+</td></tr></table>
+
+<p>Creates a <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> from another <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> using move semantics. This constructor ensures that <code class="codehilite"><span class="n">u</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span></code> is true. Whether or not the newly
+constructed <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> is empty depends on whether or not <code class="codehilite"><span class="n">u</span></code> is
+empty at the time of the move.</p>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>u</summary><p>a <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> to construct a new <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> from.</p>
+</details>
+</details>
+<details class="note"><summary>Return</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li><code class="codehilite"><span class="n">u</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span></code> == true</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">a1</span><span class="p">));</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<hr />
+<h3 id="destructor"><strong>Destructor</strong><a class="headerlink" href="#destructor" title="Permanent link">&para;</a></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="o">~</span><span class="n">dynarray</span><span class="p">()</span>
+</pre></div>
+</td></tr></table>
+
+<p>If the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> is valid (i.e., <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> does not return a null pointer), the destructor will use the deleter to delete the array that it owns.
+Otherwise, this function has no affect.</p>
+<details class="note"><summary>Parameters</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Return</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<hr />
+<h3 id="move-assignment"><strong>Move assignment</strong><a class="headerlink" href="#move-assignment" title="Permanent link">&para;</a></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">constexpr</span> <span class="k">auto</span>
+<span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">dynarray</span> <span class="o">&amp;&amp;</span><span class="n">r</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">dynarray</span> <span class="o">&amp;</span>
+</pre></div>
+</td></tr></table>
+
+<p>Transfers ownership of a <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> to this <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> using move semantics. This assignment ensures that <code class="codehilite"><span class="n">r</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span></code> is true. Whether or not the this <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> is empty depends on whether or not <code class="codehilite"><span class="n">r</span></code> is empty at the time of the move. If this <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> already owns an array, it will be deleted before the move takes place.</p>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>r</summary><p>a <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> to transfer ownership from.</p>
+</details>
+</details>
+<details class="note"><summary>Return</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li><code class="codehilite"><span class="n">r</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span></code> == true</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">);</span>
+<span class="n">a2</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">a1</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<hr />
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../examples/" title="Examples" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Examples
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../contributing/" title="Contributing" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Contributing
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.ac79c3b0.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
+      
+    
+  </body>
+</html>

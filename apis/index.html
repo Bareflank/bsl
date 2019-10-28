@@ -83,7 +83,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#application-programming-interfaces-apis" tabindex="1" class="md-skip">
+      <a href="#contracts" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -261,8 +261,6 @@
     
     <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
     
-      
-    
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
         APIs
@@ -276,15 +274,13 @@
 <nav class="md-nav md-nav--secondary">
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#bsl-contracts" class="md-nav__link">
-    BSL Contracts
+  <a href="#contracts" class="md-nav__link">
+    Contracts
   </a>
   
 </li>
@@ -294,60 +290,12 @@
     Dynamic Array
   </a>
   
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#default-constructor" class="md-nav__link">
-    Default constructor
-  </a>
-  
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#pointercount-constructor" class="md-nav__link">
-    Pointer/count constructor
+      
+        <li class="md-nav__item">
+  <a href="#input-file-array" class="md-nav__link">
+    Input File Array
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pointercount-constructor-with-custom-l-value-deleter" class="md-nav__link">
-    Pointer/count constructor with custom l-value deleter
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pointercount-constructor-with-custom-r-value-deleter" class="md-nav__link">
-    Pointer/count constructor with custom r-value deleter
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#move-constructor" class="md-nav__link">
-    Move constructor
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#destructor" class="md-nav__link">
-    Destructor
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#move-assignment" class="md-nav__link">
-    Move assignment
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -412,15 +360,13 @@
 <nav class="md-nav md-nav--secondary">
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#bsl-contracts" class="md-nav__link">
-    BSL Contracts
+  <a href="#contracts" class="md-nav__link">
+    Contracts
   </a>
   
 </li>
@@ -430,60 +376,12 @@
     Dynamic Array
   </a>
   
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#default-constructor" class="md-nav__link">
-    Default constructor
-  </a>
-  
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#pointercount-constructor" class="md-nav__link">
-    Pointer/count constructor
+      
+        <li class="md-nav__item">
+  <a href="#input-file-array" class="md-nav__link">
+    Input File Array
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pointercount-constructor-with-custom-l-value-deleter" class="md-nav__link">
-    Pointer/count constructor with custom l-value deleter
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pointercount-constructor-with-custom-r-value-deleter" class="md-nav__link">
-    Pointer/count constructor with custom r-value deleter
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#move-constructor" class="md-nav__link">
-    Move constructor
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#destructor" class="md-nav__link">
-    Destructor
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#move-assignment" class="md-nav__link">
-    Move assignment
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -506,9 +404,16 @@
                   <a href="https://github.com/Bareflank/bsl/edit/master/docs/apis.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="application-programming-interfaces-apis"><strong>Application Programming Interfaces (APIs)</strong><a class="headerlink" href="#application-programming-interfaces-apis" title="Permanent link">&para;</a></h1>
+                <h1><strong>Application Programming Interfaces (APIs)</strong></h1>
 <p>The following documents all of the APIs that the BSL provides.</p>
-<h2 id="bsl-contracts"><strong>BSL Contracts</strong><a class="headerlink" href="#bsl-contracts" title="Permanent link">&para;</a></h2>
+<div class="toc">
+<ul>
+<li><a href="#contracts">Contracts</a></li>
+<li><a href="#dynamic-array">Dynamic Array</a></li>
+<li><a href="#input-file-array">Input File Array</a></li>
+</ul>
+</div>
+<h2 id="contracts"><strong>Contracts</strong><a class="headerlink" href="#contracts" title="Permanent link">&para;</a></h2>
 <p>Like the Guideline Support Library, the BSL provides the following contract macros for validating the inputs and outputs of a function.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
 2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">bfexpects</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
@@ -584,45 +489,58 @@
 </pre></div>
 </td></tr></table>
 
-<p>These versions always call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code>, even if contracts are told to throw on violations. This is helpful when a function must labeled as <code class="codehilite"><span class="n">noexcept</span></code>, as any attempt to throw on a violation would call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code> anyways. If you wish to conditionally label a function as <code class="codehilite"><span class="n">noexcept</span></code> based on the contract violation policy, the BSL als provides the following macro:</p>
+<p>These versions always call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code>, even if contracts are told to throw on violations. This is helpful when a function must be labeled as <code class="codehilite"><span class="k">noexcept</span></code>, as any attempt to throw on a violation would call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code> anyways. If you wish to conditionally label a function as <code class="codehilite"><span class="k">noexcept</span></code> based on the contract violation policy, the BSL als provides the following macro:</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">BFNOEXCEPT</span>
 </pre></div>
 </td></tr></table>
 
-<p>If contracts are set to throw on violations, this macro is defined as empty. If contracts are set to terminate on violations, this macro is defined as <code class="codehilite"><span class="n">noexcept</span></code>. This is helpful if you wish to throw exceptions while unit testing and call std::terminate() in "Release" mode, ensuring the full benefits of <code class="codehilite"><span class="n">noexcept</span></code> can still be realized.</p>
+<p>If contracts are set to throw on violations, this macro is defined as empty, otherwise this macro is defined as <code class="codehilite"><span class="k">noexcept</span></code>.</p>
 <h2 id="dynamic-array"><strong>Dynamic Array</strong><a class="headerlink" href="#dynamic-array" title="Permanent link">&para;</a></h2>
-<p>The C++ Standard Library currently does not have support for dynamic arrays. Currently, the best options are:</p>
+<p>The C++ Standard Library currently does not have support for dynamic arrays. The best options are:</p>
 <ul>
-<li><code class="codehilite"><span class="n">std</span><span class="p">::</span><span class="n">vector</span></code></li>
-<li><code class="codehilite"><span class="n">std</span><span class="p">::</span><span class="n">unique_ptr</span></code></li>
+<li><code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">vector</span></code></li>
+<li><code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span></code></li>
 </ul>
 <p>The <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">vector</span></code> is likely the best option, with the downside that there is no ability to control the size of the internal memory that a <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">vector</span></code> creates (the count based constructors only state the minimum size a <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">vector</span></code> allocates, not the actual size), and a <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">vector</span></code> will always value-initialize the memory it allocates. When working with really large buffers, this can be problematic. The <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">vector</span></code> can also be copied, which could lead to accidental copies when moves are intended.
 Finally, the <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">vector</span></code> uses the allocator model, which is not well
 suited for mapping operations (like mapping in memory or files).</p>
 <p>The <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span></code> has an array type, and solves most of the above problems, but it is not Core Guideline Compliant, does not store the size of the array you allocate, and does not provide support for iterators, or other types of accessors like <code class="codehilite"><span class="n">at</span><span class="p">()</span></code>.</p>
-<p>The BSL dynamic array is modeled after the <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span></code> with the following changes:
-- The size of the array is stored along with the pointer. Empty base optimizations are still leveraged to ensure the minimal possible size storage requirements (similar to a <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span></code>).
-- The deleter is given both the pointer and the size, providing support for <code class="codehilite"><span class="n">free</span><span class="p">()</span></code> and <code class="codehilite"><span class="n">unmap</span><span class="p">()</span></code> style functions that require both the pointer and the size without the deleter having to duplicate this storage.
-- Iterators are provided (random access), including support for ranged based for-loops.
-- Accessors like <code class="codehilite"><span class="n">front</span><span class="p">()</span></code>, <code class="codehilite"><span class="n">back</span><span class="p">()</span></code>, <code class="codehilite"><span class="p">[]</span></code> and <code class="codehilite"><span class="n">at</span><span class="p">()</span></code> are provided along with some other convenience functions.
-- Core Guideline compliance is an optional feature that can be enabled to ensure out-of-range errors are detectable.</p>
-<div class="admonition note">
-<p class="admonition-title">Template Parameters</p>
-<details class="summary"><summary>T</summary><p>The element type to store in the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code>. There are little to           no restrictions on what type T can be.</p>
+<p>The BSL dynamic array is modeled after the <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span></code> with the following changes:</p>
+<ul>
+<li>The size of the array is stored along with the pointer. Empty base optimizations are still leveraged to ensure the minimal possible storage requirements (similar to a <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span></code>).</li>
+<li>The deleter is given both the pointer and the size, providing support for <code class="codehilite"><span class="n">free</span><span class="p">()</span></code> and <code class="codehilite"><span class="n">unmap</span><span class="p">()</span></code> style functions that require both the pointer and the size without the deleter having to duplicate this storage.</li>
+<li>Iterators are provided (random access), including support for ranged based for-loops.</li>
+<li>Accessors like <code class="codehilite"><span class="n">front</span><span class="p">()</span></code>, <code class="codehilite"><span class="n">back</span><span class="p">()</span></code>, <code class="codehilite"><span class="p">[]</span></code> and <code class="codehilite"><span class="n">at</span><span class="p">()</span></code> are provided along with some other convenience functions.</li>
+<li>Core Guideline compliance is an optional feature that can be enabled to ensure out-of-range errors are detectable.</li>
+</ul>
+<p>Our hope with this class is that it eliminates the need for a <code class="codehilite"><span class="n">gsl</span><span class="o">::</span><span class="n">span</span></code> as currently, the main use case we have for a <code class="codehilite"><span class="n">gsl</span><span class="o">::</span><span class="n">span</span></code> is when array types are allocated using <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span></code> as most Standard Library containers already provide Core Guideline compliant mechanisms for accessing their contents.</p>
+<details class="todo"><summary>Todo</summary><ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add support for reference and pointer style Deleters</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add support for the &gt;, &lt;, &gt;= and &lt;= operators</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add support for some missing <code class="codehilite"><span class="n">gsl</span><span class="o">::</span><span class="n">span</span></code> constructors and
+      helper style functions like <code class="codehilite"><span class="n">subspan</span><span class="p">()</span></code> so that if a
+      <code class="codehilite"><span class="n">gsl</span><span class="o">::</span><span class="n">span</span></code> is needed, this class can be used in its place
+      using the nodelete Deleter.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add some additional fill() functions (an operator=() versions) to
+      make it easier to work with the array.</li>
+</ul>
 </details>
-<details class="summary"><summary>Deleter</summary><p>The deleter type the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> should use to delete the array
-when the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> loses scope. By default, the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code>
-provides a default deleter that calls <code class="codehilite"><span class="k">delete</span> <span class="p">[]</span></code>. If a custom deleter
-is provided, it will be default constructed unless one of the l-value
-or r-value constructors are used to pass in a non-default constructed
-deleter. The requirements for the deleter depend on which constructor
-is used, but in general, the deleter should be nothrow movable.</p>
+<details class="note"><summary>Template Parameters</summary><details class="summary"><summary>T</summary><p>The element type to store in the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>. There are               little to no restrictions on what type T can be.</p>
+</details>
+<details class="summary"><summary>Deleter</summary><p>The deleter type the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> should use to delete the
+array when the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> loses scope. By default, the
+<code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> provides a default deleter that calls
+<code class="codehilite"><span class="k">delete</span> <span class="p">[]</span></code>. If a custom deleter is provided, it will be
+default constructed unless one of the l-value or r-value constructors
+are used to pass in a non-default constructed deleter. The requirements
+for the deleter depend on which constructor is used, but in general,
+the deleter should be nothrow movable.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>We currently do not support reference or pointer Deleter types.</p>
 </div>
 </details>
-</div>
+</details>
 <details class="note"><summary>Member Types</summary><div class="admonition summary">
 <p class="admonition-title">value_type = T</p>
 </div>
@@ -666,13 +584,49 @@ is used, but in general, the deleter should be nothrow movable.</p>
 <p class="admonition-title">const_reverse_iterator = std::reverse_iterator</p>
 </div>
 </details>
-<h3 id="default-constructor"><strong>Default constructor</strong><a class="headerlink" href="#default-constructor" title="Permanent link">&para;</a></h3>
+<h3><strong>Member Functions</strong></h3>
+<ul>
+<li><a href="#dynarray1">dynarray()</a></li>
+<li><a href="#dynarray2">dynarray(pointer ptr, index_type count)</a></li>
+<li><a href="#dynarray3">dynarray(pointer ptr, index_type count, const deleter_type &amp;d)</a></li>
+<li><a href="#dynarray4">dynarray(pointer ptr, index_type count, deleter_type &amp;&amp;d)</a></li>
+<li><a href="#dynarray5">dynarray(dynarray &amp;&amp;u)</a></li>
+<li><a href="#dynarray6">~dynarray()</a></li>
+<li><a href="#dynarray7">operator=(dynarray &amp;&amp;r)</a></li>
+<li><a href="#dynarray8">release()</a></li>
+<li><a href="#dynarray9">reset(pointer ptr, index_type count)</a></li>
+<li><a href="#dynarray10">reset(const std::pair<pointer, index_type> &amp;info)</a></li>
+<li><a href="#dynarray11">swap(dynarray &amp;other)</a></li>
+<li><a href="#dynarray12">get()</a></li>
+<li><a href="#dynarray13">get_deleter()</a></li>
+<li><a href="#dynarray14">operator bool()</a></li>
+<li><a href="#dynarray15">operator[]</a></li>
+<li><a href="#dynarray16">at()</a></li>
+<li><a href="#dynarray17">front()</a></li>
+<li><a href="#dynarray18">back()</a></li>
+<li><a href="#dynarray19">data()</a></li>
+<li><a href="#dynarray20">begin() / cbegin()</a></li>
+<li><a href="#dynarray21">end() / cend()</a></li>
+<li><a href="#dynarray22">rbegin() / crbegin()</a></li>
+<li><a href="#dynarray23">rend() / crend()</a></li>
+<li><a href="#dynarray24">empty()</a></li>
+<li><a href="#dynarray25">size() / ssize()</a></li>
+<li><a href="#dynarray26">size_bytes()</a></li>
+<li><a href="#dynarray27">max_size()</a></li>
+<li><a href="#dynarray28">fill()</a></li>
+<li><a href="#dynarray29">make_dynarray()</a></li>
+<li><a href="#dynarray30">make_dynarray_default_init()</a></li>
+<li><a href="#dynarray31">operator==() / operator!=()</a></li>
+<li><a href="#dynarray32">operator&lt;&lt;()</a></li>
+</ul>
+<p><a name="dynarray1"></a></p>
+<hr />
+<h3><strong>dynarray()</strong></h3>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">constexpr</span> <span class="nf">dynarray</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
 </pre></div>
 </td></tr></table>
 
-<p>Creates a default initialized <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code>. When called, <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> will
-return a null pointer, and <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> will return 0.</p>
+<p>Creates a default initialized <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>. When called, <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> will return a null pointer, and <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> will return 0.</p>
 <details class="note"><summary>Parameters</summary><p>Not applicable</p>
 </details>
 <details class="note"><summary>Return</summary><p>Not applicable</p>
@@ -693,15 +647,17 @@ return a null pointer, and <code class="codehilite"><span class="n">size</span><
 </td></tr></table>
 
 </div>
+<p><a name="dynarray2"></a></p>
 <hr />
-<h3 id="pointercount-constructor"><strong>Pointer/count constructor</strong><a class="headerlink" href="#pointercount-constructor" title="Permanent link">&para;</a></h3>
+<h3><strong>dynarray(pointer ptr, index_type count)</strong></h3>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">explicit</span> <span class="nf">dynarray</span><span class="p">(</span><span class="n">pointer</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">index_type</span> <span class="n">count</span><span class="p">)</span> <span class="n">BFNOEXCEPT</span><span class="p">;</span>
 </pre></div>
 </td></tr></table>
 
-<p>Creates a value initialized <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> that owns an array at ptr, of count
-elements of T. When called, <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> will return ptr and <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> will return count.</p>
-<details class="note"><summary>Parameters</summary><details class="summary"><summary>ptr</summary><p>a pointer to the array (a continuous memory block) the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code>          will manage. If the default deleter is used, this memory must be                allocated using the <code class="codehilite"><span class="k">new</span> <span class="p">[]</span></code> operator.</p>
+<p>Creates a value initialized <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> that owns an array at ptr, of count elements of T. When called, <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> will return ptr and <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> will return count.</p>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>ptr</summary><p>a pointer to the array (a continuous memory block) the
+<code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> will manage. If the default deleter is used,
+this memory must be allocated using the <code class="codehilite"><span class="k">new</span> <span class="p">[]</span></code> operator.</p>
 </details>
 <details class="summary"><summary>count</summary><p>the number of elements in the array.</p>
 <div class="admonition warning">
@@ -714,7 +670,7 @@ elements of T. When called, <code class="codehilite"><span class="n">get</span><
 </details>
 <details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
 <li><code class="codehilite"><span class="n">ptr</span></code> must not be a null pointer</li>
-<li><code class="codehilite"><span class="k">count</span></code> must be larger than 0.</li>
+<li><code class="codehilite"><span class="n">count</span></code> must be larger than 0.</li>
 </ul>
 </details>
 <details class="summary"><summary>Ensures</summary><ul>
@@ -732,19 +688,21 @@ elements of T. When called, <code class="codehilite"><span class="n">get</span><
 <details class="warning"><summary>Warning</summary><p>This function will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
 and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
 the BSL when a contract violation occurs. Otherwise, this function will
-call <code class="codehilite"><span class="n">std</span><span class="p">::</span><span class="k">terminate</span><span class="p">()</span></code> on such violations.</p>
+call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code> on such violations.</p>
 </details>
+<p><a name="dynarray3"></a></p>
 <hr />
-<h3 id="pointercount-constructor-with-custom-l-value-deleter"><strong>Pointer/count constructor with custom l-value deleter</strong><a class="headerlink" href="#pointercount-constructor-with-custom-l-value-deleter" title="Permanent link">&para;</a></h3>
+<h3><strong>dynarray(pointer ptr, index_type count, const deleter_type &amp;d)</strong></h3>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
 2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">explicit</span> <span class="nf">dynarray</span><span class="p">(</span>
     <span class="n">pointer</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">index_type</span> <span class="n">count</span><span class="p">,</span> <span class="k">const</span> <span class="n">deleter_type</span> <span class="o">&amp;</span><span class="n">d</span><span class="p">)</span> <span class="n">BFNOEXCEPT</span><span class="p">;</span>
 </pre></div>
 </td></tr></table>
 
-<p>Creates a value initialized <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> that owns an array at ptr, of count
-elements of T. When called, <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> will return ptr and <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> will return count. This version of the pointer/count constructor allows you to provide your own l-value deleter instead of the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> default-initializing the deleter for you.</p>
-<details class="note"><summary>Parameters</summary><details class="summary"><summary>ptr</summary><p>a pointer to the array (a continuous memory block) the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code>          will manage. If the default deleter is used, this memory must be                allocated using the <code class="codehilite"><span class="k">new</span> <span class="p">[]</span></code> operator.</p>
+<p>Creates a value initialized <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> that owns an array at ptr, of count elements of T. When called, <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> will return ptr and <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> will return count. This version of the pointer/count constructor allows you to provide your own l-value deleter instead of the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> default-initializing the deleter for you.</p>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>ptr</summary><p>a pointer to the array (a continuous memory block) the
+<code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> will manage. If the default deleter is used,
+this memory must be allocated using the <code class="codehilite"><span class="k">new</span> <span class="p">[]</span></code> operator.</p>
 </details>
 <details class="summary"><summary>count</summary><p>the number of elements in the array.</p>
 <div class="admonition warning">
@@ -752,16 +710,16 @@ elements of T. When called, <code class="codehilite"><span class="n">get</span><
 <p>the count does not refer to the number of bytes, but rather the                 total number of elements.</p>
 </div>
 </details>
-<details class="summary"><summary>deleter</summary><p>an l-value reference to a custom deleter. The <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> will
+<details class="summary"><summary>deleter</summary><p>an l-value reference to a custom deleter. The <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> will
 create a copy of this deleter and use it to delete the pointer when
-the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> loses scope.</p>
+the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> loses scope.</p>
 </details>
 </details>
 <details class="note"><summary>Return</summary><p>Not applicable</p>
 </details>
 <details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
 <li><code class="codehilite"><span class="n">ptr</span></code> must not be a null pointer</li>
-<li><code class="codehilite"><span class="k">count</span></code> must be larger than 0.</li>
+<li><code class="codehilite"><span class="n">count</span></code> must be larger than 0.</li>
 </ul>
 </details>
 <details class="summary"><summary>Ensures</summary><ul>
@@ -801,19 +759,21 @@ the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span>
 <details class="warning"><summary>Warning</summary><p>This function will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
 and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
 the BSL when a contract violation occurs. Otherwise, this function will
-call <code class="codehilite"><span class="n">std</span><span class="p">::</span><span class="k">terminate</span><span class="p">()</span></code> on such violations.</p>
+call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code> on such violations.</p>
 </details>
+<p><a name="dynarray4"></a></p>
 <hr />
-<h3 id="pointercount-constructor-with-custom-r-value-deleter"><strong>Pointer/count constructor with custom r-value deleter</strong><a class="headerlink" href="#pointercount-constructor-with-custom-r-value-deleter" title="Permanent link">&para;</a></h3>
+<h3><strong>dynarray(pointer ptr, index_type count, deleter_type &amp;&amp;d)</strong></h3>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
 2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">explicit</span> <span class="n">dynarray</span><span class="p">(</span>
     <span class="n">pointer</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">index_type</span> <span class="n">count</span><span class="p">,</span> <span class="n">deleter_type</span> <span class="o">&amp;&amp;</span><span class="n">d</span><span class="p">)</span> <span class="n">BFNOEXCEPT</span>
 </pre></div>
 </td></tr></table>
 
-<p>Creates a value initialized <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> that owns an array at ptr, of count
-elements of T. When called, <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> will return ptr and <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> will return count. This version of the pointer/count constructor allows you to provide your own r-value deleter instead of the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> default-initializing the deleter for you.</p>
-<details class="note"><summary>Parameters</summary><details class="summary"><summary>ptr</summary><p>a pointer to the array (a continuous memory block) the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code>          will manage. If the default deleter is used, this memory must be                allocated using the <code class="codehilite"><span class="k">new</span> <span class="p">[]</span></code> operator.</p>
+<p>Creates a value initialized <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> that owns an array at ptr, of count elements of <code class="codehilite"><span class="n">T</span></code>. When called, <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> will return ptr and <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> will return count. This version of the pointer/count constructor allows you to provide your own r-value deleter instead of the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> default-initializing the deleter for you.</p>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>ptr</summary><p>a pointer to the array (a continuous memory block) the
+<code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> will manage. If the default deleter is used,
+this memory must be allocated using the <code class="codehilite"><span class="k">new</span> <span class="p">[]</span></code> operator.</p>
 </details>
 <details class="summary"><summary>count</summary><p>the number of elements in the array.</p>
 <div class="admonition warning">
@@ -821,15 +781,15 @@ elements of T. When called, <code class="codehilite"><span class="n">get</span><
 <p>the count does not refer to the number of bytes, but rather the                 total number of elements.</p>
 </div>
 </details>
-<details class="summary"><summary>deleter</summary><p>an r-value reference to a custom deleter. The <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> will
-move this deleter and use it to delete the pointer when the                     <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> loses scope.</p>
+<details class="summary"><summary>deleter</summary><p>an r-value reference to a custom deleter. The <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> will
+move this deleter and use it to delete the pointer when the                     <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> loses scope.</p>
 </details>
 </details>
 <details class="note"><summary>Return</summary><p>Not applicable</p>
 </details>
 <details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
 <li><code class="codehilite"><span class="n">ptr</span></code> must not be a null pointer</li>
-<li><code class="codehilite"><span class="k">count</span></code> must be larger than 0.</li>
+<li><code class="codehilite"><span class="n">count</span></code> must be larger than 0.</li>
 </ul>
 </details>
 <details class="summary"><summary>Ensures</summary><ul>
@@ -869,16 +829,15 @@ and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
 the BSL when a contract violation occurs. Otherwise, this function will
 call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code> on such violations.</p>
 </details>
+<p><a name="dynarray5"></a></p>
 <hr />
-<h3 id="move-constructor"><strong>Move constructor</strong><a class="headerlink" href="#move-constructor" title="Permanent link">&para;</a></h3>
+<h3><strong>dynarray(dynarray &amp;&amp;u)</strong></h3>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">explicit</span> <span class="n">dynarray</span><span class="p">(</span><span class="n">dynarray</span> <span class="o">&amp;&amp;</span><span class="n">u</span><span class="p">)</span> <span class="k">noexcept</span>
 </pre></div>
 </td></tr></table>
 
-<p>Creates a <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> from another <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> using move semantics. This constructor ensures that <code class="codehilite"><span class="n">u</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span></code> is true. Whether or not the newly
-constructed <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> is empty depends on whether or not <code class="codehilite"><span class="n">u</span></code> is
-empty at the time of the move.</p>
-<details class="note"><summary>Parameters</summary><details class="summary"><summary>u</summary><p>a <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> to construct a new <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> from.</p>
+<p>Creates a <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> from another <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> using move semantics. This constructor ensures that <code class="codehilite"><span class="n">u</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span></code> is true. Whether or not the newly constructed <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> is empty depends on whether or not <code class="codehilite"><span class="n">u</span></code> is empty at the time of the move.</p>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>u</summary><p>a <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> to construct a new <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> from.</p>
 </details>
 </details>
 <details class="note"><summary>Return</summary><p>Not applicable</p>
@@ -895,20 +854,1341 @@ empty at the time of the move.</p>
 <div class="admonition example">
 <p class="admonition-title">Usage</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
-2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">);</span>
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 <span class="k">auto</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">a1</span><span class="p">));</span>
 </pre></div>
 </td></tr></table>
 
 </div>
+<p><a name="dynarray6"></a></p>
 <hr />
-<h3 id="destructor"><strong>Destructor</strong><a class="headerlink" href="#destructor" title="Permanent link">&para;</a></h3>
+<h3><strong>~dynarray()</strong></h3>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="o">~</span><span class="n">dynarray</span><span class="p">()</span>
 </pre></div>
 </td></tr></table>
 
-<p>If the <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> is valid (i.e., <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> does not return a null pointer), the destructor will use the deleter to delete the array that it owns.
-Otherwise, this function has no affect.</p>
+<p>If the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> is valid (i.e., <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> does not return a null pointer), the destructor will use the deleter to delete the array that it owns. Otherwise, this function has no affect.</p>
+<details class="note"><summary>Parameters</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Return</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<p><a name="dynarray7"></a></p>
+<hr />
+<h3><strong>operator=(dynarray &amp;&amp;r)</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">constexpr</span> <span class="k">auto</span>
+<span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">dynarray</span> <span class="o">&amp;&amp;</span><span class="n">r</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">dynarray</span> <span class="o">&amp;</span>
+</pre></div>
+</td></tr></table>
+
+<p>Transfers ownership of a <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> to this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> using move semantics. This assignment ensures that <code class="codehilite"><span class="n">r</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span></code> is true. Whether or not the this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> is empty depends on whether or not <code class="codehilite"><span class="n">r</span></code> is empty at the time of the move. If this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> already owns an array, it will be deleted before the move takes place.</p>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>r</summary><p>a <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> to transfer ownership from.</p>
+</details>
+</details>
+<details class="note"><summary>Return</summary><p><code class="codehilite"><span class="o">*</span><span class="k">this</span></code></p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li><code class="codehilite"><span class="n">r</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span></code> == true</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">a2</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">a1</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray8"></a></p>
+<hr />
+<h3><strong>release()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">release</span><span class="p">()</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">pointer</span><span class="p">,</span> <span class="n">index_type</span><span class="o">&gt;</span>
+</pre></div>
+</td></tr></table>
+
+<p>Transfers ownership of a <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> to the caller by returning a pointer to the array and the number of elements in the array. After the execution of this function, <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> will return a null pointer and <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> will return 0.</p>
+<details class="note"><summary>Parameters</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Return</summary><p>Returns a <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">pointer</span><span class="p">,</span> <span class="n">index_type</span><span class="o">&gt;</span></code> containing a pointer to
+the array and the number of elements in the array.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li><code class="codehilite"><span class="n">get</span><span class="p">()</span></code> == nullptr</li>
+<li><code class="codehilite"><span class="n">size</span><span class="p">()</span></code> == 0</li>
+<li>if ret.first == nullptr, ret.second == 0</li>
+<li>if ret.first != nullptr, ret.second &gt;= 1</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">p</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">release</span><span class="p">();</span>
+<span class="k">delete</span><span class="p">[]</span> <span class="n">p</span><span class="p">.</span><span class="n">first</span><span class="p">;</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray9"></a></p>
+<hr />
+<h3><strong>reset(pointer ptr, index_type count)</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">reset</span><span class="p">(</span>
+    <span class="n">pointer</span> <span class="n">ptr</span> <span class="o">=</span> <span class="n">pointer</span><span class="p">(),</span>
+    <span class="n">index_type</span> <span class="n">count</span> <span class="o">=</span> <span class="n">index_type</span><span class="p">()</span>
+<span class="p">)</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="kt">void</span>
+</pre></div>
+</td></tr></table>
+
+<p>Transfers ownership of an array at <code class="codehilite"><span class="n">ptr</span></code> of size <code class="codehilite"><span class="n">count</span></code> from the caller to the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>. If the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> already owns an array, the old array is deleted using the Deleter before ownership is transferred.</p>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>ptr</summary><p>a pointer to the array (a continuous memory block) the
+<code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> will manage. If the default deleter is used,
+this memory must be allocated using the <code class="codehilite"><span class="k">new</span> <span class="p">[]</span></code> operator.</p>
+</details>
+<details class="summary"><summary>count</summary><p>the number of elements in the array.</p>
+<div class="admonition warning">
+<p class="admonition-title">Note</p>
+<p>the count does not refer to the number of bytes, but rather the                 total number of elements.</p>
+</div>
+</details>
+</details>
+<details class="note"><summary>Return</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>if ptr == nullptr, count == 0</li>
+<li>if ptr != nullptr, count &gt;= 1</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>if ptr == nullptr, empty() == true</li>
+<li>if ptr != nullptr, empty() == false</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">p</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">release</span><span class="p">();</span>
+<span class="n">a</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">first</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">second</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray10"></a></p>
+<hr />
+<h3><strong>reset(const std::pair<pointer, index_type> &amp;info)</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">reset</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">pointer</span><span class="p">,</span> <span class="n">index_type</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">info</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="kt">void</span>
+</pre></div>
+</td></tr></table>
+
+<p>Equivalent to <code class="codehilite"><span class="n">reset</span><span class="p">(</span><span class="n">info</span><span class="p">.</span><span class="n">first</span><span class="p">,</span> <span class="n">info</span><span class="p">.</span><span class="n">second</span><span class="p">)</span></code></p>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>info</summary><p>a <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">pair</span></code> containing a pointer to the array (a continuous
+memory block) the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> will manage and the number of
+elements in the array. If the default deleter is used, this memory must
+be allocated using the <code class="codehilite"><span class="k">new</span> <span class="p">[]</span></code> operator.</p>
+<div class="admonition warning">
+<p class="admonition-title">Note</p>
+<p>the count does not refer to the number of bytes, but rather the                 total number of elements.</p>
+</div>
+</details>
+</details>
+<details class="note"><summary>Return</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>if info.first == nullptr, info.second == 0</li>
+<li>if info.first != nullptr, info.second &gt;= 1</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>if info.first == nullptr, empty() == true</li>
+<li>if info.first != nullptr, empty() == false</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">a</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">release</span><span class="p">());</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray11"></a></p>
+<hr />
+<h3><strong>swap(dynarray &amp;other)</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">swap</span><span class="p">(</span><span class="n">dynarray</span> <span class="o">&amp;</span><span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="kt">void</span>
+</pre></div>
+</td></tr></table>
+
+<p>Swaps ownership of an array between other and this. Both arrays remain unaffected other than the ownership change.</p>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>other</summary><p>the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> swap ownership with.</p>
+</details>
+</details>
+<details class="note"><summary>Return</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">a1</span><span class="p">.</span><span class="n">swap</span><span class="p">(</span><span class="n">a2</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray12"></a></p>
+<hr />
+<h3><strong>get()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">get</span><span class="p">()</span> <span class="k">const</span> <span class="o">-&gt;</span> <span class="n">pointer</span>
+</pre></div>
+</td></tr></table>
+
+<p>Returns a pointer to the array managed by this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+<details class="note"><summary>Parameters</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Return</summary><p>Returns a pointer to the array managed by this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">p</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">get</span><span class="p">();</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray13"></a></p>
+<hr />
+<h3><strong>get_deleter()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">get_deleter</span><span class="p">()</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">deleter_type</span> <span class="o">&amp;</span>
+
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">get_deleter</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">const_deleter_type</span> <span class="o">&amp;</span>
+</pre></div>
+</td></tr></table>
+
+<p>Returns an l-value reference to the Deleter that this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> will use to delete the array that it manages. Since the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> uses Empty Base Optimizations to reduce its overall size, it is likely that the returned reference is equivalent to <code class="codehilite"><span class="o">#!</span><span class="k">c</span><span class="o">++*</span> <span class="n">this</span></code>.</p>
+<details class="note"><summary>Parameters</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Return</summary><p>Returns an l-value reference to the Deleter that this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>
+will use to delete the array that it manages.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">p</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">release</span><span class="p">();</span>
+<span class="k">auto</span> <span class="n">d</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">get_deleter</span><span class="p">();</span>
+<span class="n">d</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">first</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">second</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray14"></a></p>
+<hr />
+<h3><strong>operator bool()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">explicit</span> <span class="k">operator</span> <span class="kt">bool</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
+</pre></div>
+</td></tr></table>
+
+<p>Returns true when this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> manages a valid array. While this is equivalent to <code class="codehilite"><span class="n">get</span><span class="p">()</span> <span class="o">!=</span> <span class="k">nullptr</span></code>, this function ensures that if it returns true, <code class="codehilite"><span class="n">size</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">1</span></code> and if it returns false, <code class="codehilite"><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span></code>.</p>
+<details class="note"><summary>Parameters</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Return</summary><p>Returns true when this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> manages a valid array.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>if <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> == nullptr, <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> == 0</li>
+<li>if <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> != nullptr, <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> &gt;= 1</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;dynarray is valid</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">else</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;dynarray is invalid</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray15"></a></p>
+<hr />
+<h3><strong>operator[]</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="k">operator</span><span class="p">[](</span><span class="n">index_type</span> <span class="n">i</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">reference</span>
+
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="k">operator</span><span class="p">[](</span><span class="n">index_type</span> <span class="n">i</span><span class="p">)</span> <span class="k">const</span> <span class="o">-&gt;</span> <span class="n">const_reference</span>
+</pre></div>
+</td></tr></table>
+
+<p>Returns an l-value reference to the element at index_type i in the array managed by this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
+and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
+the BSL when a contract violation occurs. Otherwise, this function will
+call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code> when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
+and BAREFLANK_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, the execution of this function is undefined when a
+contract violation occurs (such as an out of range error).</p>
+</div>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>i</summary><p>The index of the element within the array that this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> manages to return.</p>
+</details>
+</details>
+<details class="note"><summary>Return</summary><p>Returns an l-value reference to the element at index_type i in the array
+managed by this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li><code class="codehilite"><span class="n">i</span></code> &lt; <code class="codehilite"><span class="n">size</span><span class="p">()</span></code></li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+<span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">23</span><span class="p">;</span> <span class="c1">// &lt;--- throws, calls std::terminate() or is undefined</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray16"></a></p>
+<hr />
+<h3><strong>at()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">at</span><span class="p">(</span><span class="n">index_type</span> <span class="n">pos</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">reference</span>
+
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">at</span><span class="p">(</span><span class="n">index_type</span> <span class="n">pos</span><span class="p">)</span> <span class="k">const</span> <span class="o">-&gt;</span> <span class="n">const_reference</span>
+</pre></div>
+</td></tr></table>
+
+<p>Returns an l-value reference to the element at index_type pos in the array managed by this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>. This function will always throw a <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">out_of_range</span></code> exception when the index_type pos is &gt;= <code class="codehilite"><span class="n">size</span><span class="p">()</span></code>.</p>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>i</summary><p>The index of the element within the array that this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> manages to return.</p>
+</details>
+</details>
+<details class="note"><summary>Return</summary><p>Returns an l-value reference to the element at index_type i in the array
+managed by this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li><code class="codehilite"><span class="n">i</span></code> &lt; <code class="codehilite"><span class="n">size</span><span class="p">()</span></code></li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">a</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+<span class="n">a</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="mi">23</span><span class="p">;</span> <span class="c1">// &lt;--- throws</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray17"></a></p>
+<hr />
+<h3><strong>front()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">front</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">reference</span>
+
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">front</span><span class="p">()</span> <span class="k">const</span> <span class="o">-&gt;</span> <span class="n">const_reference</span>
+</pre></div>
+</td></tr></table>
+
+<p>Returns an l-value reference to the element at the beginning of the array managed by this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>. This is equivalent to <code class="codehilite"><span class="p">[</span><span class="mi">0</span><span class="p">]</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
+and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
+the BSL when a contract violation occurs. Otherwise, this function will
+call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code> when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
+and BAREFLANK_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, the execution of this function is undefined when a
+contract violation occurs (such as an out of range error).</p>
+</div>
+<details class="note"><summary>Parameters</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Return</summary><p>Returns an l-value reference to the element at the beginning of the array
+managed by this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li><code class="codehilite"><span class="o">!</span><span class="n">empty</span><span class="p">()</span></code></li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">a1</span><span class="p">.</span><span class="n">front</span><span class="p">()</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+
+<span class="k">auto</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="n">a2</span><span class="p">.</span><span class="n">front</span><span class="p">()</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span> <span class="c1">// &lt;--- throws, calls std::terminate() or is undefined</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray18"></a></p>
+<hr />
+<h3><strong>back()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">back</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">reference</span>
+
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">back</span><span class="p">()</span> <span class="k">const</span> <span class="o">-&gt;</span> <span class="n">const_reference</span>
+</pre></div>
+</td></tr></table>
+
+<p>Returns an l-value reference to the element at the end of the array managed by this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>. This is equivalent to <code class="codehilite"><span class="p">[</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
+and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
+the BSL when a contract violation occurs. Otherwise, this function will
+call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code> when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
+and BAREFLANK_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, the execution of this function is undefined when a
+contract violation occurs (such as an out of range error).</p>
+</div>
+<details class="note"><summary>Parameters</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Return</summary><p>Returns an l-value reference to the element at the end of the array managed
+by this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li><code class="codehilite"><span class="o">!</span><span class="n">empty</span><span class="p">()</span></code></li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">a1</span><span class="p">.</span><span class="n">back</span><span class="p">()</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+
+<span class="k">auto</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="n">a2</span><span class="p">.</span><span class="n">back</span><span class="p">()</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span> <span class="c1">// &lt;--- throws, calls std::terminate() or is undefined</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray19"></a></p>
+<hr />
+<h3><strong>data()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">data</span><span class="p">()</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">pointer</span>
+
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">data</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">const_pointer</span>
+</pre></div>
+</td></tr></table>
+
+<p>Returns a pointer to the array managed by this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+<details class="note"><summary>Parameters</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Return</summary><p>Returns a pointer to the array managed by this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">p</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray20"></a></p>
+<hr />
+<h3><strong>begin() / cbegin()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">begin</span><span class="p">()</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">iterator</span>
+
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">begin</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">const_iterator</span>
+
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">cbegin</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">const_iterator</span>
+</pre></div>
+</td></tr></table>
+
+<p>Returns an iterator to the first element in the array managed by this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Iterators will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
+and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
+the BSL when a contract violation occurs. Otherwise, iterators will
+call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code> when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
+and BAREFLANK_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, dereferencing an iterator is undefined when a
+contract violation occurs (such as an out of range error). It should be
+noted that unlike a <code class="codehilite"><span class="n">gsl</span><span class="o">::</span><span class="n">span</span></code>, iterators only check for contract
+violations when dereferencing. Arithmetic on an iterator (including moving
+an iterator well beyond the bounds of the array) has no affect until the
+iterator is finally dereferenced.</p>
+</div>
+<details class="note"><summary>Parameters</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Return</summary><p>Returns an iterator to the first element in the array managed by this
+<code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">iter</span> <span class="o">!=</span> <span class="n">a</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="n">iter</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">*</span><span class="n">iter</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span><span class="nl">elem</span> <span class="p">:</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">elem</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray21"></a></p>
+<hr />
+<h3><strong>end() / cend()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">end</span><span class="p">()</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">iterator</span>
+
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">end</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">const_iterator</span>
+
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">cend</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">const_iterator</span>
+</pre></div>
+</td></tr></table>
+
+<p>Returns an iterator to the element after the last element in the array managed by this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Iterators will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
+and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
+the BSL when a contract violation occurs. Otherwise, iterators will
+call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code> when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
+and BAREFLANK_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, dereferencing an iterator is undefined when a
+contract violation occurs (such as an out of range error). It should be
+noted that unlike a <code class="codehilite"><span class="n">gsl</span><span class="o">::</span><span class="n">span</span></code>, iterators only check for contract
+violations when dereferencing. Arithmetic on an iterator (including moving
+an iterator well beyond the bounds of the array) has no affect until the
+iterator is finally dereferenced.</p>
+</div>
+<details class="note"><summary>Parameters</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Return</summary><p>Returns an iterator to the element after the last element in the array
+managed by this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">iter</span> <span class="o">!=</span> <span class="n">a</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="n">iter</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">*</span><span class="n">iter</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span><span class="nl">elem</span> <span class="p">:</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">elem</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray22"></a></p>
+<hr />
+<h3><strong>rbegin() / crbegin()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">rbegin</span><span class="p">()</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">reverse_iterator</span>
+
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">rbegin</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">const_reverse_iterator</span>
+
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">crbegin</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">const_reverse_iterator</span>
+</pre></div>
+</td></tr></table>
+
+<p>Returns a reverse iterator to the last element in the array managed by this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Iterators will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
+and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
+the BSL when a contract violation occurs. Otherwise, iterators will
+call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code> when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
+and BAREFLANK_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, dereferencing an iterator is undefined when a
+contract violation occurs (such as an out of range error). It should be
+noted that unlike a <code class="codehilite"><span class="n">gsl</span><span class="o">::</span><span class="n">span</span></code>, iterators only check for contract
+violations when dereferencing. Arithmetic on an iterator (including moving
+an iterator well beyond the bounds of the array) has no affect until the
+iterator is finally dereferenced.</p>
+</div>
+<details class="note"><summary>Parameters</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Return</summary><p>Returns a reverse iterator to the last element in the array managed by this
+<code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">rbegin</span><span class="p">();</span> <span class="n">iter</span> <span class="o">!=</span> <span class="n">a</span><span class="p">.</span><span class="n">rend</span><span class="p">();</span> <span class="n">iter</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">*</span><span class="n">iter</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray23"></a></p>
+<hr />
+<h3><strong>rend() / crend()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">rend</span><span class="p">()</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">reverse_iterator</span>
+
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">rend</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">const_reverse_iterator</span>
+
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">crend</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">const_reverse_iterator</span>
+</pre></div>
+</td></tr></table>
+
+<p>Returns a reverse iterator to the element before the first element in the array managed by this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Iterators will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
+and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
+the BSL when a contract violation occurs. Otherwise, iterators will
+call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code> when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
+and BAREFLANK_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, dereferencing an iterator is undefined when a
+contract violation occurs (such as an out of range error). It should be
+noted that unlike a <code class="codehilite"><span class="n">gsl</span><span class="o">::</span><span class="n">span</span></code>, iterators only check for contract
+violations when dereferencing. Arithmetic on an iterator (including moving
+an iterator well beyond the bounds of the array) has no affect until the
+iterator is finally dereferenced.</p>
+</div>
+<details class="note"><summary>Parameters</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Return</summary><p>Returns a reverse iterator to the element before the first element in the
+array managed by this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">rbegin</span><span class="p">();</span> <span class="n">iter</span> <span class="o">!=</span> <span class="n">a</span><span class="p">.</span><span class="n">rend</span><span class="p">();</span> <span class="n">iter</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">*</span><span class="n">iter</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray24"></a></p>
+<hr />
+<h3><strong>empty()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">empty</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="kt">bool</span>
+</pre></div>
+</td></tr></table>
+
+<p>Returns true when this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> is empty. While this is equivalent to <code class="codehilite"><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span></code>, this function ensures that if it returns true, <code class="codehilite"><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="k">nullptr</span></code> and if it returns false, <code class="codehilite"><span class="n">get</span><span class="p">()</span> <span class="o">!=</span> <span class="k">nullptr</span></code>.</p>
+<details class="note"><summary>Parameters</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Return</summary><p>Returns true when this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> is empty.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>if <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> == nullptr, <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> == 0</li>
+<li>if <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> != nullptr, <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> &gt;= 1</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;dynarray is empty</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">else</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;dynarray is not empty</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray25"></a></p>
+<hr />
+<h3><strong>size() / ssize()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">size</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">index_type</span>
+
+<span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">ssize</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">difference_type</span>
+</pre></div>
+</td></tr></table>
+
+<p>Returns the number of elements in this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+<details class="note"><summary>Parameters</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Return</summary><p>Returns the number of elements in this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray26"></a></p>
+<hr />
+<h3><strong>size_bytes()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">size_bytes</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">index_type</span>
+</pre></div>
+</td></tr></table>
+
+<p>Returns the size of this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> in bytes, not elements. This is equivalent to <code class="codehilite"><span class="n">size</span><span class="p">()</span> <span class="o">*</span> <span class="k">sizeof</span> <span class="n">T</span></code>.</p>
+<details class="note"><summary>Parameters</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Return</summary><p>Returns the size of this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> in bytes, not elements.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">.</span><span class="n">size_bytes</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray27"></a></p>
+<hr />
+<h3><strong>max_size()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p">[[</span><span class="n">nodiscard</span><span class="p">]]</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">max_size</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">index_type</span>
+</pre></div>
+</td></tr></table>
+
+<p>Returns the max number of elements this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> can store. This is equivalent to <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="n">difference_type</span><span class="o">&gt;::</span><span class="n">max</span><span class="p">()</span> <span class="o">/</span> <span class="k">sizeof</span> <span class="n">T</span><span class="p">;</span></code></p>
+<details class="note"><summary>Parameters</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Return</summary><p>Returns the max number of elements this <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> can store.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">.</span><span class="n">max_size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray28"></a></p>
+<hr />
+<h3><strong>fill()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">fill</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">void</span>
+</pre></div>
+</td></tr></table>
+
+<p>Value-initializes each element in the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> by copying value.</p>
+<details class="todo"><summary>Todo</summary><ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add some additional fill() functions (an operator=() versions) to
+      make it easier to work with the array.</li>
+</ul>
+</details>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>value</summary><p>the value to copy into each element in the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>.</p>
+</details>
+</details>
+<details class="note"><summary>Return</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">a</span><span class="p">.</span><span class="n">fill</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray29"></a></p>
+<hr />
+<h3><strong>make_dynarray()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">make_dynarray</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">count</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dynarray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span>
+</pre></div>
+</td></tr></table>
+
+<p>Creates a <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> of size count using the <code class="codehilite"><span class="k">new</span> <span class="p">[]</span></code> operator and the default deleter. In addition, each element in the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> is value-initialized using <code class="codehilite"><span class="n">T</span><span class="p">()</span></code>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Whenever possible <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span></code> should be used instead of
+manually creating a <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> as this function ensures that
+the size of the array matches the memory allocated.</p>
+</div>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>count</summary><p>The total number of elements in the array to create.</p>
+</details>
+</details>
+<details class="note"><summary>Return</summary><p>A <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> of size count.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li><code class="codehilite"><span class="n">count</span></code> &gt; 0</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray30"></a></p>
+<hr />
+<h3><strong>make_dynarray_default_init()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span> <span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">make_dynarray_default_init</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">count</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dynarray</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span>
+</pre></div>
+</td></tr></table>
+
+<p>Creates a <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> of size count using the <code class="codehilite"><span class="k">new</span> <span class="p">[]</span></code> operator and the default deleter. In addition, each element in the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> is default-initialized.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Whenever possible <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray_default_init</span></code> should be used
+instead of manually creating a <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> as this function
+ensures that the size of the array matches the memory allocated.</p>
+</div>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>count</summary><p>The total number of elements in the array to create.</p>
+</details>
+</details>
+<details class="note"><summary>Return</summary><p>A <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> of size count.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li><code class="codehilite"><span class="n">count</span></code> &gt; 0</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray31"></a></p>
+<hr />
+<h3><strong>operator==() / operator!=()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T1</span><span class="p">,</span> <span class="k">typename</span> <span class="n">D1</span><span class="p">,</span> <span class="k">typename</span> <span class="n">T2</span><span class="p">,</span> <span class="k">typename</span> <span class="n">D2</span><span class="o">&gt;</span>
+<span class="k">constexpr</span> <span class="kt">bool</span>
+<span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="k">const</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="n">T1</span><span class="p">,</span> <span class="n">D1</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="n">T2</span><span class="p">,</span> <span class="n">D2</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">rhs</span><span class="p">)</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T1</span><span class="p">,</span> <span class="k">typename</span> <span class="n">D1</span><span class="p">,</span> <span class="k">typename</span> <span class="n">T2</span><span class="p">,</span> <span class="k">typename</span> <span class="n">D2</span><span class="o">&gt;</span>
+<span class="k">constexpr</span> <span class="kt">bool</span>
+<span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="k">const</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="n">T1</span><span class="p">,</span> <span class="n">D1</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">lhs</span><span class="p">,</span> <span class="k">const</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="n">T2</span><span class="p">,</span> <span class="n">D2</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">rhs</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<p>Returns true if the lhs <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> and the rhs <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> are equal (and vice versa). A <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> is equal to another <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> if they are the same size, and each element in each <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> compares equal at the same position.</p>
+<details class="todo"><summary>Todo</summary><ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add support for the &gt;, &lt;, &gt;= and &lt;= operators</li>
+</ul>
+</details>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>lhs</summary><p>A <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> to compare</p>
+</details>
+<details class="summary"><summary>rhs</summary><p>A <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> to compare</p>
+</details>
+</details>
+<details class="note"><summary>Return</summary><p>Returns true if the lhs <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> and the rhs
+<code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> are equal (and vice versa).</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">a1</span> <span class="o">==</span> <span class="n">a2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;lhs and rhs are equal</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">else</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;lhs and rhs are not equal</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="dynarray32"></a></p>
+<hr />
+<h3><strong>operator&lt;&lt;()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">CharT</span><span class="p">,</span> <span class="k">typename</span> <span class="n">Traits</span><span class="p">,</span> <span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span> <span class="n">D</span><span class="o">&gt;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">basic_ostream</span><span class="o">&lt;</span><span class="n">CharT</span><span class="p">,</span> <span class="n">Traits</span><span class="o">&gt;</span> <span class="o">&amp;</span>
+<span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">basic_ostream</span><span class="o">&lt;</span><span class="n">CharT</span><span class="p">,</span> <span class="n">Traits</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">,</span> <span class="k">const</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="n">D</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">da</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<p>Adds the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> to the output stream. This is equivalent to <code class="codehilite"><span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">void</span> <span class="o">*&gt;</span><span class="p">(</span><span class="n">da</span><span class="p">.</span><span class="n">get</span><span class="p">())</span></code>.</p>
+<details class="note"><summary>Parameters</summary><details class="summary"><summary>os</summary><p>The output stream to add the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> to.</p>
+</details>
+<details class="summary"><summary>rhs</summary><p>The <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> to add to the output stream</p>
+</details>
+</details>
+<details class="note"><summary>Return</summary><p>Returns an l-value reference to the output stream.</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li>None</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<hr />
+<h2 id="input-file-array"><strong>Input File Array</strong><a class="headerlink" href="#input-file-array" title="Permanent link">&para;</a></h2>
+<p>C++ currently doesn't have a fast, simple method for reading in the entire contents of a file into an array. The best options are:</p>
+<ul>
+<li><code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">vector</span></code></li>
+<li><code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span></code></li>
+</ul>
+<p>In either case, likely the fastest method is to use <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">fstream</span></code> to open a file and then load the <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">vector</span></code> or <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span></code> with the contents of the file using the read function. The problem with <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">vector</span></code> is that you would have to create a value-initialized array of memory based on the size of the file, and then load that array with the file's contents. For large files this is problematic as this requires the use of value-initialization even though you are about to initialize the contents of the vector with the file's contents. You could use a <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span></code> to overcome this problem, but the <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span></code> doesn't store the file's size. The other issue is with the <code class="codehilite"><span class="n">read</span><span class="p">()</span></code> function that <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">fstream</span></code> provides as this is not as fast as directly mapping the file using the operating system's mapping facilities. For large files, these mapping facilities make a big difference in performance.</p>
+<p>The <code class="codehilite"><span class="nl">bsl</span><span class="p">:</span><span class="n">ifarray</span></code> attempts to solve these issues by:</p>
+<ul>
+<li>Using a <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> as the array type.</li>
+<li>Instead of using <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">fstream</span></code>, the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">ifarray</span></code> uses the operating system's mapping functions to map in the file (read-only), providing the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> with a pointer to the newly mapped file and a custom deleter that unmaps instead of deletes.</li>
+<li>Exposing all of the functionality of the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>, providing a safe mechanism for working with the file.</li>
+</ul>
+<p>In Bareflank, we need a class like this as we work with really large files (e.g., virtual machine images which can be gigabytes in size), but in general, this type of class should be helpful for anyone that needs array style access to a file.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">ifarray</span></code> inherits the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>, providing
+access to all of the facilities that the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> provides.
+This documentation only documents the functions unique to the
+<code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">ifarray</span></code> (e.g., the constructors). For more information about
+the APIs that the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> provides in addition, please see
+the <a href="#dynamic-array">Dynamic Array</a> APIs.</p>
+</div>
+<details class="todo"><summary>Todo</summary><ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add support <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">farray</span></code> for read/write access</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add support for <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">ofarray</span></code> for write-only access</li>
+</ul>
+</details>
+<details class="note"><summary>Template Parameters</summary><details class="summary"><summary>T</summary><p>The element type used to access the file. This defaults to uint8_t.</p>
+</details>
+</details>
+<details class="note"><summary>Member Types</summary><div class="admonition summary">
+<p class="admonition-title">value_type = T</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">element_type = T</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">index_type = std::size_t</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">difference_type = std::ptrdiff_t</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">reference = T &amp;</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">const_reference = const T &amp;</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">pointer = T *</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">const_pointer = const T *</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">deleter_type = bsl::farray_deleter<T></p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">const_deleter_type = const bsl::farray_deleter<T></p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">iterator = random_access_iterator</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">const_iterator = random_access_iterator</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">reverse_iterator = std::reverse_iterator</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">const_reverse_iterator = std::reverse_iterator</p>
+</div>
+</details>
+<h3><strong>Member Functions</strong></h3>
+<ul>
+<li><a href="#ifarray1">ifarray()</a></li>
+<li><a href="#ifarray2">ifarray(const std::string &amp;filename)</a></li>
+</ul>
+<p><a name="ifarray1"></a></p>
+<hr />
+<h3><strong>ifarray()</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">constexpr</span> <span class="nf">ifarray</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
+</pre></div>
+</td></tr></table>
+
+<p>Creates a default initialized <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">ifarray</span></code>. When called, <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> will return a null pointer, and <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> will return 0.</p>
+<details class="note"><summary>Parameters</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Return</summary><p>Not applicable</p>
+</details>
+<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
+<li>None</li>
+</ul>
+</details>
+<details class="summary"><summary>Ensures</summary><ul>
+<li><code class="codehilite"><span class="n">empty</span><span class="p">()</span></code> == true</li>
+</ul>
+</details>
+</details>
+<div class="admonition example">
+<p class="admonition-title">Usage</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">ifarray</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+</pre></div>
+</td></tr></table>
+
+</div>
+<p><a name="ifarray2"></a></p>
+<hr />
+<h3><strong>ifarray(const std::string &amp;filename)</strong></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">constexpr</span> <span class="nf">ifarray</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">filename</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+</pre></div>
+</td></tr></table>
+
+<p>Creates a <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">ifarray</span></code> by opening the file using filename, and mapping the file using the operating system's mapping functions. This function will throw if the file cannot be opened or mapped.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The file is opened as read-only.</p>
+</div>
 <details class="note"><summary>Parameters</summary><p>Not applicable</p>
 </details>
 <details class="note"><summary>Return</summary><p>Not applicable</p>
@@ -924,41 +2204,7 @@ Otherwise, this function has no affect.</p>
 </details>
 <div class="admonition example">
 <p class="admonition-title">Usage</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">);</span>
-</pre></div>
-</td></tr></table>
-
-</div>
-<hr />
-<h3 id="move-assignment"><strong>Move assignment</strong><a class="headerlink" href="#move-assignment" title="Permanent link">&para;</a></h3>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
-2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">constexpr</span> <span class="k">auto</span>
-<span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">dynarray</span> <span class="o">&amp;&amp;</span><span class="n">r</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="n">dynarray</span> <span class="o">&amp;</span>
-</pre></div>
-</td></tr></table>
-
-<p>Transfers ownership of a <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> to this <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> using move semantics. This assignment ensures that <code class="codehilite"><span class="n">r</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span></code> is true. Whether or not the this <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> is empty depends on whether or not <code class="codehilite"><span class="n">r</span></code> is empty at the time of the move. If this <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> already owns an array, it will be deleted before the move takes place.</p>
-<details class="note"><summary>Parameters</summary><details class="summary"><summary>r</summary><p>a <code class="codehilite"><span class="n">bsl</span><span class="p">::</span><span class="n">dynarray</span></code> to transfer ownership from.</p>
-</details>
-</details>
-<details class="note"><summary>Return</summary><p>Not applicable</p>
-</details>
-<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
-<li>None</li>
-</ul>
-</details>
-<details class="summary"><summary>Ensures</summary><ul>
-<li><code class="codehilite"><span class="n">r</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span></code> == true</li>
-</ul>
-</details>
-</details>
-<div class="admonition example">
-<p class="admonition-title">Usage</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
-2
-3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">);</span>
-<span class="k">auto</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">);</span>
-<span class="n">a2</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">a1</span><span class="p">);</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">ifarray</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="s">&quot;test.txt&quot;</span><span class="p">);</span>
 </pre></div>
 </td></tr></table>
 

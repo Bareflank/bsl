@@ -399,9 +399,21 @@ namespace bsl
     struct default_deleter
     {
         auto
-        operator()(T *ptr, size_t /*unused*/) -> void
+        operator()(T *ptr, size_t size) -> void
         {
+            (void)size;
             delete[] ptr;
+        }
+    };
+
+    template<typename T>
+    struct nodelete
+    {
+        auto
+        operator()(T *ptr, size_t size) -> void
+        {
+            (void)ptr;
+            (void)size;
         }
     };
 
@@ -693,6 +705,9 @@ namespace bsl
             bfensures_terminate(get() == pointer());
             bfensures_terminate(size() == index_type());
 
+            bfensures_if_terminate(old_ptr != nullptr, old_count >= 1);
+            bfensures_if_terminate(old_ptr == nullptr, old_count == 0);
+
             return {old_ptr, old_count};
         }
 
@@ -723,8 +738,8 @@ namespace bsl
         reset(pointer ptr = pointer(), index_type count = index_type()) noexcept
             -> void
         {
-            bfexpects_terminate(ptr != nullptr || count == 0);
-            bfexpects_terminate(ptr == nullptr || count >= 1);
+            bfexpects_if_terminate(ptr != nullptr, count >= 1);
+            bfexpects_if_terminate(ptr == nullptr, count == 0);
 
             auto old_ptr = m_ptr;
             auto old_count = m_count;
@@ -748,15 +763,6 @@ namespace bsl
         reset(const std::pair<pointer, index_type> &info) noexcept -> void
         {
             reset(info.first, info.second);
-        }
-
-        // Reset (nullptr)
-        //
-        // Equivalent to reset(pointer(), index_type())
-        //
-        constexpr auto reset(std::nullptr_t) noexcept -> void
-        {
-            reset(pointer(), index_type());
         }
 
         // Swap
@@ -837,6 +843,9 @@ namespace bsl
         //
         explicit operator bool() const noexcept
         {
+            bfensures_if_terminate(get() != nullptr, size() >= 1);
+            bfensures_if_terminate(get() == nullptr, size() == 0);
+
             return get() != nullptr;
         }
 
@@ -1269,6 +1278,9 @@ namespace bsl
         [[nodiscard]] constexpr auto
         empty() const noexcept -> bool
         {
+            bfensures_if_terminate(get() != nullptr, size() >= 1);
+            bfensures_if_terminate(get() == nullptr, size() == 0);
+
             return size() == 0;
         }
 

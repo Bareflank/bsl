@@ -30,6 +30,25 @@ set(CMAKE_CXX_STANDARD 17)
 
 option(BUILD_EXAMPLES "Build example programs" ON)
 option(BUILD_TESTS "Build test programs" ON)
+option(DISABLE_CLANG_TIDY "Disable the use of clang tidy" OFF)
+
+# ------------------------------------------------------------------------------
+# Flags
+# ------------------------------------------------------------------------------
+
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic -Werror")
+set(CMAKE_CXX_FLAGS_ASAN "-fno-omit-frame-pointer -fsanitize=address -g")
+set(CMAKE_LINKER_FLAGS_ASAN "-fno-omit-frame-pointer -fsanitize=address -g")
+set(CMAKE_CXX_FLAGS_UBSAN "-fsanitize=undefined -g")
+set(CMAKE_LINKER_FLAGS_UBSAN "-fsanitize=undefined -g")
+
+# ------------------------------------------------------------------------------
+# Clang Tidy
+# ------------------------------------------------------------------------------
+
+if(NOT DISABLE_CLANG_TIDY AND NOT CMAKE_CXX_CLANG_TIDY)
+    set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
+endif()
 
 # ------------------------------------------------------------------------------
 # Sub Directories
@@ -42,3 +61,22 @@ endif()
 if(BUILD_TESTS)
     add_subdirectory(tests)
 endif()
+
+# ------------------------------------------------------------------------------
+# Install
+# ------------------------------------------------------------------------------
+
+install(FILES include/bsl.h DESTINATION include/bsl)
+
+# ------------------------------------------------------------------------------
+# Package
+# ------------------------------------------------------------------------------
+
+add_library(bsl INTERFACE)
+
+target_include_directories(bsl INTERFACE
+    ${CMAKE_SOURCE_DIR}/include
+)
+
+export(TARGETS bsl FILE bslConfig.cmake APPEND)
+export(PACKAGE bsl)

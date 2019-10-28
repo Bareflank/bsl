@@ -66,7 +66,7 @@ CheckOptions:
   - key:             cppcoreguidelines-avoid-magic-numbers.IgnoredIntegerValues
     value:           '1;2;3;4;'
   - key:             cppcoreguidelines-macro-usage.AllowedRegexp
-    value:           '^BAREFLANK*|^bf*|^CHECK*'
+    value:           '^BAREFLANK*|^bf*|^BF*|^CHECK*'
   - key:             cppcoreguidelines-macro-usage.CheckCapsOnly
     value:           '0'
   - key:             cppcoreguidelines-macro-usage.IgnoreCommandLineMacros

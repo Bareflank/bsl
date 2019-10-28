@@ -41,24 +41,6 @@ ExternalProject_Add(
 include_directories(SYSTEM ${CMAKE_BINARY_DIR}/external/include)
 
 # ------------------------------------------------------------------------------
-# Flags
-# ------------------------------------------------------------------------------
-
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic -Werror")
-set(CMAKE_CXX_FLAGS_ASAN "-fno-omit-frame-pointer -fsanitize=address -g")
-set(CMAKE_LINKER_FLAGS_ASAN "-fno-omit-frame-pointer -fsanitize=address -g")
-set(CMAKE_CXX_FLAGS_UBSAN "-fsanitize=undefined -g")
-set(CMAKE_LINKER_FLAGS_UBSAN "-fsanitize=undefined -g")
-
-# ------------------------------------------------------------------------------
-# Clang Tidy
-# ------------------------------------------------------------------------------
-
-if(NOT CMAKE_CXX_CLANG_TIDY)
-    set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
-endif()
-
-# ------------------------------------------------------------------------------
 # Initial Setup
 # ------------------------------------------------------------------------------
 

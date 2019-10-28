@@ -1,3 +1,35 @@
-# Bareflank Support Library
+# **Bareflank Support Library**
 
-TBD
+[![Build Status](https://dev.azure.com/bareflank/bsl/_apis/build/status/Bareflank.bsl?branchName=master)](https://dev.azure.com/bareflank/bsl/_build/latest?definitionId=2&branchName=master)
+[![Join the chat](https://img.shields.io/badge/chat-on%20Slack-brightgreen.svg)](https://app.slack.com/client/TPN7LQKRP/CPJLF1RV1)
+![GitHub](https://img.shields.io/github/license/bareflank/bsl?color=brightgreen)
+
+## **A different view on Core Guideline Compliance**
+The Bareflank Support Library (BSL) is a simple, header-only library that provides support for C++ Core Guideline Compliance. Similar to the goals of the Guideline Support Library (GSL) by Microsoft, the BSL aims to provide the facilities needed to ensure guideline compliance, while minimizing the need for verbosity.
+
+<br>
+
+[![Material for MkDocs](docs/images/example.png)](images/example.png)
+
+## **Quick start**
+Get the latest version of the BSL from GitHub:
+
+``` bash
+git clone https://github.com/bareflank/bsl
+```
+
+Enjoy:
+
+``` c++
+#include "path/bsl.h"
+
+auto
+main() -> int
+{
+    auto da = bsl::make_dynarray<int>(42);
+}
+```
+
+## **Documentation**
+
+For detailed instructions, visit https://bareflank.github.io/bsl/

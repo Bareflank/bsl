@@ -574,42 +574,63 @@ the deleter should be nothrow movable.</p>
 </details>
 <h3><strong>Member Functions</strong></h3>
 <ul>
-<li><a href="#dynarray__dynarray">dynarray()</a></li>
-<li><a href="#dynarray__dynarray_pointer_index_type">dynarray(pointer ptr, index_type count)</a></li>
-<li><a href="#dynarray__dynarray_pointer_index_type_const_deleter_type">dynarray(pointer ptr, index_type count, const deleter_type &amp;d)</a></li>
-<li><a href="#dynarray__dynarray_pointer_index_type_deleter_type">dynarray(pointer ptr, index_type count, deleter_type &amp;&amp;d)</a></li>
-<li><a href="#dynarray__dynarray_dynarray">dynarray(dynarray &amp;&amp;u)</a></li>
-<li><a href="#dynarray__destructor">~dynarray()</a></li>
-<li><a href="#dynarray__dynarray_operator_equals_dynarray">dynarray &amp;operator=(dynarray &amp;&amp;r)</a></li>
-<li><a href="#dynarray__std_pair_pointer_index_type_release">std::pair&lt;pointer, index_type&gt; release()</a></li>
-<li><a href="#dynarray__void_reset_pointer_index_type">void reset(pointer ptr, index_type count)</a></li>
-<li><a href="#dynarray__void_reset_const_std_pair_pointer_index_type">void reset(const std::pair&lt;pointer, index_type&gt; &amp;info)</a></li>
-<li><a href="#dynarray__void_swap_dynarray">void swap(dynarray &amp;other)</a></li>
-<li><a href="#dynarray__pointer_get">pointer get()</a></li>
-<li><a href="#dynarray__deleter_type_get_deleter">deleter_type &amp;get_deleter()</a></li>
-<li><a href="#dynarray__operator_bool">operator bool()</a></li>
-<li><a href="#dynarray__reference_operator_subscript_index_type">reference operator[](index_type i)</a></li>
-<li><a href="#dynarray__reference_at">reference at()</a></li>
-<li><a href="#dynarray__reference_front">reference front()</a></li>
-<li><a href="#dynarray__reference_back">reference back()</a></li>
-<li><a href="#dynarray__pointer_data">pointer data()</a></li>
-<li><a href="#dynarray__iterator_begin_const_iterator_cbegin">iterator begin() / const_iterator cbegin()</a></li>
-<li><a href="#dynarray__iterator_end_const_iterator_cend">iterator end() / const_iterator cend()</a></li>
-<li><a href="#dynarray__reverse_iterator_rbegin_const_reverse_iterator_crbegin">iterator end() / const_iterator cend()</a></li>
-<li><a href="#dynarray__reverse_iterator_rend_const_reverse_iterator_crend">reverse_iterator rend() / const_reverse_iterator crend()</a></li>
-<li><a href="#dynarray__bool_empty">bool empty()</a></li>
-<li><a href="#dynarray__index_type_size_difference_type_ssize">index_type size() / difference_type ssize()</a></li>
-<li><a href="#dynarray__index_type_size_bytes">index_type size_bytes()</a></li>
-<li><a href="#dynarray__index_type_max_size">index_type max_size()</a></li>
-<li><a href="#dynarray__void_fill_const_T">void fill(const T &amp;value)</a></li>
-<li><a href="#dynarray__dynarray_T_make_dynarray">dynarray&lt;T&gt; make_dynarray()</a></li>
-<li><a href="#dynarray__dynarray_T_make_dynarray_default_init">dynarray&lt;T&gt; make_dynarray_default_init()</a></li>
-<li><a href="#dynarray__bool_operator_comparison_equals">bool operator==() / bool operator!=()</a></li>
-<li><a href="#dynarray__operator_ostream">operator&lt;&lt;()</a></li>
+<li><a href="#dynarray__default_constructor">default constructor</a></li>
+<li><a href="#dynarray__explicit_constructors">explicit constructors</a></li>
+<li><a href="#dynarray__move_constructor">move constructor</a></li>
+<li><a href="#dynarray__destructor">destructor</a></li>
+</ul>
+<h4>Assignment</h4>
+<ul>
+<li><a href="#dynarray__move_assignment">move assignment</a></li>
+</ul>
+<h4>Modifiers:</h4>
+<ul>
+<li><a href="#dynarray__release">release</a></li>
+<li><a href="#dynarray__reset">reset</a></li>
+<li><a href="#dynarray__swap">swap</a></li>
+</ul>
+<h4>Observers:</h4>
+<ul>
+<li><a href="#dynarray__get">get</a></li>
+<li><a href="#dynarray__get_deleter">get_deleter</a></li>
+<li><a href="#dynarray__operator_bool">operator bool</a></li>
+</ul>
+<h4>Element Access:</h4>
+<ul>
+<li><a href="#dynarray__operator_subscript">operator[]</a></li>
+<li><a href="#dynarray__at">at</a></li>
+<li><a href="#dynarray__front">front</a></li>
+<li><a href="#dynarray__back">back</a></li>
+<li><a href="#dynarray__data">data</a></li>
+</ul>
+<h4>Iterators:</h4>
+<ul>
+<li><a href="#dynarray__begin_cbegin">begin / cbegin</a></li>
+<li><a href="#dynarray__end_cend">end / cend</a></li>
+<li><a href="#dynarray__rbegin_crbegin">rbegin / crbegin</a></li>
+<li><a href="#dynarray__rend_crend">rend / crend</a></li>
+</ul>
+<h4>Capacity:</h4>
+<ul>
+<li><a href="#dynarray__empty">empty</a></li>
+<li><a href="#dynarray__size_ssize">size / ssize</a></li>
+<li><a href="#dynarray__size_bytes">size_bytes</a></li>
+<li><a href="#dynarray__max_size">max_size</a></li>
+</ul>
+<h4>Operations:</h4>
+<ul>
+<li><a href="#dynarray__fill">fill</a></li>
+</ul>
+<h3><strong>Non-Member Functions</strong></h3>
+<ul>
+<li><a href="#dynarray__make_dynarray">make_dynarray</a></li>
+<li><a href="#dynarray__make_dynarray_default_init">make_dynarray_default_init</a></li>
+<li><a href="#dynarray__operator_comparison_equals">operator== / operator!=</a></li>
+<li><a href="#dynarray__operator_ostream">operator&lt;&lt;</a></li>
 </ul>
 <hr />
-<h3 id="dynarray__dynarray">
-dynarray()
+<h3 id="dynarray__default_constructor">
+default constructor
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">constexpr</span> <span class="nf">dynarray</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
@@ -638,62 +659,29 @@ dynarray()
 
 </div>
 <hr />
-<h3 id="dynarray__dynarray_pointer_index_type">
-dynarray(pointer ptr, index_type count)
-</h3>
-
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">explicit</span> <span class="nf">dynarray</span><span class="p">(</span><span class="n">pointer</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">index_type</span> <span class="n">count</span><span class="p">)</span> <span class="n">BFNOEXCEPT</span><span class="p">;</span>
-</pre></div>
-</td></tr></table>
-
-<p>Creates a value initialized <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> that owns an array at ptr, of count elements of T. When called, <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> will return ptr and <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> will return count.</p>
-<details class="note"><summary>Parameters</summary><details class="summary"><summary>ptr</summary><p>a pointer to the array (a continuous memory block) the
-<code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> will manage. If the default deleter is used,
-this memory must be allocated using the <code class="codehilite"><span class="k">new</span> <span class="p">[]</span></code> operator.</p>
-</details>
-<details class="summary"><summary>count</summary><p>the number of elements in the array.</p>
-<div class="admonition warning">
-<p class="admonition-title">Note</p>
-<p>the count does not refer to the number of bytes, but rather the                 total number of elements.</p>
-</div>
-</details>
-</details>
-<details class="note"><summary>Return</summary><p>Not applicable</p>
-</details>
-<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
-<li><code class="codehilite"><span class="n">ptr</span></code> must not be a null pointer</li>
-<li><code class="codehilite"><span class="n">count</span></code> must be larger than 0.</li>
-</ul>
-</details>
-<details class="summary"><summary>Ensures</summary><ul>
-<li><code class="codehilite"><span class="n">empty</span><span class="p">()</span></code> == false</li>
-</ul>
-</details>
-</details>
-<div class="admonition example">
-<p class="admonition-title">Usage</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">);</span>
-</pre></div>
-</td></tr></table>
-
-</div>
-<details class="warning"><summary>Warning</summary><p>This function will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
-and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
-the BSL when a contract violation occurs. Otherwise, this function will
-call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code> on such violations.</p>
-</details>
-<hr />
-<h3 id="dynarray__dynarray_pointer_index_type_const_deleter_type">
-dynarray(pointer ptr, index_type count, const deleter_type &d)
+<h3 id="dynarray__explicit_constructors">
+explicit constructors
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
-2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">explicit</span> <span class="nf">dynarray</span><span class="p">(</span>
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">explicit</span> <span class="nf">dynarray</span><span class="p">(</span>
+    <span class="n">pointer</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">index_type</span> <span class="n">count</span><span class="p">)</span> <span class="n">BFNOEXCEPT</span><span class="p">;</span>
+
+<span class="k">explicit</span> <span class="nf">dynarray</span><span class="p">(</span>
     <span class="n">pointer</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">index_type</span> <span class="n">count</span><span class="p">,</span> <span class="k">const</span> <span class="n">deleter_type</span> <span class="o">&amp;</span><span class="n">d</span><span class="p">)</span> <span class="n">BFNOEXCEPT</span><span class="p">;</span>
+
+<span class="k">explicit</span> <span class="nf">dynarray</span><span class="p">(</span>
+    <span class="n">pointer</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">index_type</span> <span class="n">count</span><span class="p">,</span> <span class="n">deleter_type</span> <span class="o">&amp;&amp;</span><span class="n">d</span><span class="p">)</span> <span class="n">BFNOEXCEPT</span><span class="p">;</span>
 </pre></div>
 </td></tr></table>
 
-<p>Creates a value initialized <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> that owns an array at ptr, of count elements of T. When called, <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> will return ptr and <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> will return count. This version of the pointer/count constructor allows you to provide your own l-value deleter instead of the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> default-initializing the deleter for you.</p>
+<p>Creates a value initialized <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> that owns an array at ptr, of count elements of T. When called, <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> will return ptr and <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> will return count. Unless a Deleter is also provided (either l-value or r-value), the Deleter is initialized using value-initialization (i.e., <code class="codehilite"><span class="n">Deleter</span><span class="p">()</span></code>).</p>
 <details class="note"><summary>Parameters</summary><details class="summary"><summary>ptr</summary><p>a pointer to the array (a continuous memory block) the
 <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> will manage. If the default deleter is used,
 this memory must be allocated using the <code class="codehilite"><span class="k">new</span> <span class="p">[]</span></code> operator.</p>
@@ -704,9 +692,9 @@ this memory must be allocated using the <code class="codehilite"><span class="k"
 <p>the count does not refer to the number of bytes, but rather the                 total number of elements.</p>
 </div>
 </details>
-<details class="summary"><summary>deleter</summary><p>an l-value reference to a custom deleter. The <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> will
-create a copy of this deleter and use it to delete the pointer when
-the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> loses scope.</p>
+<details class="summary"><summary>deleter (optional)</summary><p>an l-value or r-value reference to a custom deleter. The
+<code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> will create a copy of this deleter and use it to
+delete the pointer when the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> loses scope.</p>
 </details>
 </details>
 <details class="note"><summary>Return</summary><p>Not applicable</p>
@@ -723,111 +711,29 @@ the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span>
 </details>
 <div class="admonition example">
 <p class="admonition-title">Usage</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
-<span class="k">struct</span> <span class="n">my_deleter</span>
-<span class="p">{</span>
-    <span class="k">auto</span>
-    <span class="k">operator</span><span class="p">()(</span><span class="n">T</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">size</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">void</span>
-    <span class="p">{</span>
-        <span class="k">delete</span><span class="p">[]</span> <span class="n">ptr</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">};</span>
-
-<span class="k">auto</span> <span class="n">d</span> <span class="o">=</span> <span class="n">my_deleter</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">();</span>
-<span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="p">);</span>
-</pre></div>
-</td></tr></table>
-
-</div>
-<details class="warning"><summary>Warning</summary><p>This function will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
-and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
-the BSL when a contract violation occurs. Otherwise, this function will
-call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code> on such violations.</p>
-</details>
-<hr />
-<h3 id="dynarray__dynarray_pointer_index_type_deleter_type">
-dynarray(pointer ptr, index_type count, deleter_type &&d)
-</h3>
-
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
-2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">explicit</span> <span class="n">dynarray</span><span class="p">(</span>
-    <span class="n">pointer</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">index_type</span> <span class="n">count</span><span class="p">,</span> <span class="n">deleter_type</span> <span class="o">&amp;&amp;</span><span class="n">d</span><span class="p">)</span> <span class="n">BFNOEXCEPT</span>
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">d</span> <span class="o">=</span> <span class="n">Deleter</span><span class="p">();</span>
+
+<span class="k">auto</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">a3</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Deleter</span><span class="p">());</span>
 </pre></div>
 </td></tr></table>
 
-<p>Creates a value initialized <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> that owns an array at ptr, of count elements of <code class="codehilite"><span class="n">T</span></code>. When called, <code class="codehilite"><span class="n">get</span><span class="p">()</span></code> will return ptr and <code class="codehilite"><span class="n">size</span><span class="p">()</span></code> will return count. This version of the pointer/count constructor allows you to provide your own r-value deleter instead of the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> default-initializing the deleter for you.</p>
-<details class="note"><summary>Parameters</summary><details class="summary"><summary>ptr</summary><p>a pointer to the array (a continuous memory block) the
-<code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> will manage. If the default deleter is used,
-this memory must be allocated using the <code class="codehilite"><span class="k">new</span> <span class="p">[]</span></code> operator.</p>
-</details>
-<details class="summary"><summary>count</summary><p>the number of elements in the array.</p>
+</div>
 <div class="admonition warning">
-<p class="admonition-title">Note</p>
-<p>the count does not refer to the number of bytes, but rather the                 total number of elements.</p>
-</div>
-</details>
-<details class="summary"><summary>deleter</summary><p>an r-value reference to a custom deleter. The <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> will
-move this deleter and use it to delete the pointer when the                     <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> loses scope.</p>
-</details>
-</details>
-<details class="note"><summary>Return</summary><p>Not applicable</p>
-</details>
-<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
-<li><code class="codehilite"><span class="n">ptr</span></code> must not be a null pointer</li>
-<li><code class="codehilite"><span class="n">count</span></code> must be larger than 0.</li>
-</ul>
-</details>
-<details class="summary"><summary>Ensures</summary><ul>
-<li><code class="codehilite"><span class="n">empty</span><span class="p">()</span></code> == false</li>
-</ul>
-</details>
-</details>
-<div class="admonition example">
-<p class="admonition-title">Usage</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
-<span class="k">struct</span> <span class="n">my_deleter</span>
-<span class="p">{</span>
-    <span class="k">auto</span>
-    <span class="k">operator</span><span class="p">()(</span><span class="n">T</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">size</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">void</span>
-    <span class="p">{</span>
-        <span class="k">delete</span><span class="p">[]</span> <span class="n">ptr</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">};</span>
-
-<span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">my_deleter</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">());</span>
-</pre></div>
-</td></tr></table>
-
-</div>
-<details class="warning"><summary>Warning</summary><p>This function will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
+<p class="admonition-title">Warning</p>
+<p>This function will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
 and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
 the BSL when a contract violation occurs. Otherwise, this function will
 call <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code> on such violations.</p>
-</details>
+</div>
 <hr />
-<h3 id="dynarray__dynarray_dynarray">
-dynarray(dynarray &&u)
+<h3 id="dynarray__move_constructor">
+move constructor
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">explicit</span> <span class="n">dynarray</span><span class="p">(</span><span class="n">dynarray</span> <span class="o">&amp;&amp;</span><span class="n">u</span><span class="p">)</span> <span class="k">noexcept</span>
@@ -882,8 +788,8 @@ dynarray(dynarray &&u)
 </details>
 </details>
 <hr />
-<h3 id="dynarray__dynarray_operator_equals_dynarray">
-dynarray &operator=(dynarray &&r)
+<h3 id="dynarray__move_assignment">
+move assignment
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -919,8 +825,8 @@ dynarray &operator=(dynarray &&r)
 
 </div>
 <hr />
-<h3 id="dynarray__std_pair_pointer_index_type_release">
-std::pair&lt;pointer, index_type&gt; release()
+<h3 id="dynarray__release">
+release
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -959,8 +865,8 @@ the array and the number of elements in the array.</p>
 
 </div>
 <hr />
-<h3 id="dynarray__void_reset_pointer_index_type">
-void reset(pointer ptr, index_type count)
+<h3 id="dynarray__reset">
+reset
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -968,19 +874,28 @@ void reset(pointer ptr, index_type count)
 3
 4
 5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">constexpr</span> <span class="k">auto</span>
-<span class="n">reset</span><span class="p">(</span>
-    <span class="n">pointer</span> <span class="n">ptr</span> <span class="o">=</span> <span class="n">pointer</span><span class="p">(),</span>
-    <span class="n">index_type</span> <span class="n">count</span> <span class="o">=</span> <span class="n">index_type</span><span class="p">()</span>
-<span class="p">)</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="kt">void</span>
+<span class="n">reset</span><span class="p">(</span><span class="n">pointer</span> <span class="n">ptr</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">index_type</span> <span class="n">count</span> <span class="o">=</span> <span class="p">{})</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="kt">void</span>
+
+<span class="k">constexpr</span> <span class="k">auto</span>
+<span class="n">reset</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">pointer</span><span class="p">,</span> <span class="n">index_type</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">info</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="kt">void</span>
 </pre></div>
 </td></tr></table>
 
-<p>Transfers ownership of an array at <code class="codehilite"><span class="n">ptr</span></code> of size <code class="codehilite"><span class="n">count</span></code> from the caller to the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>. If the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> already owns an array, the old array is deleted using the Deleter before ownership is transferred.</p>
+<p>Transfers ownership of an array at <code class="codehilite"><span class="n">ptr</span></code> of size <code class="codehilite"><span class="n">count</span></code> from the caller to the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code>. If the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> already owns an array, the old array is deleted using the Deleter before ownership is transferred. A std::pair version of this function is also provided that is equivalent to <code class="codehilite"><span class="n">reset</span><span class="p">(</span><span class="n">info</span><span class="p">.</span><span class="n">first</span><span class="p">,</span> <span class="n">info</span><span class="p">.</span><span class="n">second</span><span class="p">)</span></code>.</p>
 <details class="note"><summary>Parameters</summary><details class="summary"><summary>ptr</summary><p>a pointer to the array (a continuous memory block) the
 <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> will manage. If the default deleter is used,
 this memory must be allocated using the <code class="codehilite"><span class="k">new</span> <span class="p">[]</span></code> operator.</p>
 </details>
 <details class="summary"><summary>count</summary><p>the number of elements in the array.</p>
+<div class="admonition warning">
+<p class="admonition-title">Note</p>
+<p>the count does not refer to the number of bytes, but rather the                 total number of elements.</p>
+</div>
+</details>
+<details class="summary"><summary>info (optional)</summary><p>a <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">pair</span></code> containing a pointer to the array (a continuous
+memory block) the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> will manage and the number of
+elements in the array. If the default deleter is used, this memory must
+be allocated using the <code class="codehilite"><span class="k">new</span> <span class="p">[]</span></code> operator.</p>
 <div class="admonition warning">
 <p class="admonition-title">Note</p>
 <p>the count does not refer to the number of bytes, but rather the                 total number of elements.</p>
@@ -1004,60 +919,20 @@ this memory must be allocated using the <code class="codehilite"><span class="k"
 <p class="admonition-title">Usage</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
 2
-3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 <span class="k">auto</span> <span class="n">p</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">release</span><span class="p">();</span>
+
 <span class="n">a</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">first</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">second</span><span class="p">);</span>
+<span class="n">a</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">release</span><span class="p">);</span>
 </pre></div>
 </td></tr></table>
 
 </div>
 <hr />
-<h3 id="dynarray__void_reset_const_std_pair_pointer_index_type">
-void reset(const std::pair&lt;pointer, index_type&gt; &info)
-</h3>
-
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
-2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">constexpr</span> <span class="k">auto</span>
-<span class="n">reset</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">pointer</span><span class="p">,</span> <span class="n">index_type</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">info</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">-&gt;</span> <span class="kt">void</span>
-</pre></div>
-</td></tr></table>
-
-<p>Equivalent to <code class="codehilite"><span class="n">reset</span><span class="p">(</span><span class="n">info</span><span class="p">.</span><span class="n">first</span><span class="p">,</span> <span class="n">info</span><span class="p">.</span><span class="n">second</span><span class="p">)</span></code></p>
-<details class="note"><summary>Parameters</summary><details class="summary"><summary>info</summary><p>a <code class="codehilite"><span class="n">std</span><span class="o">::</span><span class="n">pair</span></code> containing a pointer to the array (a continuous
-memory block) the <code class="codehilite"><span class="n">bsl</span><span class="o">::</span><span class="n">dynarray</span></code> will manage and the number of
-elements in the array. If the default deleter is used, this memory must
-be allocated using the <code class="codehilite"><span class="k">new</span> <span class="p">[]</span></code> operator.</p>
-<div class="admonition warning">
-<p class="admonition-title">Note</p>
-<p>the count does not refer to the number of bytes, but rather the                 total number of elements.</p>
-</div>
-</details>
-</details>
-<details class="note"><summary>Return</summary><p>Not applicable</p>
-</details>
-<details class="note"><summary>Contracts</summary><details class="summary"><summary>Expects</summary><ul>
-<li>if info.first == nullptr, info.second == 0</li>
-<li>if info.first != nullptr, info.second &gt;= 1</li>
-</ul>
-</details>
-<details class="summary"><summary>Ensures</summary><ul>
-<li>if info.first == nullptr, empty() == true</li>
-<li>if info.first != nullptr, empty() == false</li>
-</ul>
-</details>
-</details>
-<div class="admonition example">
-<p class="admonition-title">Usage</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
-2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">make_dynarray</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-<span class="n">a</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">release</span><span class="p">());</span>
-</pre></div>
-</td></tr></table>
-
-</div>
-<hr />
-<h3 id="dynarray__void_swap_dynarray">
-void swap(dynarray &other)
+<h3 id="dynarray__swap">
+swap
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -1093,8 +968,8 @@ void swap(dynarray &other)
 
 </div>
 <hr />
-<h3 id="dynarray__pointer_get">
-pointer get()
+<h3 id="dynarray__get">
+get
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -1127,8 +1002,8 @@ pointer get()
 
 </div>
 <hr />
-<h3 id="dynarray__deleter_type_get_deleter">
-deleter_type &get_deleter()
+<h3 id="dynarray__get_deleter">
+get_deleter
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -1173,7 +1048,7 @@ will use to delete the array that it manages.</p>
 </div>
 <hr />
 <h3 id="dynarray__operator_bool">
-operator bool()
+operator bool
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">explicit</span> <span class="k">operator</span> <span class="kt">bool</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
@@ -1215,8 +1090,8 @@ operator bool()
 
 </div>
 <hr />
-<h3 id="dynarray__reference_operator_subscript_index_type">
-reference operator[](index_type i)
+<h3 id="dynarray__operator_subscript">
+operator[]
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -1268,8 +1143,8 @@ managed by this <code class="codehilite"><span class="n">bsl</span><span class="
 
 </div>
 <hr />
-<h3 id="dynarray__reference_at">
-reference at()
+<h3 id="dynarray__at">
+at
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -1312,8 +1187,8 @@ managed by this <code class="codehilite"><span class="n">bsl</span><span class="
 
 </div>
 <hr />
-<h3 id="dynarray__reference_front">
-reference front()
+<h3 id="dynarray__front">
+front
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -1368,8 +1243,8 @@ managed by this <code class="codehilite"><span class="n">bsl</span><span class="
 
 </div>
 <hr />
-<h3 id="dynarray__reference_back">
-reference back()
+<h3 id="dynarray__back">
+back
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -1424,8 +1299,8 @@ by this <code class="codehilite"><span class="n">bsl</span><span class="o">::</s
 
 </div>
 <hr />
-<h3 id="dynarray__pointer_data">
-pointer data()
+<h3 id="dynarray__data">
+data
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -1464,8 +1339,8 @@ pointer data()
 
 </div>
 <hr />
-<h3 id="dynarray__iterator_begin_const_iterator_cbegin">
-iterator begin() / const_iterator cbegin()
+<h3 id="dynarray__begin_cbegin">
+begin / cbegin
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -1538,8 +1413,8 @@ iterator is finally dereferenced.</p>
 
 </div>
 <hr />
-<h3 id="dynarray__iterator_end_const_iterator_cend">
-iterator end() / const_iterator cend()
+<h3 id="dynarray__end_cend">
+end / cend
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -1612,8 +1487,8 @@ managed by this <code class="codehilite"><span class="n">bsl</span><span class="
 
 </div>
 <hr />
-<h3 id="dynarray__reverse_iterator_rbegin_const_reverse_iterator_crbegin">
-reverse_iterator rbegin() / const_reverse_iterator crbegin()
+<h3 id="dynarray__rbegin_crbegin">
+rbegin / crbegin
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -1678,8 +1553,8 @@ iterator is finally dereferenced.</p>
 
 </div>
 <hr />
-<h3 id="dynarray__reverse_iterator_rend_const_reverse_iterator_crend">
-reverse_iterator rend() / const_reverse_iterator crend()
+<h3 id="dynarray__rend_crend">
+rend / crend
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -1744,8 +1619,8 @@ array managed by this <code class="codehilite"><span class="n">bsl</span><span c
 
 </div>
 <hr />
-<h3 id="dynarray__bool_empty">
-bool empty()
+<h3 id="dynarray__empty">
+empty
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -1791,8 +1666,8 @@ bool empty()
 
 </div>
 <hr />
-<h3 id="dynarray__index_type_size_difference_type_ssize">
-index_type size() / difference_type ssize()
+<h3 id="dynarray__size_ssize">
+size / ssize
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -1831,8 +1706,8 @@ index_type size() / difference_type ssize()
 
 </div>
 <hr />
-<h3 id="dynarray__index_type_size_bytes">
-index_type size_bytes()
+<h3 id="dynarray__size_bytes">
+size_bytes
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -1865,8 +1740,8 @@ index_type size_bytes()
 
 </div>
 <hr />
-<h3 id="dynarray__index_type_max_size">
-index_type max_size()
+<h3 id="dynarray__max_size">
+max_size
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -1899,8 +1774,8 @@ index_type max_size()
 
 </div>
 <hr />
-<h3 id="dynarray__void_fill_const_T">
-void fill(const T &value)
+<h3 id="dynarray__fill">
+fill
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -1939,8 +1814,8 @@ void fill(const T &value)
 
 </div>
 <hr />
-<h3 id="dynarray__dynarray_T_make_dynarray">
-dynarray&lt;T&gt; make_dynarray()
+<h3 id="dynarray__make_dynarray">
+make_dynarray
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -1978,8 +1853,8 @@ the size of the array matches the memory allocated.</p>
 
 </div>
 <hr />
-<h3 id="dynarray__dynarray_T_make_dynarray_default_init">
-dynarray&lt;T&gt; make_dynarray_default_init()
+<h3 id="dynarray__make_dynarray_default_init">
+make_dynarray_default_init
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -2017,8 +1892,8 @@ ensures that the size of the array matches the memory allocated.</p>
 
 </div>
 <hr />
-<h3 id="dynarray__bool_operator_comparison_equals">
-bool operator==() / bool operator!=()
+<h3 id="dynarray__operator_comparison_equals">
+operator== / operator!=
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -2084,7 +1959,7 @@ bool operator==() / bool operator!=()
 </div>
 <hr />
 <h3 id="dynarray__operator_ostream">
-operator<<()
+operator<<
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -2198,12 +2073,12 @@ the <a href="#dynamic-array">Dynamic Array</a> APIs.</p>
 </details>
 <h3><strong>Member Functions</strong></h3>
 <ul>
-<li><a href="#ifarray__ifarray">ifarray()</a></li>
-<li><a href="#ifarray__ifarray_const_std_string_filename">ifarray(const std::string &amp;filename)</a></li>
+<li><a href="#ifarray__default_constructor">default constructor</a></li>
+<li><a href="#ifarray__explicit_constructors">explicit constructors</a></li>
 </ul>
 <hr />
-<h3 id="ifarray__ifarray">
-ifarray()
+<h3 id="ifarray__default_constructor">
+default constructor
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">constexpr</span> <span class="nf">ifarray</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
@@ -2233,8 +2108,8 @@ ifarray()
 </div>
 <p><a name="ifarray2"></a></p>
 <hr />
-<h3 id="ifarray__ifarray_const_std_string_filename">
-ifarray(const std::string &filename)
+<h3 id="ifarray__explicit_constructors">
+explicit constructors
 </h3>
 
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">constexpr</span> <span class="nf">ifarray</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">filename</span><span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
@@ -2261,7 +2136,17 @@ ifarray(const std::string &filename)
 </details>
 <div class="admonition example">
 <p class="admonition-title">Usage</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">ifarray</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="s">&quot;test.txt&quot;</span><span class="p">);</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">bsl</span><span class="o">::</span><span class="n">ifarray</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="s">&quot;test.txt&quot;</span><span class="p">);</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span><span class="nl">c</span> <span class="p">:</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
 </pre></div>
 </td></tr></table>
 

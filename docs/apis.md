@@ -151,43 +151,50 @@ Our hope with this class is that it eliminates the need for a `#!c++ gsl::span` 
 
 ### **Member Functions**
 
-- [dynarray()](#dynarray__dynarray)
-- [dynarray(pointer ptr, index_type count)](#dynarray__dynarray_pointer_index_type)
-- [dynarray(pointer ptr, index_type count, const deleter_type &d)](#dynarray__dynarray_pointer_index_type_const_deleter_type)
-- [dynarray(pointer ptr, index_type count, deleter_type &&d)](#dynarray__dynarray_pointer_index_type_deleter_type)
-- [dynarray(dynarray &&u)](#dynarray__dynarray_dynarray)
-- [~dynarray()](#dynarray__destructor)
-- [dynarray &operator=(dynarray &&r)](#dynarray__dynarray_operator_equals_dynarray)
-- [std::pair&lt;pointer, index_type&gt; release()](#dynarray__std_pair_pointer_index_type_release)
-- [void reset(pointer ptr, index_type count)](#dynarray__void_reset_pointer_index_type)
-- [void reset(const std::pair&lt;pointer, index_type&gt; &info)](#dynarray__void_reset_const_std_pair_pointer_index_type)
-- [void swap(dynarray &other)](#dynarray__void_swap_dynarray)
-- [pointer get()](#dynarray__pointer_get)
-- [deleter_type &get_deleter()](#dynarray__deleter_type_get_deleter)
-- [operator bool()](#dynarray__operator_bool)
-- [reference operator\[\](index_type i)](#dynarray__reference_operator_subscript_index_type)
-- [reference at()](#dynarray__reference_at)
-- [reference front()](#dynarray__reference_front)
-- [reference back()](#dynarray__reference_back)
-- [pointer data()](#dynarray__pointer_data)
-- [iterator begin() / const_iterator cbegin()](#dynarray__iterator_begin_const_iterator_cbegin)
-- [iterator end() / const_iterator cend()](#dynarray__iterator_end_const_iterator_cend)
-- [iterator end() / const_iterator cend()](#dynarray__reverse_iterator_rbegin_const_reverse_iterator_crbegin)
-- [reverse_iterator rend() / const_reverse_iterator crend()](#dynarray__reverse_iterator_rend_const_reverse_iterator_crend)
-- [bool empty()](#dynarray__bool_empty)
-- [index_type size() / difference_type ssize()](#dynarray__index_type_size_difference_type_ssize)
-- [index_type size_bytes()](#dynarray__index_type_size_bytes)
-- [index_type max_size()](#dynarray__index_type_max_size)
-- [void fill(const T &value)](#dynarray__void_fill_const_T)
-- [dynarray&lt;T&gt; make_dynarray()](#dynarray__dynarray_T_make_dynarray)
-- [dynarray&lt;T&gt; make_dynarray_default_init()](#dynarray__dynarray_T_make_dynarray_default_init)
-- [bool operator==() / bool operator!=()](#dynarray__bool_operator_comparison_equals)
-- [operator<<()](#dynarray__operator_ostream)
+- [default constructor](#dynarray__default_constructor)
+- [explicit constructors](#dynarray__explicit_constructors)
+- [move constructor](#dynarray__move_constructor)
+- [destructor](#dynarray__destructor)
+#### Assignment
+- [move assignment](#dynarray__move_assignment)
+#### Modifiers:
+- [release](#dynarray__release)
+- [reset](#dynarray__reset)
+- [swap](#dynarray__swap)
+#### Observers:
+- [get](#dynarray__get)
+- [get_deleter](#dynarray__get_deleter)
+- [operator bool](#dynarray__operator_bool)
+#### Element Access:
+- [operator\[\]](#dynarray__operator_subscript)
+- [at](#dynarray__at)
+- [front](#dynarray__front)
+- [back](#dynarray__back)
+- [data](#dynarray__data)
+#### Iterators:
+- [begin / cbegin](#dynarray__begin_cbegin)
+- [end / cend](#dynarray__end_cend)
+- [rbegin / crbegin](#dynarray__rbegin_crbegin)
+- [rend / crend](#dynarray__rend_crend)
+#### Capacity:
+- [empty](#dynarray__empty)
+- [size / ssize](#dynarray__size_ssize)
+- [size_bytes](#dynarray__size_bytes)
+- [max_size](#dynarray__max_size)
+#### Operations:
+- [fill](#dynarray__fill)
+
+### **Non-Member Functions**
+
+- [make_dynarray](#dynarray__make_dynarray)
+- [make_dynarray_default_init](#dynarray__make_dynarray_default_init)
+- [operator== / operator!=](#dynarray__operator_comparison_equals)
+- [operator<<](#dynarray__operator_ostream)
 
 ---
 
-<h3 id="dynarray__dynarray">
-dynarray()
+<h3 id="dynarray__default_constructor">
+default constructor
 </h3>
 
 ``` c++
@@ -218,131 +225,22 @@ Creates a default initialized `#!c++ bsl::dynarray`. When called, `#!c++ get()` 
 
 ---
 
-<h3 id="dynarray__dynarray_pointer_index_type">
-dynarray(pointer ptr, index_type count)
+<h3 id="dynarray__explicit_constructors">
+explicit constructors
 </h3>
 
 ``` c++
-explicit dynarray(pointer ptr, index_type count) BFNOEXCEPT;
-```
+explicit dynarray(
+    pointer ptr, index_type count) BFNOEXCEPT;
 
-Creates a value initialized `#!c++ bsl::dynarray` that owns an array at ptr, of count elements of T. When called, `#!c++ get()` will return ptr and `#!c++ size()` will return count.
-
-??? note "Parameters"
-
-    ??? summary "ptr"
-        a pointer to the array (a continuous memory block) the
-        `#!c++ bsl::dynarray` will manage. If the default deleter is used,
-        this memory must be allocated using the `#!c++ new []` operator.
-
-    ??? summary "count"
-        the number of elements in the array.
-
-        !!! warning "Note"
-            the count does not refer to the number of bytes, but rather the                 total number of elements.
-
-??? note "Return"
-    Not applicable
-
-??? note "Contracts"
-
-    ??? summary "Expects"
-        - `#!c++ ptr` must not be a null pointer
-        - `#!c++ count` must be larger than 0.
-
-    ??? summary "Ensures"
-        - `#!c++ empty()` == false
-
-!!! example "Usage"
-
-    ``` c++
-    auto a = bsl::dynarray<int>(new int[1], 1);
-    ```
-
-??? warning
-    This function will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
-    and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
-    the BSL when a contract violation occurs. Otherwise, this function will
-    call `#!c++ std::terminate()` on such violations.
-
----
-
-<h3 id="dynarray__dynarray_pointer_index_type_const_deleter_type">
-dynarray(pointer ptr, index_type count, const deleter_type &d)
-</h3>
-
-``` c++
 explicit dynarray(
     pointer ptr, index_type count, const deleter_type &d) BFNOEXCEPT;
-```
 
-Creates a value initialized `#!c++ bsl::dynarray` that owns an array at ptr, of count elements of T. When called, `#!c++ get()` will return ptr and `#!c++ size()` will return count. This version of the pointer/count constructor allows you to provide your own l-value deleter instead of the `#!c++ bsl::dynarray` default-initializing the deleter for you.
-
-??? note "Parameters"
-
-    ??? summary "ptr"
-        a pointer to the array (a continuous memory block) the
-        `#!c++ bsl::dynarray` will manage. If the default deleter is used,
-        this memory must be allocated using the `#!c++ new []` operator.
-
-    ??? summary "count"
-        the number of elements in the array.
-
-        !!! warning "Note"
-            the count does not refer to the number of bytes, but rather the                 total number of elements.
-
-    ??? summary "deleter"
-        an l-value reference to a custom deleter. The `#!c++ bsl::dynarray` will
-        create a copy of this deleter and use it to delete the pointer when
-        the `#!c++ bsl::dynarray` loses scope.
-
-??? note "Return"
-    Not applicable
-
-??? note "Contracts"
-
-    ??? summary "Expects"
-        - `#!c++ ptr` must not be a null pointer
-        - `#!c++ count` must be larger than 0.
-
-    ??? summary "Ensures"
-        - `#!c++ empty()` == false
-
-!!! example "Usage"
-
-    ``` c++
-    template<typename T>
-    struct my_deleter
-    {
-        auto
-        operator()(T *ptr, size_t size) -> void
-        {
-            delete[] ptr;
-        }
-    };
-
-    auto d = my_deleter<int>();
-    auto a = bsl::dynarray<int>(new int[1], 1, d);
-    ```
-
-??? warning
-    This function will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
-    and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
-    the BSL when a contract violation occurs. Otherwise, this function will
-    call `#!c++ std::terminate()` on such violations.
-
----
-
-<h3 id="dynarray__dynarray_pointer_index_type_deleter_type">
-dynarray(pointer ptr, index_type count, deleter_type &&d)
-</h3>
-
-``` c++
 explicit dynarray(
-    pointer ptr, index_type count, deleter_type &&d) BFNOEXCEPT
+    pointer ptr, index_type count, deleter_type &&d) BFNOEXCEPT;
 ```
 
-Creates a value initialized `#!c++ bsl::dynarray` that owns an array at ptr, of count elements of `#!c++ T`. When called, `#!c++ get()` will return ptr and `#!c++ size()` will return count. This version of the pointer/count constructor allows you to provide your own r-value deleter instead of the `#!c++ bsl::dynarray` default-initializing the deleter for you.
+Creates a value initialized `#!c++ bsl::dynarray` that owns an array at ptr, of count elements of T. When called, `#!c++ get()` will return ptr and `#!c++ size()` will return count. Unless a Deleter is also provided (either l-value or r-value), the Deleter is initialized using value-initialization (i.e., `#!c++ Deleter()`).
 
 ??? note "Parameters"
 
@@ -357,9 +255,10 @@ Creates a value initialized `#!c++ bsl::dynarray` that owns an array at ptr, of 
         !!! warning "Note"
             the count does not refer to the number of bytes, but rather the                 total number of elements.
 
-    ??? summary "deleter"
-        an r-value reference to a custom deleter. The `#!c++ bsl::dynarray` will
-        move this deleter and use it to delete the pointer when the                     `#!c++ bsl::dynarray` loses scope.
+    ??? summary "deleter (optional)"
+        an l-value or r-value reference to a custom deleter. The
+        `#!c++ bsl::dynarray` will create a copy of this deleter and use it to
+        delete the pointer when the `#!c++ bsl::dynarray` loses scope.
 
 ??? note "Return"
     Not applicable
@@ -376,20 +275,14 @@ Creates a value initialized `#!c++ bsl::dynarray` that owns an array at ptr, of 
 !!! example "Usage"
 
     ``` c++
-    template<typename T>
-    struct my_deleter
-    {
-        auto
-        operator()(T *ptr, size_t size) -> void
-        {
-            delete[] ptr;
-        }
-    };
+    auto d = Deleter();
 
-    auto a = bsl::dynarray<int>(new int[1], 1, my_deleter<int>());
+    auto a1 = bsl::dynarray<int>(new int[1], 1);
+    auto a2 = bsl::dynarray<int>(new int[1], 1, d);
+    auto a3 = bsl::dynarray<int>(new int[1], 1, Deleter());
     ```
 
-??? warning
+!!! warning
     This function will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
     and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
     the BSL when a contract violation occurs. Otherwise, this function will
@@ -397,8 +290,8 @@ Creates a value initialized `#!c++ bsl::dynarray` that owns an array at ptr, of 
 
 ---
 
-<h3 id="dynarray__dynarray_dynarray">
-dynarray(dynarray &&u)
+<h3 id="dynarray__move_constructor">
+move constructor
 </h3>
 
 ``` c++
@@ -458,8 +351,8 @@ If the `#!c++ bsl::dynarray` is valid (i.e., `#!c++ get()` does not return a nul
 
 ---
 
-<h3 id="dynarray__dynarray_operator_equals_dynarray">
-dynarray &operator=(dynarray &&r)
+<h3 id="dynarray__move_assignment">
+move assignment
 </h3>
 
 ``` c++
@@ -495,8 +388,8 @@ Transfers ownership of a `#!c++ bsl::dynarray` to this `#!c++ bsl::dynarray` usi
 
 ---
 
-<h3 id="dynarray__std_pair_pointer_index_type_release">
-std::pair&lt;pointer, index_type&gt; release()
+<h3 id="dynarray__release">
+release
 </h3>
 
 ``` c++
@@ -534,19 +427,20 @@ Transfers ownership of a `#!c++ bsl::dynarray` to the caller by returning a poin
 
 ---
 
-<h3 id="dynarray__void_reset_pointer_index_type">
-void reset(pointer ptr, index_type count)
+<h3 id="dynarray__reset">
+reset
 </h3>
 
 ``` c++
 constexpr auto
-reset(
-    pointer ptr = pointer(),
-    index_type count = index_type()
-) noexcept -> void
+reset(pointer ptr = {}, index_type count = {}) noexcept -> void
+
+constexpr auto
+reset(const std::pair<pointer, index_type> &info) noexcept -> void
+
 ```
 
-Transfers ownership of an array at `#!c++ ptr` of size `#!c++ count` from the caller to the `#!c++ bsl::dynarray`. If the `#!c++ bsl::dynarray` already owns an array, the old array is deleted using the Deleter before ownership is transferred.
+Transfers ownership of an array at `#!c++ ptr` of size `#!c++ count` from the caller to the `#!c++ bsl::dynarray`. If the `#!c++ bsl::dynarray` already owns an array, the old array is deleted using the Deleter before ownership is transferred. A std::pair version of this function is also provided that is equivalent to `#!c++ reset(info.first, info.second)`.
 
 ??? note "Parameters"
 
@@ -557,6 +451,15 @@ Transfers ownership of an array at `#!c++ ptr` of size `#!c++ count` from the ca
 
     ??? summary "count"
         the number of elements in the array.
+
+        !!! warning "Note"
+            the count does not refer to the number of bytes, but rather the                 total number of elements.
+
+    ??? summary "info (optional)"
+        a `#!c++ std::pair` containing a pointer to the array (a continuous
+        memory block) the `#!c++ bsl::dynarray` will manage and the number of
+        elements in the array. If the default deleter is used, this memory must
+        be allocated using the `#!c++ new []` operator.
 
         !!! warning "Note"
             the count does not refer to the number of bytes, but rather the                 total number of elements.
@@ -579,57 +482,15 @@ Transfers ownership of an array at `#!c++ ptr` of size `#!c++ count` from the ca
     ``` c++
     auto a = bsl::make_dynarray<int>(1);
     auto p = a.release();
+
     a.reset(p.first, p.second);
+    a.reset(a.release);
     ```
 
 ---
 
-<h3 id="dynarray__void_reset_const_std_pair_pointer_index_type">
-void reset(const std::pair&lt;pointer, index_type&gt; &info)
-</h3>
-
-``` c++
-constexpr auto
-reset(const std::pair<pointer, index_type> &info) noexcept -> void
-```
-
-Equivalent to `#!c++ reset(info.first, info.second)`
-
-??? note "Parameters"
-
-    ??? summary "info"
-        a `#!c++ std::pair` containing a pointer to the array (a continuous
-        memory block) the `#!c++ bsl::dynarray` will manage and the number of
-        elements in the array. If the default deleter is used, this memory must
-        be allocated using the `#!c++ new []` operator.
-
-        !!! warning "Note"
-            the count does not refer to the number of bytes, but rather the                 total number of elements.
-
-??? note "Return"
-    Not applicable
-
-??? note "Contracts"
-
-    ??? summary "Expects"
-        - if info.first == nullptr, info.second == 0
-        - if info.first != nullptr, info.second >= 1
-
-    ??? summary "Ensures"
-        - if info.first == nullptr, empty() == true
-        - if info.first != nullptr, empty() == false
-
-!!! example "Usage"
-
-    ``` c++
-    auto a = bsl::make_dynarray<int>(1);
-    a.reset(a.release());
-    ```
-
----
-
-<h3 id="dynarray__void_swap_dynarray">
-void swap(dynarray &other)
+<h3 id="dynarray__swap">
+swap
 </h3>
 
 ``` c++
@@ -665,8 +526,8 @@ Swaps ownership of an array between other and this. Both arrays remain unaffecte
 
 ---
 
-<h3 id="dynarray__pointer_get">
-pointer get()
+<h3 id="dynarray__get">
+get
 </h3>
 
 ``` c++
@@ -699,8 +560,8 @@ Returns a pointer to the array managed by this `#!c++ bsl::dynarray`.
 
 ---
 
-<h3 id="dynarray__deleter_type_get_deleter">
-deleter_type &get_deleter()
+<h3 id="dynarray__get_deleter">
+get_deleter
 </h3>
 
 ``` c++
@@ -740,7 +601,7 @@ Returns an l-value reference to the Deleter that this `#!c++ bsl::dynarray` will
 ---
 
 <h3 id="dynarray__operator_bool">
-operator bool()
+operator bool
 </h3>
 
 ``` c++
@@ -778,8 +639,8 @@ Returns true when this `#!c++ bsl::dynarray` manages a valid array. While this i
 
 ---
 
-<h3 id="dynarray__reference_operator_subscript_index_type">
-reference operator[](index_type i)
+<h3 id="dynarray__operator_subscript">
+operator[]
 </h3>
 
 ``` c++
@@ -828,8 +689,8 @@ Returns an l-value reference to the element at index_type i in the array managed
 
 ---
 
-<h3 id="dynarray__reference_at">
-reference at()
+<h3 id="dynarray__at">
+at
 </h3>
 
 ``` c++
@@ -870,8 +731,8 @@ Returns an l-value reference to the element at index_type pos in the array manag
 
 ---
 
-<h3 id="dynarray__reference_front">
-reference front()
+<h3 id="dynarray__front">
+front
 </h3>
 
 ``` c++
@@ -919,8 +780,8 @@ Returns an l-value reference to the element at the beginning of the array manage
 
 ---
 
-<h3 id="dynarray__reference_back">
-reference back()
+<h3 id="dynarray__back">
+back
 </h3>
 
 ``` c++
@@ -968,8 +829,8 @@ Returns an l-value reference to the element at the end of the array managed by t
 
 ---
 
-<h3 id="dynarray__pointer_data">
-pointer data()
+<h3 id="dynarray__data">
+data
 </h3>
 
 ``` c++
@@ -1005,8 +866,8 @@ Returns a pointer to the array managed by this `#!c++ bsl::dynarray`.
 
 ---
 
-<h3 id="dynarray__iterator_begin_const_iterator_cbegin">
-iterator begin() / const_iterator cbegin()
+<h3 id="dynarray__begin_cbegin">
+begin / cbegin
 </h3>
 
 ``` c++
@@ -1065,8 +926,8 @@ Returns an iterator to the first element in the array managed by this `#!c++ bsl
 
 ---
 
-<h3 id="dynarray__iterator_end_const_iterator_cend">
-iterator end() / const_iterator cend()
+<h3 id="dynarray__end_cend">
+end / cend
 </h3>
 
 ``` c++
@@ -1125,8 +986,8 @@ Returns an iterator to the element after the last element in the array managed b
 
 ---
 
-<h3 id="dynarray__reverse_iterator_rbegin_const_reverse_iterator_crbegin">
-reverse_iterator rbegin() / const_reverse_iterator crbegin()
+<h3 id="dynarray__rbegin_crbegin">
+rbegin / crbegin
 </h3>
 
 ``` c++
@@ -1181,8 +1042,8 @@ Returns a reverse iterator to the last element in the array managed by this `#!c
 
 ---
 
-<h3 id="dynarray__reverse_iterator_rend_const_reverse_iterator_crend">
-reverse_iterator rend() / const_reverse_iterator crend()
+<h3 id="dynarray__rend_crend">
+rend / crend
 </h3>
 
 ``` c++
@@ -1237,8 +1098,8 @@ Returns a reverse iterator to the element before the first element in the array 
 
 ---
 
-<h3 id="dynarray__bool_empty">
-bool empty()
+<h3 id="dynarray__empty">
+empty
 </h3>
 
 ``` c++
@@ -1278,8 +1139,8 @@ Returns true when this `#!c++ bsl::dynarray` is empty. While this is equivalent 
 
 ---
 
-<h3 id="dynarray__index_type_size_difference_type_ssize">
-index_type size() / difference_type ssize()
+<h3 id="dynarray__size_ssize">
+size / ssize
 </h3>
 
 ``` c++
@@ -1315,8 +1176,8 @@ Returns the number of elements in this `#!c++ bsl::dynarray`.
 
 ---
 
-<h3 id="dynarray__index_type_size_bytes">
-index_type size_bytes()
+<h3 id="dynarray__size_bytes">
+size_bytes
 </h3>
 
 ``` c++
@@ -1349,8 +1210,8 @@ Returns the size of this `#!c++ bsl::dynarray` in bytes, not elements. This is e
 
 ---
 
-<h3 id="dynarray__index_type_max_size">
-index_type max_size()
+<h3 id="dynarray__max_size">
+max_size
 </h3>
 
 ``` c++
@@ -1383,8 +1244,8 @@ Returns the max number of elements this `#!c++ bsl::dynarray` can store. This is
 
 ---
 
-<h3 id="dynarray__void_fill_const_T">
-void fill(const T &value)
+<h3 id="dynarray__fill">
+fill
 </h3>
 
 ``` c++
@@ -1424,8 +1285,8 @@ Value-initializes each element in the `#!c++ bsl::dynarray` by copying value.
 
 ---
 
-<h3 id="dynarray__dynarray_T_make_dynarray">
-dynarray&lt;T&gt; make_dynarray()
+<h3 id="dynarray__make_dynarray">
+make_dynarray
 </h3>
 
 ``` c++
@@ -1464,8 +1325,8 @@ Creates a `#!c++ bsl::dynarray` of size count using the `#!c++ new []` operator 
 
 ---
 
-<h3 id="dynarray__dynarray_T_make_dynarray_default_init">
-dynarray&lt;T&gt; make_dynarray_default_init()
+<h3 id="dynarray__make_dynarray_default_init">
+make_dynarray_default_init
 </h3>
 
 ``` c++
@@ -1504,8 +1365,8 @@ Creates a `#!c++ bsl::dynarray` of size count using the `#!c++ new []` operator 
 
 ---
 
-<h3 id="dynarray__bool_operator_comparison_equals">
-bool operator==() / bool operator!=()
+<h3 id="dynarray__operator_comparison_equals">
+operator== / operator!=
 </h3>
 
 ``` c++
@@ -1561,7 +1422,7 @@ Returns true if the lhs `#!c++ bsl::dynarray` and the rhs `#!c++ bsl::dynarray` 
 ---
 
 <h3 id="dynarray__operator_ostream">
-operator<<()
+operator<<
 </h3>
 
 ``` c++
@@ -1655,13 +1516,13 @@ In Bareflank, we need a class like this as we work with really large files (e.g.
 
 ### **Member Functions**
 
-- [ifarray()](#ifarray__ifarray)
-- [ifarray(const std::string &filename)](#ifarray__ifarray_const_std_string_filename)
+- [default constructor](#ifarray__default_constructor)
+- [explicit constructors](#ifarray__explicit_constructors)
 
 ---
 
-<h3 id="ifarray__ifarray">
-ifarray()
+<h3 id="ifarray__default_constructor">
+default constructor
 </h3>
 
 ``` c++
@@ -1694,8 +1555,8 @@ Creates a default initialized `#!c++ bsl::ifarray`. When called, `#!c++ get()` w
 
 ---
 
-<h3 id="ifarray__ifarray_const_std_string_filename">
-ifarray(const std::string &filename)
+<h3 id="ifarray__explicit_constructors">
+explicit constructors
 </h3>
 
 ``` c++
@@ -1725,6 +1586,11 @@ Creates a `#!c++ bsl::ifarray` by opening the file using filename, and mapping t
 
     ``` c++
     auto a = bsl::ifarray<>("test.txt");
+
+    for (const auto &c : a) {
+        std::cout << c;
+    }
+    std::cout << '\n';
     ```
 
 ---

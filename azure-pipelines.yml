@@ -113,10 +113,10 @@ jobs:
     displayName: 'Test'
 
 # ------------------------------------------------------------------------------
-# Unit Test
+# Tidy
 # ------------------------------------------------------------------------------
 
-- job: Unittest
+- job: Tidy
   steps:
   - checkout: self
     path: working/bsl
@@ -144,7 +144,7 @@ jobs:
       sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-8 100
 
       mkdir build; cd build
-      cmake ../bsl
+      cmake ../bsl -DCMAKE_CXX_CLANG_TIDY="clang-tidy-8"
     displayName: 'Configure'
 
   - script: |

@@ -3,6 +3,7 @@
 [![Build Status](https://dev.azure.com/bareflank/bsl/_apis/build/status/Bareflank.bsl?branchName=master)](https://dev.azure.com/bareflank/bsl/_build/latest?definitionId=2&branchName=master)
 [![Join the chat](https://img.shields.io/badge/chat-on%20Slack-brightgreen.svg)](https://app.slack.com/client/TPN7LQKRP/CPJLF1RV1)
 ![GitHub](https://img.shields.io/github/license/bareflank/bsl?color=brightgreen)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9e55fc17a08d4e2abe51d82f09f4449f)](https://www.codacy.com/manual/rianquinn/bsl?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Bareflank/bsl&amp;utm_campaign=Badge_Grade)
 
 ## **A different view on Core Guideline Compliance**
 The Bareflank Support Library (BSL) is a simple, header-only library that provides support for C++ Core Guideline Compliance. Similar to the goals of the Guideline Support Library (GSL) by Microsoft, the BSL aims to provide the facilities needed to ensure guideline compliance, while minimizing the need for verbosity.

@@ -32,4 +32,4 @@ main() -> int
 
 ## **Documentation**
 
-For detailed instructions, visit https://bareflank.github.io/bsl/
+For detailed instructions, visit <https://bareflank.github.io/bsl/>

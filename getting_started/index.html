@@ -471,8 +471,8 @@ sudo make install
 </pre></div>
 </td></tr></table>
 
-<p>By default, the tests and examples are built using Clang Tidy to ensure the BSL is statically analyzed during development. This too can be disabled using the following:</p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>cmake . -DDISABLE_CLANG_TIDY<span class="o">=</span>ON
+<p>The tests and examples can be built using Clang Tidy and Cppcheck to ensure the BSL is statically analyzed during development. To enable this, use the following:</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>cmake . -DENABLE_CLANG_TIDY<span class="o">=</span>ON -DENABLE_CPPCHECK<span class="o">=</span>ON
 </pre></div>
 </td></tr></table>
 
@@ -483,6 +483,12 @@ sudo make install
 
 <p>or</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>cmake . -DCMAKE_BUILD_TYPE<span class="o">=</span>UBSAN
+</pre></div>
+</td></tr></table>
+
+<p>Finally, to turn all of these features (minus ASAN), simply run cmake with the following to enable development mode, which should be used prior to submitting
+a pull request.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>cmake . -DENABLE_DEVELOPMENT<span class="o">=</span>ON
 </pre></div>
 </td></tr></table>
 

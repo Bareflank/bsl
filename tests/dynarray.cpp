@@ -244,6 +244,9 @@ setup_test() -> void
 
 using da_t = bsl::dynarray<Foo, Deleter>;
 
+constexpr const auto INT_23 = 23;
+constexpr const auto INT_42 = 42;
+
 // --------------------------------------------------------------------------
 // Tests
 // --------------------------------------------------------------------------
@@ -257,7 +260,9 @@ TEST_CASE("constructor")
 {
     {
         setup_test();
+
         da_t da1();
+        // cppcheck-suppress unreadVariable
         da_t da2 = {};
     }
     CHECK_FOO(0, 0, 0, 0);
@@ -307,6 +312,7 @@ TEST_CASE("constructor")
         setup_test();
 
         auto da1 = da_t(new Foo[1], 1);
+        // cppcheck-suppress unreadVariable
         auto da2 = da_t(std::move(da1));
     }
     CHECK_FOO(1, 0, 0, 1);
@@ -329,6 +335,9 @@ TEST_CASE("operator=")
 
         auto da1 = da_t(new Foo[1], 1);
         auto da2 = da_t();
+
+        // cppcheck-suppress redundantAssignment
+        // cppcheck-suppress unreadVariable
         da1 = std::move(da2);
     }
     CHECK_FOO(1, 0, 0, 1);
@@ -339,6 +348,9 @@ TEST_CASE("operator=")
 
         auto da1 = da_t(new Foo[1], 1);
         auto da2 = da_t(new Foo[1], 1);
+
+        // cppcheck-suppress redundantAssignment
+        // cppcheck-suppress unreadVariable
         da1 = std::move(da2);
     }
     CHECK_FOO(2, 0, 0, 2);
@@ -396,26 +408,26 @@ TEST_CASE("swap")
     bsl::dynarray<int> da1{new int[1], 1};
     bsl::dynarray<int> da2{new int[2], 2};
 
-    da1.front() = 23;
-    da2.front() = 42;
+    da1.front() = INT_23;
+    da2.front() = INT_42;
 
-    CHECK(da1.front() == 23);
+    CHECK(da1.front() == INT_23);
     CHECK(da1.size() == 1);
-    CHECK(da2.front() == 42);
+    CHECK(da2.front() == INT_42);
     CHECK(da2.size() == 2);
 
     da1.swap(da2);
 
-    CHECK(da1.front() == 42);
+    CHECK(da1.front() == INT_42);
     CHECK(da1.size() == 2);
-    CHECK(da2.front() == 23);
+    CHECK(da2.front() == INT_23);
     CHECK(da2.size() == 1);
 
     da1.swap(da2);
 
-    CHECK(da1.front() == 23);
+    CHECK(da1.front() == INT_23);
     CHECK(da1.size() == 1);
-    CHECK(da2.front() == 42);
+    CHECK(da2.front() == INT_42);
     CHECK(da2.size() == 2);
 }
 
@@ -465,10 +477,10 @@ TEST_CASE("operator[]")
         auto
         test1() -> void
         {
-            da2[0] = 23;
-            CHECK(da2[0] == 23);
-            da2[0] = 42;
-            CHECK(da2[0] == 42);
+            da2[0] = INT_23;
+            CHECK(da2[0] == INT_23);
+            da2[0] = INT_42;
+            CHECK(da2[0] == INT_42);
             CHECK_THROWS(da1[0]);
             CHECK_THROWS(da2[42]);
         }
@@ -476,7 +488,7 @@ TEST_CASE("operator[]")
         auto
         test2() const -> void
         {
-            CHECK(da2[0] == 42);
+            CHECK(da2[0] == INT_42);
             CHECK_THROWS(da1[0]);
             CHECK_THROWS(da2[42]);
         }
@@ -498,10 +510,10 @@ TEST_CASE("at")
         auto
         test1() -> void
         {
-            da2.at(0) = 23;
-            CHECK(da2.at(0) == 23);
-            da2.at(0) = 42;
-            CHECK(da2.at(0) == 42);
+            da2.at(0) = INT_23;
+            CHECK(da2.at(0) == INT_23);
+            da2.at(0) = INT_42;
+            CHECK(da2.at(0) == INT_42);
             CHECK_THROWS(da1.at(0));
             CHECK_THROWS(da2.at(42));
         }
@@ -509,7 +521,7 @@ TEST_CASE("at")
         auto
         test2() const -> void
         {
-            CHECK(da2.at(0) == 42);
+            CHECK(da2.at(0) == INT_42);
             CHECK_THROWS(da1.at(0));
             CHECK_THROWS(da2.at(42));
         }
@@ -531,10 +543,10 @@ TEST_CASE("front")
         auto
         test1() -> void
         {
-            da2.front() = 23;
-            CHECK(da2.front() == 23);
-            da2.front() = 42;
-            CHECK(da2.front() == 42);
+            da2.front() = INT_23;
+            CHECK(da2.front() == INT_23);
+            da2.front() = INT_42;
+            CHECK(da2.front() == INT_42);
             CHECK_THROWS(da1.front());
             CHECK_NOTHROW(da2.front());
         }
@@ -542,7 +554,7 @@ TEST_CASE("front")
         auto
         test2() const -> void
         {
-            CHECK(da2.front() == 42);
+            CHECK(da2.front() == INT_42);
             CHECK_THROWS(da1.front());
             CHECK_NOTHROW(da2.front());
         }
@@ -564,10 +576,10 @@ TEST_CASE("back")
         auto
         test1() -> void
         {
-            da2.back() = 23;
-            CHECK(da2.back() == 23);
-            da2.back() = 42;
-            CHECK(da2.back() == 42);
+            da2.back() = INT_23;
+            CHECK(da2.back() == INT_23);
+            da2.back() = INT_42;
+            CHECK(da2.back() == INT_42);
             CHECK_THROWS(da1.back());
             CHECK_NOTHROW(da2.back());
         }
@@ -575,7 +587,7 @@ TEST_CASE("back")
         auto
         test2() const -> void
         {
-            CHECK(da2.back() == 42);
+            CHECK(da2.back() == INT_42);
             CHECK_THROWS(da1.back());
             CHECK_NOTHROW(da2.back());
         }
@@ -597,16 +609,16 @@ TEST_CASE("data")
         auto
         test1() -> void
         {
-            da2.data()[0] = 23;
-            CHECK(da2.data()[0] == 23);
-            da2.data()[0] = 42;
-            CHECK(da2.data()[0] == 42);
+            da2.data()[0] = INT_23;
+            CHECK(da2.data()[0] == INT_23);
+            da2.data()[0] = INT_42;
+            CHECK(da2.data()[0] == INT_42);
         }
 
         auto
         test2() const -> void
         {
-            CHECK(da2.data()[0] == 42);
+            CHECK(da2.data()[0] == INT_42);
         }
     };
 
@@ -617,27 +629,27 @@ TEST_CASE("data")
 
 TEST_CASE("begin / end")
 {
-    bsl::dynarray<int> da{new int[6], 6};
+    bsl::dynarray<int> da{new int[1], 1};
 
     for (auto it = da.begin(); it != da.end(); ++it) {
-        *it = 42;
+        *it = INT_42;
     }
 
     for (auto it = da.cbegin(); it != da.cend(); ++it) {
-        CHECK(*it == 42);
+        CHECK(*it == INT_42);
     }
 }
 
 TEST_CASE("rbegin / rend")
 {
-    bsl::dynarray<int> da{new int[6], 6};
+    bsl::dynarray<int> da{new int[1], 1};
 
     for (auto it = da.rbegin(); it != da.rend(); ++it) {
-        *it = 42;
+        *it = INT_42;
     }
 
     for (auto it = da.crbegin(); it != da.crend(); ++it) {
-        CHECK(*it == 42);
+        CHECK(*it == INT_42);
     }
 }
 
@@ -692,11 +704,11 @@ TEST_CASE("fill")
 {
     bsl::dynarray<int> da{new int[1], 1};
 
-    da.fill(23);
-    CHECK(da.front() == 23);
+    da.fill(INT_23);
+    CHECK(da.front() == INT_23);
 
-    da.fill(42);
-    CHECK(da.front() == 42);
+    da.fill(INT_42);
+    CHECK(da.front() == INT_42);
 }
 
 TEST_CASE("comparison operators")
@@ -707,13 +719,13 @@ TEST_CASE("comparison operators")
     bsl::dynarray<int> da4{new int[2], 2};
     bsl::dynarray<int> da5{new int[2], 2};
 
-    da1.at(0) = 23;
-    da2.at(0) = 23;
-    da3.at(0) = 42;
-    da4.at(0) = 42;
-    da4.at(1) = 42;
-    da5.at(0) = 42;
-    da5.at(1) = 42;
+    da1.at(0) = INT_23;
+    da2.at(0) = INT_23;
+    da3.at(0) = INT_42;
+    da4.at(0) = INT_42;
+    da4.at(1) = INT_42;
+    da5.at(0) = INT_42;
+    da5.at(1) = INT_42;
 
     CHECK((da1 == da2));
     CHECK((da2 != da3));

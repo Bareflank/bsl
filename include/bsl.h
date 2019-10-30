@@ -732,8 +732,8 @@ namespace bsl
         /// @return *this
         ///
         template<BAREFLANK_IS_NOTHROW_MOVE_ASSIGNABLE(deleter_type)>
-        constexpr auto
-        operator=(dynarray &&r) noexcept -> dynarray &
+        dynarray &
+        operator=(dynarray &&r) noexcept
         {
             if (&r == this) {
                 return *this;

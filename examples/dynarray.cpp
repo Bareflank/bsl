@@ -27,13 +27,8 @@ auto
 main() -> int
 {
     try {
-        auto da = bsl::make_dynarray<int>(5);
-        da[0] = 4;
-        da[1] = 8;
-        da[2] = 15;
-        da[3] = 16;
-        da[4] = 23;
-        da[5] = 42;    // <-- throws
+        auto da = bsl::make_dynarray<int>(1);
+        da[1] = 0;    // <-- throws
     }
     catch (const std::exception &e) {
         std::cout << "error: " << e.what() << '\n';

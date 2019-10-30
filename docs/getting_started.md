@@ -67,10 +67,10 @@ The BSL comes with both a set of examples as well as unit tests. By default, the
 cmake . -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF
 ```
 
-By default, the tests and examples are built using Clang Tidy to ensure the BSL is statically analyzed during development. This too can be disabled using the following:
+The tests and examples can be built using Clang Tidy and Cppcheck to ensure the BSL is statically analyzed during development. To enable this, use the following:
 
 ``` bash
-cmake . -DDISABLE_CLANG_TIDY=ON
+cmake . -DENABLE_CLANG_TIDY=ON -DENABLE_CPPCHECK=ON
 ```
 
 Dynamic analysis using Google's sanitizers can be enabled as follows:
@@ -83,6 +83,13 @@ or
 
 ``` bash
 cmake . -DCMAKE_BUILD_TYPE=UBSAN
+```
+
+Finally, to turn all of these features (minus ASAN), simply run cmake with the following to enable development mode, which should be used prior to submitting
+a pull request.
+
+``` bash
+cmake . -DENABLE_DEVELOPMENT=ON
 ```
 
 ## **Build Targets**

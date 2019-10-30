@@ -1,5 +1,18 @@
-Checks: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-cppcoreguidelines-owning-memory,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers'
-WarningsAsErrors: ''
+# Exceptions
+#
+# -cppcoreguidelines-owning-memory
+#     We have to turn this off as the BSL is actually providing the same logic
+#     as the std::unique_ptr that this rule is based on so that the user of
+#     this library doesn't have to use new/delete
+#
+# -bugprone-macro-parentheses
+#     We are having issues with this one telling us to add () in macros that
+#     would cause the code not to compile. In other words, although this is
+#     likely a good test to use, it is buggy and not working right.
+#
+
+Checks: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-cppcoreguidelines-owning-memory,-bugprone-macro-parentheses'
+WarningsAsErrors: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-cppcoreguidelines-owning-memory,-bugprone-macro-parentheses'
 HeaderFilterRegex: '.*'
 AnalyzeTemporaryDtors: false
 CheckOptions:

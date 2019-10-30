@@ -30,7 +30,21 @@ set(CMAKE_CXX_STANDARD 17)
 
 option(BUILD_EXAMPLES "Build example programs" ON)
 option(BUILD_TESTS "Build test programs" ON)
-option(DISABLE_CLANG_TIDY "Disable the use of clang tidy" OFF)
+option(ENABLE_CLANG_TIDY "Enable the use of clang tidy" OFF)
+option(ENABLE_CPPCHECK "Enable the use of cppcheck" OFF)
+option(ENABLE_DEVELOPMENT "Enable all development options" OFF)
+
+# ------------------------------------------------------------------------------
+# Development Mode
+# ------------------------------------------------------------------------------
+
+if(ENABLE_DEVELOPMENT)
+    set(BUILD_EXAMPLES ON)
+    set(BUILD_TESTS ON)
+    set(ENABLE_CLANG_TIDY ON)
+    set(ENABLE_CPPCHECK ON)
+    set(CMAKE_BUILD_TYPE UBSAN)
+endif()
 
 # ------------------------------------------------------------------------------
 # Flags
@@ -46,8 +60,22 @@ set(CMAKE_LINKER_FLAGS_UBSAN "-fsanitize=undefined -g")
 # Clang Tidy
 # ------------------------------------------------------------------------------
 
-if(NOT DISABLE_CLANG_TIDY AND NOT CMAKE_CXX_CLANG_TIDY)
-    set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
+if(ENABLE_CLANG_TIDY AND NOT CMAKE_CXX_CLANG_TIDY)
+    list(APPEND CMAKE_CXX_CLANG_TIDY
+        clang-tidy
+    )
+endif()
+
+if(ENABLE_CPPCHECK AND NOT CMAKE_CXX_CPPCHECK)
+    list(APPEND CMAKE_CXX_CPPCHECK
+        cppcheck
+        --enable=all
+        --error-exitcode=1
+        --quiet
+        --inline-suppr
+        --suppress=missingIncludeSystem
+        --template="{file}:{line}: {severity}: {id}: {message}"
+    )
 endif()
 
 # ------------------------------------------------------------------------------

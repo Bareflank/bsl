@@ -26,6 +26,8 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
+constexpr const auto INT_42 = 42;
+
 // --------------------------------------------------------------------------
 // Tests
 // --------------------------------------------------------------------------
@@ -78,11 +80,15 @@ TEST_CASE("operator*")
             auto it1 = da1.begin();
             auto it2 = da2.begin();
 
-            CHECK_THROWS((*it1).m_data = 42);
-            CHECK_THROWS((*it1).m_data == 42);
+            CHECK_THROWS((*it1).m_data = INT_42);
+            // cppcheck-suppress knownConditionTrueFalse
+            // cppcheck-suppress constArgument
+            CHECK_THROWS((*it1).m_data == INT_42);
 
-            CHECK_NOTHROW((*it2).m_data = 42);
-            CHECK_NOTHROW((*it2).m_data == 42);
+            CHECK_NOTHROW((*it2).m_data = INT_42);
+            // cppcheck-suppress knownConditionTrueFalse
+            // cppcheck-suppress constArgument
+            CHECK_NOTHROW((*it2).m_data == INT_42);
         }
 
         auto
@@ -91,8 +97,8 @@ TEST_CASE("operator*")
             auto it1 = da1.begin();
             auto it2 = da2.begin();
 
-            CHECK_THROWS((*it1).m_data == 42);
-            CHECK_NOTHROW((*it2).m_data == 42);
+            CHECK_THROWS((*it1).m_data == INT_42);
+            CHECK_NOTHROW((*it2).m_data == INT_42);
         }
     };
 
@@ -122,11 +128,15 @@ TEST_CASE("operator->")
             auto it1 = da1.begin();
             auto it2 = da2.begin();
 
-            CHECK_THROWS(it1->m_data = 42);
-            CHECK_THROWS(it1->m_data == 42);
+            CHECK_THROWS(it1->m_data = INT_42);
+            // cppcheck-suppress knownConditionTrueFalse
+            // cppcheck-suppress constArgument
+            CHECK_THROWS(it1->m_data == INT_42);
 
-            CHECK_NOTHROW(it2->m_data = 42);
-            CHECK_NOTHROW(it2->m_data == 42);
+            CHECK_NOTHROW(it2->m_data = INT_42);
+            // cppcheck-suppress knownConditionTrueFalse
+            // cppcheck-suppress constArgument
+            CHECK_NOTHROW(it2->m_data == INT_42);
         }
 
         auto
@@ -135,8 +145,8 @@ TEST_CASE("operator->")
             auto it1 = da1.begin();
             auto it2 = da2.begin();
 
-            CHECK_THROWS(it1->m_data == 42);
-            CHECK_NOTHROW(it2->m_data == 42);
+            CHECK_THROWS(it1->m_data == INT_42);
+            CHECK_NOTHROW(it2->m_data == INT_42);
         }
     };
 
@@ -166,11 +176,15 @@ TEST_CASE("operator[]")
             auto it1 = da1.begin();
             auto it2 = da2.begin();
 
-            CHECK_THROWS(it1[0].m_data = 42);
-            CHECK_THROWS(it1[0].m_data == 42);
+            CHECK_THROWS(it1[0].m_data = INT_42);
+            // cppcheck-suppress knownConditionTrueFalse
+            // cppcheck-suppress constArgument
+            CHECK_THROWS(it1[0].m_data == INT_42);
 
-            CHECK_NOTHROW(it2[0].m_data = 42);
-            CHECK_NOTHROW(it2[0].m_data == 42);
+            CHECK_NOTHROW(it2[0].m_data = INT_42);
+            // cppcheck-suppress knownConditionTrueFalse
+            // cppcheck-suppress constArgument
+            CHECK_NOTHROW(it2[0].m_data == INT_42);
         }
 
         auto
@@ -179,8 +193,8 @@ TEST_CASE("operator[]")
             auto it1 = da1.begin();
             auto it2 = da2.begin();
 
-            CHECK_THROWS(it1[0].m_data == 42);
-            CHECK_NOTHROW(it2[0].m_data == 42);
+            CHECK_THROWS(it1[0].m_data == INT_42);
+            CHECK_NOTHROW(it2[0].m_data == INT_42);
         }
     };
 
@@ -858,33 +872,15 @@ TEST_CASE("operator- rhs")
 
 TEST_CASE("comparison operators")
 {
-    auto da1 = bsl::dynarray<int>();
-    auto da2 = bsl::make_dynarray<int>(42);
+    auto da = bsl::make_dynarray<int>(INT_42);
 
-    CHECK(da1.begin() == da1.begin());
-    CHECK(da1.end() == da1.end());
-    CHECK(da1.begin() == da1.end());
-    CHECK(da1.end() == da1.begin());
+    CHECK(da.begin() == da.begin());
+    CHECK(da.end() == da.end());
+    CHECK(da.begin() != da.end());
+    CHECK(da.end() != da.begin());
 
-    CHECK(da2.begin() == da2.begin());
-    CHECK(da2.end() == da2.end());
-    CHECK(da2.begin() != da2.end());
-    CHECK(da2.end() != da2.begin());
-
-    CHECK(da1.begin() != da2.begin());
-    CHECK(da1.end() != da2.end());
-    CHECK(da1.begin() != da2.end());
-    CHECK(da1.end() != da2.begin());
-
-    CHECK(da2.begin() != da1.begin());
-    CHECK(da2.end() != da1.end());
-    CHECK(da2.begin() != da1.end());
-    CHECK(da2.end() != da1.begin());
-
-    CHECK(da2.end() > da1.end());
-    CHECK(da1.end() < da2.end());
-    CHECK(da1.end() >= da1.end());
-    CHECK(da1.end() <= da1.end());
-    CHECK(da2.end() >= da2.end());
-    CHECK(da2.end() <= da2.end());
+    CHECK_FALSE(da.begin() > da.end());
+    CHECK(da.begin() < da.end());
+    CHECK_FALSE(da.begin() >= da.end());
+    CHECK(da.begin() <= da.end());
 }

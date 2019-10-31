@@ -38,9 +38,9 @@ For detailed instructions, visit <https://bareflank.github.io/bsl/>
 
 The Bareflank Support Library leverages the following tools to ensure the highest possible code quality. Each pull request undergoes the follwoing rigurous testing and review:
 
-- **Static Analysis:** Clang Tidy, CppCheck, Codacy, CodeFactor, and LGTM
-- **Dynamic Analysis:** Google's ASAN and UBSAN, Valgrind
-- **Code Coverage:** LCOV Code Coverage with CodeCov
-- **Coding Standards**: C++ Core Guidelines with SEI CERT C++ and High Integrity C++
-- **Style**: Clang Format and Git Check
-- **Documentation**: MkDocs and Doxygen
+-   **Static Analysis:** Clang Tidy, CppCheck, Codacy, CodeFactor, and LGTM
+-   **Dynamic Analysis:** Google's ASAN and UBSAN, Valgrind
+-   **Code Coverage:** LCOV Code Coverage with CodeCov
+-   **Coding Standards**: C++ Core Guidelines with SEI CERT C++ and High Integrity C++
+-   **Style**: Clang Format and Git Check
+-   **Documentation**: MkDocs and Doxygen

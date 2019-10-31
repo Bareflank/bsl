@@ -82,7 +82,7 @@ endif()
 # Sub Directories
 # ------------------------------------------------------------------------------
 
-if(BUILD_TESTS)
+if(BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
 

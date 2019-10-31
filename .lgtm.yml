@@ -4,5 +4,6 @@ extraction:
       command:
         - mkdir custom_cmake
         - wget --quiet -O - "http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz" | tar --strip-components=1 -xz -C custom_cmake
-        - mkdir build && cd build
-        - ../custom_cmake/bin/cmake ..
+        - export PATH=$(pwd)/custom_cmake/bin:${PATH}
+        - mkdir $LGTM_SRC/_lgtm_build_dir
+        - cd $LGTM_SRC/_lgtm_build_dir

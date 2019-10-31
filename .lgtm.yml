@@ -6,6 +6,7 @@ extraction:
       - export PATH=$(pwd)/custom_cmake/bin:${PATH}
       - mkdir $LGTM_SRC/_lgtm_build_dir
       - cd $LGTM_SRC/_lgtm_build_dir
-      
+
 queries:
   - include: "*"
+  

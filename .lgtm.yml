@@ -1,8 +1,16 @@
 extraction:
   cpp:
-    after_prepare:
-      - mkdir custom_cmake
-      - wget --quiet -O - "http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz" | tar --strip-components=1 -xz -C custom_cmake
-      - export PATH=$(pwd)/custom_cmake/bin:${PATH}
-      - mkdir $LGTM_SRC/_lgtm_build_dir
-      - cd $LGTM_SRC/_lgtm_build_dir
+    prepare:    # Customizable step used by all languages.
+      packages:
+        - python-pip
+    after_prepare:    # Customizable step used by all languages.
+      - wget https://files.pythonhosted.org/packages/5c/e0/be401c003291b56efc55aeba6a80ab790d3d4cece2778288d65323009420/pip-19.1.1-py2.py3-none-any.whl
+      - wget https://files.pythonhosted.org/packages/bb/10/44230dd6bf3563b8f227dbf344c908d412ad2ff48066476672f3a72e174e/wheel-0.33.4-py2.py3-none-any.whl
+      - wget https://files.pythonhosted.org/packages/ec/51/f45cea425fd5cb0b0380f5b0f048ebc1da5b417e48d304838c02d6288a1e/setuptools-41.0.1-py2.py3-none-any.whl
+      - pip install --user --upgrade *.whl
+      - export PATH=~/.local/bin:$PATH
+      - pip --version
+      - wget https://files.pythonhosted.org/packages/09/bb/0121c0ae40144b99420a1a0ea081d48ac4d77332600896d7e04bf23aa957/cmake-3.14.4-py2-none-manylinux2010_x86_64.whl
+      - pip install --user --upgrade cmake*.whl
+      - ls ~/.local/bin
+      - cmake --version

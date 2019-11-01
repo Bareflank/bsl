@@ -35,6 +35,10 @@ main() -> int
 For detailed instructions, visit <https://bareflank.github.io/bsl/>
 
 ## **Testing**
+[![codecov](https://codecov.io/gh/Bareflank/bsl/branch/master/graph/badge.svg)](https://codecov.io/gh/Bareflank/bsl)
+[![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/Bareflank/bsl.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Bareflank/bsl/context:cpp)
+![Codacy grade](https://img.shields.io/codacy/grade/9e55fc17a08d4e2abe51d82f09f4449f)
+[![CodeFactor](https://www.codefactor.io/repository/github/bareflank/bsl/badge)](https://www.codefactor.io/repository/github/bareflank/bsl)
 
 The Bareflank Support Library leverages the following tools to ensure the highest possible code quality. Each pull request undergoes the follwoing rigurous testing and review:
 

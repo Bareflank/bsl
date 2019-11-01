@@ -19,48 +19,5 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#define BAREFLANK_THROW_ON_CONTRACT_VIOLATION
-#define BAREFLANK_CORE_GUIDELINE_COMPLIANT
-#include "../include/bsl.h"
-
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
-
-// --------------------------------------------------------------------------
-// Tests
-// --------------------------------------------------------------------------
-
-TEST_CASE("default")
-{
-    auto fa = bsl::ifarray<>();
-    auto ifa = bsl::ifarray<>();
-
-    CHECK(fa.empty());
-    CHECK(ifa.empty());
-}
-
-TEST_CASE("does not exist")
-{
-    CHECK_THROWS(bsl::ifarray<>("this_file_does_not_exist"));
-}
-
-TEST_CASE("success")
-{
-    std::string msg = "The answer is: 42";
-    if (auto strm = std::ofstream("test.txt")) {
-        CHECK_THROWS(bsl::ifarray<char>("test.txt"));
-        strm << msg;
-    }
-
-    auto ifa = bsl::ifarray<char>("test.txt");
-
-    CHECK(ifa.size() == msg.size());
-    CHECK(ifa.front() == 'T');
-    CHECK(ifa.back() == '2');
-
-    for (const auto &c : ifa) {
-        std::cout << c;
-    }
-
-    std::cout << '\n';
-}

@@ -19,14 +19,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#define BAREFLANK_THROW_ON_CONTRACT_VIOLATION
-#define BAREFLANK_CORE_GUIDELINE_COMPLIANT
+#define BSL_THROW_ON_CONTRACT_VIOLATION
+#define BSL_CORE_GUIDELINE_COMPLIANT
 #include "../include/bsl.h"
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
-
 #include <set>
+#include <catch2/catch.hpp>
 
 // --------------------------------------------------------------------------
 // Mocks
@@ -251,9 +249,29 @@ constexpr const auto INT_42 = 42;
 // Tests
 // --------------------------------------------------------------------------
 
+TEST_CASE("check tests")
+{
+    CHECK_FALSE(Foo::check(1, 1, 1, 1));
+    CHECK_FALSE(Deleter::check(1, 1, 1, 1));
+}
+
+TEST_CASE("const / non-const")
+{
+    bsl::dynarray<int> da1;
+    bsl::dynarray<const int> da2;
+}
+
 TEST_CASE("empty base optimization")
 {
     CHECK(sizeof(da_t) == sizeof(void *) * 2);
+}
+
+TEST_CASE("nodelete")
+{
+    auto f = new Foo[1];
+    CHECK_NOTHROW(bsl::dynarray<Foo, bsl::nodelete>(f, 1));
+
+    delete[] f;
 }
 
 TEST_CASE("constructor")
@@ -261,12 +279,14 @@ TEST_CASE("constructor")
     {
         setup_test();
 
-        da_t da1();
-        // cppcheck-suppress unreadVariable
+        da_t da1;
         da_t da2 = {};
+
+        CHECK(da1.empty());
+        CHECK(da2.empty());
     }
     CHECK_FOO(0, 0, 0, 0);
-    CHECK_DELETER(1, 0, 0, 1);
+    CHECK_DELETER(2, 0, 0, 2);
 
     {
         setup_test();
@@ -312,8 +332,10 @@ TEST_CASE("constructor")
         setup_test();
 
         auto da1 = da_t(new Foo[1], 1);
-        // cppcheck-suppress unreadVariable
+        CHECK(da1);
+
         auto da2 = da_t(std::move(da1));
+        CHECK(da2);
     }
     CHECK_FOO(1, 0, 0, 1);
     CHECK_DELETER(2, 0, 1, 2);
@@ -334,11 +356,13 @@ TEST_CASE("operator=")
         setup_test();
 
         auto da1 = da_t(new Foo[1], 1);
-        auto da2 = da_t();
+        CHECK(da1);
 
-        // cppcheck-suppress redundantAssignment
-        // cppcheck-suppress unreadVariable
+        auto da2 = da_t();
+        CHECK(da2.empty());
+
         da1 = std::move(da2);
+        CHECK(da1.empty());
     }
     CHECK_FOO(1, 0, 0, 1);
     CHECK_DELETER(2, 0, 1, 2);
@@ -347,11 +371,13 @@ TEST_CASE("operator=")
         setup_test();
 
         auto da1 = da_t(new Foo[1], 1);
-        auto da2 = da_t(new Foo[1], 1);
+        CHECK(da1);
 
-        // cppcheck-suppress redundantAssignment
-        // cppcheck-suppress unreadVariable
+        auto da2 = da_t(new Foo[1], 1);
+        CHECK(da2);
+
         da1 = std::move(da2);
+        CHECK(da1);
     }
     CHECK_FOO(2, 0, 0, 2);
     CHECK_DELETER(2, 0, 1, 2);
@@ -444,17 +470,27 @@ TEST_CASE("get")
 
 TEST_CASE("get_deleter")
 {
+    class test
     {
-        auto da = bsl::dynarray<int>(new int[1], 1);
-        auto &d = da.get_deleter();
-        (void)d;
-    }
+        bsl::dynarray<int> da;
 
-    {
-        auto da = bsl::dynarray<int>(new int[1], 1);
-        const auto &d = da.get_deleter();
-        (void)d;
-    }
+    public:
+        auto
+        test1() -> void
+        {
+            CHECK_NOTHROW(da.get_deleter());
+        }
+
+        auto
+        test2() const -> void
+        {
+            CHECK_NOTHROW(da.get_deleter());
+        }
+    };
+
+    test t;
+    t.test1();
+    t.test2();
 }
 
 TEST_CASE("bool operator")
@@ -629,28 +665,68 @@ TEST_CASE("data")
 
 TEST_CASE("begin / end")
 {
-    bsl::dynarray<int> da{new int[1], 1};
+    class test
+    {
+        bsl::dynarray<int> da{new int[1], 1};
 
-    for (auto it = da.begin(); it != da.end(); ++it) {
-        *it = INT_42;
-    }
+    public:
+        auto
+        test1() -> void
+        {
+            for (auto it = da.begin(); it != da.end(); ++it) {
+                *it = INT_42;
+            }
+        }
 
-    for (auto it = da.cbegin(); it != da.cend(); ++it) {
-        CHECK(*it == INT_42);
-    }
+        auto
+        test2() const -> void
+        {
+            for (auto it = da.begin(); it != da.end(); ++it) {
+                CHECK(*it == INT_42);
+            }
+
+            for (auto it = da.cbegin(); it != da.cend(); ++it) {
+                CHECK(*it == INT_42);
+            }
+        }
+    };
+
+    test t;
+    t.test1();
+    t.test2();
 }
 
 TEST_CASE("rbegin / rend")
 {
-    bsl::dynarray<int> da{new int[1], 1};
+    class test
+    {
+        bsl::dynarray<int> da{new int[1], 1};
 
-    for (auto it = da.rbegin(); it != da.rend(); ++it) {
-        *it = INT_42;
-    }
+    public:
+        auto
+        test1() -> void
+        {
+            for (auto it = da.rbegin(); it != da.rend(); ++it) {
+                *it = INT_42;
+            }
+        }
 
-    for (auto it = da.crbegin(); it != da.crend(); ++it) {
-        CHECK(*it == INT_42);
-    }
+        auto
+        test2() const -> void
+        {
+            for (auto it = da.rbegin(); it != da.rend(); ++it) {
+                CHECK(*it == INT_42);
+            }
+
+            for (auto it = da.crbegin(); it != da.crend(); ++it) {
+                CHECK(*it == INT_42);
+            }
+        }
+    };
+
+    test t;
+    t.test1();
+    t.test2();
 }
 
 TEST_CASE("empty")
@@ -735,8 +811,11 @@ TEST_CASE("comparison operators")
 
 TEST_CASE("ostream")
 {
-    bsl::dynarray<int> da{new int[1], 1};
-    std::cout << "testing os: " << da << '\n';
+    bsl::dynarray<Foo, Deleter> da2;
+    bsl::dynarray<int> da1{new int[1], 1};
+
+    std::cout << "testing os: " << da1 << '\n';
+    std::cout << "testing os: " << da2 << '\n';
 }
 
 TEST_CASE("make_dynarray")

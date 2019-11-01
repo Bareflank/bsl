@@ -19,15 +19,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-extraction:
-  cpp:
-    after_prepare:
-      - mkdir custom_cmake
-      - wget --quiet -O - "http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz" | tar --strip-components=1 -xz -C custom_cmake
-      - export PATH=$(pwd)/custom_cmake/bin:${PATH}
-      - mkdir $LGTM_SRC/_lgtm_build_dir
-      - cd $LGTM_SRC/_lgtm_build_dir
+codecov:
+  require_ci_to_pass: yes
 
-queries:
-  - include: "*"
+coverage:
+  precision: 2
+  round: down
+  range: "95...100"
 
+  status:
+    project: yes
+    patch: yes
+    changes: yes
+
+parsers:
+  gcov:
+    branch_detection:
+      conditional: no
+      loop: no
+      method: no
+      macro: no
+
+comment:
+  layout: "reach,diff,flags,tree"
+  behavior: default
+  require_changes: no

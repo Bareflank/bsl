@@ -19,11 +19,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#define BAREFLANK_THROW_ON_CONTRACT_VIOLATION
-#define BAREFLANK_CORE_GUIDELINE_COMPLIANT
+#define BSL_THROW_ON_CONTRACT_VIOLATION
+#define BSL_CORE_GUIDELINE_COMPLIANT
 #include "../include/bsl.h"
 
-#define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
 constexpr const auto INT_42 = 42;
@@ -81,14 +80,7 @@ TEST_CASE("operator*")
             auto it2 = da2.begin();
 
             CHECK_THROWS((*it1).m_data = INT_42);
-            // cppcheck-suppress knownConditionTrueFalse
-            // cppcheck-suppress constArgument
-            CHECK_THROWS((*it1).m_data == INT_42);
-
             CHECK_NOTHROW((*it2).m_data = INT_42);
-            // cppcheck-suppress knownConditionTrueFalse
-            // cppcheck-suppress constArgument
-            CHECK_NOTHROW((*it2).m_data == INT_42);
         }
 
         auto
@@ -129,14 +121,7 @@ TEST_CASE("operator->")
             auto it2 = da2.begin();
 
             CHECK_THROWS(it1->m_data = INT_42);
-            // cppcheck-suppress knownConditionTrueFalse
-            // cppcheck-suppress constArgument
-            CHECK_THROWS(it1->m_data == INT_42);
-
             CHECK_NOTHROW(it2->m_data = INT_42);
-            // cppcheck-suppress knownConditionTrueFalse
-            // cppcheck-suppress constArgument
-            CHECK_NOTHROW(it2->m_data == INT_42);
         }
 
         auto
@@ -177,14 +162,7 @@ TEST_CASE("operator[]")
             auto it2 = da2.begin();
 
             CHECK_THROWS(it1[0].m_data = INT_42);
-            // cppcheck-suppress knownConditionTrueFalse
-            // cppcheck-suppress constArgument
-            CHECK_THROWS(it1[0].m_data == INT_42);
-
             CHECK_NOTHROW(it2[0].m_data = INT_42);
-            // cppcheck-suppress knownConditionTrueFalse
-            // cppcheck-suppress constArgument
-            CHECK_NOTHROW(it2[0].m_data == INT_42);
         }
 
         auto

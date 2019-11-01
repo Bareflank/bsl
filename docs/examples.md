@@ -9,8 +9,8 @@ The BSL provides a new container type called the Dynamic Array or `#!c++ bsl::dy
 For example:
 
 ``` c++
-#define BAREFLANK_CORE_GUIDELINE_COMPLIANT
-#define BAREFLANK_THROW_ON_CONTRACT_VIOLATION
+#define BSL_CORE_GUIDELINE_COMPLIANT
+#define BSL_THROW_ON_CONTRACT_VIOLATION
 #include <bsl.h>
 
 auto

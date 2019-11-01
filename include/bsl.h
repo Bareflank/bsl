@@ -19,8 +19,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef BAREFLANK_SUPPORT_LIBRARY
-#define BAREFLANK_SUPPORT_LIBRARY
+#ifndef BSL_SUPPORT_LIBRARY
+#define BSL_SUPPORT_LIBRARY
 
 #include <iostream>
 #include <stdexcept>
@@ -30,134 +30,128 @@
 // Helper Macros
 // --------------------------------------------------------------------------
 
-#define BAREFLANK_STRINGIFY_DETAILS(a) #a
-#define BAREFLANK_STRINGIFY(a) BAREFLANK_STRINGIFY_DETAILS(a)
+#define BSL_STRINGIFY_DETAILS(a) #a
+#define BSL_STRINGIFY(a) BSL_STRINGIFY_DETAILS(a)
 
 #if defined(__clang__) || defined(__GNUC__)
-#define BAREFLANK_LIKELY(a) __builtin_expect(!!(a), 1)
-#define BAREFLANK_UNLIKELY(a) __builtin_expect(!!(a), 0)
+#define BSL_LIKELY(a) __builtin_expect(!!(a), 1)
+#define BSL_UNLIKELY(a) __builtin_expect(!!(a), 0)
 #else
-#define BAREFLANK_LIKELY(a) (!!(a))
-#define BAREFLANK_UNLIKELY(a) (!!(a))
+#define BSL_LIKELY(a) (!!(a))
+#define BSL_UNLIKELY(a) (!!(a))
 #endif
 
 // --------------------------------------------------------------------------
 // Contracts
 // --------------------------------------------------------------------------
 
-#ifdef BAREFLANK_CORE_GUIDELINE_COMPLIANT
+#ifdef BSL_CORE_GUIDELINE_COMPLIANT
 
-#define BAREFLANK_CONTRACT_CHECK_THROW(test, file, line)                       \
-    if (BAREFLANK_UNLIKELY(!(test))) {                                         \
+#define BSL_CONTRACT_CHECK_THROW(test, file, line)                             \
+    if (BSL_UNLIKELY(!(test))) {                                               \
         throw std::logic_error("contract violation at [" line "]: " file);     \
     }
 
-#define BAREFLANK_CONTRACT_CHECK_TERMINATE(test, file, line)                   \
-    if (BAREFLANK_UNLIKELY(!(test))) {                                         \
+#define BSL_CONTRACT_CHECK_TERMINATE(test, file, line)                         \
+    if (BSL_UNLIKELY(!(test))) {                                               \
         std::cerr << "contract failure at [" line "]: " file << '\n';          \
         std::terminate();                                                      \
     }
 
-#if defined(BAREFLANK_THROW_ON_CONTRACT_VIOLATION)
+#if defined(BSL_THROW_ON_CONTRACT_VIOLATION)
 
-#define bfexpects(test)                                                        \
-    BAREFLANK_CONTRACT_CHECK_THROW(                                            \
-        (test), __FILE__, BAREFLANK_STRINGIFY(__LINE__))
-#define bfensures(test)                                                        \
-    BAREFLANK_CONTRACT_CHECK_THROW(                                            \
-        (test), __FILE__, BAREFLANK_STRINGIFY(__LINE__))
+#define bsl_expects(test)                                                      \
+    BSL_CONTRACT_CHECK_THROW((test), __FILE__, BSL_STRINGIFY(__LINE__))
+#define bsl_ensures(test)                                                      \
+    BSL_CONTRACT_CHECK_THROW((test), __FILE__, BSL_STRINGIFY(__LINE__))
 
-#define bfexpects_if(cond, test)                                               \
+#define bsl_expects_if(cond, test)                                             \
     if (cond) {                                                                \
-        bfexpects(test);                                                       \
+        bsl_expects(test);                                                     \
     }
-#define bfensures_if(cond, test)                                               \
+#define bsl_ensures_if(cond, test)                                             \
     if (cond) {                                                                \
-        bfensures(test);                                                       \
+        bsl_ensures(test);                                                     \
     }
 
-#elif defined(BAREFLANK_TERMINATE_ON_CONTRACT_VIOLATION)
+#elif defined(BSL_TERMINATE_ON_CONTRACT_VIOLATION)
 
-#define bfexpects(test)                                                        \
-    BAREFLANK_CONTRACT_CHECK_TERMINATE(                                        \
-        (test), __FILE__, BAREFLANK_STRINGIFY(__LINE__))
-#define bfensures(test)                                                        \
-    BAREFLANK_CONTRACT_CHECK_TERMINATE(                                        \
-        (test), __FILE__, BAREFLANK_STRINGIFY(__LINE__))
+#define bsl_expects(test)                                                      \
+    BSL_CONTRACT_CHECK_TERMINATE((test), __FILE__, BSL_STRINGIFY(__LINE__))
+#define bsl_ensures(test)                                                      \
+    BSL_CONTRACT_CHECK_TERMINATE((test), __FILE__, BSL_STRINGIFY(__LINE__))
 
-#define bfexpects_if(cond, test)                                               \
+#define bsl_expects_if(cond, test)                                             \
     if (cond) {                                                                \
-        bfexpects(test);                                                       \
+        bsl_expects(test);                                                     \
     }
-#define bfensures_if(cond, test)                                               \
+#define bsl_ensures_if(cond, test)                                             \
     if (cond) {                                                                \
-        bfensures(test);                                                       \
+        bsl_ensures(test);                                                     \
     }
 
-#elif defined(BAREFLANK_CUSTOM_ON_CONTRACT_VIOLATION)
+#elif defined(BSL_CUSTOM_ON_CONTRACT_VIOLATION)
 
 #else
 
-#define bfexpects(test)
-#define bfexpects_if(cond, test)
+#define bsl_expects(test)
+#define bsl_expects_if(cond, test)
 
-#define bfensures(test)
-#define bfensures_if(cond, test)
+#define bsl_ensures(test)
+#define bsl_ensures_if(cond, test)
 
 #endif
 
-#define bfexpects_terminate(test)                                              \
-    BAREFLANK_CONTRACT_CHECK_TERMINATE(                                        \
-        (test), __FILE__, BAREFLANK_STRINGIFY(__LINE__))
-#define bfensures_terminate(test)                                              \
-    BAREFLANK_CONTRACT_CHECK_TERMINATE(                                        \
-        (test), __FILE__, BAREFLANK_STRINGIFY(__LINE__))
+#define bsl_expects_terminate(test)                                            \
+    BSL_CONTRACT_CHECK_TERMINATE((test), __FILE__, BSL_STRINGIFY(__LINE__))
+#define bsl_ensures_terminate(test)                                            \
+    BSL_CONTRACT_CHECK_TERMINATE((test), __FILE__, BSL_STRINGIFY(__LINE__))
 
-#define bfexpects_if_terminate(cond, test)                                     \
+#define bsl_expects_if_terminate(cond, test)                                   \
     if (cond) {                                                                \
-        bfexpects_terminate(test);                                             \
+        bsl_expects_terminate(test);                                           \
     }
-#define bfensures_if_terminate(cond, test)                                     \
+#define bsl_ensures_if_terminate(cond, test)                                   \
     if (cond) {                                                                \
-        bfensures_terminate(test);                                             \
+        bsl_ensures_terminate(test);                                           \
     }
 
-#if defined(BAREFLANK_THROW_ON_CONTRACT_VIOLATION)
-#define BFNOEXCEPT
-#elif defined(BAREFLANK_TERMINATE_ON_CONTRACT_VIOLATION)
-#define BFNOEXCEPT noexcept
-#elif defined(BAREFLANK_CUSTOM_ON_CONTRACT_VIOLATION)
+#if defined(BSL_THROW_ON_CONTRACT_VIOLATION)
+#define BSL_NOEXCEPT
+#elif defined(BSL_TERMINATE_ON_CONTRACT_VIOLATION)
+#define BSL_NOEXCEPT noexcept
+#elif defined(BSL_CUSTOM_ON_CONTRACT_VIOLATION)
 #else
-#define BFNOEXCEPT noexcept
+#define BSL_NOEXCEPT noexcept
 #endif
 
-#ifdef BAREFLANK_IGNORE_ENSURES_CONTRACT_VIOLATIONS
+#ifdef BSL_IGNORE_ENSURES_CONTRACT_VIOLATIONS
 
-#undef bfensures
-#undef bfensures_if
-#undef bfensures_terminate
-#undef bfensures_if_terminate
+#undef bsl_ensures
+#undef bsl_ensures_if
+#undef bsl_ensures_terminate
+#undef bsl_ensures_if_terminate
 
-#define bfensures(test)
-#define bfensures_if(cond, test)
-#define bfensures_terminate(test)
-#define bfensures_if_terminate(cond, test)
+#define bsl_ensures(test)
+#define bsl_ensures_if(cond, test)
+#define bsl_ensures_terminate(test)
+#define bsl_ensures_if_terminate(cond, test)
 
 #endif
 
 #else
 
-#define bfexpects(test)
-#define bfexpects_if(cond, test)
-#define bfexpects_terminate(test)
-#define bfexpects_if_terminate(cond, test)
+#define bsl_expects(test)
+#define bsl_expects_if(cond, test)
+#define bsl_expects_terminate(test)
+#define bsl_expects_if_terminate(cond, test)
 
-#define bfensures(test)
-#define bfensures_if(cond, test)
-#define bfensures_terminate(test)
-#define bfensures_if_terminate(cond, test)
+#define bsl_ensures(test)
+#define bsl_ensures_if(cond, test)
+#define bsl_ensures_terminate(test)
+#define bsl_ensures_if_terminate(cond, test)
 
-#define BFNOEXCEPT noexcept
+#define BSL_NOEXCEPT noexcept
 
 #endif
 
@@ -165,65 +159,74 @@
 // Type Trait Macros
 // --------------------------------------------------------------------------
 
-#define BAREFLANK_IS_POINTER(a)                                                \
-    std::enable_if_t<std::is_pointer<a>::value, int> = 0
-#define BAREFLANK_IS_NOT_POINTER(a)                                            \
+#define BSL_IS_POINTER(a) std::enable_if_t<std::is_pointer<a>::value, int> = 0
+#define BSL_IS_NOT_POINTER(a)                                                  \
     std::enable_if_t<not std::is_pointer<a>::value, int> = 0
 
-#define BAREFLANK_IS_REFERENCE(a)                                              \
+#define BSL_IS_REFERENCE(a)                                                    \
     std::enable_if_t<std::is_reference<a>::value, int> = 0
-#define BAREFLANK_IS_NOT_REFERENCE(a)                                          \
+#define BSL_IS_NOT_REFERENCE(a)                                                \
     std::enable_if_t<not std::is_reference<a>::value, int> = 0
 
-#define BAREFLANK_IS_DEFAULT_CONSTRUCTABLE(a)                                  \
+#define BSL_IS_DEFAULT_CONSTRUCTABLE(a)                                        \
     std::enable_if_t<std::is_default_constructible<a>::value, int> = 0
-#define BAREFLANK_IS_NOT_DEFAULT_CONSTRUCTABLE(a)                              \
+#define BSL_IS_NOT_DEFAULT_CONSTRUCTABLE(a)                                    \
     std::enable_if_t<not std::is_default_constructible<a>::value, int> = 0
 
-#define BAREFLANK_IS_NOTHROW_MOVE_CONSTRUCTABLE(a)                             \
+#define BSL_IS_NOTHROW_MOVE_CONSTRUCTABLE(a)                                   \
     std::enable_if_t<std::is_nothrow_move_constructible<a>::value, int> = 0
-#define BAREFLANK_IS_NOT_NOTHROW_MOVE_CONSTRUCTABLE(a)                         \
+#define BSL_IS_NOT_NOTHROW_MOVE_CONSTRUCTABLE(a)                               \
     std::enable_if_t<not std::is_nothrow_move_constructible<a>::value, int> = 0
 
-#define BAREFLANK_IS_NOTHROW_MOVE_ASSIGNABLE(a)                                \
+#define BSL_IS_NOTHROW_MOVE_ASSIGNABLE(a)                                      \
     std::enable_if_t<std::is_nothrow_move_assignable<a>::value, int> = 0
-#define BAREFLANK_IS_NOT_NOTHROW_MOVE_ASSIGNABLE(a)                            \
+#define BSL_IS_NOT_NOTHROW_MOVE_ASSIGNABLE(a)                                  \
     std::enable_if_t<not std::is_nothrow_move_assignable<a>::value, int> = 0
 
 // --------------------------------------------------------------------------
 // Class Types
 // --------------------------------------------------------------------------
 
-#define BAREFLANK_MOVE_ONLY(T)                                                 \
+#define BSL_MOVE_ONLY(T)                                                       \
 public:                                                                        \
     T(const T &) = delete;                                                     \
     T &operator=(const T &) = delete;
 
-#define BAREFLANK_DEFAULT_MOVE_ONLY(T)                                         \
+#define BSL_DEFAULT_MOVE_ONLY(T)                                               \
 public:                                                                        \
     T(const T &) = delete;                                                     \
     T &operator=(const T &) = delete;                                          \
     T(T &&) noexcept = default;                                                \
     T &operator=(T &&) noexcept = default;
 
-#define BAREFLANK_COPY_ONLY(T)                                                 \
+#define BSL_COPY_ONLY(T)                                                       \
 public:                                                                        \
     T(T &&) noexcept = delete;                                                 \
     T &operator=(T &&) noexcept = delete;
 
-#define BAREFLANK_DEFAULT_COPY_ONLY(T)                                         \
+#define BSL_DEFAULT_COPY_ONLY(T)                                               \
 public:                                                                        \
     T(const T &) = default;                                                    \
     T &operator=(const T &) = default;                                         \
     T(T &&) noexcept = delete;                                                 \
     T &operator=(T &&) noexcept = delete;
 
-#define BAREFLANK_DEFAULT_COPY_MOVE(T)                                         \
+#define BSL_DEFAULT_COPY_MOVE(T)                                               \
 public:                                                                        \
     T(const T &) = default;                                                    \
     T &operator=(const T &) = default;                                         \
     T(T &&) noexcept = default;                                                \
     T &operator=(T &&) noexcept = default;
+
+// --------------------------------------------------------------------------
+// No Discard
+// --------------------------------------------------------------------------
+
+#ifndef NDEBUG
+#define BSL_NODISCARD [[nodiscard]]
+#else
+#define BSL_NODISCARD
+#endif
 
 // --------------------------------------------------------------------------
 // Iterators
@@ -274,31 +277,31 @@ namespace bsl
 
         random_access_iterator() = default;
 
-        random_access_iterator(const Array *a, difference_type i) BFNOEXCEPT :
+        random_access_iterator(const Array *a, difference_type i) BSL_NOEXCEPT :
             m_a{a},
             m_i{i}
         {}
 
-        constexpr auto operator*() const BFNOEXCEPT -> reference
+        constexpr auto operator*() const BSL_NOEXCEPT -> reference
         {
-            bfexpects(m_a != nullptr);
-            bfexpects(m_i >= 0 && m_i < m_a->ssize());
+            bsl_expects(m_a != nullptr);
+            bsl_expects(m_i >= 0 && m_i < m_a->ssize());
 
             return m_a->get()[static_cast<std::size_t>(m_i)];
         }
 
-        constexpr auto operator-> () const BFNOEXCEPT -> pointer
+        constexpr auto operator-> () const BSL_NOEXCEPT -> pointer
         {
-            bfexpects(m_a != nullptr);
-            bfexpects(m_i >= 0 && m_i < m_a->ssize());
+            bsl_expects(m_a != nullptr);
+            bsl_expects(m_i >= 0 && m_i < m_a->ssize());
 
             return &m_a->get()[static_cast<std::size_t>(m_i)];
         }
 
-        constexpr auto operator[](std::size_t n) const BFNOEXCEPT -> reference
+        constexpr auto operator[](std::size_t n) const BSL_NOEXCEPT -> reference
         {
-            bfexpects(m_a != nullptr);
-            bfexpects(n < m_a->size());
+            bsl_expects(m_a != nullptr);
+            bsl_expects(n < m_a->size());
 
             return m_a->get()[n];
         }
@@ -463,7 +466,6 @@ namespace bsl
     /// Do not delete the memory passed to the deleter. This turns a
     /// bsl::dynarray into a non-owning container (similar to a gsl::span).
     ///
-    template<typename T>
     struct nodelete
     {
         /// Functor
@@ -475,7 +477,7 @@ namespace bsl
         /// @return none
         ///
         auto
-        operator()(T *ptr, size_t size) -> void
+        operator()(const void *ptr, size_t size) -> void
         {
             (void)ptr;
             (void)size;
@@ -515,7 +517,7 @@ namespace bsl
     ///   handled. By default, to achieve this compliance, you must use .at() as
     ///   this is always bounds checked. If you would like the bsl::dynarray to
     ///   be fully compliant like a gsl::span, define
-    ///   BAREFLANK_CORE_GUIDELINE_COMPLIANT. Like the GSL, you can control
+    ///   BSL_CORE_GUIDELINE_COMPLIANT. Like the GSL, you can control
     ///   whether exceptions are thrown or std::terminate is called. This
     ///   changes some of the noexcept rules defined by std::unique_ptr. Also
     ///   note that not all of the functions can throw on contract violations.
@@ -534,11 +536,11 @@ namespace bsl
     template<
         typename T,
         typename Deleter = default_deleter<T>,
-        BAREFLANK_IS_NOT_POINTER(Deleter),
-        BAREFLANK_IS_NOT_REFERENCE(Deleter)>
+        BSL_IS_NOT_POINTER(Deleter),
+        BSL_IS_NOT_REFERENCE(Deleter)>
     class dynarray : public Deleter
     {
-        BAREFLANK_MOVE_ONLY(dynarray)
+        BSL_MOVE_ONLY(dynarray)
 
     public:
         /// @cond
@@ -573,10 +575,10 @@ namespace bsl
         /// @expects
         /// @ensures empty() == true
         ///
-        template<BAREFLANK_IS_DEFAULT_CONSTRUCTABLE(deleter_type)>
+        template<BSL_IS_DEFAULT_CONSTRUCTABLE(deleter_type)>
         constexpr dynarray() noexcept
         {
-            bfensures_terminate(empty());
+            bsl_ensures_terminate(empty());
         }
 
         /// Pointer / Count Constructor
@@ -590,7 +592,7 @@ namespace bsl
         /// std::is_default_constructible<Deleter>::value is true and Deleter
         /// is not a pointer or reference type.
         ///
-        /// If BAREFLANK_THROW_ON_CONTRACT_VIOLATION is defined, this function
+        /// If BSL_THROW_ON_CONTRACT_VIOLATION is defined, this function
         /// can throw on contract violations. Otherwise, this function is marked
         /// as noexcept.
         ///
@@ -601,14 +603,14 @@ namespace bsl
         /// @param ptr a pointer to an array
         /// @param count the number of elements in the array
         ///
-        template<BAREFLANK_IS_DEFAULT_CONSTRUCTABLE(deleter_type)>
-        explicit dynarray(pointer ptr, index_type count) BFNOEXCEPT :
+        template<BSL_IS_DEFAULT_CONSTRUCTABLE(deleter_type)>
+        explicit dynarray(pointer ptr, index_type count) BSL_NOEXCEPT :
             deleter_type(deleter_type()),
             m_ptr{ptr},
             m_count{count}
         {
-            bfexpects(ptr != nullptr && count != 0);
-            bfensures(!empty());
+            bsl_expects(ptr != nullptr && count != 0);
+            bsl_ensures(!empty());
         }
 
         /// Pointer / Count Constructor (const Deleter &)
@@ -621,7 +623,7 @@ namespace bsl
         /// This overload only participates in overload resolution if
         /// Deleter is not a pointer or reference type.
         ///
-        /// If BAREFLANK_THROW_ON_CONTRACT_VIOLATION is defined, this function
+        /// If BSL_THROW_ON_CONTRACT_VIOLATION is defined, this function
         /// can throw on contract violations. Otherwise, this function is marked
         /// as noexcept.
         ///
@@ -634,14 +636,14 @@ namespace bsl
         /// @param d the deleter to use to destroy the array
         ///
         explicit dynarray(pointer ptr, index_type count, const deleter_type &d)
-            BFNOEXCEPT :
+            BSL_NOEXCEPT :
 
             deleter_type(std::forward<decltype(d)>(d)),
             m_ptr{ptr},
             m_count{count}
         {
-            bfexpects(ptr != nullptr && count != 0);
-            bfensures(!empty());
+            bsl_expects(ptr != nullptr && count != 0);
+            bsl_ensures(!empty());
         }
 
         /// Pointer / Count Constructor (Deleter &&)
@@ -654,7 +656,7 @@ namespace bsl
         /// This overload only participates in overload resolution if
         /// Deleter is not a pointer or reference type.
         ///
-        /// If BAREFLANK_THROW_ON_CONTRACT_VIOLATION is defined, this function
+        /// If BSL_THROW_ON_CONTRACT_VIOLATION is defined, this function
         /// can throw on contract violations. Otherwise, this function is marked
         /// as noexcept.
         ///
@@ -667,14 +669,14 @@ namespace bsl
         /// @param d the deleter to use to destroy the array
         ///
         explicit dynarray(pointer ptr, index_type count, deleter_type &&d)
-            BFNOEXCEPT :
+            BSL_NOEXCEPT :
 
             deleter_type(std::forward<decltype(d)>(d)),
             m_ptr{ptr},
             m_count{count}
         {
-            bfexpects(ptr != nullptr && count != 0);
-            bfensures(!empty());
+            bsl_expects(ptr != nullptr && count != 0);
+            bsl_ensures(!empty());
         }
 
         /// Move Constructor
@@ -691,13 +693,13 @@ namespace bsl
         ///
         /// @param u another dynarray to acquire the array from
         ///
-        template<BAREFLANK_IS_NOTHROW_MOVE_CONSTRUCTABLE(deleter_type)>
+        template<BSL_IS_NOTHROW_MOVE_CONSTRUCTABLE(deleter_type)>
         explicit dynarray(dynarray &&u) noexcept : deleter_type(std::move(u))
         {
             m_ptr = std::exchange(u.m_ptr, m_ptr);
             m_count = std::exchange(u.m_count, m_count);
 
-            bfensures_terminate(u.empty());
+            bsl_ensures_terminate(u.empty());
         }
 
         /// Destructor
@@ -731,7 +733,7 @@ namespace bsl
         /// @param r another dynarray to acquire the array from
         /// @return *this
         ///
-        template<BAREFLANK_IS_NOTHROW_MOVE_ASSIGNABLE(deleter_type)>
+        template<BSL_IS_NOTHROW_MOVE_ASSIGNABLE(deleter_type)>
         dynarray &
         operator=(dynarray &&r) noexcept
         {
@@ -742,7 +744,7 @@ namespace bsl
             reset(r.release());
             get_deleter() = std::move(r.get_deleter());
 
-            bfensures_terminate(r.empty());
+            bsl_ensures_terminate(r.empty());
             return *this;
         }
 
@@ -762,7 +764,7 @@ namespace bsl
         ///     if empty(), i.e. the value which would be
         ///     returned by get() and size() before the call.
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         release() noexcept -> std::pair<pointer, index_type>
         {
             auto old_ptr = get();
@@ -771,11 +773,11 @@ namespace bsl
             m_ptr = pointer();
             m_count = index_type();
 
-            bfensures_terminate(get() == pointer());
-            bfensures_terminate(size() == index_type());
+            bsl_ensures_terminate(get() == pointer());
+            bsl_ensures_terminate(size() == index_type());
 
-            bfensures_if_terminate(old_ptr != nullptr, old_count >= 1);
-            bfensures_if_terminate(old_ptr == nullptr, old_count == 0);
+            bsl_ensures_if_terminate(old_ptr != nullptr, old_count >= 1);
+            bsl_ensures_if_terminate(old_ptr == nullptr, old_count == 0);
 
             return {old_ptr, old_count};
         }
@@ -808,8 +810,8 @@ namespace bsl
         reset(pointer ptr = pointer(), index_type count = index_type()) noexcept
             -> void
         {
-            bfexpects_if_terminate(ptr != nullptr, count >= 1);
-            bfexpects_if_terminate(ptr == nullptr, count == 0);
+            bsl_expects_if_terminate(ptr != nullptr, count >= 1);
+            bsl_expects_if_terminate(ptr == nullptr, count == 0);
 
             auto old_ptr = m_ptr;
             auto old_count = m_count;
@@ -821,8 +823,8 @@ namespace bsl
                 get_deleter()(old_ptr, old_count);
             }
 
-            bfensures_if_terminate(ptr == nullptr, empty());
-            bfensures_if_terminate(ptr != nullptr, !empty());
+            bsl_ensures_if_terminate(ptr == nullptr, empty());
+            bsl_ensures_if_terminate(ptr != nullptr, !empty());
         }
 
         /// Reset (std::pair)
@@ -870,7 +872,7 @@ namespace bsl
         ///
         /// @return Pointer to the array or nullptr if no array is owned.
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         get() const -> pointer
         {
             return m_ptr;
@@ -886,7 +888,7 @@ namespace bsl
         ///
         /// @return The stored deleter object.
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         get_deleter() noexcept -> deleter_type &
         {
             return *this;
@@ -902,7 +904,7 @@ namespace bsl
         ///
         /// @return The stored deleter object.
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         get_deleter() const noexcept -> const_deleter_type &
         {
             return *this;
@@ -919,8 +921,8 @@ namespace bsl
         ///
         explicit operator bool() const noexcept
         {
-            bfensures_if_terminate(get() != nullptr, size() >= 1);
-            bfensures_if_terminate(get() == nullptr, size() == 0);
+            bsl_ensures_if_terminate(get() != nullptr, size() >= 1);
+            bsl_ensures_if_terminate(get() == nullptr, size() == 0);
 
             return get() != nullptr;
         }
@@ -930,7 +932,7 @@ namespace bsl
         /// operator[] provides access to the elements in the array.
         /// The parameter i shall be less than the number of elements in the
         /// array; otherwise, the behavior is undefined by default, or
-        /// throws an exception when BAREFLANK_CORE_GUIDELINE_COMPLIANT is
+        /// throws an exception when BSL_CORE_GUIDELINE_COMPLIANT is
         /// defined.
         ///
         /// @expects i < size()
@@ -939,9 +941,9 @@ namespace bsl
         /// @param i the index of the element to be returned
         /// @return Returns the element at index i, i.e. get()[i].
         ///
-        [[nodiscard]] constexpr auto operator[](index_type i) -> reference
+        BSL_NODISCARD constexpr auto operator[](index_type i) -> reference
         {
-            bfexpects(i < size());
+            bsl_expects(i < size());
             return get()[i];
         }
 
@@ -950,7 +952,7 @@ namespace bsl
         /// operator[] provides access to the elements in the array.
         /// The parameter i shall be less than the number of elements in the
         /// array; otherwise, the behavior is undefined by default, or
-        /// throws an exception when BAREFLANK_CORE_GUIDELINE_COMPLIANT is
+        /// throws an exception when BSL_CORE_GUIDELINE_COMPLIANT is
         /// defined.
         ///
         /// @expects i < size()
@@ -959,10 +961,10 @@ namespace bsl
         /// @param i the index of the element to be returned
         /// @return Returns the element at index i, i.e. get()[i].
         ///
-        [[nodiscard]] constexpr auto operator[](index_type i) const
+        BSL_NODISCARD constexpr auto operator[](index_type i) const
             -> const_reference
         {
-            bfexpects(i < size());
+            bsl_expects(i < size());
             return get()[i];
         }
 
@@ -978,7 +980,7 @@ namespace bsl
         /// @param pos position of the element to return
         /// @return reference to the requested element.
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         at(index_type pos) -> reference
         {
             if (pos >= size()) {
@@ -1000,7 +1002,7 @@ namespace bsl
         /// @param pos position of the element to return
         /// @return reference to the requested element.
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         at(index_type pos) const -> const_reference
         {
             if (pos >= size()) {
@@ -1014,7 +1016,7 @@ namespace bsl
         ///
         /// Returns a reference to the first element in the array. Calling
         /// front on an empty array is undefined unless
-        /// BAREFLANK_CORE_GUIDELINE_COMPLIANT is defined in which case an
+        /// BSL_CORE_GUIDELINE_COMPLIANT is defined in which case an
         /// exception is thrown.
         ///
         /// @expects !empty()
@@ -1022,10 +1024,10 @@ namespace bsl
         ///
         /// @return reference to the first element (i.e., get()[0])
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         front() -> reference
         {
-            bfexpects(!empty());
+            bsl_expects(!empty());
             return get()[0];
         }
 
@@ -1033,7 +1035,7 @@ namespace bsl
         ///
         /// Returns a reference to the first element in the array. Calling
         /// front on an empty array is undefined unless
-        /// BAREFLANK_CORE_GUIDELINE_COMPLIANT is defined in which case an
+        /// BSL_CORE_GUIDELINE_COMPLIANT is defined in which case an
         /// exception is thrown.
         ///
         /// @expects !empty()
@@ -1041,10 +1043,10 @@ namespace bsl
         ///
         /// @return reference to the first element (i.e., get()[0])
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         front() const -> const_reference
         {
-            bfexpects(!empty());
+            bsl_expects(!empty());
             return get()[0];
         }
 
@@ -1052,7 +1054,7 @@ namespace bsl
         ///
         /// Returns a reference to the last element in the array. Calling
         /// back on an empty array is undefined unless
-        /// BAREFLANK_CORE_GUIDELINE_COMPLIANT is defined in which case an
+        /// BSL_CORE_GUIDELINE_COMPLIANT is defined in which case an
         /// exception is thrown.
         ///
         /// @expects !empty()
@@ -1060,10 +1062,10 @@ namespace bsl
         ///
         /// @return reference to the last element (i.e., get()[size() - 1])
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         back() -> reference
         {
-            bfexpects(!empty());
+            bsl_expects(!empty());
             return get()[size() - 1];
         }
 
@@ -1071,7 +1073,7 @@ namespace bsl
         ///
         /// Returns a reference to the last element in the array. Calling
         /// back on an empty array is undefined unless
-        /// BAREFLANK_CORE_GUIDELINE_COMPLIANT is defined in which case an
+        /// BSL_CORE_GUIDELINE_COMPLIANT is defined in which case an
         /// exception is thrown.
         ///
         /// @expects !empty()
@@ -1079,10 +1081,10 @@ namespace bsl
         ///
         /// @return reference to the last element (i.e., get()[size() - 1])
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         back() const -> const_reference
         {
-            bfexpects(!empty());
+            bsl_expects(!empty());
             return get()[size() - 1];
         }
 
@@ -1100,7 +1102,7 @@ namespace bsl
         ///     arrays, the returned pointer compares equal to the address
         ///     of the first element.
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         data() noexcept -> pointer
         {
             return m_ptr;
@@ -1120,7 +1122,7 @@ namespace bsl
         ///     arrays, the returned pointer compares equal to the address
         ///     of the first element.
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         data() const noexcept -> const_pointer
         {
             return m_ptr;
@@ -1136,7 +1138,7 @@ namespace bsl
         ///
         /// @return Iterator to the first element
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         begin() noexcept -> iterator
         {
             return {this, 0};
@@ -1152,7 +1154,7 @@ namespace bsl
         ///
         /// @return Iterator to the first element
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         begin() const noexcept -> const_iterator
         {
             return {this, 0};
@@ -1168,7 +1170,7 @@ namespace bsl
         ///
         /// @return Iterator to the first element
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         cbegin() const noexcept -> const_iterator
         {
             return {this, 0};
@@ -1179,7 +1181,7 @@ namespace bsl
         /// Returns an iterator to the element following the last element of
         /// the array. This element acts as a placeholder; attempting to
         /// access it results in undefined behavior unless
-        /// BAREFLANK_CORE_GUIDELINE_COMPLIANT is defined in which case an
+        /// BSL_CORE_GUIDELINE_COMPLIANT is defined in which case an
         /// exception is thrown.
         ///
         /// @expects
@@ -1187,7 +1189,7 @@ namespace bsl
         ///
         /// @return Iterator to the element following the last element.
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         end() noexcept -> iterator
         {
             return {this, ssize()};
@@ -1198,7 +1200,7 @@ namespace bsl
         /// Returns an iterator to the element following the last element of
         /// the array. This element acts as a placeholder; attempting to
         /// access it results in undefined behavior unless
-        /// BAREFLANK_CORE_GUIDELINE_COMPLIANT is defined in which case an
+        /// BSL_CORE_GUIDELINE_COMPLIANT is defined in which case an
         /// exception is thrown.
         ///
         /// @expects
@@ -1206,7 +1208,7 @@ namespace bsl
         ///
         /// @return Iterator to the element following the last element.
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         end() const noexcept -> const_iterator
         {
             return {this, ssize()};
@@ -1217,7 +1219,7 @@ namespace bsl
         /// Returns an iterator to the element following the last element of
         /// the array. This element acts as a placeholder; attempting to
         /// access it results in undefined behavior unless
-        /// BAREFLANK_CORE_GUIDELINE_COMPLIANT is defined in which case an
+        /// BSL_CORE_GUIDELINE_COMPLIANT is defined in which case an
         /// exception is thrown.
         ///
         /// @expects
@@ -1225,7 +1227,7 @@ namespace bsl
         ///
         /// @return Iterator to the element following the last element.
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         cend() const noexcept -> const_iterator
         {
             return {this, ssize()};
@@ -1242,7 +1244,7 @@ namespace bsl
         ///
         /// @return Reverse iterator to the first element.
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         rbegin() noexcept -> reverse_iterator
         {
             return std::make_reverse_iterator(end());
@@ -1259,7 +1261,7 @@ namespace bsl
         ///
         /// @return Reverse iterator to the first element.
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         rbegin() const noexcept -> const_reverse_iterator
         {
             return std::make_reverse_iterator(end());
@@ -1276,7 +1278,7 @@ namespace bsl
         ///
         /// @return Reverse iterator to the first element.
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         crbegin() const noexcept -> const_reverse_iterator
         {
             return std::make_reverse_iterator(cend());
@@ -1288,7 +1290,7 @@ namespace bsl
         /// of the reversed container. It corresponds to the element preceding
         /// the first element of the non-reversed container. This element acts
         /// as a placeholder, attempting to access it results in undefined
-        /// behavior. unless BAREFLANK_CORE_GUIDELINE_COMPLIANT is defined in
+        /// behavior. unless BSL_CORE_GUIDELINE_COMPLIANT is defined in
         /// which case an exception is thrown.
         ///
         /// @expects
@@ -1296,7 +1298,7 @@ namespace bsl
         ///
         /// @return Reverse iterator to the element following the last element.
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         rend() noexcept -> reverse_iterator
         {
             return std::make_reverse_iterator(begin());
@@ -1308,7 +1310,7 @@ namespace bsl
         /// of the reversed container. It corresponds to the element preceding
         /// the first element of the non-reversed container. This element acts
         /// as a placeholder, attempting to access it results in undefined
-        /// behavior. unless BAREFLANK_CORE_GUIDELINE_COMPLIANT is defined in
+        /// behavior. unless BSL_CORE_GUIDELINE_COMPLIANT is defined in
         /// which case an exception is thrown.
         ///
         /// @expects
@@ -1316,7 +1318,7 @@ namespace bsl
         ///
         /// @return Reverse iterator to the element following the last element.
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         rend() const noexcept -> const_reverse_iterator
         {
             return std::make_reverse_iterator(begin());
@@ -1328,7 +1330,7 @@ namespace bsl
         /// of the reversed container. It corresponds to the element preceding
         /// the first element of the non-reversed container. This element acts
         /// as a placeholder, attempting to access it results in undefined
-        /// behavior. unless BAREFLANK_CORE_GUIDELINE_COMPLIANT is defined in
+        /// behavior. unless BSL_CORE_GUIDELINE_COMPLIANT is defined in
         /// which case an exception is thrown.
         ///
         /// @expects
@@ -1336,7 +1338,7 @@ namespace bsl
         ///
         /// @return Reverse iterator to the element following the last element.
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         crend() const noexcept -> const_reverse_iterator
         {
             return std::make_reverse_iterator(cbegin());
@@ -1351,11 +1353,11 @@ namespace bsl
         ///
         /// @return true if the array is empty, false otherwise
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         empty() const noexcept -> bool
         {
-            bfensures_if_terminate(get() != nullptr, size() >= 1);
-            bfensures_if_terminate(get() == nullptr, size() == 0);
+            bsl_ensures_if_terminate(get() != nullptr, size() >= 1);
+            bsl_ensures_if_terminate(get() == nullptr, size() == 0);
 
             return size() == 0;
         }
@@ -1369,7 +1371,7 @@ namespace bsl
         ///
         /// @return The number of elements in the array
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         size() const noexcept -> index_type
         {
             return m_count;
@@ -1390,7 +1392,7 @@ namespace bsl
         ///
         /// @return The number of elements in the array
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         ssize() const noexcept -> difference_type
         {
             return static_cast<difference_type>(m_count);
@@ -1406,7 +1408,7 @@ namespace bsl
         /// @return The size of the array in bytes, i.e.,
         ///     size() * sizeof(element_type)
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         size_bytes() const noexcept -> index_type
         {
             return size() * sizeof(T);
@@ -1429,7 +1431,7 @@ namespace bsl
         ///
         /// @return Maximum number of elements.
         ///
-        [[nodiscard]] constexpr auto
+        BSL_NODISCARD constexpr auto
         max_size() const noexcept -> index_type
         {
             return std::numeric_limits<difference_type>::max() / sizeof(T);
@@ -1465,7 +1467,7 @@ namespace bsl
     /// Constructs an array of T with size count. The function is equivalent to:
     /// dynarray<T>(new T[count](), count).
     ///
-    /// If BAREFLANK_THROW_ON_CONTRACT_VIOLATION is defined, this function
+    /// If BSL_THROW_ON_CONTRACT_VIOLATION is defined, this function
     /// can throw on contract violations.
     ///
     /// @expects count > 0
@@ -1479,7 +1481,7 @@ namespace bsl
     constexpr auto
     make_dynarray(size_t count) -> dynarray<T>
     {
-        bfexpects(count > 0);
+        bsl_expects(count > 0);
         return dynarray<T>(new T[count](), count);
     }
 
@@ -1488,7 +1490,7 @@ namespace bsl
     /// Constructs an array of T with size count. The function is equivalent to:
     /// dynarray<T>(new T[count], count).
     ///
-    /// If BAREFLANK_THROW_ON_CONTRACT_VIOLATION is defined, this function
+    /// If BSL_THROW_ON_CONTRACT_VIOLATION is defined, this function
     /// can throw on contract violations.
     ///
     /// @expects count > 0
@@ -1502,7 +1504,7 @@ namespace bsl
     constexpr auto
     make_dynarray_default_init(size_t count) -> dynarray<T>
     {
-        bfexpects(count > 0);
+        bsl_expects(count > 0);
         return dynarray<T>(new T[count], count);
     }
 }    // namespace bsl
@@ -1596,13 +1598,13 @@ namespace bsl
     // Deleters
     // ----------------------------------------------------------------------
 
-    /// File Array Deleter
+    /// Input File Array Deleter
     ///
-    /// Instead of deleting memory, the file array deleter unmaps a previously
-    /// mapped file.
+    /// Instead of deleting memory, the input file array deleter unmaps a
+    /// previously mapped file.
     ///
     template<typename T>
-    struct farray_deleter
+    struct ifarray_deleter
     {
         /// Functor
         ///
@@ -1615,47 +1617,42 @@ namespace bsl
         auto
         operator()(T *ptr, size_t size) -> void
         {
-            munmap(ptr, size);
+            munmap(const_cast<std::remove_cv_t<T> *>(ptr), size);    // NOLINT
         }
     };
 
     // ----------------------------------------------------------------------
-    // farray
+    // ifarray
     // ----------------------------------------------------------------------
 
-    /// File Array
+    /// In File Array
     ///
-    /// The farray is a dynarray that maps in a file using map
+    /// The ifarray is a dynarray that maps in a file (read-only) using map
     /// functions instead of fstream and C style functions. Once the file is
     /// mapped, you can use the full services of the dynarray to work with the
     /// file as if it were any other array.
     ///
-    /// TODO:
-    /// - farray should be able to open a file as read/write
-    /// - ofarray should be added to open a file as write only.
-    ///
     template<typename T = uint8_t>
-    class farray : public dynarray<T, farray_deleter<T>>
+    class ifarray : public dynarray<const T, ifarray_deleter<const T>>
     {
-        using base_type = dynarray<T, farray_deleter<T>>;
+        using B = dynarray<const T, ifarray_deleter<const T>>;
 
     public:
         /// @cond
-        using value_type = typename base_type::value_type;
-        using element_type = typename base_type::element_type;
-        using index_type = typename base_type::index_type;
-        using difference_type = typename base_type::difference_type;
-        using reference = typename base_type::reference;
-        using const_reference = typename base_type::const_reference;
-        using pointer = typename base_type::pointer;
-        using const_pointer = typename base_type::const_pointer;
-        using deleter_type = typename base_type::deleter_type;
-        using const_deleter_type = typename base_type::const_deleter_type;
-        using iterator = typename base_type::iterator;
-        using const_iterator = typename base_type::const_iterator;
-        using reverse_iterator = typename base_type::reverse_iterator;
-        using const_reverse_iterator =
-            typename base_type::const_reverse_iterator;
+        using value_type = const typename B::value_type;
+        using element_type = const typename B::element_type;
+        using index_type = typename B::index_type;
+        using difference_type = typename B::difference_type;
+        using reference = typename B::const_reference;
+        using const_reference = typename B::const_reference;
+        using pointer = typename B::const_pointer;
+        using const_pointer = typename B::const_pointer;
+        using deleter_type = typename B::deleter_type;
+        using const_deleter_type = typename B::const_deleter_type;
+        using iterator = typename B::const_iterator;
+        using const_iterator = typename B::const_iterator;
+        using reverse_iterator = typename B::const_reverse_iterator;
+        using const_reverse_iterator = typename B::const_reverse_iterator;
         /// @endcond
 
     public:
@@ -1666,9 +1663,41 @@ namespace bsl
         /// @expects
         /// @ensures empty() == true
         ///
-        constexpr farray() noexcept
+        constexpr ifarray() noexcept
         {
-            bfensures_terminate(this->empty());
+            bsl_ensures_terminate(this->empty());
+        }
+
+        /// Filename Constructor
+        ///
+        /// Constructs an ifarray by opening the file provided by filename,
+        /// and ensuring the dynarray contains the contents of the desired file.
+        /// If possible, this constructor will gain access to the contents of
+        /// the file by using the OS's mapping facilities instead of using
+        /// C++ or C style file operations.
+        ///
+        /// If the file cannot be opened for whatever reason, this function
+        /// will throw an exception.
+        ///
+        /// @expects filename.empty() == false
+        /// @ensures
+        ///
+        /// @param filename the name of the file to open for reading.
+        ///
+        explicit ifarray(const std::string &filename)
+        {
+            bsl_expects(!filename.empty());
+
+            constexpr const auto flag = O_RDONLY;
+            constexpr const auto prot = PROT_READ;
+            constexpr const auto perm = MAP_SHARED | MAP_POPULATE;    // NOLINT
+
+            auto fd = this->open_file(filename, flag);
+            auto size = this->file_size(fd);
+            auto ptr = this->map_file(fd, size, prot, perm);
+
+            close(fd);
+            this->reset(static_cast<T *>(ptr), size / sizeof(T));
         }
 
     protected:
@@ -1708,87 +1737,6 @@ namespace bsl
         }
 
         /// @endcond
-    };
-
-    // ----------------------------------------------------------------------
-    // ifarray
-    // ----------------------------------------------------------------------
-
-    /// In File Array
-    ///
-    /// The ifarray is a dynarray that maps in a file (read-only) using map
-    /// functions instead of fstream and C style functions. Once the file is
-    /// mapped, you can use the full services of the dynarray to work with the
-    /// file as if it were any other array.
-    ///
-    template<typename T = uint8_t>
-    class ifarray : public farray<T>
-    {
-        using base_type = farray<T>;
-
-    public:
-        /// @cond
-        using value_type = typename base_type::value_type;
-        using element_type = typename base_type::element_type;
-        using index_type = typename base_type::index_type;
-        using difference_type = typename base_type::difference_type;
-        using reference = typename base_type::reference;
-        using const_reference = typename base_type::const_reference;
-        using pointer = typename base_type::pointer;
-        using const_pointer = typename base_type::const_pointer;
-        using deleter_type = typename base_type::deleter_type;
-        using const_deleter_type = typename base_type::const_deleter_type;
-        using iterator = typename base_type::iterator;
-        using const_iterator = typename base_type::const_iterator;
-        using reverse_iterator = typename base_type::reverse_iterator;
-        using const_reverse_iterator =
-            typename base_type::const_reverse_iterator;
-        /// @endcond
-
-    public:
-        /// Default Constructor
-        ///
-        /// Constructs an ifarray that does not map in a file.
-        ///
-        /// @expects
-        /// @ensures empty() == true
-        ///
-        constexpr ifarray() noexcept
-        {
-            bfensures_terminate(this->empty());
-        }
-
-        /// Filename Constructor
-        ///
-        /// Constructs an ifarray by opening the file provided by filename,
-        /// and ensuring the dynarray contains the contents of the desired file.
-        /// If possible, this constructor will gain access to the contents of
-        /// the file by using the OS's mapping facilities instead of using
-        /// C++ or C style file operations.
-        ///
-        /// If the file cannot be opened for whatever reason, this function
-        /// will throw an exception.
-        ///
-        /// @expects filename.empty() == false
-        /// @ensures
-        ///
-        /// @param filename the name of the file to open for reading.
-        ///
-        explicit ifarray(const std::string &filename)
-        {
-            bfexpects(!filename.empty());
-
-            constexpr const auto flag = O_RDONLY;
-            constexpr const auto prot = PROT_READ;
-            constexpr const auto perm = MAP_SHARED | MAP_POPULATE;    // NOLINT
-
-            auto fd = this->open_file(filename, flag);
-            auto size = this->file_size(fd);
-            auto ptr = this->map_file(fd, size, prot, perm);
-
-            close(fd);
-            this->reset(static_cast<T *>(ptr), size / sizeof(T));
-        }
     };
 }    // namespace bsl
 

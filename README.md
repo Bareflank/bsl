@@ -45,6 +45,6 @@ The Bareflank Support Library leverages the following tools to ensure the highes
 -   **Static Analysis:** Clang Tidy, CppCheck, Codacy, CodeFactor, and LGTM
 -   **Dynamic Analysis:** Google's ASAN and UBSAN, Valgrind
 -   **Code Coverage:** LCOV Code Coverage with CodeCov
--   **Coding Standards**: C++ Core Guidelines with SEI CERT C++ and High Integrity C++
+-   **Coding Standards**: C++ Core Guidelines and SEI CERT C++
 -   **Style**: Clang Format and Git Check
 -   **Documentation**: MkDocs and Doxygen

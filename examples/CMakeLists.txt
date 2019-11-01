@@ -22,8 +22,13 @@
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 add_executable(dynarray dynarray.cpp)
-add_executable(farray farray.cpp)
+add_executable(ifarray ifarray.cpp)
 
-target_compile_definitions(farray PRIVATE
+if(ENABLE_CPPCHECK)
+    add_dependencies(dynarray cppcheck)
+    add_dependencies(ifarray cppcheck)
+endif()
+
+target_compile_definitions(ifarray PRIVATE
     FILENAME="${CMAKE_SOURCE_DIR}/include/bsl.h"
 )

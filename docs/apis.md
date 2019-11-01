@@ -9,8 +9,8 @@ The following documents all of the APIs that the BSL provides.
 Like the Guideline Support Library, the BSL provides the following contract macros for validating the inputs and outputs of a function.
 
 ``` c++
-bfexpects(test)
-bfensures(test)
+bsl_expects(test)
+bsl_ensures(test)
 ```
 
 For example:
@@ -19,34 +19,34 @@ For example:
 auto
 foo(int val) -> int
 {
-    bfexpects(val >= 0);
+    bsl_expects(val >= 0);
     int ret = 0;
 
     if (val == 42) {
         ret = val;
     }
 
-    bfensures(ret >= 0);
+    bsl_ensures(ret >= 0);
     return ret;
 }
 ```
 
-If the test case given to `#!c++ bfexpects()` or `#!c++ bfensures()` is found to be false, by default, nothing happens (the contract violation is ignored). To enable contract violations, you must first define the following:
+If the test case given to `#!c++ bsl_expects()` or `#!c++ bsl_ensures()` is found to be false, by default, nothing happens (the contract violation is ignored). To enable contract violations, you must first define the following:
 
 ``` c++
-#define BAREFLANK_CORE_GUIDELINE_COMPLIANT
+#define BSL_CORE_GUIDELINE_COMPLIANT
 ```
 
 By default, contract violations are ignored, even though they are enabled using the above definition. To detect contract violations, you must also tell the BSL how you wish to handle them. The two options are:
 
 ```c++
-#define BAREFLANK_THROW_ON_CONTRACT_VIOLATION
+#define BSL_THROW_ON_CONTRACT_VIOLATION
 ```
 
 which tells the BLS to throw an exception on contract violations while the following:
 
 ```c++
-#define BAREFLANK_TERMINATE_ON_CONTRACT_VIOLATION
+#define BSL_TERMINATE_ON_CONTRACT_VIOLATION
 ```
 
 tells the BLS to execute `#!c++ std::terminate()` on contract violations.
@@ -54,11 +54,11 @@ tells the BLS to execute `#!c++ std::terminate()` on contract violations.
 !!! warning "Note"
     The above definitions must be defined prior to including the BSL to ensure      they function properly. Alternatively, you can define them on the command       line.
 
-In addition to `#!c++ bfexpects()` and `#!c++ bfensures()`, the BSL also provides the following
+In addition to `#!c++ bsl_expects()` and `#!c++ bsl_ensures()`, the BSL also provides the following
 
 ``` c++
-bfexpects_if(test, cond)
-bfensures_if(test, cond)
+bsl_expects_if(test, cond)
+bsl_ensures_if(test, cond)
 ```
 
 Both of these act the same as their non-if counterparts, with the addition of a conditional if statement that is removed when contract violations are disabled, ensuring the compiler doesn't inadvertently leave an if statement in the resulting code (e.g., when optimizations are disabled).
@@ -66,16 +66,16 @@ Both of these act the same as their non-if counterparts, with the addition of a 
 The BSL also provides "terminate" versions of these functions as follows:
 
 ``` c++
-bfexpects_terminate(test)
-bfensures_terminate(test)
-bfexpects_if_terminate(test, cond)
-bfensures_if_terminate(test, cond)
+bsl_expects_terminate(test)
+bsl_ensures_terminate(test)
+bsl_expects_if_terminate(test, cond)
+bsl_ensures_if_terminate(test, cond)
 ```
 
 These versions always call `#!c++ std::terminate()`, even if contracts are told to throw on violations. This is helpful when a function must be labeled as `#!c++ noexcept`, as any attempt to throw on a violation would call `#!c++ std::terminate()` anyways. If you wish to conditionally label a function as `#!c++ noexcept` based on the contract violation policy, the BSL als provides the following macro:
 
 ``` c++
-BFNOEXCEPT
+BSL_NOEXCEPT
 ```
 
 If contracts are set to throw on violations, this macro is defined as empty, otherwise this macro is defined as `#!c++ noexcept`.
@@ -231,13 +231,13 @@ explicit constructors
 
 ``` c++
 explicit dynarray(
-    pointer ptr, index_type count) BFNOEXCEPT;
+    pointer ptr, index_type count) BSL_NOEXCEPT;
 
 explicit dynarray(
-    pointer ptr, index_type count, const deleter_type &d) BFNOEXCEPT;
+    pointer ptr, index_type count, const deleter_type &d) BSL_NOEXCEPT;
 
 explicit dynarray(
-    pointer ptr, index_type count, deleter_type &&d) BFNOEXCEPT;
+    pointer ptr, index_type count, deleter_type &&d) BSL_NOEXCEPT;
 ```
 
 Creates a value initialized `#!c++ bsl::dynarray` that owns an array at ptr, of count elements of T. When called, `#!c++ get()` will return ptr and `#!c++ size()` will return count. Unless a Deleter is also provided (either l-value or r-value), the Deleter is initialized using value-initialization (i.e., `#!c++ Deleter()`).
@@ -283,8 +283,8 @@ Creates a value initialized `#!c++ bsl::dynarray` that owns an array at ptr, of 
     ```
 
 !!! warning
-    This function will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
-    and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
+    This function will throw when both BSL_CORE_GUIDELINE_COMPLIANT
+    and BSL_THROW_ON_CONTRACT_VIOLATION are defined prior to including
     the BSL when a contract violation occurs. Otherwise, this function will
     call `#!c++ std::terminate()` on such violations.
 
@@ -654,11 +654,11 @@ operator[](index_type i) const -> const_reference
 Returns an l-value reference to the element at index_type i in the array managed by this `#!c++ bsl::dynarray`.
 
 !!! warning
-    This function will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
-    and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
+    This function will throw when both BSL_CORE_GUIDELINE_COMPLIANT
+    and BSL_THROW_ON_CONTRACT_VIOLATION are defined prior to including
     the BSL when a contract violation occurs. Otherwise, this function will
-    call `#!c++ std::terminate()` when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
-    and BAREFLANK_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, the execution of this function is undefined when a
+    call `#!c++ std::terminate()` when both BSL_CORE_GUIDELINE_COMPLIANT
+    and BSL_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, the execution of this function is undefined when a
     contract violation occurs (such as an out of range error).
 
 ??? note "Parameters"
@@ -746,11 +746,11 @@ front() const -> const_reference
 Returns an l-value reference to the element at the beginning of the array managed by this `#!c++ bsl::dynarray`. This is equivalent to `#!c++ [0]`.
 
 !!! warning
-    This function will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
-    and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
+    This function will throw when both BSL_CORE_GUIDELINE_COMPLIANT
+    and BSL_THROW_ON_CONTRACT_VIOLATION are defined prior to including
     the BSL when a contract violation occurs. Otherwise, this function will
-    call `#!c++ std::terminate()` when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
-    and BAREFLANK_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, the execution of this function is undefined when a
+    call `#!c++ std::terminate()` when both BSL_CORE_GUIDELINE_COMPLIANT
+    and BSL_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, the execution of this function is undefined when a
     contract violation occurs (such as an out of range error).
 
 ??? note "Parameters"
@@ -795,11 +795,11 @@ back() const -> const_reference
 Returns an l-value reference to the element at the end of the array managed by this `#!c++ bsl::dynarray`. This is equivalent to `#!c++ [size() - 1]`.
 
 !!! warning
-    This function will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
-    and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
+    This function will throw when both BSL_CORE_GUIDELINE_COMPLIANT
+    and BSL_THROW_ON_CONTRACT_VIOLATION are defined prior to including
     the BSL when a contract violation occurs. Otherwise, this function will
-    call `#!c++ std::terminate()` when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
-    and BAREFLANK_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, the execution of this function is undefined when a
+    call `#!c++ std::terminate()` when both BSL_CORE_GUIDELINE_COMPLIANT
+    and BSL_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, the execution of this function is undefined when a
     contract violation occurs (such as an out of range error).
 
 ??? note "Parameters"
@@ -884,11 +884,11 @@ cbegin() const noexcept -> const_iterator
 Returns an iterator to the first element in the array managed by this `#!c++ bsl::dynarray`.
 
 !!! warning
-    Iterators will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
-    and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
+    Iterators will throw when both BSL_CORE_GUIDELINE_COMPLIANT
+    and BSL_THROW_ON_CONTRACT_VIOLATION are defined prior to including
     the BSL when a contract violation occurs. Otherwise, iterators will
-    call `#!c++ std::terminate()` when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
-    and BAREFLANK_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, dereferencing an iterator is undefined when a
+    call `#!c++ std::terminate()` when both BSL_CORE_GUIDELINE_COMPLIANT
+    and BSL_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, dereferencing an iterator is undefined when a
     contract violation occurs (such as an out of range error). It should be
     noted that unlike a `#!c++ gsl::span`, iterators only check for contract
     violations when dereferencing. Arithmetic on an iterator (including moving
@@ -944,11 +944,11 @@ cend() const noexcept -> const_iterator
 Returns an iterator to the element after the last element in the array managed by this `#!c++ bsl::dynarray`.
 
 !!! warning
-    Iterators will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
-    and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
+    Iterators will throw when both BSL_CORE_GUIDELINE_COMPLIANT
+    and BSL_THROW_ON_CONTRACT_VIOLATION are defined prior to including
     the BSL when a contract violation occurs. Otherwise, iterators will
-    call `#!c++ std::terminate()` when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
-    and BAREFLANK_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, dereferencing an iterator is undefined when a
+    call `#!c++ std::terminate()` when both BSL_CORE_GUIDELINE_COMPLIANT
+    and BSL_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, dereferencing an iterator is undefined when a
     contract violation occurs (such as an out of range error). It should be
     noted that unlike a `#!c++ gsl::span`, iterators only check for contract
     violations when dereferencing. Arithmetic on an iterator (including moving
@@ -1004,11 +1004,11 @@ crbegin() const noexcept -> const_reverse_iterator
 Returns a reverse iterator to the last element in the array managed by this `#!c++ bsl::dynarray`.
 
 !!! warning
-    Iterators will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
-    and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
+    Iterators will throw when both BSL_CORE_GUIDELINE_COMPLIANT
+    and BSL_THROW_ON_CONTRACT_VIOLATION are defined prior to including
     the BSL when a contract violation occurs. Otherwise, iterators will
-    call `#!c++ std::terminate()` when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
-    and BAREFLANK_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, dereferencing an iterator is undefined when a
+    call `#!c++ std::terminate()` when both BSL_CORE_GUIDELINE_COMPLIANT
+    and BSL_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, dereferencing an iterator is undefined when a
     contract violation occurs (such as an out of range error). It should be
     noted that unlike a `#!c++ gsl::span`, iterators only check for contract
     violations when dereferencing. Arithmetic on an iterator (including moving
@@ -1060,11 +1060,11 @@ crend() const noexcept -> const_reverse_iterator
 Returns a reverse iterator to the element before the first element in the array managed by this `#!c++ bsl::dynarray`.
 
 !!! warning
-    Iterators will throw when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
-    and BAREFLANK_THROW_ON_CONTRACT_VIOLATION are defined prior to including
+    Iterators will throw when both BSL_CORE_GUIDELINE_COMPLIANT
+    and BSL_THROW_ON_CONTRACT_VIOLATION are defined prior to including
     the BSL when a contract violation occurs. Otherwise, iterators will
-    call `#!c++ std::terminate()` when both BAREFLANK_CORE_GUIDELINE_COMPLIANT
-    and BAREFLANK_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, dereferencing an iterator is undefined when a
+    call `#!c++ std::terminate()` when both BSL_CORE_GUIDELINE_COMPLIANT
+    and BSL_TERMINATE_ON_CONTRACT_VIOLATION are defined. If neither of        these cases are true, dereferencing an iterator is undefined when a
     contract violation occurs (such as an out of range error). It should be
     noted that unlike a `#!c++ gsl::span`, iterators only check for contract
     violations when dereferencing. Arithmetic on an iterator (including moving

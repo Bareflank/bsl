@@ -22,6 +22,7 @@
 cmake_minimum_required(VERSION 3.13)
 project(dynarray CXX)
 
+include(ExternalProject)
 set(CMAKE_CXX_STANDARD 17)
 
 # ------------------------------------------------------------------------------
@@ -47,6 +48,14 @@ if(ENABLE_DEVELOPMENT)
 endif()
 
 # ------------------------------------------------------------------------------
+# Sanity Checks
+# ------------------------------------------------------------------------------
+
+if(BUILD_EXAMPLES AND CMAKE_BUILD_TYPE STREQUAL "COVERAGE")
+    message(FATAL_ERROR "BUILD_EXAMPLES must be OFF if COVERAGE is enabled")
+endif()
+
+# ------------------------------------------------------------------------------
 # Flags
 # ------------------------------------------------------------------------------
 
@@ -68,7 +77,7 @@ endif()
 
 if(ENABLE_CPPCHECK AND NOT CMAKE_CXX_CPPCHECK)
     list(APPEND CMAKE_CXX_CPPCHECK
-        cppcheck
+        ${CMAKE_BINARY_DIR}/external/bin/cppcheck
         --enable=all
         --error-exitcode=1
         --quiet
@@ -108,3 +117,34 @@ target_include_directories(bsl INTERFACE
 
 export(TARGETS bsl FILE bslConfig.cmake APPEND)
 export(PACKAGE bsl)
+
+# ------------------------------------------------------------------------------
+# Targets
+# ------------------------------------------------------------------------------
+
+add_custom_target(
+    format
+    COMMAND find ${CMAKE_SOURCE_DIR}/include -iname *.h -o -iname *.cpp | xargs clang-format -i
+    COMMAND find ${CMAKE_SOURCE_DIR}/tests -iname *.h -o -iname *.cpp | xargs clang-format -i
+)
+
+# ------------------------------------------------------------------------------
+# CppCheck
+# ------------------------------------------------------------------------------
+
+if(ENABLE_CPPCHECK)
+    list(APPEND CPPCHECK_CMAKE_ARGS
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/external/
+        -DCMAKE_CXX_FLAGS="-w"
+        -DCMAKE_BUILD_TYPE=Release
+    )
+
+    ExternalProject_Add(
+        cppcheck
+        URL https://github.com/danmar/cppcheck/archive/1.89.tar.gz
+        URL_MD5 3bc61e54f13639c60a3fc698edb18d61
+        CMAKE_ARGS ${CPPCHECK_CMAKE_ARGS}
+        UPDATE_COMMAND ""
+        UPDATE_DISCONNECTED ON
+    )
+endif()

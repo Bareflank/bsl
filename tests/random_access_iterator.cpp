@@ -23,842 +23,1158 @@
 #define BSL_CORE_GUIDELINE_COMPLIANT
 #include "../include/bsl.h"
 
-#include <catch2/catch.hpp>
+#include "boost/ut.hpp"
+using namespace boost::ut;
 
-constexpr const auto INT_42 = 42;
-
-// --------------------------------------------------------------------------
-// Tests
-// --------------------------------------------------------------------------
-
-TEST_CASE("iterator concept checks")
-{
-    using it_t = bsl::dynarray<int>::iterator;
-
-    static_assert(std::is_default_constructible_v<it_t>);
-    static_assert(std::is_destructible_v<it_t>);
-    static_assert(std::is_copy_constructible_v<it_t>);
-    static_assert(std::is_copy_assignable_v<it_t>);
-    static_assert(std::is_move_constructible_v<it_t>);
-    static_assert(std::is_move_assignable_v<it_t>);
-    static_assert(std::is_swappable_v<it_t>);
-}
-
-TEST_CASE("constructors")
-{
-    {
-        bsl::dynarray<int>::iterator it;
-        CHECK_THROWS(*it);
-    }
-
-    {
-        auto da = bsl::make_dynarray<int>(1);
-        auto it = da.begin();
-        CHECK_NOTHROW(*it);
-    }
-}
-
-TEST_CASE("operator*")
+auto
+main() -> int
 {
     struct Foo
     {
         int m_data;
     };
 
-    class test
-    {
-        bsl::dynarray<Foo> da1;
-        bsl::dynarray<Foo> da2;
+    "iterator concept checks"_test = [] {
+        using it_t = bsl::dynarray<int>::iterator;
 
-    public:
-        test() : da2{bsl::make_dynarray<Foo>(1)} {}
+        static_assert(std::is_default_constructible_v<it_t>);
+        static_assert(std::is_destructible_v<it_t>);
+        static_assert(std::is_copy_constructible_v<it_t>);
+        static_assert(std::is_copy_assignable_v<it_t>);
+        static_assert(std::is_move_constructible_v<it_t>);
+        static_assert(std::is_move_assignable_v<it_t>);
+        static_assert(std::is_swappable_v<it_t>);
+    };
 
-        auto
-        test1() -> void
+    "constructors"_test = [] {
         {
-            auto it1 = da1.begin();
-            auto it2 = da2.begin();
-
-            CHECK_THROWS((*it1).m_data = INT_42);
-            CHECK_NOTHROW((*it2).m_data = INT_42);
+            bsl::dynarray<int>::iterator it;
+            expect(throws([&] {
+                *it;
+            }));
         }
 
-        auto
-        test2() const -> void
         {
-            auto it1 = da1.begin();
-            auto it2 = da2.begin();
-
-            CHECK_THROWS((*it1).m_data == INT_42);
-            CHECK_NOTHROW((*it2).m_data == INT_42);
+            auto da = bsl::make_dynarray<int>(1);
+            auto it = da.begin();
+            expect(nothrow([&] {
+                *it;
+            }));
         }
     };
 
-    test t;
-    t.test1();
-    t.test2();
-}
+    "operator*"_test = [] {
+        class test
+        {
+            bsl::dynarray<Foo> da1;
+            bsl::dynarray<Foo> da2;
 
-TEST_CASE("operator->")
-{
-    struct Foo
-    {
-        int m_data;
+        public:
+            test() : da2{bsl::make_dynarray<Foo>(1)} {}
+
+            auto
+            test1() -> void
+            {
+                auto it1 = da1.begin();
+                auto it2 = da2.begin();
+
+                expect(throws([&] {
+                    (*it1).m_data = 42;
+                }));
+                expect(nothrow([&] {
+                    (*it2).m_data = 42;
+                }));
+            }
+
+            auto
+            test2() const -> void
+            {
+                auto it = da2.begin();
+                expect((*it).m_data == 42);
+            }
+        };
+
+        test t;
+        t.test1();
+        t.test2();
     };
 
-    class test
-    {
-        bsl::dynarray<Foo> da1;
-        bsl::dynarray<Foo> da2;
-
-    public:
-        test() : da2{bsl::make_dynarray<Foo>(1)} {}
-
-        auto
-        test1() -> void
+    "operator->"_test = [] {
+        class test
         {
-            auto it1 = da1.begin();
-            auto it2 = da2.begin();
+            bsl::dynarray<Foo> da1;
+            bsl::dynarray<Foo> da2;
 
-            CHECK_THROWS(it1->m_data = INT_42);
-            CHECK_NOTHROW(it2->m_data = INT_42);
-        }
+        public:
+            test() : da2{bsl::make_dynarray<Foo>(1)} {}
 
-        auto
-        test2() const -> void
-        {
-            auto it1 = da1.begin();
-            auto it2 = da2.begin();
+            auto
+            test1() -> void
+            {
+                auto it1 = da1.begin();
+                auto it2 = da2.begin();
 
-            CHECK_THROWS(it1->m_data == INT_42);
-            CHECK_NOTHROW(it2->m_data == INT_42);
-        }
+                expect(throws([&] {
+                    it1->m_data = 42;
+                }));
+                expect(nothrow([&] {
+                    it2->m_data = 42;
+                }));
+            }
+
+            auto
+            test2() const -> void
+            {
+                auto it = da2.begin();
+                expect(it->m_data == 42);
+            }
+        };
+
+        test t;
+        t.test1();
+        t.test2();
     };
 
-    test t;
-    t.test1();
-    t.test2();
-}
+    "operator[]"_test = [] {
+        class test
+        {
+            bsl::dynarray<Foo> da1;
+            bsl::dynarray<Foo> da2;
 
-TEST_CASE("operator[]")
-{
-    struct Foo
-    {
-        int m_data;
+        public:
+            test() : da2{bsl::make_dynarray<Foo>(1)} {}
+
+            auto
+            test1() -> void
+            {
+                auto it1 = da1.begin();
+                auto it2 = da2.begin();
+
+                expect(throws([&] {
+                    it1[0].m_data = 42;
+                }));
+                expect(nothrow([&] {
+                    it2[0].m_data = 42;
+                }));
+            }
+
+            auto
+            test2() const -> void
+            {
+                auto it = da2.begin();
+                expect(it[0].m_data == 42);
+            }
+        };
+
+        test t;
+        t.test1();
+        t.test2();
     };
 
-    class test
-    {
-        bsl::dynarray<Foo> da1;
-        bsl::dynarray<Foo> da2;
-
-    public:
-        test() : da2{bsl::make_dynarray<Foo>(1)} {}
-
-        auto
-        test1() -> void
+    "operator++"_test = [] {
+        class test
         {
-            auto it1 = da1.begin();
-            auto it2 = da2.begin();
+            bsl::dynarray<Foo> da1;
+            bsl::dynarray<Foo> da2;
 
-            CHECK_THROWS(it1[0].m_data = INT_42);
-            CHECK_NOTHROW(it2[0].m_data = INT_42);
-        }
+        public:
+            test() :
+                da1{bsl::make_dynarray<Foo>(1)}, da2{bsl::make_dynarray<Foo>(2)}
+            {}
 
-        auto
-        test2() const -> void
-        {
-            auto it1 = da1.begin();
-            auto it2 = da2.begin();
+            auto
+            test1() -> void
+            {
+                auto it1 = da1.begin();
+                auto it2 = da2.begin();
 
-            CHECK_THROWS(it1[0].m_data == INT_42);
-            CHECK_NOTHROW(it2[0].m_data == INT_42);
-        }
+                ++it1;
+                ++it2;
+
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[1].m_data;
+                }));
+
+                expect(nothrow([&] {
+                    (*it2).m_data;
+                }));
+                expect(nothrow([&] {
+                    it2->m_data;
+                }));
+                expect(nothrow([&] {
+                    it2[1].m_data;
+                }));
+
+                ++it1;
+                ++it2;
+
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[2].m_data;
+                }));
+
+                expect(throws([&] {
+                    (*it2).m_data;
+                }));
+                expect(throws([&] {
+                    it2->m_data;
+                }));
+                expect(throws([&] {
+                    it2[2].m_data;
+                }));
+            }
+
+            auto
+            test2() const -> void
+            {
+                auto it1 = da1.begin();
+                auto it2 = da2.begin();
+
+                ++it1;
+                ++it2;
+
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[1].m_data;
+                }));
+
+                expect(nothrow([&] {
+                    (*it2).m_data;
+                }));
+                expect(nothrow([&] {
+                    it2->m_data;
+                }));
+                expect(nothrow([&] {
+                    it2[1].m_data;
+                }));
+
+                ++it1;
+                ++it2;
+
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[2].m_data;
+                }));
+
+                expect(throws([&] {
+                    (*it2).m_data;
+                }));
+                expect(throws([&] {
+                    it2->m_data;
+                }));
+                expect(throws([&] {
+                    it2[2].m_data;
+                }));
+            }
+        };
+
+        test t;
+        t.test1();
+        t.test2();
     };
 
-    test t;
-    t.test1();
-    t.test2();
-}
+    "operator++(int)"_test = [] {
+        class test
+        {
+            bsl::dynarray<Foo> da1;
+            bsl::dynarray<Foo> da2;
 
-TEST_CASE("operator++")
-{
-    struct Foo
-    {
-        int m_data;
+        public:
+            test() :
+                da1{bsl::make_dynarray<Foo>(1)}, da2{bsl::make_dynarray<Foo>(2)}
+            {}
+
+            auto
+            test1() -> void
+            {
+                auto it1 = da1.begin();
+                auto it2 = da2.begin();
+
+                it1++;
+                it2++;
+
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[1].m_data;
+                }));
+
+                expect(nothrow([&] {
+                    (*it2).m_data;
+                }));
+                expect(nothrow([&] {
+                    it2->m_data;
+                }));
+                expect(nothrow([&] {
+                    it2[1].m_data;
+                }));
+
+                it1++;
+                it2++;
+
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[2].m_data;
+                }));
+
+                expect(throws([&] {
+                    (*it2).m_data;
+                }));
+                expect(throws([&] {
+                    it2->m_data;
+                }));
+                expect(throws([&] {
+                    it2[2].m_data;
+                }));
+            }
+
+            auto
+            test2() const -> void
+            {
+                auto it1 = da1.begin();
+                auto it2 = da2.begin();
+
+                it1++;
+                it2++;
+
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[1].m_data;
+                }));
+
+                expect(nothrow([&] {
+                    (*it2).m_data;
+                }));
+                expect(nothrow([&] {
+                    it2->m_data;
+                }));
+                expect(nothrow([&] {
+                    it2[1].m_data;
+                }));
+
+                it1++;
+                it2++;
+
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[2].m_data;
+                }));
+
+                expect(throws([&] {
+                    (*it2).m_data;
+                }));
+                expect(throws([&] {
+                    it2->m_data;
+                }));
+                expect(throws([&] {
+                    it2[2].m_data;
+                }));
+            }
+        };
+
+        test t;
+        t.test1();
+        t.test2();
     };
 
-    class test
-    {
-        bsl::dynarray<Foo> da1;
-        bsl::dynarray<Foo> da2;
-
-    public:
-        test() :
-            da1{bsl::make_dynarray<Foo>(1)},
-            da2{bsl::make_dynarray<Foo>(2)}
-        {}
-
-        auto
-        test1() -> void
+    "operator--"_test = [] {
+        class test
         {
-            auto it1 = da1.begin();
-            auto it2 = da2.begin();
+            bsl::dynarray<Foo> da1;
+            bsl::dynarray<Foo> da2;
 
-            ++it1;
-            ++it2;
+        public:
+            test() :
+                da1{bsl::make_dynarray<Foo>(1)}, da2{bsl::make_dynarray<Foo>(2)}
+            {}
 
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[1].m_data);
+            auto
+            test1() -> void
+            {
+                auto it1 = da1.end();
+                auto it2 = da2.end();
 
-            CHECK_NOTHROW((*it2).m_data);
-            CHECK_NOTHROW(it2->m_data);
-            CHECK_NOTHROW(it2[1].m_data);
+                --it1;
+                --it2;
 
-            ++it1;
-            ++it2;
+                expect(nothrow([&] {
+                    (*it1).m_data;
+                }));
+                expect(nothrow([&] {
+                    it1->m_data;
+                }));
+                expect(nothrow([&] {
+                    it1[0].m_data;
+                }));
 
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[2].m_data);
+                expect(nothrow([&] {
+                    (*it2).m_data;
+                }));
+                expect(nothrow([&] {
+                    it2->m_data;
+                }));
+                expect(nothrow([&] {
+                    it2[1].m_data;
+                }));
 
-            CHECK_THROWS((*it2).m_data);
-            CHECK_THROWS(it2->m_data);
-            CHECK_THROWS(it2[2].m_data);
-        }
+                --it1;
+                --it2;
 
-        auto
-        test2() const -> void
-        {
-            auto it1 = da1.begin();
-            auto it2 = da2.begin();
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[-1].m_data;
+                }));
 
-            ++it1;
-            ++it2;
+                expect(nothrow([&] {
+                    (*it2).m_data;
+                }));
+                expect(nothrow([&] {
+                    it2->m_data;
+                }));
+                expect(nothrow([&] {
+                    it2[0].m_data;
+                }));
+            }
 
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[1].m_data);
+            auto
+            test2() const -> void
+            {
+                auto it1 = da1.end();
+                auto it2 = da2.end();
 
-            CHECK_NOTHROW((*it2).m_data);
-            CHECK_NOTHROW(it2->m_data);
-            CHECK_NOTHROW(it2[1].m_data);
+                --it1;
+                --it2;
 
-            ++it1;
-            ++it2;
+                expect(nothrow([&] {
+                    (*it1).m_data;
+                }));
+                expect(nothrow([&] {
+                    it1->m_data;
+                }));
+                expect(nothrow([&] {
+                    it1[0].m_data;
+                }));
 
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[2].m_data);
+                expect(nothrow([&] {
+                    (*it2).m_data;
+                }));
+                expect(nothrow([&] {
+                    it2->m_data;
+                }));
+                expect(nothrow([&] {
+                    it2[1].m_data;
+                }));
 
-            CHECK_THROWS((*it2).m_data);
-            CHECK_THROWS(it2->m_data);
-            CHECK_THROWS(it2[2].m_data);
-        }
+                --it1;
+                --it2;
+
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[-1].m_data;
+                }));
+
+                expect(nothrow([&] {
+                    (*it2).m_data;
+                }));
+                expect(nothrow([&] {
+                    it2->m_data;
+                }));
+                expect(nothrow([&] {
+                    it2[0].m_data;
+                }));
+            }
+        };
+
+        test t;
+        t.test1();
+        t.test2();
     };
 
-    test t;
-    t.test1();
-    t.test2();
-}
+    "operator--(int)"_test = [] {
+        class test
+        {
+            bsl::dynarray<Foo> da1;
+            bsl::dynarray<Foo> da2;
 
-TEST_CASE("operator++(int)")
-{
-    struct Foo
-    {
-        int m_data;
+        public:
+            test() :
+                da1{bsl::make_dynarray<Foo>(1)}, da2{bsl::make_dynarray<Foo>(2)}
+            {}
+
+            auto
+            test1() -> void
+            {
+                auto it1 = da1.end();
+                auto it2 = da2.end();
+
+                it1--;
+                it2--;
+
+                expect(nothrow([&] {
+                    (*it1).m_data;
+                }));
+                expect(nothrow([&] {
+                    it1->m_data;
+                }));
+                expect(nothrow([&] {
+                    it1[0].m_data;
+                }));
+
+                expect(nothrow([&] {
+                    (*it2).m_data;
+                }));
+                expect(nothrow([&] {
+                    it2->m_data;
+                }));
+                expect(nothrow([&] {
+                    it2[1].m_data;
+                }));
+
+                it1--;
+                it2--;
+
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[-1].m_data;
+                }));
+
+                expect(nothrow([&] {
+                    (*it2).m_data;
+                }));
+                expect(nothrow([&] {
+                    it2->m_data;
+                }));
+                expect(nothrow([&] {
+                    it2[0].m_data;
+                }));
+            }
+
+            auto
+            test2() const -> void
+            {
+                auto it1 = da1.end();
+                auto it2 = da2.end();
+
+                it1--;
+                it2--;
+
+                expect(nothrow([&] {
+                    (*it1).m_data;
+                }));
+                expect(nothrow([&] {
+                    it1->m_data;
+                }));
+                expect(nothrow([&] {
+                    it1[0].m_data;
+                }));
+
+                expect(nothrow([&] {
+                    (*it2).m_data;
+                }));
+                expect(nothrow([&] {
+                    it2->m_data;
+                }));
+                expect(nothrow([&] {
+                    it2[1].m_data;
+                }));
+
+                it1--;
+                it2--;
+
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[-1].m_data;
+                }));
+
+                expect(nothrow([&] {
+                    (*it2).m_data;
+                }));
+                expect(nothrow([&] {
+                    it2->m_data;
+                }));
+                expect(nothrow([&] {
+                    it2[0].m_data;
+                }));
+            }
+        };
+
+        test t;
+        t.test1();
+        t.test2();
     };
 
-    class test
-    {
-        bsl::dynarray<Foo> da1;
-        bsl::dynarray<Foo> da2;
-
-    public:
-        test() :
-            da1{bsl::make_dynarray<Foo>(1)},
-            da2{bsl::make_dynarray<Foo>(2)}
-        {}
-
-        auto
-        test1() -> void
+    "operator+ n"_test = [] {
+        class test
         {
-            auto it1 = da1.begin();
-            auto it2 = da2.begin();
+            bsl::dynarray<Foo> da1;
+            bsl::dynarray<Foo> da2;
 
-            it1++;
-            it2++;
+        public:
+            test() : da2{bsl::make_dynarray<Foo>(1)} {}
 
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[1].m_data);
+            auto
+            test1() -> void
+            {
+                auto it1 = da1.begin();
+                auto it2 = da2.begin();
 
-            CHECK_NOTHROW((*it2).m_data);
-            CHECK_NOTHROW(it2->m_data);
-            CHECK_NOTHROW(it2[1].m_data);
+                auto it3 = it1 + 1;
+                auto it4 = it2 + 1;
 
-            it1++;
-            it2++;
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[0].m_data;
+                }));
 
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[2].m_data);
+                expect(nothrow([&] {
+                    (*it2).m_data;
+                }));
+                expect(nothrow([&] {
+                    it2->m_data;
+                }));
+                expect(nothrow([&] {
+                    it2[0].m_data;
+                }));
 
-            CHECK_THROWS((*it2).m_data);
-            CHECK_THROWS(it2->m_data);
-            CHECK_THROWS(it2[2].m_data);
-        }
+                expect(throws([&] {
+                    (*it3).m_data;
+                }));
+                expect(throws([&] {
+                    it3->m_data;
+                }));
+                expect(throws([&] {
+                    it3[1].m_data;
+                }));
 
-        auto
-        test2() const -> void
-        {
-            auto it1 = da1.begin();
-            auto it2 = da2.begin();
+                expect(throws([&] {
+                    (*it4).m_data;
+                }));
+                expect(throws([&] {
+                    it4->m_data;
+                }));
+                expect(throws([&] {
+                    it4[1].m_data;
+                }));
+            }
 
-            it1++;
-            it2++;
+            auto
+            test2() const -> void
+            {
+                auto it1 = da1.begin();
+                auto it2 = da2.begin();
 
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[1].m_data);
+                auto it3 = it1 + 1;
+                auto it4 = it2 + 1;
 
-            CHECK_NOTHROW((*it2).m_data);
-            CHECK_NOTHROW(it2->m_data);
-            CHECK_NOTHROW(it2[1].m_data);
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[0].m_data;
+                }));
 
-            it1++;
-            it2++;
+                expect(nothrow([&] {
+                    (*it2).m_data;
+                }));
+                expect(nothrow([&] {
+                    it2->m_data;
+                }));
+                expect(nothrow([&] {
+                    it2[0].m_data;
+                }));
 
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[2].m_data);
+                expect(throws([&] {
+                    (*it3).m_data;
+                }));
+                expect(throws([&] {
+                    it3->m_data;
+                }));
+                expect(throws([&] {
+                    it3[1].m_data;
+                }));
 
-            CHECK_THROWS((*it2).m_data);
-            CHECK_THROWS(it2->m_data);
-            CHECK_THROWS(it2[2].m_data);
-        }
+                expect(throws([&] {
+                    (*it4).m_data;
+                }));
+                expect(throws([&] {
+                    it4->m_data;
+                }));
+                expect(throws([&] {
+                    it4[1].m_data;
+                }));
+            }
+        };
+
+        test t;
+        t.test1();
+        t.test2();
     };
 
-    test t;
-    t.test1();
-    t.test2();
-}
+    "operator- n"_test = [] {
+        class test
+        {
+            bsl::dynarray<Foo> da1;
+            bsl::dynarray<Foo> da2;
 
-TEST_CASE("operator--")
-{
-    struct Foo
-    {
-        int m_data;
+        public:
+            test() : da2{bsl::make_dynarray<Foo>(1)} {}
+
+            auto
+            test1() -> void
+            {
+                auto it1 = da1.end();
+                auto it2 = da2.end();
+
+                auto it3 = it1 - 1;
+                auto it4 = it2 - 1;
+
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[0].m_data;
+                }));
+
+                expect(throws([&] {
+                    (*it2).m_data;
+                }));
+                expect(throws([&] {
+                    it2->m_data;
+                }));
+                expect(throws([&] {
+                    it2[1].m_data;
+                }));
+
+                expect(throws([&] {
+                    (*it3).m_data;
+                }));
+                expect(throws([&] {
+                    it3->m_data;
+                }));
+                expect(throws([&] {
+                    it3[-1].m_data;
+                }));
+
+                expect(nothrow([&] {
+                    (*it4).m_data;
+                }));
+                expect(nothrow([&] {
+                    it4->m_data;
+                }));
+                expect(nothrow([&] {
+                    it4[0].m_data;
+                }));
+            }
+
+            auto
+            test2() const -> void
+            {
+                auto it1 = da1.end();
+                auto it2 = da2.end();
+
+                auto it3 = it1 - 1;
+                auto it4 = it2 - 1;
+
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[0].m_data;
+                }));
+
+                expect(throws([&] {
+                    (*it2).m_data;
+                }));
+                expect(throws([&] {
+                    it2->m_data;
+                }));
+                expect(throws([&] {
+                    it2[1].m_data;
+                }));
+
+                expect(throws([&] {
+                    (*it3).m_data;
+                }));
+                expect(throws([&] {
+                    it3->m_data;
+                }));
+                expect(throws([&] {
+                    it3[-1].m_data;
+                }));
+
+                expect(nothrow([&] {
+                    (*it4).m_data;
+                }));
+                expect(nothrow([&] {
+                    it4->m_data;
+                }));
+                expect(nothrow([&] {
+                    it4[0].m_data;
+                }));
+            }
+        };
+
+        test t;
+        t.test1();
+        t.test2();
     };
 
-    class test
-    {
-        bsl::dynarray<Foo> da1;
-        bsl::dynarray<Foo> da2;
-
-    public:
-        test() :
-            da1{bsl::make_dynarray<Foo>(1)},
-            da2{bsl::make_dynarray<Foo>(2)}
-        {}
-
-        auto
-        test1() -> void
+    "operator+= n"_test = [] {
+        class test
         {
-            auto it1 = da1.end();
-            auto it2 = da2.end();
+            bsl::dynarray<Foo> da1;
+            bsl::dynarray<Foo> da2;
 
-            --it1;
-            --it2;
+        public:
+            test() : da2{bsl::make_dynarray<Foo>(1)} {}
 
-            CHECK_NOTHROW((*it1).m_data);
-            CHECK_NOTHROW(it1->m_data);
-            CHECK_NOTHROW(it1[0].m_data);
+            auto
+            test1() -> void
+            {
+                auto it1 = da1.begin();
+                auto it2 = da2.begin();
 
-            CHECK_NOTHROW((*it2).m_data);
-            CHECK_NOTHROW(it2->m_data);
-            CHECK_NOTHROW(it2[1].m_data);
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[0].m_data;
+                }));
 
-            --it1;
-            --it2;
+                expect(nothrow([&] {
+                    (*it2).m_data;
+                }));
+                expect(nothrow([&] {
+                    it2->m_data;
+                }));
+                expect(nothrow([&] {
+                    it2[0].m_data;
+                }));
 
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[-1].m_data);
+                it1 += 1;
+                it2 += 1;
 
-            CHECK_NOTHROW((*it2).m_data);
-            CHECK_NOTHROW(it2->m_data);
-            CHECK_NOTHROW(it2[0].m_data);
-        }
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[1].m_data;
+                }));
 
-        auto
-        test2() const -> void
-        {
-            auto it1 = da1.end();
-            auto it2 = da2.end();
+                expect(throws([&] {
+                    (*it2).m_data;
+                }));
+                expect(throws([&] {
+                    it2->m_data;
+                }));
+                expect(throws([&] {
+                    it2[1].m_data;
+                }));
+            }
 
-            --it1;
-            --it2;
+            auto
+            test2() const -> void
+            {
+                auto it1 = da1.begin();
+                auto it2 = da2.begin();
 
-            CHECK_NOTHROW((*it1).m_data);
-            CHECK_NOTHROW(it1->m_data);
-            CHECK_NOTHROW(it1[0].m_data);
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[0].m_data;
+                }));
 
-            CHECK_NOTHROW((*it2).m_data);
-            CHECK_NOTHROW(it2->m_data);
-            CHECK_NOTHROW(it2[1].m_data);
+                expect(nothrow([&] {
+                    (*it2).m_data;
+                }));
+                expect(nothrow([&] {
+                    it2->m_data;
+                }));
+                expect(nothrow([&] {
+                    it2[0].m_data;
+                }));
 
-            --it1;
-            --it2;
+                it1 += 1;
+                it2 += 1;
 
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[-1].m_data);
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[1].m_data;
+                }));
 
-            CHECK_NOTHROW((*it2).m_data);
-            CHECK_NOTHROW(it2->m_data);
-            CHECK_NOTHROW(it2[0].m_data);
-        }
+                expect(throws([&] {
+                    (*it2).m_data;
+                }));
+                expect(throws([&] {
+                    it2->m_data;
+                }));
+                expect(throws([&] {
+                    it2[1].m_data;
+                }));
+            }
+        };
+
+        test t;
+        t.test1();
+        t.test2();
     };
 
-    test t;
-    t.test1();
-    t.test2();
-}
+    "operator-= n"_test = [] {
+        class test
+        {
+            bsl::dynarray<Foo> da1;
+            bsl::dynarray<Foo> da2;
 
-TEST_CASE("operator--(int)")
-{
-    struct Foo
-    {
-        int m_data;
+        public:
+            test() : da2{bsl::make_dynarray<Foo>(1)} {}
+
+            auto
+            test1() -> void
+            {
+                auto it1 = da1.end();
+                auto it2 = da2.end();
+
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[0].m_data;
+                }));
+
+                expect(throws([&] {
+                    (*it2).m_data;
+                }));
+                expect(throws([&] {
+                    it2->m_data;
+                }));
+                expect(throws([&] {
+                    it2[1].m_data;
+                }));
+
+                it1 -= 1;
+                it2 -= 1;
+
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[-1].m_data;
+                }));
+
+                expect(nothrow([&] {
+                    (*it2).m_data;
+                }));
+                expect(nothrow([&] {
+                    it2->m_data;
+                }));
+                expect(nothrow([&] {
+                    it2[0].m_data;
+                }));
+            }
+
+            auto
+            test2() const -> void
+            {
+                auto it1 = da1.end();
+                auto it2 = da2.end();
+
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[0].m_data;
+                }));
+
+                expect(throws([&] {
+                    (*it2).m_data;
+                }));
+                expect(throws([&] {
+                    it2->m_data;
+                }));
+                expect(throws([&] {
+                    it2[1].m_data;
+                }));
+
+                it1 -= 1;
+                it2 -= 1;
+
+                expect(throws([&] {
+                    (*it1).m_data;
+                }));
+                expect(throws([&] {
+                    it1->m_data;
+                }));
+                expect(throws([&] {
+                    it1[-1].m_data;
+                }));
+
+                expect(nothrow([&] {
+                    (*it2).m_data;
+                }));
+                expect(nothrow([&] {
+                    it2->m_data;
+                }));
+                expect(nothrow([&] {
+                    it2[0].m_data;
+                }));
+            }
+        };
+
+        test t;
+        t.test1();
+        t.test2();
     };
 
-    class test
-    {
-        bsl::dynarray<Foo> da1;
-        bsl::dynarray<Foo> da2;
-
-    public:
-        test() :
-            da1{bsl::make_dynarray<Foo>(1)},
-            da2{bsl::make_dynarray<Foo>(2)}
-        {}
-
-        auto
-        test1() -> void
+    "operator- rhs"_test = [] {
+        class test
         {
-            auto it1 = da1.end();
-            auto it2 = da2.end();
+            bsl::dynarray<Foo> da1;
+            bsl::dynarray<Foo> da2;
 
-            it1--;
-            it2--;
+        public:
+            test() : da2{bsl::make_dynarray<Foo>(1)} {}
 
-            CHECK_NOTHROW((*it1).m_data);
-            CHECK_NOTHROW(it1->m_data);
-            CHECK_NOTHROW(it1[0].m_data);
+            auto
+            test1() -> void
+            {
+                auto it1 = da1.end();
+                auto it2 = da2.end();
 
-            CHECK_NOTHROW((*it2).m_data);
-            CHECK_NOTHROW(it2->m_data);
-            CHECK_NOTHROW(it2[1].m_data);
+                auto it3 = it1 - 1;
+                auto it4 = it2 - 1;
 
-            it1--;
-            it2--;
+                expect(it3 - it1 == -1);
+                expect(it4 - it2 == -1);
+            }
 
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[-1].m_data);
+            auto
+            test2() const -> void
+            {
+                auto it1 = da1.end();
+                auto it2 = da2.end();
 
-            CHECK_NOTHROW((*it2).m_data);
-            CHECK_NOTHROW(it2->m_data);
-            CHECK_NOTHROW(it2[0].m_data);
-        }
+                auto it3 = it1 - 1;
+                auto it4 = it2 - 1;
 
-        auto
-        test2() const -> void
-        {
-            auto it1 = da1.end();
-            auto it2 = da2.end();
+                expect(it3 - it1 == -1);
+                expect(it4 - it2 == -1);
+            }
+        };
 
-            it1--;
-            it2--;
-
-            CHECK_NOTHROW((*it1).m_data);
-            CHECK_NOTHROW(it1->m_data);
-            CHECK_NOTHROW(it1[0].m_data);
-
-            CHECK_NOTHROW((*it2).m_data);
-            CHECK_NOTHROW(it2->m_data);
-            CHECK_NOTHROW(it2[1].m_data);
-
-            it1--;
-            it2--;
-
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[-1].m_data);
-
-            CHECK_NOTHROW((*it2).m_data);
-            CHECK_NOTHROW(it2->m_data);
-            CHECK_NOTHROW(it2[0].m_data);
-        }
+        test t;
+        t.test1();
+        t.test2();
     };
 
-    test t;
-    t.test1();
-    t.test2();
-}
+    "comparison operators"_test = [] {
+        auto da = bsl::make_dynarray<int>(42);
 
-TEST_CASE("operator+ n")
-{
-    struct Foo
-    {
-        int m_data;
+        expect(da.begin() == da.begin());
+        expect(da.end() == da.end());
+        expect(da.begin() != da.end());
+        expect(da.end() != da.begin());
+
+        expect(da.end() > da.begin());
+        expect(da.begin() < da.end());
+        expect(da.end() >= da.begin());
+        expect(da.begin() <= da.end());
     };
-
-    class test
-    {
-        bsl::dynarray<Foo> da1;
-        bsl::dynarray<Foo> da2;
-
-    public:
-        test() : da2{bsl::make_dynarray<Foo>(1)} {}
-
-        auto
-        test1() -> void
-        {
-            auto it1 = da1.begin();
-            auto it2 = da2.begin();
-
-            auto it3 = it1 + 1;
-            auto it4 = it2 + 1;
-
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[0].m_data);
-
-            CHECK_NOTHROW((*it2).m_data);
-            CHECK_NOTHROW(it2->m_data);
-            CHECK_NOTHROW(it2[0].m_data);
-
-            CHECK_THROWS((*it3).m_data);
-            CHECK_THROWS(it3->m_data);
-            CHECK_THROWS(it3[1].m_data);
-
-            CHECK_THROWS((*it4).m_data);
-            CHECK_THROWS(it4->m_data);
-            CHECK_THROWS(it4[1].m_data);
-        }
-
-        auto
-        test2() const -> void
-        {
-            auto it1 = da1.begin();
-            auto it2 = da2.begin();
-
-            auto it3 = it1 + 1;
-            auto it4 = it2 + 1;
-
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[0].m_data);
-
-            CHECK_NOTHROW((*it2).m_data);
-            CHECK_NOTHROW(it2->m_data);
-            CHECK_NOTHROW(it2[0].m_data);
-
-            CHECK_THROWS((*it3).m_data);
-            CHECK_THROWS(it3->m_data);
-            CHECK_THROWS(it3[1].m_data);
-
-            CHECK_THROWS((*it4).m_data);
-            CHECK_THROWS(it4->m_data);
-            CHECK_THROWS(it4[1].m_data);
-        }
-    };
-
-    test t;
-    t.test1();
-    t.test2();
-}
-
-TEST_CASE("operator- n")
-{
-    struct Foo
-    {
-        int m_data;
-    };
-
-    class test
-    {
-        bsl::dynarray<Foo> da1;
-        bsl::dynarray<Foo> da2;
-
-    public:
-        test() : da2{bsl::make_dynarray<Foo>(1)} {}
-
-        auto
-        test1() -> void
-        {
-            auto it1 = da1.end();
-            auto it2 = da2.end();
-
-            auto it3 = it1 - 1;
-            auto it4 = it2 - 1;
-
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[0].m_data);
-
-            CHECK_THROWS((*it2).m_data);
-            CHECK_THROWS(it2->m_data);
-            CHECK_THROWS(it2[1].m_data);
-
-            CHECK_THROWS((*it3).m_data);
-            CHECK_THROWS(it3->m_data);
-            CHECK_THROWS(it3[-1].m_data);
-
-            CHECK_NOTHROW((*it4).m_data);
-            CHECK_NOTHROW(it4->m_data);
-            CHECK_NOTHROW(it4[0].m_data);
-        }
-
-        auto
-        test2() const -> void
-        {
-            auto it1 = da1.end();
-            auto it2 = da2.end();
-
-            auto it3 = it1 - 1;
-            auto it4 = it2 - 1;
-
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[0].m_data);
-
-            CHECK_THROWS((*it2).m_data);
-            CHECK_THROWS(it2->m_data);
-            CHECK_THROWS(it2[1].m_data);
-
-            CHECK_THROWS((*it3).m_data);
-            CHECK_THROWS(it3->m_data);
-            CHECK_THROWS(it3[-1].m_data);
-
-            CHECK_NOTHROW((*it4).m_data);
-            CHECK_NOTHROW(it4->m_data);
-            CHECK_NOTHROW(it4[0].m_data);
-        }
-    };
-
-    test t;
-    t.test1();
-    t.test2();
-}
-
-TEST_CASE("operator+= n")
-{
-    struct Foo
-    {
-        int m_data;
-    };
-
-    class test
-    {
-        bsl::dynarray<Foo> da1;
-        bsl::dynarray<Foo> da2;
-
-    public:
-        test() : da2{bsl::make_dynarray<Foo>(1)} {}
-
-        auto
-        test1() -> void
-        {
-            auto it1 = da1.begin();
-            auto it2 = da2.begin();
-
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[0].m_data);
-
-            CHECK_NOTHROW((*it2).m_data);
-            CHECK_NOTHROW(it2->m_data);
-            CHECK_NOTHROW(it2[0].m_data);
-
-            it1 += 1;
-            it2 += 1;
-
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[1].m_data);
-
-            CHECK_THROWS((*it2).m_data);
-            CHECK_THROWS(it2->m_data);
-            CHECK_THROWS(it2[1].m_data);
-        }
-
-        auto
-        test2() const -> void
-        {
-            auto it1 = da1.begin();
-            auto it2 = da2.begin();
-
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[0].m_data);
-
-            CHECK_NOTHROW((*it2).m_data);
-            CHECK_NOTHROW(it2->m_data);
-            CHECK_NOTHROW(it2[0].m_data);
-
-            it1 += 1;
-            it2 += 1;
-
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[1].m_data);
-
-            CHECK_THROWS((*it2).m_data);
-            CHECK_THROWS(it2->m_data);
-            CHECK_THROWS(it2[1].m_data);
-        }
-    };
-
-    test t;
-    t.test1();
-    t.test2();
-}
-
-TEST_CASE("operator-= n")
-{
-    struct Foo
-    {
-        int m_data;
-    };
-
-    class test
-    {
-        bsl::dynarray<Foo> da1;
-        bsl::dynarray<Foo> da2;
-
-    public:
-        test() : da2{bsl::make_dynarray<Foo>(1)} {}
-
-        auto
-        test1() -> void
-        {
-            auto it1 = da1.end();
-            auto it2 = da2.end();
-
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[0].m_data);
-
-            CHECK_THROWS((*it2).m_data);
-            CHECK_THROWS(it2->m_data);
-            CHECK_THROWS(it2[1].m_data);
-
-            it1 -= 1;
-            it2 -= 1;
-
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[-1].m_data);
-
-            CHECK_NOTHROW((*it2).m_data);
-            CHECK_NOTHROW(it2->m_data);
-            CHECK_NOTHROW(it2[0].m_data);
-        }
-
-        auto
-        test2() const -> void
-        {
-            auto it1 = da1.end();
-            auto it2 = da2.end();
-
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[0].m_data);
-
-            CHECK_THROWS((*it2).m_data);
-            CHECK_THROWS(it2->m_data);
-            CHECK_THROWS(it2[1].m_data);
-
-            it1 -= 1;
-            it2 -= 1;
-
-            CHECK_THROWS((*it1).m_data);
-            CHECK_THROWS(it1->m_data);
-            CHECK_THROWS(it1[-1].m_data);
-
-            CHECK_NOTHROW((*it2).m_data);
-            CHECK_NOTHROW(it2->m_data);
-            CHECK_NOTHROW(it2[0].m_data);
-        }
-    };
-
-    test t;
-    t.test1();
-    t.test2();
-}
-
-TEST_CASE("operator- rhs")
-{
-    struct Foo
-    {
-        int m_data;
-    };
-
-    class test
-    {
-        bsl::dynarray<Foo> da1;
-        bsl::dynarray<Foo> da2;
-
-    public:
-        test() : da2{bsl::make_dynarray<Foo>(1)} {}
-
-        auto
-        test1() -> void
-        {
-            auto it1 = da1.end();
-            auto it2 = da2.end();
-
-            auto it3 = it1 - 1;
-            auto it4 = it2 - 1;
-
-            CHECK(it3 - it1 == -1);
-            CHECK(it4 - it2 == -1);
-        }
-
-        auto
-        test2() const -> void
-        {
-            auto it1 = da1.end();
-            auto it2 = da2.end();
-
-            auto it3 = it1 - 1;
-            auto it4 = it2 - 1;
-
-            CHECK(it3 - it1 == -1);
-            CHECK(it4 - it2 == -1);
-        }
-    };
-
-    test t;
-    t.test1();
-    t.test2();
-}
-
-TEST_CASE("comparison operators")
-{
-    auto da = bsl::make_dynarray<int>(INT_42);
-
-    CHECK(da.begin() == da.begin());
-    CHECK(da.end() == da.end());
-    CHECK(da.begin() != da.end());
-    CHECK(da.end() != da.begin());
-
-    CHECK_FALSE(da.begin() > da.end());
-    CHECK(da.begin() < da.end());
-    CHECK_FALSE(da.begin() >= da.end());
-    CHECK(da.begin() <= da.end());
 }

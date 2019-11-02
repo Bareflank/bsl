@@ -23,224 +23,234 @@
 #define BSL_CORE_GUIDELINE_COMPLIANT
 #include "../include/bsl.h"
 
+#include "boost/ut.hpp"
+using namespace boost::ut;
+
 #include <fstream>
-#include <catch2/catch.hpp>
 
-// --------------------------------------------------------------------------
-// Tests
-// --------------------------------------------------------------------------
-
-TEST_CASE("default")
-{
-    auto ifa = bsl::ifarray<>();
-    CHECK(ifa.empty());
-}
-
-TEST_CASE("does not exist")
-{
-    CHECK_THROWS(bsl::ifarray<>("this_file_does_not_exist"));
-}
-
-TEST_CASE("fstat fails")
-{
-    auto ifa = bsl::ifarray<>();
-    CHECK_THROWS(ifa.file_size(42));
-}
-
-TEST_CASE("map fails")
-{
-    auto ifa = bsl::ifarray<>();
-    CHECK_THROWS(ifa.map_file(42, 42, 42, 42));
-}
-
-TEST_CASE("success")
+auto
+main() -> int
 {
     std::string msg = "The answer is: 42";
     if (auto strm = std::ofstream("test.txt")) {
-        CHECK_THROWS(bsl::ifarray<char>("test.txt"));
         strm << msg;
     }
 
-    CHECK_NOTHROW(bsl::ifarray<char>("test.txt"));
-}
+    "nodiscard"_test = [] {
+        uint8_t ui = 0;
+        uint8_t &ui1 = ui;
+        uint8_t const &ui2 = ui;
 
-TEST_CASE("operator=")
-{
-    auto ifa1 = bsl::ifarray<char>("test.txt");
-    CHECK(ifa1);
+        bsl::discard(ui1);
+        bsl::discard(ui2);
+    };
 
-    auto ifa2 = bsl::ifarray<char>("test.txt");
-    CHECK(ifa2);
+    "default"_test = [] {
+        auto ifa = bsl::ifarray<>();
+        expect(ifa.empty());
+    };
 
-    ifa1 = std::move(ifa2);
-    CHECK(ifa1);
-}
+    "does not exist"_test = [] {
+        expect(throws([] {
+            bsl::ifarray<>("this_file_does_not_exist");
+        }));
+    };
 
-TEST_CASE("reset and release")
-{
-    auto ifa1 = bsl::ifarray<char>("test.txt");
-    auto ifa2 = bsl::ifarray<char>("test.txt");
-    ifa1.reset(ifa2.release());
+    "fstat fails"_test = [] {
+        auto ifa = bsl::ifarray<>();
+        expect(throws([&] {
+            ifa.file_size(42);
+        }));
+    };
 
-    CHECK(!ifa1.empty());
-    CHECK(ifa2.empty());
-}
+    "map fails"_test = [] {
+        auto ifa = bsl::ifarray<>();
+        expect(throws([&] {
+            ifa.map_file(42, 42, 42, 42);
+        }));
+    };
 
-TEST_CASE("swap")
-{
-    bsl::ifarray<char> ifa1("test.txt");
-    bsl::ifarray<char> ifa2("test.txt");
-    ifa1.swap(ifa2);
+    "operator="_test = [] {
+        auto ifa1 = bsl::ifarray("test.txt");
+        expect(!!ifa1);
 
-    CHECK(ifa1.size() == 17);
-    CHECK(ifa2.size() == 17);
-}
+        auto ifa2 = bsl::ifarray("test.txt");
+        expect(!!ifa2);
 
-TEST_CASE("get")
-{
-    bsl::ifarray<char> ifa("test.txt");
-    CHECK(ifa.get() != nullptr);
-}
+        ifa1 = std::move(ifa2);
+        expect(!!ifa1);
+    };
 
-TEST_CASE("get_deleter")
-{
-    bsl::ifarray<char> ifa("test.txt");
-    CHECK_NOTHROW(ifa.get_deleter());
-}
+    "reset and release"_test = [] {
+        auto ifa1 = bsl::ifarray("test.txt");
+        auto ifa2 = bsl::ifarray("test.txt");
+        ifa1.reset(ifa2.release());
 
-TEST_CASE("bool operator")
-{
-    bsl::ifarray<char> ifa1;
-    bsl::ifarray<char> ifa2("test.txt");
+        expect(!ifa1.empty());
+        expect(ifa2.empty());
+    };
 
-    CHECK(!ifa1);
-    CHECK(ifa2);
-}
+    "swap"_test = [] {
+        bsl::ifarray ifa1("test.txt");
+        bsl::ifarray ifa2("test.txt");
+        ifa1.swap(ifa2);
 
-TEST_CASE("operator[]")
-{
-    bsl::ifarray<char> ifa1;
-    bsl::ifarray<char> ifa2{"test.txt"};
+        expect(ifa1.size() == 17);
+        expect(ifa2.size() == 17);
+    };
 
-    CHECK(ifa2[0] == 'T');
-    CHECK_THROWS(ifa1[0]);
-    CHECK_THROWS(ifa2[42]);
-}
+    "get"_test = [] {
+        bsl::ifarray ifa("test.txt");
+        expect(ifa.get() != nullptr);
+    };
 
-TEST_CASE("at")
-{
-    bsl::ifarray<char> ifa1;
-    bsl::ifarray<char> ifa2{"test.txt"};
+    "get_deleter"_test = [] {
+        bsl::ifarray ifa("test.txt");
+        expect(nothrow([&] {
+            auto d = ifa.get_deleter();
+            bsl::discard(d);
+        }));
+    };
 
-    CHECK(ifa2.at(0) == 'T');
-    CHECK_THROWS(ifa1.at(0));
-    CHECK_THROWS(ifa2.at(42));
-}
+    "bool operator"_test = [] {
+        bsl::ifarray ifa1;
+        bsl::ifarray ifa2("test.txt");
 
-TEST_CASE("front")
-{
-    bsl::ifarray<char> ifa1;
-    bsl::ifarray<char> ifa2{"test.txt"};
+        expect(!ifa1);
+        expect(!!ifa2);
+    };
 
-    CHECK(ifa2.front() == 'T');
-    CHECK_THROWS(ifa1.front());
-}
+    "operator[]"_test = [] {
+        bsl::ifarray ifa1;
+        bsl::ifarray ifa2{"test.txt"};
 
-TEST_CASE("back")
-{
-    bsl::ifarray<char> ifa1;
-    bsl::ifarray<char> ifa2{"test.txt"};
+        expect(ifa2[0] == 'T');
+        expect(throws([&] {
+            bsl::discard(ifa1[0]);
+        }));
+        expect(throws([&] {
+            bsl::discard(ifa2[42]);
+        }));
+    };
 
-    CHECK(ifa2.back() == '2');
-    CHECK_THROWS(ifa1.back());
-}
+    "at"_test = [] {
+        bsl::ifarray ifa1;
+        bsl::ifarray ifa2{"test.txt"};
 
-TEST_CASE("data")
-{
-    bsl::ifarray<char> ifa{"test.txt"};
-    CHECK(ifa.data()[0] == 'T');
-}
+        expect(ifa2.at(0) == 'T');
+        expect(throws([&] {
+            bsl::discard(ifa1.at(0));
+        }));
+        expect(throws([&] {
+            bsl::discard(ifa2.at(42));
+        }));
+    };
 
-TEST_CASE("begin / end")
-{
-    bsl::ifarray<char> ifa{"test.txt"};
+    "front"_test = [] {
+        bsl::ifarray ifa1;
+        bsl::ifarray ifa2{"test.txt"};
 
-    for (auto it = ifa.begin(); it != ifa.end(); ++it) {
-        CHECK_NOTHROW(*it);
-    }
+        expect(ifa2.front() == 'T');
+        expect(throws([&] {
+            bsl::discard(ifa1.front());
+        }));
+    };
 
-    for (auto it = ifa.cbegin(); it != ifa.cend(); ++it) {
-        CHECK_NOTHROW(*it);
-    }
-}
+    "back"_test = [] {
+        bsl::ifarray ifa1;
+        bsl::ifarray ifa2{"test.txt"};
 
-TEST_CASE("rbegin / rend")
-{
-    bsl::ifarray<char> ifa{"test.txt"};
+        expect(ifa2.back() == '2');
+        expect(throws([&] {
+            bsl::discard(ifa1.back());
+        }));
+    };
 
-    for (auto it = ifa.rbegin(); it != ifa.rend(); ++it) {
-        CHECK_NOTHROW(*it);
-    }
+    "data"_test = [] {
+        bsl::ifarray ifa{"test.txt"};
+        expect(ifa.data()[0] == 'T');
+    };
 
-    for (auto it = ifa.crbegin(); it != ifa.crend(); ++it) {
-        CHECK_NOTHROW(*it);
-    }
-}
+    "begin / end"_test = [] {
+        bsl::ifarray ifa{"test.txt"};
 
-TEST_CASE("empty")
-{
-    bsl::ifarray<char> ifa1;
-    bsl::ifarray<char> ifa2{"test.txt"};
+        for (auto it = ifa.begin(); it != ifa.end(); ++it) {
+            expect(nothrow([&] {
+                *it;
+            }));
+        }
 
-    CHECK(ifa1.empty());
-    CHECK(!ifa2.empty());
-}
+        for (auto it = ifa.cbegin(); it != ifa.cend(); ++it) {
+            expect(nothrow([&] {
+                *it;
+            }));
+        }
+    };
 
-TEST_CASE("size")
-{
-    bsl::ifarray<char> ifa1;
-    bsl::ifarray<char> ifa2{"test.txt"};
+    "rbegin / rend"_test = [] {
+        bsl::ifarray ifa{"test.txt"};
 
-    CHECK(ifa1.size() == 0);    // NOLINT
-    CHECK(ifa2.size() == 17);
-}
+        for (auto it = ifa.rbegin(); it != ifa.rend(); ++it) {
+            expect(nothrow([&] {
+                *it;
+            }));
+        }
 
-TEST_CASE("ssize")
-{
-    bsl::ifarray<char> ifa1;
-    bsl::ifarray<char> ifa2{"test.txt"};
+        for (auto it = ifa.crbegin(); it != ifa.crend(); ++it) {
+            expect(nothrow([&] {
+                *it;
+            }));
+        }
+    };
 
-    CHECK(ifa1.ssize() == 0);
-    CHECK(ifa2.ssize() == 17);
-}
+    "empty"_test = [] {
+        bsl::ifarray ifa1;
+        bsl::ifarray ifa2{"test.txt"};
 
-TEST_CASE("size_bytes")
-{
-    bsl::ifarray<char> ifa1;
-    bsl::ifarray<char> ifa2{"test.txt"};
+        expect(ifa1.empty());
+        expect(!ifa2.empty());
+    };
 
-    CHECK(ifa1.size_bytes() == 0);
-    CHECK(ifa2.size_bytes() == 17);
-}
+    "size"_test = [] {
+        bsl::ifarray ifa1;
+        bsl::ifarray ifa2{"test.txt"};
 
-TEST_CASE("max_size")
-{
-    bsl::ifarray<char> ifa;
-    CHECK(ifa.max_size() == std::numeric_limits<ptrdiff_t>::max());
-}
+        expect(ifa1.size() == 0);    // NOLINT
+        expect(ifa2.size() == 17);
+    };
 
-TEST_CASE("comparison operators")
-{
-    bsl::ifarray<char> ifa1;
-    bsl::ifarray<char> ifa2{"test.txt"};
-    bsl::ifarray<char> ifa3{"test.txt"};
+    "ssize"_test = [] {
+        bsl::ifarray ifa1;
+        bsl::ifarray ifa2{"test.txt"};
 
-    CHECK((ifa1 != ifa2));
-    CHECK((ifa2 == ifa3));
-}
+        expect(ifa1.ssize() == 0);
+        expect(ifa2.ssize() == 17);
+    };
 
-TEST_CASE("ostream")
-{
-    bsl::ifarray<char> ifa{"test.txt"};
-    std::cout << "testing os: " << ifa << '\n';
+    "size_bytes"_test = [] {
+        bsl::ifarray ifa1;
+        bsl::ifarray ifa2{"test.txt"};
+
+        expect(ifa1.size_bytes() == 0);
+        expect(ifa2.size_bytes() == 17);
+    };
+
+    "max_size"_test = [] {
+        bsl::ifarray ifa;
+        expect(ifa.max_size() <= std::numeric_limits<size_t>::max());
+    };
+
+    "comparison operators"_test = [] {
+        bsl::ifarray ifa1;
+        bsl::ifarray ifa2{"test.txt"};
+        bsl::ifarray ifa3{"test.txt"};
+
+        expect(ifa1 != ifa2);
+        expect(ifa2 == ifa3);
+    };
+
+    "ostream"_test = [] {
+        bsl::ifarray ifa{"test.txt"};
+        std::cout << "testing os: " << ifa << '\n';
+    };
 }

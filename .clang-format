@@ -31,6 +31,7 @@ AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: false
+AllowShortLambdasOnASingleLine: Empty
 AllowShortLoopsOnASingleLine: false
 # AlwaysBreakAfterDefinitionReturnType
 AlwaysBreakAfterReturnType: All
@@ -83,7 +84,7 @@ IndentWrappedFunctionNames: false
 # JavaImportGroups
 # JavaScriptQuotes
 # JavaScriptWrapImports
-KeepEmptyLinesAtTheStartOfBlocks: false
+KeepEmptyLinesAtTheStartOfBlocks: true
 Language: Cpp
 # MacroBlockBegin
 # MacroBlockEnd
@@ -103,10 +104,11 @@ NamespaceIndentation: All
 # PenaltyReturnTypeOnItsOwnLine
 PointerAlignment: Right
 # RawStringFormats
-# ReflowComments
+ReflowComments: true
 SortIncludes: false
 SortUsingDeclarations: false
 SpaceAfterCStyleCast: false
+SpaceAfterLogicalNot: false
 SpaceAfterTemplateKeyword: false
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeCpp11BracedList: false
@@ -121,7 +123,7 @@ SpacesInCStyleCastParentheses: false
 SpacesInContainerLiterals: false
 SpacesInParentheses: false
 SpacesInSquareBrackets: false
-Standard: Cpp11
+Standard: Auto
 # StatementMacros
 # TabWidth
 UseTab: Never

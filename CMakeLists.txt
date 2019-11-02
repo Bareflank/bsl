@@ -23,7 +23,7 @@ cmake_minimum_required(VERSION 3.13)
 project(dynarray CXX)
 
 include(ExternalProject)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 # ------------------------------------------------------------------------------
 # Initial Setup
@@ -33,13 +33,20 @@ option(BUILD_EXAMPLES "Build example programs" ON)
 option(BUILD_TESTS "Build test programs" ON)
 option(ENABLE_CLANG_TIDY "Enable the use of clang tidy" OFF)
 option(ENABLE_CPPCHECK "Enable the use of cppcheck" OFF)
-option(ENABLE_DEVELOPMENT "Enable all development options" OFF)
 
 # ------------------------------------------------------------------------------
 # Development Mode
 # ------------------------------------------------------------------------------
 
-if(ENABLE_DEVELOPMENT)
+if(ENABLE_DEVELOPMENT STREQUAL "ASAN")
+    set(BUILD_EXAMPLES ON)
+    set(BUILD_TESTS ON)
+    set(ENABLE_CLANG_TIDY ON)
+    set(ENABLE_CPPCHECK ON)
+    set(CMAKE_BUILD_TYPE ASAN)
+endif()
+
+if(ENABLE_DEVELOPMENT STREQUAL "UBSAN")
     set(BUILD_EXAMPLES ON)
     set(BUILD_TESTS ON)
     set(ENABLE_CLANG_TIDY ON)
@@ -47,12 +54,28 @@ if(ENABLE_DEVELOPMENT)
     set(CMAKE_BUILD_TYPE UBSAN)
 endif()
 
+if(ENABLE_DEVELOPMENT STREQUAL "COVERAGE")
+    set(BUILD_EXAMPLES OFF)
+    set(BUILD_TESTS ON)
+    set(ENABLE_CLANG_TIDY OFF)
+    set(ENABLE_CPPCHECK OFF)
+    set(CMAKE_BUILD_TYPE COVERAGE)
+endif()
+
 # ------------------------------------------------------------------------------
 # Sanity Checks
 # ------------------------------------------------------------------------------
 
-if(BUILD_EXAMPLES AND CMAKE_BUILD_TYPE STREQUAL "COVERAGE")
-    message(FATAL_ERROR "BUILD_EXAMPLES must be OFF if COVERAGE is enabled")
+if(CMAKE_BUILD_TYPE STREQUAL "COVERAGE")
+    if(BUILD_EXAMPLES)
+        message(FATAL_ERROR "BUILD_EXAMPLES must be OFF if COVERAGE is enabled")
+    endif()
+    if(ENABLE_CLANG_TIDY)
+        message(FATAL_ERROR "ENABLE_CLANG_TIDY must be OFF if COVERAGE is enabled")
+    endif()
+    if(ENABLE_CPPCHECK)
+        message(FATAL_ERROR "ENABLE_CPPCHECK must be OFF if COVERAGE is enabled")
+    endif()
 endif()
 
 # ------------------------------------------------------------------------------
@@ -82,7 +105,8 @@ if(ENABLE_CPPCHECK AND NOT CMAKE_CXX_CPPCHECK)
         --error-exitcode=1
         --quiet
         --inline-suppr
-        --suppress=missingIncludeSystem
+        --suppress=missingInclude               # Noisy warning
+        --suppress=operatorEq                   # Mutually exclusive with Clang Tidy
         --template="{file}:{line}: {severity}: {id}: {message}"
     )
 endif()

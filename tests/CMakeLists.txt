@@ -19,22 +19,25 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+include(CTest)
 enable_testing()
 
 # ------------------------------------------------------------------------------
 # Catch
 # ------------------------------------------------------------------------------
 
-list(APPEND CATCH_CMAKE_ARGS
+list(APPEND UT_CMAKE_ARGS
     -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/external/
-    -DCATCH_BUILD_TESTING=OFF
+    -DBUILD_TESTS=OFF
+    -DBUILD_EXAMPLES=OFF
+    -DBUILD_BENCHMARKS=OFF
 )
 
 ExternalProject_Add(
-    catch
-    URL https://github.com/catchorg/Catch2/archive/v2.10.2.tar.gz
-    URL_MD5 4ea4e4a9ddba9859e06a6f34719c720d
-    CMAKE_ARGS ${CATCH_CMAKE_ARGS}
+    ut
+    GIT_REPOSITORY https://github.com/boost-experimental/ut.git
+    GIT_SHALLOW 1
+    CMAKE_ARGS ${UT_CMAKE_ARGS}
     UPDATE_COMMAND ""
     UPDATE_DISCONNECTED ON
 )
@@ -57,23 +60,19 @@ set(CMAKE_LINKER_FLAGS_COVERAGE "-O0 -g --coverage -fprofile-arcs -ftest-coverag
 # Initial Setup
 # ------------------------------------------------------------------------------
 
-add_library(catch_main STATIC catch_main.cpp)
-add_dependencies(catch_main catch)
-
 add_executable(test_dynarray dynarray.cpp)
 add_executable(test_random_access_iterator random_access_iterator.cpp)
 add_executable(test_ifarray ifarray.cpp)
 
-target_link_libraries(test_dynarray catch_main)
-target_link_libraries(test_random_access_iterator catch_main)
-target_link_libraries(test_ifarray catch_main)
+add_dependencies(test_dynarray ut)
+add_dependencies(test_random_access_iterator ut)
+add_dependencies(test_ifarray ut)
 
 add_test(test_dynarray test_dynarray)
 add_test(test_random_access_iterator test_random_access_iterator)
 add_test(test_ifarray test_ifarray)
 
 if(ENABLE_CPPCHECK)
-    add_dependencies(catch_main cppcheck)
     add_dependencies(test_dynarray cppcheck)
     add_dependencies(test_random_access_iterator cppcheck)
     add_dependencies(test_ifarray cppcheck)
@@ -97,7 +96,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "COVERAGE")
         COMMAND ${CMAKE_COMMAND} -E echo "================================================================================"
         COMMAND ctest --output-on-failure
         COMMAND ${CMAKE_COMMAND} -E echo "================================================================================"
-        COMMAND lcov --capture --directory . --output-file ${CMAKE_BINARY_DIR}/coverage.info -rc lcov_function_coverage=0
+        COMMAND lcov --capture --directory . --output-file ${CMAKE_BINARY_DIR}/coverage.info
         COMMAND lcov --remove ${CMAKE_BINARY_DIR}/coverage.info '/usr/*' --output-file ${CMAKE_BINARY_DIR}/coverage.info -q
         COMMAND lcov --remove ${CMAKE_BINARY_DIR}/coverage.info '${CMAKE_BINARY_DIR}/*' --output-file ${CMAKE_BINARY_DIR}/coverage.info -q
     )
@@ -108,7 +107,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "COVERAGE")
         COMMAND ${CMAKE_COMMAND} -E echo "================================================================================"
         COMMAND genhtml -o site ${CMAKE_BINARY_DIR}/coverage.info
         COMMAND ${CMAKE_COMMAND} -E echo "================================================================================"
-        COMMAND ${CMAKE_COMMAND} -E chdir site python -m "SimpleHTTPServer"
+        COMMAND ${CMAKE_COMMAND} -E chdir site python -m "http.server"
     )
 
     add_custom_target(

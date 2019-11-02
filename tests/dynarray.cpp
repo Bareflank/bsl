@@ -23,821 +23,546 @@
 #define BSL_CORE_GUIDELINE_COMPLIANT
 #include "../include/bsl.h"
 
-#include <set>
-#include <catch2/catch.hpp>
-
-// --------------------------------------------------------------------------
-// Mocks
-// --------------------------------------------------------------------------
-
-struct Foo
-{
-    Foo()
-    {
-        s_con++;
-        s_list.insert(this);
-    }
-
-    Foo(const Foo &f)
-    {
-        (void)f;
-
-        s_cop++;
-        s_con++;
-        s_list.insert(this);
-    }
-
-    Foo &
-    operator=(const Foo &f)
-    {
-        (void)f;
-
-        s_cop++;
-        s_list.insert(this);
-        return *this;
-    }
-
-    Foo(Foo &&f) noexcept
-    {
-        (void)f;
-
-        s_mov++;
-        s_con++;
-        s_list.insert(this);
-    }
-
-    Foo &
-    operator=(Foo &&f) noexcept
-    {
-        (void)f;
-
-        s_mov++;
-        s_list.insert(this);
-        return *this;
-    }
-
-    ~Foo()
-    {
-        s_des++;
-        s_list.erase(this);
-    }
-
-    static auto
-    dump() -> void
-    {
-        std::cout << "Foo::check failed\n";
-        std::cout << "  - constructed: " << s_con << '\n';
-        std::cout << "  - copied: " << s_cop << '\n';
-        std::cout << "  - moved: " << s_mov << '\n';
-        std::cout << "  - destructed: " << s_des << '\n';
-    }
-
-    static auto
-    check(int con, int cop, int mov, int des) -> bool
-    {
-        if (s_con == con && s_cop == cop && s_mov == mov && s_des == des) {
-            return s_list.empty();
-        }
-
-        dump();
-        return false;
-    }
-
-    static auto
-    reset()
-    {
-        s_con = 0;
-        s_cop = 0;
-        s_mov = 0;
-        s_des = 0;
-    }
-
-    static int s_con;
-    static int s_cop;
-    static int s_mov;
-    static int s_des;
-
-    static std::set<Foo *> s_list;
-};
-
-int Foo::s_con{};
-int Foo::s_cop{};
-int Foo::s_mov{};
-int Foo::s_des{};
-std::set<Foo *> Foo::s_list{};
-
-#define CHECK_FOO(a, b, c, d) CHECK(Foo::check(a, b, c, d))
-
-struct Deleter
-{
-    auto
-    operator()(Foo *ptr, size_t size) const -> void
-    {
-        (void)size;
-        delete[] ptr;
-    };
-
-    Deleter()
-    {
-        s_con++;
-        s_list.insert(this);
-    }
-
-    Deleter(const Deleter &d)
-    {
-        (void)d;
-
-        s_cop++;
-        s_con++;
-        s_list.insert(this);
-    }
-
-    Deleter &
-    operator=(const Deleter &d)
-    {
-        (void)d;
-
-        s_cop++;
-        s_list.insert(this);
-        return *this;
-    }
-
-    Deleter(Deleter &&d) noexcept
-    {
-        (void)d;
-
-        s_mov++;
-        s_con++;
-        s_list.insert(this);
-    }
-
-    Deleter &
-    operator=(Deleter &&d) noexcept
-    {
-        (void)d;
-
-        s_mov++;
-        s_list.insert(this);
-        return *this;
-    }
-
-    ~Deleter()
-    {
-        s_des++;
-        s_list.erase(this);
-    }
-
-    static auto
-    dump() -> void
-    {
-        std::cout << "Deleter::check failed\n";
-        std::cout << "  - constructed: " << s_con << '\n';
-        std::cout << "  - copied: " << s_cop << '\n';
-        std::cout << "  - moved: " << s_mov << '\n';
-        std::cout << "  - destructed: " << s_des << '\n';
-    }
-
-    static auto
-    check(int con, int cop, int mov, int des) -> bool
-    {
-        if (s_con == con && s_cop == cop && s_mov == mov && s_des == des) {
-            return s_list.empty();
-        }
-
-        dump();
-        return false;
-    }
-
-    static auto
-    reset()
-    {
-        s_con = 0;
-        s_cop = 0;
-        s_mov = 0;
-        s_des = 0;
-    }
-
-    static int s_con;
-    static int s_cop;
-    static int s_mov;
-    static int s_des;
-
-    static std::set<Deleter *> s_list;
-};
-
-int Deleter::s_con{};
-int Deleter::s_cop{};
-int Deleter::s_mov{};
-int Deleter::s_des{};
-std::set<Deleter *> Deleter::s_list{};
-
-#define CHECK_DELETER(a, b, c, d) CHECK(Deleter::check(a, b, c, d))
+#include "boost/ut.hpp"
+using namespace boost::ut;
 
 auto
-setup_test() -> void
+main() -> int
 {
-    Foo::reset();
-    Deleter::reset();
-}
+    "nodiscard"_test = [] {
+        int i = 0;
+        int &i1 = i;
+        int const &i2 = i;
 
-using da_t = bsl::dynarray<Foo, Deleter>;
+        bsl::discard(i1);
+        bsl::discard(i2);
+    };
 
-constexpr const auto INT_23 = 23;
-constexpr const auto INT_42 = 42;
-
-// --------------------------------------------------------------------------
-// Tests
-// --------------------------------------------------------------------------
-
-TEST_CASE("check tests")
-{
-    CHECK_FALSE(Foo::check(1, 1, 1, 1));
-    CHECK_FALSE(Deleter::check(1, 1, 1, 1));
-}
-
-TEST_CASE("const / non-const")
-{
-    bsl::dynarray<int> da1;
-    bsl::dynarray<const int> da2;
-}
-
-TEST_CASE("empty base optimization")
-{
-    CHECK(sizeof(da_t) == sizeof(void *) * 2);
-}
-
-TEST_CASE("nodelete")
-{
-    auto f = new Foo[1];
-    CHECK_NOTHROW(bsl::dynarray<Foo, bsl::nodelete>(f, 1));
-
-    delete[] f;
-}
-
-TEST_CASE("constructor")
-{
-    {
-        setup_test();
-
-        da_t da1;
-        da_t da2 = {};
-
-        CHECK(da1.empty());
-        CHECK(da2.empty());
-    }
-    CHECK_FOO(0, 0, 0, 0);
-    CHECK_DELETER(2, 0, 0, 2);
-
-    {
-        setup_test();
-        auto f = new Foo[1];
-
-        CHECK_THROWS(da_t(nullptr, 1));
-        CHECK_THROWS(da_t(f, 0));
-        CHECK_NOTHROW(da_t(new Foo[1], 1));
+    "nodelete"_test = [] {
+        auto f = new int[1];
+        bsl::dynarray<int, bsl::nodelete> da(f, 1);
 
         delete[] f;
-    }
-    CHECK_FOO(2, 0, 0, 2);
-    CHECK_DELETER(3, 0, 0, 3);
+    };
 
-    {
-        setup_test();
-        auto f = new Foo[1];
-        auto d = Deleter();
+    "default constructor"_test = [] {
+        bsl::dynarray<int> da1;
+        bsl::dynarray<int> da2 = {};
+    };
 
-        CHECK_THROWS(da_t(nullptr, 1, d));
-        CHECK_THROWS(da_t(f, 0, d));
-        CHECK_NOTHROW(da_t(new Foo[1], 1, d));
+    "ptr, count constructor"_test = [] {
+        auto f = new int[1];
+        expect(throws([&] {
+            bsl::dynarray<int>(nullptr, 1);
+        }));
+        expect(throws([&] {
+            bsl::dynarray<int>(f, 0);
+        }));
 
-        delete[] f;
-    }
-    CHECK_FOO(2, 0, 0, 2);
-    CHECK_DELETER(4, 3, 0, 4);
+        bsl::dynarray<int>(f, 1);
+    };
 
-    {
-        setup_test();
-        auto f = new Foo[1];
+    "ptr, count, copy deleter"_test = [] {
+        auto f = new int[1];
+        auto d = bsl::default_deleter<int>();
+        expect(throws([&] {
+            bsl::dynarray<int>(nullptr, 1, d);
+        }));
+        expect(throws([&] {
+            bsl::dynarray<int>(f, 0, d);
+        }));
 
-        CHECK_THROWS(da_t(nullptr, 1, Deleter()));
-        CHECK_THROWS(da_t(f, 0, Deleter()));
-        CHECK_NOTHROW(da_t(new Foo[1], 1, Deleter()));
+        bsl::dynarray<int>(f, 1, d);
+    };
 
-        delete[] f;
-    }
-    CHECK_FOO(2, 0, 0, 2);
-    CHECK_DELETER(6, 0, 3, 6);
+    "ptr, count, move deleter"_test = [] {
+        auto f = new int[1];
+        using d = bsl::default_deleter<int>;
+        expect(throws([&] {
+            bsl::dynarray<int>(nullptr, 1, d());
+        }));
+        expect(throws([&] {
+            bsl::dynarray<int>(f, 0, d());
+        }));
 
-    {
-        setup_test();
+        bsl::dynarray<int>(f, 1, d());
+    };
 
-        auto da1 = da_t(new Foo[1], 1);
-        CHECK(da1);
+    "move constructor"_test = [] {
+        auto da1 = bsl::dynarray<int>(new int[1], 1);
+        expect(!!da1);
 
-        auto da2 = da_t(std::move(da1));
-        CHECK(da2);
-    }
-    CHECK_FOO(1, 0, 0, 1);
-    CHECK_DELETER(2, 0, 1, 2);
-}
+        auto da2 = bsl::dynarray<int>(std::move(da1));
+        expect(!!da2);
+    };
 
-TEST_CASE("operator=")
-{
-    {
-        setup_test();
+    "move operator=, self assignment"_test = [] {
+        auto da = bsl::dynarray<int>(new int[1], 1);
+        da = std::move(da);
+    };
 
-        auto da1 = da_t(new Foo[1], 1);
-        da1 = std::move(da1);
-    }
-    CHECK_FOO(1, 0, 0, 1);
-    CHECK_DELETER(1, 0, 0, 1);
+    "move operator=, empty"_test = [] {
+        auto da1 = bsl::dynarray<int>(new int[1], 1);
+        expect(!!da1);
 
-    {
-        setup_test();
-
-        auto da1 = da_t(new Foo[1], 1);
-        CHECK(da1);
-
-        auto da2 = da_t();
-        CHECK(da2.empty());
+        auto da2 = bsl::dynarray<int>();
+        expect(!da2);
 
         da1 = std::move(da2);
-        CHECK(da1.empty());
-    }
-    CHECK_FOO(1, 0, 0, 1);
-    CHECK_DELETER(2, 0, 1, 2);
+        expect(!da1);
+    };
 
-    {
-        setup_test();
+    "move operator=, valid"_test = [] {
+        auto da1 = bsl::dynarray<int>(new int[1], 1);
+        expect(!!da1);
 
-        auto da1 = da_t(new Foo[1], 1);
-        CHECK(da1);
-
-        auto da2 = da_t(new Foo[1], 1);
-        CHECK(da2);
+        auto da2 = bsl::dynarray<int>(new int[1], 1);
+        expect(!!da2);
 
         da1 = std::move(da2);
-        CHECK(da1);
-    }
-    CHECK_FOO(2, 0, 0, 2);
-    CHECK_DELETER(2, 0, 1, 2);
-}
+        expect(!!da1);
+    };
 
-TEST_CASE("reset and release")
-{
-    {
-        setup_test();
+    "reset, empty"_test = [] {
+        auto da = bsl::dynarray<int>();
 
-        auto da1 = da_t();
-        da1.reset();
+        expect(!da);
+        da.reset();
+        expect(!da);
+    };
 
-        CHECK_FOO(0, 0, 0, 0);
-    }
-    CHECK_DELETER(1, 0, 0, 1);
+    "reset, default"_test = [] {
+        auto da = bsl::dynarray<int>(new int[1], 1);
 
-    {
-        setup_test();
+        expect(!!da);
+        da.reset();
+        expect(!da);
+    };
 
-        auto da1 = da_t(new Foo[1], 1);
-        da1.reset();
-
-        CHECK_FOO(1, 0, 0, 1);
-    }
-    CHECK_DELETER(1, 0, 0, 1);
-
-    {
-        setup_test();
-
-        auto da1 = da_t(new Foo[1], 1);
-        da1.reset(nullptr);
-
-        CHECK_FOO(1, 0, 0, 1);
-    }
-    CHECK_DELETER(1, 0, 0, 1);
-
-    {
-        setup_test();
-
-        auto da1 = da_t(new Foo[1], 1);
-        auto da2 = da_t(new Foo[1], 1);
+    "reset, release"_test = [] {
+        auto da1 = bsl::dynarray<int>(new int[1], 1);
+        auto da2 = bsl::dynarray<int>(new int[1], 1);
         da1.reset(da2.release());
 
-        CHECK(!da1.empty());
-        CHECK(da2.empty());
-    }
-    CHECK_FOO(2, 0, 0, 2);
-    CHECK_DELETER(2, 0, 0, 2);
-}
-
-TEST_CASE("swap")
-{
-    bsl::dynarray<int> da1{new int[1], 1};
-    bsl::dynarray<int> da2{new int[2], 2};
-
-    da1.front() = INT_23;
-    da2.front() = INT_42;
-
-    CHECK(da1.front() == INT_23);
-    CHECK(da1.size() == 1);
-    CHECK(da2.front() == INT_42);
-    CHECK(da2.size() == 2);
-
-    da1.swap(da2);
-
-    CHECK(da1.front() == INT_42);
-    CHECK(da1.size() == 2);
-    CHECK(da2.front() == INT_23);
-    CHECK(da2.size() == 1);
-
-    da1.swap(da2);
-
-    CHECK(da1.front() == INT_23);
-    CHECK(da1.size() == 1);
-    CHECK(da2.front() == INT_42);
-    CHECK(da2.size() == 2);
-}
-
-TEST_CASE("get")
-{
-    auto f = new int[1];
-
-    bsl::dynarray<int> da1;
-    bsl::dynarray<int> da2{f, 1};
-
-    CHECK(da1.get() == nullptr);
-    CHECK(da2.get() == f);
-}
-
-TEST_CASE("get_deleter")
-{
-    class test
-    {
-        bsl::dynarray<int> da;
-
-    public:
-        auto
-        test1() -> void
-        {
-            CHECK_NOTHROW(da.get_deleter());
-        }
-
-        auto
-        test2() const -> void
-        {
-            CHECK_NOTHROW(da.get_deleter());
-        }
+        expect(!!da1);
+        expect(!da2);
     };
 
-    test t;
-    t.test1();
-    t.test2();
-}
+    "swap"_test = [] {
+        bsl::dynarray<int> da1{new int[1], 1};
+        bsl::dynarray<int> da2{new int[2], 2};
 
-TEST_CASE("bool operator")
-{
-    bsl::dynarray<int> da1;
-    bsl::dynarray<int> da2{new int[1], 1};
+        da1.front() = 23;
+        da2.front() = 42;
 
-    CHECK(!da1);
-    CHECK(da2);
-}
+        expect(da1.front() == 23);
+        expect(da1.size() == 1);
+        expect(da2.front() == 42);
+        expect(da2.size() == 2);
 
-TEST_CASE("operator[]")
-{
-    class test
-    {
-        bsl::dynarray<int> da1;
-        bsl::dynarray<int> da2{new int[1], 1};
+        da1.swap(da2);
 
-    public:
-        auto
-        test1() -> void
-        {
-            da2[0] = INT_23;
-            CHECK(da2[0] == INT_23);
-            da2[0] = INT_42;
-            CHECK(da2[0] == INT_42);
-            CHECK_THROWS(da1[0]);
-            CHECK_THROWS(da2[42]);
-        }
+        expect(da1.front() == 42);
+        expect(da1.size() == 2);
+        expect(da2.front() == 23);
+        expect(da2.size() == 1);
 
-        auto
-        test2() const -> void
-        {
-            CHECK(da2[0] == INT_42);
-            CHECK_THROWS(da1[0]);
-            CHECK_THROWS(da2[42]);
-        }
+        da1.swap(da2);
+
+        expect(da1.front() == 23);
+        expect(da1.size() == 1);
+        expect(da2.front() == 42);
+        expect(da2.size() == 2);
     };
 
-    test t;
-    t.test1();
-    t.test2();
-}
+    "get"_test = [] {
+        auto f = new int[1];
+        auto da1 = bsl::dynarray<int>();
+        auto da2 = bsl::dynarray<int>(f, 1);
 
-TEST_CASE("at")
-{
-    class test
-    {
-        bsl::dynarray<int> da1;
-        bsl::dynarray<int> da2{new int[1], 1};
-
-    public:
-        auto
-        test1() -> void
-        {
-            da2.at(0) = INT_23;
-            CHECK(da2.at(0) == INT_23);
-            da2.at(0) = INT_42;
-            CHECK(da2.at(0) == INT_42);
-            CHECK_THROWS(da1.at(0));
-            CHECK_THROWS(da2.at(42));
-        }
-
-        auto
-        test2() const -> void
-        {
-            CHECK(da2.at(0) == INT_42);
-            CHECK_THROWS(da1.at(0));
-            CHECK_THROWS(da2.at(42));
-        }
+        expect(da1.get() == nullptr);
+        expect(da2.get() == f);
     };
 
-    test t;
-    t.test1();
-    t.test2();
-}
-
-TEST_CASE("front")
-{
-    class test
-    {
-        bsl::dynarray<int> da1;
-        bsl::dynarray<int> da2{new int[1], 1};
-
-    public:
-        auto
-        test1() -> void
+    "get_deleter"_test = [] {
+        class test
         {
-            da2.front() = INT_23;
-            CHECK(da2.front() == INT_23);
-            da2.front() = INT_42;
-            CHECK(da2.front() == INT_42);
-            CHECK_THROWS(da1.front());
-            CHECK_NOTHROW(da2.front());
-        }
+            bsl::dynarray<int> da;
 
-        auto
-        test2() const -> void
-        {
-            CHECK(da2.front() == INT_42);
-            CHECK_THROWS(da1.front());
-            CHECK_NOTHROW(da2.front());
-        }
-    };
-
-    test t;
-    t.test1();
-    t.test2();
-}
-
-TEST_CASE("back")
-{
-    class test
-    {
-        bsl::dynarray<int> da1;
-        bsl::dynarray<int> da2{new int[1], 1};
-
-    public:
-        auto
-        test1() -> void
-        {
-            da2.back() = INT_23;
-            CHECK(da2.back() == INT_23);
-            da2.back() = INT_42;
-            CHECK(da2.back() == INT_42);
-            CHECK_THROWS(da1.back());
-            CHECK_NOTHROW(da2.back());
-        }
-
-        auto
-        test2() const -> void
-        {
-            CHECK(da2.back() == INT_42);
-            CHECK_THROWS(da1.back());
-            CHECK_NOTHROW(da2.back());
-        }
-    };
-
-    test t;
-    t.test1();
-    t.test2();
-}
-
-TEST_CASE("data")
-{
-    class test
-    {
-        bsl::dynarray<int> da1;
-        bsl::dynarray<int> da2{new int[1], 1};
-
-    public:
-        auto
-        test1() -> void
-        {
-            da2.data()[0] = INT_23;
-            CHECK(da2.data()[0] == INT_23);
-            da2.data()[0] = INT_42;
-            CHECK(da2.data()[0] == INT_42);
-        }
-
-        auto
-        test2() const -> void
-        {
-            CHECK(da2.data()[0] == INT_42);
-        }
-    };
-
-    test t;
-    t.test1();
-    t.test2();
-}
-
-TEST_CASE("begin / end")
-{
-    class test
-    {
-        bsl::dynarray<int> da{new int[1], 1};
-
-    public:
-        auto
-        test1() -> void
-        {
-            for (auto it = da.begin(); it != da.end(); ++it) {
-                *it = INT_42;
-            }
-        }
-
-        auto
-        test2() const -> void
-        {
-            for (auto it = da.begin(); it != da.end(); ++it) {
-                CHECK(*it == INT_42);
+        public:
+            auto
+            test1() -> void
+            {
+                expect(nothrow([&] {
+                    bsl::discard(da.get_deleter());
+                }));
             }
 
-            for (auto it = da.cbegin(); it != da.cend(); ++it) {
-                CHECK(*it == INT_42);
+            auto
+            test2() const -> void
+            {
+                expect(nothrow([&] {
+                    bsl::discard(da.get_deleter());
+                }));
             }
-        }
+        };
+
+        test t;
+        t.test1();
+        t.test2();
     };
 
-    test t;
-    t.test1();
-    t.test2();
-}
+    "operator bool"_test = [] {
+        auto da1 = bsl::dynarray<int>();
+        auto da2 = bsl::dynarray<int>(new int[1], 1);
 
-TEST_CASE("rbegin / rend")
-{
-    class test
-    {
-        bsl::dynarray<int> da{new int[1], 1};
-
-    public:
-        auto
-        test1() -> void
-        {
-            for (auto it = da.rbegin(); it != da.rend(); ++it) {
-                *it = INT_42;
-            }
-        }
-
-        auto
-        test2() const -> void
-        {
-            for (auto it = da.rbegin(); it != da.rend(); ++it) {
-                CHECK(*it == INT_42);
-            }
-
-            for (auto it = da.crbegin(); it != da.crend(); ++it) {
-                CHECK(*it == INT_42);
-            }
-        }
+        expect(!da1);
+        expect(!!da2);
     };
 
-    test t;
-    t.test1();
-    t.test2();
-}
+    "operator[]"_test = [] {
+        class test
+        {
+            bsl::dynarray<int> da1;
+            bsl::dynarray<int> da2{new int[1], 1};
 
-TEST_CASE("empty")
-{
-    bsl::dynarray<int> da1;
-    bsl::dynarray<int> da2{new int[1], 1};
+        public:
+            auto
+            test1() -> void
+            {
+                da2[0] = 23;
+                expect(da2[0] == 23);
+                da2[0] = 42;
+                expect(da2[0] == 42);
 
-    CHECK(da1.empty());
-    CHECK(!da2.empty());
-}
+                expect(throws([&] {
+                    bsl::discard(da1[0]);
+                }));
+                expect(throws([&] {
+                    bsl::discard(da2[42]);
+                }));
+            }
 
-TEST_CASE("size")
-{
-    bsl::dynarray<int> da1;
-    bsl::dynarray<int> da2{new int[1], 1};
+            auto
+            test2() const -> void
+            {
+                expect(da2[0] == 42);
 
-    CHECK(da1.size() == 0);    // NOLINT
-    CHECK(da2.size() == 1);
-}
+                expect(throws([&] {
+                    bsl::discard(da1[0]);
+                }));
+                expect(throws([&] {
+                    bsl::discard(da2[42]);
+                }));
+            }
+        };
 
-TEST_CASE("ssize")
-{
-    bsl::dynarray<int> da1;
-    bsl::dynarray<int> da2{new int[1], 1};
+        test t;
+        t.test1();
+        t.test2();
+    };
 
-    CHECK(da1.ssize() == 0);
-    CHECK(da2.ssize() == 1);
-}
+    "at"_test = [] {
+        class test
+        {
+            bsl::dynarray<int> da1;
+            bsl::dynarray<int> da2{new int[1], 1};
 
-TEST_CASE("size_bytes")
-{
-    bsl::dynarray<int> da1;
-    bsl::dynarray<int> da2{new int[1], 1};
+        public:
+            auto
+            test1() -> void
+            {
+                da2.at(0) = 23;
+                expect(da2.at(0) == 23);
+                da2.at(0) = 42;
+                expect(da2.at(0) == 42);
 
-    CHECK(da1.size_bytes() == 0);
-    CHECK(da2.size_bytes() == sizeof(int));
-}
+                expect(throws([&] {
+                    bsl::discard(da1.at(0));
+                }));
+                expect(throws([&] {
+                    bsl::discard(da2.at(42));
+                }));
+            }
 
-TEST_CASE("max_size")
-{
-    bsl::dynarray<int> da1;
-    bsl::dynarray<int> da2{new int[1], 1};
+            auto
+            test2() const -> void
+            {
+                expect(da2.at(0) == 42);
 
-    CHECK(
-        da1.max_size() == std::numeric_limits<ptrdiff_t>::max() / sizeof(int));
-    CHECK(
-        da2.max_size() == std::numeric_limits<ptrdiff_t>::max() / sizeof(int));
-}
+                expect(throws([&] {
+                    bsl::discard(da1.at(0));
+                }));
+                expect(throws([&] {
+                    bsl::discard(da2.at(42));
+                }));
+            }
+        };
 
-TEST_CASE("fill")
-{
-    bsl::dynarray<int> da{new int[1], 1};
+        test t;
+        t.test1();
+        t.test2();
+    };
 
-    da.fill(INT_23);
-    CHECK(da.front() == INT_23);
+    "front"_test = [] {
+        class test
+        {
+            bsl::dynarray<int> da1;
+            bsl::dynarray<int> da2{new int[1], 1};
 
-    da.fill(INT_42);
-    CHECK(da.front() == INT_42);
-}
+        public:
+            auto
+            test1() -> void
+            {
+                da2.front() = 23;
+                expect(da2.front() == 23);
+                da2.front() = 42;
+                expect(da2.front() == 42);
 
-TEST_CASE("comparison operators")
-{
-    bsl::dynarray<int> da1{new int[1], 1};
-    bsl::dynarray<int> da2{new int[1], 1};
-    bsl::dynarray<int> da3{new int[1], 1};
-    bsl::dynarray<int> da4{new int[2], 2};
-    bsl::dynarray<int> da5{new int[2], 2};
+                expect(throws([&] {
+                    bsl::discard(da1.front());
+                }));
+            }
 
-    da1.at(0) = INT_23;
-    da2.at(0) = INT_23;
-    da3.at(0) = INT_42;
-    da4.at(0) = INT_42;
-    da4.at(1) = INT_42;
-    da5.at(0) = INT_42;
-    da5.at(1) = INT_42;
+            auto
+            test2() const -> void
+            {
+                expect(da2.front() == 42);
 
-    CHECK((da1 == da2));
-    CHECK((da2 != da3));
-    CHECK((da3 != da4));
-    CHECK((da4 == da5));
-}
+                expect(throws([&] {
+                    bsl::discard(da1.front());
+                }));
+            }
+        };
 
-TEST_CASE("ostream")
-{
-    bsl::dynarray<Foo, Deleter> da2;
-    bsl::dynarray<int> da1{new int[1], 1};
+        test t;
+        t.test1();
+        t.test2();
+    };
 
-    std::cout << "testing os: " << da1 << '\n';
-    std::cout << "testing os: " << da2 << '\n';
-}
+    "back"_test = [] {
+        class test
+        {
+            bsl::dynarray<int> da1;
+            bsl::dynarray<int> da2{new int[1], 1};
 
-TEST_CASE("make_dynarray")
-{
-    {
-        CHECK_THROWS(bsl::make_dynarray<Foo>(0));
-        CHECK_THROWS(bsl::make_dynarray_default_init<Foo>(0));
-    }
+        public:
+            auto
+            test1() -> void
+            {
+                da2.back() = 23;
+                expect(da2.back() == 23);
+                da2.back() = 42;
+                expect(da2.back() == 42);
 
-    {
-        setup_test();
+                expect(throws([&] {
+                    bsl::discard(da1.back());
+                }));
+            }
 
-        auto da = bsl::make_dynarray<Foo>(1);
-        CHECK(da.size() == 1);
-    }
-    CHECK_FOO(1, 0, 0, 1);
+            auto
+            test2() const -> void
+            {
+                expect(da2.back() == 42);
 
-    {
-        setup_test();
+                expect(throws([&] {
+                    bsl::discard(da1.back());
+                }));
+            }
+        };
 
-        auto da = bsl::make_dynarray_default_init<Foo>(1);
-        CHECK(da.size() == 1);
-    }
-    CHECK_FOO(1, 0, 0, 1);
+        test t;
+        t.test1();
+        t.test2();
+    };
+
+    "data"_test = [] {
+        class test
+        {
+            bsl::dynarray<int> da1;
+            bsl::dynarray<int> da2{new int[1], 1};
+
+        public:
+            auto
+            test1() -> void
+            {
+                da2.data()[0] = 23;
+                expect(da2.data()[0] == 23);
+                da2.data()[0] = 42;
+                expect(da2.data()[0] == 42);
+            }
+
+            auto
+            test2() const -> void
+            {
+                expect(da2.data()[0] == 42);
+            }
+        };
+
+        test t;
+        t.test1();
+        t.test2();
+    };
+
+    "begin / end"_test = [] {
+        class test
+        {
+            bsl::dynarray<int> da{new int[1], 1};
+
+        public:
+            auto
+            test1() -> void
+            {
+                for (auto it = da.begin(); it != da.end(); ++it) {
+                    *it = 42;
+                }
+            }
+
+            auto
+            test2() const -> void
+            {
+                for (auto it = da.begin(); it != da.end(); ++it) {
+                    expect(*it == 42);
+                }
+
+                for (auto it = da.cbegin(); it != da.cend(); ++it) {
+                    expect(*it == 42);
+                }
+            }
+        };
+
+        test t;
+        t.test1();
+        t.test2();
+    };
+
+    "rbegin / rend"_test = [] {
+        class test
+        {
+            bsl::dynarray<int> da{new int[1], 1};
+
+        public:
+            auto
+            test1() -> void
+            {
+                for (auto it = da.rbegin(); it != da.rend(); ++it) {
+                    *it = 42;
+                }
+            }
+
+            auto
+            test2() const -> void
+            {
+                for (auto it = da.rbegin(); it != da.rend(); ++it) {
+                    expect(*it == 42);
+                }
+
+                for (auto it = da.crbegin(); it != da.crend(); ++it) {
+                    expect(*it == 42);
+                }
+            }
+        };
+
+        test t;
+        t.test1();
+        t.test2();
+    };
+
+    "empty"_test = [] {
+        auto da1 = bsl::dynarray<int>();
+        auto da2 = bsl::dynarray<int>(new int[1], 1);
+
+        expect(da1.empty());
+        expect(!da2.empty());
+    };
+
+    "size"_test = [] {
+        auto da1 = bsl::dynarray<int>();
+        auto da2 = bsl::dynarray<int>(new int[1], 1);
+
+        expect(da1.size() == 0);    // NOLINT
+        expect(da2.size() == 1);
+    };
+
+    "ssize"_test = [] {
+        auto da1 = bsl::dynarray<int>();
+        auto da2 = bsl::dynarray<int>(new int[1], 1);
+
+        expect(da1.ssize() == 0);
+        expect(da2.ssize() == 1);
+    };
+
+    "size_bytes"_test = [] {
+        auto da1 = bsl::dynarray<int>();
+        auto da2 = bsl::dynarray<int>(new int[1], 1);
+
+        expect(da1.size_bytes() == 0);
+        expect(da2.size_bytes() == sizeof(int));
+    };
+
+    "max_size"_test = [] {
+        auto da1 = bsl::dynarray<int>();
+        auto da2 = bsl::dynarray<int>(new int[1], 1);
+
+        expect(da1.max_size() != 0);
+        expect(da2.max_size() != 0);
+    };
+
+    "fill"_test = [] {
+        auto da = bsl::dynarray<int>(new int[1], 1);
+
+        da.fill(23);
+        expect(da.front() == 23);
+
+        da.fill(42);
+        expect(da.front() == 42);
+    };
+
+    "comparison operators"_test = [] {
+        auto da1 = bsl::dynarray<int>(new int[1], 1);
+        auto da2 = bsl::dynarray<int>(new int[1], 1);
+        auto da3 = bsl::dynarray<int>(new int[1], 1);
+        auto da4 = bsl::dynarray<int>(new int[2], 2);
+        auto da5 = bsl::dynarray<int>(new int[2], 2);
+        auto da6 = bsl::dynarray<int>(new int[2], 2);
+
+        da1.at(0) = 23;
+        da2.at(0) = 23;
+        da3.at(0) = 42;
+        da4.at(0) = 42;
+        da4.at(1) = 42;
+        da5.at(0) = 42;
+        da5.at(1) = 42;
+        da6.at(0) = 23;
+        da6.at(1) = 42;
+
+        expect(da1 == da2);
+        expect(da2 != da3);
+        expect(da3 != da4);
+        expect(da4 == da5);
+        expect(da5 != da6);
+    };
+
+    "ostream"_test = [] {
+        auto da1 = bsl::dynarray<int>();
+        auto da2 = bsl::dynarray<int>(new int[1], 1);
+
+        std::cout << "testing os: " << da1 << '\n';
+        std::cout << "testing os: " << da2 << '\n';
+    };
+
+    "make_dynarray"_test = [] {
+        expect(throws([&] {
+            bsl::make_dynarray<int>(0);
+        }));
+        expect(throws([&] {
+            bsl::make_dynarray_default_init<int>(0);
+        }));
+
+        auto da1 = bsl::make_dynarray<int>(1);
+        auto da2 = bsl::make_dynarray_default_init<int>(1);
+
+        expect(da1.size() == 1);
+        expect(da2.size() == 1);
+    };
 }

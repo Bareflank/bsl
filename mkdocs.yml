@@ -64,3 +64,5 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
+  - mdx_include:
+      allow_circular_inclusion: true

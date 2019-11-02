@@ -190,43 +190,68 @@
 #define BSL_MOVE_ONLY(T)                                                       \
 public:                                                                        \
     T(const T &) = delete;                                                     \
-    T &operator=(const T &) = delete;
+    auto operator=(const T &)->T & = delete;
 
 #define BSL_DEFAULT_MOVE_ONLY(T)                                               \
 public:                                                                        \
     T(const T &) = delete;                                                     \
-    T &operator=(const T &) = delete;                                          \
+    auto operator=(const T &)->T & = delete;                                   \
     T(T &&) noexcept = default;                                                \
-    T &operator=(T &&) noexcept = default;
+    auto operator=(T &&) noexcept->T & = default;
 
 #define BSL_COPY_ONLY(T)                                                       \
 public:                                                                        \
     T(T &&) noexcept = delete;                                                 \
-    T &operator=(T &&) noexcept = delete;
+    auto operator=(T &&) noexcept->T & = delete;
 
 #define BSL_DEFAULT_COPY_ONLY(T)                                               \
 public:                                                                        \
     T(const T &) = default;                                                    \
-    T &operator=(const T &) = default;                                         \
+    auto operator=(const T &)->T & = default;                                  \
     T(T &&) noexcept = delete;                                                 \
-    T &operator=(T &&) noexcept = delete;
+    auto operator=(T &&) noexcept->T & = delete;
 
 #define BSL_DEFAULT_COPY_MOVE(T)                                               \
 public:                                                                        \
     T(const T &) = default;                                                    \
-    T &operator=(const T &) = default;                                         \
+    auto operator=(const T &)->T & = default;                                  \
     T(T &&) noexcept = default;                                                \
-    T &operator=(T &&) noexcept = default;
+    auto operator=(T &&) noexcept->T & = default;
 
 // --------------------------------------------------------------------------
-// No Discard
+// Narrow Cast
 // --------------------------------------------------------------------------
 
-#ifndef NDEBUG
-#define BSL_NODISCARD [[nodiscard]]
-#else
-#define BSL_NODISCARD
-#endif
+namespace bsl
+{
+    template<typename T, typename U>
+    constexpr auto
+    narrow_cast(U &&u) noexcept -> T
+    {
+        return static_cast<T>(std::forward<U>(u));
+    }
+}    // namespace bsl
+
+// --------------------------------------------------------------------------
+// Ignore
+// --------------------------------------------------------------------------
+
+namespace bsl
+{
+    template<typename T>
+    constexpr void
+    unused(T &&t) noexcept
+    {
+        (void)t;
+    }
+
+    template<typename T>
+    constexpr void
+    discard(T &&t) noexcept
+    {
+        (void)t;
+    }
+}    // namespace bsl
 
 // --------------------------------------------------------------------------
 // Iterators
@@ -456,7 +481,7 @@ namespace bsl
         auto
         operator()(T *ptr, size_t size) -> void
         {
-            (void)size;
+            bsl::unused(size);
             delete[] ptr;
         }
     };
@@ -479,8 +504,8 @@ namespace bsl
         auto
         operator()(const void *ptr, size_t size) -> void
         {
-            (void)ptr;
-            (void)size;
+            bsl::unused(ptr);
+            bsl::unused(size);
         }
     };
 
@@ -734,8 +759,8 @@ namespace bsl
         /// @return *this
         ///
         template<BSL_IS_NOTHROW_MOVE_ASSIGNABLE(deleter_type)>
-        dynarray &
-        operator=(dynarray &&r) noexcept
+        auto
+        operator=(dynarray &&r) noexcept -> dynarray &
         {
             if (&r == this) {
                 return *this;
@@ -764,7 +789,7 @@ namespace bsl
         ///     if empty(), i.e. the value which would be
         ///     returned by get() and size() before the call.
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         release() noexcept -> std::pair<pointer, index_type>
         {
             auto old_ptr = get();
@@ -872,7 +897,7 @@ namespace bsl
         ///
         /// @return Pointer to the array or nullptr if no array is owned.
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         get() const -> pointer
         {
             return m_ptr;
@@ -888,7 +913,7 @@ namespace bsl
         ///
         /// @return The stored deleter object.
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         get_deleter() noexcept -> deleter_type &
         {
             return *this;
@@ -904,7 +929,7 @@ namespace bsl
         ///
         /// @return The stored deleter object.
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         get_deleter() const noexcept -> const_deleter_type &
         {
             return *this;
@@ -941,7 +966,7 @@ namespace bsl
         /// @param i the index of the element to be returned
         /// @return Returns the element at index i, i.e. get()[i].
         ///
-        BSL_NODISCARD constexpr auto operator[](index_type i) -> reference
+        [[nodiscard]] constexpr auto operator[](index_type i) -> reference
         {
             bsl_expects(i < size());
             return get()[i];
@@ -961,7 +986,7 @@ namespace bsl
         /// @param i the index of the element to be returned
         /// @return Returns the element at index i, i.e. get()[i].
         ///
-        BSL_NODISCARD constexpr auto operator[](index_type i) const
+        [[nodiscard]] constexpr auto operator[](index_type i) const
             -> const_reference
         {
             bsl_expects(i < size());
@@ -980,7 +1005,7 @@ namespace bsl
         /// @param pos position of the element to return
         /// @return reference to the requested element.
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         at(index_type pos) -> reference
         {
             if (pos >= size()) {
@@ -1002,7 +1027,7 @@ namespace bsl
         /// @param pos position of the element to return
         /// @return reference to the requested element.
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         at(index_type pos) const -> const_reference
         {
             if (pos >= size()) {
@@ -1024,7 +1049,7 @@ namespace bsl
         ///
         /// @return reference to the first element (i.e., get()[0])
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         front() -> reference
         {
             bsl_expects(!empty());
@@ -1043,7 +1068,7 @@ namespace bsl
         ///
         /// @return reference to the first element (i.e., get()[0])
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         front() const -> const_reference
         {
             bsl_expects(!empty());
@@ -1062,7 +1087,7 @@ namespace bsl
         ///
         /// @return reference to the last element (i.e., get()[size() - 1])
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         back() -> reference
         {
             bsl_expects(!empty());
@@ -1081,7 +1106,7 @@ namespace bsl
         ///
         /// @return reference to the last element (i.e., get()[size() - 1])
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         back() const -> const_reference
         {
             bsl_expects(!empty());
@@ -1102,7 +1127,7 @@ namespace bsl
         ///     arrays, the returned pointer compares equal to the address
         ///     of the first element.
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         data() noexcept -> pointer
         {
             return m_ptr;
@@ -1122,7 +1147,7 @@ namespace bsl
         ///     arrays, the returned pointer compares equal to the address
         ///     of the first element.
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         data() const noexcept -> const_pointer
         {
             return m_ptr;
@@ -1138,7 +1163,7 @@ namespace bsl
         ///
         /// @return Iterator to the first element
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         begin() noexcept -> iterator
         {
             return {this, 0};
@@ -1154,7 +1179,7 @@ namespace bsl
         ///
         /// @return Iterator to the first element
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         begin() const noexcept -> const_iterator
         {
             return {this, 0};
@@ -1170,7 +1195,7 @@ namespace bsl
         ///
         /// @return Iterator to the first element
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         cbegin() const noexcept -> const_iterator
         {
             return {this, 0};
@@ -1189,7 +1214,7 @@ namespace bsl
         ///
         /// @return Iterator to the element following the last element.
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         end() noexcept -> iterator
         {
             return {this, ssize()};
@@ -1208,7 +1233,7 @@ namespace bsl
         ///
         /// @return Iterator to the element following the last element.
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         end() const noexcept -> const_iterator
         {
             return {this, ssize()};
@@ -1227,7 +1252,7 @@ namespace bsl
         ///
         /// @return Iterator to the element following the last element.
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         cend() const noexcept -> const_iterator
         {
             return {this, ssize()};
@@ -1244,7 +1269,7 @@ namespace bsl
         ///
         /// @return Reverse iterator to the first element.
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         rbegin() noexcept -> reverse_iterator
         {
             return std::make_reverse_iterator(end());
@@ -1261,7 +1286,7 @@ namespace bsl
         ///
         /// @return Reverse iterator to the first element.
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         rbegin() const noexcept -> const_reverse_iterator
         {
             return std::make_reverse_iterator(end());
@@ -1278,7 +1303,7 @@ namespace bsl
         ///
         /// @return Reverse iterator to the first element.
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         crbegin() const noexcept -> const_reverse_iterator
         {
             return std::make_reverse_iterator(cend());
@@ -1298,7 +1323,7 @@ namespace bsl
         ///
         /// @return Reverse iterator to the element following the last element.
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         rend() noexcept -> reverse_iterator
         {
             return std::make_reverse_iterator(begin());
@@ -1318,7 +1343,7 @@ namespace bsl
         ///
         /// @return Reverse iterator to the element following the last element.
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         rend() const noexcept -> const_reverse_iterator
         {
             return std::make_reverse_iterator(begin());
@@ -1338,7 +1363,7 @@ namespace bsl
         ///
         /// @return Reverse iterator to the element following the last element.
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         crend() const noexcept -> const_reverse_iterator
         {
             return std::make_reverse_iterator(cbegin());
@@ -1353,7 +1378,7 @@ namespace bsl
         ///
         /// @return true if the array is empty, false otherwise
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         empty() const noexcept -> bool
         {
             bsl_ensures_if_terminate(get() != nullptr, size() >= 1);
@@ -1371,7 +1396,7 @@ namespace bsl
         ///
         /// @return The number of elements in the array
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         size() const noexcept -> index_type
         {
             return m_count;
@@ -1392,7 +1417,7 @@ namespace bsl
         ///
         /// @return The number of elements in the array
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         ssize() const noexcept -> difference_type
         {
             return static_cast<difference_type>(m_count);
@@ -1408,7 +1433,7 @@ namespace bsl
         /// @return The size of the array in bytes, i.e.,
         ///     size() * sizeof(element_type)
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         size_bytes() const noexcept -> index_type
         {
             return size() * sizeof(T);
@@ -1431,7 +1456,7 @@ namespace bsl
         ///
         /// @return Maximum number of elements.
         ///
-        BSL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         max_size() const noexcept -> index_type
         {
             return std::numeric_limits<difference_type>::max() / sizeof(T);
@@ -1527,8 +1552,9 @@ namespace bsl
 /// @return true if the contents of the containers are equal, false otherwise
 ///
 template<typename T1, typename D1, typename T2, typename D2>
-constexpr bool
+constexpr auto
 operator==(const bsl::dynarray<T1, D1> &lhs, const bsl::dynarray<T2, D2> &rhs)
+    -> bool
 {
     if (lhs.size() != rhs.size()) {
         return false;
@@ -1558,8 +1584,9 @@ operator==(const bsl::dynarray<T1, D1> &lhs, const bsl::dynarray<T2, D2> &rhs)
 /// otherwise
 ///
 template<typename T1, typename D1, typename T2, typename D2>
-constexpr bool
+constexpr auto
 operator!=(const bsl::dynarray<T1, D1> &lhs, const bsl::dynarray<T2, D2> &rhs)
+    -> bool
 {
     return !operator==(lhs, rhs);
 }
@@ -1575,9 +1602,10 @@ operator!=(const bsl::dynarray<T1, D1> &lhs, const bsl::dynarray<T2, D2> &rhs)
 /// @param os a std::basic_ostream to insert the pointer into
 /// @param da the array to insert into the stream
 ///
-template<typename CharT, typename Traits, typename T, typename D>
-std::basic_ostream<CharT, Traits> &
-operator<<(std::basic_ostream<CharT, Traits> &os, const bsl::dynarray<T, D> &da)
+template<typename Ch, typename Tr, typename T, typename D>
+auto
+operator<<(std::basic_ostream<Ch, Tr> &os, const bsl::dynarray<T, D> &da)
+    -> std::basic_ostream<Ch, Tr> &
 {
     return os << static_cast<const void *>(da.get());
 }

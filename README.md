@@ -9,7 +9,7 @@ The Bareflank Support Library (BSL) is a simple, header-only library that provid
 
 <br>
 
-[![Material for MkDocs](docs/images/example.png)](images/example.png)
+[![Material for MkDocs](https://github.com/Bareflank/bsl/raw/master/docs/images/example.png)](https://github.com/Bareflank/bsl/raw/master/docs/images/example.png)
 
 ## **Quick start**
 Get the latest version of the BSL from GitHub:

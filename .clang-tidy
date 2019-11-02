@@ -31,9 +31,14 @@
 #     would cause the code not to compile. In other words, although this is
 #     likely a good test to use, it is buggy and not working right.
 #
+# -readability-magic-numbers
+# -cppcoreguidelines-avoid-magic-numbers
+#     Both of these do not work with the UT engine that we use, and in general
+#     do not work well with unit testing.
+#
 
-Checks: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-cppcoreguidelines-owning-memory,-bugprone-macro-parentheses'
-WarningsAsErrors: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-cppcoreguidelines-owning-memory,-bugprone-macro-parentheses'
+Checks: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-cppcoreguidelines-owning-memory,-bugprone-macro-parentheses,-readability-magic-numbers,-cppcoreguidelines-avoid-magic-numbers'
+WarningsAsErrors: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-cppcoreguidelines-owning-memory,-bugprone-macro-parentheses,-readability-magic-numbers,-cppcoreguidelines-avoid-magic-numbers'
 HeaderFilterRegex: '.*'
 AnalyzeTemporaryDtors: false
 CheckOptions:

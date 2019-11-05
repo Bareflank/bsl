@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2019 Assured Information Security, Inc.
+# Copyright (C) 2020 Assured Information Security, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,108 +19,177 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-include(CTest)
-enable_testing()
-
-# ------------------------------------------------------------------------------
-# Catch
-# ------------------------------------------------------------------------------
-
-list(APPEND UT_CMAKE_ARGS
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/external/
-    -DBUILD_TESTS=OFF
-    -DBUILD_EXAMPLES=OFF
-    -DBUILD_BENCHMARKS=OFF
-)
-
-ExternalProject_Add(
-    ut
-    GIT_REPOSITORY https://github.com/boost-experimental/ut.git
-    GIT_SHALLOW 1
-    CMAKE_ARGS ${UT_CMAKE_ARGS}
-    UPDATE_COMMAND ""
-    UPDATE_DISCONNECTED ON
-)
-
-# ------------------------------------------------------------------------------
-# External Includes
-# ------------------------------------------------------------------------------
-
-include_directories(SYSTEM ${CMAKE_BINARY_DIR}/external/include)
-
-# ------------------------------------------------------------------------------
-# Flags
-# ------------------------------------------------------------------------------
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-access-control")
-set(CMAKE_CXX_FLAGS_COVERAGE "-O0 -g --coverage -fprofile-arcs -ftest-coverage")
-set(CMAKE_LINKER_FLAGS_COVERAGE "-O0 -g --coverage -fprofile-arcs -ftest-coverage")
-
-# ------------------------------------------------------------------------------
-# Initial Setup
-# ------------------------------------------------------------------------------
-
-add_executable(test_dynarray dynarray.cpp)
-add_executable(test_random_access_iterator random_access_iterator.cpp)
-add_executable(test_ifarray ifarray.cpp)
-
-add_dependencies(test_dynarray ut)
-add_dependencies(test_random_access_iterator ut)
-add_dependencies(test_ifarray ut)
-
-add_test(test_dynarray test_dynarray)
-add_test(test_random_access_iterator test_random_access_iterator)
-add_test(test_ifarray test_ifarray)
-
-if(ENABLE_CPPCHECK)
-    add_dependencies(test_dynarray cppcheck)
-    add_dependencies(test_random_access_iterator cppcheck)
-    add_dependencies(test_ifarray cppcheck)
-endif()
-
-# ------------------------------------------------------------------------------
-# Targets
-# ------------------------------------------------------------------------------
-
-if(CMAKE_BUILD_TYPE STREQUAL "COVERAGE")
-    add_custom_target(
-        unittest
-        COMMAND lcov --zerocounters --directory . -q
-        COMMAND ctest --output-on-failure
-    )
-
-    add_custom_target(
-        coverage_info
-        COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/coverage.info
-        COMMAND lcov --zerocounters --directory . -q
-        COMMAND ${CMAKE_COMMAND} -E echo "================================================================================"
-        COMMAND ctest --output-on-failure
-        COMMAND ${CMAKE_COMMAND} -E echo "================================================================================"
-        COMMAND lcov --capture --directory . --output-file ${CMAKE_BINARY_DIR}/coverage.info
-        COMMAND lcov --remove ${CMAKE_BINARY_DIR}/coverage.info '/usr/*' --output-file ${CMAKE_BINARY_DIR}/coverage.info -q
-        COMMAND lcov --remove ${CMAKE_BINARY_DIR}/coverage.info '${CMAKE_BINARY_DIR}/*' --output-file ${CMAKE_BINARY_DIR}/coverage.info -q
-    )
-
-    add_custom_target(
-        coverage
-        COMMAND ${CMAKE_COMMAND} --build . --target coverage_info
-        COMMAND ${CMAKE_COMMAND} -E echo "================================================================================"
-        COMMAND genhtml -o site ${CMAKE_BINARY_DIR}/coverage.info
-        COMMAND ${CMAKE_COMMAND} -E echo "================================================================================"
-        COMMAND ${CMAKE_COMMAND} -E chdir site python -m "http.server"
-    )
-
-    add_custom_target(
-        coverage_upload
-        COMMAND ${CMAKE_COMMAND} --build . --target coverage_info
-        COMMAND ${CMAKE_COMMAND} -E echo "================================================================================"
-        COMMAND curl -s https://codecov.io/bash > ${CMAKE_BINARY_DIR}/codecov.sh
-        COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR}
-        bash ${CMAKE_BINARY_DIR}/codecov.sh -t 3127698f-3d70-4a23-a00f-cd7e54768434 -f ${CMAKE_BINARY_DIR}/coverage.info
-    )
-else()
-    add_custom_target(
-        unittest
-        COMMAND ctest --output-on-failure
-    )
-endif()
+add_subdirectory(add_const)
+add_subdirectory(add_lvalue_reference)
+add_subdirectory(add_pointer)
+add_subdirectory(add_rvalue_reference)
+add_subdirectory(add_volatile)
+add_subdirectory(addressof)
+add_subdirectory(aligned_storage)
+add_subdirectory(aligned_union)
+add_subdirectory(alignment_of)
+# add_subdirectory(arguments)
+add_subdirectory(array)
+add_subdirectory(as_const)
+add_subdirectory(basic_errc_type)
+add_subdirectory(basic_string_view)
+add_subdirectory(bool_constant)
+add_subdirectory(byte)
+add_subdirectory(char_traits)
+add_subdirectory(char_type)
+add_subdirectory(color)
+add_subdirectory(common_type)
+add_subdirectory(conditional)
+add_subdirectory(conjunction)
+add_subdirectory(construct_at)
+add_subdirectory(contiguous_iterator)
+add_subdirectory(cstr_type)
+add_subdirectory(cstring)
+# add_subdirectory(debug)
+add_subdirectory(decay)
+add_subdirectory(declval)
+add_subdirectory(destroy_at)
+add_subdirectory(detected)
+add_subdirectory(detected_or)
+add_subdirectory(discard)
+add_subdirectory(disjunction)
+add_subdirectory(enable_if)
+add_subdirectory(errc_type)
+add_subdirectory(exchange)
+add_subdirectory(exit_code)
+add_subdirectory(extent)
+add_subdirectory(false_type)
+add_subdirectory(fill)
+add_subdirectory(float_denorm_style)
+add_subdirectory(float_round_style)
+# add_subdirectory(fmap)
+add_subdirectory(for_each)
+add_subdirectory(forward)
+add_subdirectory(has_unique_object_representations)
+add_subdirectory(has_virtual_destructor)
+# add_subdirectory(ifmap)
+add_subdirectory(in_place)
+add_subdirectory(integer_sequence)
+add_subdirectory(integral_constant)
+add_subdirectory(invoke)
+add_subdirectory(invoke_result)
+# add_subdirectory(ioctl)
+add_subdirectory(is_abstract)
+add_subdirectory(is_aggregate)
+add_subdirectory(is_arithmetic)
+add_subdirectory(is_array)
+add_subdirectory(is_assignable)
+add_subdirectory(is_base_of)
+add_subdirectory(is_bool)
+add_subdirectory(is_bounded_array)
+add_subdirectory(is_class)
+add_subdirectory(is_compound)
+add_subdirectory(is_const)
+add_subdirectory(is_constant_evaluated)
+add_subdirectory(is_constructible)
+add_subdirectory(is_convertible)
+add_subdirectory(is_copy_assignable)
+add_subdirectory(is_copy_constructible)
+add_subdirectory(is_copyable)
+add_subdirectory(is_default_constructible)
+add_subdirectory(is_destructible)
+add_subdirectory(is_detected)
+add_subdirectory(is_empty)
+add_subdirectory(is_enum)
+add_subdirectory(is_final)
+add_subdirectory(is_floating_point)
+add_subdirectory(is_function)
+add_subdirectory(is_fundamental)
+add_subdirectory(is_integral)
+add_subdirectory(is_invocable)
+add_subdirectory(is_invocable_r)
+add_subdirectory(is_lvalue_reference)
+add_subdirectory(is_member_function_pointer)
+add_subdirectory(is_member_object_pointer)
+add_subdirectory(is_member_pointer)
+add_subdirectory(is_move_assignable)
+add_subdirectory(is_move_constructible)
+add_subdirectory(is_movable)
+add_subdirectory(is_nothrow_assignable)
+add_subdirectory(is_nothrow_constructible)
+add_subdirectory(is_nothrow_convertible)
+add_subdirectory(is_nothrow_copy_assignable)
+add_subdirectory(is_nothrow_copy_constructible)
+add_subdirectory(is_nothrow_copyable)
+add_subdirectory(is_nothrow_default_constructible)
+add_subdirectory(is_nothrow_destructible)
+add_subdirectory(is_nothrow_invocable)
+add_subdirectory(is_nothrow_invocable_r)
+add_subdirectory(is_nothrow_movable)
+add_subdirectory(is_nothrow_move_assignable)
+add_subdirectory(is_nothrow_move_constructible)
+add_subdirectory(is_nothrow_swappable)
+add_subdirectory(is_nothrow_swappable_with)
+add_subdirectory(is_null_pointer)
+add_subdirectory(is_object)
+add_subdirectory(is_pod)
+add_subdirectory(is_pointer)
+add_subdirectory(is_polymorphic)
+add_subdirectory(is_reference)
+add_subdirectory(is_reference_wrapper)
+add_subdirectory(is_rvalue_reference)
+add_subdirectory(is_same)
+add_subdirectory(is_scalar)
+add_subdirectory(is_signed)
+add_subdirectory(is_standard_layout)
+add_subdirectory(is_swappable)
+add_subdirectory(is_swappable_with)
+add_subdirectory(is_trivial)
+add_subdirectory(is_trivially_assignable)
+add_subdirectory(is_trivially_constructible)
+add_subdirectory(is_trivially_copy_assignable)
+add_subdirectory(is_trivially_copy_constructible)
+add_subdirectory(is_trivially_copyable)
+add_subdirectory(is_trivially_default_constructible)
+add_subdirectory(is_trivially_destructible)
+add_subdirectory(is_trivially_movable)
+add_subdirectory(is_trivially_move_assignable)
+add_subdirectory(is_trivially_move_constructible)
+add_subdirectory(is_unbounded_array)
+add_subdirectory(is_union)
+add_subdirectory(is_unsigned)
+add_subdirectory(is_void)
+add_subdirectory(is_volatile)
+# add_subdirectory(lock_guard)
+add_subdirectory(make_signed)
+add_subdirectory(make_unsigned)
+# add_subdirectory(manager)
+add_subdirectory(max_align_t)
+add_subdirectory(max_of)
+add_subdirectory(min_of)
+add_subdirectory(move)
+add_subdirectory(move_if_noexcept)
+# add_subdirectory(mutex)
+add_subdirectory(negation)
+add_subdirectory(nonesuch)
+add_subdirectory(npos)
+add_subdirectory(numeric_limits)
+# add_subdirectory(ofmap)
+# add_subdirectory(print)
+add_subdirectory(rank)
+add_subdirectory(reference_wrapper)
+add_subdirectory(remove_all_extents)
+add_subdirectory(remove_const)
+add_subdirectory(remove_cv)
+add_subdirectory(remove_cvext)
+add_subdirectory(remove_cvref)
+add_subdirectory(remove_extent)
+add_subdirectory(remove_pointer)
+add_subdirectory(remove_reference)
+add_subdirectory(remove_volatile)
+add_subdirectory(result)
+add_subdirectory(reverse_iterator)
+# add_subdirectory(safe_int)
+add_subdirectory(source_location)
+add_subdirectory(span)
+add_subdirectory(string_view)
+add_subdirectory(swap)
+add_subdirectory(true_type)
+add_subdirectory(type_identity)
+add_subdirectory(underlying_type)
+add_subdirectory(void_t)

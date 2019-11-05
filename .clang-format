@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2019 Assured Information Security, Inc.
+# Copyright (C) 2020 Assured Information Security, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -29,12 +29,12 @@ AlignTrailingComments: true
 AllowAllParametersOfDeclarationOnNextLine: true
 AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: false
 AllowShortLambdasOnASingleLine: Empty
 AllowShortLoopsOnASingleLine: false
 # AlwaysBreakAfterDefinitionReturnType
-AlwaysBreakAfterReturnType: All
+AlwaysBreakAfterReturnType: AllDefinitions
 AlwaysBreakBeforeMultilineStrings: true
 AlwaysBreakTemplateDeclarations: Yes
 BinPackArguments: false
@@ -42,7 +42,7 @@ BinPackParameters: false
 BraceWrapping:
     AfterClass: true
     AfterControlStatement: false
-    AfterEnum: false
+    AfterEnum: true
     AfterFunction: true
     AfterNamespace: true
     # AfterObjCDeclaration
@@ -59,10 +59,10 @@ BraceWrapping:
 BreakBeforeBinaryOperators: None
 BreakBeforeBraces: Custom
 BreakBeforeTernaryOperators: true
-BreakConstructorInitializers: AfterColon
+BreakConstructorInitializers: BeforeComma
 BreakInheritanceList: AfterColon
 BreakStringLiterals: true
-ColumnLimit: 80
+ColumnLimit: 100
 # CommentPragmas
 CompactNamespaces: false
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
@@ -72,12 +72,12 @@ Cpp11BracedListStyle: true
 DerivePointerAlignment: false
 # DisableFormat
 # ExperimentalAutoDetectBinPacking
-FixNamespaceComments: true
+FixNamespaceComments: false
 # ForEachMacros
 # IncludeBlocks
 # IncludeCategories
 # IncludeIsMainRegex
-IndentCaseLabels: false
+IndentCaseLabels: true
 IndentPPDirectives: None
 IndentWidth: 4
 IndentWrappedFunctionNames: false
@@ -104,7 +104,7 @@ NamespaceIndentation: All
 # PenaltyReturnTypeOnItsOwnLine
 PointerAlignment: Right
 # RawStringFormats
-ReflowComments: true
+ReflowComments: false
 SortIncludes: false
 SortUsingDeclarations: false
 SpaceAfterCStyleCast: false
@@ -127,19 +127,3 @@ Standard: Auto
 # StatementMacros
 # TabWidth
 UseTab: Never
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

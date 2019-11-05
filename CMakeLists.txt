@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2019 Assured Information Security, Inc.
+# Copyright (C) 2020 Assured Information Security, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,96 +20,13 @@
 # SOFTWARE.
 
 cmake_minimum_required(VERSION 3.13)
-project(dynarray CXX)
-
-include(ExternalProject)
-set(CMAKE_CXX_STANDARD 20)
+project(bsl CXX)
 
 # ------------------------------------------------------------------------------
-# Initial Setup
+# include macros
 # ------------------------------------------------------------------------------
 
-option(BUILD_EXAMPLES "Build example programs" ON)
-option(BUILD_TESTS "Build test programs" ON)
-option(ENABLE_CLANG_TIDY "Enable the use of clang tidy" OFF)
-option(ENABLE_CPPCHECK "Enable the use of cppcheck" OFF)
-
-# ------------------------------------------------------------------------------
-# Development Mode
-# ------------------------------------------------------------------------------
-
-if(ENABLE_DEVELOPMENT STREQUAL "ASAN")
-    set(BUILD_EXAMPLES ON)
-    set(BUILD_TESTS ON)
-    set(ENABLE_CLANG_TIDY ON)
-    set(ENABLE_CPPCHECK ON)
-    set(CMAKE_BUILD_TYPE ASAN)
-endif()
-
-if(ENABLE_DEVELOPMENT STREQUAL "UBSAN")
-    set(BUILD_EXAMPLES ON)
-    set(BUILD_TESTS ON)
-    set(ENABLE_CLANG_TIDY ON)
-    set(ENABLE_CPPCHECK ON)
-    set(CMAKE_BUILD_TYPE UBSAN)
-endif()
-
-if(ENABLE_DEVELOPMENT STREQUAL "COVERAGE")
-    set(BUILD_EXAMPLES OFF)
-    set(BUILD_TESTS ON)
-    set(ENABLE_CLANG_TIDY OFF)
-    set(ENABLE_CPPCHECK OFF)
-    set(CMAKE_BUILD_TYPE COVERAGE)
-endif()
-
-# ------------------------------------------------------------------------------
-# Sanity Checks
-# ------------------------------------------------------------------------------
-
-if(CMAKE_BUILD_TYPE STREQUAL "COVERAGE")
-    if(BUILD_EXAMPLES)
-        message(FATAL_ERROR "BUILD_EXAMPLES must be OFF if COVERAGE is enabled")
-    endif()
-    if(ENABLE_CLANG_TIDY)
-        message(FATAL_ERROR "ENABLE_CLANG_TIDY must be OFF if COVERAGE is enabled")
-    endif()
-    if(ENABLE_CPPCHECK)
-        message(FATAL_ERROR "ENABLE_CPPCHECK must be OFF if COVERAGE is enabled")
-    endif()
-endif()
-
-# ------------------------------------------------------------------------------
-# Flags
-# ------------------------------------------------------------------------------
-
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic -Werror")
-set(CMAKE_CXX_FLAGS_ASAN "-fno-omit-frame-pointer -fsanitize=address -g")
-set(CMAKE_LINKER_FLAGS_ASAN "-fno-omit-frame-pointer -fsanitize=address -g")
-set(CMAKE_CXX_FLAGS_UBSAN "-fsanitize=undefined -g")
-set(CMAKE_LINKER_FLAGS_UBSAN "-fsanitize=undefined -g")
-
-# ------------------------------------------------------------------------------
-# Clang Tidy
-# ------------------------------------------------------------------------------
-
-if(ENABLE_CLANG_TIDY AND NOT CMAKE_CXX_CLANG_TIDY)
-    list(APPEND CMAKE_CXX_CLANG_TIDY
-        clang-tidy
-    )
-endif()
-
-if(ENABLE_CPPCHECK AND NOT CMAKE_CXX_CPPCHECK)
-    list(APPEND CMAKE_CXX_CPPCHECK
-        ${CMAKE_BINARY_DIR}/external/bin/cppcheck
-        --enable=all
-        --error-exitcode=1
-        --quiet
-        --inline-suppr
-        --suppress=missingInclude               # Noisy warning
-        --suppress=operatorEq                   # Mutually exclusive with Clang Tidy
-        --template="{file}:{line}: {severity}: {id}: {message}"
-    )
-endif()
+include(cmake/bareflank.cmake)
 
 # ------------------------------------------------------------------------------
 # Sub Directories
@@ -127,48 +44,4 @@ endif()
 # Install
 # ------------------------------------------------------------------------------
 
-install(FILES include/bsl.h DESTINATION include/bsl)
-
-# ------------------------------------------------------------------------------
-# Package
-# ------------------------------------------------------------------------------
-
-add_library(bsl INTERFACE)
-
-target_include_directories(bsl INTERFACE
-    ${CMAKE_SOURCE_DIR}/include
-)
-
-export(TARGETS bsl FILE bslConfig.cmake APPEND)
-export(PACKAGE bsl)
-
-# ------------------------------------------------------------------------------
-# Targets
-# ------------------------------------------------------------------------------
-
-add_custom_target(
-    format
-    COMMAND find ${CMAKE_SOURCE_DIR}/include -iname *.h -o -iname *.cpp | xargs clang-format -i
-    COMMAND find ${CMAKE_SOURCE_DIR}/tests -iname *.h -o -iname *.cpp | xargs clang-format -i
-)
-
-# ------------------------------------------------------------------------------
-# CppCheck
-# ------------------------------------------------------------------------------
-
-if(ENABLE_CPPCHECK)
-    list(APPEND CPPCHECK_CMAKE_ARGS
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/external/
-        -DCMAKE_CXX_FLAGS="-w"
-        -DCMAKE_BUILD_TYPE=Release
-    )
-
-    ExternalProject_Add(
-        cppcheck
-        URL https://github.com/danmar/cppcheck/archive/1.89.tar.gz
-        URL_MD5 3bc61e54f13639c60a3fc698edb18d61
-        CMAKE_ARGS ${CPPCHECK_CMAKE_ARGS}
-        UPDATE_COMMAND ""
-        UPDATE_DISCONNECTED ON
-    )
-endif()
+install(DIRECTORY include/bsl DESTINATION include/bsl)

@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2019 Assured Information Security, Inc.
+# Copyright (C) 2020 Assured Information Security, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,24 +21,42 @@
 
 # Exceptions
 #
-# -cppcoreguidelines-owning-memory
-#     We have to turn this off as the BSL is actually providing the same logic
-#     as the std::unique_ptr that this rule is based on so that the user of
-#     this library doesn't have to use new/delete
+# -modernize-use-trailing-return-type
 #
-# -bugprone-macro-parentheses
-#     We are having issues with this one telling us to add () in macros that
-#     would cause the code not to compile. In other words, although this is
-#     likely a good test to use, it is buggy and not working right.
+#  We disable this as AUTOSAR does not allow for non-template trailing return
+#  types, and this check does not have this sort of granularity.
 #
-# -readability-magic-numbers
-# -cppcoreguidelines-avoid-magic-numbers
-#     Both of these do not work with the UT engine that we use, and in general
-#     do not work well with unit testing.
+# -modernize-use-default-member-init
+# -readability-redundant-member-init
+#
+#  We disable this as AUTOSAR requires the use of redundant member
+#  initializers to ensure explicit initialization. In addition, they do not
+#  allow for mixed initializers. Either all members are initialized using
+#  default member initialization, or none of them are.
+#
+# -cert-dcl21-cpp
+#
+#  We disable this as AUTOSAR does not require this, and it is mutually
+#  exclusive with readability-const-return-type, which identifies a known
+#  performance issue.
+#
+# -cert-oop54-cpp
+#
+#  This produces a false positive when assignment is implemented using the
+#  temporary swap method, which AUTOSAR requires.
+#
+# -readability-avoid-const-params-in-decls
+#
+#  We disable this as AUTOSAR requires that all params that are not changed
+#  be marked as const, even if they do not contribute to the function
+#  signature.
+#
+# -readability-static-accessed-through-instance
+#
 #
 
-Checks: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-cppcoreguidelines-owning-memory,-bugprone-macro-parentheses,-readability-magic-numbers,-cppcoreguidelines-avoid-magic-numbers'
-WarningsAsErrors: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-cppcoreguidelines-owning-memory,-bugprone-macro-parentheses,-readability-magic-numbers,-cppcoreguidelines-avoid-magic-numbers'
+Checks: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-modernize-use-trailing-return-type,-modernize-use-default-member-init,-readability-redundant-member-init,-cert-dcl21-cpp,-cert-oop54-cpp,-readability-avoid-const-params-in-decls,-readability-static-accessed-through-instance'
+WarningsAsErrors: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-modernize-use-trailing-return-type,-modernize-use-default-member-init,-readability-redundant-member-init,-cert-dcl21-cpp,-cert-oop54-cpp,-readability-avoid-const-params-in-decls,-readability-static-accessed-through-instance'
 HeaderFilterRegex: '.*'
 AnalyzeTemporaryDtors: false
 CheckOptions:
@@ -103,7 +121,7 @@ CheckOptions:
   - key:             cppcoreguidelines-avoid-magic-numbers.IgnoredFloatingPointValues
     value:           '1.0;100.0;'
   - key:             cppcoreguidelines-avoid-magic-numbers.IgnoredIntegerValues
-    value:           '1;2;3;4;'
+    value:           '1;2;3;4;5;6;7;8;9;10;15;16;23;42;64;255'
   - key:             cppcoreguidelines-macro-usage.AllowedRegexp
     value:           '^BAREFLANK*|^bf*|^BF*|^CHECK*'
   - key:             cppcoreguidelines-macro-usage.CheckCapsOnly
@@ -151,7 +169,7 @@ CheckOptions:
   - key:             hicpp-function-size.ParameterThreshold
     value:           '4294967295'
   - key:             hicpp-function-size.StatementThreshold
-    value:           '800'
+    value:           '4294967295'
   - key:             hicpp-function-size.VariableThreshold
     value:           '4294967295'
   - key:             hicpp-member-init.IgnoreArrays
@@ -303,7 +321,7 @@ CheckOptions:
   - key:             readability-function-size.ParameterThreshold
     value:           '4294967295'
   - key:             readability-function-size.StatementThreshold
-    value:           '800'
+    value:           '4294967295'
   - key:             readability-function-size.VariableThreshold
     value:           '4294967295'
   - key:             readability-identifier-naming.IgnoreFailedSplit
@@ -319,7 +337,7 @@ CheckOptions:
   - key:             readability-magic-numbers.IgnoredFloatingPointValues
     value:           '1.0;100.0;'
   - key:             readability-magic-numbers.IgnoredIntegerValues
-    value:           '1;2;3;4;'
+    value:           '1;2;3;4;5;6;7;8;9;10;15;16;23;42;64;255'
   - key:             readability-redundant-smartptr-get.IgnoreMacros
     value:           '1'
   - key:             readability-simplify-boolean-expr.ChainedConditionalAssignment

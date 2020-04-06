@@ -35,7 +35,7 @@ jobs:
         sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install -y clang-format-8 ninja-build
+        sudo apt-get install -y clang-format-10 ninja-build
         sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
       shell: bash
     - name: Validate Source Formatting

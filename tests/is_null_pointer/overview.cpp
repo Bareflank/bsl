@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/is_null_pointer.hpp>
+#include <bsl/cstddef.hpp>
 #include <bsl/ut.hpp>
 
 namespace

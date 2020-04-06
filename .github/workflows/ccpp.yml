@@ -57,3 +57,188 @@ jobs:
           exit -1
         fi
       shell: bash
+
+  Clang_Tidy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup
+      run: |
+        CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
+        mkdir custom_cmake
+        wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C custom_cmake
+        export PATH=$(pwd)/custom_cmake/bin:${PATH}
+        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+        sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
+        sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get install -y clang-10 clang-tidy-10 clang-format-10 ninja-build doxygen
+        sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-10 100
+        sudo update-alternatives --remove-all clang
+        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
+        sudo update-alternatives --remove-all clang++
+        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
+        sudo update-alternatives --remove-all clang-format
+        sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
+      shell: bash
+    - name: Validate Compilation
+      run: |
+        mkdir build && cd build
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=CLANG_TIDY ..
+        ninja
+        ninja unittest
+      shell: bash
+
+  ASAN:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup
+      run: |
+        CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
+        mkdir custom_cmake
+        wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C custom_cmake
+        export PATH=$(pwd)/custom_cmake/bin:${PATH}
+        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+        sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
+        sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get install -y clang-10 clang-tidy-10 clang-format-10 ninja-build doxygen
+        sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-10 100
+        sudo update-alternatives --remove-all clang
+        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
+        sudo update-alternatives --remove-all clang++
+        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
+        sudo update-alternatives --remove-all clang-format
+        sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
+      shell: bash
+    - name: Validate Compilation
+      run: |
+        mkdir build && cd build
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=ASAN ..
+        ninja
+        ninja unittest
+      shell: bash
+
+  UBSAN:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup
+      run: |
+        CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
+        mkdir custom_cmake
+        wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C custom_cmake
+        export PATH=$(pwd)/custom_cmake/bin:${PATH}
+        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+        sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
+        sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get install -y clang-10 clang-tidy-10 clang-format-10 ninja-build doxygen
+        sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-10 100
+        sudo update-alternatives --remove-all clang
+        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
+        sudo update-alternatives --remove-all clang++
+        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
+        sudo update-alternatives --remove-all clang-format
+        sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
+      shell: bash
+    - name: Validate Compilation
+      run: |
+        mkdir build && cd build
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=UBSAN ..
+        ninja
+        ninja unittest
+      shell: bash
+
+  Release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup
+      run: |
+        CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
+        mkdir custom_cmake
+        wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C custom_cmake
+        export PATH=$(pwd)/custom_cmake/bin:${PATH}
+        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+        sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
+        sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get install -y clang-10 clang-tidy-10 clang-format-10 ninja-build doxygen
+        sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-10 100
+        sudo update-alternatives --remove-all clang
+        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
+        sudo update-alternatives --remove-all clang++
+        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
+        sudo update-alternatives --remove-all clang-format
+        sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
+      shell: bash
+    - name: Validate Compilation
+      run: |
+        mkdir build && cd build
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=RELEASE ..
+        ninja
+      shell: bash
+
+  Debug:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup
+      run: |
+        CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
+        mkdir custom_cmake
+        wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C custom_cmake
+        export PATH=$(pwd)/custom_cmake/bin:${PATH}
+        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+        sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
+        sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get install -y clang-10 clang-tidy-10 clang-format-10 ninja-build doxygen
+        sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-10 100
+        sudo update-alternatives --remove-all clang
+        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
+        sudo update-alternatives --remove-all clang++
+        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
+        sudo update-alternatives --remove-all clang-format
+        sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
+      shell: bash
+    - name: Validate Compilation
+      run: |
+        mkdir build && cd build
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=DEBUG ..
+        ninja
+        ninja unittest
+      shell: bash
+
+  Codecov:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup
+      run: |
+        CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
+        mkdir custom_cmake
+        wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C custom_cmake
+        export PATH=$(pwd)/custom_cmake/bin:${PATH}
+        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+        sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
+        sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get install -y clang-10 clang-tidy-10 clang-format-10 ninja-build doxygen
+        sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-10 100
+        sudo update-alternatives --remove-all clang
+        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
+        sudo update-alternatives --remove-all clang++
+        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
+        sudo update-alternatives --remove-all clang-format
+        sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
+      shell: bash
+    - name: Validate Compilation
+      run: |
+        mkdir build && cd build
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=COVERAGE ..
+        ninja
+        ninja codecov-upload
+      shell: bash

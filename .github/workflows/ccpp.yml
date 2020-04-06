@@ -21,7 +21,7 @@ jobs:
         doxygen .doxygen
       shell: bash
       
-  Clang Format:
+  Clang_Format:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2

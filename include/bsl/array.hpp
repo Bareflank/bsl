@@ -104,7 +104,7 @@ namespace bsl
         ///     a containter. This class mimics a container.
         ///
         /// <!-- inputs/outputs -->
-        ///   @param index the index of the instance to return
+        ///   @param index_haha the index of the instance to return
         ///   @return Returns a pointer to the instance of T stored at index
         ///     "index". If the index is out of bounds, or the array is invalid,
         ///     this function returns a nullptr.

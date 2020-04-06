@@ -236,7 +236,13 @@ jobs:
         sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
         wget https://github.com/mozilla/grcov/releases/download/v0.5.13/grcov-linux-x86_64.tar.bz2
         tar xvf grcov-linux-x86_64.tar.bz2
+        ls -al
+        echo "---------------"
         mv grcov custom_cmake/bin/grcov
+        ls -al
+        echo "---------------"
+        ls -al custom_cmake/bin/
+        echo "---------------"
       shell: bash
     - name: Validate Compilation
       run: |

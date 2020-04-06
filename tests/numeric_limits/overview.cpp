@@ -273,16 +273,16 @@ main() noexcept
     static_assert(numeric_limits<bsl::int64>::max_exponent10 == std::numeric_limits<bsl::int64>::max_exponent10);
     static_assert(numeric_limits<bsl::uint64>::max_exponent10 == std::numeric_limits<bsl::uint64>::max_exponent10);
 
-    static_assert(numeric_limits<void *>::traps == std::numeric_limits<void *>::traps);
-    static_assert(numeric_limits<bool>::traps == std::numeric_limits<bool>::traps);
-    static_assert(numeric_limits<bsl::int8>::traps == std::numeric_limits<bsl::int8>::traps);
-    static_assert(numeric_limits<bsl::uint8>::traps == std::numeric_limits<bsl::uint8>::traps);
-    static_assert(numeric_limits<bsl::int16>::traps == std::numeric_limits<bsl::int16>::traps);
-    static_assert(numeric_limits<bsl::uint16>::traps == std::numeric_limits<bsl::uint16>::traps);
-    static_assert(numeric_limits<bsl::int32>::traps == std::numeric_limits<bsl::int32>::traps);
-    static_assert(numeric_limits<bsl::uint32>::traps == std::numeric_limits<bsl::uint32>::traps);
-    static_assert(numeric_limits<bsl::int64>::traps == std::numeric_limits<bsl::int64>::traps);
-    static_assert(numeric_limits<bsl::uint64>::traps == std::numeric_limits<bsl::uint64>::traps);
+    static_assert(!numeric_limits<void *>::traps);
+    static_assert(!numeric_limits<bool>::traps);
+    static_assert(!numeric_limits<bsl::int8>::traps);
+    static_assert(!numeric_limits<bsl::uint8>::traps);
+    static_assert(!numeric_limits<bsl::int16>::traps);
+    static_assert(!numeric_limits<bsl::uint16>::traps);
+    static_assert(!numeric_limits<bsl::int32>::traps);
+    static_assert(!numeric_limits<bsl::uint32>::traps);
+    static_assert(!numeric_limits<bsl::int64>::traps);
+    static_assert(!numeric_limits<bsl::uint64>::traps);
 
     static_assert(numeric_limits<void *>::tinyness_before == std::numeric_limits<void *>::tinyness_before);
     static_assert(numeric_limits<bool>::tinyness_before == std::numeric_limits<bool>::tinyness_before);

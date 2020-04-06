@@ -217,7 +217,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Setup
-      uses: actions-rs/grcov@v0.1
       run: |
         CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
         mkdir custom_cmake

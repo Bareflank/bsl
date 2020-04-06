@@ -238,10 +238,10 @@ jobs:
         tar xvf grcov-linux-x86_64.tar.bz2
         ls -al
         echo "---------------"
-        mv grcov custom_cmake/bin/grcov
+        sudo mv grcov /usr/bin/
         ls -al
         echo "---------------"
-        ls -al custom_cmake/bin/
+        ls -al /usr/bin/
         echo "---------------"
       shell: bash
     - name: Validate Compilation

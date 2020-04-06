@@ -21,3 +21,26 @@ jobs:
         doxygen .doxygen
       shell: bash
       
+  Clang Format:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup
+      run: |
+        CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
+        mkdir custom_cmake
+        wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C custom_cmake
+        export PATH=$(pwd)/custom_cmake/bin:${PATH}
+        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+        sudo apt-add-repository -y "deb http://apt.llvm.org/xenial/ llvm-toolchain-bionic-10 main"
+        sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get install -y clang-format-8 ninja-build
+        sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
+      shell: bash
+    - name: Validate Source Formatting
+      run: |
+        mkdir build && cd build
+        cmake -GNinja -DCMAKE_BUILD_TYPE=DEBUG ..
+        make format
+      shell: bash

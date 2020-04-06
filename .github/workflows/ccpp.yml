@@ -7,17 +7,17 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
-    runs-on: windows-latest
-
+  Git_Check:
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+    - name: check
+      run: |
+        if [[ -n $(git diff --check HEAD^) ]]; then
+          echo "You must remove whitespace before submitting a pull request"
+          echo ""
+          git diff --check HEAD^
+          exit -1
+        fi
+      shell: bash
+      

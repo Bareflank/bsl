@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: Main Page</title>
+<title>My Project: bsl::add_volatile&lt; T &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -45,7 +45,6 @@ $(function() {
 });
 /* @license-end */</script>
 <div id="main-nav"></div>
-</div><!-- top -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -60,11 +59,47 @@ $(function() {
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespacebsl.html">bsl</a></li><li class="navelem"><a class="el" href="structbsl_1_1add__volatile.html">add_volatile</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="structbsl_1_1add__volatile-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">My Project Documentation</div>  </div>
+<div class="title">bsl::add_volatile&lt; T &gt; Class Template Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Provides the member typedef type which is the same as T, except that a topmost volatile qualifier is added.  
+ <a href="structbsl_1_1add__volatile.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="add__volatile_8hpp_source.html">add_volatile.hpp</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:af81fceae23ae3e7de1f6e1c4cd378ee3"><td class="memItemLeft" align="right" valign="top"><a id="af81fceae23ae3e7de1f6e1c4cd378ee3"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbsl_1_1add__volatile.html#af81fceae23ae3e7de1f6e1c4cd378ee3">type</a> = T volatile</td></tr>
+<tr class="memdesc:af81fceae23ae3e7de1f6e1c4cd378ee3"><td class="mdescLeft">&#160;</td><td class="mdescRight">provides the member typedef "type" <br /></td></tr>
+<tr class="separator:af81fceae23ae3e7de1f6e1c4cd378ee3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename T&gt;<br />
+class bsl::add_volatile&lt; T &gt;</h3>
+
+<p>Provides the member typedef type which is the same as T, except that a topmost volatile qualifier is added. </p>
+<dl class="section note"><dt>Note</dt><dd>"volatile" is not supported by the BSL as it is not compliant with AUTOSAR. We only provide this for completeness and will produce a compile-time error if these APIs are used. Also note that C++ in general is deprectating the use of volatile.</dd></dl>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>the type to add a volatile qualifier to </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
+<li>include/bsl/<a class="el" href="add__volatile_8hpp_source.html">add_volatile.hpp</a></li>
+</ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -309,7 +309,7 @@ endif()
 if(CMAKE_BUILD_TYPE STREQUAL COVERAGE)
     bf_find_program(BF_GRCOV "grcov" "https://github.com/mozilla/grcov")
     message(STATUS "Tool [grcov]: ${BF_ENABLED} - ${BF_GRCOV}")
-    add_custom_target(coverage-upload
+    add_custom_target(coverage-info
         COMMAND ctest -j ${NUM_THREADS} --output-on-failure
         COMMAND grcov ${CMAKE_BINARY_DIR} -s ${CMAKE_SOURCE_DIR} -t lcov -o ${CMAKE_BINARY_DIR}/coverage.info
         # COMMAND curl -s https://codecov.io/bash > ${CMAKE_BINARY_DIR}/codecov.sh

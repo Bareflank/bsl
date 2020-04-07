@@ -249,7 +249,7 @@ jobs:
         mkdir build && cd build
         cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=COVERAGE ..
         ninja
-        ninja codecov-upload
+        ninja coverage-info
       shell: bash
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1

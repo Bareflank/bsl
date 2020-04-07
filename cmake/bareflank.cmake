@@ -317,7 +317,7 @@ if(CMAKE_BUILD_TYPE STREQUAL COVERAGE)
         # bash ${CMAKE_BINARY_DIR}/codecov.sh -t ${BSL_CODECOV_TOKEN} -f ${CMAKE_BINARY_DIR}/coverage.info
     )
     add_custom_command(TARGET info
-        COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ninja coverage-upload                 checks source against regex rules"
+        COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ninja coverage-info                   checks source against regex rules"
         VERBATIM
     )
 else()

@@ -1,2 +1,0 @@
-discard
-narrow_cast

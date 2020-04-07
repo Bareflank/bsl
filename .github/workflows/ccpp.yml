@@ -20,11 +20,13 @@ jobs:
       run: |
         doxygen .doxygen
       shell: bash
-      
+
   Clang_Format:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        path: bsl
     - name: Setup
       run: |
         CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
@@ -47,9 +49,9 @@ jobs:
     - name: Validate Source Formatting
       run: |
         mkdir build && cd build
-        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=DEBUG ..
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=DEBUG ../bsl
         ninja format
-        cd ..
+        cd ../bsl
         if [[ -n $(git diff) ]]; then
           echo "You must run make format before submitting a pull request"
           echo ""
@@ -62,6 +64,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        path: bsl
     - name: Setup
       run: |
         CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
@@ -81,18 +85,19 @@ jobs:
         sudo update-alternatives --remove-all clang-format
         sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
       shell: bash
-    - name: Validate Compilation
+    - name: Validate Compliance
       run: |
         mkdir build && cd build
-        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=CLANG_TIDY ..
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=CLANG_TIDY ../bsl
         ninja
-        ninja unittest
       shell: bash
 
   ASAN:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        path: bsl
     - name: Setup
       run: |
         CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
@@ -112,10 +117,10 @@ jobs:
         sudo update-alternatives --remove-all clang-format
         sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
       shell: bash
-    - name: Validate Compilation
+    - name: Validate ASAN
       run: |
         mkdir build && cd build
-        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=ASAN ..
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=ASAN ../bsl
         ninja
         ninja unittest
       shell: bash
@@ -124,6 +129,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        path: bsl
     - name: Setup
       run: |
         CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
@@ -143,10 +150,10 @@ jobs:
         sudo update-alternatives --remove-all clang-format
         sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
       shell: bash
-    - name: Validate Compilation
+    - name: Validate UBSAN
       run: |
         mkdir build && cd build
-        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=UBSAN ..
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=UBSAN ../bsl
         ninja
         ninja unittest
       shell: bash
@@ -155,6 +162,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        path: bsl
     - name: Setup
       run: |
         CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
@@ -174,10 +183,10 @@ jobs:
         sudo update-alternatives --remove-all clang-format
         sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
       shell: bash
-    - name: Validate Compilation
+    - name: Validate Release Build
       run: |
         mkdir build && cd build
-        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=RELEASE ..
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=RELEASE ../bsl
         ninja
       shell: bash
 
@@ -185,6 +194,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        path: bsl
     - name: Setup
       run: |
         CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
@@ -204,10 +215,10 @@ jobs:
         sudo update-alternatives --remove-all clang-format
         sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
       shell: bash
-    - name: Validate Compilation
+    - name: Validate Debug Build
       run: |
         mkdir build && cd build
-        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=DEBUG ..
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=DEBUG ../bsl
         ninja
         ninja unittest
       shell: bash
@@ -216,6 +227,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        path: bsl
     - name: Setup
       run: |
         CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
@@ -234,20 +247,19 @@ jobs:
         sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
         sudo update-alternatives --remove-all clang-format
         sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
-        wget https://github.com/mozilla/grcov/releases/download/v0.5.13/grcov-linux-x86_64.tar.bz2
+        wget https://github.com/mozilla/grcov/releases/download/v0.5.9/grcov-linux-x86_64.tar.bz2
         tar xvf grcov-linux-x86_64.tar.bz2
-        ls -al
-        echo "---------------"
         sudo mv grcov /usr/bin/
-        ls -al
-        echo "---------------"
-        ls -al /usr/bin/
-        echo "---------------"
       shell: bash
-    - name: Validate Compilation
+    - name: Gather Coverage Info
       run: |
         mkdir build && cd build
-        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=COVERAGE ..
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=COVERAGE ../bsl
         ninja
-        ninja codecov-upload
+        ninja coverage-info
+      shell: bash
+    - name: Upload Coverage Info
+      run: |
+        cd build
+        ninja coverage-upload-ci
       shell: bash

@@ -302,29 +302,26 @@ endif()
 # llvm-cov
 # ------------------------------------------------------------------------------
 
-if(NOT DEFINED BSL_CODECOV_TOKEN)
-    set(BSL_CODECOV_TOKEN "3127698f-3d70-4a23-a00f-cd7e54768434")
-endif()
-
 if(CMAKE_BUILD_TYPE STREQUAL COVERAGE)
     bf_find_program(BF_GRCOV "grcov" "https://github.com/mozilla/grcov")
     message(STATUS "Tool [grcov]: ${BF_ENABLED} - ${BF_GRCOV}")
-    add_custom_target(codecov-upload
+    add_custom_target(coverage-info
         COMMAND ctest -j ${NUM_THREADS} --output-on-failure
         COMMAND grcov ${CMAKE_BINARY_DIR} -s ${CMAKE_SOURCE_DIR} -t lcov -o ${CMAKE_BINARY_DIR}/coverage.info
-        COMMAND curl -s https://codecov.io/bash > ${CMAKE_BINARY_DIR}/codecov.sh
-        COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR}
-        bash ${CMAKE_BINARY_DIR}/codecov.sh -t ${BSL_CODECOV_TOKEN} -f ${CMAKE_BINARY_DIR}/coverage.info
     )
     add_custom_target(coverage-upload
-        COMMAND ctest -j ${NUM_THREADS} --output-on-failure
-        COMMAND grcov ${CMAKE_BINARY_DIR} -s ${CMAKE_SOURCE_DIR} -t lcov -o ${CMAKE_BINARY_DIR}/coverage.info
         COMMAND curl -s https://codecov.io/bash > ${CMAKE_BINARY_DIR}/codecov.sh
         COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR}
         bash ${CMAKE_BINARY_DIR}/codecov.sh -t ${BSL_CODECOV_TOKEN} -f ${CMAKE_BINARY_DIR}/coverage.info
     )
+    add_custom_target(coverage-upload-ci
+        COMMAND curl -s https://codecov.io/bash > ${CMAKE_BINARY_DIR}/codecov.sh
+        COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR}
+        bash ${CMAKE_BINARY_DIR}/codecov.sh -f ${CMAKE_BINARY_DIR}/coverage.info -Z
+    )
     add_custom_command(TARGET info
-        COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ninja codecov-upload                  checks source against regex rules"
+        COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ninja coverage-info                   gathers info about unit test coverage"
+        COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ninja coverage-upload                 uploads results of unit test coverage"
         VERBATIM
     )
 else()
@@ -334,16 +331,6 @@ endif()
 # ------------------------------------------------------------------------------
 # doxygen
 # ------------------------------------------------------------------------------
-
-if(CMAKE_BUILD_TYPE STREQUAL DEBUG OR
-   CMAKE_BUILD_TYPE STREQUAL CLANG_TIDY OR
-   CMAKE_BUILD_TYPE STREQUAL ASAN OR
-   CMAKE_BUILD_TYPE STREQUAL UBSAN OR
-   CMAKE_BUILD_TYPE STREQUAL COVERAGE)
-    if(NOT DEFINED ENABLE_DOXYGEN)
-        set(ENABLE_DOXYGEN ON)
-    endif()
-endif()
 
 if(ENABLE_DOXYGEN)
     bf_find_program(BF_DOXYGEN "doxygen" "http://doxygen.nl/")

@@ -26,7 +26,7 @@
 #define EXAMPLE_MOVE_OVERVIEW_HPP
 
 #include <bsl/move.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -40,7 +40,7 @@ namespace bsl
         bool const &&val2{bsl::move(val1)};
 
         if (val2) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

@@ -26,7 +26,7 @@
 #define EXAMPLE_INVOKE_OVERVIEW_HPP
 
 #include <bsl/invoke.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 #include "example_function.hpp"
 
@@ -39,7 +39,7 @@ namespace bsl
     example_invoke_overview() noexcept
     {
         if (bsl::invoke(example_function, true)) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

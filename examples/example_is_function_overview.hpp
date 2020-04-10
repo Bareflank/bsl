@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_FUNCTION_OVERVIEW_HPP
 
 #include <bsl/is_function.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 #include "example_function.hpp"
 
@@ -39,7 +39,7 @@ namespace bsl
     example_is_function_overview() noexcept
     {
         if (bsl::is_function<decltype(example_function)>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

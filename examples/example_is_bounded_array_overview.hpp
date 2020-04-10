@@ -37,7 +37,7 @@ namespace bsl
     {
         constexpr bsl::int32 bounds{42};
         if (bsl::is_bounded_array<bool[bounds]>::value) {    // NOLINT
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

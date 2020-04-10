@@ -26,7 +26,7 @@
 #define EXAMPLE_FALSE_TYPE_OVERVIEW_HPP
 
 #include <bsl/false_type.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_false_type_overview() noexcept
     {
         if (!bsl::false_type::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

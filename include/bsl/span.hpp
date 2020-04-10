@@ -36,7 +36,6 @@
 #include "is_constant_evaluated.hpp"
 #include "is_fundamental.hpp"
 #include "numeric_limits.hpp"
-#include "remove_const.hpp"
 #include "reverse_iterator.hpp"
 
 namespace bsl
@@ -849,9 +848,9 @@ namespace bsl
     ///   @return Returns true if two spans have the same size and contain
     ///     the same contents. Returns false otherwise.
     ///
-    template<typename T, typename TRC = remove_const_t<T>>
+    template<typename T>
     constexpr bool
-    operator!=(span<TRC> const &lhs, span<TRC> const &rhs) noexcept
+    operator!=(span<T> const &lhs, span<T> const &rhs) noexcept
     {
         return !(lhs == rhs);
     }

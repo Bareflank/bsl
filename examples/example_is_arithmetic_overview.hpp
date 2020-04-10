@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_ARITHMETIC_OVERVIEW_HPP
 
 #include <bsl/is_arithmetic.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_is_arithmetic_overview() noexcept
     {
         if (bsl::is_arithmetic<bsl::int32>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

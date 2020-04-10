@@ -27,7 +27,7 @@
 
 #include <bsl/add_rvalue_reference.hpp>
 #include <bsl/is_same.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -38,7 +38,7 @@ namespace bsl
     example_add_rvalue_reference_overview() noexcept
     {
         if (bsl::is_same<bsl::add_rvalue_reference_t<bool>, bool &&>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

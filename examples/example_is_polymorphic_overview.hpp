@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_POLYMORPHIC_OVERVIEW_HPP
 
 #include <bsl/is_polymorphic.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 #include "example_class_subclass.hpp"
 
@@ -39,7 +39,7 @@ namespace bsl
     example_is_polymorphic_overview() noexcept
     {
         if (bsl::is_polymorphic<example_class_subclass>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

@@ -26,7 +26,7 @@
 #define EXAMPLE_SOURCE_LOCATION_CURRENT_HPP
 
 #include <bsl/source_location.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -36,8 +36,7 @@ namespace bsl
     inline void
     example_source_location_current() noexcept
     {
-        bsl::sloc_type const sloc{bsl::sloc_type::current()};
-        bsl::print("success: %s [%d]\n", sloc.file_name(), sloc.line());
+        bsl::print() << bsl::sloc_type::current();
     }
 }
 

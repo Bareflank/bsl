@@ -26,7 +26,7 @@
 #define EXAMPLE_CHAR_TRAITS_FIND_HPP
 
 #include <bsl/char_traits.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -40,7 +40,7 @@ namespace bsl
         constexpr bsl::char_type ch{'2'};
 
         if (bsl::char_traits<bsl::char_type>::find("42", n, ch) != nullptr) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

@@ -26,7 +26,7 @@
 #define EXAMPLE_MOVE_IF_NOEXCEPT_OVERVIEW_HPP
 
 #include <bsl/move_if_noexcept.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -40,7 +40,7 @@ namespace bsl
         bool const &&val2{bsl::move_if_noexcept(val1)};
 
         if (val2) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

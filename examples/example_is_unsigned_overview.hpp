@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_UNSIGNED_OVERVIEW_HPP
 
 #include <bsl/is_unsigned.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_is_unsigned_overview() noexcept
     {
         if (bsl::is_unsigned<bsl::uint32>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

@@ -26,7 +26,7 @@
 #define EXAMPLE_REFERENCE_WRAPPER_FUNCTOR_HPP
 
 #include <bsl/reference_wrapper.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 #include "../example_function.hpp"
 
@@ -41,7 +41,7 @@ namespace bsl
         bsl::reference_wrapper const rw{example_function};
 
         if (rw(true)) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

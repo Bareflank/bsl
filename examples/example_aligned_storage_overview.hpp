@@ -27,7 +27,7 @@
 
 #include <bsl/aligned_storage.hpp>
 #include <bsl/alignment_of.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -40,7 +40,7 @@ namespace bsl
         using page_type = bsl::aligned_storage_t<BSL_PAGE_SIZE, 64>;
 
         if (sizeof(page_type) >= BSL_PAGE_SIZE) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

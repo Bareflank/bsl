@@ -27,7 +27,7 @@
 
 #include <bsl/detected_or.hpp>
 #include <bsl/is_same.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 #include "example_class_base.hpp"
 
@@ -46,7 +46,7 @@ namespace bsl
             bsl::detected_or_t<void, example_detected_or, example_class_base>;
 
         if (is_same<example_detected_or_type, void>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

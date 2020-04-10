@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_POD_OVERVIEW_HPP
 
 #include <bsl/is_pod.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_is_pod_overview() noexcept
     {
         if (bsl::is_pod<bool>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

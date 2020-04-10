@@ -26,7 +26,7 @@
 #define EXAMPLE_SPAN_NOT_EQUALS_HPP
 
 #include <bsl/array.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -53,11 +53,11 @@ namespace bsl
         bsl::span const spn3{arr3.data(), arr3.size()};
 
         if (spn1 == spn2) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
 
         if (spn1 != spn3) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

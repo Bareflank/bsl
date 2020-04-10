@@ -26,7 +26,7 @@
 #define EXAMPLE_NUMERIC_LIMITS_OVERVIEW_HPP
 
 #include <bsl/numeric_limits.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_numeric_limits_overview() noexcept
     {
         if (bsl::numeric_limits<bsl::uint64>::min() == 0U) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

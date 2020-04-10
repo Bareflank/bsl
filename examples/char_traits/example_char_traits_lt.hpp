@@ -26,7 +26,7 @@
 #define EXAMPLE_CHAR_TRAITS_LT_HPP
 
 #include <bsl/char_traits.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -40,7 +40,7 @@ namespace bsl
         bsl::char_type const val2{static_cast<bsl::char_type>(42)};
 
         if (bsl::char_traits<bsl::char_type>::lt(val1, val2)) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

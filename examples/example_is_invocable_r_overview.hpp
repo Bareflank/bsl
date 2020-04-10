@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_INVOCABLE_R_OVERVIEW_HPP
 
 #include <bsl/is_invocable_r.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_is_invocable_r_overview() noexcept
     {
         if (bsl::is_invocable_r<bool(), bool()>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

@@ -27,7 +27,7 @@
 
 #include <bsl/remove_extent.hpp>
 #include <bsl/is_same.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -38,7 +38,7 @@ namespace bsl
     example_remove_extent_overview() noexcept
     {
         if (bsl::is_same<bsl::remove_extent_t<bool[]>, bool>::value) {    // NOLINT
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

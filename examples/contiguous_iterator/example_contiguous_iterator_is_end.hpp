@@ -26,7 +26,7 @@
 #define EXAMPLE_CONTIGUOUS_ITERATOR_IS_END_HPP
 
 #include <bsl/string_view.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -40,7 +40,7 @@ namespace bsl
         constexpr bsl::string_view::iterator_type iter{str.end()};
 
         if (iter.is_end()) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

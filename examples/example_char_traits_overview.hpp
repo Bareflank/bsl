@@ -26,7 +26,7 @@
 #define EXAMPLE_CHAR_TRAITS_OVERVIEW_HPP
 
 #include <bsl/char_traits.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -38,7 +38,7 @@ namespace bsl
     {
         constexpr bsl::uintmax n{2U};
         if (bsl::char_traits<bsl::char_type>::compare("42", "42", n) == 0) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

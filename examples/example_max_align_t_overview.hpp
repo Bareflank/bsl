@@ -26,7 +26,7 @@
 #define EXAMPLE_MAX_ALIGN_T_OVERVIEW_HPP
 
 #include <bsl/max_align_t.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_max_align_t_overview() noexcept
     {
         if (alignof(bsl::max_align_t) == alignof(bsl::uintmax)) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

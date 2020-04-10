@@ -27,7 +27,7 @@
 
 #include <bsl/make_unsigned.hpp>
 #include <bsl/is_same.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -38,7 +38,7 @@ namespace bsl
     example_make_unsigned_overview() noexcept
     {
         if (bsl::is_same<bsl::make_unsigned_t<bsl::int32>, bsl::uint32>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

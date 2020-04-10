@@ -26,7 +26,7 @@
 #define EXAMPLE_INTEGER_SEQUENCE_MIN_HPP
 
 #include <bsl/integer_sequence.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -39,7 +39,7 @@ namespace bsl
         constexpr bsl::uintmax min{0};
 
         if (bsl::make_index_sequence<6>::min() == min) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

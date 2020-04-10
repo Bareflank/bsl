@@ -36,7 +36,7 @@ namespace bsl
     example_is_void_overview() noexcept
     {
         if (bsl::is_void<void>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

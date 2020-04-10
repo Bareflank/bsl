@@ -26,7 +26,7 @@
 #define EXAMPLE_CONTIGUOUS_ITERATOR_INCREMENT_HPP
 
 #include <bsl/string_view.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -41,7 +41,7 @@ namespace bsl
 
         ++iter;
         if (auto const *const ptr = iter.get_if()) {
-            bsl::print("success: %c\n", *ptr);
+            bsl::print() << "success: " << *ptr << bsl::endl;
         }
     }
 }

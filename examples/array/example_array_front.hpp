@@ -26,7 +26,7 @@
 #define EXAMPLE_ARRAY_FRONT_HPP
 
 #include <bsl/array.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -47,7 +47,7 @@ namespace bsl
         bsl::array<bsl::uintmax, size> const arr{val1, val2, val3, val4, val5, val6};
 
         if (val1 == arr.front()) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

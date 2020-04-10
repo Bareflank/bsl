@@ -27,7 +27,7 @@
 
 #include <bsl/add_pointer.hpp>
 #include <bsl/is_same.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -38,7 +38,7 @@ namespace bsl
     example_add_pointer_overview() noexcept
     {
         if (bsl::is_same<bsl::add_pointer_t<bool>, bool *>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

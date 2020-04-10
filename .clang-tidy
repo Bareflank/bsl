@@ -53,10 +53,28 @@
 #
 # -readability-static-accessed-through-instance
 #
+#  We disable this as AUTOSAR requires that functions that can be made static
+#  are made static. Requiring this would be too much of a code change, and
+#  does not always work with templates
+#
+# -modernize-concat-nested-namespaces
+#
+#  Perforce currently does not support this. Once it does, we can remove this
+#
+# -hicpp-avoid-c-arrays
+# -modernize-avoid-c-arrays
+# -cppcoreguidelines-avoid-c-arrays
+# -hicpp-no-array-decay
+# -cppcoreguidelines-pro-bounds-array-to-pointer-decay
+# -cppcoreguidelines-pro-bounds-constant-array-index
+#
+#  These should all be enabled, but they cannot be in this library as we
+#  implement the APIs that these checks depend on.
+#
 #
 
-Checks: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-modernize-use-trailing-return-type,-modernize-use-default-member-init,-readability-redundant-member-init,-cert-dcl21-cpp,-cert-oop54-cpp,-readability-avoid-const-params-in-decls,-readability-static-accessed-through-instance'
-WarningsAsErrors: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-modernize-use-trailing-return-type,-modernize-use-default-member-init,-readability-redundant-member-init,-cert-dcl21-cpp,-cert-oop54-cpp,-readability-avoid-const-params-in-decls,-readability-static-accessed-through-instance'
+Checks: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-modernize-use-trailing-return-type,-modernize-use-default-member-init,-readability-redundant-member-init,-cert-dcl21-cpp,-cert-oop54-cpp,-readability-avoid-const-params-in-decls,-readability-static-accessed-through-instance,-modernize-concat-nested-namespaces,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-hicpp-no-array-decay,-hicpp-avoid-c-arrays,-modernize-avoid-c-arrays,-cppcoreguidelines-avoid-c-arrays,-cppcoreguidelines-pro-bounds-constant-array-index'
+WarningsAsErrors: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-modernize-use-trailing-return-type,-modernize-use-default-member-init,-readability-redundant-member-init,-cert-dcl21-cpp,-cert-oop54-cpp,-readability-avoid-const-params-in-decls,-readability-static-accessed-through-instance,-modernize-concat-nested-namespaces,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-hicpp-no-array-decay,-hicpp-avoid-c-arrays,-modernize-avoid-c-arrays,-cppcoreguidelines-avoid-c-arrays,-cppcoreguidelines-pro-bounds-constant-array-index'
 HeaderFilterRegex: '.*'
 AnalyzeTemporaryDtors: false
 CheckOptions:
@@ -121,7 +139,7 @@ CheckOptions:
   - key:             cppcoreguidelines-avoid-magic-numbers.IgnoredFloatingPointValues
     value:           '1.0;100.0;'
   - key:             cppcoreguidelines-avoid-magic-numbers.IgnoredIntegerValues
-    value:           '1;2;3;4;5;6;7;8;9;10;15;16;23;42;64;255'
+    value:           '1;2;3;4;5;6;7;8;9;10;15;16;23;42;64;255;256'
   - key:             cppcoreguidelines-macro-usage.AllowedRegexp
     value:           '^BAREFLANK*|^bf*|^BF*|^CHECK*'
   - key:             cppcoreguidelines-macro-usage.CheckCapsOnly
@@ -337,7 +355,7 @@ CheckOptions:
   - key:             readability-magic-numbers.IgnoredFloatingPointValues
     value:           '1.0;100.0;'
   - key:             readability-magic-numbers.IgnoredIntegerValues
-    value:           '1;2;3;4;5;6;7;8;9;10;15;16;23;42;64;255'
+    value:           '1;2;3;4;5;6;7;8;9;10;15;16;23;42;64;255;256'
   - key:             readability-redundant-smartptr-get.IgnoreMacros
     value:           '1'
   - key:             readability-simplify-boolean-expr.ChainedConditionalAssignment

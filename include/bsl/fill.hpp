@@ -47,16 +47,16 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @tparam VIEW the type of view to fill
         ///   @tparam T the type to fill the view with
-        ///   @param v the view to fill
+        ///   @param vw the view to fill
         ///   @param value what to fill the view with
         ///
         template<typename VIEW, typename T>
         constexpr void
-        fill_impl(VIEW &v, T const &value) noexcept(    // --
+        fill_impl(VIEW &vw, T const &value) noexcept(    // --
             is_nothrow_copy_assignable<T>::value)
         {
-            for (bsl::uintmax i{}; i < v.size(); ++i) {
-                *v.at_if(i) = value;
+            for (bsl::uintmax i{}; i < vw.size(); ++i) {
+                *vw.at_if(i) = value;
             }
         }
     }
@@ -68,7 +68,7 @@ namespace bsl
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type that defines the values being filled
-    ///   @param v the view to fill
+    ///   @param vw the view to fill
     ///   @param value the value to set the view's elements to
     ///   @return return's void
     ///
@@ -77,19 +77,19 @@ namespace bsl
     ///
     template<typename VIEW, typename T>
     constexpr enable_if_t<is_copy_assignable<T>::value>
-    fill(VIEW &v, T const &value) noexcept(    // --
+    fill(VIEW &vw, T const &value) noexcept(    // --
         is_nothrow_copy_assignable<T>::value)
     {
         if (is_fundamental<T>::value && !is_constant_evaluated()) {
             if (T{} == value) {
-                bsl::builtin_memset(v.data(), 0, v.size_bytes());
+                bsl::builtin_memset(vw.data(), 0, vw.size_bytes());
             }
             else {
-                details::fill_impl(v, value);
+                details::fill_impl(vw, value);
             }
         }
         else {
-            details::fill_impl(v, value);
+            details::fill_impl(vw, value);
         }
     }
 

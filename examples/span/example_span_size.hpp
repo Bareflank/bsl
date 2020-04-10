@@ -27,7 +27,7 @@
 
 #include <bsl/span.hpp>
 #include <bsl/array.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -48,7 +48,7 @@ namespace bsl
         bsl::array<bsl::uintmax, size> const arr{val1, val2, val3, val4, val5, val6};
 
         bsl::span const spn{arr.data(), arr.size()};
-        bsl::print("size: %d\n", spn.size());
+        bsl::print() << "size: " << spn.size() << bsl::endl;
     }
 }
 

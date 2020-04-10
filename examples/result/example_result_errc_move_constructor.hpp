@@ -26,7 +26,7 @@
 #define EXAMPLE_RESULT_ERRC_MOVE_CONSTRUCTOR_HPP
 
 #include <bsl/result.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -44,7 +44,7 @@ namespace bsl
         bsl::result<bool> const res{bsl::move(my_errc1)};
 
         if (res.errc() == my_errc2) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

@@ -26,7 +26,7 @@
 #define EXAMPLE_SPAN_DEFAULT_CONSTRUCTOR_HPP
 
 #include <bsl/span.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -39,7 +39,7 @@ namespace bsl
         bsl::span<bool> const s{};
 
         if (s.empty()) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

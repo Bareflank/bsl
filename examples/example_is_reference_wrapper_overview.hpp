@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_REFERENCE_WRAPPER_OVERVIEW_HPP
 
 #include <bsl/is_reference_wrapper.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_is_reference_wrapper_overview() noexcept
     {
         if (bsl::is_reference_wrapper<reference_wrapper<bool>>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

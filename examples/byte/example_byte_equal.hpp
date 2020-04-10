@@ -25,7 +25,7 @@
 #ifndef EXAMPLE_BYTE_EQUAL_HPP
 #define EXAMPLE_BYTE_EQUAL_HPP
 
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 #include <bsl/byte.hpp>
 
 namespace bsl
@@ -43,7 +43,7 @@ namespace bsl
         bsl::byte const b2{val2};
 
         if (b1 == b2) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

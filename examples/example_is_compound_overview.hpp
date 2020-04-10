@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_COMPOUND_OVERVIEW_HPP
 
 #include <bsl/is_compound.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 #include "example_class_pod.hpp"
 
@@ -39,7 +39,7 @@ namespace bsl
     example_is_compound_overview() noexcept
     {
         if (bsl::is_compound<example_class_pod>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

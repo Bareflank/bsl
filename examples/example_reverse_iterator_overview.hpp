@@ -27,7 +27,7 @@
 
 #include <bsl/string_view.hpp>
 #include <bsl/for_each.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -39,10 +39,10 @@ namespace bsl
     {
         constexpr bsl::string_view str{"Hello"};
         bsl::for_each(str.rbegin(), str.rend(), [](auto &e) noexcept {
-            bsl::print("%c", e);
+            bsl::print() << e;
         });
 
-        bsl::print("\n");
+        bsl::print() << bsl::endl;
     }
 }
 

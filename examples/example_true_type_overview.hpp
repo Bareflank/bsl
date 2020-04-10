@@ -26,7 +26,7 @@
 #define EXAMPLE_TRUE_TYPE_OVERVIEW_HPP
 
 #include <bsl/true_type.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_true_type_overview() noexcept
     {
         if (bsl::true_type::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

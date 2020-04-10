@@ -29,7 +29,7 @@
 #define BSL_BASIC_ERRC_TYPE_HPP
 
 #include "cstdint.hpp"
-#include "cstr_type.hpp"
+#include "string_view.hpp"
 #include "discard.hpp"
 #include "move.hpp"
 
@@ -234,7 +234,7 @@ namespace bsl
         ///     the error code is a custom, user defined error code, returns
         ///     a nullptr.
         ///
-        [[nodiscard]] constexpr cstr_type message() const noexcept;
+        [[nodiscard]] constexpr bsl::string_view message() const noexcept;
 
     private:
         /// @brief stores the error code
@@ -332,10 +332,10 @@ namespace bsl
     ///     a nullptr.
     ///
     template<typename T, T SUCCESS>
-    [[nodiscard]] constexpr cstr_type
+    [[nodiscard]] constexpr bsl::string_view
     basic_errc_type<T, SUCCESS>::message() const noexcept
     {
-        cstr_type msg{};
+        bsl::string_view msg{};
 
         switch (m_errc) {
             case errc_success.get(): {

@@ -26,7 +26,7 @@
 #define EXAMPLE_CONTIGUOUS_ITERATOR_INDEX_HPP
 
 #include <bsl/string_view.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -40,7 +40,7 @@ namespace bsl
         constexpr bsl::string_view::iterator_type iter{str.begin()};
 
         if (0U == iter.index()) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

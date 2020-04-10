@@ -21,6 +21,9 @@
 /// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
+///
+/// @file basic_string_view.hpp
+///
 
 #ifndef BSL_BASIC_STRING_VIEW_HPP
 #define BSL_BASIC_STRING_VIEW_HPP
@@ -28,6 +31,7 @@
 #include "char_traits.hpp"
 #include "contiguous_iterator.hpp"
 #include "cstdint.hpp"
+#include "debug.hpp"
 #include "min_of.hpp"
 #include "npos.hpp"
 #include "numeric_limits.hpp"
@@ -101,7 +105,7 @@ namespace bsl
         /// <!-- description -->
         ///   @brief ptr constructor. This creates a bsl::basic_string_view
         ///     given a pointer to a string. The number of characters in the
-        ///     string is deter_ofed using Traits<CharT>::length,
+        ///     string is determined using Traits<CharT>::length,
         ///     which scans for '\0'.
         ///   @include basic_string_view/example_basic_string_view_s_constructor.hpp
         ///
@@ -120,6 +124,24 @@ namespace bsl
             if ((nullptr == m_ptr) || (0U == m_count)) {
                 *this = basic_string_view{};
             }
+        }
+
+        /// <!-- description -->
+        ///   @brief ptr assignment. This assigns a bsl::basic_string_view
+        ///     a pointer to a string. The number of characters in the
+        ///     string is determined using Traits<CharT>::length,
+        ///     which scans for '\0'.
+        ///   @include basic_string_view/example_basic_string_view_s_assignment.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param s a pointer to the string
+        ///   @return Returns *this
+        ///
+        constexpr basic_string_view &
+        operator=(pointer_type const s) &noexcept
+        {
+            *this = basic_string_view{s};
+            return *this;
         }
 
         /// <!-- description -->
@@ -734,13 +756,13 @@ namespace bsl
         ///   @include basic_string_view/example_basic_string_view_compare.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @param v the bsl::basic_string_view to compare with
+        ///   @param str the bsl::basic_string_view to compare with
         ///   @return Returns the same results as std::strncmp
         ///
         [[nodiscard]] constexpr bsl::int32
-        compare(basic_string_view const &v) const noexcept
+        compare(basic_string_view const &str) const noexcept
         {
-            return Traits::compare(this->data(), v.data(), min_of(this->size(), v.size()));
+            return Traits::compare(this->data(), str.data(), min_of(this->size(), str.size()));
         }
 
         /// <!-- description -->
@@ -750,16 +772,16 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param pos the starting position of "this" to compare from
         ///   @param count the number of characters of "this" to compare
-        ///   @param v the bsl::basic_string_view to compare with
+        ///   @param str the bsl::basic_string_view to compare with
         ///   @return Returns the same results as std::strncmp
         ///
         [[nodiscard]] constexpr bsl::int32
         compare(                      // --
             size_type const pos,      // --
             size_type const count,    // --
-            basic_string_view const &v) const noexcept
+            basic_string_view const &str) const noexcept
         {
-            return this->substr(pos, count).compare(v);
+            return this->substr(pos, count).compare(str);
         }
 
         /// <!-- description -->
@@ -769,20 +791,20 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param pos1 the starting position of "this" to compare from
         ///   @param count1 the number of characters of "this" to compare
-        ///   @param v the bsl::basic_string_view to compare with
+        ///   @param str the bsl::basic_string_view to compare with
         ///   @param pos2 the starting position of "v" to compare from
         ///   @param count2 the number of characters of "v" to compare
         ///   @return Returns the same results as std::strncmp
         ///
         [[nodiscard]] constexpr bsl::int32
-        compare(                           // --
-            size_type pos1,                // --
-            size_type count1,              // --
-            basic_string_view const &v,    // --
-            size_type pos2,                // --
+        compare(                             // --
+            size_type pos1,                  // --
+            size_type count1,                // --
+            basic_string_view const &str,    // --
+            size_type pos2,                  // --
             size_type count2) const noexcept
         {
-            return this->substr(pos1, count1).compare(v.substr(pos2, count2));
+            return this->substr(pos1, count1).compare(str.substr(pos2, count2));
         }
 
         /// <!-- description -->
@@ -790,13 +812,13 @@ namespace bsl
         ///   @include basic_string_view/example_basic_string_view_compare.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @param s a pointer to a string to compare with "this"
+        ///   @param str a pointer to a string to compare with "this"
         ///   @return Returns the same results as std::strncmp
         ///
         [[nodiscard]] constexpr bsl::int32
-        compare(pointer_type const s) const noexcept
+        compare(pointer_type const str) const noexcept
         {
-            return this->compare(basic_string_view{s});
+            return this->compare(basic_string_view{str});
         }
 
         /// <!-- description -->
@@ -806,13 +828,13 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param pos the starting position of "this" to compare from
         ///   @param count the number of characters of "this" to compare
-        ///   @param s a pointer to a string to compare with "this"
+        ///   @param str a pointer to a string to compare with "this"
         ///   @return Returns the same results as std::strncmp
         ///
         [[nodiscard]] constexpr bsl::int32
-        compare(size_type pos, size_type count, pointer_type const s) const noexcept
+        compare(size_type pos, size_type count, pointer_type const str) const noexcept
         {
-            return this->substr(pos, count).compare(basic_string_view{s});
+            return this->substr(pos, count).compare(basic_string_view{str});
         }
 
         /// <!-- description -->
@@ -828,18 +850,18 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param pos the starting position of "this" to compare from
         ///   @param count1 the number of characters of "this" to compare
-        ///   @param s a pointer to a string to compare with "this"
+        ///   @param str a pointer to a string to compare with "this"
         ///   @param count2 the number of characters of "s" to compare
         ///   @return Returns the same results as std::strncmp
         ///
         [[nodiscard]] constexpr bsl::int32
-        compare(                     // --
-            size_type pos,           // --
-            size_type count1,        // --
-            pointer_type const s,    // --
+        compare(                       // --
+            size_type pos,             // --
+            size_type count1,          // --
+            pointer_type const str,    // --
             size_type count2) const noexcept
         {
-            return this->compare(pos, count1, basic_string_view{s}, 0, count2);
+            return this->compare(pos, count1, basic_string_view{str}, 0, count2);
         }
 
         /// <!-- description -->
@@ -847,18 +869,18 @@ namespace bsl
         ///   @include basic_string_view/example_basic_string_view_starts_with.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @param v the bsl::basic_string_view to compare with
+        ///   @param str the bsl::basic_string_view to compare with
         ///   @return Returns true if the string begins with the given prefix,
         ///     false otherwise.
         ///
         [[nodiscard]] constexpr bool
-        starts_with(basic_string_view const &v) const noexcept
+        starts_with(basic_string_view const &str) const noexcept
         {
-            if (this->size() < v.size()) {
+            if (this->size() < str.size()) {
                 return false;
             }
 
-            return this->substr(0U, v.size()) == v;
+            return this->substr(0U, str.size()) == str;
         }
 
         /// <!-- description -->
@@ -885,14 +907,14 @@ namespace bsl
         ///   @include basic_string_view/example_basic_string_view_starts_with.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @param s the string to compare with
+        ///   @param str the string to compare with
         ///   @return Returns true if the string begins with the given prefix,
         ///     false otherwise.
         ///
         [[nodiscard]] constexpr bool
-        starts_with(pointer_type const s) const noexcept
+        starts_with(pointer_type const str) const noexcept
         {
-            return this->starts_with(basic_string_view{s});
+            return this->starts_with(basic_string_view{str});
         }
 
         /// <!-- description -->
@@ -900,18 +922,18 @@ namespace bsl
         ///   @include basic_string_view/example_basic_string_view_ends_with.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @param v the bsl::basic_string_view to compare with
+        ///   @param str the bsl::basic_string_view to compare with
         ///   @return Returns true if the string ends with the given suffix,
         ///     false otherwise.
         ///
         [[nodiscard]] constexpr bool
-        ends_with(basic_string_view const &v) const noexcept
+        ends_with(basic_string_view const &str) const noexcept
         {
-            if (this->size() < v.size()) {
+            if (this->size() < str.size()) {
                 return false;
             }
 
-            return this->compare(this->size() - v.size(), npos, v) == 0;
+            return this->compare(this->size() - str.size(), npos, str) == 0;
         }
 
         /// <!-- description -->
@@ -938,14 +960,14 @@ namespace bsl
         ///   @include basic_string_view/example_basic_string_view_ends_with.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @param s the string to compare with
+        ///   @param str the string to compare with
         ///   @return Returns true if the string ends with the given suffix,
         ///     false otherwise.
         ///
         [[nodiscard]] constexpr bool
-        ends_with(pointer_type const s) const noexcept
+        ends_with(pointer_type const str) const noexcept
         {
-            return this->ends_with(basic_string_view{s});
+            return this->ends_with(basic_string_view{str});
         }
 
     private:
@@ -1129,6 +1151,51 @@ namespace bsl
     operator!=(CharT const *const lhs, bsl::basic_string_view<CharT, Traits> const &rhs) noexcept
     {
         return !(lhs == rhs);
+    }
+
+    /// <!-- description -->
+    ///   @brief This function is responsible for implementing bsl::fmt
+    ///     for string_view types. For strings, the only fmt options
+    ///     that are available are alignment, fill and width, all of which
+    ///     are handled by the fmt_impl_align_xxx functions.
+    ///   @related bsl::basic_string_view
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam OUT the type of out (i.e., debug, alert, etc)
+    ///   @param o the instance of out<T> to output to
+    ///   @param ops ops the fmt options used to format the output
+    ///   @param str the string_view being outputted
+    ///
+    template<typename OUT, typename CharT>
+    constexpr void
+    fmt_impl(OUT &&o, fmt_options const &ops, basic_string_view<CharT> const &str) noexcept
+    {
+        details::fmt_impl_align_pre(o, ops, str.length(), true);
+        o.write(str.data());
+        details::fmt_impl_align_suf(o, ops, str.length(), true);
+    }
+
+    /// <!-- description -->
+    ///   @brief Outputs the provided string_view to the provided
+    ///     output type.
+    ///   @related bsl::basic_string_view
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of outputter provided
+    ///   @param o the instance of the outputter used to output the value.
+    ///   @param str the string_view to output
+    ///   @return return o
+    ///
+    template<typename T, typename CharT>
+    [[maybe_unused]] constexpr out<T>
+    operator<<(out<T> const o, basic_string_view<CharT> const &str) noexcept
+    {
+        if constexpr (o.empty()) {
+            return o;
+        }
+
+        o.write(str.data());
+        return o;
     }
 }
 

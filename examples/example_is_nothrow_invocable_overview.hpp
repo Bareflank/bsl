@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_NOTHROW_INVOCABLE_OVERVIEW_HPP
 
 #include <bsl/is_nothrow_invocable.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_is_nothrow_invocable_overview() noexcept
     {
         if (bsl::is_nothrow_invocable<bool() noexcept>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

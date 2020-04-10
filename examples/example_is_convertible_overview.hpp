@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_CONVERTIBLE_OVERVIEW_HPP
 
 #include <bsl/is_convertible.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_is_convertible_overview() noexcept
     {
         if (bsl::is_convertible<bsl::int32, bsl::int64>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

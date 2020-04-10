@@ -26,7 +26,7 @@
 #define EXAMPLE_SOURCE_LOCATION_FUNCTION_NAME_HPP
 
 #include <bsl/source_location.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -36,7 +36,7 @@ namespace bsl
     inline void
     example_source_location_function_name() noexcept
     {
-        bsl::print("success: %s\n", bsl::here().function_name());
+        bsl::print() << "success: " << bsl::here().function_name() << bsl::endl;
     }
 }
 

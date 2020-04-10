@@ -26,7 +26,7 @@
 #define EXAMPLE_RESULT_NOT_EQUALS_HPP
 
 #include <bsl/result.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -41,11 +41,11 @@ namespace bsl
         bsl::result<bool> const res3{bsl::errc_failure};
 
         if (res1 != res2) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
 
         if (res1 != res3) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

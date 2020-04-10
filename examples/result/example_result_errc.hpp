@@ -26,7 +26,7 @@
 #define EXAMPLE_RESULT_ERRC_HPP
 
 #include <bsl/result.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -39,7 +39,7 @@ namespace bsl
         bsl::result<bool> const res{bsl::errc_failure};
 
         if (res.errc() == bsl::errc_failure) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

@@ -27,7 +27,7 @@
 
 #include <bsl/common_type.hpp>
 #include <bsl/is_same.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 #include "example_class_base.hpp"
 #include "example_class_subclass.hpp"
@@ -44,7 +44,7 @@ namespace bsl
             bsl::common_type_t<example_class_base, example_class_subclass>;
 
         if (is_same<example_common_type, example_class_base>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

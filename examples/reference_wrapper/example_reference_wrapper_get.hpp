@@ -26,7 +26,7 @@
 #define EXAMPLE_REFERENCE_WRAPPER_GET_HPP
 
 #include <bsl/reference_wrapper.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -40,7 +40,7 @@ namespace bsl
         bsl::reference_wrapper const rw{data};
 
         if (rw.get() == data) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

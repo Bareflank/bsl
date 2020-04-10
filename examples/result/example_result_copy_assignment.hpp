@@ -26,7 +26,7 @@
 #define EXAMPLE_RESULT_COPY_ASSIGNMENT_HPP
 
 #include <bsl/result.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -41,7 +41,7 @@ namespace bsl
 
         res2 = res1;
         if (auto const *const ptr = res2.get_if()) {
-            bsl::print("success: %s\n", *ptr ? "true" : "false");
+            bsl::print() << "success: " << *ptr << bsl::endl;
         }
     }
 }

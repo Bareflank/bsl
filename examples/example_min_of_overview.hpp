@@ -26,7 +26,7 @@
 #define EXAMPLE_MIN_OF_OVERVIEW_HPP
 
 #include <bsl/min_of.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -40,7 +40,7 @@ namespace bsl
         constexpr bsl::int32 val2{42};
 
         if (bsl::min_of(val1, val2) == val1) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

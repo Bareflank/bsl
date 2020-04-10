@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_TRIVIALLY_COPY_ASSIGNABLE_OVERVIEW_HPP
 
 #include <bsl/is_trivially_copy_assignable.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_is_trivially_copy_assignable_overview() noexcept
     {
         if (bsl::is_trivially_copy_assignable<bool>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

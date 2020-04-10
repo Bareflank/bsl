@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_NULL_POINTER_OVERVIEW_HPP
 
 #include <bsl/is_null_pointer.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_is_null_pointer_overview() noexcept
     {
         if (bsl::is_null_pointer<decltype(nullptr)>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

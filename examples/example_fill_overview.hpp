@@ -28,7 +28,7 @@
 #include <bsl/fill.hpp>
 #include <bsl/array.hpp>
 #include <bsl/for_each.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -50,7 +50,7 @@ namespace bsl
         });
 
         if (size == sum) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

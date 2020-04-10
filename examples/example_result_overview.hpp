@@ -26,7 +26,7 @@
 #define EXAMPLE_RESULT_OVERVIEW_HPP
 
 #include <bsl/result.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -39,7 +39,7 @@ namespace bsl
         bsl::result<bool> res{bsl::in_place, true};
 
         if (auto const *const ptr = res.get_if()) {
-            bsl::print("success: %s\n", *ptr ? "true" : "false");
+            bsl::print() << "success: " << *ptr << bsl::endl;
         }
     }
 }

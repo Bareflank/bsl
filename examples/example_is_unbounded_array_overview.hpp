@@ -36,7 +36,7 @@ namespace bsl
     example_is_unbounded_array_overview() noexcept
     {
         if (bsl::is_unbounded_array<bool[]>::value) {    // NOLINT
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

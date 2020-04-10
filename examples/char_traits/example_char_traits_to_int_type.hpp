@@ -26,7 +26,7 @@
 #define EXAMPLE_CHAR_TRAITS_TO_INT_TYPE_HPP
 
 #include <bsl/char_traits.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -40,7 +40,7 @@ namespace bsl
         bsl::intmax const val2{42};
 
         if (bsl::char_traits<bsl::char_type>::to_int_type(val1) == val2) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

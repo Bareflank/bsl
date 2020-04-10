@@ -26,7 +26,7 @@
 #define EXAMPLE_BASIC_STRING_VIEW_ENDS_WITH_HPP
 
 #include <bsl/basic_string_view.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -39,7 +39,7 @@ namespace bsl
         constexpr bsl::basic_string_view<bsl::char_type> str{"Hello World"};
 
         if (str.ends_with("World")) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

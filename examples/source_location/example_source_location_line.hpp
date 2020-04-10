@@ -26,7 +26,7 @@
 #define EXAMPLE_SOURCE_LOCATION_LINE_HPP
 
 #include <bsl/source_location.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -36,7 +36,7 @@ namespace bsl
     inline void
     example_source_location_line() noexcept
     {
-        bsl::print("success: %d\n", bsl::here().line());
+        bsl::print() << "success: " << bsl::here().line() << bsl::endl;
     }
 }
 

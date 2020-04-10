@@ -111,26 +111,26 @@ tests() noexcept
     };
 
     bsl::ut_scenario{"message"} = []() {
-        bsl::ut_check(bsl::errc_success.message() != nullptr);
-        bsl::ut_check(bsl::errc_failure.message() != nullptr);
-        bsl::ut_check(bsl::errc_precondition.message() != nullptr);
-        bsl::ut_check(bsl::errc_postcondition.message() != nullptr);
-        bsl::ut_check(bsl::errc_assetion.message() != nullptr);
-        bsl::ut_check(bsl::errc_invalid_argument.message() != nullptr);
-        bsl::ut_check(bsl::errc_index_out_of_bounds.message() != nullptr);
-        bsl::ut_check(bsl::errc_bad_function.message() != nullptr);
-        bsl::ut_check(bsl::errc_unsigned_wrap.message() != nullptr);
-        bsl::ut_check(bsl::errc_narrow_overflow.message() != nullptr);
-        bsl::ut_check(bsl::errc_signed_overflow.message() != nullptr);
-        bsl::ut_check(bsl::errc_divide_by_zero.message() != nullptr);
-        bsl::ut_check(bsl::errc_nullptr_dereference.message() != nullptr);
+        bsl::ut_check(!bsl::errc_success.message().empty());
+        bsl::ut_check(!bsl::errc_failure.message().empty());
+        bsl::ut_check(!bsl::errc_precondition.message().empty());
+        bsl::ut_check(!bsl::errc_postcondition.message().empty());
+        bsl::ut_check(!bsl::errc_assetion.message().empty());
+        bsl::ut_check(!bsl::errc_invalid_argument.message().empty());
+        bsl::ut_check(!bsl::errc_index_out_of_bounds.message().empty());
+        bsl::ut_check(!bsl::errc_bad_function.message().empty());
+        bsl::ut_check(!bsl::errc_unsigned_wrap.message().empty());
+        bsl::ut_check(!bsl::errc_narrow_overflow.message().empty());
+        bsl::ut_check(!bsl::errc_signed_overflow.message().empty());
+        bsl::ut_check(!bsl::errc_divide_by_zero.message().empty());
+        bsl::ut_check(!bsl::errc_nullptr_dereference.message().empty());
     };
 
     bsl::ut_scenario{"message with user defined"} = []() {
         bsl::ut_given{} = []() {
             bsl::basic_errc_type<> errc{42};
             bsl::ut_then{} = [&errc]() {
-                bsl::ut_check(errc.message() == nullptr);
+                bsl::ut_check(errc.message().empty());
             };
         };
     };

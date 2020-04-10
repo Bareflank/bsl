@@ -27,7 +27,7 @@
 
 #include <bsl/array.hpp>
 #include <bsl/for_each.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -45,16 +45,10 @@ namespace bsl
         constexpr bsl::uintmax val5{23U};
         constexpr bsl::uintmax val6{42U};
 
-        bsl::array<bsl::uintmax, size> arr{// --
-                                           val1,
-                                           val2,
-                                           val3,
-                                           val4,
-                                           val5,
-                                           val6};
+        bsl::array<bsl::uintmax, size> arr{val1, val2, val3, val4, val5, val6};
 
-        bsl::for_each(arr, [](auto &e, auto i) noexcept {
-            bsl::print("element [%d] == %d\n", i, e);
+        bsl::for_each(arr, [](auto const &e, auto const i) noexcept {
+            bsl::print() << "element [" << i << "] == " << e << bsl::endl;
         });
     }
 }

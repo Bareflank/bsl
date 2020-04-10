@@ -26,7 +26,7 @@
 #define EXAMPLE_BASIC_STRING_VIEW_SIZE_HPP
 
 #include <bsl/basic_string_view.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_basic_string_view_size() noexcept
     {
         constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
-        bsl::print("size: %d\n", str.size());
+        bsl::print() << "size: " << str.size() << bsl::endl;
     }
 }
 

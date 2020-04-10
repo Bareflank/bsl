@@ -26,7 +26,7 @@
 #define EXAMPLE_REFERENCE_WRAPPER_CONSTRUCTOR_HPP
 
 #include <bsl/reference_wrapper.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -43,7 +43,7 @@ namespace bsl
 
         rw.get() = expected;
         if (expected == data) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

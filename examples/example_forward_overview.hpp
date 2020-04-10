@@ -29,7 +29,7 @@
 #include <bsl/discard.hpp>
 #include <bsl/is_lvalue_reference.hpp>
 #include <bsl/move.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -79,11 +79,11 @@ namespace bsl
         bsl::int32 val2{val1};
 
         if (forwarder(val1)) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
 
         if (!forwarder(bsl::move(val2))) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

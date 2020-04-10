@@ -26,7 +26,7 @@
 #define EXAMPLE_ENABLE_IF_OVERVIEW_HPP
 
 #include <bsl/enable_if.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -69,11 +69,11 @@ namespace bsl
     example_enable_if_overview() noexcept
     {
         if (foo<bool>()) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
 
         if (!foo<void>()) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

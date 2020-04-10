@@ -27,7 +27,7 @@
 
 #include <bsl/basic_string_view.hpp>
 #include <bsl/for_each.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -39,8 +39,8 @@ namespace bsl
     {
         constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
 
-        bsl::for_each(str.rbegin(), str.rend(), [](auto &e, auto i) noexcept {
-            bsl::print("element [%d] == %c\n", i, e);
+        bsl::for_each(str.rbegin(), str.rend(), [](auto &e, auto const i) noexcept {
+            bsl::print() << "element [" << i << "] == " << e << bsl::endl;
         });
     }
 }

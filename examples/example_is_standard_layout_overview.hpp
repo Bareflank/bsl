@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_STANDARD_LAYOUT_OVERVIEW_HPP
 
 #include <bsl/is_standard_layout.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_is_standard_layout_overview() noexcept
     {
         if (bsl::is_standard_layout<bool>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

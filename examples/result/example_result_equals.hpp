@@ -26,7 +26,7 @@
 #define EXAMPLE_RESULT_EQUALS_HPP
 
 #include <bsl/result.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -40,7 +40,7 @@ namespace bsl
         bsl::result<bool> const res2{bsl::in_place, true};
 
         if (res1 == res2) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

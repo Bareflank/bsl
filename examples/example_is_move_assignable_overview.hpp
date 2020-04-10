@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_MOVE_ASSIGNABLE_OVERVIEW_HPP
 
 #include <bsl/is_move_assignable.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_is_move_assignable_overview() noexcept
     {
         if (bsl::is_move_assignable<bool>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

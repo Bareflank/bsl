@@ -95,14 +95,15 @@ namespace bsl
             ///     the user might provide.
             ///
             /// <!-- inputs/outputs -->
-            ///   @param v the view to iterator over
+            ///   @param vw the view to iterator over
             ///   @param f the function to execute on each iteration
             ///
             static constexpr void
-            call(VIEW &&v, FUNC &&f) noexcept(noexcept(    // --
-                for_each_impl_view<VIEW, FUNC>::call(bsl::forward<VIEW>(v), bsl::forward<FUNC>(f))))
+            call(VIEW &&vw, FUNC &&f) noexcept(noexcept(    // --
+                for_each_impl_view<VIEW, FUNC>::call(
+                    bsl::forward<VIEW>(vw), bsl::forward<FUNC>(f))))
             {
-                for_each_impl_view<VIEW, FUNC>::call(bsl::forward<VIEW>(v), bsl::forward<FUNC>(f));
+                for_each_impl_view<VIEW, FUNC>::call(bsl::forward<VIEW>(vw), bsl::forward<FUNC>(f));
             }
         };
 

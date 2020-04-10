@@ -26,7 +26,7 @@
 #define EXAMPLE_MAX_OF_OVERVIEW_HPP
 
 #include <bsl/max_of.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -40,7 +40,7 @@ namespace bsl
         constexpr bsl::int32 val2{42};
 
         if (bsl::max_of(val1, val2) == val2) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

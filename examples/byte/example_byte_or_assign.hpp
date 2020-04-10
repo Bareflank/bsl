@@ -25,7 +25,7 @@
 #ifndef EXAMPLE_BYTE_OR_ASSIGN_HPP
 #define EXAMPLE_BYTE_OR_ASSIGN_HPP
 
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 #include <bsl/byte.hpp>
 
 namespace bsl
@@ -45,7 +45,7 @@ namespace bsl
 
         b1 |= b2;
         if (b1.to_integer() == expected) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

@@ -22,9 +22,9 @@ Enjoy:
 ``` c++
 #include <bsl/array.hpp>
 #include <bsl/cstdint.hpp>
+#include <bsl/debug.hpp>
 #include <bsl/for_each.hpp>
 #include <bsl/main.hpp>
-#include <bsl/print.hpp>
 
 bsl::exit_code
 main() noexcept
@@ -32,15 +32,15 @@ main() noexcept
     constexpr bsl::uintmax size{42};
     bsl::array<bsl::int32, size> arr{};
 
-    bsl::for_each(arr, [](auto &elem, auto index) {
+    bsl::for_each(arr, [](auto &elem, auto const index) {
         elem = index;
     });
 
     bsl::for_each(arr, [](auto const &elem) {
-        bsl::print("{} ", elem);
+        bsl::print() << elem << bsl::endl;
     });
 
-    bsl::print("\n");
+    bsl::print() << bsl::endl;
     return bsl::exit_success;
 }
 

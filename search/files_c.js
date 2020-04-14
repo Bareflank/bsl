@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['source_5flocation_2ehpp',['source_location.hpp',['../source__location_8hpp.html',1,'']]],
-  ['span_2ehpp',['span.hpp',['../span_8hpp.html',1,'']]],
-  ['swap_2ehpp',['swap.hpp',['../swap_8hpp.html',1,'']]]
+  ['true_5ftype_2ehpp',['true_type.hpp',['../true__type_8hpp.html',1,'']]],
+  ['type_5fidentity_2ehpp',['type_identity.hpp',['../type__identity_8hpp.html',1,'']]]
 ];

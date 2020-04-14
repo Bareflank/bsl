@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['negation',['negation',['../classbsl_1_1negation.html',1,'bsl']]],
-  ['nonesuch',['nonesuch',['../classbsl_1_1nonesuch.html',1,'bsl']]],
-  ['numeric_5flimits',['numeric_limits',['../classbsl_1_1numeric__limits.html',1,'bsl']]]
+  ['make_5fsigned',['make_signed',['../structbsl_1_1make__signed.html',1,'bsl']]],
+  ['make_5funsigned',['make_unsigned',['../structbsl_1_1make__unsigned.html',1,'bsl']]]
 ];

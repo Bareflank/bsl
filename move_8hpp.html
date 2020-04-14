@@ -66,6 +66,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -76,6 +77,12 @@ $(function() {
 </div>
 <p><a href="move_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbsl_1_1fmt.html">bsl::fmt&lt; V &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classbsl_1_1fmt.html" title="The bsl::fmt implements a similar syntax to that of std::format, We adopt a similar approach with som...">bsl::fmt</a> implements a similar syntax to that of std::format, We adopt a similar approach with some tweaks of course to ensure AUTOSAR compliance include:  <a href="classbsl_1_1fmt.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
@@ -87,6 +94,10 @@ Functions</h2></td></tr>
 <tr class="memitem:ac57197b06a4709af30ea016f2515a0ac"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacebsl.html#afb9d843459e2d510c4bab126a9dd251d">bsl::remove_reference_t</a>&lt; T &gt; &amp;&amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#ac57197b06a4709af30ea016f2515a0ac">bsl::move</a> (T &amp;&amp;val) noexcept</td></tr>
 <tr class="memdesc:ac57197b06a4709af30ea016f2515a0ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to indicate that an object "val" may be "moved from", i.e. allowing the efficient transfer of resources from "val" to another object.  <a href="namespacebsl.html#ac57197b06a4709af30ea016f2515a0ac">More...</a><br /></td></tr>
 <tr class="separator:ac57197b06a4709af30ea016f2515a0ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2465a8dd3e8a52f1eea5759f3a2e5c85"><td class="memTemplParams" colspan="2">template&lt;typename V &gt; </td></tr>
+<tr class="memitem:a2465a8dd3e8a52f1eea5759f3a2e5c85"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a2465a8dd3e8a52f1eea5759f3a2e5c85">bsl::move</a> (fmt&lt; V &gt; &amp;&amp;val) noexcept=delete</td></tr>
+<tr class="memdesc:a2465a8dd3e8a52f1eea5759f3a2e5c85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to prevent a move of <a class="el" href="classbsl_1_1fmt.html" title="The bsl::fmt implements a similar syntax to that of std::format, We adopt a similar approach with som...">bsl::fmt</a> as it must always be a temporary r-value.  <a href="namespacebsl.html#a2465a8dd3e8a52f1eea5759f3a2e5c85">More...</a><br /></td></tr>
+<tr class="separator:a2465a8dd3e8a52f1eea5759f3a2e5c85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2020 Assured Information Security, Inc.</dd>

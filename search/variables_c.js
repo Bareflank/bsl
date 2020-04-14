@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['yellow',['yellow',['../namespacebsl.html#a334e436ca887d30513b158662b750fb4',1,'bsl']]]
+  ['white',['white',['../namespacebsl.html#abd0e9d907cc3b69d6c72e8b32cb0d543',1,'bsl']]]
 ];

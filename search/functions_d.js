@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['print',['print',['../namespacebsl.html#a88c46da64489ced5d04ef124d7ffbd70',1,'bsl']]]
+  ['print',['print',['../namespacebsl.html#a172d9238495284d49a34332143ad28c1',1,'bsl']]]
 ];

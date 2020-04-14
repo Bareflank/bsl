@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['has_5funique_5fobject_5frepresentations',['has_unique_object_representations',['../classbsl_1_1has__unique__object__representations.html',1,'bsl']]],
-  ['has_5fvirtual_5fdestructor',['has_virtual_destructor',['../classbsl_1_1has__virtual__destructor.html',1,'bsl']]]
+  ['fmt',['fmt',['../classbsl_1_1fmt.html',1,'bsl']]],
+  ['fmt_5foptions',['fmt_options',['../classbsl_1_1fmt__options.html',1,'bsl']]]
 ];

@@ -1,6 +1,9 @@
 var searchData=
 [
   ['addressof',['addressof',['../namespacebsl.html#a1606d20b803f9b7b2be5072df4028435',1,'bsl::addressof(T &amp;val) noexcept'],['../namespacebsl.html#aff0f5e6825e9000d5b4fa8dab99bf4ac',1,'bsl::addressof(T const &amp;&amp;val)=delete']]],
+  ['alert',['alert',['../namespacebsl.html#ad9cfc8786fe5806f3f16b8d7ebbc454a',1,'bsl']]],
+  ['align',['align',['../classbsl_1_1fmt__options.html#a90e012b9c27c6973332feca317ec3efb',1,'bsl::fmt_options']]],
+  ['alternate_5fform',['alternate_form',['../classbsl_1_1fmt__options.html#a6e32ce5f86bba7d5ba9c6a20afbb41fb',1,'bsl::fmt_options']]],
   ['arguments',['arguments',['../classbsl_1_1arguments.html#a5c64c61d266bb54ad8952b75a5a1f3f1',1,'bsl::arguments']]],
   ['array',['array',['../namespacebsl.html#a762a45828b89392aacded2a3d813ccdf',1,'bsl']]],
   ['as_5fconst',['as_const',['../namespacebsl.html#abe65822a59d3f1a702390d3c1b345230',1,'bsl::as_const(T &amp;t) noexcept'],['../namespacebsl.html#a7fa398963dd4a1ea7499fb63a1313749',1,'bsl::as_const(T const &amp;&amp;t) noexcept=delete']]],

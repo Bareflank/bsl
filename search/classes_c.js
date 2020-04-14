@@ -1,8 +1,5 @@
 var searchData=
 [
-  ['underlying_5ftype',['underlying_type',['../structbsl_1_1underlying__type.html',1,'bsl']]],
-  ['ut_5fgiven',['ut_given',['../classbsl_1_1ut__given.html',1,'bsl']]],
-  ['ut_5fscenario',['ut_scenario',['../classbsl_1_1ut__scenario.html',1,'bsl']]],
-  ['ut_5fthen',['ut_then',['../classbsl_1_1ut__then.html',1,'bsl']]],
-  ['ut_5fwhen',['ut_when',['../classbsl_1_1ut__when.html',1,'bsl']]]
+  ['type',['type',['../structbsl_1_1aligned__union_1_1type.html',1,'bsl::aligned_union&lt; GUARD, LEN, TYPES &gt;::type'],['../structbsl_1_1aligned__storage_1_1type.html',1,'bsl::aligned_storage&lt; GUARD, N, A &gt;::type']]],
+  ['type_5fidentity',['type_identity',['../structbsl_1_1type__identity.html',1,'bsl']]]
 ];

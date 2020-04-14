@@ -1,6 +1,8 @@
 var searchData=
 [
   ['data',['data',['../classbsl_1_1array.html#a5ad150aa57dc6c053cbd257602d78c3c',1,'bsl::array::data() noexcept'],['../classbsl_1_1array.html#a00ce73344729f40ca51b929d55eb4df5',1,'bsl::array::data() const noexcept'],['../classbsl_1_1basic__string__view.html#af36d75a4257d6c6c129d7806c605f0d0',1,'bsl::basic_string_view::data() noexcept'],['../classbsl_1_1basic__string__view.html#a5b3d0ee814631786513608262b412127',1,'bsl::basic_string_view::data() const noexcept'],['../classbsl_1_1contiguous__iterator.html#ab5059d47f1673e6091c8b3e53b247ce5',1,'bsl::contiguous_iterator::data() noexcept'],['../classbsl_1_1contiguous__iterator.html#a8a47e9773533f83376f98b075c04b002',1,'bsl::contiguous_iterator::data() const noexcept'],['../classbsl_1_1reverse__iterator.html#ad6d4623026a170d66529f28f4cde216d',1,'bsl::reverse_iterator::data() noexcept'],['../classbsl_1_1reverse__iterator.html#a664427ca6c6646a6505ea7b048363939',1,'bsl::reverse_iterator::data() const noexcept'],['../classbsl_1_1span.html#a7950e131e06cb7f15d58828a4795e721',1,'bsl::span::data() noexcept'],['../classbsl_1_1span.html#a9824711d59541b5d3327e9620a56903d',1,'bsl::span::data() const noexcept']]],
+  ['debug',['debug',['../namespacebsl.html#a0b4a9c10ac4501e78b4a7ea9c14c52b4',1,'bsl']]],
+  ['debug_2ehpp',['debug.hpp',['../debug_8hpp.html',1,'']]],
   ['decay',['decay',['../structbsl_1_1decay.html',1,'bsl']]],
   ['decay_2ehpp',['decay.hpp',['../decay_8hpp.html',1,'']]],
   ['decay_5ft',['decay_t',['../namespacebsl.html#aa6ff5c8eede87517bf5d385b3111a228',1,'bsl']]],

@@ -25,7 +25,7 @@
 #ifndef EXAMPLE_BYTE_DEFAULT_CONSTRUCTOR_HPP
 #define EXAMPLE_BYTE_DEFAULT_CONSTRUCTOR_HPP
 
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 #include <bsl/byte.hpp>
 
 namespace bsl
@@ -42,7 +42,7 @@ namespace bsl
 
         b = bsl::byte{val};
         if (b.to_integer() == expected) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

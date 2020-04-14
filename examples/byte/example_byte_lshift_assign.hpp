@@ -25,7 +25,7 @@
 #ifndef EXAMPLE_BYTE_LSHIFT_ASSIGN_HPP
 #define EXAMPLE_BYTE_LSHIFT_ASSIGN_HPP
 
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 #include <bsl/byte.hpp>
 
 namespace bsl
@@ -43,7 +43,7 @@ namespace bsl
 
         b <<= 1U;
         if (b.to_integer() == expected) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

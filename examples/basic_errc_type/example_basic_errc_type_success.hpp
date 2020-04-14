@@ -26,7 +26,7 @@
 #define EXAMPLE_BASIC_ERRC_TYPE_SUCCESS_HPP
 
 #include <bsl/errc_type.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_basic_errc_type_success() noexcept
     {
         if (errc_success.success()) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

@@ -43,6 +43,10 @@ parsers:
 ignore:
   - "examples/**"
   - "include/bsl/ut.hpp"
+  - "include/bsl/details/putc_stderr.hpp"
+  - "include/bsl/details/putc_stdout.hpp"
+  - "include/bsl/details/puts_stderr.hpp"
+  - "include/bsl/details/puts_stdout.hpp"
   - "tests/**"
 
 comment:

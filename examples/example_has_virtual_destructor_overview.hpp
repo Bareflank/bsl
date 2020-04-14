@@ -26,7 +26,7 @@
 #define EXAMPLE_HAS_VIRTUAL_DESTRUCTOR_OVERVIEW_HPP
 
 #include <bsl/has_virtual_destructor.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 #include "example_class_subclass.hpp"
 
@@ -39,7 +39,7 @@ namespace bsl
     example_has_virtual_destructor_overview() noexcept
     {
         if (!bsl::has_virtual_destructor<example_class_subclass>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

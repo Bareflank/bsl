@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_NOTHROW_CONSTRUCTIBLE_OVERVIEW_HPP
 
 #include <bsl/is_nothrow_constructible.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_is_nothrow_constructible_overview() noexcept
     {
         if (bsl::is_nothrow_constructible<bool>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

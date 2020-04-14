@@ -25,7 +25,7 @@
 #include <bsl/cstr_type.hpp>
 #include <bsl/exit_code.hpp>
 #include <bsl/main.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 #include "example_add_const_overview.hpp"
 #include "example_add_lvalue_reference_overview.hpp"
@@ -85,6 +85,7 @@
 #include "basic_string_view/example_basic_string_view_remove_suffix.hpp"
 #include "basic_string_view/example_basic_string_view_rend.hpp"
 #include "basic_string_view/example_basic_string_view_riter.hpp"
+#include "basic_string_view/example_basic_string_view_s_assignment.hpp"
 #include "basic_string_view/example_basic_string_view_s_constructor.hpp"
 #include "basic_string_view/example_basic_string_view_size_bytes.hpp"
 #include "basic_string_view/example_basic_string_view_size.hpp"
@@ -138,6 +139,10 @@
 #include "contiguous_iterator/example_contiguous_iterator_lt.hpp"
 #include "contiguous_iterator/example_contiguous_iterator_not_equals.hpp"
 #include "contiguous_iterator/example_contiguous_iterator_size.hpp"
+#include "debug/example_debug_alert.hpp"
+#include "debug/example_debug_debug.hpp"
+#include "debug/example_debug_error.hpp"
+#include "debug/example_debug_print.hpp"
 #include "example_decay_overview.hpp"
 #include "example_declval_overview.hpp"
 #include "example_destroy_at_overview.hpp"
@@ -151,6 +156,17 @@
 #include "example_extent_overview.hpp"
 #include "example_false_type_overview.hpp"
 #include "example_fill_overview.hpp"
+#include "fmt/example_fmt_align.hpp"
+#include "fmt/example_fmt_alt_form.hpp"
+#include "fmt/example_fmt_bool.hpp"
+#include "fmt/example_fmt_char_type.hpp"
+#include "fmt/example_fmt_constructor_f_val_width.hpp"
+#include "fmt/example_fmt_constructor_f_val.hpp"
+#include "fmt/example_fmt_cstr_type.hpp"
+#include "fmt/example_fmt_integral.hpp"
+#include "fmt/example_fmt_sign_aware.hpp"
+#include "fmt/example_fmt_sign.hpp"
+#include "fmt/example_fmt_width.hpp"
 #include "example_for_each_overview.hpp"
 #include "example_forward_overview.hpp"
 // #include "example_has_unique_object_representations_overview.hpp"
@@ -341,11 +357,11 @@ namespace
     void
     example(FUNC &&func, bsl::cstr_type const name) noexcept
     {
-        bsl::print("======================================================================\n");
-        bsl::print("example: %s \n", name);
-        bsl::print("----------------------------------------------------------------------\n");
+        bsl::print() << bsl::fmt{"=<80", '='} << bsl::endl;
+        bsl::print() << "example: " << name << bsl::endl;
+        bsl::print() << bsl::fmt{"-<80", '-'} << bsl::endl;
         func();
-        bsl::print("\n");
+        bsl::print() << bsl::endl;
     }
 }
 
@@ -419,6 +435,7 @@ main() noexcept
     example(&bsl::example_basic_string_view_remove_suffix, "example_basic_string_view_remove_suffix");
     example(&bsl::example_basic_string_view_rend, "example_basic_string_view_rend");
     example(&bsl::example_basic_string_view_riter, "example_basic_string_view_riter");
+    example(&bsl::example_basic_string_view_s_assignment, "example_basic_string_view_s_assignment");
     example(&bsl::example_basic_string_view_s_constructor, "example_basic_string_view_s_constructor");
     example(&bsl::example_basic_string_view_size_bytes, "example_basic_string_view_size_bytes");
     example(&bsl::example_basic_string_view_size, "example_basic_string_view_size");
@@ -472,6 +489,10 @@ main() noexcept
     example(&bsl::example_contiguous_iterator_lt, "example_contiguous_iterator_lt");
     example(&bsl::example_contiguous_iterator_not_equals, "example_contiguous_iterator_not_equals");
     example(&bsl::example_contiguous_iterator_size, "example_contiguous_iterator_size");
+    example(&bsl::example_debug_alert, "example_debug_alert");
+    example(&bsl::example_debug_debug, "example_debug_debug");
+    example(&bsl::example_debug_error, "example_debug_error");
+    example(&bsl::example_debug_print, "example_debug_print");
     example(&bsl::example_decay_overview, "example_decay_overview");
     example(&bsl::example_declval_overview, "example_declval_overview");
     example(&bsl::example_destroy_at_overview, "example_destroy_at_overview");
@@ -484,6 +505,17 @@ main() noexcept
     example(&bsl::example_extent_overview, "example_extent_overview");
     example(&bsl::example_false_type_overview, "example_false_type_overview");
     example(&bsl::example_fill_overview, "example_fill_overview");
+    example(&bsl::example_fmt_align, "example_fmt_align");
+    example(&bsl::example_fmt_alt_form, "example_fmt_alt_form");
+    example(&bsl::example_fmt_bool, "example_fmt_bool");
+    example(&bsl::example_fmt_char_type, "example_fmt_char_type");
+    example(&bsl::example_fmt_constructor_f_val_width, "example_fmt_constructor_f_val_width");
+    example(&bsl::example_fmt_constructor_f_val, "example_fmt_constructor_f_val");
+    example(&bsl::example_fmt_cstr_type, "example_fmt_cstr_type");
+    example(&bsl::example_fmt_integral, "example_fmt_integral");
+    example(&bsl::example_fmt_sign_aware, "example_fmt_sign_aware");
+    example(&bsl::example_fmt_sign, "example_fmt_sign");
+    example(&bsl::example_fmt_width, "example_fmt_width");
     example(&bsl::example_for_each_overview, "example_for_each_overview");
     example(&bsl::example_forward_overview, "example_forward_overview");
     // example(&bsl::example_has_unique_object_representations_overview, "example_has_unique_object_representations_overview");

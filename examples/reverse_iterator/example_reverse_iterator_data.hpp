@@ -26,7 +26,7 @@
 #define EXAMPLE_REVERSE_ITERATOR_DATA_HPP
 
 #include <bsl/string_view.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -40,7 +40,7 @@ namespace bsl
         constexpr bsl::string_view::reverse_iterator_type iter{str.rbegin()};
 
         if (str.data() == iter.data()) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

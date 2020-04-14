@@ -26,7 +26,7 @@
 #define EXAMPLE_BASIC_ERRC_TYPE_IS_CHECKED_HPP
 
 #include <bsl/errc_type.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -39,7 +39,7 @@ namespace bsl
         constexpr basic_errc_type<> my_errc{-42};
 
         if (my_errc.is_checked()) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

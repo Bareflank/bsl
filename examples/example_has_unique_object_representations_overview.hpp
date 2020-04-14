@@ -26,7 +26,7 @@
 #define EXAMPLE_HAS_UNIQUE_OBJECT_REPRESENTATIONS_OVERVIEW_HPP
 
 #include <bsl/has_unique_object_representations.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 #include "example_class_pod.hpp"
 
@@ -39,7 +39,7 @@ namespace bsl
     example_has_unique_object_representations_overview() noexcept
     {
         if (bsl::has_unique_object_representations<example_class_pod>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

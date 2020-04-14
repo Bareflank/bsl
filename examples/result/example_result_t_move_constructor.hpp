@@ -26,7 +26,7 @@
 #define EXAMPLE_RESULT_T_MOVE_CONSTRUCTOR_HPP
 
 #include <bsl/result.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -40,7 +40,7 @@ namespace bsl
         bsl::result<bool> const res{bsl::move(val)};
 
         if (auto const *const ptr = res.get_if()) {
-            bsl::print("success: %s\n", *ptr ? "true" : "false");
+            bsl::print() << "success: " << *ptr << bsl::endl;
         }
     }
 }

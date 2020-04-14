@@ -26,7 +26,7 @@
 #define EXAMPLE_ADDRESSOF_OVERVIEW_HPP
 
 #include <bsl/addressof.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -38,7 +38,7 @@ namespace bsl
     {
         bool const mydata{};
         if (bsl::addressof(mydata) == &mydata) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

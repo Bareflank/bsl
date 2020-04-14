@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_POINTER_OVERVIEW_HPP
 
 #include <bsl/is_pointer.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_is_pointer_overview() noexcept
     {
         if (bsl::is_pointer<void *>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

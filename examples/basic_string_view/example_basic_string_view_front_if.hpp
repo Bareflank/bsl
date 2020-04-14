@@ -26,7 +26,7 @@
 #define EXAMPLE_BASIC_STRING_VIEW_FRONT_IF_HPP
 
 #include <bsl/basic_string_view.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -39,7 +39,7 @@ namespace bsl
         constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
 
         if (auto const *const ptr = str.front_if()) {
-            bsl::print("success: %c\n", *ptr);
+            bsl::print() << "success: " << *ptr << bsl::endl;
         }
     }
 }

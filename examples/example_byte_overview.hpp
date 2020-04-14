@@ -26,7 +26,7 @@
 #define EXAMPLE_BYTE_OVERVIEW_HPP
 
 #include <bsl/byte.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_byte_overview() noexcept
     {
         bsl::byte const mybyte{static_cast<bsl::uint8>(42)};
-        bsl::print("byte: %d\n", mybyte.to_integer());
+        bsl::print() << "success: " << mybyte.to_integer();
     }
 }
 

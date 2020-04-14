@@ -381,6 +381,7 @@ string(APPEND CMAKE_CXX_FLAGS
     "-Weverything "
     "-Wno-c++98-compat "
     "-Wno-c++98-compat-pedantic "
+    "-Wno-c++20-compat "
     "-Wno-padded "
     "-Wno-weak-vtables "
     "-Wno-ctad-maybe-unsupported "
@@ -389,10 +390,10 @@ string(APPEND CMAKE_CXX_FLAGS
 
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -Werror")
 set(CMAKE_LINKER_FLAGS_RELEASE "-O3 -DNDEBUG -Werror")
-set(CMAKE_CXX_FLAGS_DEBUG "-Og -g")
-set(CMAKE_LINKER_FLAGS_DEBUG "-Og -g")
-set(CMAKE_CXX_FLAGS_CLANG_TIDY "-O0 -Werror")
-set(CMAKE_LINKER_FLAGS_CLANG_TIDY "-O0 -Werror")
+set(CMAKE_CXX_FLAGS_DEBUG "-Og -g -ftime-trace")
+set(CMAKE_LINKER_FLAGS_DEBUG "-Og -g -ftime-trace")
+set(CMAKE_CXX_FLAGS_CLANG_TIDY "-O0 -g -ftime-trace -Werror")
+set(CMAKE_LINKER_FLAGS_CLANG_TIDY "-O0 -g -ftime-trace -Werror")
 set(CMAKE_CXX_FLAGS_PERFORCE "-O0 -Werror")
 set(CMAKE_LINKER_FLAGS_PERFORCE "-O0 -Werror")
 set(CMAKE_CXX_FLAGS_ASAN "-Og -g -fno-omit-frame-pointer -fsanitize=address")
@@ -418,7 +419,7 @@ add_custom_command(TARGET info
 # ------------------------------------------------------------------------------
 
 if(NOT DEFINED BSL_DEBUG_LEVEL)
-    set(BSL_DEBUG_LEVEL "debug_level_t::verbosity_level_0")
+    set(BSL_DEBUG_LEVEL "0")
 endif()
 
 if(NOT DEFINED BSL_PAGE_SIZE)
@@ -426,6 +427,7 @@ if(NOT DEFINED BSL_PAGE_SIZE)
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL PERFORCE)
+    set(BSL_CONSTEXPR "")
     set(BSL_BUILTIN_FILE "\"file\"")
     set(BSL_BUILTIN_FUNCTION "\"function\"")
     set(BSL_BUILTIN_LINE "0")
@@ -436,6 +438,7 @@ if(CMAKE_BUILD_TYPE STREQUAL PERFORCE)
     set(BSL_BUILTIN_STRLEN "0U")
     set(BSL_BUILTIN_CHAR_MEMCHR "nullptr")
 else()
+    set(BSL_CONSTEXPR "constexpr")
     set(BSL_BUILTIN_FILE "__builtin_FILE()")
     set(BSL_BUILTIN_FUNCTION "__builtin_FUNCTION()")
     set(BSL_BUILTIN_LINE "__builtin_LINE()")
@@ -447,15 +450,10 @@ else()
     set(BSL_BUILTIN_CHAR_MEMCHR "__builtin_char_memchr(str,ch,min_of(__builtin_strlen(str)+1,count))")
 endif()
 
-if(CMAKE_BUILD_TYPE STREQUAL PERFORCE)
-    set(BSL_CONSTEXPR "")
-else()
-    set(BSL_CONSTEXPR "constexpr")
-endif()
-
 list(APPEND BSL_DEFAULT_DEFINES
     BSL_DEBUG_LEVEL=${BSL_DEBUG_LEVEL}
     BSL_PAGE_SIZE=${BSL_PAGE_SIZE}
+    BSL_CONSTEXPR=${BSL_CONSTEXPR}
     BSL_BUILTIN_FILE=${BSL_BUILTIN_FILE}
     BSL_BUILTIN_FUNCTION=${BSL_BUILTIN_FUNCTION}
     BSL_BUILTIN_LINE=${BSL_BUILTIN_LINE}
@@ -465,7 +463,6 @@ list(APPEND BSL_DEFAULT_DEFINES
     BSL_BUILTIN_STRNCMP=${BSL_BUILTIN_STRNCMP}
     BSL_BUILTIN_STRLEN=${BSL_BUILTIN_STRLEN}
     BSL_BUILTIN_CHAR_MEMCHR=${BSL_BUILTIN_CHAR_MEMCHR}
-    BSL_CONSTEXPR=${BSL_CONSTEXPR}
 )
 
 # ------------------------------------------------------------------------------

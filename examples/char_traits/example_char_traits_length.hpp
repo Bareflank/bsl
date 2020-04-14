@@ -26,7 +26,7 @@
 #define EXAMPLE_CHAR_TRAITS_LENGTH_HPP
 
 #include <bsl/char_traits.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -38,7 +38,7 @@ namespace bsl
     {
         constexpr bsl::uintmax len{2U};
         if (bsl::char_traits<bsl::char_type>::length("42") == len) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

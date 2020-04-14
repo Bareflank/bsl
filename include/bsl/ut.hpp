@@ -21,19 +21,22 @@
 /// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
+///
+/// @file ut.hpp
+///
 
 #ifndef BSL_UT_HPP
 #define BSL_UT_HPP
 
-#include <cstdlib>
-
 #include "color.hpp"
-#include "cstr_type.hpp"
+#include "debug.hpp"
+#include "discard.hpp"
 #include "exit_code.hpp"
-#include "is_constant_evaluated.hpp"
 #include "main.hpp"
-#include "print.hpp"
 #include "source_location.hpp"
+#include "string_view.hpp"
+
+#include <stdlib.h>    // NOLINT
 
 #pragma clang diagnostic ignored "-Wunused-member-function"
 #pragma clang diagnostic ignored "-Wunneeded-member-function"
@@ -47,21 +50,6 @@ namespace bsl
     namespace details
     {
         /// <!-- description -->
-        ///   @brief Returns a reference to the name of the current test
-        ///     case.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return Returns a reference to the name of the current test
-        ///     case.
-        ///
-        inline cstr_type &
-        ut_current_test_case_name() noexcept
-        {
-            static cstr_type s_ut_current_test_case_name{};
-            return s_ut_current_test_case_name;
-        }
-
-        /// <!-- description -->
         ///   @brief Prints the current source location to the console.
         ///
         /// <!-- inputs/outputs -->
@@ -70,11 +58,7 @@ namespace bsl
         inline void
         ut_print_here(sloc_type const &sloc) noexcept
         {
-            bsl::print("  --> ");
-            bsl::print("%s%s%s", yellow, sloc.file_name(), reset_color);
-            bsl::print(": ");
-            bsl::print("%s%d%s", cyan, sloc.line(), reset_color);
-            bsl::print("\n");
+            bsl::print() << sloc;
         }
     }
 
@@ -95,9 +79,10 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param name the name of the scenario (i.e., test case)
         ///
-        explicit constexpr ut_scenario(cstr_type const &name) noexcept    // --
-            : m_name{name}
-        {}
+        explicit constexpr ut_scenario(string_view const &name) noexcept
+        {
+            bsl::discard(name);
+        }
 
         /// <!-- description -->
         ///   @brief Executes a lambda function as the body of the
@@ -112,22 +97,9 @@ namespace bsl
         [[maybe_unused]] constexpr ut_scenario &
         operator=(FUNC &&func) noexcept
         {
-            if (!is_constant_evaluated()) {
-                details::ut_current_test_case_name() = m_name;
-            }
-
             func();
-
-            if (!is_constant_evaluated()) {
-                details::ut_current_test_case_name() = nullptr;
-            }
-
             return *this;
         }
-
-    private:
-        /// @brief stores the name of the scenario
-        cstr_type m_name;
     };
 
     /// @class bsl::ut_given
@@ -219,10 +191,7 @@ namespace bsl
     constexpr bsl::exit_code
     ut_success() noexcept
     {
-        if (!is_constant_evaluated()) {
-            bsl::print("%s%s%s\n", green, "All tests passed", reset_color);
-        }
-
+        bsl::print() << bsl::green << "All tests passed" << bsl::reset_color << bsl::endl;
         return bsl::exit_success;
     }
 
@@ -251,14 +220,11 @@ namespace bsl
     ut_check(bool const test, sloc_type const &sloc = here()) noexcept
     {
         if (!test) {
-            ut_check_failed();
-            bsl::print("%s%s%s ", red, "[CHECK FAILED]", reset_color);
-            bsl::print("in test case \"");
-            bsl::print("%s%s%s", magenta, details::ut_current_test_case_name(), reset_color);
-            bsl::print("\"\n");
-            details::ut_print_here(sloc);
+            bsl::error() << bsl::magenta << "[CHECK FAILED]" << bsl::reset_color << bsl::endl;
+            bsl::error() << sloc;
 
-            exit(EXIT_FAILURE);
+            ut_check_failed();
+            exit(1);
         }
 
         return test;

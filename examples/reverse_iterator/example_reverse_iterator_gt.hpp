@@ -26,7 +26,7 @@
 #define EXAMPLE_REVERSE_ITERATOR_GT_HPP
 
 #include <bsl/string_view.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -42,27 +42,27 @@ namespace bsl
         constexpr bsl::string_view::reverse_iterator_type iter3{str.rend()};
 
         if (iter1 == iter2) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
 
         if (iter1 != iter3) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
 
         if (iter1 < iter3) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
 
         if (iter1 <= iter2) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
 
         if (iter3 > iter1) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
 
         if (iter3 >= iter1) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

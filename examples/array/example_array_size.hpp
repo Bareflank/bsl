@@ -26,7 +26,7 @@
 #define EXAMPLE_ARRAY_SIZE_HPP
 
 #include <bsl/array.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -45,8 +45,7 @@ namespace bsl
         constexpr bsl::uintmax val6{42U};
 
         bsl::array<bsl::uintmax, size> const arr{val1, val2, val3, val4, val5, val6};
-
-        bsl::print("size: %d\n", arr.size());
+        bsl::print() << "size: " << arr.size() << bsl::endl;
     }
 }
 

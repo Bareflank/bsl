@@ -27,7 +27,7 @@
 
 #include <bsl/negation.hpp>
 #include <bsl/is_bool.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -38,7 +38,7 @@ namespace bsl
     example_negation_overview() noexcept
     {
         if (bsl::negation<is_bool<void>>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

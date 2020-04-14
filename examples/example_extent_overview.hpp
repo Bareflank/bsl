@@ -26,7 +26,7 @@
 #define EXAMPLE_EXTENT_OVERVIEW_HPP
 
 #include <bsl/extent.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -38,7 +38,7 @@ namespace bsl
     {
         constexpr bsl::int32 ext{2};
         if (bsl::extent<bool[ext]>::value == ext) {    // NOLINT
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

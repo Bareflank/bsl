@@ -27,7 +27,7 @@
 
 #include <bsl/as_const.hpp>
 #include <bsl/is_same.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -40,7 +40,7 @@ namespace bsl
     example_as_const_overview() noexcept
     {
         if (is_same<decltype(as_const(example_as_const_var)), bool const &>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

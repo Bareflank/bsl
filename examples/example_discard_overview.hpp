@@ -26,7 +26,7 @@
 #define EXAMPLE_DISCARD_OVERVIEW_HPP
 
 #include <bsl/discard.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -39,7 +39,7 @@ namespace bsl
         bool val{};
         bsl::discard(val);
 
-        bsl::print("success\n");
+        bsl::print() << "success\n";
     }
 }
 

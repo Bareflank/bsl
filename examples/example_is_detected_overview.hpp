@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_DETECTED_OVERVIEW_HPP
 
 #include <bsl/is_detected.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 #include "example_class_base.hpp"
 
@@ -42,7 +42,7 @@ namespace bsl
     example_is_detected_overview() noexcept
     {
         if (bsl::is_detected<example_is_detect_t, example_class_base>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

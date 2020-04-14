@@ -26,7 +26,7 @@
 #define EXAMPLE_BASIC_ERRC_TYPE_NOT_EQUALS_HPP
 
 #include <bsl/errc_type.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -43,7 +43,7 @@ namespace bsl
         constexpr basic_errc_type<> my_errc2{errc2};
 
         if (my_errc1 != my_errc2) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

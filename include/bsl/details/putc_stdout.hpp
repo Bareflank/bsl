@@ -25,31 +25,36 @@
 #ifndef BSL_DETAILS_PUTC_STDOUT_HPP
 #define BSL_DETAILS_PUTC_STDOUT_HPP
 
-#include "../cstdint.hpp"
 #include "../discard.hpp"
+#include "../char_type.hpp"
+#include "../is_constant_evaluated.hpp"
 
-#include <cstdio>
+#include <stdio.h>    // PRQA S 1-10000 // NOLINT
 
 namespace bsl
 {
     namespace details
     {
-        inline void
-        putc_stdout(bsl::int8 const c) noexcept
+        /// <!-- description -->
+        ///   @brief Outputs a character to stdout. If this function is
+        ///     executed from a constexpr this function does nothing. By
+        ///     default this function will call fputc(c, stdout).
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam T defaults to void. Provides the ability to specialize
+        ///     this function to provide your own custom implementation.
+        ///   @param c the character to output to stdout
+        ///
+        template<typename T = void>
+        constexpr void
+        putc_stdout(char_type const c) noexcept
         {
-            BSL_PUTC_STDOUT(c);
-        }
-
-        inline void
-        putc_stdout_prqa(bsl::int8 const c) noexcept
-        {
-            bsl::discard(c);
-        }
-
-        inline void
-        putc_stdout_fputc(bsl::int8 const c) noexcept
-        {
-            bsl::discard(std::fputc(c, stdout));
+            if (!is_constant_evaluated()) {
+                bsl::discard(fputc(c, stdout));    // PRQA S 1-10000 // NOLINT
+            }
+            else {
+                bsl::discard(c);
+            }
         }
     }
 }

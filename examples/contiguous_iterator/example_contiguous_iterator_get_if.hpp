@@ -26,7 +26,7 @@
 #define EXAMPLE_CONTIGUOUS_ITERATOR_GET_IF_HPP
 
 #include <bsl/string_view.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -40,7 +40,7 @@ namespace bsl
         bsl::string_view::iterator_type iter{str.begin()};
 
         if (auto const *const ptr = iter.get_if()) {
-            bsl::print("success: %c\n", *ptr);
+            bsl::print() << "success: " << *ptr << bsl::endl;
         }
     }
 }

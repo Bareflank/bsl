@@ -41,6 +41,71 @@ tests() noexcept
 {
     constexpr bsl::uintmax max_size{bsl::numeric_limits<bsl::uintmax>::max()};
 
+    bsl::ut_scenario{"construction"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::basic_string_view<bsl::char_type> msg{};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(msg.empty());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::basic_string_view<bsl::char_type> msg{""};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(msg.empty());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::basic_string_view<bsl::char_type> msg{"Hello"};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(msg == "Hello");
+            };
+        };
+    };
+
+    bsl::ut_scenario{"assignment"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::basic_string_view<bsl::char_type> msg{};
+            bsl::ut_when{} = [&msg]() {
+                msg = "";
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.empty());
+                };
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::basic_string_view<bsl::char_type> msg{"Hello"};
+            bsl::ut_when{} = [&msg]() {
+                msg = "";
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.empty());
+                };
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::basic_string_view<bsl::char_type> msg{""};
+            bsl::ut_when{} = [&msg]() {
+                msg = "Hello";
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg == "Hello");
+                };
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::basic_string_view<bsl::char_type> msg{"World"};
+            bsl::ut_when{} = [&msg]() {
+                msg = "Hello";
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg == "Hello");
+                };
+            };
+        };
+    };
+
     bsl::ut_scenario{"at_if"} = []() {
         bsl::ut_given{} = []() {
             bsl::basic_string_view<bsl::char_type> msg{};

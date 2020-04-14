@@ -26,7 +26,7 @@
 #define EXAMPLE_CHAR_TRAITS_NOT_EOF_HPP
 
 #include <bsl/char_traits.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -40,11 +40,11 @@ namespace bsl
         bsl::intmax const val2{bsl::char_traits<bsl::char_type>::eof()};
 
         if (bsl::char_traits<bsl::char_type>::not_eof(val1) == val1) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
 
         if (bsl::char_traits<bsl::char_type>::not_eof(val2) == 0) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

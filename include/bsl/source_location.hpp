@@ -28,8 +28,10 @@
 #ifndef BSL_SOURCE_LOCATION_HPP
 #define BSL_SOURCE_LOCATION_HPP
 
+#include "color.hpp"
 #include "cstdint.hpp"
 #include "cstr_type.hpp"
+#include "debug.hpp"
 
 namespace bsl
 {
@@ -45,9 +47,9 @@ namespace bsl
     class source_location final
     {
         /// @brief defines the source location's file name type
-        using file_type = cstr_type;
+        using file_type = bsl::cstr_type;
         /// @brief defines the source location's function name type
-        using func_type = cstr_type;
+        using func_type = bsl::cstr_type;
         /// @brief defines the source location's line location type
         using line_type = bsl::intmax;
 
@@ -183,6 +185,34 @@ namespace bsl
     here(source_location const &sloc = source_location::current()) noexcept
     {
         return sloc;
+    }
+
+    /// <!-- description -->
+    ///   @brief Outputs the provided bsl::source_location to the provided
+    ///     output type.
+    ///   @related bsl::source_location
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of outputter provided
+    ///   @param o the instance of the outputter used to output the value.
+    ///   @param sloc the bsl::source_location to output
+    ///   @return return o
+    ///
+    template<typename T>
+    [[maybe_unused]] constexpr out<T>
+    operator<<(out<T> const o, source_location const &sloc) noexcept
+    {
+        if constexpr (o.empty()) {
+            return o;
+        }
+
+        o << "  --> "                                               // --
+          << bsl::yellow << sloc.file_name() << bsl::reset_color    // --
+          << ": "                                                   // --
+          << bsl::cyan << sloc.line() << bsl::reset_color           // --
+          << bsl::endl;                                             // --
+
+        return o;
     }
 
     /// @brief defines the type used to describe a bsl::source_location

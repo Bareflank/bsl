@@ -26,7 +26,7 @@
 #define EXAMPLE_EXCHANGE_OVERVIEW_HPP
 
 #include <bsl/exchange.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -44,11 +44,11 @@ namespace bsl
         var2 = bsl::exchange(var1, var2);
 
         if (val2 == var1) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
 
         if (val1 == var2) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

@@ -26,7 +26,7 @@
 #define EXAMPLE_BASIC_ERRC_TYPE_OVERVIEW_HPP
 
 #include <bsl/errc_type.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,21 +37,21 @@ namespace bsl
     example_basic_errc_type_overview() noexcept
     {
         if (errc_success.success()) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
 
         if (errc_failure.failure()) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
 
         constexpr errc_type my_errc{42};
 
         if (my_errc.failure()) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
 
         if (my_errc.is_unchecked()) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

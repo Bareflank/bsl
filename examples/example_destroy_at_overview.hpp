@@ -26,7 +26,7 @@
 #define EXAMPLE_DESTROY_AT_OVERVIEW_HPP
 
 #include <bsl/destroy_at.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 #include "example_class_subclass.hpp"
 
@@ -40,12 +40,12 @@ namespace bsl
     {
         example_class_subclass myclass{};
         if (myclass.get()) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
 
         bsl::destroy_at(&myclass);
         if (!myclass.get()) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

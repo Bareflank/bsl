@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_NOTHROW_DESTRUCTIBLE_OVERVIEW_HPP
 
 #include <bsl/is_nothrow_destructible.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 #include "example_class_subclass.hpp"
 
@@ -39,7 +39,7 @@ namespace bsl
     example_is_nothrow_destructible_overview() noexcept
     {
         if (bsl::is_nothrow_destructible<example_class_subclass>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

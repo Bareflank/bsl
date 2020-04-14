@@ -26,7 +26,7 @@
 #define EXAMPLE_INTEGER_SEQUENCE_MAX_HPP
 
 #include <bsl/integer_sequence.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -39,7 +39,7 @@ namespace bsl
         constexpr bsl::uintmax max{5};
 
         if (bsl::make_index_sequence<6>::max() == max) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_SIGNED_OVERVIEW_HPP
 
 #include <bsl/is_signed.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_is_signed_overview() noexcept
     {
         if (bsl::is_signed<bsl::int32>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

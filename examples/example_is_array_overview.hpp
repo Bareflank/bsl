@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_ARRAY_OVERVIEW_HPP
 
 #include <bsl/is_array.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,12 +37,12 @@ namespace bsl
     example_is_array_overview() noexcept
     {
         if (bsl::is_array<bool[]>::value) {    // NOLINT
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
 
         constexpr bsl::uintmax bounds{42U};
         if (bsl::is_array<bool[bounds]>::value) {    // NOLINT
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

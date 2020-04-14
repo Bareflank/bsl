@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_CONSTANT_EVALUATED_OVERVIEW_HPP
 
 #include <bsl/is_constant_evaluated.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,11 +37,11 @@ namespace bsl
     example_is_constant_evaluated_overview() noexcept
     {
         if constexpr (bsl::is_constant_evaluated()) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
 
         if (!bsl::is_constant_evaluated()) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

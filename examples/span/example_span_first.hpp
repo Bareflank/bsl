@@ -28,7 +28,7 @@
 #include <bsl/span.hpp>
 #include <bsl/array.hpp>
 #include <bsl/for_each.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -58,7 +58,7 @@ namespace bsl
         bsl::span const s{arr.data(), arr.size()};
         if (auto const *const ptr = s.first(i).front_if()) {
             if (val1 == *ptr) {
-                bsl::print("success\n");
+                bsl::print() << "success\n";
             }
         }
     }

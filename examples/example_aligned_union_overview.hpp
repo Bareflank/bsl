@@ -26,7 +26,7 @@
 #define EXAMPLE_ALIGNED_UNION_OVERVIEW_HPP
 
 #include <bsl/aligned_union.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -39,7 +39,7 @@ namespace bsl
         using union_type = bsl::aligned_union_t<0, bool, bsl::int64>;
 
         if (sizeof(union_type) >= sizeof(bsl::int64)) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

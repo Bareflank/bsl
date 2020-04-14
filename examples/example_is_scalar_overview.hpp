@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_SCALAR_OVERVIEW_HPP
 
 #include <bsl/is_scalar.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_is_scalar_overview() noexcept
     {
         if (bsl::is_scalar<bool>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

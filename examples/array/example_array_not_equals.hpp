@@ -26,7 +26,7 @@
 #define EXAMPLE_ARRAY_NOT_EQUALS_HPP
 
 #include <bsl/array.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -49,11 +49,11 @@ namespace bsl
         bsl::array<bsl::uintmax, size> const arr3{val1, val1, val1, val1, val1, val1};
 
         if (arr1 == arr2) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
 
         if (arr1 != arr3) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

@@ -26,7 +26,7 @@
 #define EXAMPLE_COLOR_OVERVIEW_HPP
 
 #include <bsl/color.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -36,7 +36,7 @@ namespace bsl
     inline void
     example_color_overview() noexcept
     {
-        bsl::print("%ssuccess%s\n", bsl::green, bsl::reset_color);
+        bsl::print() << bsl::green << "success" << bsl::reset_color << bsl::endl;
     }
 }
 

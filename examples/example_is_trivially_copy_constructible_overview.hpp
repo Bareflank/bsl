@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_TRIVIALLY_COPY_CONSTRUCTIBLE_OVERVIEW_HPP
 
 #include <bsl/is_trivially_copy_constructible.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_is_trivially_copy_constructible_overview() noexcept
     {
         if (bsl::is_trivially_copy_constructible<bool>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

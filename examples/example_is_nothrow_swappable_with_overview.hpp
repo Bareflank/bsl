@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_NOTHROW_SWAPPABLE_WITH_HPP
 
 #include <bsl/is_nothrow_swappable_with.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_is_nothrow_swappable_with_overview() noexcept
     {
         if (bsl::is_nothrow_swappable_with<bool &, bool &>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

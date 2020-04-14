@@ -28,7 +28,7 @@
 #include <bsl/conjunction.hpp>
 #include <bsl/is_bool.hpp>
 #include <bsl/is_void.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -39,7 +39,7 @@ namespace bsl
     example_conjunction_overview() noexcept
     {
         if (bsl::conjunction<is_void<void>, is_bool<bool>>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

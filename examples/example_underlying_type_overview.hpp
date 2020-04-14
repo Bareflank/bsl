@@ -27,7 +27,7 @@
 
 #include <bsl/underlying_type.hpp>
 #include <bsl/is_same.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 #include "example_enum.hpp"
 
@@ -40,7 +40,7 @@ namespace bsl
     example_underlying_type_overview() noexcept
     {
         if (bsl::is_same<underlying_type_t<example_enum>, bsl::int32>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

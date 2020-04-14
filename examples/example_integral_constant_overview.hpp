@@ -26,7 +26,7 @@
 #define EXAMPLE_INTEGRAL_CONSTANT_OVERVIEW_HPP
 
 #include <bsl/integral_constant.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_integral_constant_overview() noexcept
     {
         if (bsl::integral_constant<bool, true>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

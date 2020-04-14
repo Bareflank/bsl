@@ -27,7 +27,7 @@
 
 #include <bsl/decay.hpp>
 #include <bsl/is_same.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -38,7 +38,7 @@ namespace bsl
     example_decay_overview() noexcept
     {
         if (bsl::is_same<bsl::decay_t<bool const>, bool>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

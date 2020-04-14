@@ -27,7 +27,7 @@
 
 #include <bsl/aligned_storage.hpp>
 #include <bsl/alignment_of.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -38,7 +38,7 @@ namespace bsl
     example_alignment_of_overview() noexcept
     {
         if (bsl::alignment_of<bsl::int32>::value == alignof(bsl::int32)) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

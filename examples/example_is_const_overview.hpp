@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_CONST_OVERVIEW_HPP
 
 #include <bsl/is_const.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_is_const_overview() noexcept
     {
         if (bsl::is_const<bool const>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

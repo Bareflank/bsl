@@ -26,7 +26,7 @@
 #define EXAMPLE_BASIC_STRING_VIEW_MAX_SIZE_HPP
 
 #include <bsl/basic_string_view.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_basic_string_view_max_size() noexcept
     {
         constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
-        bsl::print("max size: %ull\n", str.max_size());
+        bsl::print() << "max size: " << str.max_size() << bsl::endl;
     }
 }
 

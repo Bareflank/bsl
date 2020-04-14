@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_CLASS_OVERVIEW_HPP
 
 #include <bsl/is_class.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 #include "example_class_pod.hpp"
 
@@ -39,7 +39,7 @@ namespace bsl
     example_is_class_overview() noexcept
     {
         if (bsl::is_class<example_class_pod>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

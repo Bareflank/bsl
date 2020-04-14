@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_BASE_OF_OVERVIEW_HPP
 
 #include <bsl/is_base_of.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 #include "example_class_subclass.hpp"
 
@@ -39,7 +39,7 @@ namespace bsl
     example_is_base_of_overview() noexcept
     {
         if (bsl::is_base_of<example_class_base, example_class_subclass>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

@@ -26,7 +26,7 @@
 #define EXAMPLE_BASIC_ERRC_TYPE_MESSAGE_HPP
 
 #include <bsl/errc_type.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -36,7 +36,7 @@ namespace bsl
     inline void
     example_basic_errc_type_message() noexcept
     {
-        bsl::print("%s\n", errc_success.message());
+        bsl::print() << errc_success.message() << bsl::endl;
     }
 }
 

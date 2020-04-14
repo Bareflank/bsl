@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_AGGREGATE_OVERVIEW_HPP
 
 #include <bsl/is_aggregate.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 #include "example_class_pod.hpp"
 
@@ -39,7 +39,7 @@ namespace bsl
     example_is_aggregate_overview() noexcept
     {
         if (bsl::is_aggregate<example_class_pod>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

@@ -27,7 +27,7 @@
 
 #include <bsl/span.hpp>
 #include <bsl/array.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -49,7 +49,7 @@ namespace bsl
 
         bsl::span const spn{arr.data(), arr.size()};
         if (spn.data() == arr.data()) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

@@ -70,13 +70,13 @@ namespace bsl
             ///     the compiler spits out when an error occurs.
             ///
             /// <!-- inputs/outputs -->
-            ///   @param v the view to iterator over
+            ///   @param vw the view to iterator over
             ///   @param f the function to execute on each iteration
             ///
             static constexpr void
-            call(VIEW &&v, FUNC &&f) noexcept
+            call(VIEW &&vw, FUNC &&f) noexcept
             {
-                bsl::discard(v);
+                bsl::discard(vw);
                 bsl::discard(f);
             }
         };
@@ -107,21 +107,21 @@ namespace bsl
             ///     a bool or void to determine how to execute.
             ///
             /// <!-- inputs/outputs -->
-            ///   @param v the view to iterator over
+            ///   @param vw the view to iterator over
             ///   @param f the function to execute on each iteration
             ///
             static constexpr void
-            call(VIEW &&v, FUNC &&f) noexcept(
+            call(VIEW &&vw, FUNC &&f) noexcept(
                 is_nothrow_invocable<FUNC, value_type_for<VIEW> &>::value)
             {
-                for (bsl::uintmax i{}; i < v.size(); ++i) {
+                for (bsl::uintmax i{}; i < vw.size(); ++i) {
                     if constexpr (is_bool<ret_type>::value) {
-                        if (!invoke(bsl::forward<FUNC>(f), *v.at_if(i))) {
+                        if (!invoke(bsl::forward<FUNC>(f), *vw.at_if(i))) {
                             break;
                         }
                     }
                     else {
-                        invoke(bsl::forward<FUNC>(f), *v.at_if(i));
+                        invoke(bsl::forward<FUNC>(f), *vw.at_if(i));
                     }
                 }
             }
@@ -153,21 +153,21 @@ namespace bsl
             ///     a bool or void to determine how to execute.
             ///
             /// <!-- inputs/outputs -->
-            ///   @param v the view to iterator over
+            ///   @param vw the view to iterator over
             ///   @param f the function to execute on each iteration
             ///
             static constexpr void
-            call(VIEW &&v, FUNC &&f) noexcept(
+            call(VIEW &&vw, FUNC &&f) noexcept(
                 is_nothrow_invocable<FUNC, value_type_for<VIEW> &, bsl::uintmax>::value)
             {
-                for (bsl::uintmax i{}; i < v.size(); ++i) {
+                for (bsl::uintmax i{}; i < vw.size(); ++i) {
                     if constexpr (is_bool<ret_type>::value) {
-                        if (!invoke(bsl::forward<FUNC>(f), *v.at_if(i), i)) {
+                        if (!invoke(bsl::forward<FUNC>(f), *vw.at_if(i), i)) {
                             break;
                         }
                     }
                     else {
-                        invoke(bsl::forward<FUNC>(f), *v.at_if(i), i);
+                        invoke(bsl::forward<FUNC>(f), *vw.at_if(i), i);
                     }
                 }
             }

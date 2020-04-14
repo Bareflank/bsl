@@ -41,7 +41,7 @@ namespace bsl
             decltype(bsl::declval<example_class_nodefault>().get());
 
         if (bsl::is_same<example_declval_type, bool>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

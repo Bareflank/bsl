@@ -26,7 +26,7 @@
 #define EXAMPLE_IS_RVALUE_REFERENCE_OVERVIEW_HPP
 
 #include <bsl/is_rvalue_reference.hpp>
-#include <bsl/print.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
@@ -37,7 +37,7 @@ namespace bsl
     example_is_rvalue_reference_overview() noexcept
     {
         if (bsl::is_rvalue_reference<bool &&>::value) {
-            bsl::print("success\n");
+            bsl::print() << "success\n";
         }
     }
 }

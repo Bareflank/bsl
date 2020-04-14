@@ -66,7 +66,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">construct_at.hpp File Reference</div>  </div>
@@ -78,23 +77,18 @@ $(function() {
 </div>
 <p><a href="construct__at_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a461e925a0a8690ad467efe874bcff7cc"><td class="memItemLeft" align="right" valign="top">constexpr void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="construct__at_8hpp.html#a461e925a0a8690ad467efe874bcff7cc">operator new</a> (<a class="el" href="namespacebsl.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9">bsl::uintmax</a> count, void *ptr) noexcept</td></tr>
+<tr class="memitem:a461e925a0a8690ad467efe874bcff7cc"><td class="memItemLeft" align="right" valign="top">constexpr void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="construct__at_8hpp.html#a461e925a0a8690ad467efe874bcff7cc">operator new</a> (<a class="el" href="cstdint_8hpp.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9">bsl::uintmax</a> count, void *ptr) noexcept</td></tr>
 <tr class="memdesc:a461e925a0a8690ad467efe874bcff7cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function implements the placement new operator. Note that this function is passed a count and pointer, both of which are ignored.  <a href="#a461e925a0a8690ad467efe874bcff7cc">More...</a><br /></td></tr>
 <tr class="separator:a461e925a0a8690ad467efe874bcff7cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9aeebbf263faab0a12aaf39c944c03bd"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... ARGS&gt; </td></tr>
-<tr class="memitem:a9aeebbf263faab0a12aaf39c944c03bd"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="construct__at_8hpp.html#a9aeebbf263faab0a12aaf39c944c03bd">std::construct_at_impl</a> (void *const ptr, ARGS &amp;&amp;... args) noexcept(noexcept(new(ptr) T{<a class="el" href="namespacebsl.html#aa19e79c525543d028b9b0bdb56d022c1">bsl::declval</a>&lt; ARGS &gt;()...}))</td></tr>
+<tr class="memitem:a9aeebbf263faab0a12aaf39c944c03bd"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="construct__at_8hpp.html#a9aeebbf263faab0a12aaf39c944c03bd">std::construct_at_impl</a> (void *const ptr, ARGS &amp;&amp;... args) noexcept(noexcept(new(ptr) T{bsl::declval&lt; ARGS &gt;()...}))</td></tr>
 <tr class="memdesc:a9aeebbf263faab0a12aaf39c944c03bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements a constexpr version of placement new. that can be used by BSL's APIs to support constexpr based APIs.  <a href="construct__at_8hpp.html#a9aeebbf263faab0a12aaf39c944c03bd">More...</a><br /></td></tr>
 <tr class="separator:a9aeebbf263faab0a12aaf39c944c03bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7d0251f0a23b36f18e62e91926bc931"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... ARGS&gt; </td></tr>
-<tr class="memitem:ac7d0251f0a23b36f18e62e91926bc931"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#ac7d0251f0a23b36f18e62e91926bc931">bsl::construct_at</a> (void *const ptr, ARGS &amp;&amp;... args) noexcept(noexcept(std::construct_at_impl&lt; T, ARGS... &gt;(ptr, <a class="el" href="namespacebsl.html#aa19e79c525543d028b9b0bdb56d022c1">bsl::declval</a>&lt; ARGS &gt;()...)))</td></tr>
-<tr class="memdesc:ac7d0251f0a23b36f18e62e91926bc931"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements a constexpr version of placement new. that can be used by BSL's APIs to support constexpr based APIs.  <a href="namespacebsl.html#ac7d0251f0a23b36f18e62e91926bc931">More...</a><br /></td></tr>
+<tr class="memitem:ac7d0251f0a23b36f18e62e91926bc931"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="construct__at_8hpp.html#ac7d0251f0a23b36f18e62e91926bc931">bsl::construct_at</a> (void *const ptr, ARGS &amp;&amp;... args) noexcept(noexcept(std::construct_at_impl&lt; T, ARGS... &gt;(ptr, bsl::declval&lt; ARGS &gt;()...)))</td></tr>
+<tr class="memdesc:ac7d0251f0a23b36f18e62e91926bc931"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements a constexpr version of placement new. that can be used by BSL's APIs to support constexpr based APIs.  <a href="construct__at_8hpp.html#ac7d0251f0a23b36f18e62e91926bc931">More...</a><br /></td></tr>
 <tr class="separator:ac7d0251f0a23b36f18e62e91926bc931"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -118,7 +112,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         <tr>
           <td class="memname">constexpr void* operator new </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacebsl.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9">bsl::uintmax</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="cstdint_8hpp.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9">bsl::uintmax</a>&#160;</td>
           <td class="paramname"><em>count</em>, </td>
         </tr>
         <tr>
@@ -190,6 +184,66 @@ template&lt;typename T , typename... ARGS&gt; </div>
 
 <p>Implements a constexpr version of placement new. that can be used by BSL's APIs to support constexpr based APIs. </p>
 <dl class="section note"><dt>Note</dt><dd>C++20 right now only allows for constexpr placement new to occur from the standard library (a practice I hope changes in the next release as that is horrible). For this reason, we implement the placement new from the std namespace (uhg) and then call this from our BSL function. This rule is so easy to bypass, I am at a loss as to why they did this, but at least this approach works so that third party libraries can still take advantage of this C++20 feature.</dd></dl>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>the type of object to initialize </td></tr>
+    <tr><td class="paramname">ARGS</td><td>the types of args to initialize T with </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ptr</td><td>a pointer to the object to initialize </td></tr>
+    <tr><td class="paramname">args</td><td>the args to initialize T with</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">throws</td><td>if T throws during construction </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="file_ac7d0251f0a23b36f18e62e91926bc931"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_ac7d0251f0a23b36f18e62e91926bc931">&#9670;&nbsp;</a></span>construct_at()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr void bsl::construct_at </td>
+          <td>(</td>
+          <td class="paramtype">void *const&#160;</td>
+          <td class="paramname"><em>ptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements a constexpr version of placement new. that can be used by BSL's APIs to support constexpr based APIs. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>the type of object to initialize </td></tr>

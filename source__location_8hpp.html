@@ -67,7 +67,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -87,22 +86,17 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class implements the <a class="el" href="classbsl_1_1source__location.html" title="This class implements the source_location specification that will eventually be included in C++20....">source_location</a> specification that will eventually be included in C++20. We make some changes to the specification to support AUTOSAR, but these changes should not change how the code is compiled or used, with the exception that we do not include the column() as this does not seem to be implemented by any compilers yet.  <a href="classbsl_1_1source__location.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a5fefedc73c85f9a67d6028a786648e09"><td class="memItemLeft" align="right" valign="top"><a id="a5fefedc73c85f9a67d6028a786648e09"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a5fefedc73c85f9a67d6028a786648e09">bsl::sloc_type</a> = source_location</td></tr>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="source__location_8hpp.html#a5fefedc73c85f9a67d6028a786648e09">bsl::sloc_type</a> = source_location</td></tr>
 <tr class="memdesc:a5fefedc73c85f9a67d6028a786648e09"><td class="mdescLeft">&#160;</td><td class="mdescRight">defines the type used to describe a <a class="el" href="classbsl_1_1source__location.html" title="This class implements the source_location specification that will eventually be included in C++20....">bsl::source_location</a> <br /></td></tr>
 <tr class="separator:a5fefedc73c85f9a67d6028a786648e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ac1eb6fafedd79a63b6a389913b4e0111"><td class="memItemLeft" align="right" valign="top">constexpr source_location&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#ac1eb6fafedd79a63b6a389913b4e0111">bsl::here</a> (source_location const &amp;sloc=source_location::current()) noexcept</td></tr>
-<tr class="memdesc:ac1eb6fafedd79a63b6a389913b4e0111"><td class="mdescLeft">&#160;</td><td class="mdescRight">This provides a less verbose version of <a class="el" href="classbsl_1_1source__location.html#a4df3fd12670f7f63f0d782b35b48bf1d" title="Constructs a new source_location object corresponding to the location of the call site.">bsl::source_location::current()</a> to help reduce how large this code must be. They are equivalent, and should not produce any additional overhead in release mode.  <a href="namespacebsl.html#ac1eb6fafedd79a63b6a389913b4e0111">More...</a><br /></td></tr>
+<tr class="memitem:ac1eb6fafedd79a63b6a389913b4e0111"><td class="memItemLeft" align="right" valign="top">constexpr source_location&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="source__location_8hpp.html#ac1eb6fafedd79a63b6a389913b4e0111">bsl::here</a> (source_location const &amp;sloc=source_location::current()) noexcept</td></tr>
+<tr class="memdesc:ac1eb6fafedd79a63b6a389913b4e0111"><td class="mdescLeft">&#160;</td><td class="mdescRight">This provides a less verbose version of <a class="el" href="classbsl_1_1source__location.html#a4df3fd12670f7f63f0d782b35b48bf1d" title="Constructs a new source_location object corresponding to the location of the call site.">bsl::source_location::current()</a> to help reduce how large this code must be. They are equivalent, and should not produce any additional overhead in release mode.  <a href="source__location_8hpp.html#ac1eb6fafedd79a63b6a389913b4e0111">More...</a><br /></td></tr>
 <tr class="separator:ac1eb6fafedd79a63b6a389913b4e0111"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -113,7 +107,43 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</dd>
 <dd>
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="file_ac1eb6fafedd79a63b6a389913b4e0111"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_ac1eb6fafedd79a63b6a389913b4e0111">&#9670;&nbsp;</a></span>here()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr source_location bsl::here </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classbsl_1_1source__location.html">source_location</a> const &amp;&#160;</td>
+          <td class="paramname"><em>sloc</em> = <code><a class="el" href="classbsl_1_1source__location.html#a4df3fd12670f7f63f0d782b35b48bf1d">source_location::current</a>()</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This provides a less verbose version of <a class="el" href="classbsl_1_1source__location.html#a4df3fd12670f7f63f0d782b35b48bf1d" title="Constructs a new source_location object corresponding to the location of the call site.">bsl::source_location::current()</a> to help reduce how large this code must be. They are equivalent, and should not produce any additional overhead in release mode. </p>
+<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="source__location_8hpp.html">bsl/source_location.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="debug_8hpp.html">bsl/debug.hpp</a>&gt;</span></div><div class="line"></div><div class="line"><span class="keyword">namespace </span>bsl</div><div class="line">{</div><div class="line">    <span class="keyword">inline</span> <span class="keywordtype">void</span></div><div class="line">    example_source_location_here() noexcept</div><div class="line">    {</div><div class="line">        <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <a class="code" href="source__location_8hpp.html#ac1eb6fafedd79a63b6a389913b4e0111">bsl::here</a>();</div><div class="line">    }</div><div class="line">}</div></div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sloc</td><td>the source_location object corresponding to the location of the call site. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the source_location object corresponding to the location of the call site. </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

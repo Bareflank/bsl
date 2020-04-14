@@ -67,7 +67,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -85,23 +84,18 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides the member typedef type which is the same as T, except that a topmost rvalue reference is added.  <a href="structbsl_1_1add__rvalue__reference.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a624d5ced1c693a5b7c74ac08f6a277b7"><td class="memTemplParams" colspan="2"><a id="a624d5ced1c693a5b7c74ac08f6a277b7"></a>
 template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a624d5ced1c693a5b7c74ac08f6a277b7"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a624d5ced1c693a5b7c74ac08f6a277b7">bsl::add_rvalue_reference_t</a> = typename add_rvalue_reference&lt; T &gt;::type</td></tr>
+<tr class="memitem:a624d5ced1c693a5b7c74ac08f6a277b7"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="add__rvalue__reference_8hpp.html#a624d5ced1c693a5b7c74ac08f6a277b7">bsl::add_rvalue_reference_t</a> = typename add_rvalue_reference&lt; T &gt;::type</td></tr>
 <tr class="memdesc:a624d5ced1c693a5b7c74ac08f6a277b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">a helper that reduces the verbosity of <a class="el" href="structbsl_1_1add__rvalue__reference.html" title="Provides the member typedef type which is the same as T, except that a topmost rvalue reference is ad...">bsl::add_rvalue_reference</a> <br /></td></tr>
 <tr class="separator:a624d5ced1c693a5b7c74ac08f6a277b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a534d3b2765afd9feabfda4825da0b529"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a534d3b2765afd9feabfda4825da0b529"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="add__rvalue__reference_8hpp.html#a534d3b2765afd9feabfda4825da0b529">bsl::details::try_add_rvalue_reference</a> (<a class="el" href="namespacebsl.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a> ignored) noexcept -&gt; type_identity&lt; T &amp;&amp; &gt;</td></tr>
+<tr class="memitem:a534d3b2765afd9feabfda4825da0b529"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="add__rvalue__reference_8hpp.html#a534d3b2765afd9feabfda4825da0b529">bsl::details::try_add_rvalue_reference</a> (<a class="el" href="cstdint_8hpp.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a> ignored) noexcept -&gt; type_identity&lt; T &amp;&amp; &gt;</td></tr>
 <tr class="memdesc:a534d3b2765afd9feabfda4825da0b529"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns T with an added &amp;&amp; if possible.  <a href="add__rvalue__reference_8hpp.html#a534d3b2765afd9feabfda4825da0b529">More...</a><br /></td></tr>
 <tr class="separator:a534d3b2765afd9feabfda4825da0b529"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5a5bfdc8aec243924808e0e0a3e8545"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -132,7 +126,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">auto bsl::details::try_add_rvalue_reference </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacebsl.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="cstdint_8hpp.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a>&#160;</td>
           <td class="paramname"><em>ignored</em></td><td>)</td>
           <td> -&gt;  <a class="el" href="structbsl_1_1type__identity.html">type_identity</a>&lt; T &amp;&amp; &gt;</td>
         </tr>

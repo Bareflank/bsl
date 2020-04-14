@@ -8,6 +8,6 @@ var searchData=
   ['eq',['eq',['../classbsl_1_1char__traits_3_01char__type_01_4.html#a5e80a72008074aa5d562749a8c2f7502',1,'bsl::char_traits&lt; char_type &gt;']]],
   ['eq_5fint_5ftype',['eq_int_type',['../classbsl_1_1char__traits_3_01char__type_01_4.html#acf2648151216f7bc1071be854d4fca20',1,'bsl::char_traits&lt; char_type &gt;']]],
   ['errc',['errc',['../classbsl_1_1result.html#ad0f7328b39cb89c7626d360e55b95a16',1,'bsl::result']]],
-  ['error',['error',['../namespacebsl.html#a6e1750b0ffee1ea6581fc7935148c75e',1,'bsl']]],
-  ['exchange',['exchange',['../namespacebsl.html#a23affe63d8ea654dc6f5cbdcd0762bb8',1,'bsl']]]
+  ['error',['error',['../debug_8hpp.html#a6e1750b0ffee1ea6581fc7935148c75e',1,'bsl']]],
+  ['exchange',['exchange',['../exchange_8hpp.html#a23affe63d8ea654dc6f5cbdcd0762bb8',1,'bsl']]]
 ];

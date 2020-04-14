@@ -66,7 +66,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">is_constant_evaluated.hpp File Reference</div>  </div>
@@ -75,15 +74,10 @@ $(function() {
 
 <p><a href="is__constant__evaluated_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5fb5763fa51693d9fc58d9b05b3f1697"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a5fb5763fa51693d9fc58d9b05b3f1697">bsl::is_constant_evaluated</a> () noexcept</td></tr>
-<tr class="memdesc:a5fb5763fa51693d9fc58d9b05b3f1697"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detects whether the function call occurs within a constant-evaluated context. Returns true if the evaluation of the call occurs within the evaluation of an expression or conversion that is manifestly constant-evaluated; otherwise returns false.  <a href="namespacebsl.html#a5fb5763fa51693d9fc58d9b05b3f1697">More...</a><br /></td></tr>
+<tr class="memitem:a5fb5763fa51693d9fc58d9b05b3f1697"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="is__constant__evaluated_8hpp.html#a5fb5763fa51693d9fc58d9b05b3f1697">bsl::is_constant_evaluated</a> () noexcept</td></tr>
+<tr class="memdesc:a5fb5763fa51693d9fc58d9b05b3f1697"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detects whether the function call occurs within a constant-evaluated context. Returns true if the evaluation of the call occurs within the evaluation of an expression or conversion that is manifestly constant-evaluated; otherwise returns false.  <a href="is__constant__evaluated_8hpp.html#a5fb5763fa51693d9fc58d9b05b3f1697">More...</a><br /></td></tr>
 <tr class="separator:a5fb5763fa51693d9fc58d9b05b3f1697"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -94,7 +88,36 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</dd>
 <dd>
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="file_a5fb5763fa51693d9fc58d9b05b3f1697"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_a5fb5763fa51693d9fc58d9b05b3f1697">&#9670;&nbsp;</a></span>is_constant_evaluated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool bsl::is_constant_evaluated </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Detects whether the function call occurs within a constant-evaluated context. Returns true if the evaluation of the call occurs within the evaluation of an expression or conversion that is manifestly constant-evaluated; otherwise returns false. </p>
+<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="is__constant__evaluated_8hpp.html">bsl/is_constant_evaluated.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="debug_8hpp.html">bsl/debug.hpp</a>&gt;</span></div><div class="line"></div><div class="line"><span class="keyword">namespace </span>bsl</div><div class="line">{</div><div class="line">    <span class="keyword">inline</span> <span class="keywordtype">void</span></div><div class="line">    example_is_constant_evaluated_overview() noexcept</div><div class="line">    {</div><div class="line">        <span class="keywordflow">if</span> constexpr (bsl::is_constant_evaluated()) {</div><div class="line">            <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;success\n&quot;</span>;</div><div class="line">        }</div><div class="line"></div><div class="line">        <span class="keywordflow">if</span> (!bsl::is_constant_evaluated()) {</div><div class="line">            <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;success\n&quot;</span>;</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div></div><!-- fragment --><dl class="section return"><dt>Returns</dt><dd>Returns true if the evaluation of the call occurs within the evaluation of an expression or conversion that is manifestly constant-evaluated; otherwise returns false. </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

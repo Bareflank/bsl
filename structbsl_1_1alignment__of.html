@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="namespacebsl.html">bsl</a></li><li class="navelem"><a class="el" href="structbsl_1_1alignment__of.html">alignment_of</a></li>  </ul>
+<li class="navelem"><b>bsl</b></li><li class="navelem"><a class="el" href="structbsl_1_1alignment__of.html">alignment_of</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -81,7 +81,7 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:af88f8866406ede8ccbe3759789e03172"><td class="memItemLeft" align="right" valign="top"><a id="af88f8866406ede8ccbe3759789e03172"></a>
-static constexpr <a class="el" href="namespacebsl.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9">bsl::uintmax</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbsl_1_1alignment__of.html#af88f8866406ede8ccbe3759789e03172">value</a> {alignof(T)}</td></tr>
+static constexpr <a class="el" href="cstdint_8hpp.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9">bsl::uintmax</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbsl_1_1alignment__of.html#af88f8866406ede8ccbe3759789e03172">value</a> {alignof(T)}</td></tr>
 <tr class="memdesc:af88f8866406ede8ccbe3759789e03172"><td class="mdescLeft">&#160;</td><td class="mdescRight">the alignment of T <br /></td></tr>
 <tr class="separator:af88f8866406ede8ccbe3759789e03172"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -90,7 +90,7 @@ static constexpr <a class="el" href="namespacebsl.html#adf5cecf5ad79f6cbfc4c7ab7
 class bsl::alignment_of&lt; T &gt;</h3>
 
 <p>Provides the member constant value equal to the alignment of T. </p>
-<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#ifndef EXAMPLE_ALIGNMENT_OF_OVERVIEW_HPP</span></div><div class="line"><span class="preprocessor">#define EXAMPLE_ALIGNMENT_OF_OVERVIEW_HPP</span></div><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="aligned__storage_8hpp.html">bsl/aligned_storage.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="alignment__of_8hpp.html">bsl/alignment_of.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="debug_8hpp.html">bsl/debug.hpp</a>&gt;</span></div><div class="line"></div><div class="line"><span class="keyword">namespace </span><a class="code" href="namespacebsl.html">bsl</a></div><div class="line">{</div><div class="line">    <span class="keyword">inline</span> <span class="keywordtype">void</span></div><div class="line">    example_alignment_of_overview() noexcept</div><div class="line">    {</div><div class="line">        <span class="keywordflow">if</span> (<a class="code" href="structbsl_1_1alignment__of.html">bsl::alignment_of&lt;bsl::int32&gt;::value</a> == <span class="keyword">alignof</span>(<a class="code" href="namespacebsl.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a>)) {</div><div class="line">            <a class="code" href="namespacebsl.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;success\n&quot;</span>;</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div><div class="line"></div><div class="line"><span class="preprocessor">#endif</span></div></div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
+<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="aligned__storage_8hpp.html">bsl/aligned_storage.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="alignment__of_8hpp.html">bsl/alignment_of.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="debug_8hpp.html">bsl/debug.hpp</a>&gt;</span></div><div class="line"></div><div class="line"><span class="keyword">namespace </span>bsl</div><div class="line">{</div><div class="line">    <span class="keyword">inline</span> <span class="keywordtype">void</span></div><div class="line">    example_alignment_of_overview() noexcept</div><div class="line">    {</div><div class="line">        <span class="keywordflow">if</span> (<a class="code" href="structbsl_1_1alignment__of.html">bsl::alignment_of&lt;bsl::int32&gt;::value</a> == <span class="keyword">alignof</span>(<a class="code" href="cstdint_8hpp.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a>)) {</div><div class="line">            <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;success\n&quot;</span>;</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div></div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>the type to query </td></tr>
   </table>

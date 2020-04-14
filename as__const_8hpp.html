@@ -66,7 +66,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">as_const.hpp File Reference</div>  </div>
@@ -76,20 +75,15 @@ $(function() {
 </div>
 <p><a href="as__const_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:abe65822a59d3f1a702390d3c1b345230"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:abe65822a59d3f1a702390d3c1b345230"><td class="memTemplItemLeft" align="right" valign="top">constexpr add_const_t&lt; T &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#abe65822a59d3f1a702390d3c1b345230">bsl::as_const</a> (T &amp;t) noexcept</td></tr>
-<tr class="memdesc:abe65822a59d3f1a702390d3c1b345230"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms lvalue reference to const type of t.  <a href="namespacebsl.html#abe65822a59d3f1a702390d3c1b345230">More...</a><br /></td></tr>
+<tr class="memitem:abe65822a59d3f1a702390d3c1b345230"><td class="memTemplItemLeft" align="right" valign="top">constexpr add_const_t&lt; T &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="as__const_8hpp.html#abe65822a59d3f1a702390d3c1b345230">bsl::as_const</a> (T &amp;t) noexcept</td></tr>
+<tr class="memdesc:abe65822a59d3f1a702390d3c1b345230"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms lvalue reference to const type of t.  <a href="as__const_8hpp.html#abe65822a59d3f1a702390d3c1b345230">More...</a><br /></td></tr>
 <tr class="separator:abe65822a59d3f1a702390d3c1b345230"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fa398963dd4a1ea7499fb63a1313749"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a7fa398963dd4a1ea7499fb63a1313749"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a7fa398963dd4a1ea7499fb63a1313749">bsl::as_const</a> (T const &amp;&amp;t) noexcept=delete</td></tr>
-<tr class="memdesc:a7fa398963dd4a1ea7499fb63a1313749"><td class="mdescLeft">&#160;</td><td class="mdescRight">const rvalue reference overload is deleted to disallow rvalue arguments  <a href="namespacebsl.html#a7fa398963dd4a1ea7499fb63a1313749">More...</a><br /></td></tr>
+<tr class="memitem:a7fa398963dd4a1ea7499fb63a1313749"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="as__const_8hpp.html#a7fa398963dd4a1ea7499fb63a1313749">bsl::as_const</a> (T const &amp;&amp;t) noexcept=delete</td></tr>
+<tr class="memdesc:a7fa398963dd4a1ea7499fb63a1313749"><td class="mdescLeft">&#160;</td><td class="mdescRight">const rvalue reference overload is deleted to disallow rvalue arguments  <a href="as__const_8hpp.html#a7fa398963dd4a1ea7499fb63a1313749">More...</a><br /></td></tr>
 <tr class="separator:a7fa398963dd4a1ea7499fb63a1313749"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -100,7 +94,93 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</dd>
 <dd>
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="file_abe65822a59d3f1a702390d3c1b345230"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_abe65822a59d3f1a702390d3c1b345230">&#9670;&nbsp;</a></span>as_const() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr add_const_t&lt;T&gt;&amp; bsl::as_const </td>
+          <td>(</td>
+          <td class="paramtype">T &amp;&#160;</td>
+          <td class="paramname"><em>t</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Forms lvalue reference to const type of t. </p>
+<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="as__const_8hpp.html">bsl/as_const.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="is__same_8hpp.html">bsl/is_same.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="debug_8hpp.html">bsl/debug.hpp</a>&gt;</span></div><div class="line"></div><div class="line"><span class="keyword">namespace </span>bsl</div><div class="line">{</div><div class="line">    constexpr <span class="keywordtype">bool</span> example_as_const_var{};</div><div class="line"></div><div class="line">    <span class="keyword">inline</span> <span class="keywordtype">void</span></div><div class="line">    example_as_const_overview() noexcept</div><div class="line">    {</div><div class="line">        <span class="keywordflow">if</span> (is_same&lt;decltype(<a class="code" href="as__const_8hpp.html#abe65822a59d3f1a702390d3c1b345230">as_const</a>(example_as_const_var)), <span class="keywordtype">bool</span> <span class="keyword">const</span> &amp;&gt;::value) {</div><div class="line">            <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;success\n&quot;</span>;</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div></div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>the type to form the lvalue reference to const of </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t</td><td>the object of type T to form the const lvalue reference of </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Forms lvalue reference to const type of t </dd></dl>
+
+</div>
+</div>
+<a id="file_a7fa398963dd4a1ea7499fb63a1313749"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_a7fa398963dd4a1ea7499fb63a1313749">&#9670;&nbsp;</a></span>as_const() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr void bsl::as_const </td>
+          <td>(</td>
+          <td class="paramtype">T const &amp;&amp;&#160;</td>
+          <td class="paramname"><em>t</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>const rvalue reference overload is deleted to disallow rvalue arguments </p>
+<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="as__const_8hpp.html">bsl/as_const.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="is__same_8hpp.html">bsl/is_same.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="debug_8hpp.html">bsl/debug.hpp</a>&gt;</span></div><div class="line"></div><div class="line"><span class="keyword">namespace </span>bsl</div><div class="line">{</div><div class="line">    constexpr <span class="keywordtype">bool</span> example_as_const_var{};</div><div class="line"></div><div class="line">    <span class="keyword">inline</span> <span class="keywordtype">void</span></div><div class="line">    example_as_const_overview() noexcept</div><div class="line">    {</div><div class="line">        <span class="keywordflow">if</span> (is_same&lt;decltype(<a class="code" href="as__const_8hpp.html#abe65822a59d3f1a702390d3c1b345230">as_const</a>(example_as_const_var)), <span class="keywordtype">bool</span> <span class="keyword">const</span> &amp;&gt;::value) {</div><div class="line">            <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;success\n&quot;</span>;</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div></div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>the type to form the lvalue reference to const of </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t</td><td>the object of type T to form the const lvalue reference of </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

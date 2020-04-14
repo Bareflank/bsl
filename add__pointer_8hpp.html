@@ -67,7 +67,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -86,23 +85,18 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides the member typedef type which is the same as T, except that a topmost pointer is added.  <a href="structbsl_1_1add__pointer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a063c24eb7568bc5fdad33ac28a2bea77"><td class="memTemplParams" colspan="2"><a id="a063c24eb7568bc5fdad33ac28a2bea77"></a>
 template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a063c24eb7568bc5fdad33ac28a2bea77"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a063c24eb7568bc5fdad33ac28a2bea77">bsl::add_pointer_t</a> = typename add_pointer&lt; T &gt;::type</td></tr>
+<tr class="memitem:a063c24eb7568bc5fdad33ac28a2bea77"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="add__pointer_8hpp.html#a063c24eb7568bc5fdad33ac28a2bea77">bsl::add_pointer_t</a> = typename add_pointer&lt; T &gt;::type</td></tr>
 <tr class="memdesc:a063c24eb7568bc5fdad33ac28a2bea77"><td class="mdescLeft">&#160;</td><td class="mdescRight">a helper that reduces the verbosity of <a class="el" href="structbsl_1_1add__pointer.html" title="Provides the member typedef type which is the same as T, except that a topmost pointer is added.">bsl::add_pointer</a> <br /></td></tr>
 <tr class="separator:a063c24eb7568bc5fdad33ac28a2bea77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a01b377d3c5fa0e7a988392eb896000ac"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a01b377d3c5fa0e7a988392eb896000ac"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="add__pointer_8hpp.html#a01b377d3c5fa0e7a988392eb896000ac">bsl::details::try_add_pointer</a> (<a class="el" href="namespacebsl.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a> ignored) noexcept -&gt; type_identity&lt; remove_reference_t&lt; T &gt; * &gt;</td></tr>
+<tr class="memitem:a01b377d3c5fa0e7a988392eb896000ac"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="add__pointer_8hpp.html#a01b377d3c5fa0e7a988392eb896000ac">bsl::details::try_add_pointer</a> (<a class="el" href="cstdint_8hpp.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a> ignored) noexcept -&gt; type_identity&lt; remove_reference_t&lt; T &gt; * &gt;</td></tr>
 <tr class="memdesc:a01b377d3c5fa0e7a988392eb896000ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns T with an added * if possible.  <a href="add__pointer_8hpp.html#a01b377d3c5fa0e7a988392eb896000ac">More...</a><br /></td></tr>
 <tr class="separator:a01b377d3c5fa0e7a988392eb896000ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d9d0829665f4cf66377964432ec5251"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -133,9 +127,9 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">auto bsl::details::try_add_pointer </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacebsl.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="cstdint_8hpp.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a>&#160;</td>
           <td class="paramname"><em>ignored</em></td><td>)</td>
-          <td> -&gt;  <a class="el" href="structbsl_1_1type__identity.html">type_identity</a>&lt; <a class="el" href="namespacebsl.html#afb9d843459e2d510c4bab126a9dd251d">remove_reference_t</a>&lt; T &gt; * &gt;</td>
+          <td> -&gt;  <a class="el" href="structbsl_1_1type__identity.html">type_identity</a>&lt; <a class="el" href="remove__reference_8hpp.html#afb9d843459e2d510c4bab126a9dd251d">remove_reference_t</a>&lt; T &gt; * &gt;</td>
         </tr>
       </table>
   </td>

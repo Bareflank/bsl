@@ -66,7 +66,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle">
 <div class="title">is_detected.hpp File Reference</div>  </div>
@@ -78,26 +77,21 @@ $(function() {
 </div>
 <p><a href="is__detected_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:aa16b997cb1f8bf5bf5a237450cafdef5"><td class="memTemplParams" colspan="2"><a id="aa16b997cb1f8bf5bf5a237450cafdef5"></a>
 template&lt;template&lt; class... &gt; class Op, typename... Args&gt; </td></tr>
-<tr class="memitem:aa16b997cb1f8bf5bf5a237450cafdef5"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#aa16b997cb1f8bf5bf5a237450cafdef5">bsl::is_detected</a> = typename details::detector&lt; nonesuch, void, Op, Args... &gt;::value_t</td></tr>
-<tr class="memdesc:aa16b997cb1f8bf5bf5a237450cafdef5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The alias template is_detected is equivalent to typename detected_or&lt;bsl::nonesuch, Op, Args...&gt;::value_t. It is an alias for <a class="el" href="namespacebsl.html#a5aa75d729f1e40765ab7e9b8fe327789" title="provides a bool_constant that represents &quot;true&quot;">bsl::true_type</a> if the template-id Op&lt;Args...&gt; denotes a valid type; otherwise it is an alias for <a class="el" href="namespacebsl.html#a12a5338ec760fc73a47f2166e4d29546" title="provides a bool_constant that represents &quot;false&quot;">bsl::false_type</a>. <br /></td></tr>
+<tr class="memitem:aa16b997cb1f8bf5bf5a237450cafdef5"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="is__detected_8hpp.html#aa16b997cb1f8bf5bf5a237450cafdef5">bsl::is_detected</a> = typename details::detector&lt; nonesuch, void, Op, Args... &gt;::value_t</td></tr>
+<tr class="memdesc:aa16b997cb1f8bf5bf5a237450cafdef5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The alias template is_detected is equivalent to typename detected_or&lt;bsl::nonesuch, Op, Args...&gt;::value_t. It is an alias for bsl::true_type if the template-id Op&lt;Args...&gt; denotes a valid type; otherwise it is an alias for bsl::false_type. <br /></td></tr>
 <tr class="separator:aa16b997cb1f8bf5bf5a237450cafdef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47a4ef4ff3d6e07d5c37962c3cf1c0ea"><td class="memTemplParams" colspan="2"><a id="a47a4ef4ff3d6e07d5c37962c3cf1c0ea"></a>
 template&lt;class Expected , template&lt; class... &gt; class Op, class... Args&gt; </td></tr>
-<tr class="memitem:a47a4ef4ff3d6e07d5c37962c3cf1c0ea"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a47a4ef4ff3d6e07d5c37962c3cf1c0ea">bsl::is_detected_exact</a> = is_same&lt; Expected, detected_t&lt; Op, Args... &gt; &gt;</td></tr>
+<tr class="memitem:a47a4ef4ff3d6e07d5c37962c3cf1c0ea"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="is__detected_8hpp.html#a47a4ef4ff3d6e07d5c37962c3cf1c0ea">bsl::is_detected_exact</a> = is_same&lt; Expected, detected_t&lt; Op, Args... &gt; &gt;</td></tr>
 <tr class="memdesc:a47a4ef4ff3d6e07d5c37962c3cf1c0ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">The alias template is_detected_exact checks whether detected_t&lt;Op, Args...&gt; is Expected. <br /></td></tr>
 <tr class="separator:a47a4ef4ff3d6e07d5c37962c3cf1c0ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad549b285e5d5b8eee048b16400cc7bfd"><td class="memTemplParams" colspan="2"><a id="ad549b285e5d5b8eee048b16400cc7bfd"></a>
 template&lt;class To , template&lt; class... &gt; class Op, class... Args&gt; </td></tr>
-<tr class="memitem:ad549b285e5d5b8eee048b16400cc7bfd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#ad549b285e5d5b8eee048b16400cc7bfd">bsl::is_detected_convertible</a> = is_convertible&lt; detected_t&lt; Op, Args... &gt;, To &gt;</td></tr>
+<tr class="memitem:ad549b285e5d5b8eee048b16400cc7bfd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="is__detected_8hpp.html#ad549b285e5d5b8eee048b16400cc7bfd">bsl::is_detected_convertible</a> = is_convertible&lt; detected_t&lt; Op, Args... &gt;, To &gt;</td></tr>
 <tr class="memdesc:ad549b285e5d5b8eee048b16400cc7bfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The alias template is_detected_convertible checks whether detected_t&lt;Op, Args...&gt; is convertible to To. <br /></td></tr>
 <tr class="separator:ad549b285e5d5b8eee048b16400cc7bfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>

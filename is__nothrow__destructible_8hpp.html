@@ -67,7 +67,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -94,23 +93,18 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the provided type is nothrow destructible, provides the member constant value equal to true. Otherwise the member constant value is false.  <a href="classbsl_1_1is__nothrow__destructible.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a85590b42119910d3bd3d735c12372561"><td class="memTemplParams" colspan="2"><a id="a85590b42119910d3bd3d735c12372561"></a>
 template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a85590b42119910d3bd3d735c12372561"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="is__nothrow__destructible_8hpp.html#a85590b42119910d3bd3d735c12372561">bsl::details::is_nothrow_destructible_type</a> = decltype(<a class="el" href="namespacebsl.html#aa19e79c525543d028b9b0bdb56d022c1">bsl::declval</a>&lt; T &amp; &gt;().~T())</td></tr>
+<tr class="memitem:a85590b42119910d3bd3d735c12372561"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="is__nothrow__destructible_8hpp.html#a85590b42119910d3bd3d735c12372561">bsl::details::is_nothrow_destructible_type</a> = decltype(bsl::declval&lt; T &amp; &gt;().~T())</td></tr>
 <tr class="memdesc:a85590b42119910d3bd3d735c12372561"><td class="mdescLeft">&#160;</td><td class="mdescRight">used to detect the presence of a destructor in T <br /></td></tr>
 <tr class="separator:a85590b42119910d3bd3d735c12372561"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ac007d51fbe3817c097dbfedb826d9fbb"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ac007d51fbe3817c097dbfedb826d9fbb"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="is__nothrow__destructible_8hpp.html#ac007d51fbe3817c097dbfedb826d9fbb">bsl::details::destructor_is_marked_nothrow</a> (<a class="el" href="namespacebsl.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a> ignored) noexcept -&gt; bool_constant&lt; noexcept(<a class="el" href="namespacebsl.html#aa19e79c525543d028b9b0bdb56d022c1">bsl::declval</a>&lt; T &amp; &gt;().~T())&gt;</td></tr>
+<tr class="memitem:ac007d51fbe3817c097dbfedb826d9fbb"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="is__nothrow__destructible_8hpp.html#ac007d51fbe3817c097dbfedb826d9fbb">bsl::details::destructor_is_marked_nothrow</a> (<a class="el" href="cstdint_8hpp.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a> ignored) noexcept -&gt; bool_constant&lt; noexcept(bsl::declval&lt; T &amp; &gt;().~T())&gt;</td></tr>
 <tr class="memdesc:ac007d51fbe3817c097dbfedb826d9fbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests if a destructor is marked noexcept or not. It does this by creating a function that returns true if T's destructor is marked noexcept, false otherwise. If T does not have a destructor, the other version of this function is selected by the compiler which always returns false.  <a href="is__nothrow__destructible_8hpp.html#ac007d51fbe3817c097dbfedb826d9fbb">More...</a><br /></td></tr>
 <tr class="separator:ac007d51fbe3817c097dbfedb826d9fbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a2cc3572a077ded9e9f0b0b019012ee"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -145,9 +139,9 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">auto bsl::details::destructor_is_marked_nothrow </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacebsl.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="cstdint_8hpp.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a>&#160;</td>
           <td class="paramname"><em>ignored</em></td><td>)</td>
-          <td> -&gt;  <a class="el" href="namespacebsl.html#aab545b3015440be59ef0bf70ddc3a45a">bool_constant</a>&lt; noexcept(<a class="el" href="namespacebsl.html#aa19e79c525543d028b9b0bdb56d022c1">bsl::declval</a>&lt; T &amp; &gt;().~T())&gt;</td>
+          <td> -&gt;  <a class="el" href="bool__constant_8hpp.html#aab545b3015440be59ef0bf70ddc3a45a">bool_constant</a>&lt; noexcept(bsl::declval&lt; T &amp; &gt;().~T())&gt;</td>
         </tr>
       </table>
   </td>
@@ -190,7 +184,7 @@ template&lt;typename T &gt; </div>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>ignored</em></td><td>)</td>
-          <td> -&gt;  <a class="el" href="namespacebsl.html#a12a5338ec760fc73a47f2166e4d29546">false_type</a></td>
+          <td> -&gt;  <a class="el" href="false__type_8hpp.html#a12a5338ec760fc73a47f2166e4d29546">false_type</a></td>
         </tr>
       </table>
   </td>

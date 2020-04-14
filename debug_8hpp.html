@@ -66,7 +66,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
@@ -87,52 +86,47 @@ $(function() {
 </div>
 <p><a href="debug_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a75f7c17739499d031008ba99fed3a0b9"><td class="memTemplParams" colspan="2"><a id="a75f7c17739499d031008ba99fed3a0b9"></a>
 template&lt;bsl::uintmax DL, typename T &gt; </td></tr>
-<tr class="memitem:a75f7c17739499d031008ba99fed3a0b9"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a75f7c17739499d031008ba99fed3a0b9">bsl::out_t</a> = conditional_t&lt; DL&lt;=BSL_DEBUG_LEVEL, out&lt; T &gt;, out&lt; details::out_type_empty &gt; &gt;</td></tr>
-<tr class="memdesc:a75f7c17739499d031008ba99fed3a0b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">used to disable debugging for <a class="el" href="namespacebsl.html#a0b4a9c10ac4501e78b4a7ea9c14c52b4" title="Returns and instance of bsl::out&lt;T&gt;. This version of bsl::out&lt;T&gt; prints &quot;DEBUG: &quot; when created and ac...">debug()</a> and <a class="el" href="namespacebsl.html#ad9cfc8786fe5806f3f16b8d7ebbc454a" title="Returns and instance of bsl::out&lt;T&gt;. This version of bsl::out&lt;T&gt; prints &quot;ALERT: &quot; when created and ac...">alert()</a> <br /></td></tr>
+<tr class="memitem:a75f7c17739499d031008ba99fed3a0b9"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="debug_8hpp.html#a75f7c17739499d031008ba99fed3a0b9">bsl::out_t</a> = conditional_t&lt; DL&lt;=BSL_DEBUG_LEVEL, out&lt; T &gt;, out&lt; details::out_type_empty &gt; &gt;</td></tr>
+<tr class="memdesc:a75f7c17739499d031008ba99fed3a0b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">used to disable debugging for <a class="el" href="debug_8hpp.html#a0b4a9c10ac4501e78b4a7ea9c14c52b4" title="Returns and instance of bsl::out&lt;T&gt;. This version of bsl::out&lt;T&gt; prints &quot;DEBUG: &quot; when created and ac...">debug()</a> and <a class="el" href="debug_8hpp.html#ad9cfc8786fe5806f3f16b8d7ebbc454a" title="Returns and instance of bsl::out&lt;T&gt;. This version of bsl::out&lt;T&gt; prints &quot;ALERT: &quot; when created and ac...">alert()</a> <br /></td></tr>
 <tr class="separator:a75f7c17739499d031008ba99fed3a0b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a172d9238495284d49a34332143ad28c1"><td class="memItemLeft" align="right" valign="top">constexpr out&lt; details::out_type_print &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a172d9238495284d49a34332143ad28c1">bsl::print</a> () noexcept</td></tr>
-<tr class="memdesc:a172d9238495284d49a34332143ad28c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns and instance of bsl::out&lt;T&gt;. This version of bsl::out&lt;T&gt; does not print a label and does not accept a debug level (as it cannot be turned off). All output is redirected to bsl::details::putc_stdout and bsl::details::puts_stdout. See <a class="el" href="classbsl_1_1fmt.html" title="The bsl::fmt implements a similar syntax to that of std::format, We adopt a similar approach with som...">bsl::fmt</a> for formatting documentation and examples.  <a href="namespacebsl.html#a172d9238495284d49a34332143ad28c1">More...</a><br /></td></tr>
+<tr class="memitem:a172d9238495284d49a34332143ad28c1"><td class="memItemLeft" align="right" valign="top">constexpr out&lt; details::out_type_print &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a> () noexcept</td></tr>
+<tr class="memdesc:a172d9238495284d49a34332143ad28c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns and instance of bsl::out&lt;T&gt;. This version of bsl::out&lt;T&gt; does not print a label and does not accept a debug level (as it cannot be turned off). All output is redirected to bsl::details::putc_stdout and bsl::details::puts_stdout. See <a class="el" href="classbsl_1_1fmt.html" title="The bsl::fmt implements a similar syntax to that of std::format, We adopt a similar approach with som...">bsl::fmt</a> for formatting documentation and examples.  <a href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">More...</a><br /></td></tr>
 <tr class="separator:a172d9238495284d49a34332143ad28c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b4a9c10ac4501e78b4a7ea9c14c52b4"><td class="memTemplParams" colspan="2">template&lt;bsl::uintmax DL = 0&gt; </td></tr>
-<tr class="memitem:a0b4a9c10ac4501e78b4a7ea9c14c52b4"><td class="memTemplItemLeft" align="right" valign="top">constexpr out_t&lt; DL, details::out_type_debug &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a0b4a9c10ac4501e78b4a7ea9c14c52b4">bsl::debug</a> () noexcept</td></tr>
-<tr class="memdesc:a0b4a9c10ac4501e78b4a7ea9c14c52b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns and instance of bsl::out&lt;T&gt;. This version of bsl::out&lt;T&gt; prints "DEBUG: " when created and accepts a debug level, allowing it to be disabled. All output is redirected to bsl::details::putc_stdout and bsl::details::puts_stdout. See <a class="el" href="classbsl_1_1fmt.html" title="The bsl::fmt implements a similar syntax to that of std::format, We adopt a similar approach with som...">bsl::fmt</a> for formatting documentation and examples.  <a href="namespacebsl.html#a0b4a9c10ac4501e78b4a7ea9c14c52b4">More...</a><br /></td></tr>
+<tr class="memitem:a0b4a9c10ac4501e78b4a7ea9c14c52b4"><td class="memTemplItemLeft" align="right" valign="top">constexpr out_t&lt; DL, details::out_type_debug &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="debug_8hpp.html#a0b4a9c10ac4501e78b4a7ea9c14c52b4">bsl::debug</a> () noexcept</td></tr>
+<tr class="memdesc:a0b4a9c10ac4501e78b4a7ea9c14c52b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns and instance of bsl::out&lt;T&gt;. This version of bsl::out&lt;T&gt; prints "DEBUG: " when created and accepts a debug level, allowing it to be disabled. All output is redirected to bsl::details::putc_stdout and bsl::details::puts_stdout. See <a class="el" href="classbsl_1_1fmt.html" title="The bsl::fmt implements a similar syntax to that of std::format, We adopt a similar approach with som...">bsl::fmt</a> for formatting documentation and examples.  <a href="debug_8hpp.html#a0b4a9c10ac4501e78b4a7ea9c14c52b4">More...</a><br /></td></tr>
 <tr class="separator:a0b4a9c10ac4501e78b4a7ea9c14c52b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9cfc8786fe5806f3f16b8d7ebbc454a"><td class="memTemplParams" colspan="2">template&lt;bsl::uintmax DL = 0&gt; </td></tr>
-<tr class="memitem:ad9cfc8786fe5806f3f16b8d7ebbc454a"><td class="memTemplItemLeft" align="right" valign="top">constexpr out_t&lt; DL, details::out_type_alert &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#ad9cfc8786fe5806f3f16b8d7ebbc454a">bsl::alert</a> () noexcept</td></tr>
-<tr class="memdesc:ad9cfc8786fe5806f3f16b8d7ebbc454a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns and instance of bsl::out&lt;T&gt;. This version of bsl::out&lt;T&gt; prints "ALERT: " when created and accepts a debug level, allowing it to be disabled. All output is redirected to bsl::details::putc_stderr and bsl::details::puts_stderr. See <a class="el" href="classbsl_1_1fmt.html" title="The bsl::fmt implements a similar syntax to that of std::format, We adopt a similar approach with som...">bsl::fmt</a> for formatting documentation and examples.  <a href="namespacebsl.html#ad9cfc8786fe5806f3f16b8d7ebbc454a">More...</a><br /></td></tr>
+<tr class="memitem:ad9cfc8786fe5806f3f16b8d7ebbc454a"><td class="memTemplItemLeft" align="right" valign="top">constexpr out_t&lt; DL, details::out_type_alert &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="debug_8hpp.html#ad9cfc8786fe5806f3f16b8d7ebbc454a">bsl::alert</a> () noexcept</td></tr>
+<tr class="memdesc:ad9cfc8786fe5806f3f16b8d7ebbc454a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns and instance of bsl::out&lt;T&gt;. This version of bsl::out&lt;T&gt; prints "ALERT: " when created and accepts a debug level, allowing it to be disabled. All output is redirected to bsl::details::putc_stderr and bsl::details::puts_stderr. See <a class="el" href="classbsl_1_1fmt.html" title="The bsl::fmt implements a similar syntax to that of std::format, We adopt a similar approach with som...">bsl::fmt</a> for formatting documentation and examples.  <a href="debug_8hpp.html#ad9cfc8786fe5806f3f16b8d7ebbc454a">More...</a><br /></td></tr>
 <tr class="separator:ad9cfc8786fe5806f3f16b8d7ebbc454a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e1750b0ffee1ea6581fc7935148c75e"><td class="memItemLeft" align="right" valign="top">constexpr out&lt; details::out_type_error &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a6e1750b0ffee1ea6581fc7935148c75e">bsl::error</a> () noexcept</td></tr>
-<tr class="memdesc:a6e1750b0ffee1ea6581fc7935148c75e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns and instance of bsl::out&lt;T&gt;. This version of bsl::out&lt;T&gt; prints "ERROR: " when created and does not accept a debug level (as it cannot be turned off). All output is redirected to bsl::details::putc_stderr and bsl::details::puts_stderr. See <a class="el" href="classbsl_1_1fmt.html" title="The bsl::fmt implements a similar syntax to that of std::format, We adopt a similar approach with som...">bsl::fmt</a> for formatting documentation and examples.  <a href="namespacebsl.html#a6e1750b0ffee1ea6581fc7935148c75e">More...</a><br /></td></tr>
+<tr class="memitem:a6e1750b0ffee1ea6581fc7935148c75e"><td class="memItemLeft" align="right" valign="top">constexpr out&lt; details::out_type_error &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8hpp.html#a6e1750b0ffee1ea6581fc7935148c75e">bsl::error</a> () noexcept</td></tr>
+<tr class="memdesc:a6e1750b0ffee1ea6581fc7935148c75e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns and instance of bsl::out&lt;T&gt;. This version of bsl::out&lt;T&gt; prints "ERROR: " when created and does not accept a debug level (as it cannot be turned off). All output is redirected to bsl::details::putc_stderr and bsl::details::puts_stderr. See <a class="el" href="classbsl_1_1fmt.html" title="The bsl::fmt implements a similar syntax to that of std::format, We adopt a similar approach with som...">bsl::fmt</a> for formatting documentation and examples.  <a href="debug_8hpp.html#a6e1750b0ffee1ea6581fc7935148c75e">More...</a><br /></td></tr>
 <tr class="separator:a6e1750b0ffee1ea6581fc7935148c75e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:aa9c468ef980d5578f2e9cc5a24207698"><td class="memItemLeft" align="right" valign="top"><a id="aa9c468ef980d5578f2e9cc5a24207698"></a>
-constexpr <a class="el" href="namespacebsl.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9">bsl::uintmax</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#aa9c468ef980d5578f2e9cc5a24207698">bsl::v</a> {1U}</td></tr>
+constexpr <a class="el" href="cstdint_8hpp.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9">bsl::uintmax</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8hpp.html#aa9c468ef980d5578f2e9cc5a24207698">bsl::v</a> {1U}</td></tr>
 <tr class="memdesc:aa9c468ef980d5578f2e9cc5a24207698"><td class="mdescLeft">&#160;</td><td class="mdescRight">defines "-v" verbose mode <br /></td></tr>
 <tr class="separator:aa9c468ef980d5578f2e9cc5a24207698"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbd26344409b84262a3477c96679ab9d"><td class="memItemLeft" align="right" valign="top"><a id="adbd26344409b84262a3477c96679ab9d"></a>
-constexpr <a class="el" href="namespacebsl.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9">bsl::uintmax</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#adbd26344409b84262a3477c96679ab9d">bsl::vv</a> {2U}</td></tr>
+constexpr <a class="el" href="cstdint_8hpp.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9">bsl::uintmax</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8hpp.html#adbd26344409b84262a3477c96679ab9d">bsl::vv</a> {2U}</td></tr>
 <tr class="memdesc:adbd26344409b84262a3477c96679ab9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">defines "-vv" verbose mode <br /></td></tr>
 <tr class="separator:adbd26344409b84262a3477c96679ab9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a547e8f1e69b8334bb3a027148eeef090"><td class="memItemLeft" align="right" valign="top"><a id="a547e8f1e69b8334bb3a027148eeef090"></a>
-constexpr <a class="el" href="namespacebsl.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9">bsl::uintmax</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a547e8f1e69b8334bb3a027148eeef090">bsl::vvv</a> {3U}</td></tr>
+constexpr <a class="el" href="cstdint_8hpp.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9">bsl::uintmax</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8hpp.html#a547e8f1e69b8334bb3a027148eeef090">bsl::vvv</a> {3U}</td></tr>
 <tr class="memdesc:a547e8f1e69b8334bb3a027148eeef090"><td class="mdescLeft">&#160;</td><td class="mdescRight">defines "-vvv" verbose mode <br /></td></tr>
 <tr class="separator:a547e8f1e69b8334bb3a027148eeef090"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0411c0b3b03f8f6277e9237b0dcb2220"><td class="memItemLeft" align="right" valign="top"><a id="a0411c0b3b03f8f6277e9237b0dcb2220"></a>
-constexpr <a class="el" href="namespacebsl.html#acd32c87c9060b301047deb71f5b775e9">bsl::char_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a0411c0b3b03f8f6277e9237b0dcb2220">bsl::endl</a> {'\n'}</td></tr>
+constexpr <a class="el" href="char__type_8hpp.html#acd32c87c9060b301047deb71f5b775e9">bsl::char_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8hpp.html#a0411c0b3b03f8f6277e9237b0dcb2220">bsl::endl</a> {'\n'}</td></tr>
 <tr class="memdesc:a0411c0b3b03f8f6277e9237b0dcb2220"><td class="mdescLeft">&#160;</td><td class="mdescRight">newline constant <br /></td></tr>
 <tr class="separator:a0411c0b3b03f8f6277e9237b0dcb2220"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -144,7 +138,124 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</dd>
 <dd>
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="file_a172d9238495284d49a34332143ad28c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_a172d9238495284d49a34332143ad28c1">&#9670;&nbsp;</a></span>print()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr out&lt;details::out_type_print&gt; bsl::print </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns and instance of bsl::out&lt;T&gt;. This version of bsl::out&lt;T&gt; does not print a label and does not accept a debug level (as it cannot be turned off). All output is redirected to bsl::details::putc_stdout and bsl::details::puts_stdout. See <a class="el" href="classbsl_1_1fmt.html" title="The bsl::fmt implements a similar syntax to that of std::format, We adopt a similar approach with som...">bsl::fmt</a> for formatting documentation and examples. </p>
+<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="debug_8hpp.html">bsl/debug.hpp</a>&gt;</span></div><div class="line"></div><div class="line"><span class="keyword">namespace </span>bsl</div><div class="line">{</div><div class="line">    <span class="keyword">inline</span> <span class="keywordtype">void</span></div><div class="line">    example_debug_print() noexcept</div><div class="line">    {</div><div class="line">        constexpr <a class="code" href="cstdint_8hpp.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a> val{42};</div><div class="line">        <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;example message: &quot;</span> &lt;&lt; val &lt;&lt; <a class="code" href="debug_8hpp.html#a0411c0b3b03f8f6277e9237b0dcb2220">bsl::endl</a>;</div><div class="line">    }</div><div class="line">}</div></div><!-- fragment --><dl class="section return"><dt>Returns</dt><dd>Returns and instance of bsl::out&lt;T&gt; </dd></dl>
+
+</div>
+</div>
+<a id="file_a0b4a9c10ac4501e78b4a7ea9c14c52b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_a0b4a9c10ac4501e78b4a7ea9c14c52b4">&#9670;&nbsp;</a></span>debug()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bsl::uintmax DL = 0&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr out_t&lt;DL, details::out_type_debug&gt; bsl::debug </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns and instance of bsl::out&lt;T&gt;. This version of bsl::out&lt;T&gt; prints "DEBUG: " when created and accepts a debug level, allowing it to be disabled. All output is redirected to bsl::details::putc_stdout and bsl::details::puts_stdout. See <a class="el" href="classbsl_1_1fmt.html" title="The bsl::fmt implements a similar syntax to that of std::format, We adopt a similar approach with som...">bsl::fmt</a> for formatting documentation and examples. </p>
+<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="debug_8hpp.html">bsl/debug.hpp</a>&gt;</span></div><div class="line"></div><div class="line"><span class="keyword">namespace </span>bsl</div><div class="line">{</div><div class="line">    <span class="keyword">inline</span> <span class="keywordtype">void</span></div><div class="line">    example_debug_debug() noexcept</div><div class="line">    {</div><div class="line">        constexpr <a class="code" href="cstdint_8hpp.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a> val{42};</div><div class="line">        <a class="code" href="debug_8hpp.html#a0b4a9c10ac4501e78b4a7ea9c14c52b4">bsl::debug</a>() &lt;&lt; <span class="stringliteral">&quot;example message: &quot;</span> &lt;&lt; val &lt;&lt; <a class="code" href="debug_8hpp.html#a0411c0b3b03f8f6277e9237b0dcb2220">bsl::endl</a>;</div><div class="line">    }</div><div class="line">}</div></div><!-- fragment --><dl class="section return"><dt>Returns</dt><dd>Returns and instance of bsl::out&lt;T&gt; </dd></dl>
+
+</div>
+</div>
+<a id="file_ad9cfc8786fe5806f3f16b8d7ebbc454a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_ad9cfc8786fe5806f3f16b8d7ebbc454a">&#9670;&nbsp;</a></span>alert()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bsl::uintmax DL = 0&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr out_t&lt;DL, details::out_type_alert&gt; bsl::alert </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns and instance of bsl::out&lt;T&gt;. This version of bsl::out&lt;T&gt; prints "ALERT: " when created and accepts a debug level, allowing it to be disabled. All output is redirected to bsl::details::putc_stderr and bsl::details::puts_stderr. See <a class="el" href="classbsl_1_1fmt.html" title="The bsl::fmt implements a similar syntax to that of std::format, We adopt a similar approach with som...">bsl::fmt</a> for formatting documentation and examples. </p>
+<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="debug_8hpp.html">bsl/debug.hpp</a>&gt;</span></div><div class="line"></div><div class="line"><span class="keyword">namespace </span>bsl</div><div class="line">{</div><div class="line">    <span class="keyword">inline</span> <span class="keywordtype">void</span></div><div class="line">    example_debug_alert() noexcept</div><div class="line">    {</div><div class="line">        constexpr <a class="code" href="cstdint_8hpp.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a> val{42};</div><div class="line">        <a class="code" href="debug_8hpp.html#ad9cfc8786fe5806f3f16b8d7ebbc454a">bsl::alert</a>() &lt;&lt; <span class="stringliteral">&quot;example message: &quot;</span> &lt;&lt; val &lt;&lt; <a class="code" href="debug_8hpp.html#a0411c0b3b03f8f6277e9237b0dcb2220">bsl::endl</a>;</div><div class="line">    }</div><div class="line">}</div></div><!-- fragment --><dl class="section return"><dt>Returns</dt><dd>Returns and instance of bsl::out&lt;T&gt; </dd></dl>
+
+</div>
+</div>
+<a id="file_a6e1750b0ffee1ea6581fc7935148c75e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_a6e1750b0ffee1ea6581fc7935148c75e">&#9670;&nbsp;</a></span>error()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr out&lt;details::out_type_error&gt; bsl::error </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns and instance of bsl::out&lt;T&gt;. This version of bsl::out&lt;T&gt; prints "ERROR: " when created and does not accept a debug level (as it cannot be turned off). All output is redirected to bsl::details::putc_stderr and bsl::details::puts_stderr. See <a class="el" href="classbsl_1_1fmt.html" title="The bsl::fmt implements a similar syntax to that of std::format, We adopt a similar approach with som...">bsl::fmt</a> for formatting documentation and examples. </p>
+<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="debug_8hpp.html">bsl/debug.hpp</a>&gt;</span></div><div class="line"></div><div class="line"><span class="keyword">namespace </span>bsl</div><div class="line">{</div><div class="line">    <span class="keyword">inline</span> <span class="keywordtype">void</span></div><div class="line">    example_debug_error() noexcept</div><div class="line">    {</div><div class="line">        constexpr <a class="code" href="cstdint_8hpp.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a> val{42};</div><div class="line">        <a class="code" href="debug_8hpp.html#a6e1750b0ffee1ea6581fc7935148c75e">bsl::error</a>() &lt;&lt; <span class="stringliteral">&quot;example message: &quot;</span> &lt;&lt; val &lt;&lt; <a class="code" href="debug_8hpp.html#a0411c0b3b03f8f6277e9237b0dcb2220">bsl::endl</a>;</div><div class="line">    }</div><div class="line">}</div></div><!-- fragment --><dl class="section return"><dt>Returns</dt><dd>Returns and instance of bsl::out&lt;T&gt; </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

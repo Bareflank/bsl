@@ -66,7 +66,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">addressof.hpp File Reference</div>  </div>
@@ -75,20 +74,15 @@ $(function() {
 
 <p><a href="addressof_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a1606d20b803f9b7b2be5072df4028435"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a1606d20b803f9b7b2be5072df4028435"><td class="memTemplItemLeft" align="right" valign="top">constexpr T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a1606d20b803f9b7b2be5072df4028435">bsl::addressof</a> (T &amp;val) noexcept</td></tr>
-<tr class="memdesc:a1606d20b803f9b7b2be5072df4028435"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtains the actual address of the object or function arg, even in presence of overloaded operator&amp; (i.e., this should be used to get the address of an object instead of using &amp; as that could be unsafe).  <a href="namespacebsl.html#a1606d20b803f9b7b2be5072df4028435">More...</a><br /></td></tr>
+<tr class="memitem:a1606d20b803f9b7b2be5072df4028435"><td class="memTemplItemLeft" align="right" valign="top">constexpr T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="addressof_8hpp.html#a1606d20b803f9b7b2be5072df4028435">bsl::addressof</a> (T &amp;val) noexcept</td></tr>
+<tr class="memdesc:a1606d20b803f9b7b2be5072df4028435"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtains the actual address of the object or function arg, even in presence of overloaded operator&amp; (i.e., this should be used to get the address of an object instead of using &amp; as that could be unsafe).  <a href="addressof_8hpp.html#a1606d20b803f9b7b2be5072df4028435">More...</a><br /></td></tr>
 <tr class="separator:a1606d20b803f9b7b2be5072df4028435"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff0f5e6825e9000d5b4fa8dab99bf4ac"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aff0f5e6825e9000d5b4fa8dab99bf4ac"><td class="memTemplItemLeft" align="right" valign="top">T const  *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#aff0f5e6825e9000d5b4fa8dab99bf4ac">bsl::addressof</a> (T const &amp;&amp;val)=delete</td></tr>
-<tr class="memdesc:aff0f5e6825e9000d5b4fa8dab99bf4ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prevents the user from getting an address to a const as that would allow you to get the address of an rvalue which could result in UB.  <a href="namespacebsl.html#aff0f5e6825e9000d5b4fa8dab99bf4ac">More...</a><br /></td></tr>
+<tr class="memitem:aff0f5e6825e9000d5b4fa8dab99bf4ac"><td class="memTemplItemLeft" align="right" valign="top">T const  *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="addressof_8hpp.html#aff0f5e6825e9000d5b4fa8dab99bf4ac">bsl::addressof</a> (T const &amp;&amp;val)=delete</td></tr>
+<tr class="memdesc:aff0f5e6825e9000d5b4fa8dab99bf4ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prevents the user from getting an address to a const as that would allow you to get the address of an rvalue which could result in UB.  <a href="addressof_8hpp.html#aff0f5e6825e9000d5b4fa8dab99bf4ac">More...</a><br /></td></tr>
 <tr class="separator:aff0f5e6825e9000d5b4fa8dab99bf4ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -99,7 +93,94 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</dd>
 <dd>
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="file_a1606d20b803f9b7b2be5072df4028435"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_a1606d20b803f9b7b2be5072df4028435">&#9670;&nbsp;</a></span>addressof() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr T* bsl::addressof </td>
+          <td>(</td>
+          <td class="paramtype">T &amp;&#160;</td>
+          <td class="paramname"><em>val</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtains the actual address of the object or function arg, even in presence of overloaded operator&amp; (i.e., this should be used to get the address of an object instead of using &amp; as that could be unsafe). </p>
+<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="addressof_8hpp.html">bsl/addressof.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="debug_8hpp.html">bsl/debug.hpp</a>&gt;</span></div><div class="line"></div><div class="line"><span class="keyword">namespace </span>bsl</div><div class="line">{</div><div class="line">    <span class="keyword">inline</span> <span class="keywordtype">void</span></div><div class="line">    example_addressof_overview() noexcept</div><div class="line">    {</div><div class="line">        <span class="keywordtype">bool</span> <span class="keyword">const</span> mydata{};</div><div class="line">        <span class="keywordflow">if</span> (bsl::addressof(mydata) == &amp;mydata) {</div><div class="line">            <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;success\n&quot;</span>;</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div></div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>the type of object to get the address of. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">val</td><td>the object of type T to get the address of. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns the address of val </dd></dl>
+
+</div>
+</div>
+<a id="file_aff0f5e6825e9000d5b4fa8dab99bf4ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_aff0f5e6825e9000d5b4fa8dab99bf4ac">&#9670;&nbsp;</a></span>addressof() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T const* bsl::addressof </td>
+          <td>(</td>
+          <td class="paramtype">T const &amp;&amp;&#160;</td>
+          <td class="paramname"><em>val</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Prevents the user from getting an address to a const as that would allow you to get the address of an rvalue which could result in UB. </p>
+<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="addressof_8hpp.html">bsl/addressof.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="debug_8hpp.html">bsl/debug.hpp</a>&gt;</span></div><div class="line"></div><div class="line"><span class="keyword">namespace </span>bsl</div><div class="line">{</div><div class="line">    <span class="keyword">inline</span> <span class="keywordtype">void</span></div><div class="line">    example_addressof_overview() noexcept</div><div class="line">    {</div><div class="line">        <span class="keywordtype">bool</span> <span class="keyword">const</span> mydata{};</div><div class="line">        <span class="keywordflow">if</span> (bsl::addressof(mydata) == &amp;mydata) {</div><div class="line">            <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;success\n&quot;</span>;</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div></div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>the type of object to get the address of. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">val</td><td>the object of type T to get the address of. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns the address of val </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

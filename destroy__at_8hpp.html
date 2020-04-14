@@ -66,7 +66,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">destroy_at.hpp File Reference</div>  </div>
@@ -75,16 +74,11 @@ $(function() {
 
 <p><a href="destroy__at_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ae0738f2aff312d4abc46a43cfd2b61bf"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ae0738f2aff312d4abc46a43cfd2b61bf"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#ae0738f2aff312d4abc46a43cfd2b61bf">bsl::destroy_at</a> (T *const ptr) noexcept(noexcept(ptr-&gt;T::~T()))</td></tr>
-<tr class="memdesc:ae0738f2aff312d4abc46a43cfd2b61bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the destructor of the object pointed to by ptr.  <a href="namespacebsl.html#ae0738f2aff312d4abc46a43cfd2b61bf">More...</a><br /></td></tr>
+<tr class="memitem:ae0738f2aff312d4abc46a43cfd2b61bf"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="destroy__at_8hpp.html#ae0738f2aff312d4abc46a43cfd2b61bf">bsl::destroy_at</a> (T *const ptr) noexcept(noexcept(ptr-&gt;T::~T()))</td></tr>
+<tr class="memdesc:ae0738f2aff312d4abc46a43cfd2b61bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the destructor of the object pointed to by ptr.  <a href="destroy__at_8hpp.html#ae0738f2aff312d4abc46a43cfd2b61bf">More...</a><br /></td></tr>
 <tr class="separator:ae0738f2aff312d4abc46a43cfd2b61bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -95,7 +89,59 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</dd>
 <dd>
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="file_ae0738f2aff312d4abc46a43cfd2b61bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_ae0738f2aff312d4abc46a43cfd2b61bf">&#9670;&nbsp;</a></span>destroy_at()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr void bsl::destroy_at </td>
+          <td>(</td>
+          <td class="paramtype">T *const&#160;</td>
+          <td class="paramname"><em>ptr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calls the destructor of the object pointed to by ptr. </p>
+<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="destroy__at_8hpp.html">bsl/destroy_at.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="debug_8hpp.html">bsl/debug.hpp</a>&gt;</span></div><div class="line"></div><div class="line"><span class="preprocessor">#include &quot;example_class_subclass.hpp&quot;</span></div><div class="line"></div><div class="line"><span class="keyword">namespace </span>bsl</div><div class="line">{</div><div class="line">    <span class="keyword">inline</span> <span class="keywordtype">void</span></div><div class="line">    example_destroy_at_overview() noexcept</div><div class="line">    {</div><div class="line">        example_class_subclass myclass{};</div><div class="line">        <span class="keywordflow">if</span> (myclass.get()) {</div><div class="line">            <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;success\n&quot;</span>;</div><div class="line">        }</div><div class="line"></div><div class="line">        <a class="code" href="destroy__at_8hpp.html#ae0738f2aff312d4abc46a43cfd2b61bf">bsl::destroy_at</a>(&amp;myclass);</div><div class="line">        <span class="keywordflow">if</span> (!myclass.get()) {</div><div class="line">            <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;success\n&quot;</span>;</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div></div><!-- fragment --><p>SUPPRESSION: PRQA 4213 - false positive</p><ul>
+<li>We suppress this because M7-1-2 states that a parameter should be marked as a pointer to const if the parameter is not modified. This class call's the pointer's destructor, and therefor cannot labeled as const.</li>
+</ul>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>defines the type pointer to by ptr </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ptr</td><td>a pointer to the object to destroy</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">throws</td><td>if T throws during destruction </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

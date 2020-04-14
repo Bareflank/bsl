@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="namespacebsl.html">bsl</a></li><li class="navelem"><a class="el" href="structbsl_1_1decay.html">decay</a></li>  </ul>
+<li class="navelem"><b>bsl</b></li><li class="navelem"><a class="el" href="structbsl_1_1decay.html">decay</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -81,7 +81,7 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:ab16e0fed5ca888499439d0013c5a0402"><td class="memItemLeft" align="right" valign="top"><a id="ab16e0fed5ca888499439d0013c5a0402"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbsl_1_1decay.html#ab16e0fed5ca888499439d0013c5a0402">type</a> = <a class="el" href="namespacebsl.html#ac003bb163749363331f610967edfa314">remove_cv_t</a>&lt; <a class="el" href="namespacebsl.html#afb9d843459e2d510c4bab126a9dd251d">remove_reference_t</a>&lt; T &gt; &gt;</td></tr>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbsl_1_1decay.html#ab16e0fed5ca888499439d0013c5a0402">type</a> = <a class="el" href="remove__cv_8hpp.html#ac003bb163749363331f610967edfa314">remove_cv_t</a>&lt; <a class="el" href="remove__reference_8hpp.html#afb9d843459e2d510c4bab126a9dd251d">remove_reference_t</a>&lt; T &gt; &gt;</td></tr>
 <tr class="memdesc:ab16e0fed5ca888499439d0013c5a0402"><td class="mdescLeft">&#160;</td><td class="mdescRight">provides the member typedef "type" <br /></td></tr>
 <tr class="separator:ab16e0fed5ca888499439d0013c5a0402"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -90,7 +90,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="str
 class bsl::decay&lt; T, IS_ARRAY, IS_FUNCTION &gt;</h3>
 
 <p>Applies lvalue-to-rvalue, array-to-pointer, and function-to-pointer implicit conversions to the type T, removes cv-qualifiers, and defines the resulting type as the member typedef type. </p>
-<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#ifndef EXAMPLE_DECAY_OVERVIEW_HPP</span></div><div class="line"><span class="preprocessor">#define EXAMPLE_DECAY_OVERVIEW_HPP</span></div><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="decay_8hpp.html">bsl/decay.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="is__same_8hpp.html">bsl/is_same.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="debug_8hpp.html">bsl/debug.hpp</a>&gt;</span></div><div class="line"></div><div class="line"><span class="keyword">namespace </span><a class="code" href="namespacebsl.html">bsl</a></div><div class="line">{</div><div class="line">    <span class="keyword">inline</span> <span class="keywordtype">void</span></div><div class="line">    example_decay_overview() noexcept</div><div class="line">    {</div><div class="line">        <span class="keywordflow">if</span> (<a class="code" href="classbsl_1_1is__same.html">bsl::is_same</a>&lt;<a class="code" href="namespacebsl.html#aa6ff5c8eede87517bf5d385b3111a228">bsl::decay_t&lt;bool const&gt;</a>, <span class="keywordtype">bool</span>&gt;::value) {</div><div class="line">            <a class="code" href="namespacebsl.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;success\n&quot;</span>;</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div><div class="line"></div><div class="line"><span class="preprocessor">#endif</span></div></div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
+<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="decay_8hpp.html">bsl/decay.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="is__same_8hpp.html">bsl/is_same.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="debug_8hpp.html">bsl/debug.hpp</a>&gt;</span></div><div class="line"></div><div class="line"><span class="keyword">namespace </span>bsl</div><div class="line">{</div><div class="line">    <span class="keyword">inline</span> <span class="keywordtype">void</span></div><div class="line">    example_decay_overview() noexcept</div><div class="line">    {</div><div class="line">        <span class="keywordflow">if</span> (<a class="code" href="classbsl_1_1is__same.html">bsl::is_same</a>&lt;<a class="code" href="decay_8hpp.html#aa6ff5c8eede87517bf5d385b3111a228">bsl::decay_t&lt;bool const&gt;</a>, <span class="keywordtype">bool</span>&gt;::value) {</div><div class="line">            <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;success\n&quot;</span>;</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div></div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>the type to decay </td></tr>
   </table>

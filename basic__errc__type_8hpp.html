@@ -67,7 +67,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">basic_errc_type.hpp File Reference</div>  </div>
@@ -85,63 +84,58 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines an error code. We do not use the same pattern as the standard library. The goal is to ensure an error code can consume a single register to ensure maximum compatibility with different CPU archiectures that only have a 32bit return register. We also do not use an enum to ensure custom error codes can be created. This also means there are no error code categories. Instead, an error code is checked if it is negative, and unchecked if it is positive to align with AUTOSAR. Finally, we provide the ability to change the type that an error code uses under the hood which allows you to use a "long" type, or some other integer type depending on your requirements (i.e., NTSTATUS).  <a href="classbsl_1_1basic__errc__type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:aab1dc53fc9256efe14abcd7b6e952f94"><td class="memItemLeft" align="right" valign="top"><a id="aab1dc53fc9256efe14abcd7b6e952f94"></a>
-constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#aab1dc53fc9256efe14abcd7b6e952f94">bsl::errc_success</a> {0}</td></tr>
+constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="basic__errc__type_8hpp.html#aab1dc53fc9256efe14abcd7b6e952f94">bsl::errc_success</a> {0}</td></tr>
 <tr class="memdesc:aab1dc53fc9256efe14abcd7b6e952f94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the "no error" case. <br /></td></tr>
 <tr class="separator:aab1dc53fc9256efe14abcd7b6e952f94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acaf8c5f1eb4cf4b792013725ba6ba330"><td class="memItemLeft" align="right" valign="top"><a id="acaf8c5f1eb4cf4b792013725ba6ba330"></a>
-constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#acaf8c5f1eb4cf4b792013725ba6ba330">bsl::errc_failure</a> {1}</td></tr>
+constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="basic__errc__type_8hpp.html#acaf8c5f1eb4cf4b792013725ba6ba330">bsl::errc_failure</a> {1}</td></tr>
 <tr class="memdesc:acaf8c5f1eb4cf4b792013725ba6ba330"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the general unchecked error case. <br /></td></tr>
 <tr class="separator:acaf8c5f1eb4cf4b792013725ba6ba330"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98da7d312eabfb92b3ef8dbe98e652ff"><td class="memItemLeft" align="right" valign="top"><a id="a98da7d312eabfb92b3ef8dbe98e652ff"></a>
-constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a98da7d312eabfb92b3ef8dbe98e652ff">bsl::errc_precondition</a> {2}</td></tr>
+constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="basic__errc__type_8hpp.html#a98da7d312eabfb92b3ef8dbe98e652ff">bsl::errc_precondition</a> {2}</td></tr>
 <tr class="memdesc:a98da7d312eabfb92b3ef8dbe98e652ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the general precondition error case. <br /></td></tr>
 <tr class="separator:a98da7d312eabfb92b3ef8dbe98e652ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe33db67ba4e5bd07b97b2a08f66aca9"><td class="memItemLeft" align="right" valign="top"><a id="abe33db67ba4e5bd07b97b2a08f66aca9"></a>
-constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#abe33db67ba4e5bd07b97b2a08f66aca9">bsl::errc_postcondition</a> {3}</td></tr>
+constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="basic__errc__type_8hpp.html#abe33db67ba4e5bd07b97b2a08f66aca9">bsl::errc_postcondition</a> {3}</td></tr>
 <tr class="memdesc:abe33db67ba4e5bd07b97b2a08f66aca9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the general postcondition error case. <br /></td></tr>
 <tr class="separator:abe33db67ba4e5bd07b97b2a08f66aca9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef5a4a0bb32635232e89f2226b73b34d"><td class="memItemLeft" align="right" valign="top"><a id="aef5a4a0bb32635232e89f2226b73b34d"></a>
-constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#aef5a4a0bb32635232e89f2226b73b34d">bsl::errc_assetion</a> {4}</td></tr>
+constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="basic__errc__type_8hpp.html#aef5a4a0bb32635232e89f2226b73b34d">bsl::errc_assetion</a> {4}</td></tr>
 <tr class="memdesc:aef5a4a0bb32635232e89f2226b73b34d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the general assertion error case. <br /></td></tr>
 <tr class="separator:aef5a4a0bb32635232e89f2226b73b34d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9bd1a46f73f421dc7f709337968929c"><td class="memItemLeft" align="right" valign="top"><a id="ae9bd1a46f73f421dc7f709337968929c"></a>
-constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#ae9bd1a46f73f421dc7f709337968929c">bsl::errc_invalid_argument</a> {10}</td></tr>
+constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="basic__errc__type_8hpp.html#ae9bd1a46f73f421dc7f709337968929c">bsl::errc_invalid_argument</a> {10}</td></tr>
 <tr class="memdesc:ae9bd1a46f73f421dc7f709337968929c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines an invalid argument error code. <br /></td></tr>
 <tr class="separator:ae9bd1a46f73f421dc7f709337968929c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0dbc50f0eeec17c42743d02b14e2ce26"><td class="memItemLeft" align="right" valign="top"><a id="a0dbc50f0eeec17c42743d02b14e2ce26"></a>
-constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a0dbc50f0eeec17c42743d02b14e2ce26">bsl::errc_index_out_of_bounds</a> {11}</td></tr>
+constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="basic__errc__type_8hpp.html#a0dbc50f0eeec17c42743d02b14e2ce26">bsl::errc_index_out_of_bounds</a> {11}</td></tr>
 <tr class="memdesc:a0dbc50f0eeec17c42743d02b14e2ce26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines an out of bounds error code. <br /></td></tr>
 <tr class="separator:a0dbc50f0eeec17c42743d02b14e2ce26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6786477d6a486e12d22b7d9cb2ed4064"><td class="memItemLeft" align="right" valign="top"><a id="a6786477d6a486e12d22b7d9cb2ed4064"></a>
-constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a6786477d6a486e12d22b7d9cb2ed4064">bsl::errc_bad_function</a> {12}</td></tr>
+constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="basic__errc__type_8hpp.html#a6786477d6a486e12d22b7d9cb2ed4064">bsl::errc_bad_function</a> {12}</td></tr>
 <tr class="memdesc:a6786477d6a486e12d22b7d9cb2ed4064"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines an out of bounds error code. <br /></td></tr>
 <tr class="separator:a6786477d6a486e12d22b7d9cb2ed4064"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a665e77c016b7e80845fd1995716ec190"><td class="memItemLeft" align="right" valign="top"><a id="a665e77c016b7e80845fd1995716ec190"></a>
-constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a665e77c016b7e80845fd1995716ec190">bsl::errc_unsigned_wrap</a> {30}</td></tr>
+constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="basic__errc__type_8hpp.html#a665e77c016b7e80845fd1995716ec190">bsl::errc_unsigned_wrap</a> {30}</td></tr>
 <tr class="memdesc:a665e77c016b7e80845fd1995716ec190"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines an overflow, underflow or unsigned wrap error. <br /></td></tr>
 <tr class="separator:a665e77c016b7e80845fd1995716ec190"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ce8cc87d23318784f6c823e1201b2a8"><td class="memItemLeft" align="right" valign="top"><a id="a0ce8cc87d23318784f6c823e1201b2a8"></a>
-constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a0ce8cc87d23318784f6c823e1201b2a8">bsl::errc_narrow_overflow</a> {31}</td></tr>
+constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="basic__errc__type_8hpp.html#a0ce8cc87d23318784f6c823e1201b2a8">bsl::errc_narrow_overflow</a> {31}</td></tr>
 <tr class="memdesc:a0ce8cc87d23318784f6c823e1201b2a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines an overflow, underflow or unsigned wrap error. <br /></td></tr>
 <tr class="separator:a0ce8cc87d23318784f6c823e1201b2a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4aa6d017cb3260ff90cc3a702780a16b"><td class="memItemLeft" align="right" valign="top"><a id="a4aa6d017cb3260ff90cc3a702780a16b"></a>
-constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a4aa6d017cb3260ff90cc3a702780a16b">bsl::errc_signed_overflow</a> {32}</td></tr>
+constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="basic__errc__type_8hpp.html#a4aa6d017cb3260ff90cc3a702780a16b">bsl::errc_signed_overflow</a> {32}</td></tr>
 <tr class="memdesc:a4aa6d017cb3260ff90cc3a702780a16b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines an overflow, underflow or unsigned wrap error. <br /></td></tr>
 <tr class="separator:a4aa6d017cb3260ff90cc3a702780a16b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55709efeebed9bba17c3f2ac24d41e21"><td class="memItemLeft" align="right" valign="top"><a id="a55709efeebed9bba17c3f2ac24d41e21"></a>
-constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a55709efeebed9bba17c3f2ac24d41e21">bsl::errc_divide_by_zero</a> {33}</td></tr>
+constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="basic__errc__type_8hpp.html#a55709efeebed9bba17c3f2ac24d41e21">bsl::errc_divide_by_zero</a> {33}</td></tr>
 <tr class="memdesc:a55709efeebed9bba17c3f2ac24d41e21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a divide by zero error. <br /></td></tr>
 <tr class="separator:a55709efeebed9bba17c3f2ac24d41e21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5d60e99395faf640a054969bd463b08"><td class="memItemLeft" align="right" valign="top"><a id="ab5d60e99395faf640a054969bd463b08"></a>
-constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#ab5d60e99395faf640a054969bd463b08">bsl::errc_nullptr_dereference</a> {34}</td></tr>
+constexpr basic_errc_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="basic__errc__type_8hpp.html#ab5d60e99395faf640a054969bd463b08">bsl::errc_nullptr_dereference</a> {34}</td></tr>
 <tr class="memdesc:ab5d60e99395faf640a054969bd463b08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines an out of bounds error code. <br /></td></tr>
 <tr class="separator:ab5d60e99395faf640a054969bd463b08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>

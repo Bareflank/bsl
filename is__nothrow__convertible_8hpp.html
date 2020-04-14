@@ -67,7 +67,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">is_nothrow_convertible.hpp File Reference</div>  </div>
@@ -87,15 +86,10 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the provided type is convertible from "From" to "To", provides the member constant value equal to true. Otherwise the member constant value is false.  <a href="classbsl_1_1is__nothrow__convertible.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aac9cb82edef035e8320e67ba7f4ff63d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aac9cb82edef035e8320e67ba7f4ff63d"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="is__nothrow__convertible_8hpp.html#aac9cb82edef035e8320e67ba7f4ff63d">bsl::details::test_is_nothrow_convertible1</a> (<a class="el" href="namespacebsl.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a> ignored) noexcept -&gt; true_type_for&lt; T()&gt;</td></tr>
+<tr class="memitem:aac9cb82edef035e8320e67ba7f4ff63d"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="is__nothrow__convertible_8hpp.html#aac9cb82edef035e8320e67ba7f4ff63d">bsl::details::test_is_nothrow_convertible1</a> (<a class="el" href="cstdint_8hpp.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a> ignored) noexcept -&gt; true_type_for&lt; T()&gt;</td></tr>
 <tr class="memdesc:aac9cb82edef035e8320e67ba7f4ff63d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests if the provided type is returnable, which is required for a type to be convertible. If the type is returnable, this returns true, false otherwise.  <a href="is__nothrow__convertible_8hpp.html#aac9cb82edef035e8320e67ba7f4ff63d">More...</a><br /></td></tr>
 <tr class="separator:aac9cb82edef035e8320e67ba7f4ff63d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20b6cddb60019c3c5adecec06c3fedc7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -103,7 +97,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a20b6cddb60019c3c5adecec06c3fedc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests if the provided type is returnable, which is required for a type to be convertible. If the type is returnable, this returns true, false otherwise.  <a href="is__nothrow__convertible_8hpp.html#a20b6cddb60019c3c5adecec06c3fedc7">More...</a><br /></td></tr>
 <tr class="separator:a20b6cddb60019c3c5adecec06c3fedc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1539e41a112089f10e49f6e19f30d945"><td class="memTemplParams" colspan="2">template&lt;typename From , typename To &gt; </td></tr>
-<tr class="memitem:a1539e41a112089f10e49f6e19f30d945"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="is__nothrow__convertible_8hpp.html#a1539e41a112089f10e49f6e19f30d945">bsl::details::test_is_nothrow_convertible2</a> (<a class="el" href="namespacebsl.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a> ignored) noexcept -&gt; bool_constant&lt; noexcept(declval&lt; void(&amp;)(To) noexcept &gt;()(declval&lt; From &gt;()))&gt;</td></tr>
+<tr class="memitem:a1539e41a112089f10e49f6e19f30d945"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="is__nothrow__convertible_8hpp.html#a1539e41a112089f10e49f6e19f30d945">bsl::details::test_is_nothrow_convertible2</a> (<a class="el" href="cstdint_8hpp.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a> ignored) noexcept -&gt; bool_constant&lt; noexcept(declval&lt; void(&amp;)(To) noexcept &gt;()(declval&lt; From &gt;()))&gt;</td></tr>
 <tr class="memdesc:a1539e41a112089f10e49f6e19f30d945"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests whether or not the provided to can be converted from "From" to "To" via a function parameter similar to an implicit conversion constructor (but might be implicitly provided by the compiler). If the type is convertible, this returns true, false otherwise.  <a href="is__nothrow__convertible_8hpp.html#a1539e41a112089f10e49f6e19f30d945">More...</a><br /></td></tr>
 <tr class="separator:a1539e41a112089f10e49f6e19f30d945"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9adc3b95c8d9b0694c5dbefbe412689"><td class="memTemplParams" colspan="2">template&lt;typename From , typename To &gt; </td></tr>
@@ -138,9 +132,9 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">auto bsl::details::test_is_nothrow_convertible1 </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacebsl.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="cstdint_8hpp.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a>&#160;</td>
           <td class="paramname"><em>ignored</em></td><td>)</td>
-          <td> -&gt;  <a class="el" href="namespacebsl.html#ac8d75e8befe697900fcd9d9a0ba946a1">true_type_for</a>&lt; T()&gt;</td>
+          <td> -&gt;  <a class="el" href="true__type_8hpp.html#ac8d75e8befe697900fcd9d9a0ba946a1">true_type_for</a>&lt; T()&gt;</td>
         </tr>
       </table>
   </td>
@@ -183,7 +177,7 @@ template&lt;typename T &gt; </div>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>ignored</em></td><td>)</td>
-          <td> -&gt;  <a class="el" href="namespacebsl.html#a12a5338ec760fc73a47f2166e4d29546">false_type</a></td>
+          <td> -&gt;  <a class="el" href="false__type_8hpp.html#a12a5338ec760fc73a47f2166e4d29546">false_type</a></td>
         </tr>
       </table>
   </td>
@@ -224,9 +218,9 @@ template&lt;typename From , typename To &gt; </div>
         <tr>
           <td class="memname">auto bsl::details::test_is_nothrow_convertible2 </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacebsl.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="cstdint_8hpp.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a>&#160;</td>
           <td class="paramname"><em>ignored</em></td><td>)</td>
-          <td> -&gt;  <a class="el" href="namespacebsl.html#aab545b3015440be59ef0bf70ddc3a45a">bool_constant</a>&lt; noexcept(<a class="el" href="namespacebsl.html#aa19e79c525543d028b9b0bdb56d022c1">declval</a>&lt; void(&amp;)(To) noexcept &gt;()(<a class="el" href="namespacebsl.html#aa19e79c525543d028b9b0bdb56d022c1">declval</a>&lt; From &gt;()))&gt;</td>
+          <td> -&gt;  <a class="el" href="bool__constant_8hpp.html#aab545b3015440be59ef0bf70ddc3a45a">bool_constant</a>&lt; noexcept(declval&lt; void(&amp;)(To) noexcept &gt;()(declval&lt; From &gt;()))&gt;</td>
         </tr>
       </table>
   </td>
@@ -270,7 +264,7 @@ template&lt;typename From , typename To &gt; </div>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>ignored</em></td><td>)</td>
-          <td> -&gt;  <a class="el" href="namespacebsl.html#a12a5338ec760fc73a47f2166e4d29546">false_type</a></td>
+          <td> -&gt;  <a class="el" href="false__type_8hpp.html#a12a5338ec760fc73a47f2166e4d29546">false_type</a></td>
         </tr>
       </table>
   </td>

@@ -66,7 +66,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">discard.hpp File Reference</div>  </div>
@@ -75,16 +74,11 @@ $(function() {
 
 <p><a href="discard_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:afa7b28ce6b0762c52732d1c00234efa4"><td class="memTemplParams" colspan="2">template&lt;typename... ARGS&gt; </td></tr>
-<tr class="memitem:afa7b28ce6b0762c52732d1c00234efa4"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#afa7b28ce6b0762c52732d1c00234efa4">bsl::discard</a> (ARGS &amp;&amp;... args) noexcept</td></tr>
-<tr class="memdesc:afa7b28ce6b0762c52732d1c00234efa4"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function discards a parameter that it is given. This is the same as executing a static cast. The reason this exists is it better documents the intent to discard the result of a function or an intentionally unused parameter. This function also exists because in some cases, we must pass the address of a discard as as a template parameter, which cannot be done with a static cast.  <a href="namespacebsl.html#afa7b28ce6b0762c52732d1c00234efa4">More...</a><br /></td></tr>
+<tr class="memitem:afa7b28ce6b0762c52732d1c00234efa4"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="discard_8hpp.html#afa7b28ce6b0762c52732d1c00234efa4">bsl::discard</a> (ARGS &amp;&amp;... args) noexcept</td></tr>
+<tr class="memdesc:afa7b28ce6b0762c52732d1c00234efa4"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function discards a parameter that it is given. This is the same as executing a static cast. The reason this exists is it better documents the intent to discard the result of a function or an intentionally unused parameter. This function also exists because in some cases, we must pass the address of a discard as as a template parameter, which cannot be done with a static cast.  <a href="discard_8hpp.html#afa7b28ce6b0762c52732d1c00234efa4">More...</a><br /></td></tr>
 <tr class="separator:afa7b28ce6b0762c52732d1c00234efa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -95,7 +89,53 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</dd>
 <dd>
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="file_afa7b28ce6b0762c52732d1c00234efa4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_afa7b28ce6b0762c52732d1c00234efa4">&#9670;&nbsp;</a></span>discard()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr void bsl::discard </td>
+          <td>(</td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This function discards a parameter that it is given. This is the same as executing a static cast. The reason this exists is it better documents the intent to discard the result of a function or an intentionally unused parameter. This function also exists because in some cases, we must pass the address of a discard as as a template parameter, which cannot be done with a static cast. </p>
+<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="discard_8hpp.html">bsl/discard.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="debug_8hpp.html">bsl/debug.hpp</a>&gt;</span></div><div class="line"></div><div class="line"><span class="keyword">namespace </span>bsl</div><div class="line">{</div><div class="line">    <span class="keyword">inline</span> <span class="keywordtype">void</span></div><div class="line">    example_discard_overview() noexcept</div><div class="line">    {</div><div class="line">        <span class="keywordtype">bool</span> val{};</div><div class="line">        <a class="code" href="discard_8hpp.html#afa7b28ce6b0762c52732d1c00234efa4">bsl::discard</a>(val);</div><div class="line"></div><div class="line">        <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;success\n&quot;</span>;</div><div class="line">    }</div><div class="line">}</div></div><!-- fragment --><p>SUPPRESSION: PRQA 4050 - exception required</p><ul>
+<li>We suppress this because M0-1-8 states that all functions marked as returning void must have external side effects, which this function does not. AUTOSAR allows the use of static_cast&lt;void&gt; to mark a parameter or return as unused which is all that this is doing in a less verbose, more self-documenting way.</li>
+</ul>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ARGS</td><td>the types that define the provided arguments to ignore </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">args</td><td>the arguments to ignore </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

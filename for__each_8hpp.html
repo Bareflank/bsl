@@ -66,7 +66,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
@@ -77,26 +76,21 @@ $(function() {
 </div>
 <p><a href="for__each_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a153ba6e51aba9b91e4fa27c19c779fbe"><td class="memTemplParams" colspan="2">template&lt;typename... ARGS&gt; </td></tr>
-<tr class="memitem:a153ba6e51aba9b91e4fa27c19c779fbe"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a153ba6e51aba9b91e4fa27c19c779fbe">bsl::for_each</a> (ARGS &amp;&amp;... args) noexcept(noexcept(//-- details::for_each_impl&lt; ARGS... &gt;::call(<a class="el" href="namespacebsl.html#ad7f937baf04563f2ff88472912aa6148">bsl::forward</a>&lt; ARGS &gt;(args)...)))</td></tr>
-<tr class="memdesc:a153ba6e51aba9b91e4fa27c19c779fbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loops over a view or a pair of iterators, calling a provided function on each iteration. The provided function can take on the following signatures:  <a href="namespacebsl.html#a153ba6e51aba9b91e4fa27c19c779fbe">More...</a><br /></td></tr>
+<tr class="memitem:a153ba6e51aba9b91e4fa27c19c779fbe"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="for__each_8hpp.html#a153ba6e51aba9b91e4fa27c19c779fbe">bsl::for_each</a> (ARGS &amp;&amp;... args) noexcept(noexcept(//-- details::for_each_impl&lt; ARGS... &gt;::call(bsl::forward&lt; ARGS &gt;(args)...)))</td></tr>
+<tr class="memdesc:a153ba6e51aba9b91e4fa27c19c779fbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loops over a view or a pair of iterators, calling a provided function on each iteration. The provided function can take on the following signatures:  <a href="for__each_8hpp.html#a153ba6e51aba9b91e4fa27c19c779fbe">More...</a><br /></td></tr>
 <tr class="separator:a153ba6e51aba9b91e4fa27c19c779fbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:ad66ccdf7a07b523f7ac2a1cf47643acc"><td class="memItemLeft" align="right" valign="top"><a id="ad66ccdf7a07b523f7ac2a1cf47643acc"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#ad66ccdf7a07b523f7ac2a1cf47643acc">bsl::for_each_break</a> {false}</td></tr>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="for__each_8hpp.html#ad66ccdf7a07b523f7ac2a1cf47643acc">bsl::for_each_break</a> {false}</td></tr>
 <tr class="memdesc:ad66ccdf7a07b523f7ac2a1cf47643acc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells a foreach to stop its execution (same as "break") <br /></td></tr>
 <tr class="separator:ad66ccdf7a07b523f7ac2a1cf47643acc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6f2fad3a678973cef09c16eb11944af"><td class="memItemLeft" align="right" valign="top"><a id="ad6f2fad3a678973cef09c16eb11944af"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#ad6f2fad3a678973cef09c16eb11944af">bsl::for_each_continue</a> {true}</td></tr>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="for__each_8hpp.html#ad6f2fad3a678973cef09c16eb11944af">bsl::for_each_continue</a> {true}</td></tr>
 <tr class="memdesc:ad6f2fad3a678973cef09c16eb11944af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells a foreach to continue its execution (same as "continue") <br /></td></tr>
 <tr class="separator:ad6f2fad3a678973cef09c16eb11944af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -108,7 +102,56 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</dd>
 <dd>
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="file_a153ba6e51aba9b91e4fa27c19c779fbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_a153ba6e51aba9b91e4fa27c19c779fbe">&#9670;&nbsp;</a></span>for_each()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr void bsl::for_each </td>
+          <td>(</td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Loops over a view or a pair of iterators, calling a provided function on each iteration. The provided function can take on the following signatures: </p>
+<ul>
+<li>void(T &amp;elem)</li>
+<li>void(T &amp;elem, bsl::uintmax index)</li>
+<li>bool(T &amp;elem)</li>
+<li>bool(T &amp;elem, bsl::uintmax index) The boolean versions of this function allow you to return either bsl::for_each_break (to break from the loop) or for_each_continue (to continue the loop). Note that if you are using the void versions of the loop, you can continue by simply returning. The bool versions are only needed if you need to break from the loop, in which case bsl::for_each_continue should be used to return from the function. In addition to the different function signatures that you can provide, you can also provide bsl::for_each with either a subclass of a bsl::view, or two iterators (a begin and end iterator), which will be used to perform the loop. The bsl::for_each function acts like a ranged for loop when given a subclass of a bsl::view, and acts like a traditional for loop when given two iterators. Note that you can use a reverse iterator to loop in reverse, and you can use the BSL specific iter() functions that allow you to create your own begin and end iterators so that you can control the position and number of elements the loop will perform. For more information, see the following example: <div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="for__each_8hpp.html">bsl/for_each.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="string__view_8hpp.html">bsl/string_view.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="debug_8hpp.html">bsl/debug.hpp</a>&gt;</span></div><div class="line"></div><div class="line"><span class="keyword">namespace </span>bsl</div><div class="line">{</div><div class="line">    <span class="keyword">inline</span> <span class="keywordtype">void</span></div><div class="line">    example_for_each_overview() noexcept</div><div class="line">    {</div><div class="line">        constexpr bsl::string_view msg{<span class="stringliteral">&quot;Hello&quot;</span>};</div><div class="line">        constexpr <a class="code" href="cstdint_8hpp.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9">bsl::uintmax</a> i1{1U};</div><div class="line">        constexpr <a class="code" href="cstdint_8hpp.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9">bsl::uintmax</a> i4{4U};</div><div class="line">        constexpr <a class="code" href="char__type_8hpp.html#acd32c87c9060b301047deb71f5b775e9">char_type</a> co{<span class="charliteral">&#39;o&#39;</span>};</div><div class="line"></div><div class="line">        <span class="comment">// ---------------------------------------------------------------------</span></div><div class="line">        <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;example 1:\n&quot;</span>;</div><div class="line">        <a class="code" href="for__each_8hpp.html#a153ba6e51aba9b91e4fa27c19c779fbe">bsl::for_each</a>(msg, [](<span class="keyword">auto</span> &amp;e) noexcept {</div><div class="line">            <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; e;</div><div class="line">        });</div><div class="line">        <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;\n\n&quot;</span>;</div><div class="line"></div><div class="line">        <span class="comment">// ---------------------------------------------------------------------</span></div><div class="line">        <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;example 2:\n&quot;</span>;</div><div class="line">        <a class="code" href="for__each_8hpp.html#a153ba6e51aba9b91e4fa27c19c779fbe">bsl::for_each</a>(msg, [](<span class="keyword">auto</span> &amp;e, <span class="keyword">auto</span> <span class="keyword">const</span> i) noexcept {</div><div class="line">            <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;element [&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;] == &quot;</span> &lt;&lt; e &lt;&lt; <a class="code" href="debug_8hpp.html#a0411c0b3b03f8f6277e9237b0dcb2220">bsl::endl</a>;</div><div class="line">        });</div><div class="line">        <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <a class="code" href="debug_8hpp.html#a0411c0b3b03f8f6277e9237b0dcb2220">bsl::endl</a>;</div><div class="line"></div><div class="line">        <span class="comment">// ---------------------------------------------------------------------</span></div><div class="line">        <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;example 3:\n&quot;</span>;</div><div class="line">        <a class="code" href="for__each_8hpp.html#a153ba6e51aba9b91e4fa27c19c779fbe">bsl::for_each</a>(msg, [](<span class="keyword">auto</span> &amp;e) noexcept -&gt; <span class="keywordtype">bool</span> {</div><div class="line">            <span class="keywordflow">if</span> (co == e) {</div><div class="line">                <span class="keywordflow">return</span> <a class="code" href="for__each_8hpp.html#ad66ccdf7a07b523f7ac2a1cf47643acc">bsl::for_each_break</a>;</div><div class="line">            }</div><div class="line"></div><div class="line">            <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; e;</div><div class="line">            <span class="keywordflow">return</span> <a class="code" href="for__each_8hpp.html#ad6f2fad3a678973cef09c16eb11944af">for_each_continue</a>;</div><div class="line">        });</div><div class="line">        <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;\n\n&quot;</span>;</div><div class="line"></div><div class="line">        <span class="comment">// ---------------------------------------------------------------------</span></div><div class="line">        <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;example 4:\n&quot;</span>;</div><div class="line">        <a class="code" href="for__each_8hpp.html#a153ba6e51aba9b91e4fa27c19c779fbe">bsl::for_each</a>(msg.begin(), msg.end(), [](<span class="keyword">auto</span> &amp;e) noexcept {</div><div class="line">            <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; e;</div><div class="line">        });</div><div class="line">        <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;\n\n&quot;</span>;</div><div class="line"></div><div class="line">        <span class="comment">// ---------------------------------------------------------------------</span></div><div class="line">        <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;example 5:\n&quot;</span>;</div><div class="line">        <a class="code" href="for__each_8hpp.html#a153ba6e51aba9b91e4fa27c19c779fbe">bsl::for_each</a>(msg.iter(i1), msg.iter(i4), [](<span class="keyword">auto</span> &amp;e) noexcept {</div><div class="line">            <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; e;</div><div class="line">        });</div><div class="line">        <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;\n\n&quot;</span>;</div><div class="line"></div><div class="line">        <span class="comment">// ---------------------------------------------------------------------</span></div><div class="line">        <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;example 6:\n&quot;</span>;</div><div class="line">        <a class="code" href="for__each_8hpp.html#a153ba6e51aba9b91e4fa27c19c779fbe">bsl::for_each</a>(msg.rbegin(), msg.rend(), [](<span class="keyword">auto</span> &amp;e) noexcept {</div><div class="line">            <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; e;</div><div class="line">        });</div><div class="line">        <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;\n\n&quot;</span>;</div><div class="line"></div><div class="line">        <span class="comment">// ---------------------------------------------------------------------</span></div><div class="line">        <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;example 7:\n&quot;</span>;</div><div class="line">        <a class="code" href="for__each_8hpp.html#a153ba6e51aba9b91e4fa27c19c779fbe">bsl::for_each</a>(msg.rbegin(), msg.rend(), [](<span class="keyword">auto</span> &amp;e, <span class="keyword">auto</span> <span class="keyword">const</span> i) noexcept {</div><div class="line">            <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;element [&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;] == &quot;</span> &lt;&lt; e &lt;&lt; <a class="code" href="debug_8hpp.html#a0411c0b3b03f8f6277e9237b0dcb2220">bsl::endl</a>;</div><div class="line">        });</div><div class="line">    }</div><div class="line">}</div></div><!-- fragment --></li>
+</ul>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ARGS</td><td>the types of arguments passed to bsl::for_each. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">args</td><td>can either be a subclass of bsl::view and a lambda, or a pair of iterators and a lambda. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

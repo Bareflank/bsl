@@ -66,7 +66,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">invoke.hpp File Reference</div>  </div>
@@ -77,16 +76,11 @@ $(function() {
 </div>
 <p><a href="invoke_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a6417bf1714ada612ce525074e8fab216"><td class="memTemplParams" colspan="2">template&lt;typename FUNC , typename... TN&gt; </td></tr>
-<tr class="memitem:a6417bf1714ada612ce525074e8fab216"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a6417bf1714ada612ce525074e8fab216">bsl::invoke</a> (FUNC &amp;&amp;f, TN &amp;&amp;... tn) noexcept(//-- noexcept(details::invoke_impl&lt; FUNC, TN... &gt;::call(//-- <a class="el" href="namespacebsl.html#ad7f937baf04563f2ff88472912aa6148">bsl::forward</a>&lt; FUNC &gt;(f),//-- <a class="el" href="namespacebsl.html#ad7f937baf04563f2ff88472912aa6148">bsl::forward</a>&lt; TN &gt;(tn)...))) -&gt; decltype(details::invoke_impl&lt; FUNC, TN... &gt;::call(<a class="el" href="namespacebsl.html#ad7f937baf04563f2ff88472912aa6148">bsl::forward</a>&lt; FUNC &gt;(f), <a class="el" href="namespacebsl.html#ad7f937baf04563f2ff88472912aa6148">bsl::forward</a>&lt; TN &gt;(tn)...))</td></tr>
-<tr class="memdesc:a6417bf1714ada612ce525074e8fab216"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invokes the callable object "f" with arguments "tn".  <a href="namespacebsl.html#a6417bf1714ada612ce525074e8fab216">More...</a><br /></td></tr>
+<tr class="memitem:a6417bf1714ada612ce525074e8fab216"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="invoke_8hpp.html#a6417bf1714ada612ce525074e8fab216">bsl::invoke</a> (FUNC &amp;&amp;f, TN &amp;&amp;... tn) noexcept(//-- noexcept(details::invoke_impl&lt; FUNC, TN... &gt;::call(//-- bsl::forward&lt; FUNC &gt;(f),//-- bsl::forward&lt; TN &gt;(tn)...))) -&gt; decltype(details::invoke_impl&lt; FUNC, TN... &gt;::call(bsl::forward&lt; FUNC &gt;(f), bsl::forward&lt; TN &gt;(tn)...))</td></tr>
+<tr class="memdesc:a6417bf1714ada612ce525074e8fab216"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invokes the callable object "f" with arguments "tn".  <a href="invoke_8hpp.html#a6417bf1714ada612ce525074e8fab216">More...</a><br /></td></tr>
 <tr class="separator:a6417bf1714ada612ce525074e8fab216"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -97,7 +91,72 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</dd>
 <dd>
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="file_a6417bf1714ada612ce525074e8fab216"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_a6417bf1714ada612ce525074e8fab216">&#9670;&nbsp;</a></span>invoke()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FUNC , typename... TN&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto bsl::invoke </td>
+          <td>(</td>
+          <td class="paramtype">FUNC &amp;&amp;&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TN &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>tn</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; decltype(details::invoke_impl&lt;FUNC, TN...&gt;::call(    
+            bsl::forward&lt;FUNC&gt;(f),                              
+            bsl::forward&lt;TN&gt;(tn)...))                           
+    </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Invokes the callable object "f" with arguments "tn". </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">FUNC</td><td>the type that defines the function being called </td></tr>
+    <tr><td class="paramname">TN</td><td>the types that define the arguments passed to the provided function when called. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">f</td><td>a pointer to the function being called. </td></tr>
+    <tr><td class="paramname">tn</td><td>the arguments passed to the function f when called. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns the result of calling "f" with "tn"</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">throws</td><td>if the provided function throws </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

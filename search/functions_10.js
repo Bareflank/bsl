@@ -18,5 +18,5 @@ var searchData=
   ['subspan',['subspan',['../classbsl_1_1span.html#a321d6ac3197f81a6907867bea521d561',1,'bsl::span::subspan(size_type const pos, size_type const count=npos) noexcept'],['../classbsl_1_1span.html#a90f8e519ab49de31900b97618af1c467',1,'bsl::span::subspan(size_type const pos, size_type const count=npos) const noexcept']]],
   ['substr',['substr',['../classbsl_1_1basic__string__view.html#a0ec521caca2e550d65a393145ac6a9f0',1,'bsl::basic_string_view']]],
   ['success',['success',['../classbsl_1_1basic__errc__type.html#a56fedfee319b212bdd88b9826fc750d6',1,'bsl::basic_errc_type::success()'],['../classbsl_1_1result.html#a2d4551996460c6d4c37404e1c9156871',1,'bsl::result::success()']]],
-  ['swap',['swap',['../namespacebsl.html#ace538312ab16b685cfffc7eb75a1eb6a',1,'bsl']]]
+  ['swap',['swap',['../swap_8hpp.html#ace538312ab16b685cfffc7eb75a1eb6a',1,'bsl']]]
 ];

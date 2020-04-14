@@ -66,7 +66,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">min_of.hpp File Reference</div>  </div>
@@ -75,16 +74,11 @@ $(function() {
 
 <p><a href="min__of_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a2c8a608775d9c674363cf30509ebf0ba"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a2c8a608775d9c674363cf30509ebf0ba"><td class="memTemplItemLeft" align="right" valign="top">constexpr T const  &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a2c8a608775d9c674363cf30509ebf0ba">bsl::min_of</a> (T const &amp;a, T const &amp;b) noexcept</td></tr>
-<tr class="memdesc:a2c8a608775d9c674363cf30509ebf0ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a if a is smaller than b, otherwise returns b. Note that this function is called min_of to prevent a name collision with <a class="el" href="classbsl_1_1numeric__limits.html#a5e1ccceb6ca44091c746559b84a022c8" title="Returns the min value of T.">numeric_limits&lt;&gt;::min()</a>.  <a href="namespacebsl.html#a2c8a608775d9c674363cf30509ebf0ba">More...</a><br /></td></tr>
+<tr class="memitem:a2c8a608775d9c674363cf30509ebf0ba"><td class="memTemplItemLeft" align="right" valign="top">constexpr T const  &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="min__of_8hpp.html#a2c8a608775d9c674363cf30509ebf0ba">bsl::min_of</a> (T const &amp;a, T const &amp;b) noexcept</td></tr>
+<tr class="memdesc:a2c8a608775d9c674363cf30509ebf0ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a if a is smaller than b, otherwise returns b. Note that this function is called min_of to prevent a name collision with <a class="el" href="classbsl_1_1numeric__limits.html#a5e1ccceb6ca44091c746559b84a022c8" title="Returns the min value of T.">numeric_limits&lt;&gt;::min()</a>.  <a href="min__of_8hpp.html#a2c8a608775d9c674363cf30509ebf0ba">More...</a><br /></td></tr>
 <tr class="separator:a2c8a608775d9c674363cf30509ebf0ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -95,7 +89,62 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</dd>
 <dd>
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="file_a2c8a608775d9c674363cf30509ebf0ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_a2c8a608775d9c674363cf30509ebf0ba">&#9670;&nbsp;</a></span>min_of()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr T const&amp; bsl::min_of </td>
+          <td>(</td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a if a is smaller than b, otherwise returns b. Note that this function is called min_of to prevent a name collision with numeric_limits&lt;&gt;::min(). </p>
+<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="min__of_8hpp.html">bsl/min_of.hpp</a>&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="debug_8hpp.html">bsl/debug.hpp</a>&gt;</span></div><div class="line"></div><div class="line"><span class="keyword">namespace </span>bsl</div><div class="line">{</div><div class="line">    <span class="keyword">inline</span> <span class="keywordtype">void</span></div><div class="line">    example_min_of_overview() noexcept</div><div class="line">    {</div><div class="line">        constexpr <a class="code" href="cstdint_8hpp.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a> val1{23};</div><div class="line">        constexpr <a class="code" href="cstdint_8hpp.html#ad7463e35f2d5163201b51201e7cc6e33">bsl::int32</a> val2{42};</div><div class="line"></div><div class="line">        <span class="keywordflow">if</span> (bsl::min_of(val1, val2) == val1) {</div><div class="line">            <a class="code" href="debug_8hpp.html#a172d9238495284d49a34332143ad28c1">bsl::print</a>() &lt;&lt; <span class="stringliteral">&quot;success\n&quot;</span>;</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div></div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type that defines both a and b </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>the first parameter to compare </td></tr>
+    <tr><td class="paramname">b</td><td>the second parameter to compare </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns a if a is smaller than b, otherwise returns b. </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

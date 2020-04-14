@@ -67,7 +67,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">ut.hpp File Reference</div>  </div>
@@ -99,25 +98,20 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the expected "result" of a unit test scenario.  <a href="classbsl_1_1ut__then.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a98248eb16881c44104a4df7d663dfb26"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ut_8hpp.html#a98248eb16881c44104a4df7d663dfb26">bsl::details::ut_print_here</a> (sloc_type const &amp;sloc) noexcept</td></tr>
 <tr class="memdesc:a98248eb16881c44104a4df7d663dfb26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the current source location to the console.  <a href="ut_8hpp.html#a98248eb16881c44104a4df7d663dfb26">More...</a><br /></td></tr>
 <tr class="separator:a98248eb16881c44104a4df7d663dfb26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad233c6ee9ead79f6164c3edb084ea82f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacebsl.html#aad5e36d8b13e4eb51b5c8d152cdcf9c6">bsl::exit_code</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#ad233c6ee9ead79f6164c3edb084ea82f">bsl::ut_success</a> () noexcept</td></tr>
-<tr class="memdesc:ad233c6ee9ead79f6164c3edb084ea82f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Outputs a message and returns <a class="el" href="namespacebsl.html#acff2a318fa459cacdca6e3eb53e52e2d" title="represents a successful exit">bsl::exit_success</a>.  <a href="namespacebsl.html#ad233c6ee9ead79f6164c3edb084ea82f">More...</a><br /></td></tr>
+<tr class="memitem:ad233c6ee9ead79f6164c3edb084ea82f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="exit__code_8hpp.html#aad5e36d8b13e4eb51b5c8d152cdcf9c6">bsl::exit_code</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ut_8hpp.html#ad233c6ee9ead79f6164c3edb084ea82f">bsl::ut_success</a> () noexcept</td></tr>
+<tr class="memdesc:ad233c6ee9ead79f6164c3edb084ea82f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Outputs a message and returns bsl::exit_success.  <a href="ut_8hpp.html#ad233c6ee9ead79f6164c3edb084ea82f">More...</a><br /></td></tr>
 <tr class="separator:ad233c6ee9ead79f6164c3edb084ea82f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f2832d5c46b0c5a3072243e2df238f6"><td class="memItemLeft" align="right" valign="top"><a id="a1f2832d5c46b0c5a3072243e2df238f6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a1f2832d5c46b0c5a3072243e2df238f6">bsl::ut_check_failed</a> () noexcept</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ut_8hpp.html#a1f2832d5c46b0c5a3072243e2df238f6">bsl::ut_check_failed</a> () noexcept</td></tr>
 <tr class="memdesc:a1f2832d5c46b0c5a3072243e2df238f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a non-constexpr function that can be used to detect when a unit test check fails. If this function is called at compile-time, it will not compile, resulting in a human readable error message. <br /></td></tr>
 <tr class="separator:a1f2832d5c46b0c5a3072243e2df238f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1edde6206479f9456c6a2fa87782e55c"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a1edde6206479f9456c6a2fa87782e55c">bsl::ut_check</a> (bool const test, sloc_type const &amp;sloc=here()) noexcept</td></tr>
-<tr class="memdesc:a1edde6206479f9456c6a2fa87782e55c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks to see if "test" is true. If test is false, this function will exit fast with a failure code.  <a href="namespacebsl.html#a1edde6206479f9456c6a2fa87782e55c">More...</a><br /></td></tr>
+<tr class="memitem:a1edde6206479f9456c6a2fa87782e55c"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ut_8hpp.html#a1edde6206479f9456c6a2fa87782e55c">bsl::ut_check</a> (bool const test, sloc_type const &amp;sloc=here()) noexcept</td></tr>
+<tr class="memdesc:a1edde6206479f9456c6a2fa87782e55c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks to see if "test" is true. If test is false, this function will exit fast with a failure code.  <a href="ut_8hpp.html#a1edde6206479f9456c6a2fa87782e55c">More...</a><br /></td></tr>
 <tr class="separator:a1edde6206479f9456c6a2fa87782e55c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -141,7 +135,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         <tr>
           <td class="memname">void bsl::details::ut_print_here </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacebsl.html#a5fefedc73c85f9a67d6028a786648e09">sloc_type</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="source__location_8hpp.html#a5fefedc73c85f9a67d6028a786648e09">sloc_type</a> const &amp;&#160;</td>
           <td class="paramname"><em>sloc</em></td><td>)</td>
           <td></td>
         </tr>
@@ -160,6 +154,80 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="file_ad233c6ee9ead79f6164c3edb084ea82f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_ad233c6ee9ead79f6164c3edb084ea82f">&#9670;&nbsp;</a></span>ut_success()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="exit__code_8hpp.html#aad5e36d8b13e4eb51b5c8d152cdcf9c6">bsl::exit_code</a> bsl::ut_success </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Outputs a message and returns bsl::exit_success. </p>
+<dl class="section return"><dt>Returns</dt><dd>returns bsl::exit_success </dd></dl>
+
+</div>
+</div>
+<a id="file_a1edde6206479f9456c6a2fa87782e55c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_a1edde6206479f9456c6a2fa87782e55c">&#9670;&nbsp;</a></span>ut_check()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool bsl::ut_check </td>
+          <td>(</td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>test</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="source__location_8hpp.html#a5fefedc73c85f9a67d6028a786648e09">sloc_type</a> const &amp;&#160;</td>
+          <td class="paramname"><em>sloc</em> = <code>here()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks to see if "test" is true. If test is false, this function will exit fast with a failure code. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">test</td><td>if test is true, this function returns true. If test is false, this function will exit fast with a failure code. </td></tr>
+    <tr><td class="paramname">sloc</td><td>used to identify the location in the unit test that a check failed. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>returns test </dd></dl>
 
 </div>
 </div>

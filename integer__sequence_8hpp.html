@@ -67,7 +67,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle">
 <div class="title">integer_sequence.hpp File Reference</div>  </div>
@@ -85,31 +84,26 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The class template std::integer_sequence represents a compile-time sequence of integers. When used as an argument to a function template, the parameter pack Ints can be deduced and used in pack expansion.  <a href="classbsl_1_1integer__sequence.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a75d76831b0c34b3a08224f4ee0030178"><td class="memTemplParams" colspan="2"><a id="a75d76831b0c34b3a08224f4ee0030178"></a>
 template&lt;bsl::uintmax... INTS&gt; </td></tr>
-<tr class="memitem:a75d76831b0c34b3a08224f4ee0030178"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#a75d76831b0c34b3a08224f4ee0030178">bsl::index_sequence</a> = integer_sequence&lt; <a class="el" href="namespacebsl.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9">bsl::uintmax</a>, INTS... &gt;</td></tr>
-<tr class="memdesc:a75d76831b0c34b3a08224f4ee0030178"><td class="mdescLeft">&#160;</td><td class="mdescRight">helper alias template for the common case of <a class="el" href="namespacebsl.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9" title="defines a unsigned integer with the maximum possible size">bsl::uintmax</a> <br /></td></tr>
+<tr class="memitem:a75d76831b0c34b3a08224f4ee0030178"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="integer__sequence_8hpp.html#a75d76831b0c34b3a08224f4ee0030178">bsl::index_sequence</a> = integer_sequence&lt; <a class="el" href="cstdint_8hpp.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9">bsl::uintmax</a>, INTS... &gt;</td></tr>
+<tr class="memdesc:a75d76831b0c34b3a08224f4ee0030178"><td class="mdescLeft">&#160;</td><td class="mdescRight">helper alias template for the common case of bsl::uintmax <br /></td></tr>
 <tr class="separator:a75d76831b0c34b3a08224f4ee0030178"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa36e548a94d5d2cb0d9df3b884c09873"><td class="memTemplParams" colspan="2"><a id="aa36e548a94d5d2cb0d9df3b884c09873"></a>
 template&lt;typename T , T N&gt; </td></tr>
-<tr class="memitem:aa36e548a94d5d2cb0d9df3b884c09873"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#aa36e548a94d5d2cb0d9df3b884c09873">bsl::make_integer_sequence</a> = __make_integer_seq&lt; integer_sequence, T, N &gt;</td></tr>
+<tr class="memitem:aa36e548a94d5d2cb0d9df3b884c09873"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="integer__sequence_8hpp.html#aa36e548a94d5d2cb0d9df3b884c09873">bsl::make_integer_sequence</a> = __make_integer_seq&lt; integer_sequence, T, N &gt;</td></tr>
 <tr class="memdesc:aa36e548a94d5d2cb0d9df3b884c09873"><td class="mdescLeft">&#160;</td><td class="mdescRight">helper alias that makes integer sequences <br /></td></tr>
 <tr class="separator:aa36e548a94d5d2cb0d9df3b884c09873"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab41d1984f1978a6ec1821c1859b46322"><td class="memTemplParams" colspan="2"><a id="ab41d1984f1978a6ec1821c1859b46322"></a>
 template&lt;bsl::uintmax N&gt; </td></tr>
-<tr class="memitem:ab41d1984f1978a6ec1821c1859b46322"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#ab41d1984f1978a6ec1821c1859b46322">bsl::make_index_sequence</a> = make_integer_sequence&lt; <a class="el" href="namespacebsl.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9">bsl::uintmax</a>, N &gt;</td></tr>
-<tr class="memdesc:ab41d1984f1978a6ec1821c1859b46322"><td class="mdescLeft">&#160;</td><td class="mdescRight">helper alias that makes integer sequences for <a class="el" href="namespacebsl.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9" title="defines a unsigned integer with the maximum possible size">bsl::uintmax</a> <br /></td></tr>
+<tr class="memitem:ab41d1984f1978a6ec1821c1859b46322"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="integer__sequence_8hpp.html#ab41d1984f1978a6ec1821c1859b46322">bsl::make_index_sequence</a> = make_integer_sequence&lt; <a class="el" href="cstdint_8hpp.html#adf5cecf5ad79f6cbfc4c7ab77dc09ac9">bsl::uintmax</a>, N &gt;</td></tr>
+<tr class="memdesc:ab41d1984f1978a6ec1821c1859b46322"><td class="mdescLeft">&#160;</td><td class="mdescRight">helper alias that makes integer sequences for bsl::uintmax <br /></td></tr>
 <tr class="separator:ab41d1984f1978a6ec1821c1859b46322"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5fd17aa431672aca8493f761d8639fd"><td class="memTemplParams" colspan="2"><a id="ae5fd17aa431672aca8493f761d8639fd"></a>
 template&lt;typename... T&gt; </td></tr>
-<tr class="memitem:ae5fd17aa431672aca8493f761d8639fd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebsl.html#ae5fd17aa431672aca8493f761d8639fd">bsl::index_sequence_for</a> = make_index_sequence&lt; sizeof...(T)&gt;</td></tr>
+<tr class="memitem:ae5fd17aa431672aca8493f761d8639fd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="integer__sequence_8hpp.html#ae5fd17aa431672aca8493f761d8639fd">bsl::index_sequence_for</a> = make_index_sequence&lt; sizeof...(T)&gt;</td></tr>
 <tr class="memdesc:ae5fd17aa431672aca8493f761d8639fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">helper alias that makes an index sequence given a list of types <br /></td></tr>
 <tr class="separator:ae5fd17aa431672aca8493f761d8639fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>

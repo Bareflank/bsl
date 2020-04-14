@@ -67,7 +67,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -92,16 +91,11 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the provided type is destructible, provides the member constant value equal to true. Otherwise the member constant value is false.  <a href="classbsl_1_1is__destructible.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacebsl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebsl.html">bsl</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:aad499452dc380c1d8588996011a421ba"><td class="memTemplParams" colspan="2"><a id="aad499452dc380c1d8588996011a421ba"></a>
 template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aad499452dc380c1d8588996011a421ba"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="is__destructible_8hpp.html#aad499452dc380c1d8588996011a421ba">bsl::details::is_destructible_type</a> = decltype(<a class="el" href="namespacebsl.html#aa19e79c525543d028b9b0bdb56d022c1">bsl::declval</a>&lt; T &amp; &gt;().~T())</td></tr>
+<tr class="memitem:aad499452dc380c1d8588996011a421ba"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="is__destructible_8hpp.html#aad499452dc380c1d8588996011a421ba">bsl::details::is_destructible_type</a> = decltype(bsl::declval&lt; T &amp; &gt;().~T())</td></tr>
 <tr class="memdesc:aad499452dc380c1d8588996011a421ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">used to detect the presence of a destructor in T <br /></td></tr>
 <tr class="separator:aad499452dc380c1d8588996011a421ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">

@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_SPAN_DEFAULT_CONSTRUCTOR_HPP
-#define EXAMPLE_SPAN_DEFAULT_CONSTRUCTOR_HPP
-
 #include <bsl/span.hpp>
 #include <bsl/debug.hpp>
 
@@ -43,5 +40,3 @@ namespace bsl
         }
     }
 }
-
-#endif

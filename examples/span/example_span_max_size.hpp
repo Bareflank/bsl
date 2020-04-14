@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_SPAN_MAX_SIZE_HPP
-#define EXAMPLE_SPAN_MAX_SIZE_HPP
-
 #include <bsl/span.hpp>
 #include <bsl/array.hpp>
 #include <bsl/debug.hpp>
@@ -51,5 +48,3 @@ namespace bsl
         bsl::print() << "max size: " << spn.max_size() << bsl::endl;
     }
 }
-
-#endif

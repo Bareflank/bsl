@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_INVOKE_OVERVIEW_HPP
-#define EXAMPLE_INVOKE_OVERVIEW_HPP
-
 #include <bsl/invoke.hpp>
 #include <bsl/debug.hpp>
 
@@ -43,5 +40,3 @@ namespace bsl
         }
     }
 }
-
-#endif

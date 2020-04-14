@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_BYTE_DEFAULT_CONSTRUCTOR_HPP
-#define EXAMPLE_BYTE_DEFAULT_CONSTRUCTOR_HPP
-
 #include <bsl/debug.hpp>
 #include <bsl/byte.hpp>
 
@@ -46,5 +43,3 @@ namespace bsl
         }
     }
 }
-
-#endif

@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_FORWARD_OVERVIEW_HPP
-#define EXAMPLE_FORWARD_OVERVIEW_HPP
-
 #include <bsl/forward.hpp>
 #include <bsl/discard.hpp>
 #include <bsl/is_lvalue_reference.hpp>
@@ -87,5 +84,3 @@ namespace bsl
         }
     }
 }
-
-#endif

@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_ARRAY_FRONT_IF_HPP
-#define EXAMPLE_ARRAY_FRONT_IF_HPP
-
 #include <bsl/span.hpp>
 #include <bsl/array.hpp>
 #include <bsl/debug.hpp>
@@ -52,5 +49,3 @@ namespace bsl
         }
     }
 }
-
-#endif

@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_FOREACH_OVERVIEW_HPP
-#define EXAMPLE_FOREACH_OVERVIEW_HPP
-
 #include <bsl/for_each.hpp>
 #include <bsl/string_view.hpp>
 #include <bsl/debug.hpp>
@@ -96,5 +93,3 @@ namespace bsl
         });
     }
 }
-
-#endif

@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_BYTE_OVERVIEW_HPP
-#define EXAMPLE_BYTE_OVERVIEW_HPP
-
 #include <bsl/byte.hpp>
 #include <bsl/debug.hpp>
 
@@ -40,5 +37,3 @@ namespace bsl
         bsl::print() << "success: " << mybyte.to_integer();
     }
 }
-
-#endif

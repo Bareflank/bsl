@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_HAS_UNIQUE_OBJECT_REPRESENTATIONS_OVERVIEW_HPP
-#define EXAMPLE_HAS_UNIQUE_OBJECT_REPRESENTATIONS_OVERVIEW_HPP
-
 #include <bsl/has_unique_object_representations.hpp>
 #include <bsl/debug.hpp>
 
@@ -43,5 +40,3 @@ namespace bsl
         }
     }
 }
-
-#endif

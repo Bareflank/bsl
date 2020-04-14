@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_SPAN_LAST_HPP
-#define EXAMPLE_SPAN_LAST_HPP
-
 #include <bsl/span.hpp>
 #include <bsl/array.hpp>
 #include <bsl/for_each.hpp>
@@ -58,5 +55,3 @@ namespace bsl
         }
     }
 }
-
-#endif

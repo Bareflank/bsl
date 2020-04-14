@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_ADD_CONST_OVERVIEW_HPP
-#define EXAMPLE_ADD_CONST_OVERVIEW_HPP
-
 #include <bsl/add_const.hpp>
 #include <bsl/is_same.hpp>
 #include <bsl/debug.hpp>
@@ -42,5 +39,3 @@ namespace bsl
         }
     }
 }
-
-#endif

@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_DECLVAL_OVERVIEW_HPP
-#define EXAMPLE_DECLVAL_OVERVIEW_HPP
-
 #include <bsl/declval.hpp>
 #include <bsl/is_same.hpp>
 #include "example_class_nodefault.hpp"
@@ -45,5 +42,3 @@ namespace bsl
         }
     }
 }
-
-#endif

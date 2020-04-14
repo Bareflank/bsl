@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_VOID_T_OVERVIEW_HPP
-#define EXAMPLE_VOID_T_OVERVIEW_HPP
-
 #include <bsl/void_t.hpp>
 #include <bsl/is_same.hpp>
 #include <bsl/debug.hpp>
@@ -42,5 +39,3 @@ namespace bsl
         }
     }
 }
-
-#endif

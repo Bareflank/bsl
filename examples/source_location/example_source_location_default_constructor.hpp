@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_SOURCE_LOCATION_DEFAULT_CONSTRUCTOR_HPP
-#define EXAMPLE_SOURCE_LOCATION_DEFAULT_CONSTRUCTOR_HPP
-
 #include <bsl/source_location.hpp>
 #include <bsl/debug.hpp>
 
@@ -39,5 +36,3 @@ namespace bsl
         bsl::print() << bsl::sloc_type{};
     }
 }
-
-#endif

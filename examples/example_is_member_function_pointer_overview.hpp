@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_IS_MEMBER_FUNCTION_POINTER_OVERVIEW_HPP
-#define EXAMPLE_IS_MEMBER_FUNCTION_POINTER_OVERVIEW_HPP
-
 #include <bsl/is_member_function_pointer.hpp>
 #include <bsl/debug.hpp>
 
@@ -43,5 +40,3 @@ namespace bsl
         }
     }
 }
-
-#endif

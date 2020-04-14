@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_BASIC_STRING_VIEW_BACK_IF_HPP
-#define EXAMPLE_BASIC_STRING_VIEW_BACK_IF_HPP
-
 #include <bsl/basic_string_view.hpp>
 #include <bsl/debug.hpp>
 
@@ -43,5 +40,3 @@ namespace bsl
         }
     }
 }
-
-#endif

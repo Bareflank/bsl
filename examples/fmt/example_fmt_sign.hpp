@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_FMT_SIGN_HPP
-#define EXAMPLE_FMT_SIGN_HPP
-
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -46,5 +43,3 @@ namespace bsl
         bsl::print() << bsl::fmt{" ", val2} << bsl::endl;
     }
 }
-
-#endif

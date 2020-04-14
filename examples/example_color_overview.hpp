@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_COLOR_OVERVIEW_HPP
-#define EXAMPLE_COLOR_OVERVIEW_HPP
-
 #include <bsl/color.hpp>
 #include <bsl/debug.hpp>
 
@@ -39,5 +36,3 @@ namespace bsl
         bsl::print() << bsl::green << "success" << bsl::reset_color << bsl::endl;
     }
 }
-
-#endif

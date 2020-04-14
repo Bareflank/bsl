@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_NUMERIC_LIMITS_OVERVIEW_HPP
-#define EXAMPLE_NUMERIC_LIMITS_OVERVIEW_HPP
-
 #include <bsl/numeric_limits.hpp>
 #include <bsl/debug.hpp>
 
@@ -41,5 +38,3 @@ namespace bsl
         }
     }
 }
-
-#endif

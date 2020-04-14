@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_CHAR_TRAITS_TO_INT_TYPE_HPP
-#define EXAMPLE_CHAR_TRAITS_TO_INT_TYPE_HPP
-
 #include <bsl/char_traits.hpp>
 #include <bsl/debug.hpp>
 
@@ -44,5 +41,3 @@ namespace bsl
         }
     }
 }
-
-#endif

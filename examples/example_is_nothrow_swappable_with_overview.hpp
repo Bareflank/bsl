@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_IS_NOTHROW_SWAPPABLE_WITH_HPP
-#define EXAMPLE_IS_NOTHROW_SWAPPABLE_WITH_HPP
-
 #include <bsl/is_nothrow_swappable_with.hpp>
 #include <bsl/debug.hpp>
 
@@ -41,5 +38,3 @@ namespace bsl
         }
     }
 }
-
-#endif

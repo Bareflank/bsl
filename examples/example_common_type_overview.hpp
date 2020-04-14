@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_COMMON_TYPE_OVERVIEW_HPP
-#define EXAMPLE_COMMON_TYPE_OVERVIEW_HPP
-
 #include <bsl/common_type.hpp>
 #include <bsl/is_same.hpp>
 #include <bsl/debug.hpp>
@@ -48,5 +45,3 @@ namespace bsl
         }
     }
 }
-
-#endif

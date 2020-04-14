@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_FMT_CONSTRUCTOR_F_VAL_WIDTH_HPP
-#define EXAMPLE_FMT_CONSTRUCTOR_F_VAL_WIDTH_HPP
-
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -41,5 +38,3 @@ namespace bsl
         bsl::print() << bsl::fmt{".<", '.', width2} << bsl::endl;
     }
 }
-
-#endif

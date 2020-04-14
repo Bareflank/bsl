@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_DESTROY_AT_OVERVIEW_HPP
-#define EXAMPLE_DESTROY_AT_OVERVIEW_HPP
-
 #include <bsl/destroy_at.hpp>
 #include <bsl/debug.hpp>
 
@@ -49,5 +46,3 @@ namespace bsl
         }
     }
 }
-
-#endif

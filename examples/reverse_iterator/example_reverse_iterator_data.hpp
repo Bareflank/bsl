@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_REVERSE_ITERATOR_DATA_HPP
-#define EXAMPLE_REVERSE_ITERATOR_DATA_HPP
-
 #include <bsl/string_view.hpp>
 #include <bsl/debug.hpp>
 
@@ -44,5 +41,3 @@ namespace bsl
         }
     }
 }
-
-#endif

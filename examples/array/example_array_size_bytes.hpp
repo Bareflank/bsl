@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_ARRAY_SIZE_BYTES_HPP
-#define EXAMPLE_ARRAY_SIZE_BYTES_HPP
-
 #include <bsl/array.hpp>
 #include <bsl/debug.hpp>
 
@@ -48,5 +45,3 @@ namespace bsl
         bsl::print() << "size in bytes: " << arr.size_bytes() << bsl::endl;
     }
 }
-
-#endif

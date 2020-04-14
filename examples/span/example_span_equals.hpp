@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_SPAN_EQUALS_HPP
-#define EXAMPLE_SPAN_EQUALS_HPP
-
 #include <bsl/array.hpp>
 #include <bsl/debug.hpp>
 
@@ -61,5 +58,3 @@ namespace bsl
         }
     }
 }
-
-#endif

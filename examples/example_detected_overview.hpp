@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_DETECTED_OVERVIEW_HPP
-#define EXAMPLE_DETECTED_OVERVIEW_HPP
-
 #include <bsl/detected.hpp>
 #include <bsl/is_same.hpp>
 #include <bsl/debug.hpp>
@@ -49,5 +46,3 @@ namespace bsl
         }
     }
 }
-
-#endif

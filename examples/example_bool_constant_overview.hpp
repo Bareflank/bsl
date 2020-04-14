@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_BOOL_CONSTANT_OVERVIEW_HPP
-#define EXAMPLE_BOOL_CONSTANT_OVERVIEW_HPP
-
 #include <bsl/bool_constant.hpp>
 #include <bsl/debug.hpp>
 
@@ -41,5 +38,3 @@ namespace bsl
         }
     }
 }
-
-#endif

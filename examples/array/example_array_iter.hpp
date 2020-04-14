@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_ARRAY_ITER_HPP
-#define EXAMPLE_ARRAY_ITER_HPP
-
 #include <bsl/array.hpp>
 #include <bsl/for_each.hpp>
 #include <bsl/debug.hpp>
@@ -55,5 +52,3 @@ namespace bsl
         });
     }
 }
-
-#endif

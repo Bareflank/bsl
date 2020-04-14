@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_DISJUNCTION_OVERVIEW_HPP
-#define EXAMPLE_DISJUNCTION_OVERVIEW_HPP
-
 #include <bsl/disjunction.hpp>
 #include <bsl/is_bool.hpp>
 #include <bsl/is_void.hpp>
@@ -43,5 +40,3 @@ namespace bsl
         }
     }
 }
-
-#endif

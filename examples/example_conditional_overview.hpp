@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_CONDITIONAL_OVERVIEW_HPP
-#define EXAMPLE_CONDITIONAL_OVERVIEW_HPP
-
 #include <bsl/conditional.hpp>
 #include <bsl/is_same.hpp>
 #include <bsl/debug.hpp>
@@ -46,5 +43,3 @@ namespace bsl
         }
     }
 }
-
-#endif

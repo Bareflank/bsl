@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_RESULT_ERRC_MOVE_CONSTRUCTOR_HPP
-#define EXAMPLE_RESULT_ERRC_MOVE_CONSTRUCTOR_HPP
-
 #include <bsl/result.hpp>
 #include <bsl/debug.hpp>
 
@@ -48,5 +45,3 @@ namespace bsl
         }
     }
 }
-
-#endif

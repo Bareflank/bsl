@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_MOVE_OVERVIEW_HPP
-#define EXAMPLE_MOVE_OVERVIEW_HPP
-
 #include <bsl/move.hpp>
 #include <bsl/debug.hpp>
 
@@ -44,5 +41,3 @@ namespace bsl
         }
     }
 }
-
-#endif

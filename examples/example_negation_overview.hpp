@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_NEGATION_OVERVIEW_HPP
-#define EXAMPLE_NEGATION_OVERVIEW_HPP
-
 #include <bsl/negation.hpp>
 #include <bsl/is_bool.hpp>
 #include <bsl/debug.hpp>
@@ -42,5 +39,3 @@ namespace bsl
         }
     }
 }
-
-#endif

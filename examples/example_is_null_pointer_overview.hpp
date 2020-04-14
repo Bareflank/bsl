@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_IS_NULL_POINTER_OVERVIEW_HPP
-#define EXAMPLE_IS_NULL_POINTER_OVERVIEW_HPP
-
 #include <bsl/is_null_pointer.hpp>
 #include <bsl/debug.hpp>
 
@@ -41,5 +38,3 @@ namespace bsl
         }
     }
 }
-
-#endif

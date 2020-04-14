@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_INTEGER_SEQUENCE_OVERVIEW_HPP
-#define EXAMPLE_INTEGER_SEQUENCE_OVERVIEW_HPP
-
 #include <bsl/integer_sequence.hpp>
 #include <bsl/debug.hpp>
 
@@ -53,5 +50,3 @@ namespace bsl
         }
     }
 }
-
-#endif

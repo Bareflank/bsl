@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_BASIC_ERRC_TYPE_CONSTRUCTOR_T_HPP
-#define EXAMPLE_BASIC_ERRC_TYPE_CONSTRUCTOR_T_HPP
-
 #include <bsl/errc_type.hpp>
 #include <bsl/debug.hpp>
 
@@ -44,5 +41,3 @@ namespace bsl
         }
     }
 }
-
-#endif

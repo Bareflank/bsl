@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_HAS_VIRTUAL_DESTRUCTOR_OVERVIEW_HPP
-#define EXAMPLE_HAS_VIRTUAL_DESTRUCTOR_OVERVIEW_HPP
-
 #include <bsl/has_virtual_destructor.hpp>
 #include <bsl/debug.hpp>
 
@@ -43,5 +40,3 @@ namespace bsl
         }
     }
 }
-
-#endif

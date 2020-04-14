@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_ALIGNED_UNION_OVERVIEW_HPP
-#define EXAMPLE_ALIGNED_UNION_OVERVIEW_HPP
-
 #include <bsl/aligned_union.hpp>
 #include <bsl/debug.hpp>
 
@@ -43,5 +40,3 @@ namespace bsl
         }
     }
 }
-
-#endif

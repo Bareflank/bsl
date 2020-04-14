@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_CONTIGUOUS_ITERATOR_NOT_EQUALS_HPP
-#define EXAMPLE_CONTIGUOUS_ITERATOR_NOT_EQUALS_HPP
-
 #include <bsl/string_view.hpp>
 #include <bsl/debug.hpp>
 
@@ -66,5 +63,3 @@ namespace bsl
         }
     }
 }
-
-#endif

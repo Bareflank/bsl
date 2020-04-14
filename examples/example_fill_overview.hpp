@@ -22,9 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef EXAMPLE_FILL_OVERVIEW_HPP
-#define EXAMPLE_FILL_OVERVIEW_HPP
-
 #include <bsl/fill.hpp>
 #include <bsl/array.hpp>
 #include <bsl/for_each.hpp>
@@ -54,5 +51,3 @@ namespace bsl
         }
     }
 }
-
-#endif

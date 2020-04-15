@@ -47,7 +47,7 @@ main() noexcept
 ```
 
 ## **Build Requirements**
-Currently, the BSL only supports the Clang/LLVM 10+ compiler. This, however, ensures the BSL can be natively compiled on Windows including support for cross-compiling. Also note that at the moment, we require Ninja.
+Currently, the BSL only supports the Clang/LLVM 10+ compiler. This, however, ensures the BSL can be natively compiled on Windows including support for cross-compiling. Support for other compilers that support C++20 can be added if needed, just let us know if that is something you need. 
 
 ### **Windows**
 To compile the BSL on Windows, you must first install the following:

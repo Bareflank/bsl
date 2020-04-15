@@ -155,6 +155,11 @@ tests() noexcept
         };
     };
 
+    bsl::ut_scenario{"output doesn't crash"} = []() {
+        bsl::debug() << bsl::errc_success << '\n';
+        bsl::debug() << bsl::errc_failure << '\n';
+    };
+
     return bsl::ut_success();
 }
 

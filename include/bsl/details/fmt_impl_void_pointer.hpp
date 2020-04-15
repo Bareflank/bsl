@@ -57,7 +57,7 @@ namespace bsl
             return o;
         }
 
-        bsl::uintptr val{reinterpret_cast<bsl::uintptr>(ptr)};    // NOLINT
+        bsl::uintptr const val{reinterpret_cast<bsl::uintptr>(ptr)};    // NOLINT // PRQA S 1-10000
 
         if (nullptr == ptr) {
             o.write("nullptr");

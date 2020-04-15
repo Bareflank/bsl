@@ -30,8 +30,8 @@
 
 #include "construct_at.hpp"
 #include "cstdint.hpp"
-#include "debug.hpp"
 #include "destroy_at.hpp"
+#include "debug.hpp"
 #include "errc_type.hpp"
 #include "in_place.hpp"
 #include "is_nothrow_constructible.hpp"
@@ -43,7 +43,6 @@
 #include "is_nothrow_swappable.hpp"
 #include "is_same.hpp"
 #include "move.hpp"
-#include "source_location.hpp"
 #include "swap.hpp"
 
 namespace bsl
@@ -208,16 +207,11 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @param e the error code being copied
-        ///   @param sloc the source location of the error
         ///
         constexpr result(    // PRQA S 2180 // NOLINT
-            E const &e,
-            sloc_type const &sloc = here()) noexcept
+            E const &e) noexcept
             : m_which{details::result_type::contains_e}, m_e{e}
-        {
-            bsl::error() << e.message() << bsl::endl;
-            bsl::error() << sloc;
-        }
+        {}
 
         /// <!-- description -->
         ///   @brief Constructs a bsl::result that contains E,
@@ -232,16 +226,11 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @param e the error code being moved
-        ///   @param sloc the source location of the error
         ///
         constexpr result(    // PRQA S 2180 // NOLINT
-            E &&e,
-            sloc_type const &sloc = here()) noexcept
+            E &&e) noexcept
             : m_which{details::result_type::contains_e}, m_e{bsl::move(e)}
-        {
-            bsl::error() << e.message() << bsl::endl;
-            bsl::error() << sloc;
-        }
+        {}
 
         /// <!-- description -->
         ///   @brief Destroyes a previously created bsl::result. Since
@@ -585,6 +574,29 @@ namespace bsl
     operator!=(result<T, E> const &lhs, result<T, E> const &rhs) noexcept
     {
         return !(lhs == rhs);
+    }
+
+    /// <!-- description -->
+    ///   @brief Outputs the provided bsl::array to the provided
+    ///     output type.
+    ///   @related bsl::array
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T1 the type of outputter provided
+    ///   @tparam T2 the type of element being encapsulated.
+    ///   @param o the instance of the outputter used to output the value.
+    ///   @param val the array to output
+    ///   @return return o
+    ///
+    template<typename T1, typename T2, typename E>
+    [[maybe_unused]] constexpr out<T1>
+    operator<<(out<T1> const o, bsl::result<T2, E> const &val) noexcept
+    {
+        if (auto const *const ptr = val.get_if()) {
+            return o << *ptr;
+        }
+
+        return o << val.errc();
     }
 }
 

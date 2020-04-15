@@ -337,6 +337,15 @@ tests() noexcept
         };
     };
 
+    bsl::ut_scenario{"output doesn't crash"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::byte b{byte42};
+            bsl::ut_then{} = [&b]() {
+                bsl::debug() << b << '\n';
+            };
+        };
+    };
+
     return bsl::ut_success();
 }
 

@@ -647,8 +647,7 @@ namespace bsl
     /// @brief defines no formatting.
     constexpr fmt_options nullops{""};
     /// @brief defines how to format a ptr like type.
-    constexpr fmt_options ptrops{
-        (sizeof(bsl::uintptr) == sizeof(bsl::uint32)) ? "#010x" : "#018x"};    // NOLINT
+    constexpr fmt_options ptrops{(sizeof(bsl::uintptr) == 4) ? "#010x" : "#018x"};    // NOLINT
 }
 
 #endif

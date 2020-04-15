@@ -166,6 +166,7 @@ namespace bsl
         at_if(size_type const index) noexcept
         {
             if ((nullptr == m_ptr) || (index >= m_count)) {
+                bsl::error() << "basic_string_view: index out of range: " << index << '\n';
                 return nullptr;
             }
 
@@ -188,6 +189,7 @@ namespace bsl
         at_if(size_type const index) const noexcept
         {
             if ((nullptr == m_ptr) || (index >= m_count)) {
+                bsl::error() << "basic_string_view: index out of range: " << index << '\n';
                 return nullptr;
             }
 
@@ -500,10 +502,13 @@ namespace bsl
         ///     view.
         ///
         [[nodiscard]] constexpr reverse_iterator_type
-        riter(size_type const i) noexcept
+        riter(size_type i) noexcept
         {
-            size_type const ai{(i >= m_count) ? m_count : (i + 1U)};
-            return reverse_iterator_type{this->iter(ai)};
+            if (i < bsl::npos) {
+                ++i;
+            }
+
+            return reverse_iterator_type{this->iter(i)};
         }
 
         /// <!-- description -->
@@ -521,10 +526,13 @@ namespace bsl
         ///     view.
         ///
         [[nodiscard]] constexpr const_reverse_iterator_type
-        riter(size_type const i) const noexcept
+        riter(size_type i) const noexcept
         {
-            size_type const ai{(i >= m_count) ? m_count : (i + 1U)};
-            return const_reverse_iterator_type{this->iter(ai)};
+            if (i < bsl::npos) {
+                ++i;
+            }
+
+            return const_reverse_iterator_type{this->iter(i)};
         }
 
         /// <!-- description -->
@@ -542,10 +550,13 @@ namespace bsl
         ///     view.
         ///
         [[nodiscard]] constexpr const_reverse_iterator_type
-        criter(size_type const i) const noexcept
+        criter(size_type i) const noexcept
         {
-            size_type const ai{(i >= m_count) ? m_count : (i + 1U)};
-            return const_reverse_iterator_type{this->citer(ai)};
+            if (i < bsl::npos) {
+                ++i;
+            }
+
+            return const_reverse_iterator_type{this->citer(i)};
         }
 
         /// <!-- description -->
@@ -1176,14 +1187,14 @@ namespace bsl
     }
 
     /// <!-- description -->
-    ///   @brief Outputs the provided string_view to the provided
+    ///   @brief Outputs the provided bsl::basic_string_view to the provided
     ///     output type.
     ///   @related bsl::basic_string_view
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type of outputter provided
     ///   @param o the instance of the outputter used to output the value.
-    ///   @param str the string_view to output
+    ///   @param str the basic_string_view to output
     ///   @return return o
     ///
     template<typename T, typename CharT>

@@ -59,6 +59,22 @@ tests() noexcept
         };
     };
 
+    bsl::ut_scenario{"output doesn't crash"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::source_location sloc{};
+            bsl::ut_then{} = [&sloc]() {
+                bsl::debug() << sloc;
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::source_location sloc = bsl::here();
+            bsl::ut_then{} = [&sloc]() {
+                bsl::debug() << sloc;
+            };
+        };
+    };
+
     return bsl::ut_success();
 }
 

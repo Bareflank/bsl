@@ -29,6 +29,7 @@
 #define BSL_CONTIGUOUS_ITERATOR_HPP
 
 #include "cstdint.hpp"
+#include "debug.hpp"
 
 // TODO
 // - We need to implement the remianing functions that are part of the
@@ -117,10 +118,20 @@ namespace bsl
             : m_ptr{ptr}, m_count{count}, m_i{i}
         {
             if ((nullptr == m_ptr) || (0U == m_count)) {
+                bsl::alert() << "contiguous_iterator: invalid constructor args\n";
+                bsl::alert() << "  - ptr: " << ptr << bsl::endl;
+                bsl::alert() << "  - count: " << count << bsl::endl;
+                bsl::alert() << "  - i: " << i << bsl::endl;
+
                 *this = contiguous_iterator{};
             }
 
             if (m_i > count) {
+                bsl::alert() << "contiguous_iterator: invalid constructor args\n";
+                bsl::alert() << "  - ptr: " << ptr << bsl::endl;
+                bsl::alert() << "  - count: " << count << bsl::endl;
+                bsl::alert() << "  - i: " << i << bsl::endl;
+
                 m_i = count;
             }
         }
@@ -225,10 +236,45 @@ namespace bsl
         get_if() noexcept
         {
             if (nullptr == m_ptr) {
+                bsl::error() << "contiguous_iterator: null iterator\n";
                 return nullptr;
             }
 
             if (m_i == m_count) {
+                bsl::error() << "contiguous_iterator: attempt to get value from end() iterator\n";
+                return nullptr;
+            }
+
+            return &m_ptr[m_i];    // PRQA S 4024 // NOLINT
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns a pointer to the instance of T stored at the
+        ///     iterator's current index. If the index is out of bounds,
+        ///     or the iterator is invalid, this function returns a nullptr.
+        ///   @include contiguous_iterator/example_contiguous_iterator_get_if.hpp
+        ///
+        ///   SUPPRESSION: PRQA 4024 - false positive
+        ///   - We suppress this because A9-3-1 states that pointer we should
+        ///     not provide a non-const reference or pointer to private
+        ///     member function, unless the class mimics a smart pointer or
+        ///     a containter. This class mimics a container.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns a pointer to the instance of T stored at the
+        ///     iterator's current index. If the index is out of bounds,
+        ///     or the iterator is invalid, this function returns a nullptr.
+        ///
+        [[nodiscard]] constexpr const_pointer_type
+        get_if() const noexcept
+        {
+            if (nullptr == m_ptr) {
+                bsl::error() << "contiguous_iterator: null iterator\n";
+                return nullptr;
+            }
+
+            if (m_i == m_count) {
+                bsl::error() << "contiguous_iterator: attempt to get value from end() iterator\n";
                 return nullptr;
             }
 
@@ -246,10 +292,12 @@ namespace bsl
         operator++() noexcept
         {
             if (nullptr == m_ptr) {
+                bsl::error() << "contiguous_iterator: attempt to inc null iterator\n";
                 return *this;
             }
 
             if (m_count == m_i) {
+                bsl::error() << "contiguous_iterator: attempt to inc end() iterator\n";
                 return *this;
             }
 
@@ -268,10 +316,12 @@ namespace bsl
         operator--() noexcept
         {
             if (nullptr == m_ptr) {
+                bsl::error() << "contiguous_iterator: attempt to dec null iterator\n";
                 return *this;
             }
 
             if (0U == m_i) {
+                bsl::error() << "contiguous_iterator: attempt to inc begin() iterator\n";
                 return *this;
             }
 
@@ -398,6 +448,29 @@ namespace bsl
     operator>=(contiguous_iterator<T> const &lhs, contiguous_iterator<T> const &rhs) noexcept
     {
         return lhs.index() >= rhs.index();
+    }
+
+    /// <!-- description -->
+    ///   @brief Outputs the provided bsl::contiguous_iterator to the provided
+    ///     output type.
+    ///   @related bsl::contiguous_iterator
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T1 the type of outputter provided
+    ///   @tparam T2 the type of element being encapsulated.
+    ///   @param o the instance of the outputter used to output the value.
+    ///   @param val the contiguous_iterator to output
+    ///   @return return o
+    ///
+    template<typename T1, typename T2>
+    [[maybe_unused]] constexpr out<T1>
+    operator<<(out<T1> const o, contiguous_iterator<T2> const &val) noexcept
+    {
+        if (val.is_end()) {
+            return o << "[null]";
+        }
+
+        return o << *val.get_if();
     }
 }
 

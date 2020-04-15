@@ -30,7 +30,7 @@
 
 namespace
 {
-    bsl::array<bsl::uintmax, 6> arr{4, 8, 15, 16, 23, 42};
+    constexpr bsl::array<bsl::uintmax, 6> arr{4, 8, 15, 16, 23, 42};
 }
 
 /// <!-- description -->
@@ -73,6 +73,13 @@ tests() noexcept
     bsl::ut_scenario{"data"} = []() {
         bsl::ut_given{} = []() {
             bsl::reverse_iterator ri{arr.begin()};
+            bsl::ut_then{} = [&ri]() {
+                bsl::ut_check(ri.data() == arr.data());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::reverse_iterator const ri{arr.begin()};
             bsl::ut_then{} = [&ri]() {
                 bsl::ut_check(ri.data() == arr.data());
             };
@@ -131,16 +138,44 @@ tests() noexcept
 
     bsl::ut_scenario{"get_if"} = []() {
         bsl::ut_given{} = []() {
+            bsl::contiguous_iterator<bool> const ci{nullptr, 0, 0};
+            bsl::reverse_iterator ri{ci};
+            bsl::ut_then{} = [&ri]() {
+                bsl::ut_check(ri.get_if() == nullptr);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::contiguous_iterator<bool> const ci{nullptr, 0, 0};
+            bsl::reverse_iterator const ri{ci};
+            bsl::ut_then{} = [&ri]() {
+                bsl::ut_check(ri.get_if() == nullptr);
+            };
+        };
+
+        bsl::ut_given{} = []() {
             bsl::reverse_iterator ri{arr.begin()};
             bsl::ut_then{} = [&ri]() {
                 bsl::ut_check(ri.get_if() == nullptr);
             };
         };
-    };
 
-    bsl::ut_scenario{"get_if"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::reverse_iterator const ri{arr.begin()};
+            bsl::ut_then{} = [&ri]() {
+                bsl::ut_check(ri.get_if() == nullptr);
+            };
+        };
+
         bsl::ut_given{} = []() {
             bsl::reverse_iterator ri{arr.end()};
+            bsl::ut_then{} = [&ri]() {
+                bsl::ut_check(ri.get_if() == arr.back_if());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::reverse_iterator const ri{arr.end()};
             bsl::ut_then{} = [&ri]() {
                 bsl::ut_check(ri.get_if() == arr.back_if());
             };
@@ -287,6 +322,22 @@ tests() noexcept
             bsl::reverse_iterator ri2{arr.begin()};
             bsl::ut_then{} = [&ri1, &ri2]() {
                 bsl::ut_check(ri1 <= ri2);
+            };
+        };
+    };
+
+    bsl::ut_scenario{"output doesn't crash"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::reverse_iterator ri{arr.begin()};
+            bsl::ut_then{} = [&ri]() {
+                bsl::debug() << ri << '\n';
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::reverse_iterator ri{arr.end()};
+            bsl::ut_then{} = [&ri]() {
+                bsl::debug() << ri << '\n';
             };
         };
     };

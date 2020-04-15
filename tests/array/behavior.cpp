@@ -240,6 +240,30 @@ tests() noexcept
                 bsl::ut_check(arr.citer(1).index() == 1);
             };
         };
+
+        bsl::ut_given{} = []() {
+            bsl::array<bsl::uintmax, 6> arr = {4, 8, 15, 16, 23, 42};
+            bsl::ut_then{} = [&arr]() {
+                bsl::ut_check(arr.iter(bsl::npos).get_if() == nullptr);
+                bsl::ut_check(arr.iter(bsl::npos).index() == arr.size());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::array<bsl::uintmax, 6> const arr = {4, 8, 15, 16, 23, 42};
+            bsl::ut_then{} = [&arr]() {
+                bsl::ut_check(arr.iter(bsl::npos).get_if() == nullptr);
+                bsl::ut_check(arr.iter(bsl::npos).index() == arr.size());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::array<bsl::uintmax, 6> const arr = {4, 8, 15, 16, 23, 42};
+            bsl::ut_then{} = [&arr]() {
+                bsl::ut_check(arr.citer(bsl::npos).get_if() == nullptr);
+                bsl::ut_check(arr.citer(bsl::npos).index() == arr.size());
+            };
+        };
     };
 
     bsl::ut_scenario{"rbegin"} = []() {
@@ -316,6 +340,30 @@ tests() noexcept
             bsl::ut_then{} = [&arr]() {
                 bsl::ut_check(*(arr.criter(1).get_if()) == 8);
                 bsl::ut_check(arr.criter(1).index() == 1);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::array<bsl::uintmax, 6> arr = {4, 8, 15, 16, 23, 42};
+            bsl::ut_then{} = [&arr]() {
+                bsl::ut_check(*(arr.riter(bsl::npos).get_if()) == 42);
+                bsl::ut_check(arr.riter(bsl::npos).index() == 5);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::array<bsl::uintmax, 6> const arr = {4, 8, 15, 16, 23, 42};
+            bsl::ut_then{} = [&arr]() {
+                bsl::ut_check(*(arr.riter(bsl::npos).get_if()) == 42);
+                bsl::ut_check(arr.riter(bsl::npos).index() == 5);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::array<bsl::uintmax, 6> const arr = {4, 8, 15, 16, 23, 42};
+            bsl::ut_then{} = [&arr]() {
+                bsl::ut_check(*(arr.criter(bsl::npos).get_if()) == 42);
+                bsl::ut_check(arr.criter(bsl::npos).index() == 5);
             };
         };
     };
@@ -420,6 +468,22 @@ tests() noexcept
             bsl::array<aggregate, 6> const arr2 = {};
             bsl::ut_then{} = [&arr1, &arr2]() {
                 bsl::ut_check(arr1 != arr2);
+            };
+        };
+    };
+
+    bsl::ut_scenario{"output doesn't crash"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::array<bsl::uintmax, 1> const arr = {42};
+            bsl::ut_then{} = [&arr]() {
+                bsl::debug() << arr << '\n';
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::array<bsl::uintmax, 6> const arr = {4, 8, 15, 16, 23, 42};
+            bsl::ut_then{} = [&arr]() {
+                bsl::debug() << arr << '\n';
             };
         };
     };

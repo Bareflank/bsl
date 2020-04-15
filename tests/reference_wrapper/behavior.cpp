@@ -78,6 +78,16 @@ tests() noexcept
         };
     };
 
+    bsl::ut_scenario{"output doesn't crash"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::int32 const data{42};
+            bsl::reference_wrapper rw{data};
+            bsl::ut_then{} = [&rw]() {
+                bsl::debug() << rw << '\n';
+            };
+        };
+    };
+
     return bsl::ut_success();
 }
 

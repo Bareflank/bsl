@@ -579,6 +579,22 @@ tests() noexcept
         };
     };
 
+    bsl::ut_scenario{"output doesn't crash"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::result<bool> const test{bsl::in_place, true};
+            bsl::ut_then{} = [&test]() {
+                bsl::debug() << test << '\n';
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::result<bool> const test{bsl::errc_failure};
+            bsl::ut_then{} = [&test]() {
+                bsl::debug() << test << '\n';
+            };
+        };
+    };
+
     return bsl::ut_success();
 }
 

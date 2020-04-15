@@ -29,9 +29,10 @@
 #define BSL_BASIC_ERRC_TYPE_HPP
 
 #include "cstdint.hpp"
-#include "string_view.hpp"
+#include "debug.hpp"
 #include "discard.hpp"
 #include "move.hpp"
+#include "string_view.hpp"
 
 namespace bsl
 {
@@ -251,10 +252,10 @@ namespace bsl
     ///   @param rhs the right hand side of the operator
     ///   @return Returns true if the lhs is equal to the rhs, false otherwise
     ///
-    template<typename T1, T1 SUCCESS1, typename T2, T2 SUCCESS2>
+    template<typename T, T SUCCESS>
     constexpr bool
     operator==(
-        basic_errc_type<T1, SUCCESS1> const &lhs, basic_errc_type<T2, SUCCESS2> const &rhs) noexcept
+        basic_errc_type<T, SUCCESS> const &lhs, basic_errc_type<T, SUCCESS> const &rhs) noexcept
     {
         return lhs.get() == rhs.get();
     }
@@ -269,10 +270,10 @@ namespace bsl
     ///   @param rhs the right hand side of the operator
     ///   @return Returns false if the lhs is equal to the rhs, true otherwise
     ///
-    template<typename T1, T1 SUCCESS1, typename T2, T2 SUCCESS2>
+    template<typename T, T SUCCESS>
     constexpr bool
     operator!=(
-        basic_errc_type<T1, SUCCESS1> const &lhs, basic_errc_type<T2, SUCCESS2> const &rhs) noexcept
+        basic_errc_type<T, SUCCESS> const &lhs, basic_errc_type<T, SUCCESS> const &rhs) noexcept
     {
         return !(lhs == rhs);
     }
@@ -409,6 +410,25 @@ namespace bsl
         }
 
         return msg;
+    }
+
+    /// <!-- description -->
+    ///   @brief Outputs the provided bsl::basic_errc_type to the provided
+    ///     output type.
+    ///   @related bsl::basic_errc_type
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T1 the type of outputter provided
+    ///   @tparam T2 the type of element being encapsulated.
+    ///   @param o the instance of the outputter used to output the value.
+    ///   @param val the basic_errc_type to output
+    ///   @return return o
+    ///
+    template<typename T1, typename T2, T2 SUCCESS>
+    [[maybe_unused]] constexpr out<T1>
+    operator<<(out<T1> const o, basic_errc_type<T2, SUCCESS> const &val) noexcept
+    {
+        return o << val.message();
     }
 }
 

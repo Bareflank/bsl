@@ -29,6 +29,7 @@
 #define BSL_REFERENCE_WRAPPER_HPP
 
 #include "addressof.hpp"
+#include "debug.hpp"
 #include "forward.hpp"
 #include "invoke_result.hpp"
 
@@ -107,6 +108,25 @@ namespace bsl
             return invoke(this->get(), bsl::forward<ARGS>(a)...);
         }
     };
+
+    /// <!-- description -->
+    ///   @brief Outputs the provided bsl::reference_wrapper to the provided
+    ///     output type.
+    ///   @related bsl::reference_wrapper
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T1 the type of outputter provided
+    ///   @tparam T2 the type of element being encapsulated.
+    ///   @param o the instance of the outputter used to output the value.
+    ///   @param val the reference_wrapper to output
+    ///   @return return o
+    ///
+    template<typename T1, typename T2>
+    [[maybe_unused]] constexpr out<T1>
+    operator<<(out<T1> const o, bsl::reference_wrapper<T2> const &val) noexcept
+    {
+        return o << val.get();
+    }
 }
 
 #endif

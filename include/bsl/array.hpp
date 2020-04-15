@@ -31,6 +31,7 @@
 #include "contiguous_iterator.hpp"
 #include "cstdint.hpp"
 #include "cstring.hpp"
+#include "debug.hpp"
 #include "is_constant_evaluated.hpp"
 #include "is_fundamental.hpp"
 #include "numeric_limits.hpp"
@@ -113,6 +114,7 @@ namespace bsl
         at_if(size_type const index) noexcept
         {
             if (index >= N) {
+                bsl::error() << "array: index out of range: " << index << '\n';
                 return nullptr;
             }
 
@@ -135,6 +137,7 @@ namespace bsl
         at_if(size_type const index) const noexcept
         {
             if (index >= N) {
+                bsl::error() << "array: index out of range: " << index << '\n';
                 return nullptr;
             }
 
@@ -475,10 +478,13 @@ namespace bsl
         ///     array.
         ///
         [[nodiscard]] constexpr reverse_iterator_type
-        riter(size_type const i) noexcept
+        riter(size_type i) noexcept
         {
-            size_type const ai{(i >= N) ? N : (i + 1U)};
-            return reverse_iterator_type{this->iter(ai)};
+            if (i < bsl::npos) {
+                ++i;
+            }
+
+            return reverse_iterator_type{this->iter(i)};
         }
 
         /// <!-- description -->
@@ -496,10 +502,13 @@ namespace bsl
         ///     array.
         ///
         [[nodiscard]] constexpr const_reverse_iterator_type
-        riter(size_type const i) const noexcept
+        riter(size_type i) const noexcept
         {
-            size_type const ai{(i >= N) ? N : (i + 1U)};
-            return const_reverse_iterator_type{this->iter(ai)};
+            if (i < bsl::npos) {
+                ++i;
+            }
+
+            return const_reverse_iterator_type{this->iter(i)};
         }
 
         /// <!-- description -->
@@ -517,10 +526,13 @@ namespace bsl
         ///     array.
         ///
         [[nodiscard]] constexpr const_reverse_iterator_type
-        criter(size_type const i) const noexcept
+        criter(size_type i) const noexcept
         {
-            size_type const ai{(i >= N) ? N : (i + 1U)};
-            return const_reverse_iterator_type{this->citer(ai)};
+            if (i < bsl::npos) {
+                ++i;
+            }
+
+            return const_reverse_iterator_type{this->citer(i)};
         }
 
         /// <!-- description -->
@@ -692,6 +704,29 @@ namespace bsl
     /// @brief deduction guideline for bsl::array
     template<typename T, typename... U>
     array(T, U...) -> array<T, 1 + sizeof...(U)>;
+
+    /// <!-- description -->
+    ///   @brief Outputs the provided bsl::array to the provided
+    ///     output type.
+    ///   @related bsl::array
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T1 the type of outputter provided
+    ///   @tparam T2 the type of element being encapsulated.
+    ///   @param o the instance of the outputter used to output the value.
+    ///   @param val the array to output
+    ///   @return return o
+    ///
+    template<typename T1, typename T2, bsl::uintmax N>
+    [[maybe_unused]] constexpr out<T1>
+    operator<<(out<T1> const o, bsl::array<T2, N> const &val) noexcept
+    {
+        for (bsl::uintmax i{}; i < val.size(); ++i) {
+            o << ((0U == i) ? "[" : ", ") << *val.at_if(i);
+        }
+
+        return o << ']';
+    }
 }
 
 #endif

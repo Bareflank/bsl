@@ -29,6 +29,7 @@
 #define BSL_BYTE_HPP
 
 #include "cstdint.hpp"
+#include "debug.hpp"
 #include "move.hpp"
 
 #include "enable_if.hpp"
@@ -389,6 +390,24 @@ namespace bsl
     operator~(byte const &b) noexcept
     {
         return byte{static_cast<bsl::uint8>(~b.to_integer<bsl::uint32>())};
+    }
+
+    /// <!-- description -->
+    ///   @brief Outputs the provided bsl::byte to the provided
+    ///     output type.
+    ///   @related bsl::byte
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of outputter provided
+    ///   @param o the instance of the outputter used to output the value.
+    ///   @param val the bsl::byte to output
+    ///   @return return o
+    ///
+    template<typename T>
+    [[maybe_unused]] constexpr out<T>
+    operator<<(out<T> const o, bsl::byte const &val) noexcept
+    {
+        return o << val.to_integer();
     }
 }
 

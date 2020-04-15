@@ -388,6 +388,30 @@ tests() noexcept
                 bsl::ut_check(msg.citer(1).index() == 1);
             };
         };
+
+        bsl::ut_given{} = []() {
+            bsl::basic_string_view<bsl::char_type> msg{"Hello"};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(msg.iter(bsl::npos).get_if() == nullptr);
+                bsl::ut_check(msg.iter(bsl::npos).index() == msg.size());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(msg.iter(bsl::npos).get_if() == nullptr);
+                bsl::ut_check(msg.iter(bsl::npos).index() == msg.size());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(msg.citer(bsl::npos).get_if() == nullptr);
+                bsl::ut_check(msg.citer(bsl::npos).index() == msg.size());
+            };
+        };
     };
 
     bsl::ut_scenario{"rbegin"} = []() {
@@ -536,6 +560,30 @@ tests() noexcept
             bsl::ut_then{} = [&msg]() {
                 bsl::ut_check(*(msg.criter(1).get_if()) == 'e');
                 bsl::ut_check(msg.criter(1).index() == 1);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::basic_string_view<bsl::char_type> msg{"Hello"};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(*(msg.riter(bsl::npos).get_if()) == 'o');
+                bsl::ut_check(msg.riter(bsl::npos).index() == 4);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(*(msg.riter(bsl::npos).get_if()) == 'o');
+                bsl::ut_check(msg.riter(bsl::npos).index() == 4);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(*(msg.criter(bsl::npos).get_if()) == 'o');
+                bsl::ut_check(msg.criter(bsl::npos).index() == 4);
             };
         };
     };

@@ -90,12 +90,8 @@ endmacro(bf_configuration_error)
 # supported generator/compiler
 # ------------------------------------------------------------------------------
 
-if(NOT CMAKE_GENERATOR MATCHES "Ninja")
-    bf_configuration_error("ninja is required: cmake -G Ninja -DCMAKE_CXX_COMPILER=\"clang++\"")
-endif()
-
 if(NOT CMAKE_CXX_COMPILER MATCHES "clang")
-    bf_configuration_error("clang is required: cmake -G Ninja -DCMAKE_CXX_COMPILER=\"clang++\"")
+    bf_configuration_error("clang is required: cmake -DCMAKE_CXX_COMPILER=\"clang++\"")
 endif()
 
 # ------------------------------------------------------------------------------
@@ -427,6 +423,7 @@ if(NOT DEFINED BSL_PAGE_SIZE)
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL PERFORCE)
+    set(BSL_PERFORCE "true")
     set(BSL_CONSTEXPR "")
     set(BSL_BUILTIN_FILE "\"file\"")
     set(BSL_BUILTIN_FUNCTION "\"function\"")
@@ -438,6 +435,7 @@ if(CMAKE_BUILD_TYPE STREQUAL PERFORCE)
     set(BSL_BUILTIN_STRLEN "0U")
     set(BSL_BUILTIN_CHAR_MEMCHR "nullptr")
 else()
+    set(BSL_PERFORCE "false")
     set(BSL_CONSTEXPR "constexpr")
     set(BSL_BUILTIN_FILE "__builtin_FILE()")
     set(BSL_BUILTIN_FUNCTION "__builtin_FUNCTION()")
@@ -451,6 +449,7 @@ else()
 endif()
 
 list(APPEND BSL_DEFAULT_DEFINES
+    BSL_PERFORCE=${BSL_PERFORCE}
     BSL_DEBUG_LEVEL=${BSL_DEBUG_LEVEL}
     BSL_PAGE_SIZE=${BSL_PAGE_SIZE}
     BSL_CONSTEXPR=${BSL_CONSTEXPR}

@@ -21,47 +21,34 @@
 /// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
+///
+/// @file is_same_signedness.hpp
+///
 
-#ifndef BSL_DETAILS_PUTC_STDOUT_HPP
-#define BSL_DETAILS_PUTC_STDOUT_HPP
+#ifndef BSL_IS_SAME_SIGNEDNESS_HPP
+#define BSL_IS_SAME_SIGNEDNESS_HPP
 
-#include "../discard.hpp"
-#include "../char_type.hpp"
-#include "../is_constant_evaluated.hpp"
-
-#include <stdio.h>    // PRQA S 1-10000 // NOLINT
+#include "bool_constant.hpp"
+#include "is_signed.hpp"
 
 namespace bsl
 {
-    namespace details
-    {
-        /// <!-- description -->
-        ///   @brief Outputs a character to stdout. If this function is
-        ///     executed from a constexpr this function does nothing. By
-        ///     default this function will call fputc(c, stdout).
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @tparam T defaults to void. Provides the ability to specialize
-        ///     this function to provide your own custom implementation.
-        ///   @param c the character to output to stdout
-        ///
-        template<typename T = void>
-        constexpr void
-        putc_stdout(char_type const c) noexcept
-        {
-            if constexpr (BSL_PERFORCE) {
-                bsl::discard(c);
-            }
-            else {
-                if (!is_constant_evaluated()) {
-                    bsl::discard(fputc(c, stdout));    // PRQA S 1-10000 // NOLINT
-                }
-                else {
-                    bsl::discard(c);
-                }
-            }
-        }
-    }
+    /// @class bsl::is_same_signedness
+    ///
+    /// <!-- description -->
+    ///   @brief If the provided type is marked final, provides the member
+    ///     constant value equal to true. Otherwise the member constant value
+    ///     is false.
+    ///   @include example_is_same_signedness_overview.hpp
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to query
+    ///   @tparam U the type to query
+    ///
+    template<typename T, typename U>
+    class is_same_signedness final :    // --
+        public bool_constant<is_signed<T>::value == is_signed<U>::value>
+    {};
 }
 
 #endif

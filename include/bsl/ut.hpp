@@ -32,6 +32,7 @@
 #include "debug.hpp"
 #include "discard.hpp"
 #include "exit_code.hpp"
+#include "is_constant_evaluated.hpp"
 #include "main.hpp"
 #include "source_location.hpp"
 #include "string_view.hpp"
@@ -126,6 +127,37 @@ namespace bsl
         operator=(FUNC &&func) noexcept
         {
             func();
+            return *this;
+        }
+    };
+
+    /// @class bsl::ut_given_at_runtime
+    ///
+    /// <!-- description -->
+    ///   @brief Defines the initial state of a unit test scenario including
+    ///     the creation of any objects that might participate in the
+    ///     unit test. Note that this version will only execute at run-time.
+    ///
+    class ut_given_at_runtime final
+    {
+    public:
+        /// <!-- description -->
+        ///   @brief Executes a lambda function as the body of the
+        ///     "given" portion of the scenario.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam FUNC the type of lambda being executed
+        ///   @param func the lambda being executed
+        ///   @return Returns a reference to the ut_given_at_runtime.
+        ///
+        template<typename FUNC>
+        [[maybe_unused]] constexpr ut_given_at_runtime &
+        operator=(FUNC &&func) noexcept
+        {
+            if (!is_constant_evaluated()) {
+                func();
+            }
+
             return *this;
         }
     };

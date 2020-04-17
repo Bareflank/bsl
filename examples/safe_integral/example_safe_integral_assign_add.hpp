@@ -22,46 +22,24 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef BSL_DETAILS_PUTC_STDOUT_HPP
-#define BSL_DETAILS_PUTC_STDOUT_HPP
-
-#include "../discard.hpp"
-#include "../char_type.hpp"
-#include "../is_constant_evaluated.hpp"
-
-#include <stdio.h>    // PRQA S 1-10000 // NOLINT
+#include <bsl/safe_integral.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
-    namespace details
+    /// <!-- description -->
+    ///   @brief Provides the example's main function
+    ///
+    inline void
+    example_safe_integral_assign_add() noexcept
     {
-        /// <!-- description -->
-        ///   @brief Outputs a character to stdout. If this function is
-        ///     executed from a constexpr this function does nothing. By
-        ///     default this function will call fputc(c, stdout).
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @tparam T defaults to void. Provides the ability to specialize
-        ///     this function to provide your own custom implementation.
-        ///   @param c the character to output to stdout
-        ///
-        template<typename T = void>
-        constexpr void
-        putc_stdout(char_type const c) noexcept
-        {
-            if constexpr (BSL_PERFORCE) {
-                bsl::discard(c);
-            }
-            else {
-                if (!is_constant_evaluated()) {
-                    bsl::discard(fputc(c, stdout));    // PRQA S 1-10000 // NOLINT
-                }
-                else {
-                    bsl::discard(c);
-                }
-            }
+        bsl::safe_int32 val1{23};
+        constexpr bsl::safe_int32 val2{42};
+        constexpr bsl::safe_int32 expected{23 + 42};
+
+        val1 += val2;
+        if (val1 == expected) {
+            bsl::print() << "success\n";
         }
     }
 }
-
-#endif

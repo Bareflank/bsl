@@ -49,11 +49,16 @@ namespace bsl
         constexpr void
         putc_stderr(char_type const c) noexcept
         {
-            if (!is_constant_evaluated()) {
-                bsl::discard(fputc(c, stderr));    // PRQA S 1-10000 // NOLINT
+            if constexpr (BSL_PERFORCE) {
+                bsl::discard(c);
             }
             else {
-                bsl::discard(c);
+                if (!is_constant_evaluated()) {
+                    bsl::discard(fputc(c, stderr));    // PRQA S 1-10000 // NOLINT
+                }
+                else {
+                    bsl::discard(c);
+                }
             }
         }
     }

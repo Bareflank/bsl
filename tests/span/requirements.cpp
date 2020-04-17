@@ -25,19 +25,22 @@
 #include <bsl/span.hpp>
 #include <bsl/array.hpp>
 #include <bsl/discard.hpp>
+#include <bsl/is_pod.hpp>
 #include <bsl/ut.hpp>
 
 namespace
 {
+    bsl::span<bool> pod;
+
     class fixture_t final
     {
         bsl::array<bool, 5> arr{};
+        bsl::span<bool> spn{arr.data(), arr.size()};
 
     public:
         [[nodiscard]] constexpr bool
         test_member_const() const
         {
-            bsl::span const spn{arr.data(), arr.size()};
             bsl::discard(spn.at_if(0));
             bsl::discard(spn.front_if());
             bsl::discard(spn.back_if());
@@ -68,7 +71,6 @@ namespace
         [[nodiscard]] constexpr bool
         test_member_nonconst()
         {
-            bsl::span spn{arr.data(), arr.size()};
             bsl::discard(spn.at_if(0));
             bsl::discard(spn.front_if());
             bsl::discard(spn.back_if());
@@ -112,6 +114,46 @@ bsl::exit_code
 main() noexcept
 {
     using namespace bsl;
+
+    bsl::ut_scenario{"verify supports global POD"} = []() {
+        bsl::discard(pod);
+        static_assert(is_pod<decltype(pod)>::value);
+    };
+
+    bsl::ut_scenario{"verify noexcept"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::span<bool> spn1{};
+            bsl::span<bool> spn2{};
+            bsl::ut_then{} = []() {
+                static_assert(noexcept(spn1.at_if(0)));
+                static_assert(noexcept(spn1.front_if()));
+                static_assert(noexcept(spn1.back_if()));
+                static_assert(noexcept(spn1.data()));
+                static_assert(noexcept(spn1.begin()));
+                static_assert(noexcept(spn1.cbegin()));
+                static_assert(noexcept(spn1.end()));
+                static_assert(noexcept(spn1.cend()));
+                static_assert(noexcept(spn1.iter(0)));
+                static_assert(noexcept(spn1.citer(0)));
+                static_assert(noexcept(spn1.rbegin()));
+                static_assert(noexcept(spn1.crbegin()));
+                static_assert(noexcept(spn1.rend()));
+                static_assert(noexcept(spn1.crend()));
+                static_assert(noexcept(spn1.riter(0)));
+                static_assert(noexcept(spn1.criter(0)));
+                static_assert(noexcept(spn1.empty()));
+                static_assert(noexcept(spn1.size()));
+                static_assert(noexcept(spn1.max_size()));
+                static_assert(noexcept(spn1.size_bytes()));
+                static_assert(noexcept(spn1.size_bytes()));
+                static_assert(noexcept(spn1 == spn2));
+                static_assert(noexcept(spn1 != spn2));
+                static_assert(noexcept(spn1.first()));
+                static_assert(noexcept(spn1.last()));
+                static_assert(noexcept(spn1.subspan(0)));
+            };
+        };
+    };
 
     bsl::ut_scenario{"verify constness"} = []() {
         bsl::ut_given{} = []() {

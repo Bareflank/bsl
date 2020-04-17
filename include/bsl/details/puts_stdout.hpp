@@ -51,11 +51,16 @@ namespace bsl
         constexpr void
         puts_stdout(cstr_type const str) noexcept
         {
-            if ((!is_constant_evaluated()) && (nullptr != str)) {
-                bsl::discard(fputs(str, stdout));    // PRQA S 1-10000 // NOLINT
+            if constexpr (BSL_PERFORCE) {
+                bsl::discard(str);
             }
             else {
-                bsl::discard(str);
+                if ((!is_constant_evaluated()) && (nullptr != str)) {
+                    bsl::discard(fputs(str, stdout));    // PRQA S 1-10000 // NOLINT
+                }
+                else {
+                    bsl::discard(str);
+                }
             }
         }
     }

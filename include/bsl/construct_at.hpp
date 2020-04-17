@@ -32,8 +32,6 @@
 #include "declval.hpp"
 #include "forward.hpp"
 
-#ifndef PERFORCE
-
 /// <!-- description -->
 ///   @brief This function implements the placement new operator. Note that
 ///     this function is passed a count and pointer, both of which are ignored.
@@ -108,33 +106,14 @@ namespace bsl
     construct_at(void *const ptr, ARGS &&... args)    // --
         noexcept(noexcept(std::construct_at_impl<T, ARGS...>(ptr, bsl::declval<ARGS>()...)))
     {
-        std::construct_at_impl<T, ARGS...>(ptr, bsl::forward<ARGS>(args)...);
+        if constexpr (BSL_PERFORCE) {
+            bsl::discard(ptr);
+            bsl::discard(bsl::forward<ARGS>(args)...);
+        }
+        else {
+            std::construct_at_impl<T, ARGS...>(ptr, bsl::forward<ARGS>(args)...);
+        }
     }
 }
-
-#else
-
-namespace bsl
-{
-    /// <!-- description -->
-    ///   @brief Implements a constexpr version of placement new. that can
-    ///     be used by BSL's APIs to support constexpr based APIs
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the type of object to initialize
-    ///   @tparam ARGS the types of args to initialize T with
-    ///   @param ptr a pointer to the object to initialize
-    ///   @param args the args to initialize T with
-    ///
-    template<typename T, typename... ARGS>
-    constexpr void
-    construct_at(void *ptr, ARGS &&... args) noexcept
-    {
-        bsl::discard(ptr);
-        bsl::discard(bsl::forward<ARGS>(args)...);
-    }
-}
-
-#endif
 
 #endif

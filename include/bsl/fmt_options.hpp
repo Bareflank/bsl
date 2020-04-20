@@ -29,10 +29,12 @@
 #define BSL_FMT_OPTIONS_HPP
 
 #include "char_type.hpp"
+#include "convert.hpp"
 #include "cstr_type.hpp"
 #include "cstdint.hpp"
 #include "cstring.hpp"
 #include "npos.hpp"
+#include "safe_integral.hpp"
 
 // TODO
 // - Once Clang/LLVM supports C++20's consteval, we should determine if
@@ -151,7 +153,7 @@ namespace bsl
         /// @brief store the "sign aware" field in the {fmt} syntax
         bool m_sign_aware{};
         /// @brief store the "width" field in the {fmt} syntax
-        bsl::uintmax m_width{};
+        bsl::safe_uintmax m_width{};
         /// @brief store the "type" field in the {fmt} syntax
         fmt_type m_type{};
 
@@ -171,8 +173,8 @@ namespace bsl
         {
             details::fmt_fsm fsm{};
 
-            bsl::uintmax idx{};
-            bsl::uintmax const len{bsl::builtin_strlen(f)};
+            bsl::safe_uintmax idx{};
+            bsl::safe_uintmax const len{bsl::builtin_strlen(f)};
 
             while (idx < len) {
                 switch (fsm) {
@@ -357,7 +359,7 @@ namespace bsl
         ///   @return Returns the "width" field in the {fmt} syntax based on
         ///     the previously provided format string.
         ///
-        [[nodiscard]] constexpr bsl::uintmax
+        [[nodiscard]] constexpr bsl::safe_uintmax
         width() const noexcept
         {
             return m_width;
@@ -371,7 +373,7 @@ namespace bsl
         ///   @param val the val to set the "width" field to
         ///
         constexpr void
-        set_width(bsl::uintmax const val) noexcept
+        set_width(bsl::safe_uintmax const val) noexcept
         {
             m_width = val;
         }
@@ -423,19 +425,19 @@ namespace bsl
         ///
         constexpr void
         fmt_options_impl_align(
-            cstr_type const f, bsl::uintmax &idx, bsl::uintmax const len) noexcept
+            cstr_type const f, bsl::safe_uintmax &idx, bsl::safe_uintmax const len) noexcept
         {
             char_type f_fill{' '};
             char_type f_align{};
-            bsl::uintmax idx_inc{1U};
+            bsl::safe_uintmax idx_inc{bsl::to_umax(1)};
 
-            if ((idx + 1U) < len) {
-                f_fill = f[idx];
-                f_align = f[idx + 1U];
-                idx_inc = 2U;
+            if ((idx + bsl::to_umax(1)) < len) {
+                f_fill = f[idx.get()];
+                f_align = f[(idx + bsl::to_umax(1)).get()];
+                idx_inc = bsl::to_umax(2);
             }
             else {
-                f_align = f[idx];
+                f_align = f[idx.get()];
             }
 
             switch (f_align) {
@@ -502,9 +504,9 @@ namespace bsl
         ///   @param f the provided format string to parse
         ///
         constexpr void
-        fmt_options_impl_sign(cstr_type const f, bsl::uintmax &idx) noexcept
+        fmt_options_impl_sign(cstr_type const f, bsl::safe_uintmax &idx) noexcept
         {
-            switch (f[idx]) {
+            switch (f[idx.get()]) {
                 case '+': {
                     m_sign = fmt_sign::fmt_sign_pos_neg;
                     ++idx;
@@ -539,9 +541,9 @@ namespace bsl
         ///   @param f the provided format string to parse
         ///
         constexpr void
-        fmt_options_impl_alternate_form(cstr_type const f, bsl::uintmax &idx) noexcept
+        fmt_options_impl_alternate_form(cstr_type const f, bsl::safe_uintmax &idx) noexcept
         {
-            if ('#' == f[idx]) {
+            if ('#' == f[idx.get()]) {
                 m_alternate_form = true;
                 ++idx;
             }
@@ -557,9 +559,9 @@ namespace bsl
         ///   @param f the provided format string to parse
         ///
         constexpr void
-        fmt_options_impl_sign_aware(cstr_type const f, bsl::uintmax &idx) noexcept
+        fmt_options_impl_sign_aware(cstr_type const f, bsl::safe_uintmax &idx) noexcept
         {
-            if ('0' == f[idx]) {
+            if ('0' == f[idx.get()]) {
                 m_sign_aware = true;
                 ++idx;
             }
@@ -576,17 +578,17 @@ namespace bsl
         ///
         constexpr void
         fmt_options_impl_width(
-            cstr_type const f, bsl::uintmax &idx, bsl::uintmax const len) noexcept
+            cstr_type const f, bsl::safe_uintmax &idx, bsl::safe_uintmax const len) noexcept
         {
-            constexpr bsl::uintmax max_num_digits{3U};
+            constexpr bsl::safe_uintmax max_num_digits{bsl::to_umax(3)};
 
-            for (bsl::uintmax i{}; (i < max_num_digits) && (idx < len); ++i) {
-                char_type const digit{f[idx]};
+            for (bsl::safe_uintmax i{}; (i < max_num_digits) && (idx < len); ++i) {
+                char_type const digit{f[idx.get()]};
 
                 if ((digit >= '0') && (digit <= '9')) {
-                    m_width *= 10U;
-                    m_width += static_cast<bsl::uintmax>(digit);
-                    m_width -= static_cast<bsl::uintmax>('0');
+                    m_width *= bsl::to_umax(10);
+                    m_width += bsl::to_umax(digit);
+                    m_width -= bsl::to_umax('0');
                     ++idx;
                 }
             }
@@ -605,9 +607,9 @@ namespace bsl
         ///   @param f the provided format string to parse
         ///
         constexpr void
-        fmt_options_impl_type(cstr_type const f, bsl::uintmax &idx) noexcept
+        fmt_options_impl_type(cstr_type const f, bsl::safe_uintmax &idx) noexcept
         {
-            switch (f[idx]) {
+            switch (f[idx.get()]) {
                 case 'b':
                 case 'B': {
                     m_type = fmt_type::fmt_type_b;

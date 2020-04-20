@@ -33,9 +33,9 @@ namespace bsl
     inline void
     example_reference_wrapper_constructor() noexcept
     {
-        constexpr bsl::int32 expected{42};
+        constexpr bsl::safe_int32 expected{42};
 
-        bsl::int32 data{};
+        bsl::safe_int32 data{};
         bsl::reference_wrapper const rw{data};
 
         rw.get() = expected;

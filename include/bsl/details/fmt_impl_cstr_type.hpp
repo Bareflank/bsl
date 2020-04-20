@@ -29,8 +29,8 @@
 
 #include "../cstr_type.hpp"
 #include "../cstring.hpp"
-#include "../forward.hpp"
 #include "../fmt_options.hpp"
+#include "../safe_integral.hpp"
 
 namespace bsl
 {
@@ -56,7 +56,7 @@ namespace bsl
     constexpr void
     fmt_impl(OUT &&o, fmt_options const &ops, cstr_type const str) noexcept
     {
-        bsl::uintmax const len{bsl::builtin_strlen(str)};
+        safe_uintmax const len{bsl::builtin_strlen(str)};
         details::fmt_impl_align_pre(o, ops, len, true);
         o.write(str);
         details::fmt_impl_align_suf(o, ops, len, true);

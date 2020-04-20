@@ -23,9 +23,9 @@
 /// SOFTWARE.
 
 #include <bsl/char_traits.hpp>
-#include <bsl/string_view.hpp>
+#include <bsl/convert.hpp>
+#include <bsl/cstr_type.hpp>
 #include <bsl/npos.hpp>
-#include <bsl/numeric_limits.hpp>
 #include <bsl/ut.hpp>
 
 /// <!-- description -->
@@ -40,6 +40,7 @@
 constexpr bsl::exit_code
 tests() noexcept
 {
+    using namespace bsl;
     using traits = bsl::char_traits<bsl::char_type>;
 
     bsl::ut_scenario{"eq"} = []() {
@@ -64,35 +65,35 @@ tests() noexcept
 
     bsl::ut_scenario{"compare"} = []() {
         bsl::ut_then{} = []() {
-            bsl::ut_check(traits::compare(nullptr, "42", 2) == 0);
-            bsl::ut_check(traits::compare("42", nullptr, 2) == 0);
-            bsl::ut_check(traits::compare("42", "42", 0) == 0);
-            bsl::ut_check(traits::compare("42", "42", 1) == 0);
-            bsl::ut_check(traits::compare("42", "42", 2) == 0);
-            bsl::ut_check(traits::compare("42", "23", 1) != 0);
-            bsl::ut_check(traits::compare("42", "23", 2) != 0);
+            bsl::ut_check(traits::compare(nullptr, "42", to_umax(2)) == 0);
+            bsl::ut_check(traits::compare("42", nullptr, to_umax(2)) == 0);
+            bsl::ut_check(traits::compare("42", "42", to_umax(0)) == 0);
+            bsl::ut_check(traits::compare("42", "42", to_umax(1)) == 0);
+            bsl::ut_check(traits::compare("42", "42", to_umax(2)) == 0);
+            bsl::ut_check(traits::compare("42", "23", to_umax(1)) != 0);
+            bsl::ut_check(traits::compare("42", "23", to_umax(2)) != 0);
         };
     };
 
     bsl::ut_scenario{"length"} = []() {
         bsl::ut_then{} = []() {
-            bsl::ut_check(traits::length(nullptr) == 0);
-            bsl::ut_check(traits::length("") == 0);
-            bsl::ut_check(traits::length("42") == 2);
-            bsl::ut_check(traits::length("4\0 2") == 1);
+            bsl::ut_check(traits::length(nullptr) == to_umax(0));
+            bsl::ut_check(traits::length("") == to_umax(0));
+            bsl::ut_check(traits::length("42") == to_umax(2));
+            bsl::ut_check(traits::length("4\0 2") == to_umax(1));
         };
     };
 
     bsl::ut_scenario{"find"} = []() {
         bsl::ut_given{} = []() {
-            bsl::string_view msg{"Hello World"};
+            cstr_type const msg{"Hello World"};
             bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(traits::find(nullptr, 5, 'l') == nullptr);
-                bsl::ut_check(traits::find(msg.data(), 0, 'l') == nullptr);
-                bsl::ut_check(traits::find(msg.data(), 5, 'l') == msg.at_if(2));
-                bsl::ut_check(traits::find(msg.data(), bsl::npos, 'l') == msg.at_if(2));
-                bsl::ut_check(traits::find(msg.data(), 1, 'z') == nullptr);
-                bsl::ut_check(traits::find(msg.data(), bsl::npos, 'z') == nullptr);
+                bsl::ut_check(traits::find(nullptr, to_umax(5), 'l') == nullptr);
+                bsl::ut_check(traits::find(msg, to_umax(0), 'l') == nullptr);
+                bsl::ut_check(traits::find(msg, to_umax(5), 'l') == &msg[2]);
+                bsl::ut_check(traits::find(msg, npos, 'l') == &msg[2]);
+                bsl::ut_check(traits::find(msg, to_umax(1), 'z') == nullptr);
+                bsl::ut_check(traits::find(msg, npos, 'z') == nullptr);
             };
         };
     };

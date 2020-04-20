@@ -28,18 +28,9 @@
 #ifndef BSL_CONTIGUOUS_ITERATOR_HPP
 #define BSL_CONTIGUOUS_ITERATOR_HPP
 
-#include "cstdint.hpp"
+#include "convert.hpp"
 #include "debug.hpp"
-
-// TODO
-// - We need to implement the remianing functions that are part of the
-//   contiguous iterator specification. Specifically, the increment and
-//   decrement by "n" functions as they all require the safe_int class
-//   to be effective at preventing wrapping, overruns and underruns.
-//   Currently we only support the ++/-- functions as those are simple
-//   to implement without the need for safe_int. Also note that we would
-//   need some extra logic to ensure the iterator stays in-bounds.
-//
+#include "safe_integral.hpp"
 
 namespace bsl
 {
@@ -48,7 +39,7 @@ namespace bsl
     /// <!-- description -->
     ///   @brief Provides a contiguous iterator as defined by the C++
     ///     specification, with the follwing differences:
-    ///     - The difference type that we use is a bsl::uintmax instead of a
+    ///     - The difference type that we use is unsigned instead of a
     ///       signed type, which causes a lot of problems with AUTOSAR
     ///       compliance as signed/unsigned conversions and overflow are a
     ///       huge problem with the standard library. This iterator type is
@@ -68,6 +59,9 @@ namespace bsl
     ///       the index is always bounded by the size of the array it is
     ///       pointing to, or is equal to end(). Wrapping, overruns, and
     ///       underruns are not possible.
+    ///     - We don't implement all of the iterator functions that make up
+    ///       a contiguous iterator as defined by the C++ spec. Some of these
+    ///       can be added in future upon request.
     ///   @include example_contiguous_iterator_overview.hpp
     ///
     /// <!-- template parameters -->
@@ -87,10 +81,10 @@ namespace bsl
     public:
         /// @brief alias for: T
         using value_type = T;
-        /// @brief alias for: bsl::uintmax
-        using size_type = bsl::uintmax;
-        /// @brief alias for: bsl::uintmax
-        using difference_type = bsl::uintmax;
+        /// @brief alias for: safe_uintmax
+        using size_type = safe_uintmax;
+        /// @brief alias for: safe_uintmax
+        using difference_type = safe_uintmax;
         /// @brief alias for: T &
         using reference_type = T &;
         /// @brief alias for: T const &
@@ -114,10 +108,10 @@ namespace bsl
         constexpr contiguous_iterator(    // --
             pointer_type const ptr,       // --
             size_type const count,        // --
-            size_type const i = 0U) noexcept
+            size_type const i) noexcept
             : m_ptr{ptr}, m_count{count}, m_i{i}
         {
-            if ((nullptr == m_ptr) || (0U == m_count)) {
+            if ((nullptr == m_ptr) || m_count.is_zero()) {
                 bsl::alert() << "contiguous_iterator: invalid constructor args\n";
                 bsl::alert() << "  - ptr: " << ptr << bsl::endl;
                 bsl::alert() << "  - count: " << count << bsl::endl;
@@ -245,7 +239,7 @@ namespace bsl
                 return nullptr;
             }
 
-            return &m_ptr[m_i];    // PRQA S 4024 // NOLINT
+            return &m_ptr[m_i.get()];    // PRQA S 4024 // NOLINT
         }
 
         /// <!-- description -->
@@ -278,7 +272,7 @@ namespace bsl
                 return nullptr;
             }
 
-            return &m_ptr[m_i];    // PRQA S 4024 // NOLINT
+            return &m_ptr[m_i.get()];    // PRQA S 4024 // NOLINT
         }
 
         /// <!-- description -->
@@ -320,7 +314,7 @@ namespace bsl
                 return *this;
             }
 
-            if (0U == m_i) {
+            if (m_i.is_zero()) {
                 bsl::error() << "contiguous_iterator: attempt to inc begin() iterator\n";
                 return *this;
             }

@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_basic_string_view_length() noexcept
     {
-        constexpr bsl::uintmax expected{5U};
+        constexpr bsl::safe_uintmax expected{bsl::to_umax(5)};
         constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
 
         if (str.length() == expected) {

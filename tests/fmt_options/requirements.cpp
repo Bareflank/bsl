@@ -60,7 +60,7 @@ namespace
             bsl::discard(ops.sign_aware());
             ops.set_sign_aware(true);
             bsl::discard(ops.width());
-            ops.set_width(10);
+            ops.set_width(bsl::to_umax(10));
             bsl::discard(ops.type());
             ops.set_type(bsl::fmt_type::fmt_type_d);
 
@@ -98,7 +98,7 @@ main() noexcept
                 static_assert(noexcept(ops.sign_aware()));
                 static_assert(noexcept(ops.set_sign_aware(true)));
                 static_assert(noexcept(ops.width()));
-                static_assert(noexcept(ops.set_width(10)));
+                static_assert(noexcept(ops.set_width(bsl::to_umax(10))));
                 static_assert(noexcept(ops.type()));
                 static_assert(noexcept(ops.set_type(bsl::fmt_type::fmt_type_d)));
             };

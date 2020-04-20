@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_char_traits_overview() noexcept
     {
-        constexpr bsl::uintmax n{2U};
+        constexpr bsl::safe_uintmax n{bsl::to_umax(2)};
         if (bsl::char_traits<bsl::char_type>::compare("42", "42", n) == 0) {
             bsl::print() << "success\n";
         }

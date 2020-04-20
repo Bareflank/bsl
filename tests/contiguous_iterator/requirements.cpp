@@ -28,7 +28,13 @@
 
 namespace
 {
-    bsl::array<bsl::uintmax, 6> arr{4, 8, 15, 16, 23, 42};
+    constexpr bsl::array<bsl::safe_int32, 6> arr{
+        bsl::to_i32(4),
+        bsl::to_i32(8),
+        bsl::to_i32(15),
+        bsl::to_i32(16),
+        bsl::to_i32(23),
+        bsl::to_i32(42)};
 }
 
 /// <!-- description -->
@@ -46,10 +52,10 @@ main() noexcept
 
     bsl::ut_scenario{"verify noexcept"} = []() {
         bsl::ut_given{} = []() {
-            bsl::contiguous_iterator ci1{arr.data(), arr.size(), 0};
-            bsl::contiguous_iterator const ci2{arr.data(), arr.size(), 0};
+            contiguous_iterator ci1{arr.data(), arr.size(), to_umax(0)};
+            contiguous_iterator const ci2{arr.data(), arr.size(), to_umax(0)};
             bsl::ut_then{} = []() {
-                static_assert(noexcept(bsl::contiguous_iterator{arr.data(), arr.size(), 0}));
+                static_assert(noexcept(contiguous_iterator{arr.data(), arr.size(), to_umax(0)}));
                 static_assert(noexcept(ci1.data()));
                 static_assert(noexcept(ci2.data()));
                 static_assert(noexcept(ci1.size()));

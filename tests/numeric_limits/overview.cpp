@@ -44,6 +44,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::is_specialized == std::numeric_limits<void *>::is_specialized);
     static_assert(numeric_limits<bool>::is_specialized == std::numeric_limits<bool>::is_specialized);
+    static_assert(numeric_limits<bsl::char_type>::is_specialized == std::numeric_limits<bsl::char_type>::is_specialized);
     static_assert(numeric_limits<bsl::int8>::is_specialized == std::numeric_limits<bsl::int8>::is_specialized);
     static_assert(numeric_limits<bsl::uint8>::is_specialized == std::numeric_limits<bsl::uint8>::is_specialized);
     static_assert(numeric_limits<bsl::int16>::is_specialized == std::numeric_limits<bsl::int16>::is_specialized);
@@ -55,6 +56,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::is_signed == std::numeric_limits<void *>::is_signed);
     static_assert(numeric_limits<bool>::is_signed == std::numeric_limits<bool>::is_signed);
+    static_assert(numeric_limits<char_type>::is_signed == std::numeric_limits<char_type>::is_signed);
     static_assert(numeric_limits<bsl::int8>::is_signed == std::numeric_limits<bsl::int8>::is_signed);
     static_assert(numeric_limits<bsl::uint8>::is_signed == std::numeric_limits<bsl::uint8>::is_signed);
     static_assert(numeric_limits<bsl::int16>::is_signed == std::numeric_limits<bsl::int16>::is_signed);
@@ -66,6 +68,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::is_integer == std::numeric_limits<void *>::is_integer);
     static_assert(numeric_limits<bool>::is_integer == std::numeric_limits<bool>::is_integer);
+    static_assert(!numeric_limits<char_type>::is_integer);
     static_assert(numeric_limits<bsl::int8>::is_integer == std::numeric_limits<bsl::int8>::is_integer);
     static_assert(numeric_limits<bsl::uint8>::is_integer == std::numeric_limits<bsl::uint8>::is_integer);
     static_assert(numeric_limits<bsl::int16>::is_integer == std::numeric_limits<bsl::int16>::is_integer);
@@ -77,6 +80,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::is_exact == std::numeric_limits<void *>::is_exact);
     static_assert(numeric_limits<bool>::is_exact == std::numeric_limits<bool>::is_exact);
+    static_assert(numeric_limits<char_type>::is_exact == std::numeric_limits<char_type>::is_exact);
     static_assert(numeric_limits<bsl::int8>::is_exact == std::numeric_limits<bsl::int8>::is_exact);
     static_assert(numeric_limits<bsl::uint8>::is_exact == std::numeric_limits<bsl::uint8>::is_exact);
     static_assert(numeric_limits<bsl::int16>::is_exact == std::numeric_limits<bsl::int16>::is_exact);
@@ -88,6 +92,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::has_infinity == std::numeric_limits<void *>::has_infinity);
     static_assert(numeric_limits<bool>::has_infinity == std::numeric_limits<bool>::has_infinity);
+    static_assert(numeric_limits<char_type>::has_infinity == std::numeric_limits<char_type>::has_infinity);
     static_assert(numeric_limits<bsl::int8>::has_infinity == std::numeric_limits<bsl::int8>::has_infinity);
     static_assert(numeric_limits<bsl::uint8>::has_infinity == std::numeric_limits<bsl::uint8>::has_infinity);
     static_assert(numeric_limits<bsl::int16>::has_infinity == std::numeric_limits<bsl::int16>::has_infinity);
@@ -99,6 +104,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::has_quiet_NaN == std::numeric_limits<void *>::has_quiet_NaN);
     static_assert(numeric_limits<bool>::has_quiet_NaN == std::numeric_limits<bool>::has_quiet_NaN);
+    static_assert(numeric_limits<char_type>::has_quiet_NaN == std::numeric_limits<char_type>::has_quiet_NaN);
     static_assert(numeric_limits<bsl::int8>::has_quiet_NaN == std::numeric_limits<bsl::int8>::has_quiet_NaN);
     static_assert(numeric_limits<bsl::uint8>::has_quiet_NaN == std::numeric_limits<bsl::uint8>::has_quiet_NaN);
     static_assert(numeric_limits<bsl::int16>::has_quiet_NaN == std::numeric_limits<bsl::int16>::has_quiet_NaN);
@@ -110,6 +116,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::has_signaling_NaN == std::numeric_limits<void *>::has_signaling_NaN);
     static_assert(numeric_limits<bool>::has_signaling_NaN == std::numeric_limits<bool>::has_signaling_NaN);
+    static_assert(numeric_limits<char_type>::has_signaling_NaN == std::numeric_limits<char_type>::has_signaling_NaN);
     static_assert(numeric_limits<bsl::int8>::has_signaling_NaN == std::numeric_limits<bsl::int8>::has_signaling_NaN);
     static_assert(numeric_limits<bsl::uint8>::has_signaling_NaN == std::numeric_limits<bsl::uint8>::has_signaling_NaN);
     static_assert(numeric_limits<bsl::int16>::has_signaling_NaN == std::numeric_limits<bsl::int16>::has_signaling_NaN);
@@ -121,6 +128,7 @@ main() noexcept
 
     static_assert(static_cast<bsl::int32>(numeric_limits<void *>::has_denorm) == std::numeric_limits<void *>::has_denorm);
     static_assert(static_cast<bsl::int32>(numeric_limits<bool>::has_denorm) == std::numeric_limits<bool>::has_denorm);
+    static_assert(static_cast<bsl::int32>(numeric_limits<char_type>::has_denorm) == std::numeric_limits<char_type>::has_denorm);
     static_assert(static_cast<bsl::int32>(numeric_limits<bsl::int8>::has_denorm) == std::numeric_limits<bsl::int8>::has_denorm);
     static_assert(static_cast<bsl::int32>(numeric_limits<bsl::uint8>::has_denorm) == std::numeric_limits<bsl::uint8>::has_denorm);
     static_assert(static_cast<bsl::int32>(numeric_limits<bsl::int16>::has_denorm) == std::numeric_limits<bsl::int16>::has_denorm);
@@ -132,6 +140,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::has_denorm_loss == std::numeric_limits<void *>::has_denorm_loss);
     static_assert(numeric_limits<bool>::has_denorm_loss == std::numeric_limits<bool>::has_denorm_loss);
+    static_assert(numeric_limits<char_type>::has_denorm_loss == std::numeric_limits<char_type>::has_denorm_loss);
     static_assert(numeric_limits<bsl::int8>::has_denorm_loss == std::numeric_limits<bsl::int8>::has_denorm_loss);
     static_assert(numeric_limits<bsl::uint8>::has_denorm_loss == std::numeric_limits<bsl::uint8>::has_denorm_loss);
     static_assert(numeric_limits<bsl::int16>::has_denorm_loss == std::numeric_limits<bsl::int16>::has_denorm_loss);
@@ -143,6 +152,7 @@ main() noexcept
 
     static_assert(static_cast<bsl::int32>(numeric_limits<void *>::round_style) == std::numeric_limits<void *>::round_style);
     static_assert(static_cast<bsl::int32>(numeric_limits<bool>::round_style) == std::numeric_limits<bool>::round_style);
+    static_assert(static_cast<bsl::int32>(numeric_limits<char_type>::round_style) == std::numeric_limits<char_type>::round_style);
     static_assert(static_cast<bsl::int32>(numeric_limits<bsl::int8>::round_style) == std::numeric_limits<bsl::int8>::round_style);
     static_assert(static_cast<bsl::int32>(numeric_limits<bsl::uint8>::round_style) == std::numeric_limits<bsl::uint8>::round_style);
     static_assert(static_cast<bsl::int32>(numeric_limits<bsl::int16>::round_style) == std::numeric_limits<bsl::int16>::round_style);
@@ -154,6 +164,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::is_iec559 == std::numeric_limits<void *>::is_iec559);
     static_assert(numeric_limits<bool>::is_iec559 == std::numeric_limits<bool>::is_iec559);
+    static_assert(numeric_limits<char_type>::is_iec559 == std::numeric_limits<char_type>::is_iec559);
     static_assert(numeric_limits<bsl::int8>::is_iec559 == std::numeric_limits<bsl::int8>::is_iec559);
     static_assert(numeric_limits<bsl::uint8>::is_iec559 == std::numeric_limits<bsl::uint8>::is_iec559);
     static_assert(numeric_limits<bsl::int16>::is_iec559 == std::numeric_limits<bsl::int16>::is_iec559);
@@ -165,6 +176,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::is_bounded == std::numeric_limits<void *>::is_bounded);
     static_assert(numeric_limits<bool>::is_bounded == std::numeric_limits<bool>::is_bounded);
+    static_assert(numeric_limits<char_type>::is_bounded == std::numeric_limits<char_type>::is_bounded);
     static_assert(numeric_limits<bsl::int8>::is_bounded == std::numeric_limits<bsl::int8>::is_bounded);
     static_assert(numeric_limits<bsl::uint8>::is_bounded == std::numeric_limits<bsl::uint8>::is_bounded);
     static_assert(numeric_limits<bsl::int16>::is_bounded == std::numeric_limits<bsl::int16>::is_bounded);
@@ -176,6 +188,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::is_modulo == std::numeric_limits<void *>::is_modulo);
     static_assert(numeric_limits<bool>::is_modulo == std::numeric_limits<bool>::is_modulo);
+    static_assert(numeric_limits<char_type>::is_modulo == std::numeric_limits<char_type>::is_modulo);
     static_assert(numeric_limits<bsl::int8>::is_modulo == std::numeric_limits<bsl::int8>::is_modulo);
     static_assert(numeric_limits<bsl::uint8>::is_modulo == std::numeric_limits<bsl::uint8>::is_modulo);
     static_assert(numeric_limits<bsl::int16>::is_modulo == std::numeric_limits<bsl::int16>::is_modulo);
@@ -187,6 +200,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::digits == std::numeric_limits<void *>::digits);
     static_assert(numeric_limits<bool>::digits == std::numeric_limits<bool>::digits);
+    static_assert(numeric_limits<char_type>::digits == std::numeric_limits<char_type>::digits);
     static_assert(numeric_limits<bsl::int8>::digits == std::numeric_limits<bsl::int8>::digits);
     static_assert(numeric_limits<bsl::uint8>::digits == std::numeric_limits<bsl::uint8>::digits);
     static_assert(numeric_limits<bsl::int16>::digits == std::numeric_limits<bsl::int16>::digits);
@@ -198,6 +212,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::digits10 == std::numeric_limits<void *>::digits10);
     static_assert(numeric_limits<bool>::digits10 == std::numeric_limits<bool>::digits10);
+    // static_assert(numeric_limits<char_type>::digits10 == std::numeric_limits<char_type>::digits10);
     // static_assert(numeric_limits<bsl::int8>::digits10 == std::numeric_limits<bsl::int8>::digits10);
     // static_assert(numeric_limits<bsl::uint8>::digits10 == std::numeric_limits<bsl::uint8>::digits10);
     // static_assert(numeric_limits<bsl::int16>::digits10 == std::numeric_limits<bsl::int16>::digits10);
@@ -209,6 +224,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::max_digits10 == std::numeric_limits<void *>::max_digits10);
     static_assert(numeric_limits<bool>::max_digits10 == std::numeric_limits<bool>::max_digits10);
+    static_assert(numeric_limits<char_type>::max_digits10 == std::numeric_limits<char_type>::max_digits10);
     static_assert(numeric_limits<bsl::int8>::max_digits10 == std::numeric_limits<bsl::int8>::max_digits10);
     static_assert(numeric_limits<bsl::uint8>::max_digits10 == std::numeric_limits<bsl::uint8>::max_digits10);
     static_assert(numeric_limits<bsl::int16>::max_digits10 == std::numeric_limits<bsl::int16>::max_digits10);
@@ -220,6 +236,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::radix == std::numeric_limits<void *>::radix);
     static_assert(numeric_limits<bool>::radix == std::numeric_limits<bool>::radix);
+    static_assert(numeric_limits<char_type>::radix == std::numeric_limits<char_type>::radix);
     static_assert(numeric_limits<bsl::int8>::radix == std::numeric_limits<bsl::int8>::radix);
     static_assert(numeric_limits<bsl::uint8>::radix == std::numeric_limits<bsl::uint8>::radix);
     static_assert(numeric_limits<bsl::int16>::radix == std::numeric_limits<bsl::int16>::radix);
@@ -231,6 +248,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::min_exponent == std::numeric_limits<void *>::min_exponent);
     static_assert(numeric_limits<bool>::min_exponent == std::numeric_limits<bool>::min_exponent);
+    static_assert(numeric_limits<char_type>::min_exponent == std::numeric_limits<char_type>::min_exponent);
     static_assert(numeric_limits<bsl::int8>::min_exponent == std::numeric_limits<bsl::int8>::min_exponent);
     static_assert(numeric_limits<bsl::uint8>::min_exponent == std::numeric_limits<bsl::uint8>::min_exponent);
     static_assert(numeric_limits<bsl::int16>::min_exponent == std::numeric_limits<bsl::int16>::min_exponent);
@@ -242,6 +260,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::min_exponent10 == std::numeric_limits<void *>::min_exponent10);
     static_assert(numeric_limits<bool>::min_exponent10 == std::numeric_limits<bool>::min_exponent10);
+    static_assert(numeric_limits<char_type>::min_exponent10 == std::numeric_limits<char_type>::min_exponent10);
     static_assert(numeric_limits<bsl::int8>::min_exponent10 == std::numeric_limits<bsl::int8>::min_exponent10);
     static_assert(numeric_limits<bsl::uint8>::min_exponent10 == std::numeric_limits<bsl::uint8>::min_exponent10);
     static_assert(numeric_limits<bsl::int16>::min_exponent10 == std::numeric_limits<bsl::int16>::min_exponent10);
@@ -253,6 +272,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::max_exponent == std::numeric_limits<void *>::max_exponent);
     static_assert(numeric_limits<bool>::max_exponent == std::numeric_limits<bool>::max_exponent);
+    static_assert(numeric_limits<char_type>::max_exponent == std::numeric_limits<char_type>::max_exponent);
     static_assert(numeric_limits<bsl::int8>::max_exponent == std::numeric_limits<bsl::int8>::max_exponent);
     static_assert(numeric_limits<bsl::uint8>::max_exponent == std::numeric_limits<bsl::uint8>::max_exponent);
     static_assert(numeric_limits<bsl::int16>::max_exponent == std::numeric_limits<bsl::int16>::max_exponent);
@@ -264,6 +284,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::max_exponent10 == std::numeric_limits<void *>::max_exponent10);
     static_assert(numeric_limits<bool>::max_exponent10 == std::numeric_limits<bool>::max_exponent10);
+    static_assert(numeric_limits<char_type>::max_exponent10 == std::numeric_limits<char_type>::max_exponent10);
     static_assert(numeric_limits<bsl::int8>::max_exponent10 == std::numeric_limits<bsl::int8>::max_exponent10);
     static_assert(numeric_limits<bsl::uint8>::max_exponent10 == std::numeric_limits<bsl::uint8>::max_exponent10);
     static_assert(numeric_limits<bsl::int16>::max_exponent10 == std::numeric_limits<bsl::int16>::max_exponent10);
@@ -275,6 +296,7 @@ main() noexcept
 
     static_assert(!numeric_limits<void *>::traps);
     static_assert(!numeric_limits<bool>::traps);
+    static_assert(!numeric_limits<char_type>::traps);
     static_assert(!numeric_limits<bsl::int8>::traps);
     static_assert(!numeric_limits<bsl::uint8>::traps);
     static_assert(!numeric_limits<bsl::int16>::traps);
@@ -286,6 +308,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::tinyness_before == std::numeric_limits<void *>::tinyness_before);
     static_assert(numeric_limits<bool>::tinyness_before == std::numeric_limits<bool>::tinyness_before);
+    static_assert(numeric_limits<char_type>::tinyness_before == std::numeric_limits<char_type>::tinyness_before);
     static_assert(numeric_limits<bsl::int8>::tinyness_before == std::numeric_limits<bsl::int8>::tinyness_before);
     static_assert(numeric_limits<bsl::uint8>::tinyness_before == std::numeric_limits<bsl::uint8>::tinyness_before);
     static_assert(numeric_limits<bsl::int16>::tinyness_before == std::numeric_limits<bsl::int16>::tinyness_before);
@@ -297,6 +320,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::min() == std::numeric_limits<void *>::min());
     static_assert(numeric_limits<bool>::min() == std::numeric_limits<bool>::min());
+    static_assert(numeric_limits<char_type>::min() == std::numeric_limits<char_type>::min());
     static_assert(numeric_limits<bsl::int8>::min() == std::numeric_limits<bsl::int8>::min());
     static_assert(numeric_limits<bsl::uint8>::min() == std::numeric_limits<bsl::uint8>::min());
     static_assert(numeric_limits<bsl::int16>::min() == std::numeric_limits<bsl::int16>::min());
@@ -308,6 +332,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::lowest() == std::numeric_limits<void *>::lowest());
     static_assert(numeric_limits<bool>::lowest() == std::numeric_limits<bool>::lowest());
+    static_assert(numeric_limits<char_type>::lowest() == std::numeric_limits<char_type>::lowest());
     static_assert(numeric_limits<bsl::int8>::lowest() == std::numeric_limits<bsl::int8>::lowest());
     static_assert(numeric_limits<bsl::uint8>::lowest() == std::numeric_limits<bsl::uint8>::lowest());
     static_assert(numeric_limits<bsl::int16>::lowest() == std::numeric_limits<bsl::int16>::lowest());
@@ -319,6 +344,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::max() == std::numeric_limits<void *>::max());
     static_assert(numeric_limits<bool>::max() == std::numeric_limits<bool>::max());
+    static_assert(numeric_limits<char_type>::max() == std::numeric_limits<char_type>::max());
     static_assert(numeric_limits<bsl::int8>::max() == std::numeric_limits<bsl::int8>::max());
     static_assert(numeric_limits<bsl::uint8>::max() == std::numeric_limits<bsl::uint8>::max());
     static_assert(numeric_limits<bsl::int16>::max() == std::numeric_limits<bsl::int16>::max());
@@ -330,6 +356,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::epsilon() == std::numeric_limits<void *>::epsilon());
     static_assert(numeric_limits<bool>::epsilon() == std::numeric_limits<bool>::epsilon());
+    static_assert(numeric_limits<char_type>::epsilon() == std::numeric_limits<char_type>::epsilon());
     static_assert(numeric_limits<bsl::int8>::epsilon() == std::numeric_limits<bsl::int8>::epsilon());
     static_assert(numeric_limits<bsl::uint8>::epsilon() == std::numeric_limits<bsl::uint8>::epsilon());
     static_assert(numeric_limits<bsl::int16>::epsilon() == std::numeric_limits<bsl::int16>::epsilon());
@@ -341,6 +368,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::round_error() == std::numeric_limits<void *>::round_error());
     static_assert(numeric_limits<bool>::round_error() == std::numeric_limits<bool>::round_error());
+    static_assert(numeric_limits<char_type>::round_error() == std::numeric_limits<char_type>::round_error());
     static_assert(numeric_limits<bsl::int8>::round_error() == std::numeric_limits<bsl::int8>::round_error());
     static_assert(numeric_limits<bsl::uint8>::round_error() == std::numeric_limits<bsl::uint8>::round_error());
     static_assert(numeric_limits<bsl::int16>::round_error() == std::numeric_limits<bsl::int16>::round_error());
@@ -352,6 +380,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::infinity() == std::numeric_limits<void *>::infinity());
     static_assert(numeric_limits<bool>::infinity() == std::numeric_limits<bool>::infinity());
+    static_assert(numeric_limits<char_type>::infinity() == std::numeric_limits<char_type>::infinity());
     static_assert(numeric_limits<bsl::int8>::infinity() == std::numeric_limits<bsl::int8>::infinity());
     static_assert(numeric_limits<bsl::uint8>::infinity() == std::numeric_limits<bsl::uint8>::infinity());
     static_assert(numeric_limits<bsl::int16>::infinity() == std::numeric_limits<bsl::int16>::infinity());
@@ -363,6 +392,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::quiet_NaN() == std::numeric_limits<void *>::quiet_NaN());
     static_assert(numeric_limits<bool>::quiet_NaN() == std::numeric_limits<bool>::quiet_NaN());
+    static_assert(numeric_limits<char_type>::quiet_NaN() == std::numeric_limits<char_type>::quiet_NaN());
     static_assert(numeric_limits<bsl::int8>::quiet_NaN() == std::numeric_limits<bsl::int8>::quiet_NaN());
     static_assert(numeric_limits<bsl::uint8>::quiet_NaN() == std::numeric_limits<bsl::uint8>::quiet_NaN());
     static_assert(numeric_limits<bsl::int16>::quiet_NaN() == std::numeric_limits<bsl::int16>::quiet_NaN());
@@ -374,6 +404,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::signaling_NaN() == std::numeric_limits<void *>::signaling_NaN());
     static_assert(numeric_limits<bool>::signaling_NaN() == std::numeric_limits<bool>::signaling_NaN());
+    static_assert(numeric_limits<char_type>::signaling_NaN() == std::numeric_limits<char_type>::signaling_NaN());
     static_assert(numeric_limits<bsl::int8>::signaling_NaN() == std::numeric_limits<bsl::int8>::signaling_NaN());
     static_assert(numeric_limits<bsl::uint8>::signaling_NaN() == std::numeric_limits<bsl::uint8>::signaling_NaN());
     static_assert(numeric_limits<bsl::int16>::signaling_NaN() == std::numeric_limits<bsl::int16>::signaling_NaN());
@@ -385,6 +416,7 @@ main() noexcept
 
     static_assert(numeric_limits<void *>::denorm_min() == std::numeric_limits<void *>::denorm_min());
     static_assert(numeric_limits<bool>::denorm_min() == std::numeric_limits<bool>::denorm_min());
+    static_assert(numeric_limits<char_type>::denorm_min() == std::numeric_limits<char_type>::denorm_min());
     static_assert(numeric_limits<bsl::int8>::denorm_min() == std::numeric_limits<bsl::int8>::denorm_min());
     static_assert(numeric_limits<bsl::uint8>::denorm_min() == std::numeric_limits<bsl::uint8>::denorm_min());
     static_assert(numeric_limits<bsl::int16>::denorm_min() == std::numeric_limits<bsl::int16>::denorm_min());

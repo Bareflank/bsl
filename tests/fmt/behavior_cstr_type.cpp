@@ -23,9 +23,11 @@
 /// SOFTWARE.
 
 #include <bsl/char_type.hpp>
-#include <bsl/cstr_type.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/cstdint.hpp>
 #include <bsl/cstring.hpp>
+#include <bsl/cstr_type.hpp>
+#include <bsl/safe_integral.hpp>
 
 #include <bsl/details/putc_stdout.hpp>
 #include <bsl/details/puts_stdout.hpp>
@@ -36,11 +38,11 @@ namespace
     struct test_string_view final
     {
         bsl::char_type data[N]{};
-        bsl::uintmax size{};
+        bsl::safe_uintmax size{};
     };
 
-    constexpr bsl::uintmax res_size{32767};
-    test_string_view<res_size> res{};
+    constexpr bsl::safe_uintmax res_size{bsl::to_umax(10000)};
+    test_string_view<res_size.get()> res{};
 
     template<bsl::uintmax N>
     bool
@@ -50,7 +52,13 @@ namespace
             return false;
         }
 
-        return bsl::builtin_strncmp(lhs.data, str, lhs.size) == 0;
+        for (bsl::safe_uintmax i{}; i < lhs.size; ++i) {
+            if (lhs.data[i.get()] != str[i.get()]) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     void
@@ -59,7 +67,8 @@ namespace
         for (auto &e : res.data) {
             e = 0;
         }
-        res.size = 0;
+
+        res.size = bsl::to_umax(0);
     }
 }
 
@@ -69,17 +78,19 @@ namespace bsl
     {
         template<>
         void
-        putc_stdout<void>(char_type const c) noexcept
+        putc_stdout<void>(bsl::char_type const c) noexcept
         {
-            res.data[res.size++] = c;
+            res.data[res.size.get()] = c;
+            ++res.size;
         }
 
         template<>
         void
-        puts_stdout<void>(cstr_type const str) noexcept
+        puts_stdout<void>(bsl::cstr_type const str) noexcept
         {
-            for (bsl::uintmax i{}; i < bsl::builtin_strlen(str); ++i) {
-                res.data[res.size++] = str[i];
+            for (bsl::safe_uintmax i{}; i < bsl::builtin_strlen(str); ++i) {
+                res.data[res.size.get()] = str[i.get()];
+                ++res.size;
             }
         }
     }
@@ -120,84 +131,69 @@ main() noexcept
     };
 
     bsl::ut_scenario{"dynamic width tests"} = []() {
-        constexpr bsl::uint32 digit1{9};
-        constexpr bsl::uint32 digit2{99};
-        constexpr bsl::uint32 digit3{999};
-        constexpr bsl::uint32 digit4{9999};
-        constexpr bsl::uint32 digit5{99999};
+        constexpr bsl::safe_uintmax digit1{bsl::to_umax(9)};
+        constexpr bsl::safe_uintmax digit2{bsl::to_umax(99)};
+        constexpr bsl::safe_uintmax digit3{bsl::to_umax(999)};
+        constexpr bsl::safe_uintmax digit4{bsl::to_umax(9999)};
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{bsl::nullops, "Hello", 0};
+            bsl::print() << bsl::fmt{bsl::nullops, "Hello", bsl::to_umax(0)};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "Hello");
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = [&digit1]() {
             reset();
             bsl::print() << bsl::fmt{"=<", "=", digit1};
-            bsl::ut_then{} = []() {
-                bsl::uint32 count{};
-                for (bsl::uintmax i{}; i < res_size; ++i) {
-                    if (res.data[i] == '=') {
-                        count++;
+            bsl::ut_then{} = [&digit1]() {
+                bsl::safe_uintmax count{};
+                for (bsl::safe_uintmax i{}; i < res_size; ++i) {
+                    if (res.data[i.get()] == '=') {
+                        ++count;
                     }
                 }
                 bsl::ut_check(count == digit1);
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = [&digit2]() {
             reset();
             bsl::print() << bsl::fmt{"=<", "=", digit2};
-            bsl::ut_then{} = []() {
-                bsl::uint32 count{};
-                for (bsl::uintmax i{}; i < res_size; ++i) {
-                    if (res.data[i] == '=') {
-                        count++;
+            bsl::ut_then{} = [&digit2]() {
+                bsl::safe_uintmax count{};
+                for (bsl::safe_uintmax i{}; i < res_size; ++i) {
+                    if (res.data[i.get()] == '=') {
+                        ++count;
                     }
                 }
                 bsl::ut_check(count == digit2);
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = [&digit3]() {
             reset();
             bsl::print() << bsl::fmt{"=<", "=", digit3};
-            bsl::ut_then{} = []() {
-                bsl::uint32 count{};
-                for (bsl::uintmax i{}; i < res_size; ++i) {
-                    if (res.data[i] == '=') {
-                        count++;
+            bsl::ut_then{} = [&digit3]() {
+                bsl::safe_uintmax count{};
+                for (bsl::safe_uintmax i{}; i < res_size; ++i) {
+                    if (res.data[i.get()] == '=') {
+                        ++count;
                     }
                 }
                 bsl::ut_check(count == digit3);
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = [&digit3, &digit4]() {
             reset();
             bsl::print() << bsl::fmt{"=<", "=", digit4};
-            bsl::ut_then{} = []() {
-                bsl::uint32 count{};
-                for (bsl::uintmax i{}; i < res_size; ++i) {
-                    if (res.data[i] == '=') {
-                        count++;
-                    }
-                }
-                bsl::ut_check(count == digit3);
-            };
-        };
-
-        bsl::ut_when{} = []() {
-            reset();
-            bsl::print() << bsl::fmt{"=<", "=", digit5};
-            bsl::ut_then{} = []() {
-                bsl::uint32 count{};
-                for (bsl::uintmax i{}; i < res_size; ++i) {
-                    if (res.data[i] == '=') {
-                        count++;
+            bsl::ut_then{} = [&digit3]() {
+                bsl::safe_uintmax count{};
+                for (bsl::safe_uintmax i{}; i < res_size; ++i) {
+                    if (res.data[i.get()] == '=') {
+                        ++count;
                     }
                 }
                 bsl::ut_check(count == digit3);

@@ -32,7 +32,7 @@ namespace bsl
     inline void
     example_fmt_sign_aware() noexcept
     {
-        constexpr bsl::int32 val{42};
+        constexpr bsl::safe_int32 val{42};
         bsl::print() << bsl::fmt{"#10b", val} << bsl::endl;
         bsl::print() << bsl::fmt{"#10x", val} << bsl::endl;
         bsl::print() << bsl::fmt{"#010b", val} << bsl::endl;

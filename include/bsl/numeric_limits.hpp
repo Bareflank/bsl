@@ -28,6 +28,7 @@
 #ifndef BSL_NUMERIC_LIMITS_HPP
 #define BSL_NUMERIC_LIMITS_HPP
 
+#include "char_type.hpp"
 #include "climits.hpp"
 #include "cstdint.hpp"
 #include "float_denorm_style.hpp"
@@ -409,6 +410,181 @@ namespace bsl
         denorm_min() noexcept
         {
             return false;
+        }
+    };
+
+    /// @class bsl::numeric_limits
+    ///
+    /// <!-- description -->
+    ///   @brief Implements std::numeric_limits
+    ///   @include example_numeric_limits_overview.hpp
+    ///
+    template<>
+    class numeric_limits<char_type> final
+    {
+        /// @brief stores whether or not this is a specialization
+        static constexpr bool is_specialized{true};
+        /// @brief stores whether or not T is signed
+        static constexpr bool is_signed{true};
+        /// @brief stores whether or not T is an integer
+        static constexpr bool is_integer{false};
+        /// @brief stores whether or not T is exact
+        static constexpr bool is_exact{true};
+        /// @brief stores whether or not T has defined infinity
+        static constexpr bool has_infinity{false};
+        /// @brief stores whether or not T has a quiet NaN
+        static constexpr bool has_quiet_NaN{false};
+        /// @brief stores whether or not T has a signaling NaN
+        static constexpr bool has_signaling_NaN{false};
+        /// @brief stores the denorm style of T
+        static constexpr float_denorm_style has_denorm{float_denorm_style::denorm_absent};
+        /// @brief stores whether or not floating points detect loss
+        static constexpr bool has_denorm_loss{false};
+        /// @brief stores the rounding style of T
+        static constexpr float_round_style round_style{float_round_style::round_toward_zero};
+        /// @brief stores the type of floating point
+        static constexpr bool is_iec559{false};
+        /// @brief stores whether or not T is bounded
+        static constexpr bool is_bounded{true};
+        /// @brief stores whether or not T handles overflow with modulo
+        static constexpr bool is_modulo{false};
+        /// @brief stores the number of radix digits for T
+        static constexpr bsl::int32 digits{details::get_digits<char_type>()};
+        /// @brief stores the number of base 10 digits for T
+        static constexpr bsl::int32 digits10{0};    // TODO... need to sort out the need for log10
+        /// @brief stores the number of base 10 digits to diff T
+        static constexpr bsl::int32 max_digits10{0};
+        /// @brief stores the integer base that presents digits
+        static constexpr bsl::int32 radix{2};
+        /// @brief stores the smallest negative exponential number
+        static constexpr bsl::int32 min_exponent{0};
+        /// @brief stores the smallest negative exponential number in base 10
+        static constexpr bsl::int32 min_exponent10{0};
+        /// @brief stores the largest positive exponential number
+        static constexpr bsl::int32 max_exponent{0};
+        /// @brief stores the largest positive exponential number in base 10
+        static constexpr bsl::int32 max_exponent10{0};
+        /// @brief stores whether T can generate a trap
+        static constexpr bool traps{false};
+        /// @brief stores whether or T detected tinyness before rounding
+        static constexpr bool tinyness_before{false};
+
+    public:
+        /// <!-- description -->
+        ///   @brief Returns the min value of T
+        ///   @include example_numeric_limits_overview.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns the min value of T
+        ///
+        static constexpr char_type
+        min() noexcept
+        {
+            return CHAR_MIN;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns the lowest value of T
+        ///   @include example_numeric_limits_overview.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns the lowest value of T
+        ///
+        static constexpr char_type
+        lowest() noexcept
+        {
+            return CHAR_MIN;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns the max value of T
+        ///   @include example_numeric_limits_overview.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns the max value of T
+        ///
+        static constexpr char_type
+        max() noexcept
+        {
+            return CHAR_MAX;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns the floating point resolution
+        ///   @include example_numeric_limits_overview.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns the max value of T
+        ///
+        static constexpr char_type
+        epsilon() noexcept
+        {
+            return 0;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns the rounding error of T
+        ///   @include example_numeric_limits_overview.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns the rounding error of T
+        ///
+        static constexpr char_type
+        round_error() noexcept
+        {
+            return 0;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns the value of infinity for T
+        ///   @include example_numeric_limits_overview.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns the value of infinity for T
+        ///
+        static constexpr char_type
+        infinity() noexcept
+        {
+            return 0;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns the quiet NaN value for T
+        ///   @include example_numeric_limits_overview.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns the quiet NaN value for T
+        ///
+        static constexpr char_type
+        quiet_NaN() noexcept
+        {
+            return 0;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns the signaling NaN value for T
+        ///   @include example_numeric_limits_overview.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns the signaling NaN value for T
+        ///
+        static constexpr char_type
+        signaling_NaN() noexcept
+        {
+            return 0;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns the smallest subnormal value for T
+        ///   @include example_numeric_limits_overview.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns the smallest subnormal value for T
+        ///
+        static constexpr char_type
+        denorm_min() noexcept
+        {
+            return 0;
         }
     };
 

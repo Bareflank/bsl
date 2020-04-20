@@ -45,7 +45,12 @@ namespace bsl
     [[nodiscard]] constexpr bool
     is_constant_evaluated() noexcept
     {
-        return BSL_IS_CONSTANT_EVALUATED;
+        if constexpr (BSL_PERFORCE) {
+            return false;
+        }
+        else {
+            return __builtin_is_constant_evaluated();
+        }
     }
 }
 

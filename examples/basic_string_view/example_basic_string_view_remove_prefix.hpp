@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_basic_string_view_remove_prefix() noexcept
     {
-        constexpr bsl::uintmax num{6U};
+        constexpr bsl::safe_uintmax num{to_umax(6)};
         bsl::basic_string_view<bsl::char_type> str{"Hello World"};
 
         if (str.remove_prefix(num) == "World") {

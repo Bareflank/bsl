@@ -27,8 +27,8 @@
 
 namespace
 {
-    [[nodiscard]] constexpr bsl::int32
-    func(bsl::int32 const val) noexcept
+    [[nodiscard]] constexpr bsl::safe_int32
+    func(bsl::safe_int32 const val) noexcept
     {
         return val;
     }
@@ -48,7 +48,7 @@ tests() noexcept
 {
     bsl::ut_scenario{"constructor / get"} = []() {
         bsl::ut_given{} = []() {
-            bsl::int32 data{};
+            bsl::safe_int32 data{};
             bsl::reference_wrapper rw{data};
             bsl::ut_when{} = [&rw]() {
                 rw.get() = 42;
@@ -61,7 +61,7 @@ tests() noexcept
 
     bsl::ut_scenario{"const constructor / get"} = []() {
         bsl::ut_given{} = []() {
-            bsl::int32 const data{42};
+            bsl::safe_int32 const data{42};
             bsl::reference_wrapper rw{data};
             bsl::ut_then{} = [&rw]() {
                 bsl::ut_check(rw.get() == 42);
@@ -73,14 +73,14 @@ tests() noexcept
         bsl::ut_given{} = []() {
             bsl::reference_wrapper rw{func};
             bsl::ut_then{} = [&rw]() {
-                bsl::ut_check(rw(42) == 42);
+                bsl::ut_check(rw(bsl::to_i32(42)) == 42);
             };
         };
     };
 
     bsl::ut_scenario{"output doesn't crash"} = []() {
         bsl::ut_given{} = []() {
-            bsl::int32 const data{42};
+            bsl::safe_int32 const data{42};
             bsl::reference_wrapper rw{data};
             bsl::ut_then{} = [&rw]() {
                 bsl::debug() << rw << '\n';

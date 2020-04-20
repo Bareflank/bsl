@@ -72,8 +72,8 @@ namespace bsl
     inline void
     example_forward_overview() noexcept
     {
-        bsl::int32 const val1{42};
-        bsl::int32 val2{val1};
+        constexpr bsl::safe_int32 val1{42};
+        bsl::safe_int32 val2{val1};
 
         if (forwarder(val1)) {
             bsl::print() << "success\n";

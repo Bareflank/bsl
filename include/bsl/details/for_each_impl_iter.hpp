@@ -32,6 +32,7 @@
 #include "../is_bool.hpp"
 #include "../is_invocable.hpp"
 #include "../is_nothrow_invocable.hpp"
+#include "../safe_integral.hpp"
 
 namespace bsl
 {
@@ -60,7 +61,7 @@ namespace bsl
             typename ITER2,
             typename FUNC,
             bool EO = is_invocable<FUNC, value_type_for<ITER1> &>::value,
-            bool EI = is_invocable<FUNC, value_type_for<ITER1> &, bsl::uintmax>::value>
+            bool EI = is_invocable<FUNC, value_type_for<ITER1> &, safe_uintmax>::value>
         class for_each_impl_iter final
         {
             static_assert(
@@ -158,7 +159,7 @@ namespace bsl
         class for_each_impl_iter<ITER, ITER, FUNC, false, true> final
         {
             /// @brief reduces the verbosity of invoke_result_t
-            using ret_type = invoke_result_t<FUNC, value_type_for<ITER> &, bsl::uintmax>;
+            using ret_type = invoke_result_t<FUNC, value_type_for<ITER> &, safe_uintmax>;
 
         public:
             /// <!-- description -->
@@ -174,7 +175,7 @@ namespace bsl
             ///
             static constexpr void
             call(ITER &&begin, ITER &&end, FUNC &&f) noexcept(
-                is_nothrow_invocable<FUNC, value_type_for<ITER> &, bsl::uintmax>::value)
+                is_nothrow_invocable<FUNC, value_type_for<ITER> &, safe_uintmax>::value)
             {
                 for (ITER iter{begin}; iter < end; ++iter) {
                     if constexpr (is_bool<ret_type>::value) {

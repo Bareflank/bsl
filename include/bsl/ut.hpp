@@ -29,13 +29,15 @@
 #define BSL_UT_HPP
 
 #include "color.hpp"
+#include "convert.hpp"
+#include "cstr_type.hpp"
 #include "debug.hpp"
 #include "discard.hpp"
 #include "exit_code.hpp"
 #include "is_constant_evaluated.hpp"
 #include "main.hpp"
 #include "source_location.hpp"
-#include "string_view.hpp"
+#include "safe_integral.hpp"
 
 #include <stdlib.h>    // NOLINT
 
@@ -80,7 +82,7 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param name the name of the scenario (i.e., test case)
         ///
-        explicit constexpr ut_scenario(string_view const &name) noexcept
+        explicit constexpr ut_scenario(cstr_type const name) noexcept
         {
             bsl::discard(name);
         }

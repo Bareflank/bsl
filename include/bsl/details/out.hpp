@@ -41,7 +41,6 @@
 #include "../color.hpp"
 #include "../char_type.hpp"
 #include "../cstr_type.hpp"
-#include "../cstdint.hpp"
 #include "../is_same.hpp"
 
 namespace bsl

@@ -51,7 +51,7 @@ namespace bsl
         /// @brief defines the source location's function name type
         using func_type = bsl::cstr_type;
         /// @brief defines the source location's line location type
-        using line_type = bsl::intmax;
+        using line_type = bsl::int32;
 
         /// <!-- description -->
         ///   @brief constructor
@@ -217,6 +217,6 @@ namespace bsl
 
     /// @brief defines the type used to describe a bsl::source_location
     using sloc_type = source_location;
-}    // namespace bsl
+}
 
 #endif

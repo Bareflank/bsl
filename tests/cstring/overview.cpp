@@ -23,8 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/cstring.hpp>
-#include <bsl/array.hpp>
-#include <bsl/string_view.hpp>
+#include <bsl/cstr_type.hpp>
 #include <bsl/ut.hpp>
 
 /// <!-- description -->
@@ -38,74 +37,47 @@
 bsl::exit_code
 main() noexcept
 {
-    // clang-format off
-
-    bsl::ut_scenario{"builtin_memset"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::array<bsl::uintmax, 6> arr{4, 8, 15, 16, 23, 42};
-            bsl::ut_then{} = [&arr]() {
-                bsl::ut_check(bsl::builtin_memset(nullptr, 42, arr.size_bytes()) == nullptr);
-                bsl::ut_check(bsl::builtin_memset(arr.data(), 42, 0) == nullptr);
-                bsl::ut_check(bsl::builtin_memset(arr.data(), 42, arr.size_bytes()) == arr.data());
-            };
-        };
-    };
-
-    bsl::ut_scenario{"builtin_memcmp"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::array<bsl::uintmax, 6> arr1{4, 8, 15, 16, 23, 42};
-            bsl::array<bsl::uintmax, 6> arr2{4, 8, 15, 16, 23, 42};
-            bsl::array<bsl::uintmax, 6> arr3{4, 8, 15, 16, 23, 0};
-            bsl::ut_then{} = [&arr1, &arr2, &arr3]() {
-                bsl::ut_check(bsl::builtin_memcmp(nullptr, arr2.data(), arr1.size_bytes()) == 0);
-                bsl::ut_check(bsl::builtin_memcmp(arr1.data(), nullptr, arr1.size_bytes()) == 0);
-                bsl::ut_check(bsl::builtin_memcmp(arr1.data(), arr2.data(), arr1.size_bytes()) == 0);
-                bsl::ut_check(bsl::builtin_memcmp(arr1.data(), arr3.data(), arr1.size_bytes()) != 0);
-            };
-        };
-    };
+    using namespace bsl;
 
     bsl::ut_scenario{"builtin_strncmp"} = []() {
         bsl::ut_given{} = []() {
-            bsl::string_view msg1{"Hello World"};
-            bsl::string_view msg2{"Hello World"};
-            bsl::string_view msg3{"Something Else"};
+            bsl::cstr_type msg1{"Hello World"};
+            bsl::cstr_type msg2{"Hello World"};
+            bsl::cstr_type msg3{"Something Else"};
             bsl::ut_then{} = [&msg1, &msg2, &msg3]() {
-                bsl::ut_check(bsl::builtin_strncmp(nullptr, msg2.data(), msg1.size_bytes()) == 0);
-                bsl::ut_check(bsl::builtin_strncmp(msg1.data(), nullptr, msg1.size_bytes()) == 0);
-                bsl::ut_check(bsl::builtin_strncmp(msg1.data(), msg2.data(), msg1.size_bytes()) == 0);
-                bsl::ut_check(bsl::builtin_strncmp(msg1.data(), msg3.data(), msg1.size_bytes()) != 0);
+                bsl::ut_check(builtin_strncmp(nullptr, msg2, builtin_strlen(msg1)) == 0);
+                bsl::ut_check(builtin_strncmp(msg1, nullptr, builtin_strlen(msg1)) == 0);
+                bsl::ut_check(builtin_strncmp(msg1, msg2, builtin_strlen(msg1)) == 0);
+                bsl::ut_check(builtin_strncmp(msg1, msg3, builtin_strlen(msg1)) != 0);
             };
         };
     };
 
     bsl::ut_scenario{"builtin_strlen"} = []() {
         bsl::ut_given{} = []() {
-            bsl::string_view msg1{};
-            bsl::string_view msg2{""};
-            bsl::string_view msg3{"Hello"};
+            bsl::cstr_type msg1{};
+            bsl::cstr_type msg2{""};
+            bsl::cstr_type msg3{"Hello"};
             bsl::ut_then{} = [&msg1, &msg2, &msg3]() {
-                bsl::ut_check(bsl::builtin_strlen(nullptr) == 0);
-                bsl::ut_check(bsl::builtin_strlen(msg1.data()) == 0);
-                bsl::ut_check(bsl::builtin_strlen(msg2.data()) == 0);
-                bsl::ut_check(bsl::builtin_strlen(msg3.data()) == 5);
+                bsl::ut_check(builtin_strlen(nullptr) == to_umax(0));
+                bsl::ut_check(builtin_strlen(msg1) == to_umax(0));
+                bsl::ut_check(builtin_strlen(msg2) == to_umax(0));
+                bsl::ut_check(builtin_strlen(msg3) == to_umax(5));
             };
         };
     };
 
     bsl::ut_scenario{"builtin_strnchr"} = []() {
         bsl::ut_given{} = []() {
-            bsl::string_view msg{"Hello World"};
+            bsl::cstr_type msg{"Hello World"};
             bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(bsl::builtin_strnchr(nullptr, 'o', msg.size_bytes()) == nullptr);
-                bsl::ut_check(bsl::builtin_strnchr(msg.data(), 'o', 0) == nullptr);
-                bsl::ut_check(bsl::builtin_strnchr(msg.data(), 'o', msg.size_bytes()) == msg.at_if(4));
-                bsl::ut_check(bsl::builtin_strnchr(msg.data(), 'z', msg.size_bytes()) == nullptr);
+                bsl::ut_check(builtin_strnchr(nullptr, 'o', builtin_strlen(msg)) == nullptr);
+                bsl::ut_check(builtin_strnchr(msg, 'o', to_umax(0)) == nullptr);
+                bsl::ut_check(builtin_strnchr(msg, 'o', builtin_strlen(msg)) == &msg[4]);
+                bsl::ut_check(builtin_strnchr(msg, 'z', builtin_strlen(msg)) == nullptr);
             };
         };
     };
-
-    // clang-format on
 
     return bsl::ut_success();
 }

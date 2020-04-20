@@ -38,14 +38,14 @@ namespace
     [[nodiscard]] constexpr bool
     check(bsl::cstr_type const lhs, bsl::cstr_type const rhs) noexcept
     {
-        bsl::uintmax i{};
-        for (; lhs[i] != '\0' && rhs[i] != '\0'; ++i) {
-            if (lhs[i] != rhs[i]) {
+        bsl::safe_uintmax i{};
+        for (; lhs[i.get()] != '\0' && rhs[i.get()] != '\0'; ++i) {
+            if (lhs[i.get()] != rhs[i.get()]) {
                 return false;
             }
         }
 
-        return lhs[i] == rhs[i];
+        return lhs[i.get()] == rhs[i.get()];
     }
 }
 

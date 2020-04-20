@@ -258,6 +258,107 @@ tests() noexcept
         bsl::ut_check(bsl::safe_uintmax::is_unsigned_type());
     };
 
+    bsl::ut_scenario{"is_pos"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 const val{42};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(val.is_pos());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 const val{0};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(!val.is_pos());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 const val{-42};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(!val.is_pos());
+            };
+        };
+    };
+
+    bsl::ut_scenario{"is_neg"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 const val{-42};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(val.is_neg());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 const val{0};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(!val.is_neg());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 const val{42};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(!val.is_neg());
+            };
+        };
+    };
+
+    bsl::ut_scenario{"is_zero"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 const val{0};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(val.is_zero());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 const val{42};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(!val.is_zero());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 const val{-42};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(!val.is_zero());
+            };
+        };
+    };
+
+    bsl::ut_scenario{"is_max"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 const val{bsl::safe_int32::max()};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(val.is_max());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 const val{bsl::safe_int32::min()};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(!val.is_max());
+            };
+        };
+    };
+
+    bsl::ut_scenario{"is_min"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 const val{bsl::safe_int32::min()};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(val.is_min());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 const val{bsl::safe_int32::max()};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(!val.is_min());
+            };
+        };
+    };
+
     bsl::ut_scenario{"add assign"} = []() {
         bsl::ut_given{} = []() {
             bsl::safe_int32 val1{42};

@@ -38,7 +38,7 @@ namespace
     }
 
     constexpr void
-    except_void_e_i(bsl::char_type const &e, bsl::uintmax i)
+    except_void_e_i(bsl::char_type const &e, bsl::safe_uintmax i)
     {
         bsl::discard(e);
         bsl::discard(i);
@@ -52,7 +52,7 @@ namespace
     }
 
     constexpr bool
-    except_bool_e_i(bsl::char_type const &e, bsl::uintmax i)
+    except_bool_e_i(bsl::char_type const &e, bsl::safe_uintmax i)
     {
         bsl::discard(e);
         bsl::discard(i);
@@ -66,7 +66,7 @@ namespace
     }
 
     constexpr void
-    noexcept_void_e_i(bsl::char_type const &e, bsl::uintmax i) noexcept
+    noexcept_void_e_i(bsl::char_type const &e, bsl::safe_uintmax i) noexcept
     {
         bsl::discard(e);
         bsl::discard(i);
@@ -80,7 +80,7 @@ namespace
     }
 
     constexpr bool
-    noexcept_bool_e_i(bsl::char_type const &e, bsl::uintmax i) noexcept
+    noexcept_bool_e_i(bsl::char_type const &e, bsl::safe_uintmax i) noexcept
     {
         bsl::discard(e);
         bsl::discard(i);

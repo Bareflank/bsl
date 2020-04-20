@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/span.hpp>
 #include <bsl/array.hpp>
 #include <bsl/debug.hpp>
 
@@ -33,17 +34,10 @@ namespace bsl
     inline void
     example_array_back() noexcept
     {
-        constexpr bsl::uintmax size{6U};
-        constexpr bsl::uintmax val1{4U};
-        constexpr bsl::uintmax val2{8U};
-        constexpr bsl::uintmax val3{15U};
-        constexpr bsl::uintmax val4{16U};
-        constexpr bsl::uintmax val5{23U};
-        constexpr bsl::uintmax val6{42U};
+        constexpr bsl::safe_uintmax size{bsl::to_umax(2)};
+        constexpr bsl::array<bool, size.get()> arr{true, false};
 
-        bsl::array<bsl::uintmax, size> const arr{val1, val2, val3, val4, val5, val6};
-
-        if (val6 == arr.back()) {
+        if (!arr.back()) {
             bsl::print() << "success\n";
         }
     }

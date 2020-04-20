@@ -32,8 +32,8 @@ namespace bsl
     inline void
     example_fmt_constructor_f_val_width() noexcept
     {
-        constexpr bsl::uintmax width1{23U};
-        constexpr bsl::uintmax width2{42U};
+        constexpr bsl::safe_uintmax width1{bsl::to_umax(23)};
+        constexpr bsl::safe_uintmax width2{bsl::to_umax(42)};
         bsl::print() << bsl::fmt{".<", '.', width1} << bsl::endl;
         bsl::print() << bsl::fmt{".<", '.', width2} << bsl::endl;
     }

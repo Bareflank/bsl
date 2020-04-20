@@ -22,27 +22,31 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/max_of.hpp>
-#include <bsl/ut.hpp>
+#include <bsl/safe_integral.hpp>
+#include <bsl/debug.hpp>
 
-/// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
-///     function will successfully return with bsl::exit_success.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-bsl::exit_code
-main() noexcept
+namespace bsl
 {
-    using namespace bsl;
+    /// <!-- description -->
+    ///   @brief Provides the example's main function
+    ///
+    inline void
+    example_safe_integral_is_zero() noexcept
+    {
+        constexpr bsl::safe_int32 val1{0};
+        constexpr bsl::safe_int32 val2{42};
+        constexpr bsl::safe_int32 val3{-42};
 
-    bsl::ut_scenario{"verify noexcept"} = []() {
-        bsl::ut_then{} = []() {
-            static_assert(noexcept(max_of(23, 42)));
-        };
-    };
+        if (val1.is_zero()) {
+            bsl::print() << "success\n";
+        }
 
-    return bsl::ut_success();
+        if (!val2.is_zero()) {
+            bsl::print() << "success\n";
+        }
+
+        if (!val3.is_zero()) {
+            bsl::print() << "success\n";
+        }
+    }
 }

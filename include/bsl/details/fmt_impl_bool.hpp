@@ -29,13 +29,16 @@
 #include "fmt_impl_integral_helpers.hpp"
 #include "out.hpp"
 
+#include "../convert.hpp"
+#include "../forward.hpp"
 #include "../fmt_options.hpp"
+#include "../safe_integral.hpp"
 
 namespace bsl
 {
     /// <!-- description -->
     ///   @brief This function is responsible for implementing bsl::fmt
-    ///     for bool types. For bools, the only fmt options
+    ///     for bool types. For booleans, the only fmt options
     ///     that are available are alignment, fill and width, all of which
     ///     are handled by the fmt_impl_align_xxx functions.
     ///
@@ -61,13 +64,13 @@ namespace bsl
                 case fmt_type::fmt_type_c:
                 case fmt_type::fmt_type_d:
                 case fmt_type::fmt_type_x: {
-                    details::fmt_impl_integral(bsl::forward<OUT>(o), ops, 1U);
+                    details::fmt_impl_integral(bsl::forward<OUT>(o), ops, to_u32(1));
                     break;
                 }
 
                 case fmt_type::fmt_type_s:
                 case fmt_type::fmt_type_default: {
-                    constexpr bsl::uintmax len_true{4U};
+                    constexpr safe_uintmax len_true{to_umax(4)};
                     details::fmt_impl_align_pre(o, ops, len_true, true);
                     o.write("true");
                     details::fmt_impl_align_suf(o, ops, len_true, true);
@@ -81,13 +84,13 @@ namespace bsl
                 case fmt_type::fmt_type_c:
                 case fmt_type::fmt_type_d:
                 case fmt_type::fmt_type_x: {
-                    details::fmt_impl_integral(bsl::forward<OUT>(o), ops, 0U);
+                    details::fmt_impl_integral(bsl::forward<OUT>(o), ops, to_u32(0));
                     break;
                 }
 
                 case fmt_type::fmt_type_s:
                 case fmt_type::fmt_type_default: {
-                    constexpr bsl::uintmax len_false{5U};
+                    constexpr safe_uintmax len_false{to_umax(5)};
                     details::fmt_impl_align_pre(o, ops, len_false, true);
                     o.write("false");
                     details::fmt_impl_align_suf(o, ops, len_false, true);

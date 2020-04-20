@@ -28,7 +28,13 @@
 
 namespace
 {
-    bsl::array<bsl::uintmax, 6> arr{4, 8, 15, 16, 23, 42};
+    constexpr bsl::array<bsl::safe_int32, 6> arr{
+        bsl::to_i32(4),
+        bsl::to_i32(8),
+        bsl::to_i32(15),
+        bsl::to_i32(16),
+        bsl::to_i32(23),
+        bsl::to_i32(42)};
 }
 
 /// <!-- description -->

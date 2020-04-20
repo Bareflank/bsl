@@ -28,13 +28,12 @@
 #ifndef BSL_NPOS_HPP
 #define BSL_NPOS_HPP
 
-#include "cstdint.hpp"
-#include "numeric_limits.hpp"
+#include "safe_integral.hpp"
 
 namespace bsl
 {
     /// @brief defines npos
-    constexpr bsl::uintmax npos{numeric_limits<bsl::uintmax>::max()};
+    constexpr safe_uintmax npos{safe_uintmax::max()};
 }
 
 #endif

@@ -32,7 +32,7 @@ namespace bsl
     inline void
     example_fmt_alt_form() noexcept
     {
-        constexpr bsl::int32 val{42};
+        constexpr bsl::safe_int32 val{42};
         bsl::print() << bsl::fmt{"#b", val} << bsl::endl;
         bsl::print() << bsl::fmt{"#d", val} << bsl::endl;
         bsl::print() << bsl::fmt{"#x", val} << bsl::endl;

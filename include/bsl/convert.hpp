@@ -22,7 +22,9 @@
 #ifndef BSL_CONVERT_HPP
 #define BSL_CONVERT_HPP
 
+#include "enable_if.hpp"
 #include "is_constant_evaluated.hpp"
+#include "is_pointer.hpp"
 #include "is_same.hpp"
 #include "is_same_signedness.hpp"
 #include "is_signed.hpp"
@@ -60,73 +62,73 @@ namespace bsl
     ///
     template<typename T, typename F>
     [[nodiscard]] constexpr safe_integral<T>
-    convert(safe_integral<F> const &f) noexcept
+    convert(F const &f) noexcept
     {
         using t_limits = numeric_limits<T>;
         using f_limits = numeric_limits<F>;
 
         if constexpr (is_same<F, T>::value) {
-            return f;
+            return safe_integral<T>{static_cast<T>(f)};
         }
 
         if constexpr (is_signed<F>::value) {
             if constexpr (is_signed<T>::value) {
                 if constexpr (f_limits::max() <= t_limits::max()) {
-                    return safe_integral<T>{static_cast<T>(f.get()), f.failure()};
+                    return safe_integral<T>{static_cast<T>(f)};
                 }
                 else {
-                    if ((f.get() > t_limits::max()) || (f.get() < t_limits::min())) {
+                    if ((f > t_limits::max()) || (f < t_limits::min())) {
                         conversion_failure__narrowing_results_in_loss_of_data();
                         return safe_integral<T>{static_cast<T>(0), true};
                     }
 
-                    return safe_integral<T>{static_cast<T>(f.get()), f.failure()};
+                    return safe_integral<T>{static_cast<T>(f)};
                 }
             }
             else {
-                if (f.get() < 0) {
+                if (f < 0) {
                     conversion_failure__narrowing_results_in_loss_of_data();
                     return safe_integral<T>{static_cast<T>(0), true};
                 }
 
                 if constexpr (static_cast<bsl::uintmax>(f_limits::max()) <= t_limits::max()) {
-                    return safe_integral<T>{static_cast<T>(f.get()), f.failure()};
+                    return safe_integral<T>{static_cast<T>(f)};
                 }
                 else {
-                    if (static_cast<bsl::uintmax>(f.get()) > t_limits::max()) {
+                    if (static_cast<bsl::uintmax>(f) > t_limits::max()) {
                         conversion_failure__narrowing_results_in_loss_of_data();
                         return safe_integral<T>{static_cast<T>(0), true};
                     }
 
-                    return safe_integral<T>{static_cast<T>(f.get()), f.failure()};
+                    return safe_integral<T>{static_cast<T>(f)};
                 }
             }
         }
         else {
             if constexpr (is_signed<T>::value) {
                 if constexpr (f_limits::max() <= static_cast<bsl::uintmax>(t_limits::max())) {
-                    return safe_integral<T>{static_cast<T>(f.get()), f.failure()};
+                    return safe_integral<T>{static_cast<T>(f)};
                 }
                 else {
-                    if (f.get() > static_cast<bsl::uintmax>(t_limits::max())) {
+                    if (f > static_cast<bsl::uintmax>(t_limits::max())) {
                         conversion_failure__narrowing_results_in_loss_of_data();
                         return safe_integral<T>{static_cast<T>(0), true};
                     }
 
-                    return safe_integral<T>{static_cast<T>(f.get()), f.failure()};
+                    return safe_integral<T>{static_cast<T>(f)};
                 }
             }
             else {
                 if constexpr (f_limits::max() <= t_limits::max()) {
-                    return safe_integral<T>{static_cast<T>(f.get()), f.failure()};
+                    return safe_integral<T>{static_cast<T>(f)};
                 }
                 else {
-                    if ((f.get() > t_limits::max())) {
+                    if ((f > t_limits::max())) {
                         conversion_failure__narrowing_results_in_loss_of_data();
                         return safe_integral<T>{static_cast<T>(0), true};
                     }
 
-                    return safe_integral<T>{static_cast<T>(f.get()), f.failure()};
+                    return safe_integral<T>{static_cast<T>(f)};
                 }
             }
         }
@@ -153,9 +155,13 @@ namespace bsl
     ///
     template<typename T, typename F>
     [[nodiscard]] constexpr safe_integral<T>
-    convert(F const &f) noexcept
+    convert(safe_integral<F> const &f) noexcept
     {
-        return convert<T>(safe_integral<F>{f});
+        if (f.failure()) {
+            return safe_integral<T>{static_cast<T>(0), true};
+        }
+
+        return convert<T>(f.get());
     }
 
     /// <!-- description -->
@@ -496,6 +502,57 @@ namespace bsl
     to_umax(T const val) noexcept
     {
         return convert<bsl::uintmax>(val);
+    }
+
+    /// <!-- description -->
+    ///   @brief Returns convert<bsl::uintptr>(val)
+    ///   @related bsl::safe_integral
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param val the integral to convert
+    ///   @return Returns convert<bsl::uintptr>(val)
+    ///
+    [[nodiscard]] constexpr bsl::safe_uintptr
+    to_uptr(void const *const val) noexcept
+    {
+        if (is_constant_evaluated()) {
+            return bsl::safe_uintptr{};
+        }
+
+        return convert<bsl::uintptr>(
+            reinterpret_cast<bsl::uintptr>(val));    // NOLINT // PRQA S 1-10000
+    }
+
+    /// <!-- description -->
+    ///   @brief Returns convert<bsl::uintptr>(val)
+    ///   @related bsl::safe_integral
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of integral to convert
+    ///   @param val the integral to convert
+    ///   @return Returns convert<bsl::uintptr>(val)
+    ///
+    template<typename T>
+    [[nodiscard]] constexpr bsl::safe_uintptr
+    to_uptr(safe_integral<T> const &val) noexcept
+    {
+        return convert<bsl::uintptr>(val);
+    }
+
+    /// <!-- description -->
+    ///   @brief Returns convert<bsl::uintptr>(val)
+    ///   @related bsl::safe_integral
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of integral to convert
+    ///   @param val the integral to convert
+    ///   @return Returns convert<bsl::uintptr>(val)
+    ///
+    template<typename T, enable_if_t<!is_pointer<T>::value, bool> = true>
+    [[nodiscard]] constexpr bsl::safe_uintptr
+    to_uptr(T const val) noexcept
+    {
+        return convert<bsl::uintptr>(val);
     }
 }
 

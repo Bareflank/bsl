@@ -22,7 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/min_of.hpp>
+#include <bsl/safe_integral.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -31,12 +31,21 @@ namespace bsl
     ///   @brief Provides the example's main function
     ///
     inline void
-    example_min_of_overview() noexcept
+    example_safe_integral_is_neg() noexcept
     {
-        constexpr bsl::int32 val1{23};
-        constexpr bsl::int32 val2{42};
+        constexpr bsl::safe_int32 val1{-42};
+        constexpr bsl::safe_int32 val2{0};
+        constexpr bsl::safe_int32 val3{42};
 
-        if (bsl::min_of(val1, val2) == val1) {
+        if (val1.is_neg()) {
+            bsl::print() << "success\n";
+        }
+
+        if (!val2.is_neg()) {
+            bsl::print() << "success\n";
+        }
+
+        if (!val3.is_neg()) {
             bsl::print() << "success\n";
         }
     }

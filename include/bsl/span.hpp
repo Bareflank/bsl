@@ -29,15 +29,11 @@
 #define BSL_SPAN_HPP
 
 #include "contiguous_iterator.hpp"
-#include "cstdint.hpp"
-#include "cstring.hpp"
+#include "convert.hpp"
 #include "debug.hpp"
-#include "min_of.hpp"
 #include "npos.hpp"
-#include "is_constant_evaluated.hpp"
-#include "is_fundamental.hpp"
-#include "numeric_limits.hpp"
 #include "reverse_iterator.hpp"
+#include "safe_integral.hpp"
 
 namespace bsl
 {
@@ -93,10 +89,10 @@ namespace bsl
     public:
         /// @brief alias for: T
         using value_type = T;
-        /// @brief alias for: bsl::uintmax
-        using size_type = bsl::uintmax;
-        /// @brief alias for: bsl::uintmax
-        using difference_type = bsl::uintmax;
+        /// @brief alias for: safe_uintmax
+        using size_type = safe_uintmax;
+        /// @brief alias for: safe_uintmax
+        using difference_type = safe_uintmax;
         /// @brief alias for: T &
         using reference_type = T &;
         /// @brief alias for: T &
@@ -147,7 +143,7 @@ namespace bsl
         constexpr span(pointer_type const ptr, size_type const count) noexcept    // --
             : m_ptr{ptr}, m_count{count}
         {
-            if ((nullptr == m_ptr) || (0U == m_count)) {
+            if ((nullptr == m_ptr) || m_count.is_zero()) {
                 *this = span{};
             }
         }
@@ -178,7 +174,7 @@ namespace bsl
                 return nullptr;
             }
 
-            return &m_ptr[index];    // PRQA S 4024 // NOLINT
+            return &m_ptr[index.get()];    // PRQA S 4024 // NOLINT
         }
 
         /// <!-- description -->
@@ -201,7 +197,7 @@ namespace bsl
                 return nullptr;
             }
 
-            return &m_ptr[index];    // NOLINT
+            return &m_ptr[index.get()];    // NOLINT
         }
 
         /// <!-- description -->
@@ -218,7 +214,7 @@ namespace bsl
         [[nodiscard]] constexpr pointer_type
         front_if() noexcept
         {
-            return this->at_if(0U);
+            return this->at_if(to_umax(0));
         }
 
         /// <!-- description -->
@@ -235,7 +231,7 @@ namespace bsl
         [[nodiscard]] constexpr const_pointer_type
         front_if() const noexcept
         {
-            return this->at_if(0U);
+            return this->at_if(to_umax(0));
         }
 
         /// <!-- description -->
@@ -252,7 +248,7 @@ namespace bsl
         [[nodiscard]] constexpr pointer_type
         back_if() noexcept
         {
-            return this->at_if((m_count > 0U) ? (m_count - 1U) : 0U);
+            return this->at_if(m_count.is_pos() ? (m_count - to_umax(1)) : to_umax(0));
         }
 
         /// <!-- description -->
@@ -269,7 +265,7 @@ namespace bsl
         [[nodiscard]] constexpr const_pointer_type
         back_if() const noexcept
         {
-            return this->at_if((m_count > 0U) ? (m_count - 1U) : 0U);
+            return this->at_if(m_count.is_pos() ? (m_count - to_umax(1)) : to_umax(0));
         }
 
         /// <!-- description -->
@@ -316,7 +312,7 @@ namespace bsl
         [[nodiscard]] constexpr iterator_type
         begin() noexcept
         {
-            return iterator_type{m_ptr, m_count, 0U};
+            return iterator_type{m_ptr, m_count, to_umax(0)};
         }
 
         /// <!-- description -->
@@ -329,7 +325,7 @@ namespace bsl
         [[nodiscard]] constexpr const_iterator_type
         begin() const noexcept
         {
-            return const_iterator_type{m_ptr, m_count, 0U};
+            return const_iterator_type{m_ptr, m_count, to_umax(0)};
         }
 
         /// <!-- description -->
@@ -342,7 +338,7 @@ namespace bsl
         [[nodiscard]] constexpr const_iterator_type
         cbegin() const noexcept
         {
-            return const_iterator_type{m_ptr, m_count, 0U};
+            return const_iterator_type{m_ptr, m_count, to_umax(0)};
         }
 
         /// <!-- description -->
@@ -510,13 +506,13 @@ namespace bsl
         ///     view.
         ///
         [[nodiscard]] constexpr reverse_iterator_type
-        riter(size_type i) noexcept
+        riter(size_type const i) noexcept
         {
-            if (i < bsl::npos) {
-                ++i;
+            if (i >= m_count) {
+                return reverse_iterator_type{this->iter(m_count)};
             }
 
-            return reverse_iterator_type{this->iter(i)};
+            return reverse_iterator_type{this->iter(i + to_umax(1))};
         }
 
         /// <!-- description -->
@@ -534,13 +530,13 @@ namespace bsl
         ///     view.
         ///
         [[nodiscard]] constexpr const_reverse_iterator_type
-        riter(size_type i) const noexcept
+        riter(size_type const i) const noexcept
         {
-            if (i < bsl::npos) {
-                ++i;
+            if (i >= m_count) {
+                return const_reverse_iterator_type{this->iter(m_count)};
             }
 
-            return const_reverse_iterator_type{this->iter(i)};
+            return const_reverse_iterator_type{this->iter(i + to_umax(1))};
         }
 
         /// <!-- description -->
@@ -558,13 +554,13 @@ namespace bsl
         ///     view.
         ///
         [[nodiscard]] constexpr const_reverse_iterator_type
-        criter(size_type i) const noexcept
+        criter(size_type const i) const noexcept
         {
-            if (i < bsl::npos) {
-                ++i;
+            if (i >= m_count) {
+                return const_reverse_iterator_type{this->citer(m_count)};
             }
 
-            return const_reverse_iterator_type{this->citer(i)};
+            return const_reverse_iterator_type{this->citer(i + to_umax(1))};
         }
 
         /// <!-- description -->
@@ -634,7 +630,7 @@ namespace bsl
         [[nodiscard]] constexpr bool
         empty() const noexcept
         {
-            return 0U == m_count;
+            return m_count.is_zero();
         }
 
         /// <!-- description -->
@@ -664,7 +660,7 @@ namespace bsl
         [[nodiscard]] static constexpr size_type
         max_size() noexcept
         {
-            return numeric_limits<size_type>::max() / sizeof(T);
+            return size_type::max() / to_umax(sizeof(T));
         }
 
         /// <!-- description -->
@@ -677,23 +673,7 @@ namespace bsl
         [[nodiscard]] constexpr size_type
         size_bytes() const noexcept
         {
-            return m_count * sizeof(T);
-        }
-
-        /// <!-- description -->
-        ///   @brief Returns subspan(0, count). If count is 0, an invalid
-        ///     span is returned.
-        ///   @include span/example_span_first.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param count the number of elements of the new subspan
-        ///   @return Returns subspan(0, count). If count is 0, an invalid
-        ///     span is returned.
-        ///
-        [[nodiscard]] constexpr span<T>
-        first(size_type const count = npos) noexcept
-        {
-            return this->subspan(0U, count);
+            return m_count * to_umax(sizeof(T));
         }
 
         /// <!-- description -->
@@ -709,31 +689,7 @@ namespace bsl
         [[nodiscard]] constexpr span<T>
         first(size_type const count = npos) const noexcept
         {
-            return this->subspan(0U, count);
-        }
-
-        /// <!-- description -->
-        ///   @brief Returns subspan(this->size() - count, count). If count
-        ///     is greater than the size of the current span, a copy of the
-        ///     current span is returned. If the count is 0, an invalid span
-        ///     is returned.
-        ///   @include span/example_span_last.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param count the number of elements of the new subspan
-        ///   @return Returns subspan(this->size() - count, count). If count
-        ///     is greater than the size of the current span, a copy of the
-        ///     current span is returned. If the count is 0, an invalid span
-        ///     is returned.
-        ///
-        [[nodiscard]] constexpr span<T>
-        last(size_type count = npos) noexcept
-        {
-            if (count > this->size()) {
-                count = this->size();
-            }
-
-            return this->subspan(this->size() - count, count);
+            return this->subspan(to_umax(0), count);
         }
 
         /// <!-- description -->
@@ -761,7 +717,7 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief Returns span{at_if(pos), min_of(count, size() - pos)}. If
+        ///   @brief Returns span{at_if(pos), count.min(size() - pos)}. If
         ///     the provided "pos" is greater than or equal to the size of
         ///     the current span, an invalid span is returned.
         ///   @include span/example_span_subspan.hpp
@@ -769,30 +725,7 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param pos the starting position of the new span
         ///   @param count the number of elements of the new subspan
-        ///   @return Returns span{at_if(pos), min_of(count, size() - pos)}. If
-        ///     the provided "pos" is greater than or equal to the size of
-        ///     the current span, an invalid span is returned.
-        ///
-        [[nodiscard]] constexpr span<T>
-        subspan(size_type const pos, size_type const count = npos) noexcept
-        {
-            if ((nullptr == m_ptr) || (pos >= m_count)) {
-                return {};
-            }
-
-            return span<T>{&m_ptr[pos], min_of(count, m_count - pos)};    // NOLINT
-        }
-
-        /// <!-- description -->
-        ///   @brief Returns span{at_if(pos), min_of(count, size() - pos)}. If
-        ///     the provided "pos" is greater than or equal to the size of
-        ///     the current span, an invalid span is returned.
-        ///   @include span/example_span_subspan.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param pos the starting position of the new span
-        ///   @param count the number of elements of the new subspan
-        ///   @return Returns span{at_if(pos), min_of(count, size() - pos)}. If
+        ///   @return Returns span{at_if(pos), count.min(size() - pos)}. If
         ///     the provided "pos" is greater than or equal to the size of
         ///     the current span, an invalid span is returned.
         ///
@@ -803,7 +736,7 @@ namespace bsl
                 return {};
             }
 
-            return span<T>{&m_ptr[pos], min_of(count, m_count - pos)};    // NOLINT
+            return span<T>{&m_ptr[pos.get()], count.min(m_count - pos)};    // NOLINT
         }
 
     private:
@@ -834,11 +767,7 @@ namespace bsl
             return false;
         }
 
-        if (is_fundamental<T>::value && !is_constant_evaluated()) {
-            return bsl::builtin_memcmp(lhs.data(), rhs.data(), lhs.size_bytes()) == 0;
-        }
-
-        for (bsl::uintmax i{}; i < lhs.size(); ++i) {
+        for (safe_uintmax i{}; i < lhs.size(); ++i) {
             if (*lhs.at_if(i) != *rhs.at_if(i)) {
                 return false;
             }
@@ -887,8 +816,8 @@ namespace bsl
             return o << "[]";
         }
 
-        for (bsl::uintmax i{}; i < val.size(); ++i) {
-            o << ((0U == i) ? "[" : ", ") << *val.at_if(i);
+        for (safe_uintmax i{}; i < val.size(); ++i) {
+            o << (i.is_zero() ? "[" : ", ") << *val.at_if(i);
         }
 
         return o << ']';

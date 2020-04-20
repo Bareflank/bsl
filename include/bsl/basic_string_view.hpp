@@ -30,12 +30,11 @@
 
 #include "char_traits.hpp"
 #include "contiguous_iterator.hpp"
-#include "cstdint.hpp"
+#include "convert.hpp"
 #include "debug.hpp"
-#include "min_of.hpp"
 #include "npos.hpp"
-#include "numeric_limits.hpp"
 #include "reverse_iterator.hpp"
+#include "safe_integral.hpp"
 
 // TODO:
 // - Need to implement the find functions. These need the safe_int class as
@@ -62,10 +61,10 @@ namespace bsl
     public:
         /// @brief alias for: CharT const
         using value_type = CharT const;
-        /// @brief alias for: bsl::uintmax
-        using size_type = bsl::uintmax;
-        /// @brief alias for: bsl::uintmax
-        using difference_type = bsl::uintmax;
+        /// @brief alias for: safe_uintmax
+        using size_type = safe_uintmax;
+        /// @brief alias for: safe_uintmax
+        using difference_type = safe_uintmax;
         /// @brief alias for: CharT const &
         using reference_type = CharT const &;
         /// @brief alias for: CharT const &
@@ -121,7 +120,7 @@ namespace bsl
         constexpr basic_string_view(pointer_type const s) noexcept    // PRQA S 2180 // NOLINT
             : m_ptr{s}, m_count{Traits::length(s)}
         {
-            if ((nullptr == m_ptr) || (0U == m_count)) {
+            if ((nullptr == m_ptr) || m_count.is_zero()) {
                 *this = basic_string_view{};
             }
         }
@@ -170,7 +169,7 @@ namespace bsl
                 return nullptr;
             }
 
-            return &m_ptr[index];    // PRQA S 4024 // NOLINT
+            return &m_ptr[index.get()];    // PRQA S 4024 // NOLINT
         }
 
         /// <!-- description -->
@@ -193,7 +192,7 @@ namespace bsl
                 return nullptr;
             }
 
-            return &m_ptr[index];    // NOLINT
+            return &m_ptr[index.get()];    // NOLINT
         }
 
         /// <!-- description -->
@@ -210,7 +209,7 @@ namespace bsl
         [[nodiscard]] constexpr pointer_type
         front_if() noexcept
         {
-            return this->at_if(0U);
+            return this->at_if(to_umax(0));
         }
 
         /// <!-- description -->
@@ -227,7 +226,7 @@ namespace bsl
         [[nodiscard]] constexpr const_pointer_type
         front_if() const noexcept
         {
-            return this->at_if(0U);
+            return this->at_if(to_umax(0));
         }
 
         /// <!-- description -->
@@ -244,7 +243,7 @@ namespace bsl
         [[nodiscard]] constexpr pointer_type
         back_if() noexcept
         {
-            return this->at_if((m_count > 0U) ? (m_count - 1U) : 0U);
+            return this->at_if(m_count.is_pos() ? (m_count - to_umax(1)) : to_umax(0));
         }
 
         /// <!-- description -->
@@ -261,7 +260,7 @@ namespace bsl
         [[nodiscard]] constexpr const_pointer_type
         back_if() const noexcept
         {
-            return this->at_if((m_count > 0U) ? (m_count - 1U) : 0U);
+            return this->at_if(m_count.is_pos() ? (m_count - to_umax(1)) : to_umax(0));
         }
 
         /// <!-- description -->
@@ -308,7 +307,7 @@ namespace bsl
         [[nodiscard]] constexpr iterator_type
         begin() noexcept
         {
-            return iterator_type{m_ptr, m_count, 0U};
+            return iterator_type{m_ptr, m_count, to_umax(0)};
         }
 
         /// <!-- description -->
@@ -321,7 +320,7 @@ namespace bsl
         [[nodiscard]] constexpr const_iterator_type
         begin() const noexcept
         {
-            return const_iterator_type{m_ptr, m_count, 0U};
+            return const_iterator_type{m_ptr, m_count, to_umax(0)};
         }
 
         /// <!-- description -->
@@ -334,7 +333,7 @@ namespace bsl
         [[nodiscard]] constexpr const_iterator_type
         cbegin() const noexcept
         {
-            return const_iterator_type{m_ptr, m_count, 0U};
+            return const_iterator_type{m_ptr, m_count, to_umax(0)};
         }
 
         /// <!-- description -->
@@ -502,13 +501,13 @@ namespace bsl
         ///     view.
         ///
         [[nodiscard]] constexpr reverse_iterator_type
-        riter(size_type i) noexcept
+        riter(size_type const i) noexcept
         {
-            if (i < bsl::npos) {
-                ++i;
+            if (i >= m_count) {
+                return reverse_iterator_type{this->iter(m_count)};
             }
 
-            return reverse_iterator_type{this->iter(i)};
+            return reverse_iterator_type{this->iter(i + to_umax(1))};
         }
 
         /// <!-- description -->
@@ -526,13 +525,13 @@ namespace bsl
         ///     view.
         ///
         [[nodiscard]] constexpr const_reverse_iterator_type
-        riter(size_type i) const noexcept
+        riter(size_type const i) const noexcept
         {
-            if (i < bsl::npos) {
-                ++i;
+            if (i >= m_count) {
+                return const_reverse_iterator_type{this->iter(m_count)};
             }
 
-            return const_reverse_iterator_type{this->iter(i)};
+            return const_reverse_iterator_type{this->iter(i + to_umax(1))};
         }
 
         /// <!-- description -->
@@ -550,13 +549,13 @@ namespace bsl
         ///     view.
         ///
         [[nodiscard]] constexpr const_reverse_iterator_type
-        criter(size_type i) const noexcept
+        criter(size_type const i) const noexcept
         {
-            if (i < bsl::npos) {
-                ++i;
+            if (i >= m_count) {
+                return const_reverse_iterator_type{this->citer(m_count)};
             }
 
-            return const_reverse_iterator_type{this->citer(i)};
+            return const_reverse_iterator_type{this->citer(i + to_umax(1))};
         }
 
         /// <!-- description -->
@@ -626,7 +625,7 @@ namespace bsl
         [[nodiscard]] constexpr bool
         empty() const noexcept
         {
-            return 0U == m_count;
+            return m_count.is_zero();
         }
 
         /// <!-- description -->
@@ -673,7 +672,7 @@ namespace bsl
         [[nodiscard]] static constexpr size_type
         max_size() noexcept
         {
-            return numeric_limits<size_type>::max() / sizeof(CharT);
+            return size_type::max() / to_umax(sizeof(CharT));
         }
 
         /// <!-- description -->
@@ -686,7 +685,7 @@ namespace bsl
         [[nodiscard]] constexpr size_type
         size_bytes() const noexcept
         {
-            return m_count * sizeof(CharT);
+            return m_count * to_umax(sizeof(CharT));
         }
 
         /// <!-- description -->
@@ -705,6 +704,7 @@ namespace bsl
         {
             if (n >= this->size()) {
                 *this = basic_string_view{};
+                return *this;
             }
 
             *this = basic_string_view{this->at_if(n), this->size() - n};
@@ -727,9 +727,10 @@ namespace bsl
         {
             if (n >= this->size()) {
                 *this = basic_string_view{};
+                return *this;
             }
 
-            *this = basic_string_view{this->at_if(0U), this->size() - n};
+            *this = basic_string_view{this->front_if(), this->size() - n};
             return *this;
         }
 
@@ -753,13 +754,13 @@ namespace bsl
         ///     and ends at "pos" + "count".
         ///
         [[nodiscard]] constexpr basic_string_view
-        substr(size_type const pos = 0U, size_type const count = npos) const noexcept
+        substr(size_type const pos = {}, size_type const count = npos) const noexcept
         {
             if (pos >= this->size()) {
                 return basic_string_view{};
             }
 
-            return basic_string_view{this->at_if(pos), min_of(count, this->size() - pos)};
+            return basic_string_view{this->at_if(pos), count.min(this->size() - pos)};
         }
 
         /// <!-- description -->
@@ -770,10 +771,10 @@ namespace bsl
         ///   @param str the bsl::basic_string_view to compare with
         ///   @return Returns the same results as std::strncmp
         ///
-        [[nodiscard]] constexpr bsl::int32
+        [[nodiscard]] constexpr safe_int32
         compare(basic_string_view const &str) const noexcept
         {
-            return Traits::compare(this->data(), str.data(), min_of(this->size(), str.size()));
+            return Traits::compare(this->data(), str.data(), this->size().min(str.size()));
         }
 
         /// <!-- description -->
@@ -786,7 +787,7 @@ namespace bsl
         ///   @param str the bsl::basic_string_view to compare with
         ///   @return Returns the same results as std::strncmp
         ///
-        [[nodiscard]] constexpr bsl::int32
+        [[nodiscard]] constexpr safe_int32
         compare(                      // --
             size_type const pos,      // --
             size_type const count,    // --
@@ -807,7 +808,7 @@ namespace bsl
         ///   @param count2 the number of characters of "v" to compare
         ///   @return Returns the same results as std::strncmp
         ///
-        [[nodiscard]] constexpr bsl::int32
+        [[nodiscard]] constexpr safe_int32
         compare(                             // --
             size_type pos1,                  // --
             size_type count1,                // --
@@ -826,7 +827,7 @@ namespace bsl
         ///   @param str a pointer to a string to compare with "this"
         ///   @return Returns the same results as std::strncmp
         ///
-        [[nodiscard]] constexpr bsl::int32
+        [[nodiscard]] constexpr safe_int32
         compare(pointer_type const str) const noexcept
         {
             return this->compare(basic_string_view{str});
@@ -842,7 +843,7 @@ namespace bsl
         ///   @param str a pointer to a string to compare with "this"
         ///   @return Returns the same results as std::strncmp
         ///
-        [[nodiscard]] constexpr bsl::int32
+        [[nodiscard]] constexpr safe_int32
         compare(size_type pos, size_type count, pointer_type const str) const noexcept
         {
             return this->substr(pos, count).compare(basic_string_view{str});
@@ -865,14 +866,14 @@ namespace bsl
         ///   @param count2 the number of characters of "s" to compare
         ///   @return Returns the same results as std::strncmp
         ///
-        [[nodiscard]] constexpr bsl::int32
+        [[nodiscard]] constexpr safe_int32
         compare(                       // --
             size_type pos,             // --
             size_type count1,          // --
             pointer_type const str,    // --
             size_type count2) const noexcept
         {
-            return this->compare(pos, count1, basic_string_view{str}, 0, count2);
+            return this->compare(pos, count1, basic_string_view{str}, to_umax(0), count2);
         }
 
         /// <!-- description -->
@@ -891,7 +892,7 @@ namespace bsl
                 return false;
             }
 
-            return this->substr(0U, str.size()) == str;
+            return this->substr(to_umax(0), str.size()) == str;
         }
 
         /// <!-- description -->
@@ -995,7 +996,7 @@ namespace bsl
         constexpr basic_string_view(pointer_type const s, size_type const count) noexcept
             : m_ptr{s}, m_count{count}
         {
-            if ((nullptr == m_ptr) || (0U == m_count)) {
+            if ((nullptr == m_ptr) || m_count.is_zero()) {
                 *this = basic_string_view{};
             }
         }

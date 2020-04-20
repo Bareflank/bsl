@@ -39,8 +39,8 @@ tests() noexcept
 {
     bsl::ut_scenario{"exchange"} = []() {
         bsl::ut_given{} = []() {
-            bsl::int32 val1{23};
-            bsl::int32 val2{42};
+            bsl::safe_int32 val1{23};
+            bsl::safe_int32 val2{42};
             bsl::ut_when{} = [&val1, &val2]() {
                 val2 = bsl::exchange(val1, val2);
                 bsl::ut_then{} = [&val1, &val2]() {

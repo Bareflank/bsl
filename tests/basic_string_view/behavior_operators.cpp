@@ -39,10 +39,12 @@
 constexpr bsl::exit_code
 tests() noexcept
 {
+    using namespace bsl;
+
     bsl::ut_scenario{"equals/not equals"} = []() {
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{};
-            bsl::basic_string_view<bsl::char_type> const msg2{};
+            basic_string_view<char_type> const msg1{};
+            basic_string_view<char_type> const msg2{};
 
             bsl::ut_then{} = [&msg1, &msg2]() {
                 bsl::ut_check(msg1 == msg2);
@@ -51,7 +53,7 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{};
+            basic_string_view<char_type> const msg1{};
 
             bsl::ut_then{} = [&msg1]() {
                 bsl::ut_check(msg1 == "");       // NOLINT
@@ -60,7 +62,7 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{};
+            basic_string_view<char_type> const msg1{};
 
             bsl::ut_then{} = [&msg1]() {
                 bsl::ut_check("" == msg1);       // NOLINT
@@ -69,8 +71,8 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
-            bsl::basic_string_view<bsl::char_type> const msg2{};
+            basic_string_view<char_type> const msg1{"Hello"};
+            basic_string_view<char_type> const msg2{};
 
             bsl::ut_then{} = [&msg1, &msg2]() {
                 bsl::ut_check(!(msg1 == msg2));
@@ -79,7 +81,7 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
+            basic_string_view<char_type> const msg1{"Hello"};
 
             bsl::ut_then{} = [&msg1]() {
                 bsl::ut_check(!(msg1 == ""));    // NOLINT
@@ -88,7 +90,7 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
+            basic_string_view<char_type> const msg1{"Hello"};
 
             bsl::ut_then{} = [&msg1]() {
                 bsl::ut_check(!("" == msg1));    // NOLINT
@@ -97,8 +99,8 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{};
-            bsl::basic_string_view<bsl::char_type> const msg2{"Hello"};
+            basic_string_view<char_type> const msg1{};
+            basic_string_view<char_type> const msg2{"Hello"};
 
             bsl::ut_then{} = [&msg1, &msg2]() {
                 bsl::ut_check(!(msg1 == msg2));
@@ -107,7 +109,7 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{};
+            basic_string_view<char_type> const msg1{};
 
             bsl::ut_then{} = [&msg1]() {
                 bsl::ut_check(!(msg1 == "Hello"));    // NOLINT
@@ -116,7 +118,7 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{};
+            basic_string_view<char_type> const msg1{};
 
             bsl::ut_then{} = [&msg1]() {
                 bsl::ut_check(!("Hello" == msg1));    // NOLINT
@@ -125,8 +127,8 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
-            bsl::basic_string_view<bsl::char_type> const msg2{"42"};
+            basic_string_view<char_type> const msg1{"Hello"};
+            basic_string_view<char_type> const msg2{"42"};
 
             bsl::ut_then{} = [&msg1, &msg2]() {
                 bsl::ut_check(!(msg1 == msg2));
@@ -135,7 +137,7 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
+            basic_string_view<char_type> const msg1{"Hello"};
 
             bsl::ut_then{} = [&msg1]() {
                 bsl::ut_check(!(msg1 == "42"));    // NOLINT
@@ -144,7 +146,7 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
+            basic_string_view<char_type> const msg1{"Hello"};
 
             bsl::ut_then{} = [&msg1]() {
                 bsl::ut_check(!("42" == msg1));    // NOLINT
@@ -153,8 +155,8 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"42"};
-            bsl::basic_string_view<bsl::char_type> const msg2{"Hello"};
+            basic_string_view<char_type> const msg1{"42"};
+            basic_string_view<char_type> const msg2{"Hello"};
 
             bsl::ut_then{} = [&msg1, &msg2]() {
                 bsl::ut_check(!(msg1 == msg2));
@@ -163,7 +165,7 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"42"};
+            basic_string_view<char_type> const msg1{"42"};
 
             bsl::ut_then{} = [&msg1]() {
                 bsl::ut_check(!(msg1 == "Hello"));    // NOLINT
@@ -172,7 +174,7 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"42"};
+            basic_string_view<char_type> const msg1{"42"};
 
             bsl::ut_then{} = [&msg1]() {
                 bsl::ut_check(!("Hello" == msg1));    // NOLINT
@@ -181,8 +183,8 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
-            bsl::basic_string_view<bsl::char_type> const msg2{"World"};
+            basic_string_view<char_type> const msg1{"Hello"};
+            basic_string_view<char_type> const msg2{"World"};
 
             bsl::ut_then{} = [&msg1, &msg2]() {
                 bsl::ut_check(!(msg1 == msg2));
@@ -191,7 +193,7 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
+            basic_string_view<char_type> const msg1{"Hello"};
 
             bsl::ut_then{} = [&msg1]() {
                 bsl::ut_check(!(msg1 == "World"));    // NOLINT
@@ -200,7 +202,7 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
+            basic_string_view<char_type> const msg1{"Hello"};
 
             bsl::ut_then{} = [&msg1]() {
                 bsl::ut_check(!("World" == msg1));    // NOLINT
@@ -209,8 +211,8 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
-            bsl::basic_string_view<bsl::char_type> const msg2{"Hello"};
+            basic_string_view<char_type> const msg1{"Hello"};
+            basic_string_view<char_type> const msg2{"Hello"};
 
             bsl::ut_then{} = [&msg1, &msg2]() {
                 bsl::ut_check(msg1 == msg2);
@@ -219,7 +221,7 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
+            basic_string_view<char_type> const msg1{"Hello"};
 
             bsl::ut_then{} = [&msg1]() {
                 bsl::ut_check(msg1 == "Hello");       // NOLINT
@@ -228,7 +230,7 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
+            basic_string_view<char_type> const msg1{"Hello"};
 
             bsl::ut_then{} = [&msg1]() {
                 bsl::ut_check("Hello" == msg1);       // NOLINT

@@ -41,11 +41,11 @@ main() noexcept
         bsl::ut_given{} = []() {
             bsl::ut_then{} = []() {
                 static_assert(noexcept(bsl::fmt{"", ""}));
-                static_assert(noexcept(bsl::fmt{"", "", 42}));
+                static_assert(noexcept(bsl::fmt{"", "", bsl::to_umax(42)}));
                 static_assert(noexcept(bsl::fmt_impl(bsl::print(), {""}, true)));
                 static_assert(noexcept(bsl::fmt_impl(bsl::print(), {""}, '*')));
                 static_assert(noexcept(bsl::fmt_impl(bsl::print(), {""}, "")));
-                static_assert(noexcept(bsl::fmt_impl(bsl::print(), {""}, 42)));
+                static_assert(noexcept(bsl::fmt_impl(bsl::print(), {""}, bsl::to_umax(42))));
             };
         };
     };

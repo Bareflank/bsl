@@ -29,13 +29,11 @@
 #define BSL_ARRAY_HPP
 
 #include "contiguous_iterator.hpp"
+#include "convert.hpp"
 #include "cstdint.hpp"
-#include "cstring.hpp"
 #include "debug.hpp"
-#include "is_constant_evaluated.hpp"
-#include "is_fundamental.hpp"
-#include "numeric_limits.hpp"
 #include "reverse_iterator.hpp"
+#include "safe_integral.hpp"
 
 namespace bsl
 {
@@ -71,10 +69,10 @@ namespace bsl
 
         /// @brief alias for: T
         using value_type = T;
-        /// @brief alias for: bsl::uintmax
-        using size_type = bsl::uintmax;
-        /// @brief alias for: bsl::uintmax
-        using difference_type = bsl::uintmax;
+        /// @brief alias for: safe_uintmax
+        using size_type = safe_uintmax;
+        /// @brief alias for: safe_uintmax
+        using difference_type = safe_uintmax;
         /// @brief alias for: T &
         using reference_type = T &;
         /// @brief alias for: T const &
@@ -113,12 +111,12 @@ namespace bsl
         [[nodiscard]] constexpr pointer_type
         at_if(size_type const index) noexcept
         {
-            if (index >= N) {
+            if (index >= to_umax(N)) {
                 bsl::error() << "array: index out of range: " << index << '\n';
                 return nullptr;
             }
 
-            return &m_data[index];    // PRQA S 4024 // NOLINT
+            return &m_data[index.get()];    // PRQA S 4024 // NOLINT
         }
 
         /// <!-- description -->
@@ -136,12 +134,12 @@ namespace bsl
         [[nodiscard]] constexpr const_pointer_type
         at_if(size_type const index) const noexcept
         {
-            if (index >= N) {
+            if (index >= to_umax(N)) {
                 bsl::error() << "array: index out of range: " << index << '\n';
                 return nullptr;
             }
 
-            return &m_data[index];    // NOLINT
+            return &m_data[index.get()];    // NOLINT
         }
 
         /// <!-- description -->
@@ -154,7 +152,7 @@ namespace bsl
         [[nodiscard]] constexpr reference_type
         front() noexcept
         {
-            return *this->at_if(0U);
+            return *this->at_if(to_umax(0));
         }
 
         /// <!-- description -->
@@ -167,7 +165,7 @@ namespace bsl
         [[nodiscard]] constexpr const_reference_type
         front() const noexcept
         {
-            return *this->at_if(0U);
+            return *this->at_if(to_umax(0));
         }
 
         /// <!-- description -->
@@ -180,7 +178,7 @@ namespace bsl
         [[nodiscard]] constexpr pointer_type
         front_if() noexcept
         {
-            return this->at_if(0U);
+            return this->at_if(to_umax(0));
         }
 
         /// <!-- description -->
@@ -193,7 +191,7 @@ namespace bsl
         [[nodiscard]] constexpr const_pointer_type
         front_if() const noexcept
         {
-            return this->at_if(0U);
+            return this->at_if(to_umax(0));
         }
 
         /// <!-- description -->
@@ -206,7 +204,7 @@ namespace bsl
         [[nodiscard]] constexpr reference_type
         back() noexcept
         {
-            return *this->at_if(N - 1U);
+            return *this->at_if(to_umax(N) - to_umax(1));
         }
 
         /// <!-- description -->
@@ -219,7 +217,7 @@ namespace bsl
         [[nodiscard]] constexpr const_reference_type
         back() const noexcept
         {
-            return *this->at_if(N - 1U);
+            return *this->at_if(to_umax(N) - to_umax(1));
         }
 
         /// <!-- description -->
@@ -232,7 +230,7 @@ namespace bsl
         [[nodiscard]] constexpr pointer_type
         back_if() noexcept
         {
-            return this->at_if(N - 1U);
+            return this->at_if(to_umax(N) - to_umax(1));
         }
 
         /// <!-- description -->
@@ -245,7 +243,7 @@ namespace bsl
         [[nodiscard]] constexpr const_pointer_type
         back_if() const noexcept
         {
-            return this->at_if(N - 1U);
+            return this->at_if(to_umax(N) - to_umax(1));
         }
 
         /// <!-- description -->
@@ -284,7 +282,7 @@ namespace bsl
         [[nodiscard]] constexpr iterator_type
         begin() noexcept
         {
-            return iterator_type{this->front_if(), N, 0U};
+            return iterator_type{this->front_if(), to_umax(N), to_umax(0)};
         }
 
         /// <!-- description -->
@@ -297,7 +295,7 @@ namespace bsl
         [[nodiscard]] constexpr const_iterator_type
         begin() const noexcept
         {
-            return const_iterator_type{this->front_if(), N, 0U};
+            return const_iterator_type{this->front_if(), to_umax(N), to_umax(0)};
         }
 
         /// <!-- description -->
@@ -310,7 +308,7 @@ namespace bsl
         [[nodiscard]] constexpr const_iterator_type
         cbegin() const noexcept
         {
-            return const_iterator_type{this->front_if(), N, 0U};
+            return const_iterator_type{this->front_if(), to_umax(N), to_umax(0)};
         }
 
         /// <!-- description -->
@@ -324,7 +322,7 @@ namespace bsl
         [[nodiscard]] constexpr iterator_type
         iter(size_type const i) noexcept
         {
-            return iterator_type{this->front_if(), N, i};
+            return iterator_type{this->front_if(), to_umax(N), i};
         }
 
         /// <!-- description -->
@@ -338,7 +336,7 @@ namespace bsl
         [[nodiscard]] constexpr const_iterator_type
         iter(size_type const i) const noexcept
         {
-            return const_iterator_type{this->front_if(), N, i};
+            return const_iterator_type{this->front_if(), to_umax(N), i};
         }
 
         /// <!-- description -->
@@ -352,7 +350,7 @@ namespace bsl
         [[nodiscard]] constexpr const_iterator_type
         citer(size_type const i) const noexcept
         {
-            return const_iterator_type{this->front_if(), N, i};
+            return const_iterator_type{this->front_if(), to_umax(N), i};
         }
 
         /// <!-- description -->
@@ -369,7 +367,7 @@ namespace bsl
         [[nodiscard]] constexpr iterator_type
         end() noexcept
         {
-            return iterator_type{this->front_if(), N, N};
+            return iterator_type{this->front_if(), to_umax(N), to_umax(N)};
         }
 
         /// <!-- description -->
@@ -386,7 +384,7 @@ namespace bsl
         [[nodiscard]] constexpr const_iterator_type
         end() const noexcept
         {
-            return const_iterator_type{this->front_if(), N, N};
+            return const_iterator_type{this->front_if(), to_umax(N), to_umax(N)};
         }
 
         /// <!-- description -->
@@ -403,7 +401,7 @@ namespace bsl
         [[nodiscard]] constexpr const_iterator_type
         cend() const noexcept
         {
-            return const_iterator_type{this->front_if(), N, N};
+            return const_iterator_type{this->front_if(), to_umax(N), to_umax(N)};
         }
 
         /// <!-- description -->
@@ -478,13 +476,13 @@ namespace bsl
         ///     array.
         ///
         [[nodiscard]] constexpr reverse_iterator_type
-        riter(size_type i) noexcept
+        riter(size_type const i) noexcept
         {
-            if (i < bsl::npos) {
-                ++i;
+            if (i >= to_umax(N)) {
+                return reverse_iterator_type{this->iter(to_umax(N))};
             }
 
-            return reverse_iterator_type{this->iter(i)};
+            return reverse_iterator_type{this->iter(i + to_umax(1))};
         }
 
         /// <!-- description -->
@@ -502,13 +500,13 @@ namespace bsl
         ///     array.
         ///
         [[nodiscard]] constexpr const_reverse_iterator_type
-        riter(size_type i) const noexcept
+        riter(size_type const i) const noexcept
         {
-            if (i < bsl::npos) {
-                ++i;
+            if (i >= to_umax(N)) {
+                return const_reverse_iterator_type{this->iter(to_umax(N))};
             }
 
-            return const_reverse_iterator_type{this->iter(i)};
+            return const_reverse_iterator_type{this->iter(i + to_umax(1))};
         }
 
         /// <!-- description -->
@@ -526,13 +524,13 @@ namespace bsl
         ///     array.
         ///
         [[nodiscard]] constexpr const_reverse_iterator_type
-        criter(size_type i) const noexcept
+        criter(size_type const i) const noexcept
         {
-            if (i < bsl::npos) {
-                ++i;
+            if (i >= to_umax(N)) {
+                return const_reverse_iterator_type{this->citer(to_umax(N))};
             }
 
-            return const_reverse_iterator_type{this->citer(i)};
+            return const_reverse_iterator_type{this->citer(i + to_umax(1))};
         }
 
         /// <!-- description -->
@@ -619,7 +617,7 @@ namespace bsl
         [[nodiscard]] static constexpr size_type
         size() noexcept
         {
-            return N;
+            return to_umax(N);
         }
 
         /// <!-- description -->
@@ -632,7 +630,7 @@ namespace bsl
         [[nodiscard]] static constexpr size_type
         max_size() noexcept
         {
-            return numeric_limits<size_type>::max() / sizeof(T);
+            return size_type::max() / to_umax(sizeof(T));
         }
 
         /// <!-- description -->
@@ -645,7 +643,7 @@ namespace bsl
         [[nodiscard]] static constexpr size_type
         size_bytes() noexcept
         {
-            return N * sizeof(T);
+            return to_umax(N) * to_umax(sizeof(T));
         }
     };
 
@@ -667,11 +665,7 @@ namespace bsl
     constexpr bool
     operator==(bsl::array<T, N> const &lhs, bsl::array<T, N> const &rhs) noexcept
     {
-        if (is_fundamental<T>::value && !is_constant_evaluated()) {
-            return bsl::builtin_memcmp(lhs.data(), rhs.data(), lhs.size_bytes()) == 0;
-        }
-
-        for (bsl::uintmax i{}; i < lhs.size(); ++i) {
+        for (safe_uintmax i{}; i < lhs.size(); ++i) {
             if (*lhs.at_if(i) != *rhs.at_if(i)) {
                 return false;
             }
@@ -721,8 +715,8 @@ namespace bsl
     [[maybe_unused]] constexpr out<T1>
     operator<<(out<T1> const o, bsl::array<T2, N> const &val) noexcept
     {
-        for (bsl::uintmax i{}; i < val.size(); ++i) {
-            o << ((0U == i) ? "[" : ", ") << *val.at_if(i);
+        for (safe_uintmax i{}; i < val.size(); ++i) {
+            o << (i.is_zero() ? "[" : ", ") << *val.at_if(i);
         }
 
         return o << ']';

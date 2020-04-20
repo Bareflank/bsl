@@ -95,6 +95,8 @@ main() noexcept
     static_assert(is_signed<bsl::intptr const>::value);
     static_assert(is_signed<bsl::intmax>::value);
     static_assert(is_signed<bsl::intmax const>::value);
+    static_assert(is_signed<bsl::char_type>::value);
+    static_assert(is_signed<bsl::char_type const>::value);
 
     static_assert(!is_signed<bool>::value);
     static_assert(!is_signed<bool const>::value);

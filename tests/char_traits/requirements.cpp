@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/char_traits.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/ut.hpp>
 
 /// <!-- description -->
@@ -42,9 +43,9 @@ main() noexcept
     bsl::ut_scenario{"verify noexcept"} = []() {
         static_assert(noexcept(traits::eq('H', 'H')));
         static_assert(noexcept(traits::lt('H', 'H')));
-        static_assert(noexcept(traits::compare(nullptr, nullptr, 0)));
+        static_assert(noexcept(traits::compare(nullptr, nullptr, bsl::to_umax(0))));
         static_assert(noexcept(traits::length(nullptr)));
-        static_assert(noexcept(traits::find(nullptr, 0, 0)));
+        static_assert(noexcept(traits::find(nullptr, bsl::to_umax(0), 0)));
         static_assert(noexcept(traits::to_char_type(0)));
         static_assert(noexcept(traits::to_int_type(0)));
         static_assert(noexcept(traits::eq_int_type(0, 0)));

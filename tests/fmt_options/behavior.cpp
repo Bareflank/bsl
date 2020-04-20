@@ -46,7 +46,7 @@ tests() noexcept
                 bsl::ut_check(ops.sign() == bsl::fmt_sign::fmt_sign_neg_only);
                 bsl::ut_check(!ops.alternate_form());
                 bsl::ut_check(!ops.sign_aware());
-                bsl::ut_check(ops.width() == 0);
+                bsl::ut_check(ops.width() == bsl::to_umax(0));
                 bsl::ut_check(ops.type() == bsl::fmt_type::fmt_type_default);
             };
         };
@@ -61,7 +61,7 @@ tests() noexcept
                 bsl::ut_check(ops.sign() == bsl::fmt_sign::fmt_sign_pos_neg);
                 bsl::ut_check(ops.alternate_form());
                 bsl::ut_check(ops.sign_aware());
-                bsl::ut_check(ops.width() == 10);
+                bsl::ut_check(ops.width() == bsl::to_umax(10));
                 bsl::ut_check(ops.type() == bsl::fmt_type::fmt_type_d);
             };
         };
@@ -74,7 +74,7 @@ tests() noexcept
                 bsl::ut_check(ops.sign() == bsl::fmt_sign::fmt_sign_pos_neg);
                 bsl::ut_check(ops.alternate_form());
                 bsl::ut_check(ops.sign_aware());
-                bsl::ut_check(ops.width() == 10);
+                bsl::ut_check(ops.width() == bsl::to_umax(10));
                 bsl::ut_check(ops.type() == bsl::fmt_type::fmt_type_d);
             };
         };
@@ -209,41 +209,41 @@ tests() noexcept
     };
 
     bsl::ut_scenario{"width"} = []() {
-        constexpr bsl::uint32 digit1{9};
-        constexpr bsl::uint32 digit2{99};
-        constexpr bsl::uint32 digit3{999};
+        constexpr bsl::safe_uintmax digit1{bsl::to_umax(9)};
+        constexpr bsl::safe_uintmax digit2{bsl::to_umax(99)};
+        constexpr bsl::safe_uintmax digit3{bsl::to_umax(999)};
 
-        bsl::ut_given{} = []() {
+        bsl::ut_given{} = [&digit1]() {
             bsl::fmt_options ops{"9"};
-            bsl::ut_then{} = [&ops]() {
+            bsl::ut_then{} = [&ops, &digit1]() {
                 bsl::ut_check(ops.width() == digit1);
             };
         };
 
-        bsl::ut_given{} = []() {
+        bsl::ut_given{} = [&digit2]() {
             bsl::fmt_options ops{"99"};
-            bsl::ut_then{} = [&ops]() {
+            bsl::ut_then{} = [&ops, &digit2]() {
                 bsl::ut_check(ops.width() == digit2);
             };
         };
 
-        bsl::ut_given{} = []() {
+        bsl::ut_given{} = [&digit3]() {
             bsl::fmt_options ops{"999"};
-            bsl::ut_then{} = [&ops]() {
+            bsl::ut_then{} = [&ops, &digit3]() {
                 bsl::ut_check(ops.width() == digit3);
             };
         };
 
-        bsl::ut_given{} = []() {
+        bsl::ut_given{} = [&digit3]() {
             bsl::fmt_options ops{"9999"};
-            bsl::ut_then{} = [&ops]() {
+            bsl::ut_then{} = [&ops, &digit3]() {
                 bsl::ut_check(ops.width() == digit3);
             };
         };
 
-        bsl::ut_given{} = []() {
+        bsl::ut_given{} = [&digit3]() {
             bsl::fmt_options ops{"999999999999999999999999999999999999999"};
-            bsl::ut_then{} = [&ops]() {
+            bsl::ut_then{} = [&ops, &digit3]() {
                 bsl::ut_check(ops.width() == digit3);
             };
         };
@@ -251,7 +251,7 @@ tests() noexcept
         bsl::ut_given{} = []() {
             bsl::fmt_options ops{"Hello World"};
             bsl::ut_then{} = [&ops]() {
-                bsl::ut_check(ops.width() == 0);
+                bsl::ut_check(ops.width() == bsl::to_umax(0));
             };
         };
     };

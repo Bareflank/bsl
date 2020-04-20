@@ -23,9 +23,11 @@
 /// SOFTWARE.
 
 #include <bsl/char_type.hpp>
-#include <bsl/cstr_type.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/cstdint.hpp>
 #include <bsl/cstring.hpp>
+#include <bsl/cstr_type.hpp>
+#include <bsl/safe_integral.hpp>
 
 #include <bsl/details/putc_stdout.hpp>
 #include <bsl/details/puts_stdout.hpp>
@@ -36,11 +38,11 @@ namespace
     struct test_string_view final
     {
         bsl::char_type data[N]{};
-        bsl::uintmax size{};
+        bsl::safe_uintmax size{};
     };
 
-    constexpr bsl::uintmax res_size{256};
-    test_string_view<res_size> res{};
+    constexpr bsl::safe_uintmax res_size{bsl::to_umax(256)};
+    test_string_view<res_size.get()> res{};
 
     template<bsl::uintmax N>
     bool
@@ -50,7 +52,13 @@ namespace
             return false;
         }
 
-        return bsl::builtin_strncmp(lhs.data, str, lhs.size) == 0;
+        for (bsl::safe_uintmax i{}; i < lhs.size; ++i) {
+            if (lhs.data[i.get()] != str[i.get()]) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     void
@@ -59,7 +67,8 @@ namespace
         for (auto &e : res.data) {
             e = 0;
         }
-        res.size = 0;
+
+        res.size = bsl::to_umax(0);
     }
 }
 
@@ -69,17 +78,19 @@ namespace bsl
     {
         template<>
         void
-        putc_stdout<void>(char_type const c) noexcept
+        putc_stdout<void>(bsl::char_type const c) noexcept
         {
-            res.data[res.size++] = c;
+            res.data[res.size.get()] = c;
+            ++res.size;
         }
 
         template<>
         void
-        puts_stdout<void>(cstr_type const str) noexcept
+        puts_stdout<void>(bsl::cstr_type const str) noexcept
         {
-            for (bsl::uintmax i{}; i < bsl::builtin_strlen(str); ++i) {
-                res.data[res.size++] = str[i];
+            for (bsl::safe_uintmax i{}; i < bsl::builtin_strlen(str); ++i) {
+                res.data[res.size.get()] = str[i.get()];
+                ++res.size;
             }
         }
     }
@@ -119,6 +130,32 @@ main() noexcept
         bsl::ut_when{} = []() {
             reset();
             bsl::print() << -42;
+            bsl::ut_then{} = []() {
+                bsl::ut_check(res == "-42");
+            };
+        };
+    };
+
+    bsl::ut_scenario{"safe_integral with no formatting"} = []() {
+        bsl::ut_when{} = []() {
+            reset();
+            bsl::print() << bsl::to_i32(0);
+            bsl::ut_then{} = []() {
+                bsl::ut_check(res == "0");
+            };
+        };
+
+        bsl::ut_when{} = []() {
+            reset();
+            bsl::print() << bsl::to_i32(42);
+            bsl::ut_then{} = []() {
+                bsl::ut_check(res == "42");
+            };
+        };
+
+        bsl::ut_when{} = []() {
+            reset();
+            bsl::print() << bsl::to_i32(-42);
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "-42");
             };

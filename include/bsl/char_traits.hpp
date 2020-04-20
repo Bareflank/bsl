@@ -29,8 +29,9 @@
 #define BSL_CHAR_TRAITS_HPP
 
 #include "char_type.hpp"
-#include "cstdint.hpp"
+#include "convert.hpp"
 #include "cstring.hpp"
+#include "safe_integral.hpp"
 
 namespace bsl
 {
@@ -121,13 +122,13 @@ namespace bsl
         ///     if s1 or s2 are nullptr, or if count is zero. Positive value
         ///     if s1 appears after s2 in lexicographical order.
         ///
-        [[nodiscard]] static constexpr bsl::int32
+        [[nodiscard]] static constexpr safe_int32
         compare(                          // --
             char_type const *const s1,    // --
             char_type const *const s2,    // --
-            bsl::uintmax const count) noexcept
+            safe_uintmax const count) noexcept
         {
-            return bsl::builtin_strncmp(s1, s2, count);
+            return to_i32(bsl::builtin_strncmp(s1, s2, count));
         }
 
         /// <!-- description -->
@@ -142,7 +143,7 @@ namespace bsl
         ///   @param s the string to get the length of
         ///   @return Returns the length of the provided string.
         ///
-        [[nodiscard]] static constexpr bsl::uintmax
+        [[nodiscard]] static constexpr safe_uintmax
         length(char_type const *const s) noexcept
         {
             return bsl::builtin_strlen(s);
@@ -164,7 +165,7 @@ namespace bsl
         ///   @return Returns a pointer to the first occurrence of "ch" in "p".
         ///
         [[nodiscard]] static constexpr char_type const *
-        find(char_type const *const p, bsl::uintmax const count, char_type const &ch) noexcept
+        find(char_type const *const p, safe_uintmax const count, char_type const &ch) noexcept
         {
             return bsl::builtin_strnchr(p, ch, count);
         }

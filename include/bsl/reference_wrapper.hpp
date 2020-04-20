@@ -69,7 +69,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param val the thing to get the address of and store.
         ///
-        explicit constexpr reference_wrapper(T &val) noexcept : m_ptr{addressof(val)}
+        explicit constexpr reference_wrapper(T &val) noexcept    // --
+            : m_ptr{addressof(val)}
         {}
 
         /// <!-- description -->

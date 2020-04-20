@@ -33,8 +33,8 @@ namespace bsl
     inline void
     example_basic_string_view_substr() noexcept
     {
-        constexpr bsl::uintmax pos{0U};
-        constexpr bsl::uintmax count{5U};
+        constexpr bsl::safe_uintmax pos{to_umax(0)};
+        constexpr bsl::safe_uintmax count{to_umax(5)};
         constexpr bsl::basic_string_view<bsl::char_type> str{"Hello World"};
 
         if (str.substr(pos, count) == "Hello") {

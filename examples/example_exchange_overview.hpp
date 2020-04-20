@@ -33,11 +33,11 @@ namespace bsl
     inline void
     example_exchange_overview() noexcept
     {
-        bsl::int32 const val1{23};
-        bsl::int32 const val2{42};
+        constexpr bsl::safe_int32 val1{23};
+        constexpr bsl::safe_int32 val2{42};
 
-        bsl::int32 var1{val1};
-        bsl::int32 var2{val2};
+        bsl::safe_int32 var1{val1};
+        bsl::safe_int32 var2{val2};
         var2 = bsl::exchange(var1, var2);
 
         if (val2 == var1) {

@@ -35,13 +35,13 @@ namespace bsl
     inline void
     example_fill_overview() noexcept
     {
-        constexpr bsl::uintmax val{1U};
-        constexpr bsl::uintmax size{42U};
+        constexpr bsl::safe_uintmax val{bsl::to_umax(1)};
+        constexpr bsl::safe_uintmax size{bsl::to_umax(42)};
 
-        bsl::array<bsl::uintmax, size> arr{};
+        bsl::array<bsl::safe_uintmax, size.get()> arr{};
         bsl::fill(arr, val);
 
-        bsl::uintmax sum{};
+        bsl::safe_uintmax sum{};
         bsl::for_each(arr, [&sum](auto const &e) mutable noexcept {
             sum += e;
         });

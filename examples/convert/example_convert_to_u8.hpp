@@ -35,6 +35,6 @@ namespace bsl
     example_convert_to_u8() noexcept
     {
         constexpr bsl::safe_uint8 val{bsl::to_u8(42)};
-        bsl::print() << "success: " << val.get() << '\n';
+        bsl::print() << "success: " << val << '\n';
     }
 }

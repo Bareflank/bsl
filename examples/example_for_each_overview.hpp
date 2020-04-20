@@ -35,8 +35,8 @@ namespace bsl
     example_for_each_overview() noexcept
     {
         constexpr bsl::string_view msg{"Hello"};
-        constexpr bsl::uintmax i1{1U};
-        constexpr bsl::uintmax i4{4U};
+        constexpr bsl::safe_uintmax i1{bsl::to_umax(1)};
+        constexpr bsl::safe_uintmax i4{bsl::to_umax(4)};
         constexpr char_type co{'o'};
 
         // ---------------------------------------------------------------------

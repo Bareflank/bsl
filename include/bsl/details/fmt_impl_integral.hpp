@@ -30,10 +30,13 @@
 #include "out.hpp"
 
 #include "../char_type.hpp"
-#include "../cstdint.hpp"
+#include "../convert.hpp"
 #include "../enable_if.hpp"
 #include "../fmt_options.hpp"
+#include "../forward.hpp"
+#include "../is_signed.hpp"
 #include "../is_integral.hpp"
+#include "../safe_integral.hpp"
 
 namespace bsl
 {
@@ -56,9 +59,9 @@ namespace bsl
     ///   @param ops ops the fmt options used to format the output
     ///   @param val the integral being outputted
     ///
-    template<typename OUT, typename V, enable_if_t<is_integral<V>::value, bool> = true>
+    template<typename OUT, typename T>
     constexpr void
-    fmt_impl(OUT &&o, fmt_options const &ops, V const val) noexcept
+    fmt_impl(OUT &&o, fmt_options const &ops, safe_integral<T> const val) noexcept
     {
         switch (ops.type()) {
             case fmt_type::fmt_type_b:
@@ -71,9 +74,51 @@ namespace bsl
 
             case fmt_type::fmt_type_c:
             case fmt_type::fmt_type_s: {
-                details::fmt_impl_align_pre(o, ops, 1U, true);
+                details::fmt_impl_align_pre(o, ops, to_umax(1), true);
+                o.write(static_cast<char_type>(val.get()));
+                details::fmt_impl_align_suf(o, ops, to_umax(1), true);
+                break;
+            }
+        }
+    }
+
+    /// <!-- description -->
+    ///   @brief This function is responsible for implementing bsl::fmt
+    ///     for integral types. For integral types with b, d, x and default,
+    ///     this will call fmt_impl_integral_out which does the bulk of
+    ///     the work. For c, this will output the integral as a character
+    ///     type.
+    ///
+    /// <!-- notes -->
+    ///   @note This function exists in the details folder because it is
+    ///     private to the BSL, but it does not exist in the details namespace
+    ///     as it can be overridden by the user to provide their own
+    ///     fmt support for their own types.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam OUT the type of out (i.e., debug, alert, etc)
+    ///   @param o the instance of out<T> to output to
+    ///   @param ops ops the fmt options used to format the output
+    ///   @param val the integral being outputted
+    ///
+    template<typename OUT, typename T, enable_if_t<is_integral<T>::value, bool> = true>
+    constexpr void
+    fmt_impl(OUT &&o, fmt_options const &ops, T const val) noexcept
+    {
+        switch (ops.type()) {
+            case fmt_type::fmt_type_b:
+            case fmt_type::fmt_type_d:
+            case fmt_type::fmt_type_x:
+            case fmt_type::fmt_type_default: {
+                fmt_impl_integral(bsl::forward<OUT>(o), ops, convert<T>(val));
+                break;
+            }
+
+            case fmt_type::fmt_type_c:
+            case fmt_type::fmt_type_s: {
+                details::fmt_impl_align_pre(o, ops, to_umax(1), true);
                 o.write(static_cast<char_type>(val));
-                details::fmt_impl_align_suf(o, ops, 1U, true);
+                details::fmt_impl_align_suf(o, ops, to_umax(1), true);
                 break;
             }
         }
@@ -84,41 +129,72 @@ namespace bsl
     ///     output type.
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam T the type of outputter provided
+    ///   @tparam T1 the type of outputter provided
+    ///   @tparam T2 the type of integral to output
     ///   @param o the instance of the outputter used to output the value.
     ///   @param val the integral to output
     ///   @return return o
     ///
-    template<typename T, typename V, enable_if_t<is_integral<V>::value, bool> = true>
-    [[maybe_unused]] constexpr out<T>
-    operator<<(out<T> const o, V val) noexcept
+    template<typename T1, typename T2>
+    [[maybe_unused]] constexpr out<T1>
+    operator<<(out<T1> const o, safe_integral<T2> const val) noexcept
     {
         if constexpr (o.empty()) {
             return o;
         }
 
-        if (is_signed<V>::value && (val < static_cast<V>(0))) {
-            o.write('-');
-            val = -val;
-        }
+        details::fmt_impl_integral_info<T2> info{details::get_integral_info(nullops, val)};
 
-        if (static_cast<V>(0) == val) {
+        if (val.is_zero()) {
             o.write('0');
         }
         else {
-            V reversed{};
-            bsl::uintmax digits{};
-
-            while (val > static_cast<V>(0)) {
-                ++digits;
-                reversed = (reversed * static_cast<V>(10)) + (val % static_cast<V>(10));
-                val /= static_cast<V>(10);
+            if (val.is_neg()) {
+                o.write('-');
             }
 
-            for (bsl::uintmax i{digits}; i > 0U; --i) {
-                V const digit{static_cast<V>(reversed % static_cast<V>(10))};
-                o.write(static_cast<char_type>(digit + static_cast<V>('0')));
-                reversed /= static_cast<V>(10);
+            for (safe_uintmax i{info.num}; i.is_pos(); --i) {
+                o.write(info.buf[(i - to_umax(1)).get()]);
+            }
+        }
+
+        return o;
+    }
+
+    /// <!-- description -->
+    ///   @brief Outputs the provided integral to the provided
+    ///     output type.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T1 the type of outputter provided
+    ///   @tparam T2 the type of integral to output
+    ///   @param o the instance of the outputter used to output the value.
+    ///   @param val the integral to output
+    ///   @return return o
+    ///
+    template<typename T1, typename T2, enable_if_t<is_integral<T2>::value, bool> = true>
+    [[maybe_unused]] constexpr out<T1>
+    operator<<(out<T1> const o, T2 const val) noexcept
+    {
+        if constexpr (o.empty()) {
+            return o;
+        }
+
+        details::fmt_impl_integral_info<T2> info{
+            details::get_integral_info(nullops, convert<T2>(val))};
+
+        if (val == static_cast<T2>(0)) {
+            o.write('0');
+        }
+        else {
+            if constexpr (is_signed<T2>::value) {
+                if (val < static_cast<T2>(0)) {
+                    o.write('-');
+                }
+            }
+
+            for (safe_uintmax i{info.num}; i.is_pos(); --i) {
+                o.write(info.buf[(i - to_umax(1)).get()]);
             }
         }
 

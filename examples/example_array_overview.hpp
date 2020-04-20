@@ -34,15 +34,8 @@ namespace bsl
     inline void
     example_array_overview() noexcept
     {
-        constexpr bsl::uintmax size{6U};
-        constexpr bsl::uintmax val1{4U};
-        constexpr bsl::uintmax val2{8U};
-        constexpr bsl::uintmax val3{15U};
-        constexpr bsl::uintmax val4{16U};
-        constexpr bsl::uintmax val5{23U};
-        constexpr bsl::uintmax val6{42U};
-
-        bsl::array<bsl::uintmax, size> arr{val1, val2, val3, val4, val5, val6};
+        constexpr bsl::safe_uintmax size{bsl::to_umax(2)};
+        constexpr bsl::array<bool, size.get()> arr{true, false};
 
         bsl::for_each(arr, [](auto const &e, auto const i) noexcept {
             bsl::print() << "element [" << i << "] == " << e << bsl::endl;

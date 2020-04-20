@@ -28,7 +28,6 @@
 #ifndef BSL_SWAP_HPP
 #define BSL_SWAP_HPP
 
-#include "cstdint.hpp"
 #include "move.hpp"
 #include "enable_if.hpp"
 #include "is_movable.hpp"

@@ -21,33 +21,27 @@
 /// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
-///
-/// @file min_of.hpp
-///
 
-#ifndef BSL_MIN_OF_HPP
-#define BSL_MIN_OF_HPP
+#include <bsl/safe_integral.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
     /// <!-- description -->
-    ///   @brief Returns a if a is smaller than b, otherwise returns b. Note
-    ///     that this function is called min_of to prevent a name collision
-    ///     with numeric_limits<>::min().
-    ///   @include example_min_of_overview.hpp
+    ///   @brief Provides the example's main function
     ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T The type that defines both a and b
-    ///   @param a the first parameter to compare
-    ///   @param b the second parameter to compare
-    ///   @return Returns a if a is smaller than b, otherwise returns b.
-    ///
-    template<typename T>
-    constexpr T const &
-    min_of(T const &a, T const &b) noexcept
+    inline void
+    example_safe_integral_is_min() noexcept
     {
-        return (b < a) ? b : a;
+        constexpr bsl::safe_int32 val1{bsl::safe_int32::min()};
+        constexpr bsl::safe_int32 val2{bsl::safe_int32::max()};
+
+        if (val1.is_min()) {
+            bsl::print() << "success\n";
+        }
+
+        if (!val2.is_min()) {
+            bsl::print() << "success\n";
+        }
     }
 }
-
-#endif

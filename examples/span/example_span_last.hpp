@@ -35,21 +35,14 @@ namespace bsl
     inline void
     example_span_last() noexcept
     {
-        constexpr bsl::uintmax size{6U};
-        constexpr bsl::uintmax val1{4U};
-        constexpr bsl::uintmax val2{8U};
-        constexpr bsl::uintmax val3{15U};
-        constexpr bsl::uintmax val4{16U};
-        constexpr bsl::uintmax val5{23U};
-        constexpr bsl::uintmax val6{42U};
-        constexpr bsl::uintmax i{3U};
+        constexpr bsl::safe_uintmax size{bsl::to_umax(2)};
+        constexpr bsl::safe_uintmax i{bsl::to_umax(1)};
 
-        bsl::array<bsl::uintmax, size> const arr{val1, val2, val3, val4, val5, val6};
+        constexpr bsl::array<bool, size.get()> arr{true, false};
+        bsl::span const spn{arr.data(), arr.size()};
 
-        bsl::span const s{arr.data(), arr.size()};
-
-        if (auto const *const ptr = s.last(i).front_if()) {
-            if (val4 == *ptr) {
+        if (auto const *const ptr = spn.last(i).front_if()) {
+            if (*ptr) {
                 bsl::print() << "success\n";
             }
         }

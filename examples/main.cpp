@@ -55,6 +55,7 @@
 #include "array/example_array_size_bytes.hpp"
 #include "array/example_array_size.hpp"
 #include "example_as_const_overview.hpp"
+#include "example_basic_errc_type_overview.hpp"
 #include "basic_errc_type/example_basic_errc_type_constructor_t.hpp"
 #include "basic_errc_type/example_basic_errc_type_equals.hpp"
 #include "basic_errc_type/example_basic_errc_type_failure.hpp"
@@ -162,7 +163,6 @@
 #include "example_discard_overview.hpp"
 #include "example_disjunction_overview.hpp"
 #include "example_enable_if_overview.hpp"
-#include "example_basic_errc_type_overview.hpp"
 #include "example_exchange_overview.hpp"
 #include "example_extent_overview.hpp"
 #include "example_false_type_overview.hpp"
@@ -272,8 +272,6 @@
 #include "example_make_signed_overview.hpp"
 #include "example_make_unsigned_overview.hpp"
 #include "example_max_align_t_overview.hpp"
-#include "example_max_of_overview.hpp"
-#include "example_min_of_overview.hpp"
 #include "example_move_if_noexcept_overview.hpp"
 #include "example_move_overview.hpp"
 #include "example_negation_overview.hpp"
@@ -347,8 +345,13 @@
 #include "safe_integral/example_safe_integral_gt_equals.hpp"
 #include "safe_integral/example_safe_integral_gt.hpp"
 #include "safe_integral/example_safe_integral_inc.hpp"
+#include "safe_integral/example_safe_integral_is_max.hpp"
+#include "safe_integral/example_safe_integral_is_min.hpp"
+#include "safe_integral/example_safe_integral_is_neg.hpp"
+#include "safe_integral/example_safe_integral_is_pos.hpp"
 #include "safe_integral/example_safe_integral_is_signed_type.hpp"
 #include "safe_integral/example_safe_integral_is_unsigned_type.hpp"
+#include "safe_integral/example_safe_integral_is_zero.hpp"
 #include "safe_integral/example_safe_integral_lshift.hpp"
 #include "safe_integral/example_safe_integral_lt_equals.hpp"
 #include "safe_integral/example_safe_integral_lt.hpp"
@@ -674,8 +677,6 @@ main() noexcept
     example(&bsl::example_make_signed_overview, "example_make_signed_overview");
     example(&bsl::example_make_unsigned_overview, "example_make_unsigned_overview");
     example(&bsl::example_max_align_t_overview, "example_max_align_t_overview");
-    example(&bsl::example_max_of_overview, "example_max_of_overview");
-    example(&bsl::example_min_of_overview, "example_min_of_overview");
     example(&bsl::example_move_if_noexcept_overview, "example_move_if_noexcept_overview");
     example(&bsl::example_move_overview, "example_move_overview");
     example(&bsl::example_negation_overview, "example_negation_overview");
@@ -749,8 +750,13 @@ main() noexcept
     example(&bsl::example_safe_integral_gt_equals, "example_safe_integral_gt_equals");
     example(&bsl::example_safe_integral_gt, "example_safe_integral_gt");
     example(&bsl::example_safe_integral_inc, "example_safe_integral_inc");
+    example(&bsl::example_safe_integral_is_max, "example_safe_integral_is_max");
+    example(&bsl::example_safe_integral_is_min, "example_safe_integral_is_min");
+    example(&bsl::example_safe_integral_is_neg, "example_safe_integral_is_neg");
+    example(&bsl::example_safe_integral_is_pos, "example_safe_integral_is_pos");
     example(&bsl::example_safe_integral_is_signed_type, "example_safe_integral_is_signed_type");
     example(&bsl::example_safe_integral_is_unsigned_type, "example_safe_integral_is_unsigned_type");
+    example(&bsl::example_safe_integral_is_zero, "example_safe_integral_is_zero");
     example(&bsl::example_safe_integral_lshift, "example_safe_integral_lshift");
     example(&bsl::example_safe_integral_lt_equals, "example_safe_integral_lt_equals");
     example(&bsl::example_safe_integral_lt, "example_safe_integral_lt");
@@ -798,8 +804,6 @@ main() noexcept
     example(&bsl::example_true_type_overview, "example_true_type_overview");
     example(&bsl::example_underlying_type_overview, "example_underlying_type_overview");
     example(&bsl::example_void_t_overview, "example_void_t_overview");
-
-    // clang-format on
 
     return bsl::exit_success;
 }

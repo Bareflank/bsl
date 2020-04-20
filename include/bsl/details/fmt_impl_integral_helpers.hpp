@@ -28,16 +28,18 @@
 #include "fmt_impl_align.hpp"
 #include "out.hpp"
 
-#include "../cstdint.hpp"
-#include "../enable_if.hpp"
+#include "../convert.hpp"
+#include "../char_type.hpp"
 #include "../fmt_options.hpp"
-#include "../is_integral.hpp"
-#include "../is_signed.hpp"
+#include "../safe_integral.hpp"
 
 namespace bsl
 {
     namespace details
     {
+        /// @brief stores the maximum number of digits.
+        constexpr safe_uintmax max_num_digits{to_umax(64)};
+
         /// @class bsl::details::fmt_impl_integral_info
         ///
         /// <!-- description -->
@@ -45,19 +47,19 @@ namespace bsl
         ///     by the fmt logic to output a number.
         ///
         /// <!-- template parameters -->
-        ///   @tparam V the type of integral to get info from
+        ///   @tparam T the type of integral to get info from
         ///
-        template<typename V>
+        template<typename T>
         struct fmt_impl_integral_info final
         {
             /// @brief stores the base of the number (2, 10 or 16)
-            V base;
-            /// @brief stores the number in reverse
-            V reversed;
-            /// @brief stores the total number of digits in the number
-            bsl::uintmax digits;
+            safe_integral<T> base;
             /// @brief stores the total number of extra characters needed
-            bsl::uintmax extras;
+            safe_uintmax extras;
+            /// @brief stores the total number digits that make up the integral
+            safe_uintmax num;
+            /// @brief stores the integral as a string in reverse
+            char_type buf[max_num_digits.get()];
         };
 
         /// <!-- description -->
@@ -72,53 +74,46 @@ namespace bsl
         ///       extra characters consume characters from any "width" the
         ///       user might have provided and need to be accounted for.
         ///     - The fmt_impl_integral function use a common divide by base
-        ///       approach to convert a number to a string. The problem
-        ///       with this approach is the number is outputted in reverse
-        ///       order. Normally a character buffer is allocated, filled
-        ///       with the characters, reversed and then outputted.
-        ///       Since we don't want to use temp storage, we reverse the
-        ///       number in its integral format first. This way, when
-        ///       the fmt_impl_integral function attempts to output the
-        ///       number it will be reversing an already reversed number
-        ///       which will output correctly.
+        ///       approach to convert a number to a string. This approach
+        ///       converts the number in reverse order, so the characters
+        ///       must be stored in a buffer and then outputted in reverse
+        ///       order.
+        ///     - The buffer that we store the digits in (which is in reverse
+        ///       order as stated above) is a simple C-style array and not a
+        ///       bsl::array as the bsl::array depends on this functionality
+        ///       which would create a circular reference.
         ///     - The total number of digits that the number will consume
-        ///       must also be recorded. This is used to ensure trailing
-        ///       zeros are still outputted (e.g., the number 400 in reverse
-        ///       is 4, which would only output 4 when reversed again, but
-        ///       knowing how many digits must be outputted ensures that
-        ///       the 0 case is accounted for, which ensures 400 is outputted
-        ///       by the fmt_impl_integral function).
+        ///       must also be recorded. This prevents the need to add a 0
+        ///       at the end of the buffer.
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam V the type of integral value being outputted
+        ///   @tparam T the type of integral to output
         ///   @param ops ops the fmt options used to format the output
-        ///   @param val the integral value being outputted
-        ///   @return Returns fmt_impl_integral_info<V>
+        ///   @param val the integral value to output
+        ///   @return Returns fmt_impl_integral_info<T>
         ///
-        template<typename V>
-        constexpr fmt_impl_integral_info<V>
-        get_integral_info(fmt_options const &ops, V val) noexcept
+        template<typename T>
+        constexpr fmt_impl_integral_info<T>
+        get_integral_info(fmt_options const &ops, safe_integral<T> val) noexcept
         {
-            fmt_impl_integral_info<V> info{static_cast<V>(10), static_cast<V>(0), 0U, 0U};
+            fmt_impl_integral_info<T> info{};
 
             switch (ops.type()) {
                 case fmt_type::fmt_type_b: {
                     if (ops.alternate_form()) {
-                        ++info.extras;
-                        ++info.extras;
+                        info.extras += to_umax(2);
                     }
 
-                    info.base = static_cast<V>(2);
+                    info.base = convert<T>(2);
                     break;
                 }
 
                 case fmt_type::fmt_type_x: {
                     if (ops.alternate_form()) {
-                        ++info.extras;
-                        ++info.extras;
+                        info.extras += to_umax(2);
                     }
 
-                    info.base = static_cast<V>(16);
+                    info.base = convert<T>(16);
                     break;
                 }
 
@@ -126,45 +121,47 @@ namespace bsl
                 case fmt_type::fmt_type_d:
                 case fmt_type::fmt_type_s:
                 case fmt_type::fmt_type_default: {
-                    info.base = static_cast<V>(10);
+                    info.base = convert<T>(10);
                     break;
                 }
             }
 
             switch (ops.sign()) {
-                case fmt_sign::fmt_sign_pos_neg: {
-                    if (is_signed<V>::value && (val < static_cast<V>(0))) {
-                        val = -val;
-                    }
-                    ++info.extras;
-                    break;
-                }
-
+                case fmt_sign::fmt_sign_pos_neg:
                 case fmt_sign::fmt_sign_space_for_pos: {
-                    if (is_signed<V>::value && (val < static_cast<V>(0))) {
-                        val = -val;
-                    }
                     ++info.extras;
                     break;
                 }
 
                 case fmt_sign::fmt_sign_neg_only: {
-                    if (is_signed<V>::value && (val < static_cast<V>(0))) {
-                        val = -val;
+                    if (val.is_neg()) {
                         ++info.extras;
                     }
                     break;
                 }
             }
 
-            if (static_cast<V>(0) == val) {
-                ++info.digits;
+            if (val.is_zero()) {
+                ++info.num;
             }
             else {
-                while (val > static_cast<V>(0)) {
-                    ++info.digits;
-                    info.reversed = (info.reversed * info.base) + (val % info.base);
+                for (info.num = {}; (info.num < max_num_digits) && (!val.is_zero()); ++info.num) {
+                    safe_integral<T> digit = val % info.base;
                     val /= info.base;
+
+                    if constexpr (val.is_signed_type()) {
+                        if (digit.is_neg()) {
+                            digit = -digit;
+                        }
+                    }
+
+                    if (digit > convert<T>(9)) {
+                        digit -= convert<T>(10);
+                        info.buf[info.num.get()] = 'A' + static_cast<char_type>(digit.get());
+                    }
+                    else {
+                        info.buf[info.num.get()] = '0' + static_cast<char_type>(digit.get());
+                    }
                 }
             }
 
@@ -178,33 +175,32 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam OUT the type of out (i.e., debug, alert, etc)
+        ///   @tparam T the type of integral to output
         ///   @param o the instance of out<T> to output to
         ///   @param ops ops the fmt options used to format the output
         ///   @param val the integral being outputted
         ///
-        template<typename OUT, typename V>
+        template<typename OUT, typename T>
         constexpr void
-        fmt_impl_integral(OUT &&o, fmt_options const &ops, V const val) noexcept
+        fmt_impl_integral(OUT &&o, fmt_options const &ops, safe_integral<T> const val) noexcept
         {
-            fmt_impl_integral_info<V> info{get_integral_info(ops, val)};
+            fmt_impl_integral_info<T> info{get_integral_info(ops, val)};
+            safe_uintmax const padding{fmt_impl_align_pre(o, ops, info.num + info.extras, false)};
 
-            bsl::uintmax const padding{
-                fmt_impl_align_pre(o, ops, info.digits + info.extras, false)};
-
-            if (is_signed<V>::value) {
+            if (is_signed<T>::value) {
                 switch (ops.sign()) {
                     case fmt_sign::fmt_sign_pos_neg: {
-                        o.write((val < static_cast<V>(0)) ? '-' : '+');
+                        o.write(val.is_neg() ? '-' : '+');
                         break;
                     }
 
                     case fmt_sign::fmt_sign_space_for_pos: {
-                        o.write((val < static_cast<V>(0)) ? '-' : ' ');
+                        o.write(val.is_neg() ? '-' : ' ');
                         break;
                     }
 
                     case fmt_sign::fmt_sign_neg_only: {
-                        if (val < static_cast<V>(0)) {
+                        if (val.is_neg()) {
                             o.write('-');
                         }
 
@@ -235,25 +231,21 @@ namespace bsl
             }
 
             if (ops.sign_aware()) {
-                for (bsl::uintmax i{}; i < padding; ++i) {
+                for (safe_uintmax i{}; i < padding; ++i) {
                     o.write('0');
                 }
             }
 
-            for (bsl::uintmax i{info.digits}; i > 0U; --i) {
-                V digit{static_cast<V>(info.reversed % info.base)};
-                if (digit > static_cast<V>(9)) {
-                    digit += static_cast<V>(static_cast<V>('A') - static_cast<V>(10));
+            if (val.is_zero()) {
+                o.write('0');
+            }
+            else {
+                for (safe_uintmax i{info.num}; i.is_pos(); --i) {
+                    o.write(info.buf[(i - to_umax(1)).get()]);
                 }
-                else {
-                    digit += static_cast<V>('0');
-                }
-
-                o.write(static_cast<char_type>(digit));
-                info.reversed /= info.base;
             }
 
-            fmt_impl_align_suf(o, ops, info.digits + info.extras, false);
+            fmt_impl_align_suf(o, ops, info.num + info.extras, false);
         }
     }
 }

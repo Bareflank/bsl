@@ -28,39 +28,13 @@
 #ifndef BSL_FILL_HPP
 #define BSL_FILL_HPP
 
-#include "cstdint.hpp"
-#include "cstring.hpp"
 #include "enable_if.hpp"
-#include "is_constant_evaluated.hpp"
-#include "is_fundamental.hpp"
 #include "is_copy_assignable.hpp"
 #include "is_nothrow_copy_assignable.hpp"
+#include "safe_integral.hpp"
 
 namespace bsl
 {
-    namespace details
-    {
-        /// <!-- description -->
-        ///   @brief Provides the internal implementation of the fill
-        ///     function. Specifically, this is the non-optimized version.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @tparam VIEW the type of view to fill
-        ///   @tparam T the type to fill the view with
-        ///   @param vw the view to fill
-        ///   @param value what to fill the view with
-        ///
-        template<typename VIEW, typename T>
-        constexpr void
-        fill_impl(VIEW &vw, T const &value) noexcept(    // --
-            is_nothrow_copy_assignable<T>::value)
-        {
-            for (bsl::uintmax i{}; i < vw.size(); ++i) {
-                *vw.at_if(i) = value;
-            }
-        }
-    }
-
     /// <!-- description -->
     ///   @brief Sets all elements of a view to "value". T must be
     ///     copy assignable.
@@ -80,16 +54,8 @@ namespace bsl
     fill(VIEW &vw, T const &value) noexcept(    // --
         is_nothrow_copy_assignable<T>::value)
     {
-        if (is_fundamental<T>::value && !is_constant_evaluated()) {
-            if (T{} == value) {
-                bsl::builtin_memset(vw.data(), 0, vw.size_bytes());
-            }
-            else {
-                details::fill_impl(vw, value);
-            }
-        }
-        else {
-            details::fill_impl(vw, value);
+        for (safe_uintmax i{}; i < vw.size(); ++i) {
+            *vw.at_if(i) = value;
         }
     }
 

@@ -23,9 +23,11 @@
 /// SOFTWARE.
 
 #include <bsl/char_type.hpp>
-#include <bsl/cstr_type.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/cstdint.hpp>
 #include <bsl/cstring.hpp>
+#include <bsl/cstr_type.hpp>
+#include <bsl/safe_integral.hpp>
 
 #include <bsl/details/putc_stdout.hpp>
 #include <bsl/details/puts_stdout.hpp>
@@ -36,17 +38,27 @@ namespace
     struct test_string_view final
     {
         bsl::char_type data[N]{};
-        bsl::uintmax size{};
+        bsl::safe_uintmax size{};
     };
 
-    constexpr bsl::uintmax res_size{256};
-    test_string_view<res_size> res{};
+    constexpr bsl::safe_uintmax res_size{bsl::to_umax(10000)};
+    test_string_view<res_size.get()> res{};
 
     template<bsl::uintmax N>
     bool
     operator==(test_string_view<N> const &lhs, bsl::cstr_type const str) noexcept
     {
-        return bsl::builtin_strncmp(lhs.data, str, lhs.size) == 0;
+        if (bsl::builtin_strlen(str) != lhs.size) {
+            return false;
+        }
+
+        for (bsl::safe_uintmax i{}; i < lhs.size; ++i) {
+            if (lhs.data[i.get()] != str[i.get()]) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     void
@@ -55,7 +67,8 @@ namespace
         for (auto &e : res.data) {
             e = 0;
         }
-        res.size = 0;
+
+        res.size = bsl::to_umax(0);
     }
 }
 
@@ -65,22 +78,25 @@ namespace bsl
     {
         template<>
         void
-        putc_stdout<void>(char_type const c) noexcept
+        putc_stdout<void>(bsl::char_type const c) noexcept
         {
-            res.data[res.size++] = c;
+            res.data[res.size.get()] = c;
+            ++res.size;
         }
 
         template<>
         void
-        puts_stdout<void>(cstr_type const str) noexcept
+        puts_stdout<void>(bsl::cstr_type const str) noexcept
         {
-            for (bsl::uintmax i{}; i < bsl::builtin_strlen(str); ++i) {
-                res.data[res.size++] = str[i];
+            for (bsl::safe_uintmax i{}; i < bsl::builtin_strlen(str); ++i) {
+                res.data[res.size.get()] = str[i.get()];
+                ++res.size;
             }
         }
     }
 }
 
+#include <bsl/string_view.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/ut.hpp>
 
@@ -95,10 +111,12 @@ namespace bsl
 bsl::exit_code
 main() noexcept
 {
+    using namespace bsl;
+
     bsl::ut_scenario{"string_view with no formatting"} = []() {
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::string_view{"Hello"};
+            bsl::print() << string_view{"Hello"};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "Hello");
             };
@@ -108,7 +126,7 @@ main() noexcept
     bsl::ut_scenario{"string_view with no formatting using fmt"} = []() {
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{bsl::nullops, bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{nullops, string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "Hello");
             };
@@ -118,7 +136,7 @@ main() noexcept
     bsl::ut_scenario{"string_view with formatting type s"} = []() {
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{"s", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{"s", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "Hello");
             };
@@ -126,7 +144,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{"10s", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{"10s", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "Hello     ");
             };
@@ -134,7 +152,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{"<s", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{"<s", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "Hello");
             };
@@ -142,7 +160,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{">s", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{">s", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "Hello");
             };
@@ -150,7 +168,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{"^s", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{"^s", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "Hello");
             };
@@ -158,7 +176,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{"<10s", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{"<10s", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "Hello     ");
             };
@@ -166,7 +184,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{">10s", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{">10s", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "     Hello");
             };
@@ -174,7 +192,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{"^10s", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{"^10s", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "  Hello   ");
             };
@@ -182,7 +200,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{"#<10s", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{"#<10s", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "Hello#####");
             };
@@ -190,7 +208,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{"#>10s", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{"#>10s", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "#####Hello");
             };
@@ -198,7 +216,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{"#^10s", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{"#^10s", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "##Hello###");
             };
@@ -208,7 +226,7 @@ main() noexcept
     bsl::ut_scenario{"string_view with default formatting type"} = []() {
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{"", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{"", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "Hello");
             };
@@ -216,7 +234,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{"10", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{"10", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "Hello     ");
             };
@@ -224,7 +242,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{"<", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{"<", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "Hello");
             };
@@ -232,7 +250,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{">", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{">", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "Hello");
             };
@@ -240,7 +258,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{"^", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{"^", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "Hello");
             };
@@ -248,7 +266,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{"<10", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{"<10", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "Hello     ");
             };
@@ -256,7 +274,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{">10", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{">10", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "     Hello");
             };
@@ -264,7 +282,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{"^10", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{"^10", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "  Hello   ");
             };
@@ -272,7 +290,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{"#<10", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{"#<10", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "Hello#####");
             };
@@ -280,7 +298,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{"#>10", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{"#>10", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "#####Hello");
             };
@@ -288,7 +306,7 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            bsl::print() << bsl::fmt{"#^10", bsl::string_view{"Hello"}};
+            bsl::print() << bsl::fmt{"#^10", string_view{"Hello"}};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "##Hello###");
             };

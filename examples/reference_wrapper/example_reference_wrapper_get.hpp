@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_reference_wrapper_get() noexcept
     {
-        bsl::int32 const data{42};
+        bsl::safe_int32 const data{42};
         bsl::reference_wrapper const rw{data};
 
         if (rw.get() == data) {

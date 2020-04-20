@@ -37,90 +37,92 @@
 constexpr bsl::exit_code
 tests() noexcept
 {
+    using namespace bsl;
+
     bsl::ut_scenario{"compare"} = []() {
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{};
-            bsl::basic_string_view<bsl::char_type> const msg2{};
+            basic_string_view<char_type> const msg1{};
+            basic_string_view<char_type> const msg2{};
             bsl::ut_then{} = [&msg1, msg2]() {
                 bsl::ut_check(msg1.compare(msg2) == 0);
             };
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{};
-            bsl::basic_string_view<bsl::char_type> const msg2{"Hello"};
+            basic_string_view<char_type> const msg1{};
+            basic_string_view<char_type> const msg2{"Hello"};
             bsl::ut_then{} = [&msg1, msg2]() {
                 bsl::ut_check(msg1.compare(msg2) == 0);
             };
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
-            bsl::basic_string_view<bsl::char_type> const msg2{};
+            basic_string_view<char_type> const msg1{"Hello"};
+            basic_string_view<char_type> const msg2{};
             bsl::ut_then{} = [&msg1, msg2]() {
                 bsl::ut_check(msg1.compare(msg2) == 0);
             };
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
-            bsl::basic_string_view<bsl::char_type> const msg2{"World"};
+            basic_string_view<char_type> const msg1{"Hello"};
+            basic_string_view<char_type> const msg2{"World"};
             bsl::ut_then{} = [&msg1, msg2]() {
                 bsl::ut_check(msg1.compare(msg2) != 0);
             };
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
-            bsl::basic_string_view<bsl::char_type> const msg2{"42"};
+            basic_string_view<char_type> const msg1{"Hello"};
+            basic_string_view<char_type> const msg2{"42"};
             bsl::ut_then{} = [&msg1, msg2]() {
                 bsl::ut_check(msg1.compare(msg2) != 0);
             };
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"42"};
-            bsl::basic_string_view<bsl::char_type> const msg2{"Hello"};
+            basic_string_view<char_type> const msg1{"42"};
+            basic_string_view<char_type> const msg2{"Hello"};
             bsl::ut_then{} = [&msg1, msg2]() {
                 bsl::ut_check(msg1.compare(msg2) != 0);
             };
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
-            bsl::basic_string_view<bsl::char_type> const msg2{"Hell"};
+            basic_string_view<char_type> const msg1{"Hello"};
+            basic_string_view<char_type> const msg2{"Hell"};
             bsl::ut_then{} = [&msg1, msg2]() {
                 bsl::ut_check(msg1.compare(msg2) == 0);
             };
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"Hell"};
-            bsl::basic_string_view<bsl::char_type> const msg2{"Hello"};
+            basic_string_view<char_type> const msg1{"Hell"};
+            basic_string_view<char_type> const msg2{"Hello"};
             bsl::ut_then{} = [&msg1, msg2]() {
                 bsl::ut_check(msg1.compare(msg2) == 0);
             };
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
-            bsl::basic_string_view<bsl::char_type> const msg2{"ell"};
+            basic_string_view<char_type> const msg1{"Hello"};
+            basic_string_view<char_type> const msg2{"ell"};
             bsl::ut_then{} = [&msg1, msg2]() {
                 bsl::ut_check(msg1.compare(msg2) != 0);
             };
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"ell"};
-            bsl::basic_string_view<bsl::char_type> const msg2{"Hello"};
+            basic_string_view<char_type> const msg1{"ell"};
+            basic_string_view<char_type> const msg2{"Hello"};
             bsl::ut_then{} = [&msg1, msg2]() {
                 bsl::ut_check(msg1.compare(msg2) != 0);
             };
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
-            bsl::basic_string_view<bsl::char_type> const msg2{"Hello"};
+            basic_string_view<char_type> const msg1{"Hello"};
+            basic_string_view<char_type> const msg2{"Hello"};
             bsl::ut_then{} = [&msg1, msg2]() {
                 bsl::ut_check(msg1.compare(msg2) == 0);
             };

@@ -32,8 +32,8 @@ namespace bsl
     inline void
     example_fmt_integral() noexcept
     {
-        constexpr bsl::int32 val1{42};
-        constexpr bsl::int32 val2{-42};
+        constexpr bsl::safe_int32 val1{42};
+        constexpr bsl::safe_int32 val2{-42};
 
         bsl::print() << bsl::fmt{"", val1} << bsl::endl;
         bsl::print() << bsl::fmt{"b", val1} << bsl::endl;

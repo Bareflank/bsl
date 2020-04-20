@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/basic_string_view.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/discard.hpp>
 #include <bsl/is_pod.hpp>
 #include <bsl/ut.hpp>
@@ -39,7 +40,7 @@ namespace
         [[nodiscard]] constexpr bool
         test_member_const() const
         {
-            bsl::discard(msg.at_if(0));
+            bsl::discard(msg.at_if(bsl::to_umax(0)));
             bsl::discard(msg.front_if());
             bsl::discard(msg.back_if());
             bsl::discard(msg.data());
@@ -47,14 +48,14 @@ namespace
             bsl::discard(msg.cbegin());
             bsl::discard(msg.end());
             bsl::discard(msg.cend());
-            bsl::discard(msg.iter(0));
-            bsl::discard(msg.citer(0));
+            bsl::discard(msg.iter(bsl::to_umax(0)));
+            bsl::discard(msg.citer(bsl::to_umax(0)));
             bsl::discard(msg.rbegin());
             bsl::discard(msg.crbegin());
             bsl::discard(msg.rend());
             bsl::discard(msg.crend());
-            bsl::discard(msg.riter(0));
-            bsl::discard(msg.criter(0));
+            bsl::discard(msg.riter(bsl::to_umax(0)));
+            bsl::discard(msg.criter(bsl::to_umax(0)));
             bsl::discard(msg.empty());
             bsl::discard(msg.size());
             bsl::discard(msg.length());
@@ -80,7 +81,7 @@ namespace
         [[nodiscard]] constexpr bool
         test_member_nonconst()
         {
-            bsl::discard(msg.at_if(0));
+            bsl::discard(msg.at_if(bsl::to_umax(0)));
             bsl::discard(msg.front_if());
             bsl::discard(msg.back_if());
             bsl::discard(msg.data());
@@ -88,21 +89,21 @@ namespace
             bsl::discard(msg.cbegin());
             bsl::discard(msg.end());
             bsl::discard(msg.cend());
-            bsl::discard(msg.iter(0));
-            bsl::discard(msg.citer(0));
+            bsl::discard(msg.iter(bsl::to_umax(0)));
+            bsl::discard(msg.citer(bsl::to_umax(0)));
             bsl::discard(msg.rbegin());
             bsl::discard(msg.crbegin());
             bsl::discard(msg.rend());
             bsl::discard(msg.crend());
-            bsl::discard(msg.riter(0));
-            bsl::discard(msg.criter(0));
+            bsl::discard(msg.riter(bsl::to_umax(0)));
+            bsl::discard(msg.criter(bsl::to_umax(0)));
             bsl::discard(msg.empty());
             bsl::discard(msg.size());
             bsl::discard(msg.length());
             bsl::discard(msg.max_size());
             bsl::discard(msg.size_bytes());
-            bsl::discard(msg.remove_prefix(0));
-            bsl::discard(msg.remove_suffix(0));
+            bsl::discard(msg.remove_prefix(bsl::to_umax(0)));
+            bsl::discard(msg.remove_suffix(bsl::to_umax(0)));
             bsl::discard(msg.substr());
             bsl::discard(msg.compare(bsl::basic_string_view<bsl::char_type>{}));
             bsl::discard(msg.compare({}, {}, bsl::basic_string_view<bsl::char_type>{}));
@@ -150,7 +151,7 @@ main() noexcept
             bsl::ut_then{} = []() {
                 static_assert(noexcept(bsv_type{}));
                 static_assert(noexcept(bsv_type{""}));
-                static_assert(noexcept(msg1.at_if(0)));
+                static_assert(noexcept(msg1.at_if(bsl::to_umax(0))));
                 static_assert(noexcept(msg1.front_if()));
                 static_assert(noexcept(msg1.back_if()));
                 static_assert(noexcept(msg1.data()));
@@ -158,21 +159,21 @@ main() noexcept
                 static_assert(noexcept(msg1.cbegin()));
                 static_assert(noexcept(msg1.end()));
                 static_assert(noexcept(msg1.cend()));
-                static_assert(noexcept(msg1.iter(0)));
-                static_assert(noexcept(msg1.citer(0)));
+                static_assert(noexcept(msg1.iter(bsl::to_umax(0))));
+                static_assert(noexcept(msg1.citer(bsl::to_umax(0))));
                 static_assert(noexcept(msg1.rbegin()));
                 static_assert(noexcept(msg1.crbegin()));
                 static_assert(noexcept(msg1.rend()));
                 static_assert(noexcept(msg1.crend()));
-                static_assert(noexcept(msg1.riter(0)));
-                static_assert(noexcept(msg1.criter(0)));
+                static_assert(noexcept(msg1.riter(bsl::to_umax(0))));
+                static_assert(noexcept(msg1.criter(bsl::to_umax(0))));
                 static_assert(noexcept(msg1.empty()));
                 static_assert(noexcept(msg1.size()));
                 static_assert(noexcept(msg1.length()));
                 static_assert(noexcept(msg1.max_size()));
                 static_assert(noexcept(msg1.size_bytes()));
-                static_assert(noexcept(msg1.remove_prefix(0)));
-                static_assert(noexcept(msg1.remove_suffix(0)));
+                static_assert(noexcept(msg1.remove_prefix(bsl::to_umax(0))));
+                static_assert(noexcept(msg1.remove_suffix(bsl::to_umax(0))));
                 static_assert(noexcept(msg1.substr()));
                 static_assert(noexcept(msg1.compare(bsv_type{})));
                 static_assert(noexcept(msg1.compare({}, {}, bsv_type{})));

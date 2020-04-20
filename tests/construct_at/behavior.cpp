@@ -40,14 +40,14 @@ tests() noexcept
     bsl::ut_scenario{"construct_at"} = []() {
         bsl::ut_given{} = []() {
             bsl::ut_when{} = []() {
-                bsl::construct_at<bsl::int32>(nullptr, 42);
+                bsl::construct_at<bsl::safe_int32>(nullptr, bsl::to_i32(42));
             };
         };
 
         bsl::ut_given{} = []() {
-            bsl::int32 mydata{};
+            bsl::safe_int32 mydata{};
             bsl::ut_when{} = [&mydata]() {
-                bsl::construct_at<bsl::int32>(&mydata, 42);
+                bsl::construct_at<bsl::safe_int32>(&mydata, bsl::to_i32(42));
                 bsl::ut_then{} = [&mydata]() {
                     bsl::ut_check(mydata == 42);
                 };

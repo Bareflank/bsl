@@ -28,13 +28,10 @@
 #ifndef BSL_CSTRING_HPP
 #define BSL_CSTRING_HPP
 
-#include "cstdint.hpp"
 #include "char_type.hpp"
+#include "convert.hpp"
 #include "cstr_type.hpp"
-#include "discard.hpp"
-#include "is_constant_evaluated.hpp"
-#include "is_void.hpp"
-#include "min_of.hpp"
+#include "safe_integral.hpp"
 
 // Notes: --
 // - In general, you should not use these functions as they are not
@@ -61,64 +58,6 @@
 namespace bsl
 {
     /// <!-- description -->
-    ///   @brief Same as std::memset with parameter checks. If dst is a
-    ///     nullptr, or count is 0, this function returns a nullptr without
-    ///     doing anything.
-    ///
-    /// <!-- notes -->
-    ///   @note Clang currently does not have support for this function in
-    ///     constexpr logic.
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @param dst the buffer to set to all 'ch'
-    ///   @param ch the value to set the provided buffer to
-    ///   @param count the total number of bytes to set
-    ///   @return Returns the same result as std::memset.
-    ///
-    [[maybe_unused]] inline void *
-    builtin_memset(void *const dst, bsl::int8 const ch, bsl::uintmax const count) noexcept
-    {
-        bsl::discard(dst);
-        bsl::discard(ch);
-        bsl::discard(count);
-
-        if ((nullptr == dst) || (count == 0U)) {
-            return nullptr;
-        }
-
-        return BSL_BUILTIN_MEMSET;
-    }
-
-    /// <!-- description -->
-    ///   @brief Same as std::memcmp with parameter checks. If lhs, rhs are a
-    ///     nullptr, or count is 0, this function returns 0.
-    ///
-    /// <!-- notes -->
-    ///   @note For now, this function is marked as a non-constexpr as there
-    ///     seems to be a bug in how this function is implemented by Clang
-    ///     with constexpr functions.
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @param lhs the left hand side of the comparison
-    ///   @param rhs the right hand side of the comparison
-    ///   @param count the total number of bytes to compare
-    ///   @return Returns the same result as std::memcmp.
-    ///
-    [[nodiscard]] inline bsl::int32
-    builtin_memcmp(void const *const lhs, void const *const rhs, bsl::uintmax const count) noexcept
-    {
-        bsl::discard(lhs);
-        bsl::discard(rhs);
-        bsl::discard(count);
-
-        if ((nullptr == lhs) || (nullptr == rhs) || (0U == count)) {
-            return 0;
-        }
-
-        return BSL_BUILTIN_MEMCMP;
-    }
-
-    /// <!-- description -->
     ///   @brief Same as std::strncmp with parameter checks. If lhs, rhs are a
     ///     nullptr, or count is 0, this function returns 0.
     ///
@@ -128,18 +67,19 @@ namespace bsl
     ///   @param count the total number of bytes to compare
     ///   @return Returns the same result as std::strncmp.
     ///
-    [[nodiscard]] inline constexpr bsl::int32
-    builtin_strncmp(cstr_type const lhs, cstr_type const rhs, bsl::uintmax const count) noexcept
+    [[nodiscard]] inline constexpr safe_int32
+    builtin_strncmp(cstr_type const lhs, cstr_type const rhs, safe_uintmax const count) noexcept
     {
-        bsl::discard(lhs);
-        bsl::discard(rhs);
-        bsl::discard(count);
-
-        if ((nullptr == lhs) || (nullptr == rhs) || (0U == count)) {
-            return 0;
+        if ((nullptr == lhs) || (nullptr == rhs) || (count.is_zero())) {
+            return to_i32(0);
         }
 
-        return BSL_BUILTIN_STRNCMP;
+        if constexpr (BSL_PERFORCE) {
+            return to_i32(0);
+        }
+        else {
+            return to_i32(__builtin_strncmp(lhs, rhs, count.get()));
+        }
     }
 
     /// <!-- description -->
@@ -150,16 +90,19 @@ namespace bsl
     ///   @param str a pointer to a string to get the length of
     ///   @return Returns the same result as std::strlen.
     ///
-    [[nodiscard]] inline constexpr bsl::uintmax
+    [[nodiscard]] inline constexpr safe_uintmax
     builtin_strlen(cstr_type const str) noexcept
     {
-        bsl::discard(str);
-
         if (nullptr == str) {
-            return 0U;
+            return to_umax(0);
         }
 
-        return BSL_BUILTIN_STRLEN;
+        if constexpr (BSL_PERFORCE) {
+            return to_umax(0);
+        }
+        else {
+            return to_umax(__builtin_strlen(str));
+        }
     }
 
     /// <!-- description -->
@@ -173,17 +116,19 @@ namespace bsl
     ///   @return Returns the same result as std::strnchr.
     ///
     [[nodiscard]] inline constexpr cstr_type
-    builtin_strnchr(cstr_type const str, char_type const ch, bsl::uintmax const count) noexcept
+    builtin_strnchr(cstr_type const str, char_type const ch, safe_uintmax const count) noexcept
     {
-        bsl::discard(str);
-        bsl::discard(ch);
-        bsl::discard(count);
-
-        if ((nullptr == str) || (0U == count)) {
+        if ((nullptr == str) || (count.is_zero())) {
             return nullptr;
         }
 
-        return BSL_BUILTIN_CHAR_MEMCHR;
+        if constexpr (BSL_PERFORCE) {
+            return nullptr;
+        }
+        else {
+            safe_uintmax len{__builtin_strlen(str)};
+            return __builtin_char_memchr(str, ch, count.min(len + to_umax(1)).get());
+        }
     }
 }
 

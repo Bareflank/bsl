@@ -39,6 +39,29 @@ tests() noexcept
 {
     using namespace bsl;
 
+    bsl::ut_scenario{"the basics"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::int32 val{42};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(convert<bsl::int32>(val) == 42);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 val{42};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(convert<bsl::int32>(val) == 42);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 val{42, true};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(convert<bsl::int32>(val).failure());
+            };
+        };
+    };
+
     bsl::ut_scenario{"up convert signed to signed"} = []() {
         bsl::ut_given{} = []() {
             bsl::safe_int8 val{bsl::safe_int8::max()};
@@ -525,6 +548,15 @@ tests() noexcept
                 bsl::ut_check(to_u64(42U) == static_cast<bsl::uint64>(42U));
                 bsl::ut_check(to_umax(val) == static_cast<bsl::uintmax>(42U));
                 bsl::ut_check(to_umax(42U) == static_cast<bsl::uintmax>(42U));
+            };
+        };
+
+        bsl::ut_given_at_runtime{} = []() {
+            bsl::safe_uint32 val{42U};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(to_uptr(val) == static_cast<bsl::uintptr>(42U));
+                bsl::ut_check(to_uptr(42U) == static_cast<bsl::uintptr>(42U));
+                bsl::ut_check(to_uptr(&val) != static_cast<bsl::uintptr>(0));
             };
         };
     };

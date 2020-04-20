@@ -29,12 +29,12 @@ namespace
 {
     struct monitor_stats final
     {
-        bsl::intmax constructor;
-        bsl::intmax copy_constructor;
-        bsl::intmax move_constructor;
-        bsl::intmax copy_assignment;
-        bsl::intmax move_assignment;
-        bsl::intmax destructor;
+        bsl::safe_int32 constructor;
+        bsl::safe_int32 copy_constructor;
+        bsl::safe_int32 move_constructor;
+        bsl::safe_int32 copy_assignment;
+        bsl::safe_int32 move_assignment;
+        bsl::safe_int32 destructor;
     };
 
     /// @class bsl::example_class_base
@@ -54,7 +54,7 @@ namespace
         explicit constexpr test_result_monitor(monitor_stats *stats) noexcept    // --
             : m_stats{stats}
         {
-            m_stats->constructor++;
+            ++m_stats->constructor;
         }
 
         /// <!-- description -->
@@ -65,7 +65,7 @@ namespace
         ///
         constexpr test_result_monitor(test_result_monitor const &o) noexcept : m_stats{o.m_stats}
         {
-            m_stats->copy_constructor++;
+            ++m_stats->copy_constructor;
         }
 
         /// <!-- description -->
@@ -76,7 +76,7 @@ namespace
         ///
         constexpr test_result_monitor(test_result_monitor &&o) noexcept : m_stats{o.m_stats}
         {
-            m_stats->move_constructor++;
+            ++m_stats->move_constructor;
         }
 
         /// <!-- description -->
@@ -94,7 +94,7 @@ namespace
             }
 
             m_stats = o.m_stats;
-            m_stats->copy_assignment++;
+            ++m_stats->copy_assignment;
 
             return *this;
         }
@@ -114,7 +114,7 @@ namespace
             }
 
             m_stats = o.m_stats;
-            m_stats->move_assignment++;
+            ++m_stats->move_assignment;
 
             return *this;
         }
@@ -124,7 +124,7 @@ namespace
         ///
         constexpr ~test_result_monitor() noexcept
         {
-            m_stats->destructor++;
+            ++m_stats->destructor;
         }
     };
 }

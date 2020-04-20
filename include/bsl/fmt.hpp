@@ -37,16 +37,15 @@
 
 #include "details/out.hpp"
 
-#include "cstdint.hpp"
+#include "convert.hpp"
 #include "enable_if.hpp"
-#include "forward.hpp"
 #include "fmt_options.hpp"
 #include "is_bool.hpp"
 #include "is_integral.hpp"
 #include "is_null_pointer.hpp"
 #include "is_same.hpp"
 #include "is_pointer.hpp"
-#include "move.hpp"
+#include "safe_integral.hpp"
 
 namespace bsl
 {
@@ -233,7 +232,7 @@ namespace bsl
     /// If bsl::fmt{} is given a bsl::char_type, the type field indicates the
     /// following:
     /// - none, 's', 'c': outputs the ascii representation of the character
-    /// - 'b', 'B', 'd', 'x', 'X': uses static_cast<bsl::uint8>() to convert
+    /// - 'b', 'B', 'd', 'x', 'X': uses bsl::to_u8() to convert
     ///   the character type and then uses the integral rules defined below.
     ///
     /// @include fmt/example_fmt_char_type.hpp
@@ -361,12 +360,12 @@ namespace bsl
         ///   @param width a dynamic width which overrides the width field
         ///     in the format string (used to set the width field at runtime).
         ///
-        constexpr fmt(fmt_options const &ops, V const &val, bsl::uintmax width) noexcept
+        constexpr fmt(fmt_options const &ops, V const &val, safe_uintmax width) noexcept
             : m_ops{ops}, m_val{val}
         {
-            constexpr bsl::uintmax max_width{1000U};
+            constexpr safe_uintmax max_width{to_umax(1000)};
             if (width > max_width) {
-                width = max_width - 1U;
+                width = max_width - to_umax(1);
             }
 
             m_ops.set_width(width);
@@ -400,7 +399,7 @@ namespace bsl
         ///   @param width a dynamic width which overrides the width field
         ///     in the format string (used to set the width field at runtime).
         ///
-        constexpr fmt(cstr_type const str, V const &val, bsl::uintmax const width) noexcept
+        constexpr fmt(cstr_type const str, V const &val, safe_uintmax const width) noexcept
             : fmt{fmt_options{str}, val, width}
         {}
 

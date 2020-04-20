@@ -34,8 +34,8 @@ namespace bsl
     inline void
     example_basic_string_view_iter() noexcept
     {
-        constexpr bsl::uintmax i1{1U};
-        constexpr bsl::uintmax i4{4U};
+        constexpr bsl::safe_uintmax i1{bsl::to_umax(1)};
+        constexpr bsl::safe_uintmax i4{bsl::to_umax(4)};
         constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
 
         bsl::for_each(str.iter(i1), str.iter(i4), [](auto &e, auto const i) noexcept {

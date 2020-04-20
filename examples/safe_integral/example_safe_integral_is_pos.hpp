@@ -21,33 +21,32 @@
 /// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
-///
-/// @file max_of.hpp
-///
 
-#ifndef BSL_MAX_OF_HPP
-#define BSL_MAX_OF_HPP
+#include <bsl/safe_integral.hpp>
+#include <bsl/debug.hpp>
 
 namespace bsl
 {
     /// <!-- description -->
-    ///   @brief Returns a if a is larger than b, otherwise returns b. Note
-    ///     that this function is called max_of to prevent a name collision
-    ///     with numeric_limits<>::max().
-    ///   @include example_max_of_overview.hpp
+    ///   @brief Provides the example's main function
     ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T The type that defines both a and b
-    ///   @param a the first parameter to compare
-    ///   @param b the second parameter to compare
-    ///   @return Returns a if a is larger than b, otherwise returns b.
-    ///
-    template<typename T>
-    constexpr T const &
-    max_of(T const &a, T const &b) noexcept
+    inline void
+    example_safe_integral_is_pos() noexcept
     {
-        return (a < b) ? b : a;
+        constexpr bsl::safe_int32 val1{42};
+        constexpr bsl::safe_int32 val2{0};
+        constexpr bsl::safe_int32 val3{-42};
+
+        if (val1.is_pos()) {
+            bsl::print() << "success\n";
+        }
+
+        if (!val2.is_pos()) {
+            bsl::print() << "success\n";
+        }
+
+        if (!val3.is_pos()) {
+            bsl::print() << "success\n";
+        }
     }
 }
-
-#endif

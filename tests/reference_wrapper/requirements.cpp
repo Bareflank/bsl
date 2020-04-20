@@ -28,22 +28,22 @@
 
 namespace
 {
-    [[nodiscard]] constexpr bsl::int32
-    func(bsl::int32 const val) noexcept
+    [[nodiscard]] constexpr bsl::safe_int32
+    func(bsl::safe_int32 const val) noexcept
     {
         return val;
     }
 
     class fixture_t final
     {
-        bsl::reference_wrapper<bsl::int32(bsl::int32)> rw{func};
+        bsl::reference_wrapper<bsl::safe_int32(bsl::safe_int32)> rw{func};
 
     public:
         [[nodiscard]] constexpr bool
         test_member_const() const
         {
             bsl::discard(rw.get());
-            bsl::discard(rw(42));
+            bsl::discard(rw(bsl::to_i32(42)));
 
             return true;
         }
@@ -52,7 +52,7 @@ namespace
         test_member_nonconst()
         {
             bsl::discard(rw.get());
-            bsl::discard(rw(42));
+            bsl::discard(rw(bsl::to_i32(42)));
 
             return true;
         }
@@ -76,11 +76,12 @@ main() noexcept
 
     bsl::ut_scenario{"verify noexcept"} = []() {
         bsl::ut_given{} = []() {
-            bsl::reference_wrapper<bsl::int32(bsl::int32)> rw{func};
+            bsl::reference_wrapper<bsl::safe_int32(bsl::safe_int32)> rw{func};
             bsl::ut_then{} = []() {
-                static_assert(noexcept(bsl::reference_wrapper<bsl::int32(bsl::int32)>{func}));
+                static_assert(
+                    noexcept(bsl::reference_wrapper<bsl::safe_int32(bsl::safe_int32)>{func}));
                 static_assert(noexcept(rw.get()));
-                static_assert(!noexcept(rw(42)));
+                static_assert(!noexcept(rw(bsl::to_i32(42))));
             };
         };
     };

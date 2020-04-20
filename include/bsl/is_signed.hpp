@@ -29,6 +29,7 @@
 #define BSL_IS_SIGNED_HPP
 
 #include "bool_constant.hpp"
+#include "char_type.hpp"
 #include "cstdint.hpp"
 #include "is_floating_point.hpp"
 #include "true_type.hpp"
@@ -58,6 +59,14 @@ namespace bsl
     {};
 
     /// @cond doxygen off
+
+    template<>
+    class is_signed<char_type> final : public true_type
+    {};
+
+    template<>
+    class is_signed<char_type const> final : public true_type
+    {};
 
     template<>
     class is_signed<bsl::int8> final : public true_type

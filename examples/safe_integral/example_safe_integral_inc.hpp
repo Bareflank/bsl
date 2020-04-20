@@ -36,6 +36,6 @@ namespace bsl
         bsl::safe_int32 val{42};
 
         ++val;
-        bsl::print() << "success: " << val.get() << '\n';
+        bsl::print() << "success: " << val << '\n';
     }
 }

@@ -33,17 +33,10 @@ namespace bsl
     inline void
     example_span_equals() noexcept
     {
-        constexpr bsl::uintmax size{6U};
-        constexpr bsl::uintmax val1{4U};
-        constexpr bsl::uintmax val2{8U};
-        constexpr bsl::uintmax val3{15U};
-        constexpr bsl::uintmax val4{16U};
-        constexpr bsl::uintmax val5{23U};
-        constexpr bsl::uintmax val6{42U};
-
-        bsl::array<bsl::uintmax, size> const arr1{val1, val2, val3, val4, val5, val6};
-        bsl::array<bsl::uintmax, size> const arr2{val1, val2, val3, val4, val5, val6};
-        bsl::array<bsl::uintmax, size> const arr3{val1, val1, val1, val1, val1, val1};
+        constexpr bsl::safe_uintmax size{bsl::to_umax(2)};
+        constexpr bsl::array<bool, size.get()> arr1{true, false};
+        constexpr bsl::array<bool, size.get()> arr2{true, false};
+        constexpr bsl::array<bool, size.get()> arr3{false, false};
 
         bsl::span const spn1{arr1.data(), arr1.size()};
         bsl::span const spn2{arr2.data(), arr2.size()};

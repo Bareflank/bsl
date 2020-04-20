@@ -34,6 +34,6 @@ namespace bsl
     example_safe_integral_unary() noexcept
     {
         constexpr bsl::safe_int32 val{42};
-        bsl::print() << "success: " << (-val).get() << '\n';
+        bsl::print() << "success: " << (-val) << '\n';
     }
 }

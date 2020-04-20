@@ -32,7 +32,7 @@ namespace bsl
     inline void
     example_debug_error() noexcept
     {
-        constexpr bsl::int32 val{42};
+        constexpr bsl::safe_int32 val{42};
         bsl::error() << "example message: " << val << bsl::endl;
     }
 }

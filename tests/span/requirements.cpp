@@ -41,7 +41,7 @@ namespace
         [[nodiscard]] constexpr bool
         test_member_const() const
         {
-            bsl::discard(spn.at_if(0));
+            bsl::discard(spn.at_if(bsl::to_umax(0)));
             bsl::discard(spn.front_if());
             bsl::discard(spn.back_if());
             bsl::discard(spn.data());
@@ -49,21 +49,21 @@ namespace
             bsl::discard(spn.cbegin());
             bsl::discard(spn.end());
             bsl::discard(spn.cend());
-            bsl::discard(spn.iter(0));
-            bsl::discard(spn.citer(0));
+            bsl::discard(spn.iter(bsl::to_umax(0)));
+            bsl::discard(spn.citer(bsl::to_umax(0)));
             bsl::discard(spn.rbegin());
             bsl::discard(spn.crbegin());
             bsl::discard(spn.rend());
             bsl::discard(spn.crend());
-            bsl::discard(spn.riter(0));
-            bsl::discard(spn.criter(0));
+            bsl::discard(spn.riter(bsl::to_umax(0)));
+            bsl::discard(spn.criter(bsl::to_umax(0)));
             bsl::discard(spn.empty());
             bsl::discard(spn.size());
             bsl::discard(spn.max_size());
             bsl::discard(spn.size_bytes());
             bsl::discard(spn.first());
             bsl::discard(spn.last());
-            bsl::discard(spn.subspan(0));
+            bsl::discard(spn.subspan(bsl::to_umax(0)));
 
             return true;
         }
@@ -71,7 +71,7 @@ namespace
         [[nodiscard]] constexpr bool
         test_member_nonconst()
         {
-            bsl::discard(spn.at_if(0));
+            bsl::discard(spn.at_if(bsl::to_umax(0)));
             bsl::discard(spn.front_if());
             bsl::discard(spn.back_if());
             bsl::discard(spn.data());
@@ -79,21 +79,21 @@ namespace
             bsl::discard(spn.cbegin());
             bsl::discard(spn.end());
             bsl::discard(spn.cend());
-            bsl::discard(spn.iter(0));
-            bsl::discard(spn.citer(0));
+            bsl::discard(spn.iter(bsl::to_umax(0)));
+            bsl::discard(spn.citer(bsl::to_umax(0)));
             bsl::discard(spn.rbegin());
             bsl::discard(spn.crbegin());
             bsl::discard(spn.rend());
             bsl::discard(spn.crend());
-            bsl::discard(spn.riter(0));
-            bsl::discard(spn.criter(0));
+            bsl::discard(spn.riter(bsl::to_umax(0)));
+            bsl::discard(spn.criter(bsl::to_umax(0)));
             bsl::discard(spn.empty());
             bsl::discard(spn.size());
             bsl::discard(spn.max_size());
             bsl::discard(spn.size_bytes());
             bsl::discard(spn.first());
             bsl::discard(spn.last());
-            bsl::discard(spn.subspan(0));
+            bsl::discard(spn.subspan(bsl::to_umax(0)));
 
             return true;
         }
@@ -125,7 +125,7 @@ main() noexcept
             bsl::span<bool> spn1{};
             bsl::span<bool> spn2{};
             bsl::ut_then{} = []() {
-                static_assert(noexcept(spn1.at_if(0)));
+                static_assert(noexcept(spn1.at_if(bsl::to_umax(0))));
                 static_assert(noexcept(spn1.front_if()));
                 static_assert(noexcept(spn1.back_if()));
                 static_assert(noexcept(spn1.data()));
@@ -133,14 +133,14 @@ main() noexcept
                 static_assert(noexcept(spn1.cbegin()));
                 static_assert(noexcept(spn1.end()));
                 static_assert(noexcept(spn1.cend()));
-                static_assert(noexcept(spn1.iter(0)));
-                static_assert(noexcept(spn1.citer(0)));
+                static_assert(noexcept(spn1.iter(bsl::to_umax(0))));
+                static_assert(noexcept(spn1.citer(bsl::to_umax(0))));
                 static_assert(noexcept(spn1.rbegin()));
                 static_assert(noexcept(spn1.crbegin()));
                 static_assert(noexcept(spn1.rend()));
                 static_assert(noexcept(spn1.crend()));
-                static_assert(noexcept(spn1.riter(0)));
-                static_assert(noexcept(spn1.criter(0)));
+                static_assert(noexcept(spn1.riter(bsl::to_umax(0))));
+                static_assert(noexcept(spn1.criter(bsl::to_umax(0))));
                 static_assert(noexcept(spn1.empty()));
                 static_assert(noexcept(spn1.size()));
                 static_assert(noexcept(spn1.max_size()));
@@ -150,7 +150,7 @@ main() noexcept
                 static_assert(noexcept(spn1 != spn2));
                 static_assert(noexcept(spn1.first()));
                 static_assert(noexcept(spn1.last()));
-                static_assert(noexcept(spn1.subspan(0)));
+                static_assert(noexcept(spn1.subspan(bsl::to_umax(0))));
             };
         };
     };

@@ -25,8 +25,9 @@
 #ifndef BSL_DETAILS_FMT_IMPL_ALIGN_HPP
 #define BSL_DETAILS_FMT_IMPL_ALIGN_HPP
 
-#include "../cstdint.hpp"
+#include "../convert.hpp"
 #include "../fmt_options.hpp"
+#include "../safe_integral.hpp"
 
 namespace bsl
 {
@@ -49,27 +50,27 @@ namespace bsl
         ///   @return Returns the size of the padding
         ///
         template<typename OUT>
-        [[maybe_unused]] constexpr bsl::uintmax
+        [[maybe_unused]] constexpr safe_uintmax
         fmt_impl_align_pre(
-            OUT const &o, fmt_options const &ops, bsl::uintmax const len, bool const left) noexcept
+            OUT const &o, fmt_options const &ops, safe_uintmax const len, bool const left) noexcept
         {
-            bsl::uintmax const padding{(len < ops.width()) ? ops.width() - len : 0U};
+            safe_uintmax const padding{(len < ops.width()) ? ops.width() - len : to_umax(0)};
 
-            if ((!ops.sign_aware()) && (padding != 0U)) {
+            if ((!ops.sign_aware()) && (padding != to_umax(0))) {
                 switch (ops.align()) {
                     case fmt_align::fmt_align_left: {
                         break;
                     }
 
                     case fmt_align::fmt_align_center: {
-                        for (bsl::uintmax i{}; i < (padding >> 1U); ++i) {
+                        for (safe_uintmax i{}; i < (padding >> 1U); ++i) {
                             o.write(ops.fill());
                         }
                         break;
                     }
 
                     case fmt_align::fmt_align_right: {
-                        for (bsl::uintmax i{}; i < padding; ++i) {
+                        for (safe_uintmax i{}; i < padding; ++i) {
                             o.write(ops.fill());
                         }
                         break;
@@ -77,7 +78,7 @@ namespace bsl
 
                     case fmt_align::fmt_align_default: {
                         if (!left) {
-                            for (bsl::uintmax i{}; i < padding; ++i) {
+                            for (safe_uintmax i{}; i < padding; ++i) {
                                 o.write(ops.fill());
                             }
                         }
@@ -107,21 +108,21 @@ namespace bsl
         template<typename OUT>
         constexpr void
         fmt_impl_align_suf(
-            OUT const &o, fmt_options const &ops, bsl::uintmax const len, bool const left) noexcept
+            OUT const &o, fmt_options const &ops, safe_uintmax const len, bool const left) noexcept
         {
-            bsl::uintmax const padding{(len < ops.width()) ? ops.width() - len : 0U};
+            safe_uintmax const padding{(len < ops.width()) ? ops.width() - len : to_umax(0)};
 
-            if ((!ops.sign_aware()) && (padding != 0U)) {
+            if ((!ops.sign_aware()) && (padding != to_umax(0))) {
                 switch (ops.align()) {
                     case fmt_align::fmt_align_left: {
-                        for (bsl::uintmax i{}; i < padding; ++i) {
+                        for (safe_uintmax i{}; i < padding; ++i) {
                             o.write(ops.fill());
                         }
                         break;
                     }
 
                     case fmt_align::fmt_align_center: {
-                        for (bsl::uintmax i{}; i < (padding - (padding >> 1U)); ++i) {
+                        for (safe_uintmax i{}; i < (padding - (padding >> 1U)); ++i) {
                             o.write(ops.fill());
                         }
                         break;
@@ -133,7 +134,7 @@ namespace bsl
 
                     case fmt_align::fmt_align_default: {
                         if (left) {
-                            for (bsl::uintmax i{}; i < padding; ++i) {
+                            for (safe_uintmax i{}; i < padding; ++i) {
                                 o.write(ops.fill());
                             }
                         }

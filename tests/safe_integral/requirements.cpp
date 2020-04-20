@@ -28,7 +28,7 @@
 
 namespace
 {
-    bsl::basic_string_view<bsl::char_type> pod;
+    bsl::safe_int32 pod;
 
     class fixture_t final
     {

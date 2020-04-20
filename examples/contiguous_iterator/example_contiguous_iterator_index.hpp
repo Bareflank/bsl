@@ -36,7 +36,7 @@ namespace bsl
         constexpr bsl::string_view str{"Hello"};
         constexpr bsl::string_view::iterator_type iter{str.begin()};
 
-        if (0U == iter.index()) {
+        if (iter.index().is_zero()) {
             bsl::print() << "success\n";
         }
     }

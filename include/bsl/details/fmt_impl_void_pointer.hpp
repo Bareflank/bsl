@@ -28,7 +28,7 @@
 #include "fmt_impl_integral_helpers.hpp"
 #include "out.hpp"
 
-#include "../cstdint.hpp"
+#include "../convert.hpp"
 #include "../fmt_options.hpp"
 #include "../is_constant_evaluated.hpp"
 
@@ -57,13 +57,11 @@ namespace bsl
             return o;
         }
 
-        bsl::uintptr const val{reinterpret_cast<bsl::uintptr>(ptr)};    // NOLINT // PRQA S 1-10000
-
         if (nullptr == ptr) {
             o.write("nullptr");
         }
         else {
-            details::fmt_impl_integral(o, ptrops, val);
+            details::fmt_impl_integral(o, ptrops, to_uptr(ptr));
         }
 
         return o;

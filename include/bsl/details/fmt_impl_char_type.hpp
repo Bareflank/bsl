@@ -29,6 +29,7 @@
 #include "fmt_impl_integral_helpers.hpp"
 #include "out.hpp"
 
+#include "../convert.hpp"
 #include "../char_type.hpp"
 #include "../forward.hpp"
 #include "../fmt_options.hpp"
@@ -61,16 +62,16 @@ namespace bsl
             case fmt_type::fmt_type_b:
             case fmt_type::fmt_type_d:
             case fmt_type::fmt_type_x: {
-                details::fmt_impl_integral(bsl::forward<OUT>(o), ops, static_cast<bsl::uint8>(c));
+                details::fmt_impl_integral(bsl::forward<OUT>(o), ops, to_u8(c));
                 break;
             }
 
             case fmt_type::fmt_type_c:
             case fmt_type::fmt_type_s:
             case fmt_type::fmt_type_default: {
-                details::fmt_impl_align_pre(o, ops, 1U, true);
+                details::fmt_impl_align_pre(o, ops, to_umax(1), true);
                 o.write(c);
-                details::fmt_impl_align_suf(o, ops, 1U, true);
+                details::fmt_impl_align_suf(o, ops, to_umax(1), true);
                 break;
             }
         }

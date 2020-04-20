@@ -43,9 +43,9 @@ namespace bsl
     ///     function on each iteration. The provided function can take on
     ///     the following signatures:
     ///     - void(T &elem)
-    ///     - void(T &elem, bsl::uintmax index)
+    ///     - void(T &elem, bsl::safe_uintmax index)
     ///     - bool(T &elem)
-    ///     - bool(T &elem, bsl::uintmax index)
+    ///     - bool(T &elem, bsl::safe_uintmax index)
     ///     The boolean versions of this function allow you to return either
     ///     bsl::for_each_break (to break from the loop) or
     ///     for_each_continue (to continue the loop). Note that if you are

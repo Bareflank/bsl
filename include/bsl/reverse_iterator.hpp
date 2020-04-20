@@ -28,8 +28,9 @@
 #ifndef BSL_REVERSE_ITERATOR_HPP
 #define BSL_REVERSE_ITERATOR_HPP
 
-#include "cstdint.hpp"
+#include "convert.hpp"
 #include "debug.hpp"
+#include "safe_integral.hpp"
 
 // TODO
 // - We need to implement the remianing functions that are part of the
@@ -48,7 +49,7 @@ namespace bsl
     /// <!-- description -->
     ///   @brief Provides a reverse iterator as defined by the C++
     ///     specification, with the follwing differences:
-    ///     - The difference type that we use is a bsl::uintmax instead of a
+    ///     - The difference type that we use is a unsigned instead of a
     ///       signed type, which causes a lot of problems with AUTOSAR
     ///       compliance as signed/unsigned conversions and overflow are a
     ///       huge problem with the standard library. This iterator type is
@@ -70,6 +71,9 @@ namespace bsl
     ///       underruns are not possible.
     ///     - We do not provide the protected member "current" as this class
     ///       cannot be subclassed.
+    ///     - We don't implement all of the iterator functions that make up
+    ///       a contiguous iterator as defined by the C++ spec. Some of these
+    ///       can be added in future upon request.
     ///   @include example_reverse_iterator_overview.hpp
     ///
     /// <!-- template parameters -->
@@ -81,10 +85,10 @@ namespace bsl
     public:
         /// @brief alias for: typename Iter::value_type
         using value_type = typename Iter::value_type;
-        /// @brief alias for: bsl::uintmax
-        using size_type = bsl::uintmax;
-        /// @brief alias for: bsl::uintmax
-        using difference_type = bsl::uintmax;
+        /// @brief alias for: safe_uintmax
+        using size_type = safe_uintmax;
+        /// @brief alias for: safe_uintmax
+        using difference_type = safe_uintmax;
         /// @brief alias for: typename Iter::value_type &
         using reference_type = typename Iter::value_type &;
         /// @brief alias for: typename Iter::value_type const &
@@ -170,11 +174,11 @@ namespace bsl
         [[nodiscard]] constexpr size_type
         index() const noexcept
         {
-            if (m_i.index() == 0U) {
+            if (m_i.index().is_zero()) {
                 return m_i.size();
             }
 
-            return m_i.index() - 1U;
+            return m_i.index() - to_umax(1);
         }
 
         /// <!-- description -->
@@ -200,7 +204,7 @@ namespace bsl
         [[nodiscard]] constexpr bool
         is_end() const noexcept
         {
-            return 0U == m_i.index();
+            return m_i.index().is_zero();
         }
 
         /// <!-- description -->
@@ -228,12 +232,12 @@ namespace bsl
                 return nullptr;
             }
 
-            if (m_i.index() == 0U) {
+            if (m_i.index().is_zero()) {
                 bsl::error() << "reverse_iterator: attempt to get value from end() iterator\n";
                 return nullptr;
             }
 
-            return &m_i.data()[m_i.index() - 1U];    // PRQA S 4024 // NOLINT
+            return &m_i.data()[(m_i.index() - to_umax(1)).get()];    // PRQA S 4024 // NOLINT
         }
 
         /// <!-- description -->
@@ -261,12 +265,12 @@ namespace bsl
                 return nullptr;
             }
 
-            if (m_i.index() == 0U) {
+            if (m_i.index().is_zero()) {
                 bsl::error() << "reverse_iterator: attempt to get value from end() iterator\n";
                 return nullptr;
             }
 
-            return &m_i.data()[m_i.index() - 1U];    // PRQA S 4024 // NOLINT
+            return &m_i.data()[(m_i.index() - to_umax(1)).get()];    // PRQA S 4024 // NOLINT
         }
 
         /// <!-- description -->

@@ -428,40 +428,22 @@ if(CMAKE_BUILD_TYPE STREQUAL PERFORCE)
     set(BSL_BUILTIN_FILE "\"file\"")
     set(BSL_BUILTIN_FUNCTION "\"function\"")
     set(BSL_BUILTIN_LINE "0")
-    set(BSL_IS_CONSTANT_EVALUATED "false")
-    set(BSL_BUILTIN_MEMSET "nullptr")
-    set(BSL_BUILTIN_MEMCMP "0")
-    set(BSL_BUILTIN_STRNCMP "0")
-    set(BSL_BUILTIN_STRLEN "0U")
-    set(BSL_BUILTIN_CHAR_MEMCHR "nullptr")
 else()
     set(BSL_PERFORCE "false")
     set(BSL_CONSTEXPR "constexpr")
     set(BSL_BUILTIN_FILE "__builtin_FILE()")
     set(BSL_BUILTIN_FUNCTION "__builtin_FUNCTION()")
     set(BSL_BUILTIN_LINE "__builtin_LINE()")
-    set(BSL_IS_CONSTANT_EVALUATED "__builtin_is_constant_evaluated()")
-    set(BSL_BUILTIN_MEMSET "__builtin_memset(dst,ch,count)")
-    set(BSL_BUILTIN_MEMCMP "__builtin_memcmp(lhs,rhs,count)")
-    set(BSL_BUILTIN_STRNCMP "__builtin_strncmp(lhs,rhs,count)")
-    set(BSL_BUILTIN_STRLEN "__builtin_strlen(str)")
-    set(BSL_BUILTIN_CHAR_MEMCHR "__builtin_char_memchr(str,ch,min_of(__builtin_strlen(str)+1,count))")
 endif()
 
 list(APPEND BSL_DEFAULT_DEFINES
-    BSL_PERFORCE=${BSL_PERFORCE}
     BSL_DEBUG_LEVEL=${BSL_DEBUG_LEVEL}
     BSL_PAGE_SIZE=${BSL_PAGE_SIZE}
+    BSL_PERFORCE=${BSL_PERFORCE}
     BSL_CONSTEXPR=${BSL_CONSTEXPR}
     BSL_BUILTIN_FILE=${BSL_BUILTIN_FILE}
     BSL_BUILTIN_FUNCTION=${BSL_BUILTIN_FUNCTION}
     BSL_BUILTIN_LINE=${BSL_BUILTIN_LINE}
-    BSL_IS_CONSTANT_EVALUATED=${BSL_IS_CONSTANT_EVALUATED}
-    BSL_BUILTIN_MEMSET=${BSL_BUILTIN_MEMSET}
-    BSL_BUILTIN_MEMCMP=${BSL_BUILTIN_MEMCMP}
-    BSL_BUILTIN_STRNCMP=${BSL_BUILTIN_STRNCMP}
-    BSL_BUILTIN_STRLEN=${BSL_BUILTIN_STRLEN}
-    BSL_BUILTIN_CHAR_MEMCHR=${BSL_BUILTIN_CHAR_MEMCHR}
 )
 
 # ------------------------------------------------------------------------------

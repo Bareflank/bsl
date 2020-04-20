@@ -37,19 +37,21 @@
 constexpr bsl::exit_code
 tests() noexcept
 {
+    using namespace bsl;
+
     bsl::ut_scenario{"starts_with"} = []() {
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg{};
+            basic_string_view<char_type> const msg{};
             bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.starts_with(bsl::basic_string_view<bsl::char_type>{}));
+                bsl::ut_check(msg.starts_with(basic_string_view<char_type>{}));
             };
 
             bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(!msg.starts_with(bsl::basic_string_view<bsl::char_type>{"Hell"}));
+                bsl::ut_check(!msg.starts_with(basic_string_view<char_type>{"Hell"}));
             };
 
             bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(!msg.starts_with(bsl::basic_string_view<bsl::char_type>{"ello"}));
+                bsl::ut_check(!msg.starts_with(basic_string_view<char_type>{"ello"}));
             };
 
             bsl::ut_then{} = [&msg]() {
@@ -70,17 +72,17 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
+            basic_string_view<char_type> const msg{"Hello"};
             bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.starts_with(bsl::basic_string_view<bsl::char_type>{}));
+                bsl::ut_check(msg.starts_with(basic_string_view<char_type>{}));
             };
 
             bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.starts_with(bsl::basic_string_view<bsl::char_type>{"Hell"}));
+                bsl::ut_check(msg.starts_with(basic_string_view<char_type>{"Hell"}));
             };
 
             bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(!msg.starts_with(bsl::basic_string_view<bsl::char_type>{"ello"}));
+                bsl::ut_check(!msg.starts_with(basic_string_view<char_type>{"ello"}));
             };
 
             bsl::ut_then{} = [&msg]() {

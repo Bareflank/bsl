@@ -23,13 +23,15 @@
 /// SOFTWARE.
 
 #include <bsl/array.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/discard.hpp>
 #include <bsl/is_pod.hpp>
+#include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
 
 namespace
 {
-    bsl::array<bsl::uintmax, 6> pod;
+    bsl::array<bsl::safe_uintmax, 6> pod;
 
     class fixture_t final
     {
@@ -39,7 +41,7 @@ namespace
         [[nodiscard]] constexpr bool
         test_member_const() const
         {
-            bsl::discard(arr.at_if(0));
+            bsl::discard(arr.at_if(bsl::to_umax(0)));
             bsl::discard(arr.front());
             bsl::discard(arr.front_if());
             bsl::discard(arr.back());
@@ -49,14 +51,14 @@ namespace
             bsl::discard(arr.cbegin());
             bsl::discard(arr.end());
             bsl::discard(arr.cend());
-            bsl::discard(arr.iter(0));
-            bsl::discard(arr.citer(0));
+            bsl::discard(arr.iter(bsl::to_umax(0)));
+            bsl::discard(arr.citer(bsl::to_umax(0)));
             bsl::discard(arr.rbegin());
             bsl::discard(arr.crbegin());
             bsl::discard(arr.rend());
             bsl::discard(arr.crend());
-            bsl::discard(arr.riter(0));
-            bsl::discard(arr.criter(0));
+            bsl::discard(arr.riter(bsl::to_umax(0)));
+            bsl::discard(arr.criter(bsl::to_umax(0)));
             bsl::discard(arr.empty());
             bsl::discard(arr.size());
             bsl::discard(arr.max_size());
@@ -68,7 +70,7 @@ namespace
         [[nodiscard]] constexpr bool
         test_member_nonconst()
         {
-            bsl::discard(arr.at_if(0));
+            bsl::discard(arr.at_if(bsl::to_umax(0)));
             bsl::discard(arr.front());
             bsl::discard(arr.front_if());
             bsl::discard(arr.back());
@@ -76,10 +78,10 @@ namespace
             bsl::discard(arr.data());
             bsl::discard(arr.begin());
             bsl::discard(arr.end());
-            bsl::discard(arr.iter(0));
+            bsl::discard(arr.iter(bsl::to_umax(0)));
             bsl::discard(arr.rbegin());
             bsl::discard(arr.rend());
-            bsl::discard(arr.riter(0));
+            bsl::discard(arr.riter(bsl::to_umax(0)));
             bsl::discard(arr.empty());
             bsl::discard(arr.size());
             bsl::discard(arr.max_size());
@@ -115,7 +117,7 @@ main() noexcept
             bsl::array<bool, 5> arr1{};
             bsl::array<bool, 5> arr2{};
             bsl::ut_then{} = []() {
-                static_assert(noexcept(arr1.at_if(0)));
+                static_assert(noexcept(arr1.at_if(bsl::to_umax(0))));
                 static_assert(noexcept(arr1.front()));
                 static_assert(noexcept(arr1.front_if()));
                 static_assert(noexcept(arr1.back()));
@@ -125,14 +127,14 @@ main() noexcept
                 static_assert(noexcept(arr1.cbegin()));
                 static_assert(noexcept(arr1.end()));
                 static_assert(noexcept(arr1.cend()));
-                static_assert(noexcept(arr1.iter(0)));
-                static_assert(noexcept(arr1.citer(0)));
+                static_assert(noexcept(arr1.iter(bsl::to_umax(0))));
+                static_assert(noexcept(arr1.citer(bsl::to_umax(0))));
                 static_assert(noexcept(arr1.rbegin()));
                 static_assert(noexcept(arr1.crbegin()));
                 static_assert(noexcept(arr1.rend()));
                 static_assert(noexcept(arr1.crend()));
-                static_assert(noexcept(arr1.riter(0)));
-                static_assert(noexcept(arr1.criter(0)));
+                static_assert(noexcept(arr1.riter(bsl::to_umax(0))));
+                static_assert(noexcept(arr1.criter(bsl::to_umax(0))));
                 static_assert(noexcept(arr1.empty()));
                 static_assert(noexcept(arr1.size()));
                 static_assert(noexcept(arr1.max_size()));

@@ -39,6 +39,10 @@
 constexpr bsl::exit_code
 tests() noexcept
 {
+    using namespace bsl;
+
+    // clang-format off
+
     bsl::ut_scenario{"empty span"} = []() {
         bsl::ut_given{} = []() {
             bool touched{};
@@ -103,8 +107,8 @@ tests() noexcept
 
     bsl::ut_scenario{"loop over a view"} = []() {
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 3> arr = {1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 3> arr = {to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
                 bsl::for_each(arr, [&sum](auto &e) {
                     sum += e;
@@ -116,12 +120,12 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 3> arr = {1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 3> arr = {to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
                 bsl::for_each(arr, [&sum](auto &e, auto i) {
                     sum += e;
-                    sum += i;
+                    sum += to_i32(i);
                 });
                 bsl::ut_then{} = [&sum]() {
                     bsl::ut_check(sum == 6);
@@ -130,8 +134,8 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 3> arr = {1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 3> arr = {to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
                 bsl::for_each(arr, [&sum](auto &e) -> bool {
                     if (e == 1) {
@@ -148,16 +152,16 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 3> arr = {1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 3> arr = {to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
                 bsl::for_each(arr, [&sum](auto &e, auto i) -> bool {
-                    if (i == 2) {
+                    if (i == to_umax(2)) {
                         return bsl::for_each_break;
                     }
 
                     sum += e;
-                    sum += i;
+                    sum += to_i32(i);
                     return bsl::for_each_continue;
                 });
                 bsl::ut_then{} = [&sum]() {
@@ -169,8 +173,8 @@ tests() noexcept
 
     bsl::ut_scenario{"loop using begin()/end() iterators"} = []() {
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 3> arr = {1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 3> arr = {to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
                 bsl::for_each(arr.begin(), arr.end(), [&sum](auto &e) {
                     sum += e;
@@ -182,12 +186,12 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 3> arr = {1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 3> arr = {to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
                 bsl::for_each(arr.begin(), arr.end(), [&sum](auto &e, auto i) {
                     sum += e;
-                    sum += i;
+                    sum += to_i32(i);
                 });
                 bsl::ut_then{} = [&sum]() {
                     bsl::ut_check(sum == 6);
@@ -196,8 +200,8 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 3> arr = {1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 3> arr = {to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
                 bsl::for_each(arr.begin(), arr.end(), [&sum](auto &e) -> bool {
                     if (e == 1) {
@@ -214,16 +218,16 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 3> arr = {1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 3> arr = {to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
                 bsl::for_each(arr.begin(), arr.end(), [&sum](auto &e, auto i) -> bool {
-                    if (i == 2) {
+                    if (i == to_umax(2)) {
                         return bsl::for_each_break;
                     }
 
                     sum += e;
-                    sum += i;
+                    sum += to_i32(i);
                     return bsl::for_each_continue;
                 });
                 bsl::ut_then{} = [&sum]() {
@@ -235,8 +239,8 @@ tests() noexcept
 
     bsl::ut_scenario{"loop using rbegin()/rend() iterators"} = []() {
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 3> arr = {1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 3> arr = {to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
                 bsl::for_each(arr.rbegin(), arr.rend(), [&sum](auto &e) {
                     sum += e;
@@ -248,12 +252,12 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 3> arr = {1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 3> arr = {to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
                 bsl::for_each(arr.rbegin(), arr.rend(), [&sum](auto &e, auto i) {
                     sum += e;
-                    sum += i;
+                    sum += to_i32(i);
                 });
                 bsl::ut_then{} = [&sum]() {
                     bsl::ut_check(sum == 6);
@@ -262,8 +266,8 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 3> arr = {1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 3> arr = {to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
                 bsl::for_each(arr.rbegin(), arr.rend(), [&sum](auto &e) -> bool {
                     if (e == 1) {
@@ -280,16 +284,16 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 3> arr = {1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 3> arr = {to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
                 bsl::for_each(arr.rbegin(), arr.rend(), [&sum](auto &e, auto i) -> bool {
-                    if (i == 2) {
+                    if (i == to_umax(2)) {
                         return bsl::for_each_break;
                     }
 
                     sum += e;
-                    sum += i;
+                    sum += to_i32(i);
                     return bsl::for_each_continue;
                 });
                 bsl::ut_then{} = [&sum]() {
@@ -301,10 +305,10 @@ tests() noexcept
 
     bsl::ut_scenario{"loop using iter() iterators"} = []() {
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 5> arr = {1, 1, 1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 5> arr{to_i32(1), to_i32(1), to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
-                bsl::for_each(arr.iter(1), arr.iter(4), [&sum](auto &e) {
+                bsl::for_each(arr.iter(to_umax(1)), arr.iter(to_umax(4)), [&sum](auto &e) {
                     sum += e;
                 });
                 bsl::ut_then{} = [&sum]() {
@@ -314,12 +318,12 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 5> arr = {1, 1, 1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 5> arr{to_i32(1), to_i32(1), to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
-                bsl::for_each(arr.iter(1), arr.iter(4), [&sum](auto &e, auto i) {
+                bsl::for_each(arr.iter(to_umax(1)), arr.iter(to_umax(4)), [&sum](auto &e, auto i) {
                     sum += e;
-                    sum += i;
+                    sum += to_i32(i);
                 });
                 bsl::ut_then{} = [&sum]() {
                     bsl::ut_check(sum == 9);
@@ -330,10 +334,10 @@ tests() noexcept
 
     bsl::ut_scenario{"loop using riter() iterators"} = []() {
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 5> arr = {1, 1, 1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 5> arr{to_i32(1), to_i32(1), to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
-                bsl::for_each(arr.riter(3), arr.riter(0), [&sum](auto &e) {
+                bsl::for_each(arr.riter(to_umax(3)), arr.riter(to_umax(0)), [&sum](auto &e) {
                     sum += e;
                 });
                 bsl::ut_then{} = [&sum]() {
@@ -343,12 +347,12 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 5> arr = {1, 1, 1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 5> arr{to_i32(1), to_i32(1), to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
-                bsl::for_each(arr.riter(3), arr.riter(0), [&sum](auto &e, auto i) {
+                bsl::for_each(arr.riter(to_umax(3)), arr.riter(to_umax(0)), [&sum](auto &e, auto i) {
                     sum += e;
-                    sum += i;
+                    sum += to_i32(i);
                 });
                 bsl::ut_then{} = [&sum]() {
                     bsl::ut_check(sum == 9);
@@ -359,8 +363,8 @@ tests() noexcept
 
     bsl::ut_scenario{"loop using invalid begin()/end() iterators"} = []() {
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 3> arr = {1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 3> arr = {to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
                 bsl::for_each(arr.end(), arr.begin(), [&sum](auto &e) {
                     sum += e;
@@ -372,12 +376,12 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 3> arr = {1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 3> arr = {to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
                 bsl::for_each(arr.end(), arr.begin(), [&sum](auto &e, auto i) {
                     sum += e;
-                    sum += i;
+                    sum += to_i32(i);
                 });
                 bsl::ut_then{} = [&sum]() {
                     bsl::ut_check(sum == 0);
@@ -388,8 +392,8 @@ tests() noexcept
 
     bsl::ut_scenario{"loop using invalid rbegin()/rend() iterators"} = []() {
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 3> arr = {1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 3> arr = {to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
                 bsl::for_each(arr.rend(), arr.rbegin(), [&sum](auto &e) {
                     sum += e;
@@ -401,12 +405,12 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 3> arr = {1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 3> arr = {to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
                 bsl::for_each(arr.rend(), arr.rbegin(), [&sum](auto &e, auto i) {
                     sum += e;
-                    sum += i;
+                    sum += to_i32(i);
                 });
                 bsl::ut_then{} = [&sum]() {
                     bsl::ut_check(sum == 0);
@@ -417,10 +421,10 @@ tests() noexcept
 
     bsl::ut_scenario{"loop using invalid iter() iterators"} = []() {
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 5> arr = {1, 1, 1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 5> arr{to_i32(1), to_i32(1), to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
-                bsl::for_each(arr.iter(4), arr.iter(1), [&sum](auto &e) {
+                bsl::for_each(arr.iter(to_umax(4)), arr.iter(to_umax(1)), [&sum](auto &e) {
                     sum += e;
                 });
                 bsl::ut_then{} = [&sum]() {
@@ -430,12 +434,12 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 5> arr = {1, 1, 1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 5> arr{to_i32(1), to_i32(1), to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
-                bsl::for_each(arr.iter(4), arr.iter(1), [&sum](auto &e, auto i) {
+                bsl::for_each(arr.iter(to_umax(4)), arr.iter(to_umax(1)), [&sum](auto &e, auto i) {
                     sum += e;
-                    sum += i;
+                    sum += to_i32(i);
                 });
                 bsl::ut_then{} = [&sum]() {
                     bsl::ut_check(sum == 0);
@@ -446,10 +450,10 @@ tests() noexcept
 
     bsl::ut_scenario{"loop using invalid riter() iterators"} = []() {
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 5> arr = {1, 1, 1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 5> arr{to_i32(1), to_i32(1), to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
-                bsl::for_each(arr.riter(0), arr.riter(3), [&sum](auto &e) {
+                bsl::for_each(arr.riter(to_umax(0)), arr.riter(to_umax(3)), [&sum](auto &e) {
                     sum += e;
                 });
                 bsl::ut_then{} = [&sum]() {
@@ -459,12 +463,12 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
-            bsl::uintmax sum{};
-            bsl::array<bsl::uintmax, 5> arr = {1, 1, 1, 1, 1};
+            bsl::safe_int32 sum{};
+            bsl::array<safe_int32, 5> arr{to_i32(1), to_i32(1), to_i32(1), to_i32(1), to_i32(1)};
             bsl::ut_when{} = [&arr, &sum]() {
-                bsl::for_each(arr.riter(0), arr.riter(3), [&sum](auto &e, auto i) {
+                bsl::for_each(arr.riter(to_umax(0)), arr.riter(to_umax(3)), [&sum](auto &e, auto i) {
                     sum += e;
-                    sum += i;
+                    sum += to_i32(i);
                 });
                 bsl::ut_then{} = [&sum]() {
                     bsl::ut_check(sum == 0);

@@ -38,7 +38,7 @@ bsl::exit_code
 main() noexcept
 {
     using namespace bsl;
-    static_assert(bsl::npos == numeric_limits<bsl::uintmax>::max());
+    static_assert(bsl::npos == bsl::safe_uintmax::max());
 
     return bsl::ut_success();
 }

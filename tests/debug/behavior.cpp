@@ -84,10 +84,10 @@ tests() noexcept
     bsl::ut_scenario{"small integral from constexpr"} = []() {
         bsl::ut_given{} = []() {
             bsl::ut_then{} = []() {
-                bsl::print() << static_cast<bsl::uint8>(42) << '\n';
-                bsl::alert() << static_cast<bsl::uint8>(42) << '\n';
-                bsl::alert() << static_cast<bsl::uint8>(42) << '\n';
-                bsl::error() << static_cast<bsl::uint8>(42) << '\n';
+                bsl::print() << bsl::to_u8(42) << '\n';
+                bsl::alert() << bsl::to_u8(42) << '\n';
+                bsl::alert() << bsl::to_u8(42) << '\n';
+                bsl::error() << bsl::to_u8(42) << '\n';
             };
         };
     };

@@ -180,6 +180,7 @@
 #include "fmt/example_fmt_width.hpp"
 #include "example_for_each_overview.hpp"
 #include "example_forward_overview.hpp"
+#include "example_from_chars_overview.hpp"
 // #include "example_has_unique_object_representations_overview.hpp"
 #include "example_has_virtual_destructor_overview.hpp"
 #include "example_in_place_overview.hpp"
@@ -363,6 +364,7 @@
 #include "safe_integral/example_safe_integral_operator_bool.hpp"
 #include "safe_integral/example_safe_integral_or.hpp"
 #include "safe_integral/example_safe_integral_rshift.hpp"
+#include "safe_integral/example_safe_integral_set_failure.hpp"
 #include "safe_integral/example_safe_integral_sub.hpp"
 #include "safe_integral/example_safe_integral_unary.hpp"
 #include "safe_integral/example_safe_integral_xor.hpp"
@@ -585,6 +587,7 @@ main() noexcept
     example(&bsl::example_fmt_width, "example_fmt_width");
     example(&bsl::example_for_each_overview, "example_for_each_overview");
     example(&bsl::example_forward_overview, "example_forward_overview");
+    example(&bsl::example_from_chars_overview, "example_from_chars_overview");
     // example(&bsl::example_has_unique_object_representations_overview, "example_has_unique_object_representations_overview");
     example(&bsl::example_has_virtual_destructor_overview, "example_has_virtual_destructor_overview");
     example(&bsl::example_in_place_overview, "example_in_place_overview");
@@ -768,6 +771,7 @@ main() noexcept
     example(&bsl::example_safe_integral_operator_bool, "example_safe_integral_operator_bool");
     example(&bsl::example_safe_integral_or, "example_safe_integral_or");
     example(&bsl::example_safe_integral_rshift, "example_safe_integral_rshift");
+    example(&bsl::example_safe_integral_rshift, "example_safe_integral_set_failure");
     example(&bsl::example_safe_integral_sub, "example_safe_integral_sub");
     example(&bsl::example_safe_integral_unary, "example_safe_integral_unary");
     example(&bsl::example_safe_integral_xor, "example_safe_integral_xor");

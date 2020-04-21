@@ -293,6 +293,17 @@ namespace bsl
         }
 
         /// <!-- description -->
+        ///   @brief Used to indicate that the integral has experienced an
+        ///     error.
+        ///   @include safe_integral/example_safe_integral_set_failure.hpp
+        ///
+        constexpr void
+        set_failure() noexcept
+        {
+            m_error = true;
+        }
+
+        /// <!-- description -->
         ///   @brief Returns the max value the bsl::safe_integral can store.
         ///   @include safe_integral/example_safe_integral_max.hpp
         ///

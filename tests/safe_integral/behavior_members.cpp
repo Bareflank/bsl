@@ -132,7 +132,7 @@ tests() noexcept
         };
     };
 
-    bsl::ut_scenario{"error"} = []() {
+    bsl::ut_scenario{"failure"} = []() {
         bsl::ut_given{} = []() {
             bsl::safe_int32 val{42, false};
             bsl::ut_then{} = [&val]() {
@@ -144,6 +144,28 @@ tests() noexcept
             bsl::safe_int32 val{42, true};
             bsl::ut_then{} = [&val]() {
                 bsl::ut_check(val.failure());
+            };
+        };
+    };
+
+    bsl::ut_scenario{"set_failure"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 val{42, false};
+            bsl::ut_then{} = [&val]() {
+                val.set_failure();
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(val.failure());
+                };
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 val{42, true};
+            bsl::ut_then{} = [&val]() {
+                val.set_failure();
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(val.failure());
+                };
             };
         };
     };

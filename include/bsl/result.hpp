@@ -475,6 +475,18 @@ namespace bsl
         }
 
         /// <!-- description -->
+        ///   @brief Returns success()
+        ///   @include result/example_result_operator_bool.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns success()
+        ///
+        [[nodiscard]] constexpr explicit operator bool() const noexcept
+        {
+            return this->success();
+        }
+
+        /// <!-- description -->
         ///   @brief Returns true if the bsl::result contains T,
         ///     otherwise, if the bsl::result contains an error code,
         ///     returns false.
@@ -577,21 +589,26 @@ namespace bsl
     }
 
     /// <!-- description -->
-    ///   @brief Outputs the provided bsl::array to the provided
+    ///   @brief Outputs the provided bsl::result to the provided
     ///     output type.
-    ///   @related bsl::array
+    ///   @related bsl::result
+    ///   @include result/example_result_ostream.hpp
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T1 the type of outputter provided
     ///   @tparam T2 the type of element being encapsulated.
     ///   @param o the instance of the outputter used to output the value.
-    ///   @param val the array to output
+    ///   @param val the result to output
     ///   @return return o
     ///
     template<typename T1, typename T2, typename E>
     [[maybe_unused]] constexpr out<T1>
     operator<<(out<T1> const o, bsl::result<T2, E> const &val) noexcept
     {
+        if constexpr (!o) {
+            return o;
+        }
+
         if (auto const *const ptr = val.get_if()) {
             return o << *ptr;
         }

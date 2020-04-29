@@ -95,6 +95,18 @@ if(NOT CMAKE_CXX_COMPILER MATCHES "clang")
 endif()
 
 # ------------------------------------------------------------------------------
+# build command
+# ------------------------------------------------------------------------------
+
+if(CMAKE_GENERATOR STREQUAL "Unix Makefiles")
+    set(BUILD_COMMAND "make")
+elseif(CMAKE_GENERATOR STREQUAL "Ninja")
+    set(BUILD_COMMAND "ninja")
+else()
+    bf_configuration_error("Unsupported cmake generator: ${CMAKE_GENERATOR}")
+endif()
+
+# ------------------------------------------------------------------------------
 # default build type
 # ------------------------------------------------------------------------------
 
@@ -188,10 +200,10 @@ message(STATUS "Build type: ${BF_COLOR_CYN}${CMAKE_BUILD_TYPE}${BF_COLOR_RST}")
 
 add_custom_command(TARGET info
     COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --green   " Basic Commands:"
-    COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ninja info                            shows this help info"
-    COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ninja                                 builds the project"
-    COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ninja clean                           cleans the project"
-    COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ninja install                         installs the project on your system"
+    COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ${BUILD_COMMAND} info                            shows this help info"
+    COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ${BUILD_COMMAND}                                 builds the project"
+    COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ${BUILD_COMMAND} clean                           cleans the project"
+    COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ${BUILD_COMMAND} install                         installs the project on your system"
     COMMAND ${CMAKE_COMMAND} -E cmake_echo_color " "
     COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --green   " Supported Build Targets:"
     VERBATIM
@@ -238,7 +250,7 @@ if(BUILD_TESTS)
         COMMAND ctest -j ${NUM_THREADS} --output-on-failure
     )
     add_custom_command(TARGET info
-        COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ninja unittest                        run the project's unit tests"
+        COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ${BUILD_COMMAND} unittest                        run the project's unit tests"
         VERBATIM
     )
     message(STATUS "Build tests: ${BF_ENABLED}")
@@ -286,7 +298,7 @@ if(ENABLE_CLANG_FORMAT)
         COMMAND ${BF_CLANG_FORMAT} -i ${BF_HEADERS_TESTS} ${BF_SOURCES_TESTS}
     )
     add_custom_command(TARGET info
-        COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ninja format                          formats the source code"
+        COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ${BUILD_COMMAND} format                          formats the source code"
         VERBATIM
     )
     message(STATUS "Tool [Clang Format]: ${BF_ENABLED} - ${BF_CLANG_FORMAT}")
@@ -316,8 +328,8 @@ if(CMAKE_BUILD_TYPE STREQUAL COVERAGE)
         bash ${CMAKE_BINARY_DIR}/codecov.sh -f ${CMAKE_BINARY_DIR}/coverage.info -Z
     )
     add_custom_command(TARGET info
-        COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ninja coverage-info                   gathers info about unit test coverage"
-        COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ninja coverage-upload                 uploads results of unit test coverage"
+        COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ${BUILD_COMMAND} coverage-info                   gathers info about unit test coverage"
+        COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ${BUILD_COMMAND} coverage-upload                 uploads results of unit test coverage"
         VERBATIM
     )
 else()
@@ -335,7 +347,7 @@ if(ENABLE_DOXYGEN)
         VERBATIM
     )
     add_custom_command(TARGET info
-        COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ninja doxygen                         generates documentation"
+        COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow  "   ${BUILD_COMMAND} doxygen                         generates documentation"
         VERBATIM
     )
     message(STATUS "Tool [Doxygen]: ${BF_ENABLED} - ${BF_DOXYGEN}")
@@ -425,15 +437,9 @@ endif()
 if(CMAKE_BUILD_TYPE STREQUAL PERFORCE)
     set(BSL_PERFORCE "true")
     set(BSL_CONSTEXPR "")
-    set(BSL_BUILTIN_FILE "\"file\"")
-    set(BSL_BUILTIN_FUNCTION "\"function\"")
-    set(BSL_BUILTIN_LINE "0")
 else()
     set(BSL_PERFORCE "false")
     set(BSL_CONSTEXPR "constexpr")
-    set(BSL_BUILTIN_FILE "__builtin_FILE()")
-    set(BSL_BUILTIN_FUNCTION "__builtin_FUNCTION()")
-    set(BSL_BUILTIN_LINE "__builtin_LINE()")
 endif()
 
 list(APPEND BSL_DEFAULT_DEFINES
@@ -441,9 +447,6 @@ list(APPEND BSL_DEFAULT_DEFINES
     BSL_PAGE_SIZE=${BSL_PAGE_SIZE}
     BSL_PERFORCE=${BSL_PERFORCE}
     BSL_CONSTEXPR=${BSL_CONSTEXPR}
-    BSL_BUILTIN_FILE=${BSL_BUILTIN_FILE}
-    BSL_BUILTIN_FUNCTION=${BSL_BUILTIN_FUNCTION}
-    BSL_BUILTIN_LINE=${BSL_BUILTIN_LINE}
 )
 
 # ------------------------------------------------------------------------------

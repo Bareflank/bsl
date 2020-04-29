@@ -48,7 +48,7 @@ namespace bsl
     {
         bsl::discard(ptr);
 
-        if constexpr (o.empty()) {
+        if constexpr (!o) {
             return o;
         }
 

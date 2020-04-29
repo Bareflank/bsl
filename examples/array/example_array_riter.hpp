@@ -38,7 +38,7 @@ namespace bsl
         constexpr bsl::safe_uintmax idx{bsl::to_umax(1)};
         constexpr bsl::array<bool, size.get()> arr{true, false};
 
-        bsl::for_each(arr.riter(idx), arr.rend(), [](auto &e, auto const i) noexcept {
+        bsl::for_each(arr.riter(idx), arr.rend(), [](auto &e, auto const &i) noexcept {
             bsl::print() << "element [" << i << "] == " << e << bsl::endl;
         });
     }

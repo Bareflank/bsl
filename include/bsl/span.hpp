@@ -28,9 +28,11 @@
 #ifndef BSL_SPAN_HPP
 #define BSL_SPAN_HPP
 
+#include "char_type.hpp"
 #include "contiguous_iterator.hpp"
 #include "convert.hpp"
 #include "debug.hpp"
+#include "is_same.hpp"
 #include "npos.hpp"
 #include "reverse_iterator.hpp"
 #include "safe_integral.hpp"
@@ -86,6 +88,8 @@ namespace bsl
     template<typename T>
     class span final    // NOLINT
     {
+        static_assert(!is_same<T, char_type>::value, "use bsl::string_view instead");
+
     public:
         /// @brief alias for: T
         using value_type = T;
@@ -140,10 +144,14 @@ namespace bsl
         ///   @param ptr a pointer to the array being spaned.
         ///   @param count the number of elements in the array being spaned.
         ///
-        constexpr span(pointer_type const ptr, size_type const count) noexcept    // --
+        constexpr span(pointer_type const ptr, size_type const &count) noexcept    // --
             : m_ptr{ptr}, m_count{count}
         {
             if ((nullptr == m_ptr) || m_count.is_zero()) {
+                bsl::alert() << "basic_string_view: invalid constructor args\n";
+                bsl::alert() << "  - ptr: " << ptr << bsl::endl;
+                bsl::alert() << "  - count: " << m_count << bsl::endl;
+
                 *this = span{};
             }
         }
@@ -167,9 +175,9 @@ namespace bsl
         ///     this function returns a nullptr.
         ///
         [[nodiscard]] constexpr pointer_type
-        at_if(size_type const index) noexcept
+        at_if(size_type const &index) noexcept
         {
-            if ((nullptr == m_ptr) || (index >= m_count)) {
+            if ((!index) || (index >= m_count)) {
                 bsl::error() << "span: index out of range: " << index << '\n';
                 return nullptr;
             }
@@ -190,9 +198,9 @@ namespace bsl
         ///     this function returns a nullptr.
         ///
         [[nodiscard]] constexpr const_pointer_type
-        at_if(size_type const index) const noexcept
+        at_if(size_type const &index) const noexcept
         {
-            if ((nullptr == m_ptr) || (index >= m_count)) {
+            if ((!index) || (index >= m_count)) {
                 bsl::error() << "span: index out of range: " << index << '\n';
                 return nullptr;
             }
@@ -350,7 +358,7 @@ namespace bsl
         ///   @return Returns an iterator to the element "i" in the view.
         ///
         [[nodiscard]] constexpr iterator_type
-        iter(size_type const i) noexcept
+        iter(size_type const &i) noexcept
         {
             return iterator_type{m_ptr, m_count, i};
         }
@@ -364,7 +372,7 @@ namespace bsl
         ///   @return Returns an iterator to the element "i" in the view.
         ///
         [[nodiscard]] constexpr const_iterator_type
-        iter(size_type const i) const noexcept
+        iter(size_type const &i) const noexcept
         {
             return const_iterator_type{m_ptr, m_count, i};
         }
@@ -378,7 +386,7 @@ namespace bsl
         ///   @return Returns an iterator to the element "i" in the view.
         ///
         [[nodiscard]] constexpr const_iterator_type
-        citer(size_type const i) const noexcept
+        citer(size_type const &i) const noexcept
         {
             return const_iterator_type{m_ptr, m_count, i};
         }
@@ -506,9 +514,9 @@ namespace bsl
         ///     view.
         ///
         [[nodiscard]] constexpr reverse_iterator_type
-        riter(size_type const i) noexcept
+        riter(size_type const &i) noexcept
         {
-            if (i >= m_count) {
+            if ((!!i) && (i >= m_count)) {
                 return reverse_iterator_type{this->iter(m_count)};
             }
 
@@ -530,9 +538,9 @@ namespace bsl
         ///     view.
         ///
         [[nodiscard]] constexpr const_reverse_iterator_type
-        riter(size_type const i) const noexcept
+        riter(size_type const &i) const noexcept
         {
-            if (i >= m_count) {
+            if ((!!i) && (i >= m_count)) {
                 return const_reverse_iterator_type{this->iter(m_count)};
             }
 
@@ -554,9 +562,9 @@ namespace bsl
         ///     view.
         ///
         [[nodiscard]] constexpr const_reverse_iterator_type
-        criter(size_type const i) const noexcept
+        criter(size_type const &i) const noexcept
         {
-            if (i >= m_count) {
+            if ((!!i) && (i >= m_count)) {
                 return const_reverse_iterator_type{this->citer(m_count)};
             }
 
@@ -634,6 +642,18 @@ namespace bsl
         }
 
         /// <!-- description -->
+        ///   @brief Returns !empty()
+        ///   @include span/example_span_operator_bool.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns !empty()
+        ///
+        [[nodiscard]] constexpr explicit operator bool() const noexcept
+        {
+            return !this->empty();
+        }
+
+        /// <!-- description -->
         ///   @brief Returns the number of elements in the array being
         ///     viewed. If this is a default constructed view, or the view
         ///     was constructed in error, this will return 0.
@@ -644,7 +664,7 @@ namespace bsl
         ///     viewed. If this is a default constructed view, or the view
         ///     was constructed in error, this will return 0.
         ///
-        [[nodiscard]] constexpr size_type
+        [[nodiscard]] constexpr size_type const &
         size() const noexcept
         {
             return m_count;
@@ -687,7 +707,7 @@ namespace bsl
         ///     span is returned.
         ///
         [[nodiscard]] constexpr span<T>
-        first(size_type const count = npos) const noexcept
+        first(size_type const &count = npos) const noexcept
         {
             return this->subspan(to_umax(0), count);
         }
@@ -707,10 +727,10 @@ namespace bsl
         ///     is returned.
         ///
         [[nodiscard]] constexpr span<T>
-        last(size_type count = npos) const noexcept
+        last(size_type const &count = npos) const noexcept
         {
             if (count > this->size()) {
-                count = this->size();
+                return this->subspan(to_umax(0), count);
             }
 
             return this->subspan(this->size() - count, count);
@@ -730,9 +750,9 @@ namespace bsl
         ///     the current span, an invalid span is returned.
         ///
         [[nodiscard]] constexpr span<T>
-        subspan(size_type const pos, size_type const count = npos) const noexcept
+        subspan(size_type const &pos, size_type const &count = npos) const noexcept
         {
-            if ((nullptr == m_ptr) || (pos >= m_count)) {
+            if ((!pos) || (!count) || (pos >= m_count)) {
                 return {};
             }
 
@@ -800,6 +820,7 @@ namespace bsl
     ///   @brief Outputs the provided bsl::span to the provided
     ///     output type.
     ///   @related bsl::span
+    ///   @include span/example_span_ostream.hpp
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T1 the type of outputter provided
@@ -812,6 +833,10 @@ namespace bsl
     [[maybe_unused]] constexpr out<T1>
     operator<<(out<T1> const o, bsl::span<T2> const &val) noexcept
     {
+        if constexpr (!o) {
+            return o;
+        }
+
         if (val.empty()) {
             return o << "[]";
         }

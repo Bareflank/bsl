@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_basic_errc_type_success() noexcept
     {
-        if (errc_success.success()) {
+        if (bsl::errc_success.success()) {
             bsl::print() << "success\n";
         }
     }

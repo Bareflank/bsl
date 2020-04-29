@@ -360,15 +360,16 @@ namespace bsl
         ///   @param width a dynamic width which overrides the width field
         ///     in the format string (used to set the width field at runtime).
         ///
-        constexpr fmt(fmt_options const &ops, V const &val, safe_uintmax width) noexcept
+        constexpr fmt(fmt_options const &ops, V const &val, safe_uintmax const &width) noexcept
             : m_ops{ops}, m_val{val}
         {
-            constexpr safe_uintmax max_width{to_umax(1000)};
-            if (width > max_width) {
-                width = max_width - to_umax(1);
+            constexpr safe_uintmax max_width{to_umax(999)};
+            if ((!width) || (width > max_width)) {
+                m_ops.set_width(max_width);
             }
-
-            m_ops.set_width(width);
+            else {
+                m_ops.set_width(width);
+            }
         }
 
         /// <!-- description -->
@@ -399,7 +400,7 @@ namespace bsl
         ///   @param width a dynamic width which overrides the width field
         ///     in the format string (used to set the width field at runtime).
         ///
-        constexpr fmt(cstr_type const str, V const &val, safe_uintmax const width) noexcept
+        constexpr fmt(cstr_type const str, V const &val, safe_uintmax const &width) noexcept
             : fmt{fmt_options{str}, val, width}
         {}
 
@@ -446,7 +447,7 @@ namespace bsl
     [[maybe_unused]] constexpr out<T>
     operator<<(out<T> const o, fmt<U> &&arg) noexcept
     {
-        if constexpr (o.empty()) {
+        if constexpr (!o) {
             return o;
         }
 
@@ -479,7 +480,7 @@ namespace bsl
     [[maybe_unused]] constexpr out<T>
     operator<<(out<T> const o, U const &arg) noexcept
     {
-        if constexpr (o.empty()) {
+        if constexpr (!o) {
             return o;
         }
 

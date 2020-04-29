@@ -79,16 +79,16 @@ namespace bsl
                 else {
                     if ((f > t_limits::max()) || (f < t_limits::min())) {
                         conversion_failure__narrowing_results_in_loss_of_data();
-                        return safe_integral<T>{static_cast<T>(0), true};
+                        return safe_integral<T>::zero(true);
                     }
 
                     return safe_integral<T>{static_cast<T>(f)};
                 }
             }
             else {
-                if (f < 0) {
+                if (f < static_cast<F>(0)) {
                     conversion_failure__narrowing_results_in_loss_of_data();
-                    return safe_integral<T>{static_cast<T>(0), true};
+                    return safe_integral<T>::zero(true);
                 }
 
                 if constexpr (static_cast<bsl::uintmax>(f_limits::max()) <= t_limits::max()) {
@@ -97,7 +97,7 @@ namespace bsl
                 else {
                     if (static_cast<bsl::uintmax>(f) > t_limits::max()) {
                         conversion_failure__narrowing_results_in_loss_of_data();
-                        return safe_integral<T>{static_cast<T>(0), true};
+                        return safe_integral<T>::zero(true);
                     }
 
                     return safe_integral<T>{static_cast<T>(f)};
@@ -112,7 +112,7 @@ namespace bsl
                 else {
                     if (f > static_cast<bsl::uintmax>(t_limits::max())) {
                         conversion_failure__narrowing_results_in_loss_of_data();
-                        return safe_integral<T>{static_cast<T>(0), true};
+                        return safe_integral<T>::zero(true);
                     }
 
                     return safe_integral<T>{static_cast<T>(f)};
@@ -125,7 +125,7 @@ namespace bsl
                 else {
                     if ((f > t_limits::max())) {
                         conversion_failure__narrowing_results_in_loss_of_data();
-                        return safe_integral<T>{static_cast<T>(0), true};
+                        return safe_integral<T>::zero(true);
                     }
 
                     return safe_integral<T>{static_cast<T>(f)};
@@ -158,7 +158,7 @@ namespace bsl
     convert(safe_integral<F> const &f) noexcept
     {
         if (f.failure()) {
-            return safe_integral<T>{static_cast<T>(0), true};
+            return safe_integral<T>::zero(true);
         }
 
         return convert<T>(f.get());

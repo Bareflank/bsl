@@ -127,6 +127,22 @@ tests() noexcept
         };
     };
 
+    bsl::ut_scenario{"operator bool"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::reverse_iterator ri{arr.end()};
+            bsl::ut_then{} = [&ri]() {
+                bsl::ut_check(!!ri);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::reverse_iterator ri{arr.begin()};
+            bsl::ut_then{} = [&ri]() {
+                bsl::ut_check(!ri);
+            };
+        };
+    };
+
     bsl::ut_scenario{"is_end"} = []() {
         bsl::ut_given{} = []() {
             bsl::reverse_iterator ri{arr.begin()};

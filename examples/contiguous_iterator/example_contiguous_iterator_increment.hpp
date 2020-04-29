@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_contiguous_iterator_increment() noexcept
     {
-        constexpr bsl::string_view str{"Hello"};
+        bsl::string_view const str{"Hello"};
         bsl::string_view::iterator_type iter{str.begin()};
 
         ++iter;

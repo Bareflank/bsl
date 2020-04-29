@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_basic_string_view_at_if() noexcept
     {
-        constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
+        bsl::basic_string_view<bsl::char_type> const str{"Hello"};
 
         if (auto const *const ptr = str.at_if(bsl::to_umax(0))) {
             bsl::print() << "success: " << *ptr << bsl::endl;

@@ -113,6 +113,7 @@ tests() noexcept
             bsl::ut_then{} = [&msg]() {
                 bsl::ut_check(msg.at_if(to_umax(0)) == nullptr);
                 bsl::ut_check(msg.at_if(npos) == nullptr);
+                bsl::ut_check(msg.at_if(safe_uintmax::zero(true)) == nullptr);
             };
         };
 
@@ -121,6 +122,7 @@ tests() noexcept
             bsl::ut_then{} = [&msg]() {
                 bsl::ut_check(msg.at_if(to_umax(0)) == nullptr);
                 bsl::ut_check(msg.at_if(npos) == nullptr);
+                bsl::ut_check(msg.at_if(safe_uintmax::zero(true)) == nullptr);
             };
         };
 
@@ -134,6 +136,7 @@ tests() noexcept
                 bsl::ut_check(*msg.at_if(to_umax(4)) == 'o');
                 bsl::ut_check(msg.at_if(to_umax(5)) == nullptr);
                 bsl::ut_check(msg.at_if(npos) == nullptr);
+                bsl::ut_check(msg.at_if(safe_uintmax::zero(true)) == nullptr);
             };
         };
 
@@ -147,6 +150,7 @@ tests() noexcept
                 bsl::ut_check(*msg.at_if(to_umax(4)) == 'o');
                 bsl::ut_check(msg.at_if(to_umax(5)) == nullptr);
                 bsl::ut_check(msg.at_if(npos) == nullptr);
+                bsl::ut_check(msg.at_if(safe_uintmax::zero(true)) == nullptr);
             };
         };
     };
@@ -413,6 +417,30 @@ tests() noexcept
                 bsl::ut_check(msg.citer(npos).index() == msg.size());
             };
         };
+
+        bsl::ut_given{} = []() {
+            basic_string_view<char_type> msg{"Hello"};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(msg.iter(safe_uintmax::zero(true)).get_if() == nullptr);
+                bsl::ut_check(msg.iter(safe_uintmax::zero(true)).index() == msg.size());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            basic_string_view<char_type> const msg{"Hello"};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(msg.iter(safe_uintmax::zero(true)).get_if() == nullptr);
+                bsl::ut_check(msg.iter(safe_uintmax::zero(true)).index() == msg.size());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            basic_string_view<char_type> const msg{"Hello"};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(msg.citer(safe_uintmax::zero(true)).get_if() == nullptr);
+                bsl::ut_check(msg.citer(safe_uintmax::zero(true)).index() == msg.size());
+            };
+        };
     };
 
     bsl::ut_scenario{"rbegin"} = []() {
@@ -587,6 +615,30 @@ tests() noexcept
                 bsl::ut_check(msg.criter(npos).index() == to_umax(4));
             };
         };
+
+        bsl::ut_given{} = []() {
+            basic_string_view<char_type> msg{"Hello"};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(*(msg.riter(safe_uintmax::zero(true)).get_if()) == 'o');
+                bsl::ut_check(msg.riter(safe_uintmax::zero(true)).index() == to_umax(4));
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            basic_string_view<char_type> const msg{"Hello"};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(*(msg.riter(safe_uintmax::zero(true)).get_if()) == 'o');
+                bsl::ut_check(msg.riter(safe_uintmax::zero(true)).index() == to_umax(4));
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            basic_string_view<char_type> const msg{"Hello"};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(*(msg.criter(safe_uintmax::zero(true)).get_if()) == 'o');
+                bsl::ut_check(msg.criter(safe_uintmax::zero(true)).index() == to_umax(4));
+            };
+        };
     };
 
     bsl::ut_scenario{"empty"} = []() {
@@ -615,6 +667,36 @@ tests() noexcept
             basic_string_view<char_type> const msg{"Hello"};
             bsl::ut_then{} = [&msg]() {
                 bsl::ut_check(!msg.empty());
+            };
+        };
+    };
+
+    bsl::ut_scenario{"operator bool"} = []() {
+        bsl::ut_given{} = []() {
+            basic_string_view<char_type> msg{};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(!msg);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            basic_string_view<char_type> const msg{};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(!msg);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            basic_string_view<char_type> msg{"Hello"};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(!!msg);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            basic_string_view<char_type> const msg{"Hello"};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(!!msg);
             };
         };
     };
@@ -857,6 +939,8 @@ tests() noexcept
                     bsl::ut_check(msg.substr(npos, to_umax(0)).empty());
                     bsl::ut_check(msg.substr(npos, to_umax(3)).empty());
                     bsl::ut_check(msg.substr(npos, npos).empty());
+                    bsl::ut_check(
+                        msg.substr(safe_uintmax::zero(true), safe_uintmax::zero(true)).empty());
                 };
             };
         };
@@ -874,6 +958,8 @@ tests() noexcept
                     bsl::ut_check(msg.substr(npos, to_umax(0)).empty());
                     bsl::ut_check(msg.substr(npos, to_umax(3)).empty());
                     bsl::ut_check(msg.substr(npos, npos).empty());
+                    bsl::ut_check(
+                        msg.substr(safe_uintmax::zero(true), safe_uintmax::zero(true)).empty());
                 };
             };
         };

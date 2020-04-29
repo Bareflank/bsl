@@ -160,6 +160,14 @@ main() noexcept
                 bsl::ut_check(res == "-42");
             };
         };
+
+        bsl::ut_when{} = []() {
+            reset();
+            bsl::print() << bsl::safe_uintmax::zero(true);
+            bsl::ut_then{} = []() {
+                bsl::ut_check(res == "[error]");
+            };
+        };
     };
 
     bsl::ut_scenario{"integral with no formatting using fmt"} = []() {
@@ -184,6 +192,124 @@ main() noexcept
             bsl::print() << bsl::fmt{bsl::nullops, -42};
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "-42");
+            };
+        };
+    };
+
+    bsl::ut_scenario{"integral with no formatting using fmt"} = []() {
+        bsl::ut_when{} = []() {
+            reset();
+            bsl::print() << bsl::fmt{bsl::nullops, bsl::to_i32(0)};
+            bsl::ut_then{} = []() {
+                bsl::ut_check(res == "0");
+            };
+        };
+
+        bsl::ut_when{} = []() {
+            reset();
+            bsl::print() << bsl::fmt{bsl::nullops, bsl::to_i32(42)};
+            bsl::ut_then{} = []() {
+                bsl::ut_check(res == "42");
+            };
+        };
+
+        bsl::ut_when{} = []() {
+            reset();
+            bsl::print() << bsl::fmt{bsl::nullops, bsl::to_i32(-42)};
+            bsl::ut_then{} = []() {
+                bsl::ut_check(res == "-42");
+            };
+        };
+
+        bsl::ut_when{} = []() {
+            reset();
+            bsl::print() << bsl::fmt{bsl::nullops, bsl::safe_uintmax::zero(true)};
+            bsl::ut_then{} = []() {
+                bsl::ut_check(res == "[error]");
+            };
+        };
+    };
+
+    bsl::ut_scenario{"integral with minimal formatting"} = []() {
+        bsl::ut_when{} = []() {
+            reset();
+            bsl::print() << bsl::fmt{"b", 0};
+            bsl::ut_then{} = []() {
+                bsl::ut_check(res == "0");
+            };
+        };
+
+        bsl::ut_when{} = []() {
+            reset();
+            bsl::print() << bsl::fmt{"d", 0};
+            bsl::ut_then{} = []() {
+                bsl::ut_check(res == "0");
+            };
+        };
+
+        bsl::ut_when{} = []() {
+            reset();
+            bsl::print() << bsl::fmt{"x", 0};
+            bsl::ut_then{} = []() {
+                bsl::ut_check(res == "0");
+            };
+        };
+
+        bsl::ut_when{} = []() {
+            reset();
+            bsl::print() << bsl::fmt{"c", 42};
+            bsl::ut_then{} = []() {
+                bsl::ut_check(res == "*");
+            };
+        };
+
+        bsl::ut_when{} = []() {
+            reset();
+            bsl::print() << bsl::fmt{"s", 42};
+            bsl::ut_then{} = []() {
+                bsl::ut_check(res == "*");
+            };
+        };
+    };
+
+    bsl::ut_scenario{"integral with minimal formatting using fmt"} = []() {
+        bsl::ut_when{} = []() {
+            reset();
+            bsl::print() << bsl::fmt{"b", bsl::to_i32(0)};
+            bsl::ut_then{} = []() {
+                bsl::ut_check(res == "0");
+            };
+        };
+
+        bsl::ut_when{} = []() {
+            reset();
+            bsl::print() << bsl::fmt{"d", bsl::to_i32(0)};
+            bsl::ut_then{} = []() {
+                bsl::ut_check(res == "0");
+            };
+        };
+
+        bsl::ut_when{} = []() {
+            reset();
+            bsl::print() << bsl::fmt{"x", bsl::to_i32(0)};
+            bsl::ut_then{} = []() {
+                bsl::ut_check(res == "0");
+            };
+        };
+
+        bsl::ut_when{} = []() {
+            reset();
+            bsl::print() << bsl::fmt{"c", bsl::to_i32(42)};
+            bsl::ut_then{} = []() {
+                bsl::ut_check(res == "*");
+            };
+        };
+
+        bsl::ut_when{} = []() {
+            reset();
+            bsl::print() << bsl::fmt{"s", bsl::to_i32(42)};
+            bsl::ut_then{} = []() {
+                bsl::ut_check(res == "*");
             };
         };
     };

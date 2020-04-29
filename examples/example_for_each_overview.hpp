@@ -34,7 +34,7 @@ namespace bsl
     inline void
     example_for_each_overview() noexcept
     {
-        constexpr bsl::string_view msg{"Hello"};
+        bsl::string_view const msg{"Hello"};
         constexpr bsl::safe_uintmax i1{bsl::to_umax(1)};
         constexpr bsl::safe_uintmax i4{bsl::to_umax(4)};
         constexpr char_type co{'o'};
@@ -48,7 +48,7 @@ namespace bsl
 
         // ---------------------------------------------------------------------
         bsl::print() << "example 2:\n";
-        bsl::for_each(msg, [](auto &e, auto const i) noexcept {
+        bsl::for_each(msg, [](auto &e, auto const &i) noexcept {
             bsl::print() << "element [" << i << "] == " << e << bsl::endl;
         });
         bsl::print() << bsl::endl;
@@ -88,7 +88,7 @@ namespace bsl
 
         // ---------------------------------------------------------------------
         bsl::print() << "example 7:\n";
-        bsl::for_each(msg.rbegin(), msg.rend(), [](auto &e, auto const i) noexcept {
+        bsl::for_each(msg.rbegin(), msg.rend(), [](auto &e, auto const &i) noexcept {
             bsl::print() << "element [" << i << "] == " << e << bsl::endl;
         });
     }

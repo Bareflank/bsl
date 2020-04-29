@@ -36,9 +36,9 @@ namespace bsl
     {
         constexpr bsl::safe_uintmax i1{bsl::to_umax(1)};
         constexpr bsl::safe_uintmax i4{bsl::to_umax(4)};
-        constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
+        bsl::basic_string_view<bsl::char_type> const str{"Hello"};
 
-        bsl::for_each(str.riter(i4), str.riter(i1), [](auto &e, auto const i) noexcept {
+        bsl::for_each(str.riter(i4), str.riter(i1), [](auto &e, auto const &i) noexcept {
             bsl::print() << "element [" << i << "] == " << e << bsl::endl;
         });
     }

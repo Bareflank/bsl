@@ -47,6 +47,7 @@ main() noexcept
             bsl::ut_then{} = [&msg1, &msg2, &msg3]() {
                 bsl::ut_check(builtin_strncmp(nullptr, msg2, builtin_strlen(msg1)) == 0);
                 bsl::ut_check(builtin_strncmp(msg1, nullptr, builtin_strlen(msg1)) == 0);
+                bsl::ut_check(builtin_strncmp(msg1, msg2, safe_uintmax::zero(true)) == 0);
                 bsl::ut_check(builtin_strncmp(msg1, msg2, builtin_strlen(msg1)) == 0);
                 bsl::ut_check(builtin_strncmp(msg1, msg3, builtin_strlen(msg1)) != 0);
             };
@@ -73,6 +74,7 @@ main() noexcept
             bsl::ut_then{} = [&msg]() {
                 bsl::ut_check(builtin_strnchr(nullptr, 'o', builtin_strlen(msg)) == nullptr);
                 bsl::ut_check(builtin_strnchr(msg, 'o', to_umax(0)) == nullptr);
+                bsl::ut_check(builtin_strnchr(msg, 'o', safe_uintmax::zero(true)) == nullptr);
                 bsl::ut_check(builtin_strnchr(msg, 'o', builtin_strlen(msg)) == &msg[4]);
                 bsl::ut_check(builtin_strnchr(msg, 'z', builtin_strlen(msg)) == nullptr);
             };

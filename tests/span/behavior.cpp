@@ -93,6 +93,7 @@ tests() noexcept
             bsl::ut_then{} = [&spn]() {
                 bsl::ut_check(spn.at_if(to_umax(0)) == nullptr);
                 bsl::ut_check(spn.at_if(npos) == nullptr);
+                bsl::ut_check(spn.at_if(safe_uintmax::zero(true)) == nullptr);
             };
         };
 
@@ -101,6 +102,7 @@ tests() noexcept
             bsl::ut_then{} = [&spn]() {
                 bsl::ut_check(spn.at_if(to_umax(0)) == nullptr);
                 bsl::ut_check(spn.at_if(npos) == nullptr);
+                bsl::ut_check(spn.at_if(safe_uintmax::zero(true)) == nullptr);
             };
         };
 
@@ -109,6 +111,7 @@ tests() noexcept
             bsl::ut_then{} = [&spn]() {
                 bsl::ut_check(spn.at_if(to_umax(0)) == nullptr);
                 bsl::ut_check(spn.at_if(npos) == nullptr);
+                bsl::ut_check(spn.at_if(safe_uintmax::zero(true)) == nullptr);
             };
         };
 
@@ -117,6 +120,7 @@ tests() noexcept
             bsl::ut_then{} = [&spn]() {
                 bsl::ut_check(spn.at_if(to_umax(0)) == nullptr);
                 bsl::ut_check(spn.at_if(npos) == nullptr);
+                bsl::ut_check(spn.at_if(safe_uintmax::zero(true)) == nullptr);
             };
         };
 
@@ -126,6 +130,7 @@ tests() noexcept
             bsl::ut_then{} = [&spn]() {
                 bsl::ut_check(spn.at_if(to_umax(0)) == nullptr);
                 bsl::ut_check(spn.at_if(npos) == nullptr);
+                bsl::ut_check(spn.at_if(safe_uintmax::zero(true)) == nullptr);
             };
         };
 
@@ -135,6 +140,7 @@ tests() noexcept
             bsl::ut_then{} = [&spn]() {
                 bsl::ut_check(spn.at_if(to_umax(0)) == nullptr);
                 bsl::ut_check(spn.at_if(npos) == nullptr);
+                bsl::ut_check(spn.at_if(safe_uintmax::zero(true)) == nullptr);
             };
         };
 
@@ -150,6 +156,7 @@ tests() noexcept
                 bsl::ut_check(*spn.at_if(to_umax(5)) == to_i32(42));
                 bsl::ut_check(spn.at_if(to_umax(6)) == nullptr);
                 bsl::ut_check(spn.at_if(npos) == nullptr);
+                bsl::ut_check(spn.at_if(safe_uintmax::zero(true)) == nullptr);
             };
         };
 
@@ -165,6 +172,7 @@ tests() noexcept
                 bsl::ut_check(*spn.at_if(to_umax(5)) == to_i32(42));
                 bsl::ut_check(spn.at_if(to_umax(6)) == nullptr);
                 bsl::ut_check(spn.at_if(npos) == nullptr);
+                bsl::ut_check(spn.at_if(safe_uintmax::zero(true)) == nullptr);
             };
         };
     };
@@ -449,6 +457,33 @@ tests() noexcept
                 bsl::ut_check(spn.citer(npos).index() == spn.size());
             };
         };
+
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> arr = test_arr;
+            span spn{arr.data(), arr.size()};
+            bsl::ut_then{} = [&spn]() {
+                bsl::ut_check(spn.iter(safe_uintmax::zero(true)).get_if() == nullptr);
+                bsl::ut_check(spn.iter(safe_uintmax::zero(true)).index() == spn.size());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> const arr = test_arr;
+            span const spn{arr.data(), arr.size()};
+            bsl::ut_then{} = [&spn]() {
+                bsl::ut_check(spn.iter(safe_uintmax::zero(true)).get_if() == nullptr);
+                bsl::ut_check(spn.iter(safe_uintmax::zero(true)).index() == spn.size());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> const arr = test_arr;
+            span const spn{arr.data(), arr.size()};
+            bsl::ut_then{} = [&spn]() {
+                bsl::ut_check(spn.citer(safe_uintmax::zero(true)).get_if() == nullptr);
+                bsl::ut_check(spn.citer(safe_uintmax::zero(true)).index() == spn.size());
+            };
+        };
     };
 
     bsl::ut_scenario{"rbegin"} = []() {
@@ -635,6 +670,33 @@ tests() noexcept
                 bsl::ut_check(spn.criter(npos).index() == to_umax(5));
             };
         };
+
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> arr = test_arr;
+            span spn{arr.data(), arr.size()};
+            bsl::ut_then{} = [&spn]() {
+                bsl::ut_check(*(spn.riter(safe_uintmax::zero(true)).get_if()) == to_i32(42));
+                bsl::ut_check(spn.riter(safe_uintmax::zero(true)).index() == to_umax(5));
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> const arr = test_arr;
+            span const spn{arr.data(), arr.size()};
+            bsl::ut_then{} = [&spn]() {
+                bsl::ut_check(*(spn.riter(safe_uintmax::zero(true)).get_if()) == to_i32(42));
+                bsl::ut_check(spn.riter(safe_uintmax::zero(true)).index() == to_umax(5));
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> const arr = test_arr;
+            span const spn{arr.data(), arr.size()};
+            bsl::ut_then{} = [&spn]() {
+                bsl::ut_check(*(spn.criter(safe_uintmax::zero(true)).get_if()) == to_i32(42));
+                bsl::ut_check(spn.criter(safe_uintmax::zero(true)).index() == to_umax(5));
+            };
+        };
     };
 
     bsl::ut_scenario{"empty"} = []() {
@@ -665,6 +727,38 @@ tests() noexcept
             span const spn{arr.data(), arr.size()};
             bsl::ut_then{} = [&spn]() {
                 bsl::ut_check(!spn.empty());
+            };
+        };
+    };
+
+    bsl::ut_scenario{"operator bool"} = []() {
+        bsl::ut_given{} = []() {
+            span<bool> const spn{};
+            bsl::ut_then{} = [&spn]() {
+                bsl::ut_check(!spn);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            span<bool> const spn{};
+            bsl::ut_then{} = [&spn]() {
+                bsl::ut_check(!spn);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> arr = test_arr;
+            span spn{arr.data(), arr.size()};
+            bsl::ut_then{} = [&spn]() {
+                bsl::ut_check(!!spn);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> const arr = test_arr;
+            span const spn{arr.data(), arr.size()};
+            bsl::ut_then{} = [&spn]() {
+                bsl::ut_check(!!spn);
             };
         };
     };
@@ -861,6 +955,24 @@ tests() noexcept
                 bsl::ut_check(spn1.first(to_umax(0)) == spn2);
             };
         };
+
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> arr = test_arr;
+            span spn1{arr.data(), arr.size()};
+            span<safe_int32> spn2{};
+            bsl::ut_then{} = [&spn1, &spn2]() {
+                bsl::ut_check(spn1.first(safe_uintmax::zero(true)) == spn2);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> const arr = test_arr;
+            span const spn1{arr.data(), arr.size()};
+            span<safe_int32 const> const spn2{};
+            bsl::ut_then{} = [&spn1, &spn2]() {
+                bsl::ut_check(spn1.first(safe_uintmax::zero(true)) == spn2);
+            };
+        };
     };
 
     bsl::ut_scenario{"last"} = []() {
@@ -959,6 +1071,24 @@ tests() noexcept
                 bsl::ut_check(spn1.last(to_umax(0)) == spn2);
             };
         };
+
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> arr = test_arr;
+            span spn1{arr.data(), arr.size()};
+            span<safe_int32> spn2{};
+            bsl::ut_then{} = [&spn1, &spn2]() {
+                bsl::ut_check(spn1.last(safe_uintmax::zero(true)) == spn2);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> const arr = test_arr;
+            span const spn1{arr.data(), arr.size()};
+            span<safe_int32 const> const spn2{};
+            bsl::ut_then{} = [&spn1, &spn2]() {
+                bsl::ut_check(spn1.last(safe_uintmax::zero(true)) == spn2);
+            };
+        };
     };
 
     bsl::ut_scenario{"subspan"} = []() {
@@ -1035,6 +1165,20 @@ tests() noexcept
         bsl::ut_given{} = []() {
             span<bool> spn{};
             bsl::ut_then{} = [&spn]() {
+                bsl::ut_check(spn.subspan(safe_uintmax::zero(true)) == spn);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            span<bool> const spn{};
+            bsl::ut_then{} = [&spn]() {
+                bsl::ut_check(spn.subspan(safe_uintmax::zero(true)) == spn);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            span<bool> spn{};
+            bsl::ut_then{} = [&spn]() {
                 bsl::ut_check(spn.subspan(npos, to_umax(3)) == spn);
             };
         };
@@ -1057,6 +1201,20 @@ tests() noexcept
             span<bool> const spn{};
             bsl::ut_then{} = [&spn]() {
                 bsl::ut_check(spn.subspan(npos, npos) == spn);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            span<bool> spn{};
+            bsl::ut_then{} = [&spn]() {
+                bsl::ut_check(spn.subspan(to_umax(0), safe_uintmax::zero(true)) == spn);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            span<bool> const spn{};
+            bsl::ut_then{} = [&spn]() {
+                bsl::ut_check(spn.subspan(to_umax(0), safe_uintmax::zero(true)) == spn);
             };
         };
 

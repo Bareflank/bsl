@@ -33,6 +33,6 @@ namespace bsl
     inline void
     example_basic_errc_type_message() noexcept
     {
-        bsl::print() << errc_success.message() << bsl::endl;
+        bsl::print() << bsl::errc_success.message() << bsl::endl;
     }
 }

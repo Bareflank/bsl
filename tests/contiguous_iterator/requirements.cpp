@@ -61,6 +61,7 @@ main() noexcept
                 static_assert(noexcept(ci1.size()));
                 static_assert(noexcept(ci1.index()));
                 static_assert(noexcept(ci1.empty()));
+                static_assert(noexcept(!!ci1));
                 static_assert(noexcept(ci1.is_end()));
                 static_assert(noexcept(ci1.get_if()));
                 static_assert(noexcept(++ci1));

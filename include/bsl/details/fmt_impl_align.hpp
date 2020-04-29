@@ -52,7 +52,7 @@ namespace bsl
         template<typename OUT>
         [[maybe_unused]] constexpr safe_uintmax
         fmt_impl_align_pre(
-            OUT const &o, fmt_options const &ops, safe_uintmax const len, bool const left) noexcept
+            OUT const &o, fmt_options const &ops, safe_uintmax const &len, bool const left) noexcept
         {
             safe_uintmax const padding{(len < ops.width()) ? ops.width() - len : to_umax(0)};
 
@@ -108,7 +108,7 @@ namespace bsl
         template<typename OUT>
         constexpr void
         fmt_impl_align_suf(
-            OUT const &o, fmt_options const &ops, safe_uintmax const len, bool const left) noexcept
+            OUT const &o, fmt_options const &ops, safe_uintmax const &len, bool const left) noexcept
         {
             safe_uintmax const padding{(len < ops.width()) ? ops.width() - len : to_umax(0)};
 

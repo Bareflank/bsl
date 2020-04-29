@@ -57,6 +57,7 @@ namespace
             bsl::discard(msg.riter(bsl::to_umax(0)));
             bsl::discard(msg.criter(bsl::to_umax(0)));
             bsl::discard(msg.empty());
+            bsl::discard(!!msg);
             bsl::discard(msg.size());
             bsl::discard(msg.length());
             bsl::discard(msg.max_size());
@@ -98,6 +99,7 @@ namespace
             bsl::discard(msg.riter(bsl::to_umax(0)));
             bsl::discard(msg.criter(bsl::to_umax(0)));
             bsl::discard(msg.empty());
+            bsl::discard(!!msg);
             bsl::discard(msg.size());
             bsl::discard(msg.length());
             bsl::discard(msg.max_size());
@@ -168,6 +170,7 @@ main() noexcept
                 static_assert(noexcept(msg1.riter(bsl::to_umax(0))));
                 static_assert(noexcept(msg1.criter(bsl::to_umax(0))));
                 static_assert(noexcept(msg1.empty()));
+                static_assert(noexcept(!!msg1));
                 static_assert(noexcept(msg1.size()));
                 static_assert(noexcept(msg1.length()));
                 static_assert(noexcept(msg1.max_size()));

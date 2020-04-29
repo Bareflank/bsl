@@ -373,9 +373,15 @@ namespace bsl
         ///   @param val the val to set the "width" field to
         ///
         constexpr void
-        set_width(bsl::safe_uintmax const val) noexcept
+        set_width(bsl::safe_uintmax const &val) noexcept
         {
-            m_width = val;
+            constexpr safe_uintmax max_width{to_umax(999)};
+            if ((!val) || (val > max_width)) {
+                m_width = max_width;
+            }
+            else {
+                m_width = val;
+            }
         }
 
         /// <!-- description -->
@@ -425,7 +431,7 @@ namespace bsl
         ///
         constexpr void
         fmt_options_impl_align(
-            cstr_type const f, bsl::safe_uintmax &idx, bsl::safe_uintmax const len) noexcept
+            cstr_type const f, bsl::safe_uintmax &idx, bsl::safe_uintmax const &len) noexcept
         {
             char_type f_fill{' '};
             char_type f_align{};
@@ -578,11 +584,11 @@ namespace bsl
         ///
         constexpr void
         fmt_options_impl_width(
-            cstr_type const f, bsl::safe_uintmax &idx, bsl::safe_uintmax const len) noexcept
+            cstr_type const f, bsl::safe_uintmax &idx, bsl::safe_uintmax const &len) noexcept
         {
-            constexpr bsl::safe_uintmax max_num_digits{bsl::to_umax(3)};
+            constexpr bsl::safe_uintmax max_num_width_digits{bsl::to_umax(3)};
 
-            for (bsl::safe_uintmax i{}; (i < max_num_digits) && (idx < len); ++i) {
+            for (bsl::safe_uintmax i{}; (i < max_num_width_digits) && (idx < len); ++i) {
                 char_type const digit{f[idx.get()]};
 
                 if ((digit >= '0') && (digit <= '9')) {
@@ -642,7 +648,7 @@ namespace bsl
                 }
             }
 
-            idx = bsl::npos;
+            idx += (bsl::npos - idx);
         }
     };
 

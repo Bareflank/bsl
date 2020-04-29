@@ -48,7 +48,7 @@ namespace bsl
     [[maybe_unused]] constexpr out<T>
     operator<<(out<T> const o, void const *const ptr) noexcept
     {
-        if constexpr (o.empty()) {
+        if constexpr (!o) {
             return o;
         }
 

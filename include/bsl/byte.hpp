@@ -327,6 +327,7 @@ namespace bsl
     ///   @brief Outputs the provided bsl::byte to the provided
     ///     output type.
     ///   @related bsl::byte
+    ///   @include byte/example_byte_ostream.hpp
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type of outputter provided
@@ -338,6 +339,10 @@ namespace bsl
     [[maybe_unused]] constexpr out<T>
     operator<<(out<T> const o, bsl::byte const &val) noexcept
     {
+        if constexpr (!o) {
+            return o;
+        }
+
         return o << val.to_integer();
     }
 }

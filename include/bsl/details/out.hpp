@@ -82,23 +82,20 @@ namespace bsl
         {
             if constexpr (is_debug()) {
                 write(bsl::bold_green);
-                write("DEBUG");
+                write("DEBUG ");
                 write(bsl::reset_color);
-                write(": ");
             }
 
             if constexpr (is_alert()) {
                 write(bsl::bold_yellow);
-                write("ALERT");
+                write("ALERT ");
                 write(bsl::reset_color);
-                write(": ");
             }
 
             if constexpr (is_error()) {
                 write(bsl::bold_red);
-                write("ERROR");
+                write("ERROR ");
                 write(bsl::reset_color);
-                write(": ");
             }
         }
 
@@ -118,6 +115,17 @@ namespace bsl
         empty() noexcept
         {
             return is_same<T, details::out_type_empty>::value;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns !empty()
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns !empty()
+        ///
+        [[nodiscard]] constexpr explicit operator bool() const noexcept
+        {
+            return !is_same<T, details::out_type_empty>::value;
         }
 
         /// <!-- description -->

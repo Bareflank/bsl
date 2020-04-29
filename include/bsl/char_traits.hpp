@@ -126,7 +126,7 @@ namespace bsl
         compare(                          // --
             char_type const *const s1,    // --
             char_type const *const s2,    // --
-            safe_uintmax const count) noexcept
+            safe_uintmax const &count) noexcept
         {
             return to_i32(bsl::builtin_strncmp(s1, s2, count));
         }
@@ -165,7 +165,7 @@ namespace bsl
         ///   @return Returns a pointer to the first occurrence of "ch" in "p".
         ///
         [[nodiscard]] static constexpr char_type const *
-        find(char_type const *const p, safe_uintmax const count, char_type const &ch) noexcept
+        find(char_type const *const p, safe_uintmax const &count, char_type const &ch) noexcept
         {
             return bsl::builtin_strnchr(p, ch, count);
         }

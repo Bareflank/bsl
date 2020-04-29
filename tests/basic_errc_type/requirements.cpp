@@ -37,6 +37,7 @@ namespace
         test_member_const() const
         {
             bsl::discard(errc.get());
+            bsl::discard(!!errc);
             bsl::discard(errc.success());
             bsl::discard(errc.failure());
             bsl::discard(errc.is_checked());
@@ -50,6 +51,7 @@ namespace
         test_member_nonconst()
         {
             bsl::discard(errc.get());
+            bsl::discard(!!errc);
             bsl::discard(errc.success());
             bsl::discard(errc.failure());
             bsl::discard(errc.is_checked());
@@ -82,6 +84,7 @@ main() noexcept
             bsl::basic_errc_type<> errc2{};
             bsl::ut_then{} = []() {
                 static_assert(noexcept(errc1.get()));
+                static_assert(noexcept(!!errc1));
                 static_assert(noexcept(errc1.success()));
                 static_assert(noexcept(errc1.failure()));
                 static_assert(noexcept(errc1.is_checked()));

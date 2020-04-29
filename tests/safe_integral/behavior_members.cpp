@@ -270,6 +270,20 @@ tests() noexcept
         };
     };
 
+    bsl::ut_scenario{"zero"} = []() {
+        bsl::ut_check(bsl::safe_intmax::zero() == bsl::to_imax(0));
+        bsl::ut_check(!bsl::safe_intmax::zero(true));
+        bsl::ut_check(bsl::safe_uintmax::zero() == bsl::to_umax(0));
+        bsl::ut_check(!bsl::safe_uintmax::zero(true));
+    };
+
+    bsl::ut_scenario{"one"} = []() {
+        bsl::ut_check(bsl::safe_intmax::one() == bsl::to_imax(1));
+        bsl::ut_check(!bsl::safe_intmax::one(true));
+        bsl::ut_check(bsl::safe_uintmax::one() == bsl::to_umax(1));
+        bsl::ut_check(!bsl::safe_uintmax::one(true));
+    };
+
     bsl::ut_scenario{"is_signed_type"} = []() {
         bsl::ut_check(bsl::safe_intmax::is_signed_type());
         bsl::ut_check(!bsl::safe_uintmax::is_signed_type());
@@ -301,6 +315,13 @@ tests() noexcept
                 bsl::ut_check(!val.is_pos());
             };
         };
+
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 const val{42, true};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(!val.is_pos());
+            };
+        };
     };
 
     bsl::ut_scenario{"is_neg"} = []() {
@@ -320,6 +341,13 @@ tests() noexcept
 
         bsl::ut_given{} = []() {
             bsl::safe_int32 const val{42};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(!val.is_neg());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 const val{-42, true};
             bsl::ut_then{} = [&val]() {
                 bsl::ut_check(!val.is_neg());
             };
@@ -347,6 +375,13 @@ tests() noexcept
                 bsl::ut_check(!val.is_zero());
             };
         };
+
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 const val{0, true};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(val.is_zero());
+            };
+        };
     };
 
     bsl::ut_scenario{"is_max"} = []() {
@@ -363,6 +398,13 @@ tests() noexcept
                 bsl::ut_check(!val.is_max());
             };
         };
+
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 const val{bsl::safe_int32::max(), true};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(!val.is_max());
+            };
+        };
     };
 
     bsl::ut_scenario{"is_min"} = []() {
@@ -375,6 +417,13 @@ tests() noexcept
 
         bsl::ut_given{} = []() {
             bsl::safe_int32 const val{bsl::safe_int32::max()};
+            bsl::ut_then{} = [&val]() {
+                bsl::ut_check(!val.is_min());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 const val{bsl::safe_int32::min(), true};
             bsl::ut_then{} = [&val]() {
                 bsl::ut_check(!val.is_min());
             };

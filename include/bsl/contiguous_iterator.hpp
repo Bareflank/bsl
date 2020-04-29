@@ -107,8 +107,8 @@ namespace bsl
         ///
         constexpr contiguous_iterator(    // --
             pointer_type const ptr,       // --
-            size_type const count,        // --
-            size_type const i) noexcept
+            size_type const &count,       // --
+            size_type const &i) noexcept
             : m_ptr{ptr}, m_count{count}, m_i{i}
         {
             if ((nullptr == m_ptr) || m_count.is_zero()) {
@@ -120,7 +120,7 @@ namespace bsl
                 *this = contiguous_iterator{};
             }
 
-            if (m_i > count) {
+            if ((!i) || (i > count)) {
                 bsl::alert() << "contiguous_iterator: invalid constructor args\n";
                 bsl::alert() << "  - ptr: " << ptr << bsl::endl;
                 bsl::alert() << "  - count: " << count << bsl::endl;
@@ -163,7 +163,7 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the number of elements in the array being iterated
         ///
-        [[nodiscard]] constexpr size_type
+        [[nodiscard]] constexpr size_type const &
         size() const noexcept
         {
             return m_count;
@@ -177,7 +177,7 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the iterator's current index
         ///
-        [[nodiscard]] constexpr size_type
+        [[nodiscard]] constexpr size_type const &
         index() const noexcept
         {
             return m_i;
@@ -194,6 +194,18 @@ namespace bsl
         empty() const noexcept
         {
             return nullptr == this->data();
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns !is_end()
+        ///   @include contiguous_iterator/example_contiguous_iterator_operator_bool.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns !is_end()
+        ///
+        [[nodiscard]] constexpr explicit operator bool() const noexcept
+        {
+            return !this->is_end();
         }
 
         /// <!-- description -->
@@ -448,6 +460,7 @@ namespace bsl
     ///   @brief Outputs the provided bsl::contiguous_iterator to the provided
     ///     output type.
     ///   @related bsl::contiguous_iterator
+    ///   @include contiguous_iterator/example_contiguous_iterator_ostream.hpp
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T1 the type of outputter provided
@@ -460,6 +473,10 @@ namespace bsl
     [[maybe_unused]] constexpr out<T1>
     operator<<(out<T1> const o, contiguous_iterator<T2> const &val) noexcept
     {
+        if constexpr (!o) {
+            return o;
+        }
+
         if (val.is_end()) {
             return o << "[null]";
         }

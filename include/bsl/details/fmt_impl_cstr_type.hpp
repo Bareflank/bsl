@@ -76,7 +76,7 @@ namespace bsl
     [[maybe_unused]] constexpr out<T>
     operator<<(out<T> const o, cstr_type const str) noexcept
     {
-        if constexpr (o.empty()) {
+        if constexpr (!o) {
             return o;
         }
 

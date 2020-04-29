@@ -67,6 +67,7 @@ tests() noexcept
         bsl::ut_then{} = []() {
             bsl::ut_check(traits::compare(nullptr, "42", to_umax(2)) == 0);
             bsl::ut_check(traits::compare("42", nullptr, to_umax(2)) == 0);
+            bsl::ut_check(traits::compare("42", nullptr, safe_uintmax::zero(true)) == 0);
             bsl::ut_check(traits::compare("42", "42", to_umax(0)) == 0);
             bsl::ut_check(traits::compare("42", "42", to_umax(1)) == 0);
             bsl::ut_check(traits::compare("42", "42", to_umax(2)) == 0);
@@ -90,6 +91,7 @@ tests() noexcept
             bsl::ut_then{} = [&msg]() {
                 bsl::ut_check(traits::find(nullptr, to_umax(5), 'l') == nullptr);
                 bsl::ut_check(traits::find(msg, to_umax(0), 'l') == nullptr);
+                bsl::ut_check(traits::find(msg, safe_uintmax::zero(true), 'l') == nullptr);
                 bsl::ut_check(traits::find(msg, to_umax(5), 'l') == &msg[2]);
                 bsl::ut_check(traits::find(msg, npos, 'l') == &msg[2]);
                 bsl::ut_check(traits::find(msg, to_umax(1), 'z') == nullptr);

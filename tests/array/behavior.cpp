@@ -82,6 +82,7 @@ tests() noexcept
                 bsl::ut_check(*arr.at_if(to_umax(5)) == to_i32(42));
                 bsl::ut_check(arr.at_if(to_umax(6)) == nullptr);
                 bsl::ut_check(arr.at_if(npos) == nullptr);
+                bsl::ut_check(arr.at_if(safe_uintmax::zero(true)) == nullptr);
             };
         };
 
@@ -96,6 +97,7 @@ tests() noexcept
                 bsl::ut_check(*arr.at_if(to_umax(5)) == to_i32(42));
                 bsl::ut_check(arr.at_if(to_umax(6)) == nullptr);
                 bsl::ut_check(arr.at_if(npos) == nullptr);
+                bsl::ut_check(arr.at_if(safe_uintmax::zero(true)) == nullptr);
             };
         };
     };
@@ -280,6 +282,30 @@ tests() noexcept
                 bsl::ut_check(arr.citer(bsl::npos).index() == arr.size());
             };
         };
+
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> arr = test_arr;
+            bsl::ut_then{} = [&arr]() {
+                bsl::ut_check(arr.iter(safe_uintmax::zero(true)).get_if() == nullptr);
+                bsl::ut_check(arr.iter(safe_uintmax::zero(true)).index() == arr.size());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> const arr = test_arr;
+            bsl::ut_then{} = [&arr]() {
+                bsl::ut_check(arr.iter(safe_uintmax::zero(true)).get_if() == nullptr);
+                bsl::ut_check(arr.iter(safe_uintmax::zero(true)).index() == arr.size());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> const arr = test_arr;
+            bsl::ut_then{} = [&arr]() {
+                bsl::ut_check(arr.citer(safe_uintmax::zero(true)).get_if() == nullptr);
+                bsl::ut_check(arr.citer(safe_uintmax::zero(true)).index() == arr.size());
+            };
+        };
     };
 
     bsl::ut_scenario{"rbegin"} = []() {
@@ -382,6 +408,30 @@ tests() noexcept
                 bsl::ut_check(arr.criter(bsl::npos).index() == to_umax(5));
             };
         };
+
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> arr = test_arr;
+            bsl::ut_then{} = [&arr]() {
+                bsl::ut_check(*(arr.riter(safe_uintmax::zero(true)).get_if()) == to_i32(42));
+                bsl::ut_check(arr.riter(safe_uintmax::zero(true)).index() == to_umax(5));
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> const arr = test_arr;
+            bsl::ut_then{} = [&arr]() {
+                bsl::ut_check(*(arr.riter(safe_uintmax::zero(true)).get_if()) == to_i32(42));
+                bsl::ut_check(arr.riter(safe_uintmax::zero(true)).index() == to_umax(5));
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> const arr = test_arr;
+            bsl::ut_then{} = [&arr]() {
+                bsl::ut_check(*(arr.criter(safe_uintmax::zero(true)).get_if()) == to_i32(42));
+                bsl::ut_check(arr.criter(safe_uintmax::zero(true)).index() == to_umax(5));
+            };
+        };
     };
 
     bsl::ut_scenario{"empty"} = []() {
@@ -396,6 +446,22 @@ tests() noexcept
             array<safe_int32, 6> const arr = test_arr;
             bsl::ut_then{} = [&arr]() {
                 bsl::ut_check(!arr.empty());
+            };
+        };
+    };
+
+    bsl::ut_scenario{"operator bool"} = []() {
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> arr = test_arr;
+            bsl::ut_then{} = [&arr]() {
+                bsl::ut_check(!!arr);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            array<safe_int32, 6> const arr = test_arr;
+            bsl::ut_then{} = [&arr]() {
+                bsl::ut_check(!!arr);
             };
         };
     };

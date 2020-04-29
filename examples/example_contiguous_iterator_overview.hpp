@@ -34,7 +34,7 @@ namespace bsl
     inline void
     example_contiguous_iterator_overview() noexcept
     {
-        constexpr bsl::string_view str{"Hello"};
+        bsl::string_view const str{"Hello"};
         bsl::for_each(str.begin(), str.end(), [](auto &e) noexcept {
             bsl::print() << e;
         });

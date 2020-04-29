@@ -199,6 +199,20 @@ main() noexcept
                 bsl::ut_check(count == digit3);
             };
         };
+
+        bsl::ut_when{} = [&digit3]() {
+            reset();
+            bsl::print() << bsl::fmt{"=<", "=", bsl::safe_uintmax::zero(true)};
+            bsl::ut_then{} = [&digit3]() {
+                bsl::safe_uintmax count{};
+                for (bsl::safe_uintmax i{}; i < res_size; ++i) {
+                    if (res.data[i.get()] == '=') {
+                        ++count;
+                    }
+                }
+                bsl::ut_check(count == digit3);
+            };
+        };
     };
 
     bsl::ut_scenario{"cstr_type with formatting type s"} = []() {

@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_reverse_iterator_decrement() noexcept
     {
-        constexpr bsl::string_view str{"Hello"};
+        bsl::string_view const str{"Hello"};
         bsl::string_view::reverse_iterator_type iter{str.rend()};
 
         --iter;

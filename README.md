@@ -21,29 +21,29 @@ Enjoy:
 
 ``` c++
 #include <bsl/array.hpp>
-#include <bsl/cstdint.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/for_each.hpp>
 #include <bsl/main.hpp>
+#include <bsl/safe_integral.hpp>
 
 bsl::exit_code
 main() noexcept
 {
-    constexpr bsl::uintmax size{42};
-    bsl::array<bsl::int32, size> arr{};
+    constexpr bsl::safe_uintmax size{bsl::to_umax(42)};
+    bsl::array<bsl::safe_int32, size.get()> arr{};
 
-    bsl::for_each(arr, [](auto &elem, auto const index) {
-        elem = index;
+    bsl::for_each(arr, [](auto &elem, auto const &index) noexcept {
+        elem = bsl::to_i32(index);
     });
 
-    bsl::for_each(arr, [](auto const &elem) {
+    bsl::for_each(arr, [](auto const &elem) noexcept {
         bsl::print() << elem << bsl::endl;
     });
 
     bsl::print() << bsl::endl;
     return bsl::exit_success;
 }
-
 ```
 
 ## **Build Requirements**

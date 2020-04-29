@@ -1,4 +1,4 @@
-# **Bareflank Support Library**
+![Bareflank](https://github.com/Bareflank/bsl/raw/master/.github/images/bsl_logo.png)
 
 ## **Description**
 

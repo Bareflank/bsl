@@ -54,30 +54,6 @@ main() noexcept
     static_assert(numeric_limits<bsl::int64>::is_specialized == std::numeric_limits<bsl::int64>::is_specialized);
     static_assert(numeric_limits<bsl::uint64>::is_specialized == std::numeric_limits<bsl::uint64>::is_specialized);
 
-    static_assert(numeric_limits<void *>::is_signed == std::numeric_limits<void *>::is_signed);
-    static_assert(numeric_limits<bool>::is_signed == std::numeric_limits<bool>::is_signed);
-    static_assert(numeric_limits<char_type>::is_signed == std::numeric_limits<char_type>::is_signed);
-    static_assert(numeric_limits<bsl::int8>::is_signed == std::numeric_limits<bsl::int8>::is_signed);
-    static_assert(numeric_limits<bsl::uint8>::is_signed == std::numeric_limits<bsl::uint8>::is_signed);
-    static_assert(numeric_limits<bsl::int16>::is_signed == std::numeric_limits<bsl::int16>::is_signed);
-    static_assert(numeric_limits<bsl::uint16>::is_signed == std::numeric_limits<bsl::uint16>::is_signed);
-    static_assert(numeric_limits<bsl::int32>::is_signed == std::numeric_limits<bsl::int32>::is_signed);
-    static_assert(numeric_limits<bsl::uint32>::is_signed == std::numeric_limits<bsl::uint32>::is_signed);
-    static_assert(numeric_limits<bsl::int64>::is_signed == std::numeric_limits<bsl::int64>::is_signed);
-    static_assert(numeric_limits<bsl::uint64>::is_signed == std::numeric_limits<bsl::uint64>::is_signed);
-
-    static_assert(numeric_limits<void *>::is_integer == std::numeric_limits<void *>::is_integer);
-    static_assert(numeric_limits<bool>::is_integer == std::numeric_limits<bool>::is_integer);
-    static_assert(!numeric_limits<char_type>::is_integer);
-    static_assert(numeric_limits<bsl::int8>::is_integer == std::numeric_limits<bsl::int8>::is_integer);
-    static_assert(numeric_limits<bsl::uint8>::is_integer == std::numeric_limits<bsl::uint8>::is_integer);
-    static_assert(numeric_limits<bsl::int16>::is_integer == std::numeric_limits<bsl::int16>::is_integer);
-    static_assert(numeric_limits<bsl::uint16>::is_integer == std::numeric_limits<bsl::uint16>::is_integer);
-    static_assert(numeric_limits<bsl::int32>::is_integer == std::numeric_limits<bsl::int32>::is_integer);
-    static_assert(numeric_limits<bsl::uint32>::is_integer == std::numeric_limits<bsl::uint32>::is_integer);
-    static_assert(numeric_limits<bsl::int64>::is_integer == std::numeric_limits<bsl::int64>::is_integer);
-    static_assert(numeric_limits<bsl::uint64>::is_integer == std::numeric_limits<bsl::uint64>::is_integer);
-
     static_assert(numeric_limits<void *>::is_exact == std::numeric_limits<void *>::is_exact);
     static_assert(numeric_limits<bool>::is_exact == std::numeric_limits<bool>::is_exact);
     static_assert(numeric_limits<char_type>::is_exact == std::numeric_limits<char_type>::is_exact);

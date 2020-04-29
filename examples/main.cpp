@@ -35,6 +35,10 @@
 #include "example_aligned_storage_overview.hpp"
 // #include "example_aligned_union_overview.hpp"
 #include "example_alignment_of_overview.hpp"
+#include "arguments/example_arguments_operator_bool.hpp"
+#include "arguments/example_arguments_opt.hpp"
+#include "arguments/example_arguments_ostream.hpp"
+#include "arguments/example_arguments_pos.hpp"
 #include "example_array_overview.hpp"
 #include "array/example_array_at_if.hpp"
 #include "array/example_array_back_if.hpp"
@@ -49,6 +53,8 @@
 #include "array/example_array_iter.hpp"
 #include "array/example_array_max_size.hpp"
 #include "array/example_array_not_equals.hpp"
+#include "array/example_array_operator_bool.hpp"
+#include "array/example_array_ostream.hpp"
 #include "array/example_array_rbegin.hpp"
 #include "array/example_array_rend.hpp"
 #include "array/example_array_riter.hpp"
@@ -64,6 +70,8 @@
 #include "basic_errc_type/example_basic_errc_type_is_unchecked.hpp"
 #include "basic_errc_type/example_basic_errc_type_message.hpp"
 #include "basic_errc_type/example_basic_errc_type_not_equals.hpp"
+#include "basic_errc_type/example_basic_errc_type_operator_bool.hpp"
+#include "basic_errc_type/example_basic_errc_type_ostream.hpp"
 #include "basic_errc_type/example_basic_errc_type_success.hpp"
 #include "example_basic_string_view_overview.hpp"
 #include "basic_string_view/example_basic_string_view_at_if.hpp"
@@ -76,11 +84,14 @@
 #include "basic_string_view/example_basic_string_view_end.hpp"
 #include "basic_string_view/example_basic_string_view_ends_with.hpp"
 #include "basic_string_view/example_basic_string_view_equals.hpp"
+#include "basic_string_view/example_basic_string_view_find.hpp"
 #include "basic_string_view/example_basic_string_view_front_if.hpp"
 #include "basic_string_view/example_basic_string_view_iter.hpp"
 #include "basic_string_view/example_basic_string_view_length.hpp"
 #include "basic_string_view/example_basic_string_view_max_size.hpp"
 #include "basic_string_view/example_basic_string_view_not_equals.hpp"
+#include "basic_string_view/example_basic_string_view_operator_bool.hpp"
+#include "basic_string_view/example_basic_string_view_ostream.hpp"
 #include "basic_string_view/example_basic_string_view_rbegin.hpp"
 #include "basic_string_view/example_basic_string_view_remove_prefix.hpp"
 #include "basic_string_view/example_basic_string_view_remove_suffix.hpp"
@@ -105,6 +116,7 @@
 #include "byte/example_byte_not_equal.hpp"
 #include "byte/example_byte_or_assign.hpp"
 #include "byte/example_byte_or.hpp"
+#include "byte/example_byte_ostream.hpp"
 #include "byte/example_byte_rshift_assign.hpp"
 #include "byte/example_byte_rshift.hpp"
 #include "byte/example_byte_to_integer.hpp"
@@ -139,6 +151,8 @@
 #include "contiguous_iterator/example_contiguous_iterator_lt_equals.hpp"
 #include "contiguous_iterator/example_contiguous_iterator_lt.hpp"
 #include "contiguous_iterator/example_contiguous_iterator_not_equals.hpp"
+#include "contiguous_iterator/example_contiguous_iterator_operator_bool.hpp"
+#include "contiguous_iterator/example_contiguous_iterator_ostream.hpp"
 #include "contiguous_iterator/example_contiguous_iterator_size.hpp"
 #include "example_convert_overview.hpp"
 #include "convert/example_convert_to_i8.hpp"
@@ -282,6 +296,7 @@
 #include "reference_wrapper/example_reference_wrapper_constructor.hpp"
 #include "reference_wrapper/example_reference_wrapper_functor.hpp"
 #include "reference_wrapper/example_reference_wrapper_get.hpp"
+#include "reference_wrapper/example_reference_wrapper_ostream.hpp"
 #include "example_remove_all_extents_overview.hpp"
 #include "example_remove_const_overview.hpp"
 #include "example_remove_cv_overview.hpp"
@@ -302,6 +317,8 @@
 #include "result/example_result_move_assignment.hpp"
 #include "result/example_result_move_constructor.hpp"
 #include "result/example_result_not_equals.hpp"
+#include "result/example_result_operator_bool.hpp"
+#include "result/example_result_ostream.hpp"
 #include "result/example_result_success.hpp"
 #include "result/example_result_t_copy_constructor.hpp"
 #include "result/example_result_t_in_place_constructor.hpp"
@@ -320,6 +337,8 @@
 #include "reverse_iterator/example_reverse_iterator_lt_equals.hpp"
 #include "reverse_iterator/example_reverse_iterator_lt.hpp"
 #include "reverse_iterator/example_reverse_iterator_not_equals.hpp"
+#include "reverse_iterator/example_reverse_iterator_operator_bool.hpp"
+#include "reverse_iterator/example_reverse_iterator_ostream.hpp"
 #include "reverse_iterator/example_reverse_iterator_size.hpp"
 #include "example_safe_integral_overview.hpp"
 #include "safe_integral/example_safe_integral_add.hpp"
@@ -375,6 +394,7 @@
 #include "source_location/example_source_location_function_name.hpp"
 #include "source_location/example_source_location_here.hpp"
 #include "source_location/example_source_location_line.hpp"
+#include "source_location/example_source_location_ostream.hpp"
 #include "example_span_overview.hpp"
 #include "span/example_span_at_if.hpp"
 #include "span/example_span_back_if.hpp"
@@ -390,6 +410,8 @@
 #include "span/example_span_last.hpp"
 #include "span/example_span_max_size.hpp"
 #include "span/example_span_not_equals.hpp"
+#include "span/example_span_operator_bool.hpp"
+#include "span/example_span_ostream.hpp"
 #include "span/example_span_ptr_count_constructor.hpp"
 #include "span/example_span_rbegin.hpp"
 #include "span/example_span_rend.hpp"
@@ -442,6 +464,10 @@ main() noexcept
     example(&bsl::example_aligned_storage_overview, "example_aligned_storage_overview");
     // example(&bsl::example_aligned_union_overview, "example_aligned_union_overview");
     example(&bsl::example_alignment_of_overview, "example_alignment_of_overview");
+    example(&bsl::example_arguments_operator_bool, "example_arguments_operator_bool");
+    example(&bsl::example_arguments_opt, "example_arguments_opt");
+    example(&bsl::example_arguments_ostream, "example_arguments_ostream");
+    example(&bsl::example_arguments_pos, "example_arguments_pos");
     example(&bsl::example_array_overview, "example_array_overview");
     example(&bsl::example_array_at_if, "example_array_at_if");
     example(&bsl::example_array_back_if, "example_array_back_if");
@@ -456,6 +482,8 @@ main() noexcept
     example(&bsl::example_array_iter, "example_array_iter");
     example(&bsl::example_array_max_size, "example_array_max_size");
     example(&bsl::example_array_not_equals, "example_array_not_equals");
+    example(&bsl::example_array_operator_bool, "example_array_operator_bool");
+    example(&bsl::example_array_ostream, "example_array_ostream");
     example(&bsl::example_array_rbegin, "example_array_rbegin");
     example(&bsl::example_array_rend, "example_array_rend");
     example(&bsl::example_array_riter, "example_array_riter");
@@ -471,6 +499,8 @@ main() noexcept
     example(&bsl::example_basic_errc_type_is_unchecked, "example_basic_errc_type_is_unchecked");
     example(&bsl::example_basic_errc_type_message, "example_basic_errc_type_message");
     example(&bsl::example_basic_errc_type_not_equals, "example_basic_errc_type_not_equals");
+    example(&bsl::example_basic_errc_type_operator_bool, "example_basic_errc_type_operator_bool");
+    example(&bsl::example_basic_errc_type_ostream, "example_basic_errc_type_ostream");
     example(&bsl::example_basic_errc_type_success, "example_basic_errc_type_success");
     example(&bsl::example_basic_string_view_overview, "example_basic_string_view_overview");
     example(&bsl::example_basic_string_view_at_if, "example_basic_string_view_at_if");
@@ -483,11 +513,14 @@ main() noexcept
     example(&bsl::example_basic_string_view_end, "example_basic_string_view_end");
     example(&bsl::example_basic_string_view_ends_with, "example_basic_string_view_ends_with");
     example(&bsl::example_basic_string_view_equals, "example_basic_string_view_equals");
+    example(&bsl::example_basic_string_view_find, "example_basic_string_view_find");
     example(&bsl::example_basic_string_view_front_if, "example_basic_string_view_front_if");
     example(&bsl::example_basic_string_view_iter, "example_basic_string_view_iter");
     example(&bsl::example_basic_string_view_length, "example_basic_string_view_length");
     example(&bsl::example_basic_string_view_max_size, "example_basic_string_view_max_size");
     example(&bsl::example_basic_string_view_not_equals, "example_basic_string_view_not_equals");
+    example(&bsl::example_basic_string_view_operator_bool, "example_basic_string_view_operator_bool");
+    example(&bsl::example_basic_string_view_ostream, "example_basic_string_view_ostream");
     example(&bsl::example_basic_string_view_rbegin, "example_basic_string_view_rbegin");
     example(&bsl::example_basic_string_view_remove_prefix, "example_basic_string_view_remove_prefix");
     example(&bsl::example_basic_string_view_remove_suffix, "example_basic_string_view_remove_suffix");
@@ -512,6 +545,7 @@ main() noexcept
     example(&bsl::example_byte_not_equal, "example_byte_not_equal");
     example(&bsl::example_byte_or_assign, "example_byte_or_assign");
     example(&bsl::example_byte_or, "example_byte_or");
+    example(&bsl::example_byte_ostream, "example_byte_ostream");
     example(&bsl::example_byte_rshift_assign, "example_byte_rshift_assign");
     example(&bsl::example_byte_rshift, "example_byte_rshift");
     example(&bsl::example_byte_to_integer, "example_byte_to_integer");
@@ -546,6 +580,8 @@ main() noexcept
     example(&bsl::example_contiguous_iterator_lt_equals, "example_contiguous_iterator_lt_equals");
     example(&bsl::example_contiguous_iterator_lt, "example_contiguous_iterator_lt");
     example(&bsl::example_contiguous_iterator_not_equals, "example_contiguous_iterator_not_equals");
+    example(&bsl::example_contiguous_iterator_operator_bool, "example_contiguous_iterator_operator_bool");
+    example(&bsl::example_contiguous_iterator_ostream, "example_contiguous_iterator_ostream");
     example(&bsl::example_contiguous_iterator_size, "example_contiguous_iterator_size");
     example(&bsl::example_convert_overview, "example_convert_overview");
     example(&bsl::example_convert_to_i8, "example_convert_to_i8");
@@ -689,6 +725,7 @@ main() noexcept
     example(&bsl::example_reference_wrapper_constructor, "example_reference_wrapper_constructor");
     example(&bsl::example_reference_wrapper_functor, "example_reference_wrapper_functor");
     example(&bsl::example_reference_wrapper_get, "example_reference_wrapper_get");
+    example(&bsl::example_reference_wrapper_ostream, "example_reference_wrapper_ostream");
     example(&bsl::example_remove_all_extents_overview, "example_remove_all_extents_overview");
     example(&bsl::example_remove_const_overview, "example_remove_const_overview");
     example(&bsl::example_remove_cv_overview, "example_remove_cv_overview");
@@ -709,6 +746,8 @@ main() noexcept
     example(&bsl::example_result_move_assignment, "example_result_move_assignment");
     example(&bsl::example_result_move_constructor, "example_result_move_constructor");
     example(&bsl::example_result_not_equals, "example_result_not_equals");
+    example(&bsl::example_result_operator_bool, "example_result_operator_bool");
+    example(&bsl::example_result_ostream, "example_result_ostream");
     example(&bsl::example_result_success, "example_result_success");
     example(&bsl::example_result_t_copy_constructor, "example_result_t_copy_constructor");
     example(&bsl::example_result_t_in_place_constructor, "example_result_t_in_place_constructor");
@@ -727,6 +766,8 @@ main() noexcept
     example(&bsl::example_reverse_iterator_lt_equals, "example_reverse_iterator_lt_equals");
     example(&bsl::example_reverse_iterator_lt, "example_reverse_iterator_lt");
     example(&bsl::example_reverse_iterator_not_equals, "example_reverse_iterator_not_equals");
+    example(&bsl::example_reverse_iterator_operator_bool, "example_reverse_iterator_operator_bool");
+    example(&bsl::example_reverse_iterator_ostream, "example_reverse_iterator_ostream");
     example(&bsl::example_reverse_iterator_size, "example_reverse_iterator_size");
     example(&bsl::example_safe_integral_overview, "example_safe_integral_overview");
     example(&bsl::example_safe_integral_add, "example_safe_integral_add");
@@ -771,7 +812,7 @@ main() noexcept
     example(&bsl::example_safe_integral_operator_bool, "example_safe_integral_operator_bool");
     example(&bsl::example_safe_integral_or, "example_safe_integral_or");
     example(&bsl::example_safe_integral_rshift, "example_safe_integral_rshift");
-    example(&bsl::example_safe_integral_rshift, "example_safe_integral_set_failure");
+    example(&bsl::example_safe_integral_set_failure, "example_safe_integral_set_failure");
     example(&bsl::example_safe_integral_sub, "example_safe_integral_sub");
     example(&bsl::example_safe_integral_unary, "example_safe_integral_unary");
     example(&bsl::example_safe_integral_xor, "example_safe_integral_xor");
@@ -782,6 +823,7 @@ main() noexcept
     example(&bsl::example_source_location_function_name, "example_source_location_function_name");
     example(&bsl::example_source_location_here, "example_source_location_here");
     example(&bsl::example_source_location_line, "example_source_location_line");
+    example(&bsl::example_source_location_ostream, "example_source_location_ostream");
     example(&bsl::example_span_overview, "example_span_overview");
     example(&bsl::example_span_at_if, "example_span_at_if");
     example(&bsl::example_span_back_if, "example_span_back_if");
@@ -797,6 +839,8 @@ main() noexcept
     example(&bsl::example_span_last, "example_span_last");
     example(&bsl::example_span_max_size, "example_span_max_size");
     example(&bsl::example_span_not_equals, "example_span_not_equals");
+    example(&bsl::example_span_operator_bool, "example_span_operator_bool");
+    example(&bsl::example_span_ostream, "example_span_ostream");
     example(&bsl::example_span_ptr_count_constructor, "example_span_ptr_count_constructor");
     example(&bsl::example_span_rbegin, "example_span_rbegin");
     example(&bsl::example_span_rend, "example_span_rend");

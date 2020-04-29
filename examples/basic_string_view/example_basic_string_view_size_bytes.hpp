@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_basic_string_view_size_bytes() noexcept
     {
-        constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
+        bsl::basic_string_view<bsl::char_type> const str{"Hello"};
         bsl::print() << "size in bytes: " << str.size_bytes() << bsl::endl;
     }
 }

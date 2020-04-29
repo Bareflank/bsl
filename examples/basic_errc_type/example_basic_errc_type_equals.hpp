@@ -36,8 +36,8 @@ namespace bsl
         constexpr bsl::int32 errc1{42};
         constexpr bsl::int32 errc2{42};
 
-        constexpr basic_errc_type<> my_errc1{errc1};
-        constexpr basic_errc_type<> my_errc2{errc2};
+        constexpr bsl::basic_errc_type<> my_errc1{errc1};
+        constexpr bsl::basic_errc_type<> my_errc2{errc2};
 
         if (my_errc1 == my_errc2) {
             bsl::print() << "success\n";

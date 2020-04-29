@@ -51,6 +51,16 @@ tests() noexcept
         };
 
         bsl::ut_given{} = []() {
+            cstr_type str{"42"};
+            safe_int32 val{0};
+            bsl::ut_then{} = [&str, &val]() {
+                safe_uintmax idx = from_chars(str, val, safe_int32::zero(true));
+                bsl::ut_check(!val);
+                bsl::ut_check(idx == to_umax(0));
+            };
+        };
+
+        bsl::ut_given{} = []() {
             cstr_type str{""};
             safe_int32 val{};
             bsl::ut_then{} = [&str, &val]() {

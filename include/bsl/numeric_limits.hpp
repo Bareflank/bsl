@@ -72,10 +72,6 @@ namespace bsl
     {
         /// @brief stores whether or not this is a specialization
         static constexpr bool is_specialized{false};
-        /// @brief stores whether or not T is signed
-        static constexpr bool is_signed{false};
-        /// @brief stores whether or not T is an integer
-        static constexpr bool is_integer{false};
         /// @brief stores whether or not T is exact
         static constexpr bool is_exact{false};
         /// @brief stores whether or not T has defined infinity
@@ -249,10 +245,6 @@ namespace bsl
     {
         /// @brief stores whether or not this is a specialization
         static constexpr bool is_specialized{true};
-        /// @brief stores whether or not T is signed
-        static constexpr bool is_signed{false};
-        /// @brief stores whether or not T is an integer
-        static constexpr bool is_integer{true};
         /// @brief stores whether or not T is exact
         static constexpr bool is_exact{true};
         /// @brief stores whether or not T has defined infinity
@@ -424,10 +416,6 @@ namespace bsl
     {
         /// @brief stores whether or not this is a specialization
         static constexpr bool is_specialized{true};
-        /// @brief stores whether or not T is signed
-        static constexpr bool is_signed{true};
-        /// @brief stores whether or not T is an integer
-        static constexpr bool is_integer{false};
         /// @brief stores whether or not T is exact
         static constexpr bool is_exact{true};
         /// @brief stores whether or not T has defined infinity
@@ -480,7 +468,7 @@ namespace bsl
         static constexpr char_type
         min() noexcept
         {
-            return CHAR_MIN;
+            return static_cast<char_type>(CHAR_MIN);
         }
 
         /// <!-- description -->
@@ -493,7 +481,7 @@ namespace bsl
         static constexpr char_type
         lowest() noexcept
         {
-            return CHAR_MIN;
+            return static_cast<char_type>(CHAR_MIN);
         }
 
         /// <!-- description -->
@@ -506,7 +494,7 @@ namespace bsl
         static constexpr char_type
         max() noexcept
         {
-            return CHAR_MAX;
+            return static_cast<char_type>(CHAR_MAX);
         }
 
         /// <!-- description -->
@@ -519,7 +507,7 @@ namespace bsl
         static constexpr char_type
         epsilon() noexcept
         {
-            return 0;
+            return static_cast<char_type>(0);
         }
 
         /// <!-- description -->
@@ -532,7 +520,7 @@ namespace bsl
         static constexpr char_type
         round_error() noexcept
         {
-            return 0;
+            return static_cast<char_type>(0);
         }
 
         /// <!-- description -->
@@ -545,7 +533,7 @@ namespace bsl
         static constexpr char_type
         infinity() noexcept
         {
-            return 0;
+            return static_cast<char_type>(0);
         }
 
         /// <!-- description -->
@@ -558,7 +546,7 @@ namespace bsl
         static constexpr char_type
         quiet_NaN() noexcept
         {
-            return 0;
+            return static_cast<char_type>(0);
         }
 
         /// <!-- description -->
@@ -571,7 +559,7 @@ namespace bsl
         static constexpr char_type
         signaling_NaN() noexcept
         {
-            return 0;
+            return static_cast<char_type>(0);
         }
 
         /// <!-- description -->
@@ -584,7 +572,7 @@ namespace bsl
         static constexpr char_type
         denorm_min() noexcept
         {
-            return 0;
+            return static_cast<char_type>(0);
         }
     };
 
@@ -599,10 +587,6 @@ namespace bsl
     {
         /// @brief stores whether or not this is a specialization
         static constexpr bool is_specialized{true};
-        /// @brief stores whether or not T is signed
-        static constexpr bool is_signed{true};
-        /// @brief stores whether or not T is an integer
-        static constexpr bool is_integer{true};
         /// @brief stores whether or not T is exact
         static constexpr bool is_exact{true};
         /// @brief stores whether or not T has defined infinity
@@ -774,10 +758,6 @@ namespace bsl
     {
         /// @brief stores whether or not this is a specialization
         static constexpr bool is_specialized{true};
-        /// @brief stores whether or not T is signed
-        static constexpr bool is_signed{true};
-        /// @brief stores whether or not T is an integer
-        static constexpr bool is_integer{true};
         /// @brief stores whether or not T is exact
         static constexpr bool is_exact{true};
         /// @brief stores whether or not T has defined infinity
@@ -949,10 +929,6 @@ namespace bsl
     {
         /// @brief stores whether or not this is a specialization
         static constexpr bool is_specialized{true};
-        /// @brief stores whether or not T is signed
-        static constexpr bool is_signed{true};
-        /// @brief stores whether or not T is an integer
-        static constexpr bool is_integer{true};
         /// @brief stores whether or not T is exact
         static constexpr bool is_exact{true};
         /// @brief stores whether or not T has defined infinity
@@ -1124,10 +1100,6 @@ namespace bsl
     {
         /// @brief stores whether or not this is a specialization
         static constexpr bool is_specialized{true};
-        /// @brief stores whether or not T is signed
-        static constexpr bool is_signed{true};
-        /// @brief stores whether or not T is an integer
-        static constexpr bool is_integer{true};
         /// @brief stores whether or not T is exact
         static constexpr bool is_exact{true};
         /// @brief stores whether or not T has defined infinity
@@ -1299,10 +1271,6 @@ namespace bsl
     {
         /// @brief stores whether or not this is a specialization
         static constexpr bool is_specialized{true};
-        /// @brief stores whether or not T is signed
-        static constexpr bool is_signed{false};
-        /// @brief stores whether or not T is an integer
-        static constexpr bool is_integer{true};
         /// @brief stores whether or not T is exact
         static constexpr bool is_exact{true};
         /// @brief stores whether or not T has defined infinity
@@ -1479,10 +1447,6 @@ namespace bsl
     {
         /// @brief stores whether or not this is a specialization
         static constexpr bool is_specialized{true};
-        /// @brief stores whether or not T is signed
-        static constexpr bool is_signed{false};
-        /// @brief stores whether or not T is an integer
-        static constexpr bool is_integer{true};
         /// @brief stores whether or not T is exact
         static constexpr bool is_exact{true};
         /// @brief stores whether or not T has defined infinity
@@ -1659,10 +1623,6 @@ namespace bsl
     {
         /// @brief stores whether or not this is a specialization
         static constexpr bool is_specialized{true};
-        /// @brief stores whether or not T is signed
-        static constexpr bool is_signed{false};
-        /// @brief stores whether or not T is an integer
-        static constexpr bool is_integer{true};
         /// @brief stores whether or not T is exact
         static constexpr bool is_exact{true};
         /// @brief stores whether or not T has defined infinity
@@ -1834,10 +1794,6 @@ namespace bsl
     {
         /// @brief stores whether or not this is a specialization
         static constexpr bool is_specialized{true};
-        /// @brief stores whether or not T is signed
-        static constexpr bool is_signed{false};
-        /// @brief stores whether or not T is an integer
-        static constexpr bool is_integer{true};
         /// @brief stores whether or not T is exact
         static constexpr bool is_exact{true};
         /// @brief stores whether or not T has defined infinity

@@ -41,7 +41,7 @@ namespace bsl
         constexpr bsl::array<bool, size.get()> arr{true, false};
         bsl::span const spn{arr.data(), arr.size()};
 
-        bsl::for_each(spn.iter(idx), spn.end(), [](auto &e, auto const i) noexcept {
+        bsl::for_each(spn.iter(idx), spn.end(), [](auto &e, auto const &i) noexcept {
             bsl::print() << "element [" << i << "] == " << e << bsl::endl;
         });
     }

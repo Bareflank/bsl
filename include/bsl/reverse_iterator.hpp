@@ -157,7 +157,7 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the number of elements in the array being iterated
         ///
-        [[nodiscard]] constexpr size_type
+        [[nodiscard]] constexpr size_type const &
         size() const noexcept
         {
             return m_i.size();
@@ -192,6 +192,18 @@ namespace bsl
         empty() const noexcept
         {
             return m_i.empty();
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns !is_end()
+        ///   @include reverse_iterator/example_reverse_iterator_operator_bool.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns !is_end()
+        ///
+        [[nodiscard]] constexpr explicit operator bool() const noexcept
+        {
+            return !this->is_end();
         }
 
         /// <!-- description -->
@@ -434,6 +446,7 @@ namespace bsl
     ///   @brief Outputs the provided bsl::reverse_iterator to the provided
     ///     output type.
     ///   @related bsl::reverse_iterator
+    ///   @include reverse_iterator/example_reverse_iterator_ostream.hpp
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T1 the type of outputter provided
@@ -446,6 +459,10 @@ namespace bsl
     [[maybe_unused]] constexpr out<T1>
     operator<<(out<T1> const o, reverse_iterator<T2> const &val) noexcept
     {
+        if constexpr (!o) {
+            return o;
+        }
+
         if (val.is_end()) {
             return o << "[null]";
         }

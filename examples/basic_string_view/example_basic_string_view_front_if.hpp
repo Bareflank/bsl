@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_basic_string_view_front_if() noexcept
     {
-        constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
+        bsl::basic_string_view<bsl::char_type> const str{"Hello"};
 
         if (auto const *const ptr = str.front_if()) {
             bsl::print() << "success: " << *ptr << bsl::endl;

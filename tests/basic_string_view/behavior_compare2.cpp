@@ -480,6 +480,19 @@ tests() noexcept
                 bsl::ut_check(msg1.compare(npos, npos, msg2) == 0);
             };
         };
+
+        bsl::ut_given{} = []() {
+            basic_string_view<char_type> const msg1{"Hello"};
+            basic_string_view<char_type> const msg2{"Hello"};
+
+            bsl::ut_then{} = [&msg1, msg2]() {
+                bsl::ut_check(msg1.compare(safe_uintmax::zero(true), to_umax(0), msg2) == 0);
+            };
+
+            bsl::ut_then{} = [&msg1, msg2]() {
+                bsl::ut_check(msg1.compare(to_umax(0), safe_uintmax::zero(true), msg2) == 0);
+            };
+        };
     };
 
     return bsl::ut_success();

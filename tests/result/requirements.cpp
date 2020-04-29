@@ -38,6 +38,7 @@ namespace
         {
             bsl::discard(res.get_if());
             bsl::discard(res.errc());
+            bsl::discard(!!res);
             bsl::discard(res.success());
             bsl::discard(res.failure());
 
@@ -49,6 +50,7 @@ namespace
         {
             bsl::discard(res.get_if());
             bsl::discard(res.errc());
+            bsl::discard(!!res);
             bsl::discard(res.success());
             bsl::discard(res.failure());
 
@@ -89,6 +91,7 @@ main() noexcept
                 static_assert(noexcept(res1 = bsl::move(res2)));
                 static_assert(noexcept(res1.get_if()));
                 static_assert(noexcept(res1.errc()));
+                static_assert(noexcept(!!res1));
                 static_assert(noexcept(res1.success()));
                 static_assert(noexcept(res1.failure()));
             };

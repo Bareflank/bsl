@@ -34,9 +34,9 @@ namespace bsl
     inline void
     example_basic_string_view_begin() noexcept
     {
-        constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
+        bsl::basic_string_view<bsl::char_type> const str{"Hello"};
 
-        bsl::for_each(str.begin(), str.end(), [](auto &e, auto const i) noexcept {
+        bsl::for_each(str.begin(), str.end(), [](auto &e, auto const &i) noexcept {
             bsl::print() << "element [" << i << "] == " << e << bsl::endl;
         });
     }

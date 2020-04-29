@@ -56,6 +56,24 @@ namespace bsl
     template<bsl::uintmax DL, typename T>
     using out_t = conditional_t<DL <= BSL_DEBUG_LEVEL, out<T>, out<details::out_type_empty>>;
 
+    namespace details
+    {
+        /// <!-- description -->
+        ///   @brief Returns the current thread id
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam T defaults to void. Provides the ability to specialize
+        ///     this function to provide your own custom implementation.
+        ///   @return Returns the current thread id
+        ///
+        template<typename T = void>
+        [[nodiscard]] constexpr safe_uintmax
+        thread_id() noexcept
+        {
+            return safe_uintmax::zero();
+        }
+    }
+
     /// <!-- description -->
     ///   @brief Returns and instance of bsl::out<T>. This version of
     ///     bsl::out<T> does not print a label and does not accept
@@ -90,7 +108,14 @@ namespace bsl
     [[nodiscard]] constexpr out_t<DL, details::out_type_debug>
     debug() noexcept
     {
-        return {};
+        out_t<DL, details::out_type_debug> o{};
+
+        if constexpr (!o) {
+            return o;
+        }
+
+        o << '[' << bsl::cyan << details::thread_id() << bsl::reset_color << "]: ";
+        return o;
     }
 
     /// <!-- description -->
@@ -109,7 +134,14 @@ namespace bsl
     [[nodiscard]] constexpr out_t<DL, details::out_type_alert>
     alert() noexcept
     {
-        return {};
+        out_t<DL, details::out_type_alert> o{};
+
+        if constexpr (!o) {
+            return o;
+        }
+
+        o << '[' << bsl::cyan << details::thread_id() << bsl::reset_color << "]: ";
+        return o;
     }
 
     /// <!-- description -->
@@ -127,7 +159,10 @@ namespace bsl
     [[nodiscard]] constexpr out<details::out_type_error>
     error() noexcept
     {
-        return {};
+        out<details::out_type_error> o{};
+        o << '[' << bsl::cyan << details::thread_id() << bsl::reset_color << "]: ";
+
+        return o;
     }
 }
 

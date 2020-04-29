@@ -34,15 +34,15 @@ namespace bsl
     inline void
     example_from_chars_overview() noexcept
     {
-        bsl::safe_int32 val;
-        bsl::safe_uintmax idx{bsl::from_chars("42", val)};
+        bsl::safe_int32 val{};
+        bsl::safe_uintmax const idx{bsl::from_chars("-42", val)};
 
-        constexpr bsl::safe_int32 expected_val{42};
+        constexpr bsl::safe_int32 expected_val{-42};
         if (expected_val == val) {
             bsl::print() << "success\n";
         }
 
-        constexpr bsl::safe_uintmax expected_idx{bsl::to_umax(2)};
+        constexpr bsl::safe_uintmax expected_idx{bsl::to_umax(3)};
         if (expected_idx == idx) {
             bsl::print() << "success\n";
         }

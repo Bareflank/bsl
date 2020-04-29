@@ -33,8 +33,8 @@ namespace bsl
     inline void
     example_contiguous_iterator_data() noexcept
     {
-        constexpr bsl::string_view str{"Hello"};
-        constexpr bsl::string_view::iterator_type iter{str.begin()};
+        bsl::string_view const str{"Hello"};
+        bsl::string_view::iterator_type const iter{str.begin()};
 
         if (str.data() == iter.data()) {
             bsl::print() << "success\n";

@@ -46,6 +46,22 @@ tests() noexcept
         };
     };
 
+    bsl::ut_scenario{"operator bool"} = []() {
+        bsl::ut_check(!!bsl::errc_success);
+        bsl::ut_check(!bsl::errc_failure);
+        bsl::ut_check(!bsl::errc_precondition);
+        bsl::ut_check(!bsl::errc_postcondition);
+        bsl::ut_check(!bsl::errc_assetion);
+        bsl::ut_check(!bsl::errc_invalid_argument);
+        bsl::ut_check(!bsl::errc_index_out_of_bounds);
+        bsl::ut_check(!bsl::errc_bad_function);
+        bsl::ut_check(!bsl::errc_unsigned_wrap);
+        bsl::ut_check(!bsl::errc_narrow_overflow);
+        bsl::ut_check(!bsl::errc_signed_overflow);
+        bsl::ut_check(!bsl::errc_divide_by_zero);
+        bsl::ut_check(!bsl::errc_nullptr_dereference);
+    };
+
     bsl::ut_scenario{"success"} = []() {
         bsl::ut_check(bsl::errc_success.success());
         bsl::ut_check(!bsl::errc_failure.success());

@@ -114,7 +114,7 @@ namespace bsl
     [[maybe_unused]] constexpr out<T>
     operator<<(out<T> const o, bool const b) noexcept
     {
-        if constexpr (o.empty()) {
+        if constexpr (!o) {
             return o;
         }
 

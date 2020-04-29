@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_basic_errc_type_is_unchecked() noexcept
     {
-        constexpr basic_errc_type<> my_errc{42};
+        constexpr bsl::basic_errc_type<> my_errc{42};
 
         if (my_errc.is_unchecked()) {
             bsl::print() << "success\n";

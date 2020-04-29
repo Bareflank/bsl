@@ -52,8 +52,6 @@ namespace bsl
         template<typename T>
         struct fmt_impl_integral_info final
         {
-            /// @brief stores the base of the number (2, 10 or 16)
-            safe_integral<T> base;
             /// @brief stores the total number of extra characters needed
             safe_uintmax extras;
             /// @brief stores the total number digits that make up the integral
@@ -96,6 +94,7 @@ namespace bsl
         constexpr fmt_impl_integral_info<T>
         get_integral_info(fmt_options const &ops, safe_integral<T> val) noexcept
         {
+            safe_integral<T> base{convert<T>(10)};
             fmt_impl_integral_info<T> info{};
 
             switch (ops.type()) {
@@ -104,7 +103,7 @@ namespace bsl
                         info.extras += to_umax(2);
                     }
 
-                    info.base = convert<T>(2);
+                    base = convert<T>(2);
                     break;
                 }
 
@@ -113,7 +112,7 @@ namespace bsl
                         info.extras += to_umax(2);
                     }
 
-                    info.base = convert<T>(16);
+                    base = convert<T>(16);
                     break;
                 }
 
@@ -121,7 +120,6 @@ namespace bsl
                 case fmt_type::fmt_type_d:
                 case fmt_type::fmt_type_s:
                 case fmt_type::fmt_type_default: {
-                    info.base = convert<T>(10);
                     break;
                 }
             }
@@ -146,8 +144,8 @@ namespace bsl
             }
             else {
                 for (info.num = {}; (info.num < max_num_digits) && (!val.is_zero()); ++info.num) {
-                    safe_integral<T> digit = val % info.base;
-                    val /= info.base;
+                    safe_integral<T> digit{val % base};
+                    val /= base;
 
                     if constexpr (val.is_signed_type()) {
                         if (digit.is_neg()) {
@@ -157,11 +155,13 @@ namespace bsl
 
                     if (digit > convert<T>(9)) {
                         digit -= convert<T>(10);
-                        info.buf[info.num.get()] = 'A' + static_cast<char_type>(digit.get());
+                        digit += convert<T>('A');
                     }
                     else {
-                        info.buf[info.num.get()] = '0' + static_cast<char_type>(digit.get());
+                        digit += convert<T>('0');
                     }
+
+                    info.buf[info.num.get()] = static_cast<char_type>(digit.get());
                 }
             }
 
@@ -182,9 +182,9 @@ namespace bsl
         ///
         template<typename OUT, typename T>
         constexpr void
-        fmt_impl_integral(OUT &&o, fmt_options const &ops, safe_integral<T> const val) noexcept
+        fmt_impl_integral(OUT &&o, fmt_options const &ops, safe_integral<T> const &val) noexcept
         {
-            fmt_impl_integral_info<T> info{get_integral_info(ops, val)};
+            fmt_impl_integral_info<T> const info{get_integral_info(ops, val)};
             safe_uintmax const padding{fmt_impl_align_pre(o, ops, info.num + info.extras, false)};
 
             if (is_signed<T>::value) {
@@ -241,7 +241,7 @@ namespace bsl
             }
             else {
                 for (safe_uintmax i{info.num}; i.is_pos(); --i) {
-                    o.write(info.buf[(i - to_umax(1)).get()]);
+                    o.write(info.buf[(i - safe_uintmax::one()).get()]);
                 }
             }
 

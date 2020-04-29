@@ -61,8 +61,15 @@ namespace bsl
     ///
     template<typename OUT, typename T>
     constexpr void
-    fmt_impl(OUT &&o, fmt_options const &ops, safe_integral<T> const val) noexcept
+    fmt_impl(OUT &&o, fmt_options const &ops, safe_integral<T> const &val) noexcept
     {
+        if (!val) {
+            details::fmt_impl_align_pre(o, ops, to_umax(7), true);
+            o.write("[error]");
+            details::fmt_impl_align_suf(o, ops, to_umax(7), true);
+            return;
+        }
+
         switch (ops.type()) {
             case fmt_type::fmt_type_b:
             case fmt_type::fmt_type_d:
@@ -137,13 +144,18 @@ namespace bsl
     ///
     template<typename T1, typename T2>
     [[maybe_unused]] constexpr out<T1>
-    operator<<(out<T1> const o, safe_integral<T2> const val) noexcept
+    operator<<(out<T1> const o, safe_integral<T2> const &val) noexcept
     {
-        if constexpr (o.empty()) {
+        if constexpr (!o) {
             return o;
         }
 
-        details::fmt_impl_integral_info<T2> info{details::get_integral_info(nullops, val)};
+        if (!val) {
+            o.write("[error]");
+            return o;
+        }
+
+        details::fmt_impl_integral_info<T2> const info{details::get_integral_info(nullops, val)};
 
         if (val.is_zero()) {
             o.write('0');
@@ -154,7 +166,7 @@ namespace bsl
             }
 
             for (safe_uintmax i{info.num}; i.is_pos(); --i) {
-                o.write(info.buf[(i - to_umax(1)).get()]);
+                o.write(info.buf[(i - safe_uintmax::one()).get()]);
             }
         }
 
@@ -176,11 +188,11 @@ namespace bsl
     [[maybe_unused]] constexpr out<T1>
     operator<<(out<T1> const o, T2 const val) noexcept
     {
-        if constexpr (o.empty()) {
+        if constexpr (!o) {
             return o;
         }
 
-        details::fmt_impl_integral_info<T2> info{
+        details::fmt_impl_integral_info<T2> const info{
             details::get_integral_info(nullops, convert<T2>(val))};
 
         if (val == static_cast<T2>(0)) {
@@ -194,7 +206,7 @@ namespace bsl
             }
 
             for (safe_uintmax i{info.num}; i.is_pos(); --i) {
-                o.write(info.buf[(i - to_umax(1)).get()]);
+                o.write(info.buf[(i - safe_uintmax::one()).get()]);
             }
         }
 

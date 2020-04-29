@@ -110,9 +110,9 @@ namespace bsl
         ///
         static constexpr source_location
         current(
-            file_type const current_file = BSL_BUILTIN_FILE,
-            func_type const current_func = BSL_BUILTIN_FUNCTION,
-            line_type const current_line = BSL_BUILTIN_LINE) noexcept
+            file_type const current_file = __builtin_FILE(),
+            func_type const current_func = __builtin_FUNCTION(),
+            line_type const current_line = __builtin_LINE()) noexcept
         {
             return {current_file, current_func, current_line};
         }
@@ -191,6 +191,7 @@ namespace bsl
     ///   @brief Outputs the provided bsl::source_location to the provided
     ///     output type.
     ///   @related bsl::source_location
+    ///   @include source_location/example_source_location_ostream.hpp
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type of outputter provided
@@ -202,7 +203,7 @@ namespace bsl
     [[maybe_unused]] constexpr out<T>
     operator<<(out<T> const o, source_location const &sloc) noexcept
     {
-        if constexpr (o.empty()) {
+        if constexpr (!o) {
             return o;
         }
 

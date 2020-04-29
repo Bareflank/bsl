@@ -33,8 +33,8 @@ namespace bsl
     inline void
     example_reverse_iterator_get_if() noexcept
     {
-        constexpr bsl::string_view str{"Hello"};
-        bsl::string_view::reverse_iterator_type iter{str.rbegin()};
+        bsl::string_view const str{"Hello"};
+        bsl::string_view::reverse_iterator_type const iter{str.rbegin()};
 
         if (auto const *const ptr = iter.get_if()) {
             bsl::print() << "success: " << *ptr << bsl::endl;

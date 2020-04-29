@@ -68,9 +68,9 @@ namespace bsl
     ///   @return Returns the same result as std::strncmp.
     ///
     [[nodiscard]] inline constexpr safe_int32
-    builtin_strncmp(cstr_type const lhs, cstr_type const rhs, safe_uintmax const count) noexcept
+    builtin_strncmp(cstr_type const lhs, cstr_type const rhs, safe_uintmax const &count) noexcept
     {
-        if ((nullptr == lhs) || (nullptr == rhs) || (count.is_zero())) {
+        if ((nullptr == lhs) || (nullptr == rhs) || count.is_zero()) {
             return to_i32(0);
         }
 
@@ -116,9 +116,9 @@ namespace bsl
     ///   @return Returns the same result as std::strnchr.
     ///
     [[nodiscard]] inline constexpr cstr_type
-    builtin_strnchr(cstr_type const str, char_type const ch, safe_uintmax const count) noexcept
+    builtin_strnchr(cstr_type const str, char_type const ch, safe_uintmax const &count) noexcept
     {
-        if ((nullptr == str) || (count.is_zero())) {
+        if ((nullptr == str) || count.is_zero()) {
             return nullptr;
         }
 
@@ -126,7 +126,7 @@ namespace bsl
             return nullptr;
         }
         else {
-            safe_uintmax len{__builtin_strlen(str)};
+            safe_uintmax len{to_umax(__builtin_strlen(str))};
             return __builtin_char_memchr(str, ch, count.min(len + to_umax(1)).get());
         }
     }

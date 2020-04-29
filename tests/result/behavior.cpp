@@ -547,6 +547,22 @@ tests() noexcept
         };
     };
 
+    bsl::ut_scenario{"operator bool"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::result<bool> const test{bsl::in_place, true};
+            bsl::ut_then{} = [&test]() {
+                bsl::ut_check(!!test);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::result<bool> const test{bsl::errc_failure};
+            bsl::ut_then{} = [&test]() {
+                bsl::ut_check(!test);
+            };
+        };
+    };
+
     bsl::ut_scenario{"success"} = []() {
         bsl::ut_given{} = []() {
             bsl::result<bool> const test{bsl::in_place, true};

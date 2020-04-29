@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_basic_string_view_default_constructor() noexcept
     {
-        constexpr bsl::basic_string_view<bsl::char_type> str{};
+        bsl::basic_string_view<bsl::char_type> const str{};
 
         if (str.empty()) {
             bsl::print() << "success\n";

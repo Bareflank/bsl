@@ -144,6 +144,18 @@ tests() noexcept
                 bsl::ut_check(ops.align() == bsl::fmt_align::fmt_align_default);
             };
         };
+
+        bsl::ut_given{} = []() {
+            bsl::fmt_options ops{""};
+            bsl::ut_when{} = [&ops]() {
+                ops.set_fill('#');
+                ops.set_align(bsl::fmt_align::fmt_align_left);
+                bsl::ut_then{} = [&ops]() {
+                    bsl::ut_check(ops.fill() == '#');
+                    bsl::ut_check(ops.align() == bsl::fmt_align::fmt_align_left);
+                };
+            };
+        };
     };
 
     bsl::ut_scenario{"sign"} = []() {
@@ -174,6 +186,16 @@ tests() noexcept
                 bsl::ut_check(ops.sign() == bsl::fmt_sign::fmt_sign_neg_only);
             };
         };
+
+        bsl::ut_given{} = []() {
+            bsl::fmt_options ops{""};
+            bsl::ut_when{} = [&ops]() {
+                ops.set_sign(bsl::fmt_sign::fmt_sign_pos_neg);
+                bsl::ut_then{} = [&ops]() {
+                    bsl::ut_check(ops.sign() == bsl::fmt_sign::fmt_sign_pos_neg);
+                };
+            };
+        };
     };
 
     bsl::ut_scenario{"alt form"} = []() {
@@ -190,6 +212,16 @@ tests() noexcept
                 bsl::ut_check(!ops.alternate_form());
             };
         };
+
+        bsl::ut_given{} = []() {
+            bsl::fmt_options ops{""};
+            bsl::ut_when{} = [&ops]() {
+                ops.set_alternate_form(true);
+                bsl::ut_then{} = [&ops]() {
+                    bsl::ut_check(ops.alternate_form());
+                };
+            };
+        };
     };
 
     bsl::ut_scenario{"sign aware"} = []() {
@@ -204,6 +236,16 @@ tests() noexcept
             bsl::fmt_options ops{"Hello World"};
             bsl::ut_then{} = [&ops]() {
                 bsl::ut_check(!ops.sign_aware());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::fmt_options ops{""};
+            bsl::ut_when{} = [&ops]() {
+                ops.set_sign_aware(true);
+                bsl::ut_then{} = [&ops]() {
+                    bsl::ut_check(ops.sign_aware());
+                };
             };
         };
     };
@@ -252,6 +294,56 @@ tests() noexcept
             bsl::fmt_options ops{"Hello World"};
             bsl::ut_then{} = [&ops]() {
                 bsl::ut_check(ops.width() == bsl::to_umax(0));
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::fmt_options ops{""};
+            bsl::ut_when{} = [&ops]() {
+                ops.set_width(bsl::to_umax(9));    // NOLINT
+                bsl::ut_then{} = [&ops]() {
+                    bsl::ut_check(ops.width() == bsl::to_umax(9));    // NOLINT
+                };
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::fmt_options ops{""};
+            bsl::ut_when{} = [&ops]() {
+                ops.set_width(bsl::to_umax(99));    // NOLINT
+                bsl::ut_then{} = [&ops]() {
+                    bsl::ut_check(ops.width() == bsl::to_umax(99));    // NOLINT
+                };
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::fmt_options ops{""};
+            bsl::ut_when{} = [&ops]() {
+                ops.set_width(bsl::to_umax(999));    // NOLINT
+                bsl::ut_then{} = [&ops]() {
+                    bsl::ut_check(ops.width() == bsl::to_umax(999));    // NOLINT
+                };
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::fmt_options ops{""};
+            bsl::ut_when{} = [&ops]() {
+                ops.set_width(bsl::to_umax(9999));    // NOLINT
+                bsl::ut_then{} = [&ops]() {
+                    bsl::ut_check(ops.width() == bsl::to_umax(999));    // NOLINT
+                };
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::fmt_options ops{""};
+            bsl::ut_when{} = [&ops]() {
+                ops.set_width(bsl::safe_uintmax::zero(true));
+                bsl::ut_then{} = [&ops]() {
+                    bsl::ut_check(ops.width() == bsl::to_umax(999));    // NOLINT
+                };
             };
         };
     };
@@ -310,6 +402,16 @@ tests() noexcept
             bsl::fmt_options ops{"Hello World"};
             bsl::ut_then{} = [&ops]() {
                 bsl::ut_check(ops.type() == bsl::fmt_type::fmt_type_default);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            bsl::fmt_options ops{""};
+            bsl::ut_when{} = [&ops]() {
+                ops.set_type(bsl::fmt_type::fmt_type_x);
+                bsl::ut_then{} = [&ops]() {
+                    bsl::ut_check(ops.type() == bsl::fmt_type::fmt_type_x);
+                };
             };
         };
     };

@@ -84,6 +84,22 @@ tests() noexcept
                 bsl::ut_check(ci.index() == arr.size());
             };
         };
+
+        bsl::ut_given{} = []() {
+            contiguous_iterator ci{arr.data(), safe_uintmax::zero(true), to_umax(0)};
+            bsl::ut_then{} = [&ci]() {
+                bsl::ut_check(ci.empty());
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            contiguous_iterator ci{arr.data(), arr.size(), safe_uintmax::zero(true)};
+            bsl::ut_then{} = [&ci]() {
+                bsl::ut_check(ci.data() == arr.data());
+                bsl::ut_check(ci.size() == arr.size());
+                bsl::ut_check(ci.index() == arr.size());
+            };
+        };
     };
 
     bsl::ut_scenario{"data"} = []() {
@@ -167,6 +183,29 @@ tests() noexcept
             contiguous_iterator ci{arr.data(), arr.size(), to_umax(0)};
             bsl::ut_then{} = [&ci]() {
                 bsl::ut_check(!ci.empty());
+            };
+        };
+    };
+
+    bsl::ut_scenario{"operator bool"} = []() {
+        bsl::ut_given{} = []() {
+            contiguous_iterator ci{arr.data(), arr.size(), to_umax(0)};
+            bsl::ut_then{} = [&ci]() {
+                bsl::ut_check(!!ci);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            contiguous_iterator<bool> ci{nullptr, to_umax(0), to_umax(0)};
+            bsl::ut_then{} = [&ci]() {
+                bsl::ut_check(!ci);
+            };
+        };
+
+        bsl::ut_given{} = []() {
+            contiguous_iterator ci{arr.data(), arr.size(), arr.size()};
+            bsl::ut_then{} = [&ci]() {
+                bsl::ut_check(!ci);
             };
         };
     };

@@ -59,7 +59,7 @@ namespace bsl
             typename VIEW,
             typename FUNC,
             bool EO = is_invocable<FUNC, value_type_for<VIEW> &>::value,
-            bool EI = is_invocable<FUNC, value_type_for<VIEW> &, safe_uintmax>::value>
+            bool EI = is_invocable<FUNC, value_type_for<VIEW> &, safe_uintmax const &>::value>
         class for_each_impl_view final
         {
             static_assert(
@@ -144,7 +144,7 @@ namespace bsl
         class for_each_impl_view<VIEW, FUNC, false, true> final
         {
             /// @brief reduces the verbosity of invoke_result_t
-            using ret_type = invoke_result_t<FUNC, value_type_for<VIEW> &, safe_uintmax>;
+            using ret_type = invoke_result_t<FUNC, value_type_for<VIEW> &, safe_uintmax const &>;
 
         public:
             /// <!-- description -->
@@ -159,7 +159,7 @@ namespace bsl
             ///
             static constexpr void
             call(VIEW &&vw, FUNC &&f) noexcept(
-                is_nothrow_invocable<FUNC, value_type_for<VIEW> &, safe_uintmax>::value)
+                is_nothrow_invocable<FUNC, value_type_for<VIEW> &, safe_uintmax const &>::value)
             {
                 for (safe_uintmax i{}; i < vw.size(); ++i) {
                     if constexpr (is_bool<ret_type>::value) {

@@ -90,6 +90,18 @@ namespace bsl
         }
 
         /// <!-- description -->
+        ///   @brief Returns success()
+        ///   @include basic_errc_type/example_basic_errc_type_operator_bool.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns success()
+        ///
+        [[nodiscard]] constexpr explicit operator bool() const noexcept
+        {
+            return this->success();
+        }
+
+        /// <!-- description -->
         ///   @brief Returns true if the error code contains SUCCESS,
         ///     otherwise, if the error code contains an error code,
         ///     returns false.
@@ -349,6 +361,7 @@ namespace bsl
     ///   @brief Outputs the provided bsl::basic_errc_type to the provided
     ///     output type.
     ///   @related bsl::basic_errc_type
+    ///   @include basic_errc_type/example_basic_errc_type_ostream.hpp
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T1 the type of outputter provided
@@ -361,6 +374,10 @@ namespace bsl
     [[maybe_unused]] constexpr out<T1>
     operator<<(out<T1> const o, basic_errc_type<T2, SUCCESS> const &val) noexcept
     {
+        if constexpr (!o) {
+            return o;
+        }
+
         return o << val.message();
     }
 }

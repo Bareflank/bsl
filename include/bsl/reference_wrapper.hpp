@@ -114,6 +114,7 @@ namespace bsl
     ///   @brief Outputs the provided bsl::reference_wrapper to the provided
     ///     output type.
     ///   @related bsl::reference_wrapper
+    ///   @include reference_wrapper/example_reference_wrapper_ostream.hpp
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T1 the type of outputter provided
@@ -126,6 +127,10 @@ namespace bsl
     [[maybe_unused]] constexpr out<T1>
     operator<<(out<T1> const o, bsl::reference_wrapper<T2> const &val) noexcept
     {
+        if constexpr (!o) {
+            return o;
+        }
+
         return o << val.get();
     }
 }

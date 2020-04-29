@@ -33,10 +33,10 @@ namespace bsl
     inline void
     example_contiguous_iterator_gt_equals() noexcept
     {
-        constexpr bsl::string_view str{"Hello"};
-        constexpr bsl::string_view::iterator_type iter1{str.begin()};
-        constexpr bsl::string_view::iterator_type iter2{str.begin()};
-        constexpr bsl::string_view::iterator_type iter3{str.end()};
+        bsl::string_view const str{"Hello"};
+        bsl::string_view::iterator_type const iter1{str.begin()};
+        bsl::string_view::iterator_type const iter2{str.begin()};
+        bsl::string_view::iterator_type const iter3{str.end()};
 
         if (iter1 == iter2) {
             bsl::print() << "success\n";

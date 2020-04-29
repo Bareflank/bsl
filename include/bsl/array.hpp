@@ -109,9 +109,9 @@ namespace bsl
         ///     this function returns a nullptr.
         ///
         [[nodiscard]] constexpr pointer_type
-        at_if(size_type const index) noexcept
+        at_if(size_type const &index) noexcept
         {
-            if (index >= to_umax(N)) {
+            if ((!index) || (index >= to_umax(N))) {
                 bsl::error() << "array: index out of range: " << index << '\n';
                 return nullptr;
             }
@@ -132,9 +132,9 @@ namespace bsl
         ///     this function returns a nullptr.
         ///
         [[nodiscard]] constexpr const_pointer_type
-        at_if(size_type const index) const noexcept
+        at_if(size_type const &index) const noexcept
         {
-            if (index >= to_umax(N)) {
+            if ((!index) || (index >= to_umax(N))) {
                 bsl::error() << "array: index out of range: " << index << '\n';
                 return nullptr;
             }
@@ -320,7 +320,7 @@ namespace bsl
         ///   @return Returns an iterator to the element "i" in the array.
         ///
         [[nodiscard]] constexpr iterator_type
-        iter(size_type const i) noexcept
+        iter(size_type const &i) noexcept
         {
             return iterator_type{this->front_if(), to_umax(N), i};
         }
@@ -334,7 +334,7 @@ namespace bsl
         ///   @return Returns an iterator to the element "i" in the array.
         ///
         [[nodiscard]] constexpr const_iterator_type
-        iter(size_type const i) const noexcept
+        iter(size_type const &i) const noexcept
         {
             return const_iterator_type{this->front_if(), to_umax(N), i};
         }
@@ -348,7 +348,7 @@ namespace bsl
         ///   @return Returns an iterator to the element "i" in the array.
         ///
         [[nodiscard]] constexpr const_iterator_type
-        citer(size_type const i) const noexcept
+        citer(size_type const &i) const noexcept
         {
             return const_iterator_type{this->front_if(), to_umax(N), i};
         }
@@ -476,9 +476,9 @@ namespace bsl
         ///     array.
         ///
         [[nodiscard]] constexpr reverse_iterator_type
-        riter(size_type const i) noexcept
+        riter(size_type const &i) noexcept
         {
-            if (i >= to_umax(N)) {
+            if ((!!i) && (i >= to_umax(N))) {
                 return reverse_iterator_type{this->iter(to_umax(N))};
             }
 
@@ -500,9 +500,9 @@ namespace bsl
         ///     array.
         ///
         [[nodiscard]] constexpr const_reverse_iterator_type
-        riter(size_type const i) const noexcept
+        riter(size_type const &i) const noexcept
         {
-            if (i >= to_umax(N)) {
+            if ((!!i) && (i >= to_umax(N))) {
                 return const_reverse_iterator_type{this->iter(to_umax(N))};
             }
 
@@ -524,9 +524,9 @@ namespace bsl
         ///     array.
         ///
         [[nodiscard]] constexpr const_reverse_iterator_type
-        criter(size_type const i) const noexcept
+        criter(size_type const &i) const noexcept
         {
-            if (i >= to_umax(N)) {
+            if ((!!i) && (i >= to_umax(N))) {
                 return const_reverse_iterator_type{this->citer(to_umax(N))};
             }
 
@@ -603,6 +603,18 @@ namespace bsl
         empty() noexcept
         {
             return false;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns !empty()
+        ///   @include array/example_array_operator_bool.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns !empty()
+        ///
+        [[nodiscard]] constexpr explicit operator bool() const noexcept
+        {
+            return !this->empty();
         }
 
         /// <!-- description -->
@@ -703,6 +715,7 @@ namespace bsl
     ///   @brief Outputs the provided bsl::array to the provided
     ///     output type.
     ///   @related bsl::array
+    ///   @include array/example_array_ostream.hpp
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T1 the type of outputter provided
@@ -715,6 +728,10 @@ namespace bsl
     [[maybe_unused]] constexpr out<T1>
     operator<<(out<T1> const o, bsl::array<T2, N> const &val) noexcept
     {
+        if constexpr (!o) {
+            return o;
+        }
+
         for (safe_uintmax i{}; i < val.size(); ++i) {
             o << (i.is_zero() ? "[" : ", ") << *val.at_if(i);
         }

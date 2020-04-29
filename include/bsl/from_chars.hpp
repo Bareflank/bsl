@@ -83,7 +83,7 @@ namespace bsl
         [[nodiscard]] constexpr safe_integral<T>
         from_chars_parse_dec(string_view const &str, safe_uintmax &idx) noexcept
         {
-            bool negate{};
+            bool negate{};    // PRQA S 1-10000
             bool found_digits{};
             safe_integral<T> val{};
 
@@ -139,7 +139,7 @@ namespace bsl
             safe_integral<T> val{};
 
             if constexpr (val.is_signed_type()) {
-                return safe_integral<T>{static_cast<T>(0), true};
+                return safe_integral<T>::zero(true);
             }
 
             for (; idx < str.length(); ++idx) {
@@ -234,8 +234,8 @@ namespace bsl
         safe_int32 const base = safe_int32{10}) noexcept
     {
         if ((!val) || str.empty()) {
-            val = safe_integral<T>{static_cast<T>(0), true};
-            return to_umax(0);
+            val = safe_integral<T>::zero(true);
+            return safe_uintmax::zero();
         }
 
         switch (base.get()) {
@@ -243,7 +243,7 @@ namespace bsl
                 safe_uintmax idx{details::from_chars_ignore_whitespace(str)};
                 val = details::from_chars_parse_dec<T>(str, idx);
                 if (!val) {
-                    return to_umax(0);
+                    return safe_uintmax::zero();
                 }
                 return idx;
             }
@@ -252,7 +252,7 @@ namespace bsl
                 safe_uintmax idx{details::from_chars_ignore_whitespace(str)};
                 val = details::from_chars_parse_hex<T>(str, idx);
                 if (!val) {
-                    return to_umax(0);
+                    return safe_uintmax::zero();
                 }
                 return idx;
             }
@@ -262,8 +262,8 @@ namespace bsl
             }
         }
 
-        val = safe_integral<T>{static_cast<T>(0), true};
-        return to_umax(0);
+        val = safe_integral<T>::zero(true);
+        return safe_uintmax::zero();
     }
 }
 

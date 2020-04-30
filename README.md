@@ -152,11 +152,11 @@ Bareflank project. This includes:
 - bsl::source_location
 - bsl::string_view
 
-The next version of this library that will be needed to port MicroV will 
-include (to be done sometime near the end of 2020):
+The next version of this library will include (near the end of 2020):
 - All of the atomic APIs
 - All of the bit APIs
-- Some sort of Data/Time APIs
+- Most of the thread APIs (minus futures)
+- Some sort of Date/Time APIs
 - Some of the algorithms APIs (like copy, etc...)
 
 In the future, we would like to add the following APIs, but we don't have a 
@@ -164,7 +164,6 @@ specific time frame for when these would be added:
 - All of the concept APIs
 - All of the algorithms APIs
 - Most of the remaining utility APIs
-- Most of the remaining thread support APIs
 - Non-allocating versions of a queue and stack
 
 Most of the C++ APIs that include floating point numbers, dynamic memory 

@@ -19,6 +19,4 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-bf_add_example(main)
-
-file(WRITE ${CMAKE_BINARY_DIR}/test.txt "hello world")
+bf_add_test(overview)

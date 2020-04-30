@@ -19,6 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-bf_add_example(main)
+bf_add_test(requirements)
+bf_add_test(behavior)
 
-file(WRITE ${CMAKE_BINARY_DIR}/test.txt "hello world")
+file(WRITE ${CMAKE_BINARY_DIR}/tests/ifmap/test.txt "hello world")

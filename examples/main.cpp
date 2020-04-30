@@ -99,6 +99,7 @@
 #include "basic_string_view/example_basic_string_view_riter.hpp"
 #include "basic_string_view/example_basic_string_view_s_assignment.hpp"
 #include "basic_string_view/example_basic_string_view_s_constructor.hpp"
+#include "basic_string_view/example_basic_string_view_s_count_constructor.hpp"
 #include "basic_string_view/example_basic_string_view_size_bytes.hpp"
 #include "basic_string_view/example_basic_string_view_size.hpp"
 #include "basic_string_view/example_basic_string_view_starts_with.hpp"
@@ -197,6 +198,14 @@
 #include "example_from_chars_overview.hpp"
 // #include "example_has_unique_object_representations_overview.hpp"
 #include "example_has_virtual_destructor_overview.hpp"
+// #include "example_ifmap_overview.hpp"
+// #include "ifmap/example_ifmap_constructor.hpp"
+// #include "ifmap/example_ifmap_data.hpp"
+// #include "ifmap/example_ifmap_empty.hpp"
+// #include "ifmap/example_ifmap_max_size.hpp"
+// #include "ifmap/example_ifmap_operator_bool.hpp"
+// #include "ifmap/example_ifmap_size_bytes.hpp"
+// #include "ifmap/example_ifmap_size.hpp"
 #include "example_in_place_overview.hpp"
 // #include "example_integer_sequence_overview.hpp"
 // #include "integer_sequence/example_integer_sequence_max.hpp"
@@ -284,6 +293,9 @@
 #include "example_is_unbounded_array_overview.hpp"
 #include "example_is_unsigned_overview.hpp"
 #include "example_is_void_overview.hpp"
+#include "example_lock_guard_overview.hpp"
+#include "lock_guard/example_lock_guard_constructor_adopt.hpp"
+#include "lock_guard/example_lock_guard_constructor_lck.hpp"
 #include "example_make_signed_overview.hpp"
 #include "example_make_unsigned_overview.hpp"
 #include "example_max_align_t_overview.hpp"
@@ -396,6 +408,8 @@
 #include "source_location/example_source_location_line.hpp"
 #include "source_location/example_source_location_ostream.hpp"
 #include "example_span_overview.hpp"
+#include "span/example_span_as_bytes.hpp"
+#include "span/example_span_as_writable_bytes.hpp"
 #include "span/example_span_at_if.hpp"
 #include "span/example_span_back_if.hpp"
 #include "span/example_span_begin.hpp"
@@ -419,6 +433,12 @@
 #include "span/example_span_size_bytes.hpp"
 #include "span/example_span_size.hpp"
 #include "span/example_span_subspan.hpp"
+#include "example_spinlock_overview.hpp"
+#include "spinlock/example_spinlock_constructor_val.hpp"
+#include "spinlock/example_spinlock_default_constructor.hpp"
+#include "spinlock/example_spinlock_lock.hpp"
+#include "spinlock/example_spinlock_try_lock.hpp"
+#include "spinlock/example_spinlock_unlock.hpp"
 #include "example_swap_overview.hpp"
 #include "example_true_type_overview.hpp"
 #include "example_underlying_type_overview.hpp"
@@ -528,6 +548,7 @@ main() noexcept
     example(&bsl::example_basic_string_view_riter, "example_basic_string_view_riter");
     example(&bsl::example_basic_string_view_s_assignment, "example_basic_string_view_s_assignment");
     example(&bsl::example_basic_string_view_s_constructor, "example_basic_string_view_s_constructor");
+    example(&bsl::example_basic_string_view_s_count_constructor, "example_basic_string_view_s_count_constructor");
     example(&bsl::example_basic_string_view_size_bytes, "example_basic_string_view_size_bytes");
     example(&bsl::example_basic_string_view_size, "example_basic_string_view_size");
     example(&bsl::example_basic_string_view_starts_with, "example_basic_string_view_starts_with");
@@ -626,6 +647,14 @@ main() noexcept
     example(&bsl::example_from_chars_overview, "example_from_chars_overview");
     // example(&bsl::example_has_unique_object_representations_overview, "example_has_unique_object_representations_overview");
     example(&bsl::example_has_virtual_destructor_overview, "example_has_virtual_destructor_overview");
+    // example(&bsl::example_ifmap_overview, "example_ifmap_overview");
+    // example(&bsl::example_ifmap_constructor, "example_ifmap_constructor");
+    // example(&bsl::example_ifmap_data, "example_ifmap_data");
+    // example(&bsl::example_ifmap_empty, "example_ifmap_empty");
+    // example(&bsl::example_ifmap_max_size, "example_ifmap_max_size");
+    // example(&bsl::example_ifmap_operator_bool, "example_ifmap_operator_bool");
+    // example(&bsl::example_ifmap_size_bytes, "example_ifmap_size_bytes");
+    // example(&bsl::example_ifmap_size, "example_ifmap_size");
     example(&bsl::example_in_place_overview, "example_in_place_overview");
     // // example(&bsl::example_integer_sequence_overview, "example_integer_sequence_overview");
     // // example(&bsl::example_integer_sequence_max, "example_integer_sequence_max");
@@ -713,6 +742,9 @@ main() noexcept
     example(&bsl::example_is_unbounded_array_overview, "example_is_unbounded_array_overview");
     example(&bsl::example_is_unsigned_overview, "example_is_unsigned_overview");
     example(&bsl::example_is_void_overview, "example_is_void_overview");
+    example(&bsl::example_lock_guard_overview, "example_lock_guard_overview");
+    example(&bsl::example_lock_guard_constructor_adopt, "example_lock_guard_constructor_adopt");
+    example(&bsl::example_lock_guard_constructor_lck, "example_lock_guard_constructor_lck");
     example(&bsl::example_make_signed_overview, "example_make_signed_overview");
     example(&bsl::example_make_unsigned_overview, "example_make_unsigned_overview");
     example(&bsl::example_max_align_t_overview, "example_max_align_t_overview");
@@ -825,6 +857,8 @@ main() noexcept
     example(&bsl::example_source_location_line, "example_source_location_line");
     example(&bsl::example_source_location_ostream, "example_source_location_ostream");
     example(&bsl::example_span_overview, "example_span_overview");
+    example(&bsl::example_span_as_bytes, "example_span_as_bytes");
+    example(&bsl::example_span_as_writable_bytes, "example_span_as_writable_bytes");
     example(&bsl::example_span_at_if, "example_span_at_if");
     example(&bsl::example_span_back_if, "example_span_back_if");
     example(&bsl::example_span_begin, "example_span_begin");
@@ -848,6 +882,12 @@ main() noexcept
     example(&bsl::example_span_size_bytes, "example_span_size_bytes");
     example(&bsl::example_span_size, "example_span_size");
     example(&bsl::example_span_subspan, "example_span_subspan");
+    example(&bsl::example_spinlock_overview, "example_spinlock_overview");
+    example(&bsl::example_spinlock_constructor_val, "example_spinlock_constructor_val");
+    example(&bsl::example_spinlock_default_constructor, "example_spinlock_default_constructor");
+    example(&bsl::example_spinlock_lock, "example_spinlock_lock");
+    example(&bsl::example_spinlock_try_lock, "example_spinlock_try_lock");
+    example(&bsl::example_spinlock_unlock, "example_spinlock_unlock");
     example(&bsl::example_swap_overview, "example_swap_overview");
     example(&bsl::example_true_type_overview, "example_true_type_overview");
     example(&bsl::example_underlying_type_overview, "example_underlying_type_overview");

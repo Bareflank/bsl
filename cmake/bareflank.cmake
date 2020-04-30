@@ -390,6 +390,7 @@ string(APPEND CMAKE_CXX_FLAGS
     "-Wno-c++98-compat "
     "-Wno-c++98-compat-pedantic "
     "-Wno-c++20-compat "
+    "-Wno-c11-extensions "
     "-Wno-padded "
     "-Wno-weak-vtables "
     "-Wno-ctad-maybe-unsupported "

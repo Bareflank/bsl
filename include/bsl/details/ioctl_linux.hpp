@@ -21,22 +21,18 @@
 /// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
-///
-/// @file ioctl.hpp
-///
 
-#ifndef BSL_IOCTL_HPP
-#define BSL_IOCTL_HPP
+#ifndef BSL_DETAILS_IOCTL_LINUX_HPP
+#define BSL_DETAILS_IOCTL_LINUX_HPP
 
-#include "debug.hpp"
-#include "discard.hpp"
-#include "safe_integral.hpp"
+#include "../cstdint.hpp"
+#include "../debug.hpp"
+#include "../discard.hpp"
+#include "../safe_integral.hpp"
 
-#if defined(_WIN32) && !BSL_PERFORCE
-#include "details/ioctl_windows.hpp"
-#elif defined(__linux__) && !BSL_PERFORCE
-#include "details/ioctl_linux.hpp"
-#else
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
 
 namespace bsl
 {
@@ -47,6 +43,9 @@ namespace bsl
     ///
     class ioctl final
     {
+        /// @brief stores a handle to the device driver.
+        bsl::int32 m_hndl{};
+
     public:
         /// <!-- description -->
         ///   @brief Creates a bsl::ioctl that can be used to communicate
@@ -55,12 +54,58 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param name the name of the device driver to IOCTL.
         ///
-        template<typename T>
-        explicit ioctl(T name) noexcept
+        template<typename CSTR>
+        explicit ioctl(CSTR name) noexcept
         {
-            bsl::discard(name);
-            bsl::error() << "bsl::ioctl is unsupported on this platform\n";
+            m_hndl = open(name, O_RDWR);
+
+            if (0 == m_hndl) {
+                bsl::error() << "ioctl open failed\n";
+                return;
+            }
         }
+
+        /// <!-- description -->
+        ///   @brief Destructor
+        ///
+        ~ioctl() noexcept
+        {
+            close(m_hndl);
+        }
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr ioctl(ioctl const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr ioctl(ioctl &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        ioctl &operator=(ioctl const &o) &noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        ioctl &operator=(ioctl &&o) &noexcept = default;
 
         /// <!-- description -->
         ///   @brief Sends a request to the driver without read or writing
@@ -72,13 +117,20 @@ namespace bsl
         ///   @return Returns true if the IOCTL succeeded, false otherwise.
         ///
         template<typename REQUEST>
-        [[nodiscard]] static constexpr bool
-        send(REQUEST req) noexcept
+        [[nodiscard]] constexpr bool
+        send(REQUEST req) const noexcept
         {
-            bsl::discard(req);
+            if (0 == m_hndl) {
+                bsl::error() << "failed to send, ioctl not properly initialized\n";
+                return false;
+            }
 
-            bsl::error() << "bsl::ioctl is unsupported on this platform\n";
-            return false;
+            if (::ioctl(m_hndl, req) < 0) {    // NOLINT
+                bsl::error() << "ioctl failed\n";
+                return false;
+            }
+
+            return true;
         }
 
         /// <!-- description -->
@@ -92,15 +144,22 @@ namespace bsl
         ///   @return Returns true if the IOCTL succeeded, false otherwise.
         ///
         template<typename REQUEST>
-        [[nodiscard]] static constexpr bool
-        read(REQUEST req, void *const data, safe_uintmax const &size) noexcept
+        [[nodiscard]] constexpr bool
+        read(REQUEST req, void *const data, safe_uintmax const &size) const noexcept
         {
-            bsl::discard(req);
-            bsl::discard(data);
             bsl::discard(size);
 
-            bsl::error() << "bsl::ioctl is unsupported on this platform\n";
-            return false;
+            if (0 == m_hndl) {
+                bsl::error() << "failed to read, ioctl not properly initialized\n";
+                return false;
+            }
+
+            if (::ioctl(m_hndl, req, data) < 0) {    // NOLINT
+                bsl::error() << "ioctl failed\n";
+                return false;
+            }
+
+            return true;
         }
 
         /// <!-- description -->
@@ -114,15 +173,22 @@ namespace bsl
         ///   @return Returns true if the IOCTL succeeded, false otherwise.
         ///
         template<typename REQUEST>
-        [[nodiscard]] static constexpr bool
-        write(REQUEST req, void const *const data, safe_uintmax const &size) noexcept
+        [[nodiscard]] constexpr bool
+        write(REQUEST req, void const *const data, safe_uintmax const &size) const noexcept
         {
-            bsl::discard(req);
-            bsl::discard(data);
             bsl::discard(size);
 
-            bsl::error() << "bsl::ioctl is unsupported on this platform\n";
-            return false;
+            if (0 == m_hndl) {
+                bsl::error() << "failed to write, ioctl not properly initialized\n";
+                return false;
+            }
+
+            if (::ioctl(m_hndl, req, data) < 0) {    // NOLINT
+                bsl::error() << "ioctl failed\n";
+                return false;
+            }
+
+            return true;
         }
 
         /// <!-- description -->
@@ -136,19 +202,24 @@ namespace bsl
         ///   @return Returns true if the IOCTL succeeded, false otherwise.
         ///
         template<typename REQUEST>
-        [[nodiscard]] static constexpr bool
-        read_write(REQUEST req, void *const data, safe_uintmax const &size) noexcept
+        [[nodiscard]] constexpr bool
+        read_write(REQUEST req, void *const data, safe_uintmax const &size) const noexcept
         {
-            bsl::discard(req);
-            bsl::discard(data);
             bsl::discard(size);
 
-            bsl::error() << "bsl::ioctl is unsupported on this platform\n";
-            return false;
+            if (0 == m_hndl) {
+                bsl::error() << "failed to read/write, ioctl not properly initialized\n";
+                return false;
+            }
+
+            if (::ioctl(m_hndl, req, data) < 0) {    // NOLINT
+                bsl::error() << "ioctl failed\n";
+                return false;
+            }
+
+            return true;
         }
     };
 }
-
-#endif
 
 #endif

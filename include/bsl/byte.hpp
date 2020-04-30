@@ -53,9 +53,6 @@ namespace bsl
         /// <!-- description -->
         ///   @brief Default constructor. This ensures the byte type is a
         ///     POD type, allowing it to be constructed as a global resource.
-        ///     This is needed as aligned storage uses a bsl::byte as its
-        ///     base type, and aligned storage is needed as a global resource
-        ///     to support the bsl::manager.
         ///   @include byte/example_byte_default_constructor.hpp
         ///
         byte() noexcept = default;

@@ -129,3 +129,46 @@ The Bareflank Support Library leverages the following tools to ensure the highes
 -   **Coding Standards**: [AUTOSAR C++14](https://www.autosar.org/fileadmin/user_upload/standards/adaptive/17-03/AUTOSAR_RS_CPP14Guidelines.pdf)
 -   **Style**: Clang Format
 -   **Documentation**: Doxygen
+
+## **The Future**
+The initial version of the BSL is designed to support the needs of the 
+Bareflank project. This includes:
+- All of the "type_traits" APIs
+- All of the "limits" APIs
+- Some utilities like bsl::move, bsl::forward, bsl::swap, etc... 
+- bsl::arguments
+- bsl::array
+- bsl::byte
+- bsl::debug
+- bsl::fmt
+- bsl::for_each
+- bsl::from_chars
+- bsl::ifmap
+- bsl::ioctl
+- bsl::invoke
+- bsl::reference_wrapper
+- bsl::result
+- bsl::safe_integral
+- bsl::source_location
+- bsl::string_view
+
+The next version of this library that will be needed to port MicroV will 
+include (to be done sometime near the end of 2020):
+- All of the atomic APIs
+- All of the bit APIs
+- Some sort of Data/Time APIs
+- Some of the algorithms APIs (like copy, etc...)
+
+In the future, we would like to add the following APIs, but we don't have a 
+specific time frame for when these would be added:
+- All of the concept APIs
+- All of the algorithms APIs
+- Most of the remaining utility APIs
+- Most of the remaining thread support APIs
+- Non-allocating versions of a queue and stack
+
+Most of the C++ APIs that include floating point numbers, dynamic memory 
+and exceptions are purposely being avoided at the moment. If a need for 
+these features is expressed, we can certainly add these as needed, we just 
+need to ensure the BSL can continue to function without these where 
+needed. 

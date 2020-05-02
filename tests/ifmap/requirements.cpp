@@ -1,0 +1,103 @@
+/// @copyright
+/// Copyright (C) 2020 Assured Information Security, Inc.
+///
+/// @copyright
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to deal
+/// in the Software without restriction, including without limitation the rights
+/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+/// copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+///
+/// @copyright
+/// The above copyright notice and this permission notice shall be included in
+/// all copies or substantial portions of the Software.
+///
+/// @copyright
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+/// SOFTWARE.
+
+#include <bsl/ifmap.hpp>
+#include <bsl/ut.hpp>
+
+namespace
+{
+    class fixture_t final
+    {
+        bsl::ifmap map{"hello"};
+
+    public:
+        [[nodiscard]] constexpr bool
+        test_member_const() const
+        {
+            bsl::discard(map.data());
+            bsl::discard(map.empty());
+            bsl::discard(!!map);
+            bsl::discard(map.size());
+            bsl::discard(map.max_size());
+            bsl::discard(map.size_bytes());
+
+            return true;
+        }
+
+        [[nodiscard]] constexpr bool
+        test_member_nonconst()
+        {
+            bsl::discard(map.data());
+            bsl::discard(map.empty());
+            bsl::discard(!!map);
+            bsl::discard(map.size());
+            bsl::discard(map.max_size());
+            bsl::discard(map.size_bytes());
+
+            return true;
+        }
+    };
+}
+
+/// <!-- description -->
+///   @brief Main function for this unit test. If a call to ut_check() fails
+///     the application will fast fail. If all calls to ut_check() pass, this
+///     function will successfully return with bsl::exit_success.
+///
+/// <!-- inputs/outputs -->
+///   @return Always returns bsl::exit_success.
+///
+bsl::exit_code
+main() noexcept
+{
+    using namespace bsl;
+
+    bsl::ut_scenario{"verify noexcept"} = []() {
+        bsl::ut_given{} = []() {
+            ifmap map{"test.txt"};
+            bsl::ut_then{} = []() {
+                static_assert(noexcept(ifmap{"hello"}));
+                static_assert(noexcept(map.data()));
+                static_assert(noexcept(map.empty()));
+                static_assert(noexcept(!!map));
+                static_assert(noexcept(map.size()));
+                static_assert(noexcept(map.max_size()));
+                static_assert(noexcept(map.size_bytes()));
+            };
+        };
+    };
+
+    bsl::ut_scenario{"verify constness"} = []() {
+        bsl::ut_given{} = []() {
+            fixture_t const fixture1{};
+            fixture_t fixture2{};
+            bsl::ut_then{} = [&fixture1, &fixture2]() {
+                ut_check(fixture1.test_member_const());
+                ut_check(fixture2.test_member_nonconst());
+            };
+        };
+    };
+
+    return bsl::ut_success();
+}

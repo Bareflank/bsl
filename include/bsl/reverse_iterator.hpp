@@ -32,16 +32,6 @@
 #include "debug.hpp"
 #include "safe_integral.hpp"
 
-// TODO
-// - We need to implement the remianing functions that are part of the
-//   reverse iterator specification. Specifically, the increment and
-//   decrement by "n" functions as they all require the safe_int class
-//   to be effective at preventing wrapping, overruns and underruns.
-//   Currently we only support the ++/-- functions as those are simple
-//   to implement without the need for safe_int. Also note that we would
-//   need some extra logic to ensure the iterator stays in-bounds.
-//
-
 namespace bsl
 {
     /// @class bsl::reverse_iterator

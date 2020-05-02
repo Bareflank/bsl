@@ -46,7 +46,7 @@ namespace bsl
     {
     public:
         /// <!-- description -->
-        ///   @brief Default constructor that ensure construction of
+        ///   @brief Default constructor that ensures construction of
         ///     this type must be explicit
         ///
         explicit constexpr in_place_t() noexcept = default;
@@ -73,7 +73,7 @@ namespace bsl
     {
     public:
         /// <!-- description -->
-        ///   @brief Default constructor that ensure construction of
+        ///   @brief Default constructor that ensures construction of
         ///     this type must be explicit
         ///
         explicit constexpr in_place_type_t() noexcept = default;
@@ -97,7 +97,7 @@ namespace bsl
     {
     public:
         /// <!-- description -->
-        ///   @brief Default constructor that ensure construction of
+        ///   @brief Default constructor that ensures construction of
         ///     this type must be explicit
         ///
         explicit constexpr in_place_index_t() noexcept = default;

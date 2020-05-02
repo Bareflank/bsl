@@ -128,6 +128,28 @@ namespace bsl
         }
 
         /// <!-- description -->
+        ///   @brief ptr/count constructor. Creates a bsl::basic_string_view
+        ///     given a pointer to a string and the number of characters in
+        ///     the string.
+        ///   @include basic_string_view/example_basic_string_view_s_count_constructor.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param s a pointer to the string
+        ///   @param count the number of characters in the string
+        ///
+        constexpr basic_string_view(pointer_type const s, size_type const count) noexcept
+            : m_ptr{s}, m_count{count}
+        {
+            if ((nullptr == m_ptr) || m_count.is_zero()) {
+                bsl::alert() << "basic_string_view: invalid constructor args\n";
+                bsl::alert() << "  - ptr: " << static_cast<void const *>(s) << bsl::endl;
+                bsl::alert() << "  - count: " << m_count << bsl::endl;
+
+                *this = basic_string_view{};
+            }
+        }
+
+        /// <!-- description -->
         ///   @brief ptr assignment. This assigns a bsl::basic_string_view
         ///     a pointer to a string. The number of characters in the
         ///     string is determined using Traits<CharT>::length,
@@ -1070,28 +1092,6 @@ namespace bsl
         }
 
     private:
-        /// <!-- description -->
-        ///   @brief ptr/count constructor. Creates a bsl::basic_string_view
-        ///     given a pointer to a string and the number of characters in
-        ///     the string.
-        ///   @include basic_string_view/example_basic_string_view_s_count_constructor.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param s a pointer to the string
-        ///   @param count the number of characters in the string
-        ///
-        constexpr basic_string_view(pointer_type const s, size_type const count) noexcept
-            : m_ptr{s}, m_count{count}
-        {
-            if ((nullptr == m_ptr) || m_count.is_zero()) {
-                bsl::alert() << "basic_string_view: invalid constructor args\n";
-                bsl::alert() << "  - ptr: " << static_cast<void const *>(s) << bsl::endl;
-                bsl::alert() << "  - count: " << m_count << bsl::endl;
-
-                *this = basic_string_view{};
-            }
-        }
-
         /// @brief stores a pointer to the string being viewed
         pointer_type m_ptr;
         /// @brief stores the number of elements in the string being viewed

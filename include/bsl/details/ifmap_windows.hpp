@@ -21,24 +21,22 @@
 /// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
-///
-/// @file ifmap.hpp
-///
 
-#ifndef BSL_IFMAP_HPP
-#define BSL_IFMAP_HPP
+#ifndef BSL_DETAILS_IFMAP_WINDOWS_HPP
+#define BSL_DETAILS_IFMAP_WINDOWS_HPP
 
-#include "cstdint.hpp"
-#include "debug.hpp"
-#include "discard.hpp"
-#include "safe_integral.hpp"
-#include "string_view.hpp"
+#include "../byte.hpp"
+#include "../convert.hpp"
+#include "../cstdint.hpp"
+#include "../debug.hpp"
+#include "../discard.hpp"
+#include "../safe_integral.hpp"
+#include "../span.hpp"
+#include "../string_view.hpp"
 
-#if defined(_WIN32) && !BSL_PERFORCE
-#include "details/ifmap_windows.hpp"
-#elif defined(__linux__) && !BSL_PERFORCE
-#include "details/ifmap_linux.hpp"
-#else
+#include <Windows.h>
+#undef max
+#undef min
 
 namespace bsl
 {
@@ -51,6 +49,13 @@ namespace bsl
     ///
     class ifmap final
     {
+        /// @brief stores a handle to the mapped file.
+        HANDLE m_file{};
+        /// @brief stores a handle to the mapped file.
+        HANDLE m_view{};
+        /// @brief stores a view of the file that is mapped.
+        span<byte> m_data{};
+
     public:
         /// @brief alias for: void
         using value_type = void;
@@ -73,9 +78,88 @@ namespace bsl
         ///
         explicit ifmap(string_view const &filename) noexcept
         {
-            bsl::discard(filename);
-            bsl::error() << "bsl::ifmap is unsupported on this platform\n";
+            m_file = CreateFileA(
+                filename.data(),
+                GENERIC_READ,
+                0,
+                nullptr,
+                OPEN_EXISTING,
+                FILE_ATTRIBUTE_NORMAL,
+                nullptr);
+
+            m_view = CreateFileMappingA(m_file, nullptr, PAGE_READONLY, 0, 0, nullptr);
+            if (nullptr == m_view) {
+                bsl::alert() << "failed to open read-only file: "    // --
+                             << filename                             // --
+                             << bsl::endl;
+                return;
+            }
+
+            DWORD high{};
+            DWORD size{GetFileSize(m_file, &high)};
+            if (size == INVALID_FILE_SIZE) {
+                bsl::alert() << "failed to get the size of the read-only file: "    // --
+                             << filename                                            // --
+                             << bsl::endl;
+                CloseHandle(m_file);
+                return;
+            }
+
+            pointer_type const ptr{MapViewOfFile(m_view, FILE_MAP_READ, 0, 0, 0)};
+            if (nullptr == ptr) {
+                bsl::alert() << "failed to map read-only file: "    // --
+                             << filename                            // --
+                             << bsl::endl;
+                CloseHandle(m_file);
+                return;
+            }
+
+            m_data = as_writable_bytes(ptr, (to_umax(high) << 32U) | to_umax(size));
         }
+
+        /// <!-- description -->
+        ///   @brief Destructor unmaps a previously mapped file.
+        ///
+        ~ifmap() noexcept
+        {
+            UnmapViewOfFile(m_data.data());
+            CloseHandle(m_view);
+            CloseHandle(m_file);
+        }
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr ifmap(ifmap const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr ifmap(ifmap &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        ifmap &operator=(ifmap const &o) &noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        ifmap &operator=(ifmap &&o) &noexcept = default;
 
         /// <!-- description -->
         ///   @brief Returns a pointer to the read-only mapped file.
@@ -84,10 +168,10 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns a pointer to the read-only mapped file.
         ///
-        [[nodiscard]] static constexpr const_pointer_type
-        data() noexcept
+        [[nodiscard]] constexpr const_pointer_type
+        data() const noexcept
         {
-            return nullptr;
+            return m_data.data();
         }
 
         /// <!-- description -->
@@ -99,10 +183,10 @@ namespace bsl
         ///   @return Returns true if the file failed to be mapped, false
         ///     otherwise.
         ///
-        [[nodiscard]] static constexpr bool
-        empty() noexcept
+        [[nodiscard]] constexpr bool
+        empty() const noexcept
         {
-            return true;
+            return m_data.empty();
         }
 
         /// <!-- description -->
@@ -126,10 +210,10 @@ namespace bsl
         ///   @return Returns the number of bytes in the file being
         ///     mapped.
         ///
-        [[nodiscard]] static constexpr size_type
-        size() noexcept
+        [[nodiscard]] constexpr size_type const &
+        size() const noexcept
         {
-            return size_type::zero();
+            return m_data.size();
         }
 
         /// <!-- description -->
@@ -154,14 +238,12 @@ namespace bsl
         ///   @return Returns the number of bytes in the file being
         ///     mapped.
         ///
-        [[nodiscard]] static constexpr size_type
-        size_bytes() noexcept
+        [[nodiscard]] constexpr size_type const &
+        size_bytes() const noexcept
         {
-            return size_type::zero();
+            return m_data.size();
         }
     };
 }
-
-#endif
 
 #endif

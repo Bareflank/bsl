@@ -21,24 +21,24 @@
 /// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
-///
-/// @file ifmap.hpp
-///
 
-#ifndef BSL_IFMAP_HPP
-#define BSL_IFMAP_HPP
+#ifndef BSL_DETAILS_IFMAP_LINUX_HPP
+#define BSL_DETAILS_IFMAP_LINUX_HPP
 
-#include "cstdint.hpp"
-#include "debug.hpp"
-#include "discard.hpp"
-#include "safe_integral.hpp"
-#include "string_view.hpp"
+#include "../byte.hpp"
+#include "../convert.hpp"
+#include "../cstdint.hpp"
+#include "../debug.hpp"
+#include "../discard.hpp"
+#include "../safe_integral.hpp"
+#include "../span.hpp"
+#include "../string_view.hpp"
 
-#if defined(_WIN32) && !BSL_PERFORCE
-#include "details/ifmap_windows.hpp"
-#elif defined(__linux__) && !BSL_PERFORCE
-#include "details/ifmap_linux.hpp"
-#else
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 namespace bsl
 {
@@ -51,6 +51,11 @@ namespace bsl
     ///
     class ifmap final
     {
+        /// @brief stores a handle to the mapped file.
+        bsl::int32 m_file{};
+        /// @brief stores a view of the file that is mapped.
+        span<byte> m_data{};
+
     public:
         /// @brief alias for: void
         using value_type = void;
@@ -73,9 +78,85 @@ namespace bsl
         ///
         explicit ifmap(string_view const &filename) noexcept
         {
-            bsl::discard(filename);
-            bsl::error() << "bsl::ifmap is unsupported on this platform\n";
+            using stat_t = struct stat;
+
+            m_file = open(filename.data(), O_RDONLY);    // NOLINT
+            if (m_file == -1) {
+                bsl::alert() << "failed to open read-only file: "    // --
+                             << filename                             // --
+                             << bsl::endl;
+                close(m_file);
+                return;
+            }
+
+            stat_t s{};
+            if (fstat(m_file, &s) == -1) {
+                bsl::alert() << "failed to get the size of the read-only file: "    // --
+                             << filename                                            // --
+                             << bsl::endl;
+                close(m_file);
+            }
+
+            pointer_type const ptr{mmap(
+                nullptr,
+                static_cast<bsl::uintmax>(s.st_size),
+                PROT_READ,
+                MAP_SHARED | MAP_POPULATE,    // NOLINT
+                m_file,
+                0)};
+
+            if (ptr == MAP_FAILED) {                                // NOLINT
+                bsl::alert() << "failed to map read-only file: "    // --
+                             << filename                            // --
+                             << bsl::endl;
+                close(m_file);
+            }
+
+            m_data = as_writable_bytes(ptr, to_umax(s.st_size));
         }
+
+        /// <!-- description -->
+        ///   @brief Destructor unmaps a previously mapped file.
+        ///
+        ~ifmap() noexcept
+        {
+            munmap(m_data.data(), m_data.size().get());
+            close(m_file);
+        }
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr ifmap(ifmap const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr ifmap(ifmap &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        ifmap &operator=(ifmap const &o) &noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        ifmap &operator=(ifmap &&o) &noexcept = default;
 
         /// <!-- description -->
         ///   @brief Returns a pointer to the read-only mapped file.
@@ -84,10 +165,10 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns a pointer to the read-only mapped file.
         ///
-        [[nodiscard]] static constexpr const_pointer_type
-        data() noexcept
+        [[nodiscard]] constexpr const_pointer_type
+        data() const noexcept
         {
-            return nullptr;
+            return m_data.data();
         }
 
         /// <!-- description -->
@@ -99,10 +180,10 @@ namespace bsl
         ///   @return Returns true if the file failed to be mapped, false
         ///     otherwise.
         ///
-        [[nodiscard]] static constexpr bool
-        empty() noexcept
+        [[nodiscard]] constexpr bool
+        empty() const noexcept
         {
-            return true;
+            return m_data.empty();
         }
 
         /// <!-- description -->
@@ -126,10 +207,10 @@ namespace bsl
         ///   @return Returns the number of bytes in the file being
         ///     mapped.
         ///
-        [[nodiscard]] static constexpr size_type
-        size() noexcept
+        [[nodiscard]] constexpr size_type const &
+        size() const noexcept
         {
-            return size_type::zero();
+            return m_data.size();
         }
 
         /// <!-- description -->
@@ -154,14 +235,12 @@ namespace bsl
         ///   @return Returns the number of bytes in the file being
         ///     mapped.
         ///
-        [[nodiscard]] static constexpr size_type
-        size_bytes() noexcept
+        [[nodiscard]] constexpr size_type const &
+        size_bytes() const noexcept
         {
-            return size_type::zero();
+            return m_data.size();
         }
     };
 }
-
-#endif
 
 #endif

@@ -28,6 +28,7 @@
 #ifndef BSL_SPAN_HPP
 #define BSL_SPAN_HPP
 
+#include "byte.hpp"
 #include "char_type.hpp"
 #include "contiguous_iterator.hpp"
 #include "convert.hpp"
@@ -282,6 +283,12 @@ namespace bsl
         ///     error, this will return a nullptr.
         ///   @include span/example_span_data.hpp
         ///
+        ///   SUPPRESSION: PRQA 4625 - false positive
+        ///   - We suppress this because A9-3-1 states that we should
+        ///     not provide a non-const reference or pointer to private
+        ///     member function, unless the class mimics a smart pointer or
+        ///     a containter. This class mimics a container.
+        ///
         /// <!-- inputs/outputs -->
         ///   @return Returns a pointer to the array being viewed. If this is
         ///     a default constructed view, or the view was constructed in
@@ -290,7 +297,7 @@ namespace bsl
         [[nodiscard]] constexpr pointer_type
         data() noexcept
         {
-            return m_ptr;
+            return m_ptr;    // PRQA S 4625
         }
 
         /// <!-- description -->
@@ -765,6 +772,74 @@ namespace bsl
         /// @brief stores the number of elements in the array being viewed
         size_type m_count;
     };
+
+    /// <!-- description -->
+    ///   @brief Returns a span<byte const> given a pointer to an array
+    ///     type and the total number of bytes
+    ///   @include span/example_span_as_bytes.hpp
+    ///   @related bsl::span
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param ptr a pointer to the array to create the span for
+    ///   @param bytes the total number of bytes in the array
+    ///   @return Returns a span<byte const> given a pointer to an array
+    ///     type and the total number of bytes
+    ///
+    [[nodiscard]] constexpr span<byte const>
+    as_bytes(void const *const ptr, safe_uintmax const &bytes) noexcept
+    {
+        return {static_cast<byte const *>(ptr), bytes};
+    }
+
+    /// <!-- description -->
+    ///   @brief Returns a span<byte const> given an existing span<T>
+    ///   @include span/example_span_as_bytes.hpp
+    ///   @related bsl::span
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param spn the span<T> to convert into a span<byte const>
+    ///   @return Returns a span<byte const> given an existing span<T>
+    ///
+    template<typename T>
+    [[nodiscard]] constexpr span<byte const>
+    as_bytes(span<T> const spn) noexcept
+    {
+        return as_bytes(spn.data(), spn.size_bytes());
+    }
+
+    /// <!-- description -->
+    ///   @brief Returns a span<byte> given a pointer to an array
+    ///     type and the total number of bytes
+    ///   @include span/example_span_as_writable_bytes.hpp
+    ///   @related bsl::span
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param ptr a pointer to the array to create the span for
+    ///   @param bytes the total number of bytes in the array
+    ///   @return Returns a span<byte> given a pointer to an array
+    ///     type and the total number of bytes
+    ///
+    [[nodiscard]] constexpr span<byte>
+    as_writable_bytes(void *const ptr, safe_uintmax const &bytes) noexcept
+    {
+        return {static_cast<byte *>(ptr), bytes};
+    }
+
+    /// <!-- description -->
+    ///   @brief Returns a span<byte> given an existing span<T>
+    ///   @include span/example_span_as_writable_bytes.hpp
+    ///   @related bsl::span
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param spn the span<T> to convert into a span<byte>
+    ///   @return Returns a span<byte> given an existing span<T>
+    ///
+    template<typename T>
+    [[nodiscard]] constexpr span<byte>
+    as_writable_bytes(span<T> spn) noexcept
+    {
+        return as_writable_bytes(spn.data(), spn.size_bytes());
+    }
 
     /// <!-- description -->
     ///   @brief Returns true if two spans have the same size and contain

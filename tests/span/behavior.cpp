@@ -1349,6 +1349,48 @@ tests() noexcept
         };
     };
 
+    bsl::ut_scenario{"as_bytes"} = []() {
+        bsl::ut_given_at_runtime{} = []() {
+            array<safe_int32, 6> arr = test_arr;
+            bsl::ut_then{} = [&arr]() {
+                bsl::ut_check(!as_bytes(nullptr, arr.size_bytes()));
+                bsl::ut_check(!as_bytes(arr.data(), to_umax(0)));
+                bsl::ut_check(!as_bytes(span{arr.data(), to_umax(0)}));
+            };
+        };
+
+        bsl::ut_given_at_runtime{} = []() {
+            array<safe_int32, 6> arr = test_arr;
+            bsl::ut_then{} = [&arr]() {
+                bsl::ut_check(!!as_bytes(arr.data(), arr.size_bytes()));
+                bsl::ut_check(as_bytes(arr.data(), arr.size_bytes()).size() == arr.size_bytes());
+                bsl::ut_check(as_bytes(span{arr.data(), arr.size()}).size() == arr.size_bytes());
+            };
+        };
+    };
+
+    bsl::ut_scenario{"as_writable_bytes"} = []() {
+        bsl::ut_given_at_runtime{} = []() {
+            array<safe_int32, 6> arr = test_arr;
+            bsl::ut_then{} = [&arr]() {
+                bsl::ut_check(!as_writable_bytes(nullptr, arr.size_bytes()));
+                bsl::ut_check(!as_writable_bytes(arr.data(), to_umax(0)));
+                bsl::ut_check(!as_writable_bytes(span{arr.data(), to_umax(0)}));
+            };
+        };
+
+        bsl::ut_given_at_runtime{} = []() {
+            array<safe_int32, 6> arr = test_arr;
+            bsl::ut_then{} = [&arr]() {
+                bsl::ut_check(!!as_writable_bytes(arr.data(), arr.size_bytes()));
+                bsl::ut_check(
+                    as_writable_bytes(arr.data(), arr.size_bytes()).size() == arr.size_bytes());
+                bsl::ut_check(
+                    as_writable_bytes(span{arr.data(), arr.size()}).size() == arr.size_bytes());
+            };
+        };
+    };
+
     bsl::ut_scenario{"equals"} = []() {
         bsl::ut_given{} = []() {
             array<safe_int32, 6> arr1 = test_arr;

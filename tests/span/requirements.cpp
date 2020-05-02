@@ -154,6 +154,10 @@ main() noexcept
                 static_assert(noexcept(spn1.first()));
                 static_assert(noexcept(spn1.last()));
                 static_assert(noexcept(spn1.subspan(bsl::to_umax(0))));
+                static_assert(noexcept(bsl::as_bytes(nullptr, bsl::to_umax(0))));
+                static_assert(noexcept(bsl::as_bytes(bsl::span<bool>{})));
+                static_assert(noexcept(bsl::as_writable_bytes(nullptr, bsl::to_umax(0))));
+                static_assert(noexcept(bsl::as_writable_bytes(bsl::span<bool>{})));
             };
         };
     };

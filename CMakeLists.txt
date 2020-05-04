@@ -29,19 +29,19 @@ project(bsl CXX)
 include(cmake/bareflank.cmake)
 
 # ------------------------------------------------------------------------------
-# Sub Directories
+# sub directories
 # ------------------------------------------------------------------------------
 
-if(BUILD_EXAMPLES)
+if(BSL_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
-if(BUILD_TESTS)
+if(BSL_BUILD_TESTS)
     add_subdirectory(tests)
 endif()
 
 # ------------------------------------------------------------------------------
-# Install
+# install
 # ------------------------------------------------------------------------------
 
 install(DIRECTORY include/bsl DESTINATION include/bsl)

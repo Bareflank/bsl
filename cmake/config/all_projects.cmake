@@ -17,6 +17,18 @@
 # SOFTWARE.
 
 # ------------------------------------------------------------------------------
+# validate
+# ------------------------------------------------------------------------------
+
+if(NOT CMAKE_GENERATOR STREQUAL "Unix Makefiles" AND NOT CMAKE_GENERATOR STREQUAL "Ninja")
+    message(FATAL_ERROR "CMAKE_GENERATOR must be set to \"Unix Makefiles\" or \"Ninja\"")
+endif()
+
+if(NOT CMAKE_CXX_COMPILER MATCHES "clang")
+    message(FATAL_ERROR "CMAKE_CXX_COMPILER must be set to a clang compiler")
+endif()
+
+# ------------------------------------------------------------------------------
 # functions
 # ------------------------------------------------------------------------------
 

@@ -86,7 +86,7 @@ jobs:
     - name: Validate Compliance
       run: |
         mkdir build && cd build
-        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=CLANG_TIDY ../bsl
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=CLANG_TIDY -DBUILD_EXAMPLES=ON -DBUILD_TESTS=ON ../bsl
         ninja
       shell: bash
 
@@ -117,7 +117,7 @@ jobs:
     - name: Validate ASAN
       run: |
         mkdir build && cd build
-        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=ASAN ../bsl
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=ASAN -DBUILD_EXAMPLES=ON -DBUILD_TESTS=ON ../bsl
         ninja
         ninja unittest
       shell: bash
@@ -149,7 +149,7 @@ jobs:
     - name: Validate UBSAN
       run: |
         mkdir build && cd build
-        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=UBSAN ../bsl
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=UBSAN -DBUILD_EXAMPLES=ON -DBUILD_TESTS=ON ../bsl
         ninja
         ninja unittest
       shell: bash
@@ -181,7 +181,7 @@ jobs:
     - name: Validate Release Build
       run: |
         mkdir build && cd build
-        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=RELEASE ../bsl
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=RELEASE -DBUILD_EXAMPLES=ON ../bsl
         ninja
       shell: bash
 
@@ -212,7 +212,7 @@ jobs:
     - name: Validate Debug Build
       run: |
         mkdir build && cd build
-        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=DEBUG ../bsl
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=DEBUG -DBUILD_EXAMPLES=ON -DBUILD_TESTS=ON ../bsl
         ninja
         ninja unittest
       shell: bash
@@ -247,7 +247,7 @@ jobs:
     - name: Gather Codecov Info
       run: |
         mkdir build && cd build
-        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=CODECOV ../bsl
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=CODECOV -DBUILD_TESTS=ON ../bsl
         ninja
         ninja codecov-info
       shell: bash

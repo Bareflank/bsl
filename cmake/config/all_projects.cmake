@@ -20,10 +20,86 @@
 # functions
 # ------------------------------------------------------------------------------
 
-include(${CMAKE_CURRENT_LIST_DIR}/../function/bf_error.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/../function/bf_find_program.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/../function/bf_add_config.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/../function/bf_add_test.cmake)
+
+# ------------------------------------------------------------------------------
+# options (user configurable)
+# ------------------------------------------------------------------------------
+
+option(BUILD_EXAMPLES "Turns on/off building the examples" OFF)
+option(BUILD_TESTS "Turns on/off building the tests" OFF)
+option(ENABLE_CLANG_FORMAT "Turns on/off support for clang format" ON)
+option(ENABLE_DOXYGEN "Turns on/off support for doxygen" OFF)
+
+# ------------------------------------------------------------------------------
+# settings (user configurable)
+# ------------------------------------------------------------------------------
+
+bf_add_config(
+    CONFIG_NAME BSL_DEBUG_LEVEL
+    CONFIG_TYPE STRING
+    DEFAULT_VAL 0
+    DESCRIPTION "Defines the debug level"
+    OPTIONS 0 v vv vvv
+)
+
+bf_add_config(
+    CONFIG_NAME BSL_PAGE_SIZE
+    CONFIG_TYPE STRING
+    DEFAULT_VAL "0x10'00U"
+    DESCRIPTION "Defines the size of a page"
+    SKIP_VALIDATION
+)
+
+# ------------------------------------------------------------------------------
+# build types (user configurable)
+# ------------------------------------------------------------------------------
+
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE DEBUG)
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL Release)
+    set(CMAKE_BUILD_TYPE RELEASE)
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL Debug)
+    set(CMAKE_BUILD_TYPE DEBUG)
+endif()
+
+if(NOT CMAKE_BUILD_TYPE STREQUAL RELEASE AND
+   NOT CMAKE_BUILD_TYPE STREQUAL DEBUG AND
+   NOT CMAKE_BUILD_TYPE STREQUAL CLANG_TIDY AND
+   NOT CMAKE_BUILD_TYPE STREQUAL PERFORCE AND
+   NOT CMAKE_BUILD_TYPE STREQUAL ASAN AND
+   NOT CMAKE_BUILD_TYPE STREQUAL UBSAN AND
+   NOT CMAKE_BUILD_TYPE STREQUAL CODECOV)
+    message(FATAL_ERROR "Unknown CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+endif()
+
+message(STATUS "Build type: ${BF_COLOR_CYN}${CMAKE_BUILD_TYPE}${BF_COLOR_RST}")
+
+# ------------------------------------------------------------------------------
+# validate
+# ------------------------------------------------------------------------------
+
+if(NOT CMAKE_GENERATOR STREQUAL "Unix Makefiles" AND NOT CMAKE_GENERATOR STREQUAL "Ninja")
+    message(FATAL_ERROR "CMAKE_GENERATOR must be set to \"Unix Makefiles\" or \"Ninja\"")
+endif()
+
+if(NOT CMAKE_CXX_COMPILER MATCHES "clang")
+    message(FATAL_ERROR "CMAKE_CXX_COMPILER must be set to a clang compiler")
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL PERFORCE AND BUILD_TESTS)
+    message(FATAL_ERROR "BUILD_TESTS is not supported with CMAKE_BUILD_TYPE=PERFORCE")
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL CODECOV AND BUILD_EXAMPLES)
+    message(FATAL_ERROR "BUILD_EXAMPLES is not supported with CMAKE_BUILD_TYPE=CODECOV")
+endif()
 
 # ------------------------------------------------------------------------------
 # number of threads
@@ -81,50 +157,12 @@ if(CMAKE_GENERATOR STREQUAL "Unix Makefiles")
 elseif(CMAKE_GENERATOR STREQUAL "Ninja")
     set(BUILD_COMMAND "ninja")
 else()
-    bf_error("Unsupported cmake generator: ${CMAKE_GENERATOR}")
+    message(FATAL_ERROR "Unsupported cmake generator: ${CMAKE_GENERATOR}")
 endif()
-
-# ------------------------------------------------------------------------------
-# build types
-# ------------------------------------------------------------------------------
-
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE DEBUG)
-endif()
-
-if(CMAKE_BUILD_TYPE STREQUAL Release)
-    set(CMAKE_BUILD_TYPE RELEASE)
-endif()
-
-if(CMAKE_BUILD_TYPE STREQUAL Debug)
-    set(CMAKE_BUILD_TYPE DEBUG)
-endif()
-
-if(NOT CMAKE_BUILD_TYPE STREQUAL RELEASE AND
-   NOT CMAKE_BUILD_TYPE STREQUAL DEBUG AND
-   NOT CMAKE_BUILD_TYPE STREQUAL CLANG_TIDY AND
-   NOT CMAKE_BUILD_TYPE STREQUAL PERFORCE AND
-   NOT CMAKE_BUILD_TYPE STREQUAL ASAN AND
-   NOT CMAKE_BUILD_TYPE STREQUAL UBSAN AND
-   NOT CMAKE_BUILD_TYPE STREQUAL CODECOV)
-    bf_error("Unknown CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
-endif()
-
-message(STATUS "Build type: ${BF_COLOR_CYN}${CMAKE_BUILD_TYPE}${BF_COLOR_RST}")
 
 # ------------------------------------------------------------------------------
 # examples
 # ------------------------------------------------------------------------------
-
-if(CMAKE_BUILD_TYPE STREQUAL DEBUG OR
-   CMAKE_BUILD_TYPE STREQUAL CLANG_TIDY OR
-   CMAKE_BUILD_TYPE STREQUAL PERFORCE OR
-   CMAKE_BUILD_TYPE STREQUAL ASAN OR
-   CMAKE_BUILD_TYPE STREQUAL UBSAN)
-    if(NOT DEFINED BUILD_EXAMPLES)
-        set(BUILD_EXAMPLES ON)
-    endif()
-endif()
 
 if(BUILD_EXAMPLES)
     message(STATUS "Build examples: ${BF_ENABLED}")
@@ -135,16 +173,6 @@ endif()
 # ------------------------------------------------------------------------------
 # tests
 # ------------------------------------------------------------------------------
-
-if(CMAKE_BUILD_TYPE STREQUAL DEBUG OR
-   CMAKE_BUILD_TYPE STREQUAL CLANG_TIDY OR
-   CMAKE_BUILD_TYPE STREQUAL ASAN OR
-   CMAKE_BUILD_TYPE STREQUAL UBSAN OR
-   CMAKE_BUILD_TYPE STREQUAL CODECOV)
-    if(NOT DEFINED BUILD_TESTS)
-        set(BUILD_TESTS ON)
-    endif()
-endif()
 
 if(BUILD_TESTS)
     include(CTest)
@@ -165,17 +193,6 @@ endif()
 # ------------------------------------------------------------------------------
 # clang format
 # ------------------------------------------------------------------------------
-
-if(CMAKE_BUILD_TYPE STREQUAL DEBUG OR
-   CMAKE_BUILD_TYPE STREQUAL CLANG_TIDY OR
-   CMAKE_BUILD_TYPE STREQUAL PERFORCE OR
-   CMAKE_BUILD_TYPE STREQUAL ASAN OR
-   CMAKE_BUILD_TYPE STREQUAL UBSAN OR
-   CMAKE_BUILD_TYPE STREQUAL CODECOV)
-    if(NOT DEFINED ENABLE_CLANG_FORMAT)
-        set(ENABLE_CLANG_FORMAT ON)
-    endif()
-endif()
 
 if(ENABLE_CLANG_FORMAT)
     bf_find_program(BF_CLANG_FORMAT "clang-format" "https://clang.llvm.org/docs/ClangFormat.html")
@@ -230,14 +247,6 @@ endif()
 # defaults
 # ------------------------------------------------------------------------------
 
-if(NOT DEFINED BSL_DEBUG_LEVEL)
-    set(BSL_DEBUG_LEVEL "0")
-endif()
-
-if(NOT DEFINED BSL_PAGE_SIZE)
-    set(BSL_PAGE_SIZE "0x10'00U")
-endif()
-
 if(CMAKE_BUILD_TYPE STREQUAL PERFORCE)
     set(BSL_PERFORCE "true")
     set(BSL_CONSTEXPR "")
@@ -250,8 +259,7 @@ endif()
 # build type flags
 # ------------------------------------------------------------------------------
 
-string(APPEND CMAKE_CXX_FLAGS
-    "${CMAKE_CXX_FLAGS} "
+string(APPEND BSL_WARNINGS
     "-Weverything "
     "-Wno-c++98-compat "
     "-Wno-c++98-compat-pedantic "
@@ -266,19 +274,19 @@ string(APPEND CMAKE_CXX_FLAGS
     "-fcomment-block-commands=endcond "
 )
 
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -Werror")
-set(CMAKE_LINKER_FLAGS_RELEASE "-O3 -DNDEBUG -Werror")
-set(CMAKE_CXX_FLAGS_DEBUG "-Og -g -ftime-trace")
-set(CMAKE_LINKER_FLAGS_DEBUG "-Og -g -ftime-trace")
-set(CMAKE_CXX_FLAGS_CLANG_TIDY "-O0 -g -ftime-trace -Werror")
-set(CMAKE_LINKER_FLAGS_CLANG_TIDY "-O0 -g -ftime-trace -Werror")
-set(CMAKE_CXX_FLAGS_PERFORCE "-O0 -Werror")
-set(CMAKE_LINKER_FLAGS_PERFORCE "-O0 -Werror")
-set(CMAKE_CXX_FLAGS_ASAN "-Og -g -fno-omit-frame-pointer -fsanitize=address")
-set(CMAKE_LINKER_FLAGS_ASAN "-Og -g -fno-omit-frame-pointer -fsanitize=address")
-set(CMAKE_CXX_FLAGS_UBSAN "-Og -g -fsanitize=undefined")
-set(CMAKE_LINKER_FLAGS_UBSAN "-Og -g -fsanitize=undefined")
-set(CMAKE_CXX_FLAGS_CODECOV "-O0 -fprofile-arcs -ftest-coverage")
-set(CMAKE_LINKER_FLAGS_CODECOV "-O0 -fprofile-arcs -ftest-coverage")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -Werror ${BSL_WARNINGS}")
+set(CMAKE_LINKER_FLAGS_RELEASE "-O3 -DNDEBUG -Werror ${BSL_WARNINGS}")
+set(CMAKE_CXX_FLAGS_DEBUG "-Og -g -ftime-trace ${BSL_WARNINGS}")
+set(CMAKE_LINKER_FLAGS_DEBUG "-Og -g -ftime-trace ${BSL_WARNINGS}")
+set(CMAKE_CXX_FLAGS_CLANG_TIDY "-O0 -g -ftime-trace -Werror ${BSL_WARNINGS}")
+set(CMAKE_LINKER_FLAGS_CLANG_TIDY "-O0 -g -ftime-trace -Werror ${BSL_WARNINGS}")
+set(CMAKE_CXX_FLAGS_PERFORCE "-O0 -Werror ${BSL_WARNINGS}")
+set(CMAKE_LINKER_FLAGS_PERFORCE "-O0 -Werror ${BSL_WARNINGS}")
+set(CMAKE_CXX_FLAGS_ASAN "-Og -g -fno-omit-frame-pointer -fsanitize=address ${BSL_WARNINGS}")
+set(CMAKE_LINKER_FLAGS_ASAN "-Og -g -fno-omit-frame-pointer -fsanitize=address ${BSL_WARNINGS}")
+set(CMAKE_CXX_FLAGS_UBSAN "-Og -g -fsanitize=undefined ${BSL_WARNINGS}")
+set(CMAKE_LINKER_FLAGS_UBSAN "-Og -g -fsanitize=undefined ${BSL_WARNINGS}")
+set(CMAKE_CXX_FLAGS_CODECOV "-O0 -fprofile-arcs -ftest-coverage ${BSL_WARNINGS}")
+set(CMAKE_LINKER_FLAGS_CODECOV "-O0 -fprofile-arcs -ftest-coverage ${BSL_WARNINGS}")
 
 message(STATUS "CXX Flags:${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${CMAKE_BUILD_TYPE}}")

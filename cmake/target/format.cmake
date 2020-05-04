@@ -19,19 +19,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-add_custom_target(
-    format
-)
+if(ENABLE_CLANG_FORMAT)
+    add_custom_target(
+        format
+    )
 
-file(GLOB SUBDIRS RELATIVE ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/*)
-foreach(DIR ${SUBDIRS})
-    if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/${DIR} AND NOT DIR MATCHES "build")
-        file(GLOB_RECURSE HEADERS RELATIVE ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR}/${DIR}/*.hpp)
-        file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR}/${DIR}/*.cpp)
-        if(NOT "${HEADERS}" STREQUAL "" OR NOT "${SOURCES}" STREQUAL "")
-            add_custom_command(TARGET format
-                COMMAND ${BF_CLANG_FORMAT} -i ${HEADERS} ${SOURCES}
-            )
+    file(GLOB SUBDIRS RELATIVE ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/*)
+    foreach(DIR ${SUBDIRS})
+        if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/${DIR} AND NOT DIR MATCHES "build")
+            file(GLOB_RECURSE HEADERS RELATIVE ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR}/${DIR}/*.hpp)
+            file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR}/${DIR}/*.cpp)
+            if(NOT "${HEADERS}" STREQUAL "" OR NOT "${SOURCES}" STREQUAL "")
+                add_custom_command(TARGET format
+                    COMMAND ${BF_CLANG_FORMAT} -i ${HEADERS} ${SOURCES}
+                )
+            endif()
         endif()
-    endif()
-endforeach()
+    endforeach()
+endif()

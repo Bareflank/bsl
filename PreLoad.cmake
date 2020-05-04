@@ -19,16 +19,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# ------------------------------------------------------------------------------
-# defaults
-# ------------------------------------------------------------------------------
-
-if(NOT DEFINED CMAKE_GENERATOR)
-    if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL Windows)
-        set(CMAKE_GENERATOR "Ninja")
-    else()
-        set(CMAKE_GENERATOR "Unix Makefiles")
-    endif()
+if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL Windows)
+    set(CMAKE_GENERATOR "Ninja" CACHE INTERNAL "")
 endif()
 
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL Darwin)
@@ -41,19 +33,8 @@ if(NOT DEFINED CMAKE_CXX_COMPILER)
     else()
         set(CMAKE_CXX_COMPILER clang++ CACHE INTERNAL "")
     endif()
+    find_program(CMAKE_CXX_COMPILER ${CMAKE_CXX_COMPILER})
     if(NOT CMAKE_CXX_COMPILER)
         message(FATAL_ERROR "Unable to find a default C++ compiler")
     endif()
-endif()
-
-# ------------------------------------------------------------------------------
-# validate
-# ------------------------------------------------------------------------------
-
-if(NOT CMAKE_GENERATOR STREQUAL "Unix Makefiles" AND NOT CMAKE_GENERATOR STREQUAL "Ninja")
-    message(FATAL_ERROR "CMAKE_GENERATOR must be set to \"Unix Makefiles\" or \"Ninja\"")
-endif()
-
-if(NOT CMAKE_CXX_COMPILER MATCHES "clang")
-    message(FATAL_ERROR "CMAKE_CXX_COMPILER must be set to a clang compiler")
 endif()

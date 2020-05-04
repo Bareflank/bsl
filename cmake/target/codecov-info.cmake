@@ -19,10 +19,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-add_executable(examples main.cpp)
-target_link_libraries(examples PRIVATE bsl)
-if(WIN32)
-    target_link_libraries(examples PRIVATE libcmt.lib)
+if(CMAKE_BUILD_TYPE STREQUAL CODECOV)
+    add_custom_target(codecov-info
+        COMMAND ctest -j ${NUM_THREADS} --output-on-failure
+        COMMAND grcov ${CMAKE_BINARY_DIR} -s ${CMAKE_SOURCE_DIR} -t lcov -o ${CMAKE_BINARY_DIR}/codecov.info
+    )
 endif()
-
-file(WRITE ${CMAKE_BINARY_DIR}/test.txt "hello world")

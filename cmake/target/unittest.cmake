@@ -19,10 +19,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-add_executable(examples main.cpp)
-target_link_libraries(examples PRIVATE bsl)
-if(WIN32)
-    target_link_libraries(examples PRIVATE libcmt.lib)
+if(BUILD_TESTS)
+    add_custom_target(
+        unittest
+        COMMAND ctest -j ${NUM_THREADS} --output-on-failure
+    )
 endif()
-
-file(WRITE ${CMAKE_BINARY_DIR}/test.txt "hello world")

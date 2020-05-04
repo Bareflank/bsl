@@ -244,15 +244,15 @@ jobs:
         tar xvf grcov-linux-x86_64.tar.bz2
         sudo mv grcov /usr/bin/
       shell: bash
-    - name: Gather Coverage Info
+    - name: Gather Codecov Info
       run: |
         mkdir build && cd build
-        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=COVERAGE ../bsl
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=CODECOV ../bsl
         ninja
-        ninja coverage-info
+        ninja codecov-info
       shell: bash
-    - name: Upload Coverage Info
+    - name: Upload Codecov Info
       run: |
         cd build
-        ninja coverage-upload-ci
+        ninja codecov-upload-ci
       shell: bash

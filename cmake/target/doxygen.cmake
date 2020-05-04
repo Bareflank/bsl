@@ -19,10 +19,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-add_executable(examples main.cpp)
-target_link_libraries(examples PRIVATE bsl)
-if(WIN32)
-    target_link_libraries(examples PRIVATE libcmt.lib)
+if(ENABLE_DOXYGEN)
+    add_custom_target(doxygen
+        COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR} doxygen .doxygen
+        VERBATIM
+    )
 endif()
-
-file(WRITE ${CMAKE_BINARY_DIR}/test.txt "hello world")

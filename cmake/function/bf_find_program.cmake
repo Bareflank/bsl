@@ -19,10 +19,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-add_executable(examples main.cpp)
-target_link_libraries(examples PRIVATE bsl)
-if(WIN32)
-    target_link_libraries(examples PRIVATE libcmt.lib)
-endif()
-
-file(WRITE ${CMAKE_BINARY_DIR}/test.txt "hello world")
+# Find Program
+#
+# The only difference between this function and find_program() is that is
+# makes sure that the program is found. If it is not, it will error out.
+#
+macro(bf_find_program VAR NAME URL)
+    find_program(${VAR} ${NAME})
+    if(NOT ${VAR})
+        bf_error("Unable to locate: ${NAME} - ${URL}")
+    endif()
+endmacro(bf_find_program)

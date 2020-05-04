@@ -19,10 +19,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-add_executable(examples main.cpp)
-target_link_libraries(examples PRIVATE bsl)
-if(WIN32)
-    target_link_libraries(examples PRIVATE libcmt.lib)
-endif()
+# ------------------------------------------------------------------------------
+# configuration
+# ------------------------------------------------------------------------------
 
-file(WRITE ${CMAKE_BINARY_DIR}/test.txt "hello world")
+include(${CMAKE_CURRENT_LIST_DIR}/config/all_projects.cmake)
+
+# ------------------------------------------------------------------------------
+# interfaces
+# ------------------------------------------------------------------------------
+
+include(${CMAKE_CURRENT_LIST_DIR}/interface/bsl.cmake)
+
+# ------------------------------------------------------------------------------
+# targets
+# ------------------------------------------------------------------------------
+
+include(${CMAKE_CURRENT_LIST_DIR}/target/codecov-info.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/target/codecov-upload-ci.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/target/codecov-upload.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/target/doxygen.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/target/format.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/target/info.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/target/unittest.cmake)

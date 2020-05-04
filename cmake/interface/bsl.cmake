@@ -1,6 +1,3 @@
-#
-# Copyright (C) 2020 Assured Information Security, Inc.
-#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -19,10 +16,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-add_executable(examples main.cpp)
-target_link_libraries(examples PRIVATE bsl)
-if(WIN32)
-    target_link_libraries(examples PRIVATE libcmt.lib)
-endif()
+add_library(bsl INTERFACE)
 
-file(WRITE ${CMAKE_BINARY_DIR}/test.txt "hello world")
+target_compile_options(bsl INTERFACE
+    -fno-exceptions
+    -fno-rtti
+)
+
+target_compile_definitions(bsl INTERFACE
+    BSL_DEBUG_LEVEL=${BSL_DEBUG_LEVEL}
+    BSL_PAGE_SIZE=${BSL_PAGE_SIZE}
+    BSL_PERFORCE=${BSL_PERFORCE}
+    BSL_CONSTEXPR=${BSL_CONSTEXPR}
+)
+
+target_include_directories(bsl INTERFACE
+    ${CMAKE_SOURCE_DIR}/include
+)

@@ -19,23 +19,41 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-cmake_minimum_required(VERSION 3.13)
-project(bsl CXX)
-
 # ------------------------------------------------------------------------------
-# include macros
+# defaults
 # ------------------------------------------------------------------------------
 
-include(cmake/init_build.cmake)
-
-# ------------------------------------------------------------------------------
-# sub directories
-# ------------------------------------------------------------------------------
-
-if(BUILD_EXAMPLES AND NOT DEFINED BSL_IS_SUBPROJECT)
-    add_subdirectory(examples)
+if(NOT DEFINED CMAKE_GENERATOR)
+    if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL Windows)
+        set(CMAKE_GENERATOR "Ninja")
+    else()
+        set(CMAKE_GENERATOR "Unix Makefiles")
+    endif()
 endif()
 
-if(BUILD_TESTS AND NOT DEFINED BSL_IS_SUBPROJECT)
-    add_subdirectory(tests)
+if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL Darwin)
+    set(HAVE_FLAG_SEARCH_PATHS_FIRST 0 CACHE INTERNAL "")
+endif()
+
+if(NOT DEFINED CMAKE_CXX_COMPILER)
+    if(CMAKE_HOST_SYSTEM_NAME STREQUAL Darwin)
+        set(CMAKE_CXX_COMPILER llvm-clang++ CACHE INTERNAL "")
+    else()
+        set(CMAKE_CXX_COMPILER clang++ CACHE INTERNAL "")
+    endif()
+    if(NOT CMAKE_CXX_COMPILER)
+        message(FATAL_ERROR "Unable to find a default C++ compiler")
+    endif()
+endif()
+
+# ------------------------------------------------------------------------------
+# validate
+# ------------------------------------------------------------------------------
+
+if(NOT CMAKE_GENERATOR STREQUAL "Unix Makefiles" AND NOT CMAKE_GENERATOR STREQUAL "Ninja")
+    message(FATAL_ERROR "CMAKE_GENERATOR must be set to \"Unix Makefiles\" or \"Ninja\"")
+endif()
+
+if(NOT CMAKE_CXX_COMPILER MATCHES "clang")
+    message(FATAL_ERROR "CMAKE_CXX_COMPILER must be set to a clang compiler")
 endif()

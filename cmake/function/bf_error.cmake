@@ -19,10 +19,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-add_executable(examples main.cpp)
-target_link_libraries(examples PRIVATE bsl)
-if(WIN32)
-    target_link_libraries(examples PRIVATE libcmt.lib)
-endif()
+# Error
+#
+# Prints an error message, and then errors out to stop processing.
+#
+# MSG: The message to show when erroring out
+#
+macro(bf_error MSG)
+    message(FATAL_ERROR "${BF_COLOR_RED}${MSG}${BF_COLOR_RST}")
+endmacro(bf_error)
 
-file(WRITE ${CMAKE_BINARY_DIR}/test.txt "hello world")

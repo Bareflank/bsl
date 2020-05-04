@@ -19,10 +19,24 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-add_executable(examples main.cpp)
-target_link_libraries(examples PRIVATE bsl)
-if(WIN32)
-    target_link_libraries(examples PRIVATE libcmt.lib)
-endif()
+# Add Test
+#
+# Adds a test case given a name. Note that this will disable C++ access
+# controls, assisting in unit testing.
+#
+# NAME: The name of the test case to add
+#
+macro(bf_add_test NAME)
+    file(RELATIVE_PATH REL_NAME ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_LIST_DIR})
+    file(TO_CMAKE_PATH "${REL_NAME}" REL_NAME)
+    string(REPLACE "/" "_" REL_NAME ${REL_NAME})
 
-file(WRITE ${CMAKE_BINARY_DIR}/test.txt "hello world")
+    add_executable(${REL_NAME}_${NAME} ${NAME}.cpp)
+    target_compile_options(${REL_NAME}_${NAME} PRIVATE -fno-access-control)
+    target_link_libraries(${REL_NAME}_${NAME} PRIVATE bsl)
+    if(WIN32)
+        target_link_libraries(${REL_NAME}_${NAME} PRIVATE libcmt.lib)
+    endif()
+
+    add_test(${REL_NAME}_${NAME} ${REL_NAME}_${NAME})
+endmacro(bf_add_test)

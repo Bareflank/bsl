@@ -27,6 +27,6 @@
 macro(bf_find_program VAR NAME URL)
     find_program(${VAR} ${NAME})
     if(NOT ${VAR})
-        bf_error("Unable to locate: ${NAME} - ${URL}")
+        message(FATAL_ERROR "Unable to locate: ${NAME} - ${URL}")
     endif()
 endmacro(bf_find_program)

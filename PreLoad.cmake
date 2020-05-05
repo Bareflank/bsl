@@ -20,6 +20,10 @@
 # SOFTWARE.
 
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL Windows)
+    find_program(HYPERVISOR_NINJA "ninja")
+    if(NOT HYPERVISOR_NINJA)
+        message(FATAL_ERROR "Unable to find ninja")
+    endif()
     set(CMAKE_GENERATOR "Ninja" CACHE INTERNAL "")
 endif()
 

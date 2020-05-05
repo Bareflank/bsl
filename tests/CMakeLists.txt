@@ -19,6 +19,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+include_directories(../include)
+
 add_subdirectory(add_const)
 add_subdirectory(add_lvalue_reference)
 add_subdirectory(add_pointer)

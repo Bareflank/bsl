@@ -19,6 +19,8 @@
 add_library(bsl INTERFACE)
 
 target_compile_options(bsl INTERFACE
+    -ffreestanding
+    -fstack-protector-strong
     -fno-exceptions
     -fno-rtti
 )
@@ -28,4 +30,8 @@ target_compile_definitions(bsl INTERFACE
     BSL_PAGE_SIZE=${BSL_PAGE_SIZE}
     BSL_PERFORCE=${BSL_PERFORCE}
     BSL_CONSTEXPR=${BSL_CONSTEXPR}
+)
+
+target_include_directories(bsl INTERFACE
+    ${bsl_SOURCE_DIR}/include
 )

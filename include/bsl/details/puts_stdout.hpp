@@ -72,9 +72,23 @@ namespace bsl
 
 namespace bsl
 {
-    template<typename T = void>
-    constexpr void
-    puts_stdout(cstr_type const str) noexcept;
+    namespace details
+    {
+        /// <!-- description -->
+        ///   @brief Outputs a string to stdout. If this function is
+        ///     executed from a constexpr, or is given a nullptr, this
+        ///     function does nothing. The provided string must also end
+        ///     in a '\0'. By default this function will call
+        ///     fputs(str, stdout).
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam T defaults to void. Provides the ability to specialize
+        ///     this function to provide your own custom implementation.
+        ///   @param str the string to output to stdout
+        ///
+        template<typename T = void>
+        constexpr void puts_stdout(cstr_type const str) noexcept;
+    }
 }
 
 #endif

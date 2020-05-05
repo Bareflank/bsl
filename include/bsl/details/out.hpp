@@ -41,6 +41,7 @@
 #include "../color.hpp"
 #include "../char_type.hpp"
 #include "../cstr_type.hpp"
+#include "../is_constant_evaluated.hpp"
 #include "../is_same.hpp"
 
 namespace bsl
@@ -194,6 +195,14 @@ namespace bsl
         static constexpr void
         write(char_type const c) noexcept
         {
+            if (is_constant_evaluated()) {
+                return;
+            }
+
+            if constexpr (BSL_PERFORCE) {
+                return;
+            }
+
             if constexpr (is_print()) {
                 details::putc_stdout(c);
             }
@@ -222,6 +231,14 @@ namespace bsl
         static constexpr void
         write(cstr_type const str) noexcept
         {
+            if (is_constant_evaluated()) {
+                return;
+            }
+
+            if constexpr (BSL_PERFORCE) {
+                return;
+            }
+
             if constexpr (is_print()) {
                 details::puts_stdout(str);
             }

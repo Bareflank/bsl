@@ -29,7 +29,3 @@ target_compile_definitions(bsl INTERFACE
     BSL_PERFORCE=${BSL_PERFORCE}
     BSL_CONSTEXPR=${BSL_CONSTEXPR}
 )
-
-target_include_directories(bsl INTERFACE
-    ${CMAKE_SOURCE_DIR}/include
-)

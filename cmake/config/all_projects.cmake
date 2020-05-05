@@ -235,6 +235,8 @@ string(APPEND BSL_WARNINGS
     "-fcomment-block-commands=include "
     "-fcomment-block-commands=cond "
     "-fcomment-block-commands=endcond "
+    "-fdiagnostics-color=always "
+    "-fansi-escape-codes "
 )
 
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -Werror ${BSL_WARNINGS}")

@@ -30,7 +30,7 @@ add_custom_command(TARGET info
     COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --magenta " |___/_/ \\_\\_|_\\___|_| |____/_/ \\_\\_|\\_|_|\\_\\ "
     COMMAND ${CMAKE_COMMAND} -E cmake_echo_color " "
     COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --green   " Please give us a star on: ${BF_COLOR_WHT}https://github.com/bareflank/${BSL_PROJECT_NAME} "
-    COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --blue    " ------------------------------------------------------ "
+    COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --blue    " ------------------------------------------------------------------------------- "
     COMMAND ${CMAKE_COMMAND} -E cmake_echo_color " "
     COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --green   " Current Build Configuration:"
     VERBATIM

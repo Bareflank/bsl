@@ -19,10 +19,9 @@
 add_library(bsl INTERFACE)
 
 target_compile_options(bsl INTERFACE
-    -ffreestanding
-    -fstack-protector-strong
     -fno-exceptions
     -fno-rtti
+    -fstack-protector-strong
 )
 
 target_compile_definitions(bsl INTERFACE

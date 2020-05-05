@@ -29,6 +29,8 @@
 #include "../char_type.hpp"
 #include "../is_constant_evaluated.hpp"
 
+#ifndef __bareflank__
+
 #include <stdio.h>    // PRQA S 1-10000 // NOLINT
 
 namespace bsl
@@ -63,5 +65,16 @@ namespace bsl
         }
     }
 }
+
+#else
+
+namespace bsl
+{
+    template<typename T = void>
+    constexpr void
+    putc_stderr(char_type const c) noexcept;
+}
+
+#endif
 
 #endif

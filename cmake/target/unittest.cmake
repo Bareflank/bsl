@@ -20,6 +20,9 @@
 # SOFTWARE.
 
 if(BUILD_TESTS)
+    include(ProcessorCount)
+    ProcessorCount(NUM_THREADS)
+
     add_custom_target(
         unittest
         COMMAND ctest -j ${NUM_THREADS} --output-on-failure

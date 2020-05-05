@@ -19,21 +19,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-add_library(bsl INTERFACE)
-
-target_compile_options(bsl INTERFACE
-    -fno-exceptions
-    -fno-rtti
-    -fstack-protector-strong
-)
-
-target_compile_definitions(bsl INTERFACE
-    BSL_DEBUG_LEVEL=${BSL_DEBUG_LEVEL}
-    BSL_PAGE_SIZE=${BSL_PAGE_SIZE}
-    BSL_PERFORCE=${BSL_PERFORCE}
-    BSL_CONSTEXPR=${BSL_CONSTEXPR}
-)
-
-target_include_directories(bsl INTERFACE
-    ${CMAKE_CURRENT_LIST_DIR}/../../include
-)
+string(ASCII 27 Esc)
+set(BF_COLOR_RST "${Esc}[m")
+set(BF_COLOR_RED "${Esc}[91m")
+set(BF_COLOR_GRN "${Esc}[92m")
+set(BF_COLOR_YLW "${Esc}[93m")
+set(BF_COLOR_BLU "${Esc}[94m")
+set(BF_COLOR_MAG "${Esc}[95m")
+set(BF_COLOR_CYN "${Esc}[96m")
+set(BF_COLOR_WHT "${Esc}[97m")

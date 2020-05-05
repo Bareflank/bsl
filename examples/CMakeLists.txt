@@ -19,8 +19,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-include_directories(../include)
-
 add_executable(examples main.cpp)
 target_link_libraries(examples PRIVATE bsl)
 if(WIN32)

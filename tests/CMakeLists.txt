@@ -19,7 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-include_directories(../include)
+include(${CMAKE_CURRENT_LIST_DIR}/../cmake/function/bf_add_test.cmake)
 
 add_subdirectory(add_const)
 add_subdirectory(add_lvalue_reference)

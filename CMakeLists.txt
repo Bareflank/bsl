@@ -22,20 +22,12 @@
 cmake_minimum_required(VERSION 3.13)
 project(bsl CXX)
 
-# ------------------------------------------------------------------------------
-# include macros
-# ------------------------------------------------------------------------------
-
 include(cmake/init_build.cmake)
 
-# ------------------------------------------------------------------------------
-# sub directories
-# ------------------------------------------------------------------------------
-
-if(BUILD_EXAMPLES AND NOT DEFINED BSL_IS_SUBPROJECT)
+if(BUILD_EXAMPLES AND NOT BSL_BUILD_EXAMPLES_OVERRIDE)
     add_subdirectory(examples)
 endif()
 
-if(BUILD_TESTS AND NOT DEFINED BSL_IS_SUBPROJECT)
+if(BUILD_TESTS AND NOT BSL_BUILD_TESTS_OVERRIDE)
     add_subdirectory(tests)
 endif()

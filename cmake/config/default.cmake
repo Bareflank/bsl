@@ -19,21 +19,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-add_library(bsl INTERFACE)
-
-target_compile_options(bsl INTERFACE
-    -fno-exceptions
-    -fno-rtti
-    -fstack-protector-strong
-)
-
-target_compile_definitions(bsl INTERFACE
-    BSL_DEBUG_LEVEL=${BSL_DEBUG_LEVEL}
-    BSL_PAGE_SIZE=${BSL_PAGE_SIZE}
-    BSL_PERFORCE=${BSL_PERFORCE}
-    BSL_CONSTEXPR=${BSL_CONSTEXPR}
-)
-
-target_include_directories(bsl INTERFACE
-    ${CMAKE_CURRENT_LIST_DIR}/../../include
-)
+option(BSL_BUILD_EXAMPLES_OVERRIDE "Prevents the examples from being built when enabled" OFF)
+option(BSL_BUILD_TESTS_OVERRIDE "Prevents the tests from being built when enabled" OFF)
+option(BSL_INCLUDE_INFO_OVERRIDE "Prevents the BSL from creating an info target when enabled" OFF)

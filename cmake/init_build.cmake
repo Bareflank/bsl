@@ -19,21 +19,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# ------------------------------------------------------------------------------
-# configuration
-# ------------------------------------------------------------------------------
-
 include(${CMAKE_CURRENT_LIST_DIR}/config/all_projects.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/config/default.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/config/cmake.cmake)
 
-# ------------------------------------------------------------------------------
-# interfaces
-# ------------------------------------------------------------------------------
-
-include(${CMAKE_CURRENT_LIST_DIR}/interface/bsl.cmake)
-
-# ------------------------------------------------------------------------------
-# targets
-# ------------------------------------------------------------------------------
+include(${CMAKE_CURRENT_LIST_DIR}/build_types.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/find_programs.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/perforce.cmake)
 
 include(${CMAKE_CURRENT_LIST_DIR}/target/codecov-info.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/target/codecov-upload-ci.cmake)
@@ -42,3 +34,6 @@ include(${CMAKE_CURRENT_LIST_DIR}/target/doxygen.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/target/format.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/target/info.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/target/unittest.cmake)
+
+include(${CMAKE_CURRENT_LIST_DIR}/interface/bsl.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/validate.cmake)

@@ -70,9 +70,21 @@ namespace bsl
 
 namespace bsl
 {
-    template<typename T = void>
-    constexpr void
-    putc_stderr(char_type const c) noexcept;
+    namespace details
+    {
+        /// <!-- description -->
+        ///   @brief Outputs a character to stderr. If this function is
+        ///     executed from a constexpr this function does nothing. By
+        ///     default this function will call fputc(c, stderr).
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam T defaults to void. Provides the ability to specialize
+        ///     this function to provide your own custom implementation.
+        ///   @param c the character to output to stderr
+        ///
+        template<typename T = void>
+        constexpr void putc_stderr(char_type const c) noexcept;
+    }
 }
 
 #endif

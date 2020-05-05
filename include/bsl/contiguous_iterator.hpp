@@ -113,7 +113,7 @@ namespace bsl
         {
             if ((nullptr == m_ptr) || m_count.is_zero()) {
                 bsl::alert() << "contiguous_iterator: invalid constructor args\n";
-                bsl::alert() << "  - ptr: " << ptr << bsl::endl;
+                bsl::alert() << "  - ptr: " << static_cast<void const *>(ptr) << bsl::endl;
                 bsl::alert() << "  - count: " << count << bsl::endl;
                 bsl::alert() << "  - i: " << i << bsl::endl;
 
@@ -122,7 +122,7 @@ namespace bsl
 
             if ((!i) || (i > count)) {
                 bsl::alert() << "contiguous_iterator: invalid constructor args\n";
-                bsl::alert() << "  - ptr: " << ptr << bsl::endl;
+                bsl::alert() << "  - ptr: " << static_cast<void const *>(ptr) << bsl::endl;
                 bsl::alert() << "  - count: " << count << bsl::endl;
                 bsl::alert() << "  - i: " << i << bsl::endl;
 

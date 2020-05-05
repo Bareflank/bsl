@@ -150,7 +150,7 @@ namespace bsl
         {
             if ((nullptr == m_ptr) || m_count.is_zero()) {
                 bsl::alert() << "basic_string_view: invalid constructor args\n";
-                bsl::alert() << "  - ptr: " << ptr << bsl::endl;
+                bsl::alert() << "  - ptr: " << static_cast<void const *>(ptr) << bsl::endl;
                 bsl::alert() << "  - count: " << m_count << bsl::endl;
 
                 *this = span{};

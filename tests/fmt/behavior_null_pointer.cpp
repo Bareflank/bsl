@@ -22,6 +22,11 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#pragma clang diagnostic ignored "-Wreserved-id-macro"
+#define __bareflank__
+
+#include <stdio.h>    // NOLINT
+
 #include <bsl/char_type.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/cstdint.hpp>
@@ -31,6 +36,8 @@
 
 #include <bsl/details/putc_stdout.hpp>
 #include <bsl/details/puts_stdout.hpp>
+#include <bsl/details/putc_stderr.hpp>
+#include <bsl/details/puts_stderr.hpp>
 
 namespace
 {
@@ -76,22 +83,32 @@ namespace bsl
 {
     namespace details
     {
-        template<>
         void
-        putc_stdout<void>(bsl::char_type const c) noexcept
+        putc_stdout(bsl::char_type const c) noexcept
         {
             res.data[res.size.get()] = c;
             ++res.size;
         }
 
-        template<>
         void
-        puts_stdout<void>(bsl::cstr_type const str) noexcept
+        puts_stdout(bsl::cstr_type const str) noexcept
         {
             for (bsl::safe_uintmax i{}; i < bsl::builtin_strlen(str); ++i) {
                 res.data[res.size.get()] = str[i.get()];
                 ++res.size;
             }
+        }
+
+        void
+        putc_stderr(char_type const c) noexcept
+        {
+            bsl::discard(fputc(c, stderr));    // NOLINT
+        }
+
+        void
+        puts_stderr(cstr_type const str) noexcept
+        {
+            bsl::discard(fputs(str, stderr));    // NOLINT
         }
     }
 }

@@ -28,8 +28,6 @@
 #ifndef BSL_UT_HPP
 #define BSL_UT_HPP
 
-#ifndef __bareflank__
-
 #include "color.hpp"
 #include "convert.hpp"
 #include "cstr_type.hpp"
@@ -266,7 +264,5 @@ namespace bsl
         return test;
     }
 }
-
-#endif
 
 #endif

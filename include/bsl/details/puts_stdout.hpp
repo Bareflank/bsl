@@ -25,9 +25,22 @@
 #ifndef BSL_DETAILS_PUTS_STDOUT_HPP
 #define BSL_DETAILS_PUTS_STDOUT_HPP
 
-#include "../discard.hpp"
 #include "../cstr_type.hpp"
-#include "../is_constant_evaluated.hpp"
+#include "../discard.hpp"
+
+namespace bsl
+{
+    namespace details
+    {
+        /// <!-- description -->
+        ///   @brief Outputs a string to stdout.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param str the string to output to stdout
+        ///
+        void puts_stdout(cstr_type const str) noexcept;
+    }
+}
 
 #ifndef __bareflank__
 
@@ -38,56 +51,16 @@ namespace bsl
     namespace details
     {
         /// <!-- description -->
-        ///   @brief Outputs a string to stdout. If this function is
-        ///     executed from a constexpr, or is given a nullptr, this
-        ///     function does nothing. The provided string must also end
-        ///     in a '\0'. By default this function will call
-        ///     fputs(str, stdout).
+        ///   @brief Outputs a string to stdout.
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam T defaults to void. Provides the ability to specialize
-        ///     this function to provide your own custom implementation.
         ///   @param str the string to output to stdout
         ///
-        template<typename T = void>
-        constexpr void
+        inline void
         puts_stdout(cstr_type const str) noexcept
         {
-            if constexpr (BSL_PERFORCE) {
-                bsl::discard(str);
-            }
-            else {
-                if ((!is_constant_evaluated()) && (nullptr != str)) {
-                    bsl::discard(fputs(str, stdout));    // PRQA S 1-10000 // NOLINT
-                }
-                else {
-                    bsl::discard(str);
-                }
-            }
+            bsl::discard(fputs(str, stdout));    // PRQA S 1-10000 // NOLINT
         }
-    }
-}
-
-#else
-
-namespace bsl
-{
-    namespace details
-    {
-        /// <!-- description -->
-        ///   @brief Outputs a string to stdout. If this function is
-        ///     executed from a constexpr, or is given a nullptr, this
-        ///     function does nothing. The provided string must also end
-        ///     in a '\0'. By default this function will call
-        ///     fputs(str, stdout).
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @tparam T defaults to void. Provides the ability to specialize
-        ///     this function to provide your own custom implementation.
-        ///   @param str the string to output to stdout
-        ///
-        template<typename T = void>
-        constexpr void puts_stdout(cstr_type const str) noexcept;
     }
 }
 

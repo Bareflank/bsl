@@ -25,9 +25,22 @@
 #ifndef BSL_DETAILS_PUTC_STDOUT_HPP
 #define BSL_DETAILS_PUTC_STDOUT_HPP
 
-#include "../discard.hpp"
 #include "../char_type.hpp"
-#include "../is_constant_evaluated.hpp"
+#include "../discard.hpp"
+
+namespace bsl
+{
+    namespace details
+    {
+        /// <!-- description -->
+        ///   @brief Outputs a character to stdout.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param c the character to output to stdout
+        ///
+        void putc_stdout(char_type const c) noexcept;
+    }
+}
 
 #ifndef __bareflank__
 
@@ -38,52 +51,16 @@ namespace bsl
     namespace details
     {
         /// <!-- description -->
-        ///   @brief Outputs a character to stdout. If this function is
-        ///     executed from a constexpr this function does nothing. By
-        ///     default this function will call fputc(c, stdout).
+        ///   @brief Outputs a character to stdout.
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam T defaults to void. Provides the ability to specialize
-        ///     this function to provide your own custom implementation.
         ///   @param c the character to output to stdout
         ///
-        template<typename T = void>
-        constexpr void
+        inline void
         putc_stdout(char_type const c) noexcept
         {
-            if constexpr (BSL_PERFORCE) {
-                bsl::discard(c);
-            }
-            else {
-                if (!is_constant_evaluated()) {
-                    bsl::discard(fputc(c, stdout));    // PRQA S 1-10000 // NOLINT
-                }
-                else {
-                    bsl::discard(c);
-                }
-            }
+            bsl::discard(fputc(c, stdout));    // PRQA S 1-10000 // NOLINT
         }
-    }
-}
-
-#else
-
-namespace bsl
-{
-    namespace details
-    {
-        /// <!-- description -->
-        ///   @brief Outputs a character to stdout. If this function is
-        ///     executed from a constexpr this function does nothing. By
-        ///     default this function will call fputc(c, stdout).
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @tparam T defaults to void. Provides the ability to specialize
-        ///     this function to provide your own custom implementation.
-        ///   @param c the character to output to stdout
-        ///
-        template<typename T = void>
-        constexpr void putc_stdout(char_type const c) noexcept;
     }
 }
 

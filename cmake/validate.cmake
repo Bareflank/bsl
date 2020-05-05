@@ -19,21 +19,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-add_library(bsl INTERFACE)
+if(NOT CMAKE_GENERATOR STREQUAL "Unix Makefiles" AND NOT CMAKE_GENERATOR STREQUAL "Ninja")
+    message(FATAL_ERROR "CMAKE_GENERATOR must be set to \"Unix Makefiles\" or \"Ninja\"")
+endif()
 
-target_compile_options(bsl INTERFACE
-    -fno-exceptions
-    -fno-rtti
-    -fstack-protector-strong
-)
+if(NOT CMAKE_CXX_COMPILER MATCHES "clang")
+    message(FATAL_ERROR "CMAKE_CXX_COMPILER must be set to a clang compiler")
+endif()
 
-target_compile_definitions(bsl INTERFACE
-    BSL_DEBUG_LEVEL=${BSL_DEBUG_LEVEL}
-    BSL_PAGE_SIZE=${BSL_PAGE_SIZE}
-    BSL_PERFORCE=${BSL_PERFORCE}
-    BSL_CONSTEXPR=${BSL_CONSTEXPR}
-)
+if(CMAKE_BUILD_TYPE STREQUAL PERFORCE AND BUILD_TESTS)
+    message(FATAL_ERROR "BUILD_TESTS is not supported with CMAKE_BUILD_TYPE=PERFORCE")
+endif()
 
-target_include_directories(bsl INTERFACE
-    ${CMAKE_CURRENT_LIST_DIR}/../../include
-)
+if(CMAKE_BUILD_TYPE STREQUAL CODECOV AND BUILD_EXAMPLES)
+    message(FATAL_ERROR "BUILD_EXAMPLES is not supported with CMAKE_BUILD_TYPE=CODECOV")
+endif()

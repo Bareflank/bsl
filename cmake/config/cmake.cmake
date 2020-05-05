@@ -19,21 +19,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-add_library(bsl INTERFACE)
+if(BUILD_TESTS)
+    include(CTest)
+endif()
 
-target_compile_options(bsl INTERFACE
-    -fno-exceptions
-    -fno-rtti
-    -fstack-protector-strong
-)
+if(CMAKE_BUILD_TYPE STREQUAL PERFORCE)
+    set(CMAKE_CXX_STANDARD 17)
+else()
+    set(CMAKE_CXX_STANDARD 20)
+endif()
 
-target_compile_definitions(bsl INTERFACE
-    BSL_DEBUG_LEVEL=${BSL_DEBUG_LEVEL}
-    BSL_PAGE_SIZE=${BSL_PAGE_SIZE}
-    BSL_PERFORCE=${BSL_PERFORCE}
-    BSL_CONSTEXPR=${BSL_CONSTEXPR}
-)
-
-target_include_directories(bsl INTERFACE
-    ${CMAKE_CURRENT_LIST_DIR}/../../include
-)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

@@ -19,21 +19,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-add_library(bsl INTERFACE)
+include(${CMAKE_CURRENT_LIST_DIR}/function/bf_find_program.cmake)
 
-target_compile_options(bsl INTERFACE
-    -fno-exceptions
-    -fno-rtti
-    -fstack-protector-strong
-)
+if(ENABLE_CLANG_FORMAT)
+    bf_find_program(BF_CLANG_FORMAT "clang-format" "https://clang.llvm.org/docs/ClangFormat.html")
+endif()
 
-target_compile_definitions(bsl INTERFACE
-    BSL_DEBUG_LEVEL=${BSL_DEBUG_LEVEL}
-    BSL_PAGE_SIZE=${BSL_PAGE_SIZE}
-    BSL_PERFORCE=${BSL_PERFORCE}
-    BSL_CONSTEXPR=${BSL_CONSTEXPR}
-)
+if(ENABLE_DOXYGEN)
+    bf_find_program(BF_DOXYGEN "doxygen" "http://doxygen.nl/")
+endif()
 
-target_include_directories(bsl INTERFACE
-    ${CMAKE_CURRENT_LIST_DIR}/../../include
-)
+if(CMAKE_BUILD_TYPE STREQUAL CLANG_TIDY)
+    bf_find_program(CMAKE_CXX_CLANG_TIDY "clang-tidy" "https://clang.llvm.org/extra/clang-tidy/")
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL CODECOV)
+    bf_find_program(BF_GRCOV "grcov" "https://github.com/mozilla/grcov")
+endif()

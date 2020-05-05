@@ -91,8 +91,6 @@ if(NOT CMAKE_BUILD_TYPE STREQUAL RELEASE AND
     message(FATAL_ERROR "Unknown CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 endif()
 
-message(STATUS "Build type: ${BF_COLOR_CYN}${CMAKE_BUILD_TYPE}${BF_COLOR_RST}")
-
 # ------------------------------------------------------------------------------
 # validate
 # ------------------------------------------------------------------------------
@@ -158,7 +156,7 @@ set(BF_COLOR_WHT "${Esc}[97m")
 # ------------------------------------------------------------------------------
 
 set(BF_ENABLED "${BF_COLOR_GRN}enabled${BF_COLOR_RST}")
-set(BF_DISABLED "${BF_COLOR_YLW}disabled${BF_COLOR_RST}")
+set(BF_DISABLED "${BF_COLOR_RED}disabled${BF_COLOR_RST}")
 
 # ------------------------------------------------------------------------------
 # build command
@@ -173,90 +171,35 @@ else()
 endif()
 
 # ------------------------------------------------------------------------------
-# examples
-# ------------------------------------------------------------------------------
-
-if(BUILD_EXAMPLES)
-    message(STATUS "Build examples: ${BF_ENABLED}")
-else()
-    message(STATUS "Build examples: ${BF_DISABLED}")
-endif()
-
-# ------------------------------------------------------------------------------
 # tests
 # ------------------------------------------------------------------------------
 
 if(BUILD_TESTS)
     include(CTest)
-    message(STATUS "Build tests: ${BF_ENABLED}")
-else()
-    message(STATUS "Build tests: ${BF_DISABLED}")
 endif()
 
 # ------------------------------------------------------------------------------
-# clang tidy
-# ------------------------------------------------------------------------------
-
-if(CMAKE_BUILD_TYPE STREQUAL CLANG_TIDY)
-    bf_find_program(CMAKE_CXX_CLANG_TIDY "clang-tidy" "https://clang.llvm.org/extra/clang-tidy/")
-    message(STATUS "Tool [Clang Tidy]: ${BF_ENABLED} - ${CMAKE_CXX_CLANG_TIDY}")
-endif()
-
-# ------------------------------------------------------------------------------
-# clang format
+# find programs
 # ------------------------------------------------------------------------------
 
 if(ENABLE_CLANG_FORMAT)
     bf_find_program(BF_CLANG_FORMAT "clang-format" "https://clang.llvm.org/docs/ClangFormat.html")
-    message(STATUS "Tool [Clang Format]: ${BF_ENABLED} - ${BF_CLANG_FORMAT}")
-else()
-    message(STATUS "Tool [Clang Format]: ${BF_DISABLED}")
 endif()
-
-# ------------------------------------------------------------------------------
-# grcov
-# ------------------------------------------------------------------------------
-
-if(CMAKE_BUILD_TYPE STREQUAL CODECOV)
-    bf_find_program(BF_GRCOV "grcov" "https://github.com/mozilla/grcov")
-    message(STATUS "Tool [grcov]: ${BF_ENABLED} - ${BF_GRCOV}")
-else()
-    message(STATUS "Tool [grcov]: ${BF_DISABLED}")
-endif()
-
-# ------------------------------------------------------------------------------
-# doxygen
-# ------------------------------------------------------------------------------
 
 if(ENABLE_DOXYGEN)
     bf_find_program(BF_DOXYGEN "doxygen" "http://doxygen.nl/")
-    message(STATUS "Tool [Doxygen]: ${BF_ENABLED} - ${BF_DOXYGEN}")
-else()
-    message(STATUS "Tool [Doxygen]: ${BF_DISABLED}")
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL CLANG_TIDY)
+    bf_find_program(CMAKE_CXX_CLANG_TIDY "clang-tidy" "https://clang.llvm.org/extra/clang-tidy/")
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL CODECOV)
+    bf_find_program(BF_GRCOV "grcov" "https://github.com/mozilla/grcov")
 endif()
 
 # ------------------------------------------------------------------------------
-# asan
-# ------------------------------------------------------------------------------
-
-if(CMAKE_BUILD_TYPE STREQUAL ASAN)
-    message(STATUS "Tool [Google's ASAN]: ${BF_ENABLED}")
-else()
-    message(STATUS "Tool [Google's ASAN]: ${BF_DISABLED}")
-endif()
-
-# ------------------------------------------------------------------------------
-# ubsan
-# ------------------------------------------------------------------------------
-
-if(CMAKE_BUILD_TYPE STREQUAL UBSAN)
-    message(STATUS "Tool [Google's UBSAN]: ${BF_ENABLED}")
-else()
-    message(STATUS "Tool [Google's UBSAN]: ${BF_DISABLED}")
-endif()
-
-# ------------------------------------------------------------------------------
-# defaults
+# perforce
 # ------------------------------------------------------------------------------
 
 if(CMAKE_BUILD_TYPE STREQUAL PERFORCE)
@@ -300,5 +243,3 @@ set(CMAKE_CXX_FLAGS_UBSAN "-Og -g -fsanitize=undefined ${BSL_WARNINGS}")
 set(CMAKE_LINKER_FLAGS_UBSAN "-Og -g -fsanitize=undefined ${BSL_WARNINGS}")
 set(CMAKE_CXX_FLAGS_CODECOV "-O0 -fprofile-arcs -ftest-coverage ${BSL_WARNINGS}")
 set(CMAKE_LINKER_FLAGS_CODECOV "-O0 -fprofile-arcs -ftest-coverage ${BSL_WARNINGS}")
-
-message(STATUS "CXX Flags:${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${CMAKE_BUILD_TYPE}}")

@@ -25,6 +25,6 @@ if(BUILD_TESTS)
 
     add_custom_target(
         unittest
-        COMMAND ctest -j ${NUM_THREADS} --output-on-failure
+        COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ctest -j ${NUM_THREADS} --output-on-failure
     )
 endif()

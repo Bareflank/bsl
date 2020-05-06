@@ -21,7 +21,7 @@
 
 if(CMAKE_BUILD_TYPE STREQUAL CODECOV)
     add_custom_target(codecov-info
-        COMMAND ctest -j ${NUM_THREADS} --output-on-failure
+        COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} cmake --build . --target unittest
         COMMAND grcov ${CMAKE_BINARY_DIR} -s ${CMAKE_SOURCE_DIR} -t lcov -o ${CMAKE_BINARY_DIR}/codecov.info
     )
 endif()

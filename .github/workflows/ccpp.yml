@@ -48,7 +48,7 @@ jobs:
     - name: Validate Source Formatting
       run: |
         mkdir build && cd build
-        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=DEBUG ../bsl
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_CLANG_FORMAT=ON ../bsl
         ninja format
         cd ../bsl
         if [[ -n $(git diff) ]]; then

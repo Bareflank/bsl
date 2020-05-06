@@ -22,6 +22,6 @@
 include(${CMAKE_CURRENT_LIST_DIR}/../function/bf_add_info.cmake)
 
 if(NOT BSL_INCLUDE_INFO_OVERRIDE)
-    bf_add_info(BSL)
+    bf_add_info(bsl)
 endif()
 

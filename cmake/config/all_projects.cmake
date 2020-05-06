@@ -23,7 +23,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/../function/bf_add_config.cmake)
 
 option(BUILD_EXAMPLES "Turns on/off building the examples" OFF)
 option(BUILD_TESTS "Turns on/off building the tests" OFF)
-option(ENABLE_CLANG_FORMAT "Turns on/off support for clang format" ON)
+option(ENABLE_CLANG_FORMAT "Turns on/off support for clang format" OFF)
 option(ENABLE_DOXYGEN "Turns on/off support for doxygen" OFF)
 
 bf_add_config(

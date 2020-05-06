@@ -44,7 +44,7 @@ namespace
     template<bsl::uintmax N>
     struct test_string_view final
     {
-        bsl::char_type data[N]{};
+        bsl::char_type data[N]{};    // NOLINT
         bsl::safe_uintmax size{};
     };
 
@@ -60,7 +60,7 @@ namespace
         }
 
         for (bsl::safe_uintmax i{}; i < lhs.size; ++i) {
-            if (lhs.data[i.get()] != str[i.get()]) {
+            if (lhs.data[i.get()] != str[i.get()]) {    // NOLINT
                 return false;
             }
         }
@@ -86,7 +86,7 @@ namespace bsl
         void
         putc_stdout(bsl::char_type const c) noexcept
         {
-            res.data[res.size.get()] = c;
+            res.data[res.size.get()] = c;    // NOLINT
             ++res.size;
         }
 
@@ -94,7 +94,7 @@ namespace bsl
         puts_stdout(bsl::cstr_type const str) noexcept
         {
             for (bsl::safe_uintmax i{}; i < bsl::builtin_strlen(str); ++i) {
-                res.data[res.size.get()] = str[i.get()];
+                res.data[res.size.get()] = str[i.get()];    // NOLINT
                 ++res.size;
             }
         }

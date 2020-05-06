@@ -36,10 +36,7 @@ jobs:
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
         sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
-        sudo apt-get install -y clang-10 clang-tidy-10 clang-format-10 ninja-build doxygen
-        sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-10 100
-        sudo update-alternatives --remove-all clang
-        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
+        sudo apt-get install -y clang-10 clang-format-10 ninja-build
         sudo update-alternatives --remove-all clang++
         sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
         sudo update-alternatives --remove-all clang-format
@@ -74,14 +71,10 @@ jobs:
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
         sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
-        sudo apt-get install -y clang-10 clang-tidy-10 clang-format-10 ninja-build doxygen
-        sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-10 100
-        sudo update-alternatives --remove-all clang
-        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
+        sudo apt-get install -y clang-10 clang-tidy-10 ninja-build
         sudo update-alternatives --remove-all clang++
         sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
-        sudo update-alternatives --remove-all clang-format
-        sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
+        sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-10 100
       shell: bash
     - name: Validate Compliance
       run: |
@@ -105,14 +98,9 @@ jobs:
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
         sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
-        sudo apt-get install -y clang-10 clang-tidy-10 clang-format-10 ninja-build doxygen
-        sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-10 100
-        sudo update-alternatives --remove-all clang
-        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
+        sudo apt-get install -y clang-10 ninja-build
         sudo update-alternatives --remove-all clang++
         sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
-        sudo update-alternatives --remove-all clang-format
-        sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
       shell: bash
     - name: Validate ASAN
       run: |
@@ -137,14 +125,9 @@ jobs:
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
         sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
-        sudo apt-get install -y clang-10 clang-tidy-10 clang-format-10 ninja-build doxygen
-        sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-10 100
-        sudo update-alternatives --remove-all clang
-        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
+        sudo apt-get install -y clang-10 ninja-build
         sudo update-alternatives --remove-all clang++
         sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
-        sudo update-alternatives --remove-all clang-format
-        sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
       shell: bash
     - name: Validate UBSAN
       run: |
@@ -169,14 +152,9 @@ jobs:
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
         sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
-        sudo apt-get install -y clang-10 clang-tidy-10 clang-format-10 ninja-build doxygen
-        sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-10 100
-        sudo update-alternatives --remove-all clang
-        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
+        sudo apt-get install -y clang-10 ninja-build
         sudo update-alternatives --remove-all clang++
         sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
-        sudo update-alternatives --remove-all clang-format
-        sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
       shell: bash
     - name: Validate Release Build
       run: |
@@ -200,14 +178,9 @@ jobs:
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
         sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
-        sudo apt-get install -y clang-10 clang-tidy-10 clang-format-10 ninja-build doxygen
-        sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-10 100
-        sudo update-alternatives --remove-all clang
-        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
+        sudo apt-get install -y clang-10 ninja-build
         sudo update-alternatives --remove-all clang++
         sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
-        sudo update-alternatives --remove-all clang-format
-        sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
       shell: bash
     - name: Validate Debug Build
       run: |
@@ -232,14 +205,9 @@ jobs:
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
         sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
-        sudo apt-get install -y clang-10 clang-tidy-10 clang-format-10 ninja-build doxygen
-        sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-10 100
-        sudo update-alternatives --remove-all clang
-        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
+        sudo apt-get install -y clang-10 ninja-build
         sudo update-alternatives --remove-all clang++
         sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
-        sudo update-alternatives --remove-all clang-format
-        sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
         wget https://github.com/mozilla/grcov/releases/download/v0.5.9/grcov-linux-x86_64.tar.bz2
         tar xvf grcov-linux-x86_64.tar.bz2
         sudo mv grcov /usr/bin/

@@ -52,7 +52,7 @@ namespace bsl
     ///     requirements (i.e., NTSTATUS).
     ///   @include example_basic_errc_type_overview.hpp
     ///
-    template<typename T = bsl::int32, T SUCCESS = 0>
+    template<typename T = bsl::int32>
     class basic_errc_type final
     {
     public:
@@ -64,13 +64,20 @@ namespace bsl
         using const_reference_type = T const &;
 
         /// <!-- description -->
+        ///   @brief Default constructor. This ensures the type is a
+        ///     POD type, allowing it to be constructed as a global resource.
+        ///   @include basic_errc_type/example_basic_errc_type_default_constructor.hpp
+        ///
+        constexpr basic_errc_type() noexcept = default;
+
+        /// <!-- description -->
         ///   @brief Value initialization constructor
         ///   @include basic_errc_type/example_basic_errc_type_constructor_t.hpp
         ///
         /// <!-- inputs/outputs -->
         ///   @param errc the error code to store
         ///
-        explicit constexpr basic_errc_type(value_type const &errc = SUCCESS) noexcept : m_errc{errc}
+        explicit constexpr basic_errc_type(value_type const &errc) noexcept : m_errc{errc}
         {}
 
         /// <!-- description -->
@@ -102,37 +109,37 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief Returns true if the error code contains SUCCESS,
+        ///   @brief Returns true if the error code contains T{},
         ///     otherwise, if the error code contains an error code,
         ///     returns false.
         ///   @include basic_errc_type/example_basic_errc_type_success.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Returns true if the error code contains SUCCESS,
+        ///   @return Returns true if the error code contains T{},
         ///     otherwise, if the error code contains an error code,
         ///     returns false.
         ///
         [[nodiscard]] constexpr bool
         success() const noexcept
         {
-            return m_errc == SUCCESS;
+            return m_errc == T{};
         }
 
         /// <!-- description -->
         ///   @brief Returns true if the error code contains an error code,
-        ///     otherwise, if the error code contains SUCCESS,
+        ///     otherwise, if the error code contains T{},
         ///     returns false.
         ///   @include basic_errc_type/example_basic_errc_type_failure.hpp
         ///
         /// <!-- inputs/outputs -->
         ///   @return Returns true if the error code contains an error code,
-        ///     otherwise, if the error code contains SUCCESS,
+        ///     otherwise, if the error code contains T{},
         ///     returns false.
         ///
         [[nodiscard]] constexpr bool
         failure() const noexcept
         {
-            return m_errc != SUCCESS;
+            return m_errc != T{};
         }
 
         /// <!-- description -->
@@ -149,7 +156,7 @@ namespace bsl
         [[nodiscard]] constexpr bool
         is_checked() const noexcept
         {
-            return m_errc < 0;
+            return m_errc < T{};
         }
 
         /// <!-- description -->
@@ -166,7 +173,7 @@ namespace bsl
         [[nodiscard]] constexpr bool
         is_unchecked() const noexcept
         {
-            return m_errc > 0;
+            return m_errc > T{};
         }
 
         /// <!-- description -->
@@ -197,10 +204,9 @@ namespace bsl
     ///   @param rhs the right hand side of the operator
     ///   @return Returns true if the lhs is equal to the rhs, false otherwise
     ///
-    template<typename T, T SUCCESS>
+    template<typename T>
     constexpr bool
-    operator==(
-        basic_errc_type<T, SUCCESS> const &lhs, basic_errc_type<T, SUCCESS> const &rhs) noexcept
+    operator==(basic_errc_type<T> const &lhs, basic_errc_type<T> const &rhs) noexcept
     {
         return lhs.get() == rhs.get();
     }
@@ -215,10 +221,9 @@ namespace bsl
     ///   @param rhs the right hand side of the operator
     ///   @return Returns false if the lhs is equal to the rhs, true otherwise
     ///
-    template<typename T, T SUCCESS>
+    template<typename T>
     constexpr bool
-    operator!=(
-        basic_errc_type<T, SUCCESS> const &lhs, basic_errc_type<T, SUCCESS> const &rhs) noexcept
+    operator!=(basic_errc_type<T> const &lhs, basic_errc_type<T> const &rhs) noexcept
     {
         return !(lhs == rhs);
     }
@@ -277,9 +282,9 @@ namespace bsl
     ///     the error code is a custom, user defined error code, returns
     ///     a nullptr.
     ///
-    template<typename T, T SUCCESS>
+    template<typename T>
     [[nodiscard]] constexpr bsl::string_view
-    basic_errc_type<T, SUCCESS>::message() const noexcept
+    basic_errc_type<T>::message() const noexcept
     {
         bsl::string_view msg{};
 
@@ -370,9 +375,9 @@ namespace bsl
     ///   @param val the basic_errc_type to output
     ///   @return return o
     ///
-    template<typename T1, typename T2, T2 SUCCESS>
+    template<typename T1, typename T2>
     [[maybe_unused]] constexpr out<T1>
-    operator<<(out<T1> const o, basic_errc_type<T2, SUCCESS> const &val) noexcept
+    operator<<(out<T1> const o, basic_errc_type<T2> const &val) noexcept
     {
         if constexpr (!o) {
             return o;

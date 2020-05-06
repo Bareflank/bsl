@@ -63,6 +63,7 @@
 #include "example_as_const_overview.hpp"
 #include "example_basic_errc_type_overview.hpp"
 #include "basic_errc_type/example_basic_errc_type_constructor_t.hpp"
+#include "basic_errc_type/example_basic_errc_type_default_constructor.hpp"
 #include "basic_errc_type/example_basic_errc_type_equals.hpp"
 #include "basic_errc_type/example_basic_errc_type_failure.hpp"
 #include "basic_errc_type/example_basic_errc_type_get.hpp"
@@ -512,6 +513,7 @@ main() noexcept
     example(&bsl::example_as_const_overview, "example_as_const_overview");
     example(&bsl::example_basic_errc_type_overview, "example_basic_errc_type_overview");
     example(&bsl::example_basic_errc_type_constructor_t, "example_basic_errc_type_constructor_t");
+    example(&bsl::example_basic_errc_type_default_constructor, "example_basic_errc_type_default_constructor");
     example(&bsl::example_basic_errc_type_equals, "example_basic_errc_type_equals");
     example(&bsl::example_basic_errc_type_failure, "example_basic_errc_type_failure");
     example(&bsl::example_basic_errc_type_get, "example_basic_errc_type_get");

@@ -29,9 +29,14 @@ if(ENABLE_CLANG_FORMAT)
         if(IS_DIRECTORY ${CMAKE_BINARY_DIR}/${DIR} AND NOT DIR MATCHES "build")
             file(GLOB_RECURSE HEADERS RELATIVE ${CMAKE_BINARY_DIR} ${CMAKE_BINARY_DIR}/${DIR}/*.hpp)
             file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_BINARY_DIR} ${CMAKE_BINARY_DIR}/${DIR}/*.cpp)
-            if(NOT "${HEADERS}" STREQUAL "" OR NOT "${SOURCES}" STREQUAL "")
+            if(NOT "${HEADERS}" STREQUAL "")
                 add_custom_command(TARGET format
-                    COMMAND ${BF_CLANG_FORMAT} -i ${HEADERS} ${SOURCES}
+                    COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_CLANG_FORMAT} -i ${HEADERS}
+                )
+            endif()
+            if(NOT "${SOURCES}" STREQUAL "")
+                add_custom_command(TARGET format
+                    COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_CLANG_FORMAT} -i ${SOURCES}
                 )
             endif()
         endif()

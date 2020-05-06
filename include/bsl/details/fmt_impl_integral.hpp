@@ -166,7 +166,7 @@ namespace bsl
             }
 
             for (safe_uintmax i{info.num}; i.is_pos(); --i) {
-                o.write(info.buf[(i - safe_uintmax::one()).get()]);
+                o.write(info.buf[(i - safe_uintmax::one()).get()]);    // NOLINT
             }
         }
 
@@ -206,7 +206,7 @@ namespace bsl
             }
 
             for (safe_uintmax i{info.num}; i.is_pos(); --i) {
-                o.write(info.buf[(i - safe_uintmax::one()).get()]);
+                o.write(info.buf[(i - safe_uintmax::one()).get()]);    // NOLINT
             }
         }
 

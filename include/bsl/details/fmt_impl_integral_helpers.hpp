@@ -57,7 +57,7 @@ namespace bsl
             /// @brief stores the total number digits that make up the integral
             safe_uintmax num;
             /// @brief stores the integral as a string in reverse
-            char_type buf[max_num_digits.get()];
+            char_type buf[max_num_digits.get()];    // NOLINT
         };
 
         /// <!-- description -->
@@ -161,7 +161,7 @@ namespace bsl
                         digit += convert<T>('0');
                     }
 
-                    info.buf[info.num.get()] = static_cast<char_type>(digit.get());
+                    info.buf[info.num.get()] = static_cast<char_type>(digit.get());    // NOLINT
                 }
             }
 
@@ -241,7 +241,7 @@ namespace bsl
             }
             else {
                 for (safe_uintmax i{info.num}; i.is_pos(); --i) {
-                    o.write(info.buf[(i - safe_uintmax::one()).get()]);
+                    o.write(info.buf[(i - safe_uintmax::one()).get()]);    // NOLINT
                 }
             }
 

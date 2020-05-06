@@ -61,20 +61,9 @@
 #
 #  Perforce currently does not support this. Once it does, we can remove this
 #
-# -hicpp-avoid-c-arrays
-# -modernize-avoid-c-arrays
-# -cppcoreguidelines-avoid-c-arrays
-# -hicpp-no-array-decay
-# -cppcoreguidelines-pro-bounds-array-to-pointer-decay
-# -cppcoreguidelines-pro-bounds-constant-array-index
-# -cppcoreguidelines-owning-memory
-#
-#  These should all be enabled, but they cannot be in this library as we
-#  implement the APIs that these checks depend on.
-#
 
-Checks: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-modernize-use-trailing-return-type,-modernize-use-default-member-init,-readability-redundant-member-init,-cert-dcl21-cpp,-cert-oop54-cpp,-readability-avoid-const-params-in-decls,-readability-static-accessed-through-instance,-modernize-concat-nested-namespaces,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-hicpp-no-array-decay,-hicpp-avoid-c-arrays,-modernize-avoid-c-arrays,-cppcoreguidelines-avoid-c-arrays,-cppcoreguidelines-pro-bounds-constant-array-index,-cppcoreguidelines-owning-memory'
-WarningsAsErrors: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-modernize-use-trailing-return-type,-modernize-use-default-member-init,-readability-redundant-member-init,-cert-dcl21-cpp,-cert-oop54-cpp,-readability-avoid-const-params-in-decls,-readability-static-accessed-through-instance,-modernize-concat-nested-namespaces,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-hicpp-no-array-decay,-hicpp-avoid-c-arrays,-modernize-avoid-c-arrays,-cppcoreguidelines-avoid-c-arrays,-cppcoreguidelines-pro-bounds-constant-array-index,-cppcoreguidelines-owning-memory'
+Checks: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-modernize-use-trailing-return-type,-modernize-use-default-member-init,-readability-redundant-member-init,-cert-dcl21-cpp,-cert-oop54-cpp,-readability-avoid-const-params-in-decls,-readability-static-accessed-through-instance,-modernize-concat-nested-namespaces'
+WarningsAsErrors: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-modernize-use-trailing-return-type,-modernize-use-default-member-init,-readability-redundant-member-init,-cert-dcl21-cpp,-cert-oop54-cpp,-readability-avoid-const-params-in-decls,-readability-static-accessed-through-instance,-modernize-concat-nested-namespaces'
 HeaderFilterRegex: '.*'
 AnalyzeTemporaryDtors: false
 CheckOptions:

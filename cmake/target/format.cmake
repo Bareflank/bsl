@@ -24,21 +24,26 @@ if(ENABLE_CLANG_FORMAT)
         format
     )
 
-    file(GLOB SUBDIRS RELATIVE ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR}/*)
+    file(GLOB SUBDIRS RELATIVE ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/*)
     foreach(DIR ${SUBDIRS})
-        if(IS_DIRECTORY ${CMAKE_BINARY_DIR}/${DIR} AND NOT DIR MATCHES "build")
-            file(GLOB_RECURSE HEADERS RELATIVE ${CMAKE_BINARY_DIR} ${CMAKE_BINARY_DIR}/${DIR}/*.hpp)
-            file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_BINARY_DIR} ${CMAKE_BINARY_DIR}/${DIR}/*.cpp)
+        if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/${DIR} AND NOT DIR MATCHES "^[\.].*" AND NOT DIR MATCHES "^build")
+            file(GLOB_RECURSE HEADERS RELATIVE ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR}/${DIR}/*.hpp)
+            file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR}/${DIR}/*.cpp)
             if(NOT "${HEADERS}" STREQUAL "")
                 add_custom_command(TARGET format
+                    COMMAND ${CMAKE_COMMAND} -E echo " - formatting headers in: ${DIR}"
                     COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_CLANG_FORMAT} -i ${HEADERS}
                 )
             endif()
             if(NOT "${SOURCES}" STREQUAL "")
                 add_custom_command(TARGET format
+                    COMMAND ${CMAKE_COMMAND} -E echo " - formatting sources in: ${DIR}"
                     COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_CLANG_FORMAT} -i ${SOURCES}
                 )
             endif()
         endif()
     endforeach()
+    add_custom_command(TARGET format
+        COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --green "done"
+    )
 endif()

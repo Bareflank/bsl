@@ -24,10 +24,13 @@
 
 #include <bsl/basic_errc_type.hpp>
 #include <bsl/discard.hpp>
+#include <bsl/is_pod.hpp>
 #include <bsl/ut.hpp>
 
 namespace
 {
+    bsl::basic_errc_type<> pod;
+
     class fixture_t final
     {
         bsl::basic_errc_type<> errc{};
@@ -77,6 +80,11 @@ bsl::exit_code
 main() noexcept
 {
     using namespace bsl;
+
+    bsl::ut_scenario{"verify supports global POD"} = []() {
+        bsl::discard(pod);
+        static_assert(is_pod<decltype(pod)>::value);
+    };
 
     bsl::ut_scenario{"verify noexcept"} = []() {
         bsl::ut_given{} = []() {

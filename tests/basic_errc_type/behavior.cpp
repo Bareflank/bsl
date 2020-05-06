@@ -39,6 +39,13 @@ tests() noexcept
 {
     bsl::ut_scenario{"constructor / get"} = []() {
         bsl::ut_given{} = []() {
+            bsl::basic_errc_type<> errc{};
+            bsl::ut_then{} = [&errc]() {
+                bsl::ut_check(errc.get() == 0);
+            };
+        };
+
+        bsl::ut_given{} = []() {
             bsl::basic_errc_type<> errc{42};
             bsl::ut_then{} = [&errc]() {
                 bsl::ut_check(errc.get() == 42);

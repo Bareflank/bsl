@@ -57,7 +57,7 @@ namespace bsl
         template<typename CSTR>
         explicit ioctl(CSTR name) noexcept
         {
-            m_hndl = open(name, O_RDWR);
+            m_hndl = open(name, O_RDWR);    // NOLINT
 
             if (0 == m_hndl) {
                 bsl::error() << "ioctl open failed\n";

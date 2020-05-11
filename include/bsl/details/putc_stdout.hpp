@@ -42,7 +42,7 @@ namespace bsl
     }
 }
 
-#ifndef __bareflank__
+#ifndef BAREFLANK
 
 #include <stdio.h>    // PRQA S 1-10000 // NOLINT
 

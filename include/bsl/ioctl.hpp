@@ -32,9 +32,9 @@
 #include "discard.hpp"
 #include "safe_integral.hpp"
 
-#if defined(_WIN32) && !BSL_PERFORCE && !defined(__bareflank__)
+#if defined(_WIN32) && !BSL_PERFORCE && !defined(BAREFLANK)
 #include "details/ioctl_windows.hpp"
-#elif defined(__linux__) && !BSL_PERFORCE && !defined(__bareflank__)
+#elif defined(__linux__) && !BSL_PERFORCE && !defined(BAREFLANK)
 #include "details/ioctl_linux.hpp"
 #else
 

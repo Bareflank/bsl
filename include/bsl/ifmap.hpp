@@ -34,9 +34,9 @@
 #include "safe_integral.hpp"
 #include "string_view.hpp"
 
-#if defined(_WIN32) && !BSL_PERFORCE && !defined(__bareflank__)
+#if defined(_WIN32) && !BSL_PERFORCE && !defined(BAREFLANK)
 #include "details/ifmap_windows.hpp"
-#elif defined(__linux__) && !BSL_PERFORCE && !defined(__bareflank__)
+#elif defined(__linux__) && !BSL_PERFORCE && !defined(BAREFLANK)
 #include "details/ifmap_linux.hpp"
 #else
 

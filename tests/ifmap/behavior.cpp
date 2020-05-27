@@ -38,6 +38,13 @@ main() noexcept
 {
     bsl::ut_scenario{"constructor"} = []() {
         bsl::ut_given{} = []() {
+            bsl::ifmap map{};
+            bsl::ut_then{} = [&map]() {
+                bsl::ut_check(!map);
+            };
+        };
+
+        bsl::ut_given{} = []() {
             bsl::ifmap map{"blah"};
             bsl::ut_then{} = [&map]() {
                 bsl::ut_check(!map);

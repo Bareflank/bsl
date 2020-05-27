@@ -23,7 +23,7 @@
 /// SOFTWARE.
 
 #pragma clang diagnostic ignored "-Wreserved-id-macro"
-#define __bareflank__
+#define BAREFLANK
 
 #include <stdio.h>    // NOLINT
 

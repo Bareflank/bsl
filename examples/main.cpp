@@ -202,6 +202,7 @@
 // #include "example_ifmap_overview.hpp"
 // #include "ifmap/example_ifmap_constructor.hpp"
 // #include "ifmap/example_ifmap_data.hpp"
+// #include "ifmap/example_ifmap_default_constructor.hpp"
 // #include "ifmap/example_ifmap_empty.hpp"
 // #include "ifmap/example_ifmap_max_size.hpp"
 // #include "ifmap/example_ifmap_operator_bool.hpp"
@@ -652,6 +653,7 @@ main() noexcept
     // example(&bsl::example_ifmap_overview, "example_ifmap_overview");
     // example(&bsl::example_ifmap_constructor, "example_ifmap_constructor");
     // example(&bsl::example_ifmap_data, "example_ifmap_data");
+    // example(&bsl::example_ifmap_default_constructor, "example_ifmap_default_constructor");
     // example(&bsl::example_ifmap_empty, "example_ifmap_empty");
     // example(&bsl::example_ifmap_max_size, "example_ifmap_max_size");
     // example(&bsl::example_ifmap_operator_bool, "example_ifmap_operator_bool");

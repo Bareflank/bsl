@@ -69,6 +69,12 @@ namespace bsl
         using const_pointer_type = void const *;
 
         /// <!-- description -->
+        ///   @brief Creates a default ifmap that has not yet been mapped.
+        ///   @include ifmap/example_ifmap_default_constructor.hpp
+        ///
+        ifmap() noexcept = default;
+
+        /// <!-- description -->
         ///   @brief Creates a bsl::ifmap given a the filename and path of
         ///     the file to map as read-only.
         ///   @include ifmap/example_ifmap_constructor.hpp

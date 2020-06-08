@@ -1298,6 +1298,10 @@ namespace bsl
             return o;
         }
 
+        if (!str) {
+            return o;
+        }
+
         o.write(str.data());
         return o;
     }

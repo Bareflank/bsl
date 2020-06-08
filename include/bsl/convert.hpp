@@ -38,7 +38,7 @@ namespace bsl
     ///     conversion error occurred that would result in the loss of
     ///     data.
     inline void
-    conversion_failure__narrowing_results_in_loss_of_data() noexcept
+    conversion_failure_narrowing_results_in_loss_of_data() noexcept
     {}
 
     /// <!-- description -->
@@ -78,7 +78,7 @@ namespace bsl
                 }
                 else {
                     if ((f > t_limits::max()) || (f < t_limits::min())) {
-                        conversion_failure__narrowing_results_in_loss_of_data();
+                        conversion_failure_narrowing_results_in_loss_of_data();
                         return safe_integral<T>::zero(true);
                     }
 
@@ -87,7 +87,7 @@ namespace bsl
             }
             else {
                 if (f < static_cast<F>(0)) {
-                    conversion_failure__narrowing_results_in_loss_of_data();
+                    conversion_failure_narrowing_results_in_loss_of_data();
                     return safe_integral<T>::zero(true);
                 }
 
@@ -96,7 +96,7 @@ namespace bsl
                 }
                 else {
                     if (static_cast<bsl::uintmax>(f) > t_limits::max()) {
-                        conversion_failure__narrowing_results_in_loss_of_data();
+                        conversion_failure_narrowing_results_in_loss_of_data();
                         return safe_integral<T>::zero(true);
                     }
 
@@ -111,7 +111,7 @@ namespace bsl
                 }
                 else {
                     if (f > static_cast<bsl::uintmax>(t_limits::max())) {
-                        conversion_failure__narrowing_results_in_loss_of_data();
+                        conversion_failure_narrowing_results_in_loss_of_data();
                         return safe_integral<T>::zero(true);
                     }
 
@@ -124,7 +124,7 @@ namespace bsl
                 }
                 else {
                     if ((f > t_limits::max())) {
-                        conversion_failure__narrowing_results_in_loss_of_data();
+                        conversion_failure_narrowing_results_in_loss_of_data();
                         return safe_integral<T>::zero(true);
                     }
 

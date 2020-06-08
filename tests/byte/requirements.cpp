@@ -29,7 +29,7 @@
 
 namespace
 {
-    bsl::byte pod;
+    bsl::byte const pod{};
 
     class fixture_t final
     {

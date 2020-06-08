@@ -29,7 +29,7 @@
 
 namespace
 {
-    bsl::basic_errc_type<> pod;
+    bsl::basic_errc_type<> const pod{};
 
     class fixture_t final
     {
@@ -81,7 +81,7 @@ main() noexcept
 {
     using namespace bsl;
 
-    bsl::ut_scenario{"verify supports global POD"} = []() {
+    bsl::ut_scenario{"verify supports global const "} = []() {
         bsl::discard(pod);
         static_assert(is_pod<decltype(pod)>::value);
     };

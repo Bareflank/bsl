@@ -49,7 +49,7 @@ namespace
     };
 
     constexpr bsl::safe_uintmax res_size{bsl::to_umax(10000)};
-    test_string_view<res_size.get()> res{};
+    test_string_view<res_size.get()> res{};    // NOLINT
 
     template<bsl::uintmax N>
     bool
@@ -129,6 +129,16 @@ bsl::exit_code
 main() noexcept
 {
     using namespace bsl;
+
+    bsl::ut_scenario{"empty"} = []() {
+        bsl::ut_when{} = []() {
+            reset();
+            bsl::print() << string_view{};
+            bsl::ut_then{} = []() {
+                bsl::ut_check(res == "");
+            };
+        };
+    };
 
     bsl::ut_scenario{"string_view with no formatting"} = []() {
         bsl::ut_when{} = []() {

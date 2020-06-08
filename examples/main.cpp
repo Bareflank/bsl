@@ -35,10 +35,16 @@
 #include "example_aligned_storage_overview.hpp"
 // #include "example_aligned_union_overview.hpp"
 #include "example_alignment_of_overview.hpp"
+#include "arguments/example_arguments_at.hpp"
+#include "arguments/example_arguments_back.hpp"
+#include "arguments/example_arguments_empty.hpp"
+#include "arguments/example_arguments_front.hpp"
+#include "arguments/example_arguments_increment.hpp"
 #include "arguments/example_arguments_operator_bool.hpp"
 #include "arguments/example_arguments_opt.hpp"
 #include "arguments/example_arguments_ostream.hpp"
 #include "arguments/example_arguments_pos.hpp"
+#include "arguments/example_arguments_size.hpp"
 #include "example_array_overview.hpp"
 #include "array/example_array_at_if.hpp"
 #include "array/example_array_back_if.hpp"
@@ -486,10 +492,16 @@ main() noexcept
     example(&bsl::example_aligned_storage_overview, "example_aligned_storage_overview");
     // example(&bsl::example_aligned_union_overview, "example_aligned_union_overview");
     example(&bsl::example_alignment_of_overview, "example_alignment_of_overview");
+    example(&bsl::example_arguments_at, "example_arguments_at");
+    example(&bsl::example_arguments_back, "example_arguments_back");
+    example(&bsl::example_arguments_empty, "example_arguments_empty");
+    example(&bsl::example_arguments_front, "example_arguments_front");
+    example(&bsl::example_arguments_increment, "example_arguments_increment");
     example(&bsl::example_arguments_operator_bool, "example_arguments_operator_bool");
     example(&bsl::example_arguments_opt, "example_arguments_opt");
     example(&bsl::example_arguments_ostream, "example_arguments_ostream");
     example(&bsl::example_arguments_pos, "example_arguments_pos");
+    example(&bsl::example_arguments_size, "example_arguments_size");
     example(&bsl::example_array_overview, "example_array_overview");
     example(&bsl::example_array_at_if, "example_array_at_if");
     example(&bsl::example_array_back_if, "example_array_back_if");

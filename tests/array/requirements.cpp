@@ -31,7 +31,7 @@
 
 namespace
 {
-    bsl::array<bsl::safe_uintmax, 6> pod;
+    bsl::array<bsl::safe_uintmax, 6> const pod{};
 
     class fixture_t final
     {

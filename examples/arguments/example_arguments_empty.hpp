@@ -22,45 +22,23 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/spinlock.hpp>
-#include <bsl/is_pod.hpp>
-#include <bsl/ut.hpp>
+#include <bsl/arguments.hpp>
+#include <bsl/array.hpp>
+#include <bsl/debug.hpp>
 
-namespace
+namespace bsl
 {
-    bsl::spinlock const pod{};
-}
+    /// <!-- description -->
+    ///   @brief Provides the example's main function
+    ///
+    inline void
+    example_arguments_empty() noexcept
+    {
+        constexpr bsl::array argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
+        bsl::arguments const args{argv.size(), argv.data()};
 
-/// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
-///     function will successfully return with bsl::exit_success.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-bsl::exit_code
-main() noexcept
-{
-    using namespace bsl;
-
-    bsl::ut_scenario{"verify supports global POD"} = []() {
-        bsl::discard(pod);
-        static_assert(is_pod<decltype(pod)>::value);
-    };
-
-    bsl::ut_scenario{"verify noexcept"} = []() {
-        bsl::ut_given{} = []() {
-            spinlock lck{};
-            bsl::ut_then{} = []() {
-                static_assert(noexcept(spinlock{}));
-                static_assert(noexcept(spinlock{true}));
-                static_assert(noexcept(lck.lock()));
-                static_assert(noexcept(lck.try_lock()));
-                static_assert(noexcept(lck.unlock()));
-            };
-        };
-    };
-
-    return bsl::ut_success();
+        if (!args.empty()) {
+            bsl::print() << "success\n";
+        }
+    }
 }

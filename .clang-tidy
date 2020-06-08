@@ -61,9 +61,15 @@
 #
 #  Perforce currently does not support this. Once it does, we can remove this
 #
+# -misc-misplaced-const
+#
+#  Not really sure why this check was added as it is perfectly ok to have a
+#  pointer marked as, for example, int * const ptr, stating that the pointer
+#  is read-only, but the memory being pointed to is read/write.
+#
 
-Checks: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-modernize-use-trailing-return-type,-modernize-use-default-member-init,-readability-redundant-member-init,-cert-dcl21-cpp,-cert-oop54-cpp,-readability-avoid-const-params-in-decls,-readability-static-accessed-through-instance,-modernize-concat-nested-namespaces'
-WarningsAsErrors: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-modernize-use-trailing-return-type,-modernize-use-default-member-init,-readability-redundant-member-init,-cert-dcl21-cpp,-cert-oop54-cpp,-readability-avoid-const-params-in-decls,-readability-static-accessed-through-instance,-modernize-concat-nested-namespaces'
+Checks: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-modernize-use-trailing-return-type,-modernize-use-default-member-init,-readability-redundant-member-init,-cert-dcl21-cpp,-cert-oop54-cpp,-readability-avoid-const-params-in-decls,-readability-static-accessed-through-instance,-modernize-concat-nested-namespaces,-misc-misplaced-const'
+WarningsAsErrors: 'clang-diagnostic-*,clang-analyzer-*,-*,bugprone-*,cert-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,misc-*,modernize-*,performance-*,readability-*,-modernize-use-trailing-return-type,-modernize-use-default-member-init,-readability-redundant-member-init,-cert-dcl21-cpp,-cert-oop54-cpp,-readability-avoid-const-params-in-decls,-readability-static-accessed-through-instance,-modernize-concat-nested-namespaces,-misc-misplaced-const'
 HeaderFilterRegex: '.*'
 AnalyzeTemporaryDtors: false
 CheckOptions:

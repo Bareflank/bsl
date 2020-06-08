@@ -49,7 +49,7 @@ namespace
     };
 
     constexpr bsl::safe_uintmax res_size{bsl::to_umax(256)};
-    test_string_view<res_size.get()> res{};
+    test_string_view<res_size.get()> res{};    // NOLINT
 
     template<bsl::uintmax N>
     bool

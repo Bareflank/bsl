@@ -30,7 +30,7 @@
 
 namespace
 {
-    bsl::span<bool> pod;
+    bsl::span<bool> const pod{};
 
     class fixture_t final
     {

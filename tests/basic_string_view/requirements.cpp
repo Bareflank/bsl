@@ -30,7 +30,7 @@
 
 namespace
 {
-    bsl::basic_string_view<bsl::char_type> pod;
+    bsl::basic_string_view<bsl::char_type> const pod{};
 
     class fixture_t final
     {

@@ -125,10 +125,30 @@ namespace bsl
     ///
     class arguments final
     {
-        /// @brief stores the argc/argv arguments.
-        span<cstr_type const> m_args;
-
     public:
+        /// @brief alias for: cstr_type const
+        using value_type = cstr_type const;
+        /// @brief alias for: safe_uintmax
+        using size_type = safe_uintmax;
+        /// @brief alias for: safe_uintmax
+        using difference_type = safe_uintmax;
+        /// @brief alias for: cstr_type const &
+        using reference_type = cstr_type const &;
+        /// @brief alias for: cstr_type const &
+        using const_reference_type = cstr_type const &;
+        /// @brief alias for: cstr_type const *
+        using pointer_type = cstr_type const *;
+        /// @brief alias for: cstr_type const *
+        using const_pointer_type = cstr_type const *;
+        /// @brief alias for: contiguous_iterator<cstr_type const>
+        using iterator_type = contiguous_iterator<cstr_type const>;
+        /// @brief alias for: contiguous_iterator<cstr_type const>
+        using const_iterator_type = contiguous_iterator<cstr_type const>;
+        /// @brief alias for: reverse_iterator<iterator>
+        using reverse_iterator_type = reverse_iterator<iterator_type>;
+        /// @brief alias for: reverse_iterator<const_iterator>
+        using const_reverse_iterator_type = reverse_iterator<const_iterator_type>;
+
         /// <!-- description -->
         ///   @brief Creates a bsl::arguments object given a provided argc
         ///     and argv.
@@ -138,7 +158,7 @@ namespace bsl
         ///     application
         ///   @param argv the arguments passed to the application
         ///
-        constexpr arguments(safe_uintmax const argc, bsl::cstr_type const *const argv) noexcept
+        constexpr arguments(size_type const &argc, value_type *const argv) noexcept
             : m_args{argv, argc}
         {}
 
@@ -151,7 +171,7 @@ namespace bsl
         ///     application
         ///   @param argv the arguments passed to the application
         ///
-        constexpr arguments(bsl::int32 const argc, bsl::cstr_type const *const argv) noexcept
+        constexpr arguments(bsl::int32 const argc, value_type *const argv) noexcept
             : arguments{to_umax(argc), argv}
         {}
 
@@ -170,6 +190,124 @@ namespace bsl
         }
 
         /// <!-- description -->
+        ///   @brief Returns the positional argument at position "pos"
+        ///     converted to "T". If the positional argument "pos" does not
+        ///     exist, the result depends on "T". For a bsl::safe_integral,
+        ///     the result is bsl::safe_integral<T>{0, true}, meaning the
+        ///     integral has it's error flag set. All other types return T{}.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
+        ///   @param pos the position of the positional argument to get.
+        ///   @return Returns the positional argument at position "pos"
+        ///     converted to "T". If the positional argument "pos" does not
+        ///     exist, the result depends on "T". For a bsl::safe_integral,
+        ///     the result is bsl::safe_integral<T>{0, true}, meaning the
+        ///     integral has it's error flag set. All other types return T{}.
+        ///
+        template<typename T, bsl::int32 B = 10>
+        [[nodiscard]] constexpr T
+        get(size_type const &pos) const noexcept
+        {
+            return details::arguments_impl<T, B>::get(m_args, pos);
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns the requested optional argument. If the optional
+        ///     argument "pos" does not exist, the result depends on "T".
+        ///     For a bsl::safe_integral, the result is
+        ///     bsl::safe_integral<T>{0, true}, meaning the integral has it's
+        ///     error flag set. All other types return T{}.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
+        ///   @param opt the optional argument to get.
+        ///   @return Returns the requested optional argument. If the optional
+        ///     argument "pos" does not exist, the result depends on "T".
+        ///     For a bsl::safe_integral, the result is
+        ///     bsl::safe_integral<T>{0, true}, meaning the integral has it's
+        ///     error flag set. All other types return T{}.
+        ///
+        template<typename T, bsl::int32 B = 10>
+        [[nodiscard]] constexpr T
+        get(string_view const &opt) const noexcept
+        {
+            return details::arguments_impl<T, B>::get(m_args, opt);
+        }
+
+        /// <!-- description -->
+        ///   @brief Same as get<T, B>(pos)
+        ///   @include arguments/example_arguments_at.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
+        ///   @param pos the position of the positional argument to get.
+        ///   @return Returns the positional argument at position "pos"
+        ///     converted to "T". If the positional argument "pos" does not
+        ///     exist, the result depends on "T". For a bsl::safe_integral,
+        ///     the result is bsl::safe_integral<T>{0, true}, meaning the
+        ///     integral has it's error flag set. All other types return T{}.
+        ///
+        template<typename T, bsl::int32 B = 10>
+        [[nodiscard]] constexpr T
+        at(size_type const &pos) const noexcept
+        {
+            return this->get<T, B>(pos);
+        }
+
+        /// <!-- description -->
+        ///   @brief Same as get<T, B>(to_umax(0))
+        ///   @include arguments/example_arguments_front.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
+        ///   @return Returns the positional argument at position "0"
+        ///     converted to "T". If the positional argument "0" does not
+        ///     exist, the result depends on "T". For a bsl::safe_integral,
+        ///     the result is bsl::safe_integral<T>{0, true}, meaning the
+        ///     integral has it's error flag set. All other types return T{}.
+        ///
+        template<typename T, bsl::int32 B = 10>
+        [[nodiscard]] constexpr T
+        front() const noexcept
+        {
+            return this->get<T, B>(to_umax(0));
+        }
+
+        /// <!-- description -->
+        ///   @brief Same as get<T, B>(size().is_pos() ? (size() - to_umax(1)) : to_umax(0))
+        ///   @include arguments/example_arguments_back.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
+        ///   @return Returns the positional argument at position "size() - 1"
+        ///     converted to "T". If the positional argument "size() - 1" does
+        ///     not exist, the result depends on "T". For a bsl::safe_integral,
+        ///     the result is bsl::safe_integral<T>{0, true}, meaning the
+        ///     integral has it's error flag set. All other types return T{}.
+        ///
+        template<typename T, bsl::int32 B = 10>
+        [[nodiscard]] constexpr T
+        back() const noexcept
+        {
+            size_type s{this->size()};
+            return this->get<T, B>(s.is_pos() ? (s - to_umax(1)) : to_umax(0));
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns size().is_zero()
+        ///   @include arguments/example_arguments_empty.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns size().is_zero()
+        ///
+        [[nodiscard]] constexpr bool
+        empty() const noexcept
+        {
+            return this->size().is_zero();
+        }
+
+        /// <!-- description -->
         ///   @brief Returns true if the arguments contains a valid span
         ///     of arguments.
         ///   @include arguments/example_arguments_operator_bool.hpp
@@ -184,38 +322,65 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief Generic placeholder for the get() function that will result
-        ///     in a compile-time error if the user attempts to use a type that
-        ///     is not supported.
+        ///   @brief Returns the number of positional arguments being viewed.
+        ///     Optional arguments are ignored and are not included in the
+        ///     resulting size. Note that this function is slow.
+        ///   @include arguments/example_arguments_size.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam T any type not supported by this API
-        ///   @param pos the position of the positional argument to get.
-        ///   @return never returns
+        ///   @return Returns the number of positional arguments being viewed.
+        ///     Optional arguments are ignored and are not included in the
+        ///     resulting size.
         ///
-        template<typename T, bsl::int32 B = 10>
-        [[nodiscard]] constexpr T
-        get(safe_uintmax const &pos) const noexcept
+        [[nodiscard]] constexpr size_type
+        size() const noexcept
         {
-            return details::arguments_impl<T, B>::get(m_args, pos);
+            size_type ret{};
+
+            for (safe_uintmax i{}; i < m_args.size(); ++i) {
+                string_view const arg{*m_args.at_if(i)};
+
+                if (arg.starts_with('-')) {
+                    continue;
+                }
+
+                ++ret;
+            }
+
+            return ret;
         }
 
         /// <!-- description -->
-        ///   @brief Generic placeholder for the get() function that will result
-        ///     in a compile-time error if the user attempts to use a type that
-        ///     is not supported.
+        ///   @brief Increments argument list. This is the same as creating a
+        ///     new bsl::arguments with the pointer advanced and count
+        ///     decremented. Note that only positional arguments are accounted
+        ///     for. Optional arguments are ignored.
+        ///   @include arguments/example_arguments_increment.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam T any type not supported by this API
-        ///   @param opt the optional argument to get.
-        ///   @return never returns
+        ///   @return returns *this
         ///
-        template<typename T, bsl::int32 B = 10>
-        [[nodiscard]] constexpr T
-        get(string_view const &opt) const noexcept
+        [[maybe_unused]] constexpr arguments &
+        operator++() noexcept
         {
-            return details::arguments_impl<T, B>::get(m_args, opt);
+            for (safe_uintmax i{to_umax(1)}; i < m_args.size(); ++i) {
+                string_view const arg{*m_args.at_if(i)};
+
+                if (arg.starts_with('-')) {
+                    continue;
+                }
+
+                *this = arguments{m_args.size() - i, m_args.at_if(i)};
+                return *this;
+            }
+
+            *this = arguments{0, nullptr};
+            return *this;
         }
+
+    private:
+        /// @brief stores the argc/argv arguments.
+        span<value_type> m_args;
     };
 
     /// <!-- description -->

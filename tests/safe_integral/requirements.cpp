@@ -28,7 +28,7 @@
 
 namespace
 {
-    bsl::safe_int32 pod;
+    bsl::safe_int32 const pod{};
 
     class fixture_t final
     {

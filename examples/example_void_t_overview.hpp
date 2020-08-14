@@ -34,8 +34,11 @@ namespace bsl
     inline void
     example_void_t_overview() noexcept
     {
-        if (bsl::is_same<void_t<bool>, void>::value) {
+        if constexpr (bsl::is_same<void_t<bool>, void>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

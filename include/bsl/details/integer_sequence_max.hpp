@@ -25,64 +25,84 @@
 #ifndef BSL_INTEGER_SEQUENCE_MAX_HPP
 #define BSL_INTEGER_SEQUENCE_MAX_HPP
 
-namespace bsl
+namespace bsl::details
 {
     namespace details
     {
-        /// @class bsl::details::integer_sequence_max
-        ///
         /// <!-- description -->
-        ///   @brief Returns the max value given an integer sequence. This is
-        ///     used to implement integer_sequence::max().
+        ///   @brief Returns the max of T1 and T2
         ///
-        /// <!-- template parameters -->
-        ///   @tparam T the type that defines the sequence of integers
-        ///   @tparam T1 the first integer in the sequence
-        ///   @tparam R the remaining integers in the sequence
+        /// <!-- inputs/outputs -->
+        ///   @tparam T the type of values being compared
+        ///   @param T1 the first integer to compare
+        ///   @param T2 the second integer to compare
+        ///   @return Returns the max of T1 and T2
         ///
-        template<typename T, T T1, T... R>
-        struct integer_sequence_max final
+        template<typename T>
+        [[nodiscard]] constexpr auto
+        integer_sequence_max_impl(T const T1, T const T2) noexcept -> T
         {
-            static constexpr T T2{integer_sequence_max<T, R...>::value};
-            static constexpr T value{T1 > T2 ? T1 : T2};
-        };
+            if (T1 > T2) {
+                return T1;
+            }
 
-        /// @class bsl::details::integer_sequence_max
-        ///
-        /// <!-- description -->
-        ///   @brief Returns the max value given an integer sequence. This is
-        ///     used to implement integer_sequence::max(). Note that this
-        ///     provides the case where there are only two integers in the
-        ///     sequence.
-        ///
-        /// <!-- template parameters -->
-        ///   @tparam T the type that defines the sequence of integers
-        ///   @tparam T1 the first integer in the sequence
-        ///   @tparam T2 the second integer in the sequence
-        ///
-        template<typename T, T T1, T T2>
-        struct integer_sequence_max<T, T1, T2> final
-        {
-            static constexpr T value{T1 > T2 ? T1 : T2};
-        };
+            return T2;
+        }
+    }
 
-        /// @class bsl::details::integer_sequence_max
-        ///
-        /// <!-- description -->
-        ///   @brief Returns the max value given an integer sequence. This is
-        ///     used to implement integer_sequence::max(). Note that this
-        ///     provides the case where there is only one integer in the
-        ///     sequence.
-        ///
-        /// <!-- template parameters -->
-        ///   @tparam T the type that defines the sequence of integers
-        ///   @tparam T1 the first integer in the sequence
-        ///
-        template<typename T, T T1>
-        struct integer_sequence_max<T, T1> final
-        {
-            static constexpr T value{T1};
-        };
+    /// @class bsl::details::integer_sequence_max
+    ///
+    /// <!-- description -->
+    ///   @brief Returns the max value given an integer sequence. This is
+    ///     used to implement integer_sequence::max().
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type that defines the sequence of integers
+    ///   @tparam T1 the first integer in the sequence
+    ///   @tparam R the remaining integers in the sequence
+    ///
+    template<typename T, T T1, T... R>
+    struct integer_sequence_max final
+    {
+        static constexpr T T2{integer_sequence_max<T, R...>::value};
+        static constexpr T value{details::integer_sequence_max_impl(T1, T2)};
+    };
+
+    /// @class bsl::details::integer_sequence_max
+    ///
+    /// <!-- description -->
+    ///   @brief Returns the max value given an integer sequence. This is
+    ///     used to implement integer_sequence::max(). Note that this
+    ///     provides the case where there are only two integers in the
+    ///     sequence.
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type that defines the sequence of integers
+    ///   @tparam T1 the first integer in the sequence
+    ///   @tparam T2 the second integer in the sequence
+    ///
+    template<typename T, T T1, T T2>
+    struct integer_sequence_max<T, T1, T2> final
+    {
+        static constexpr T value{details::integer_sequence_max_impl(T1, T2)};
+    };
+
+    /// @class bsl::details::integer_sequence_max
+    ///
+    /// <!-- description -->
+    ///   @brief Returns the max value given an integer sequence. This is
+    ///     used to implement integer_sequence::max(). Note that this
+    ///     provides the case where there is only one integer in the
+    ///     sequence.
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type that defines the sequence of integers
+    ///   @tparam T1 the first integer in the sequence
+    ///
+    template<typename T, T T1>
+    struct integer_sequence_max<T, T1> final
+    {
+        static constexpr T value{T1};
     };
 }
 

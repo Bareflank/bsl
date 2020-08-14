@@ -32,8 +32,11 @@ namespace bsl
     inline void
     example_is_void_overview() noexcept
     {
-        if (bsl::is_void<void>::value) {
+        if constexpr (bsl::is_void<void>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

@@ -36,9 +36,10 @@ namespace bsl
         bsl::ifmap const map{"test.txt"};
         if (map) {
             bsl::string_view const str{static_cast<cstr_type>(map.data()), map.size()};
-            if (map && str) {
-                bsl::print() << "success: " << str << bsl::endl;
-            }
+            bsl::print() << "success: " << str << bsl::endl;
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

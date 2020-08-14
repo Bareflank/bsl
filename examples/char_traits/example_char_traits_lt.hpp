@@ -33,11 +33,14 @@ namespace bsl
     inline void
     example_char_traits_lt() noexcept
     {
-        bsl::char_type const val1{static_cast<bsl::char_type>(23)};
-        bsl::char_type const val2{static_cast<bsl::char_type>(42)};
+        constexpr bsl::char_type val1{static_cast<bsl::char_type>(23)};
+        constexpr bsl::char_type val2{static_cast<bsl::char_type>(42)};
 
-        if (bsl::char_traits<bsl::char_type>::lt(val1, val2)) {
+        if constexpr (bsl::char_traits<bsl::char_type>::lt(val1, val2)) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

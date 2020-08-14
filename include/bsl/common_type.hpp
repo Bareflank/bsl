@@ -61,7 +61,14 @@ namespace bsl
     struct common_type<T1, T2> final
     {
         /// @brief provides the member typedef "type"
-        using type = decay_t<decltype(true ? declval<T1>() : declval<T2>())>;    // NOLINT
+        // The ternary operator is one of the few ways that you can
+        // implement this type traits (if not the only way), so in this
+        // case it makes sense to allow. Also, it is not actually being
+        // executed, so not testing is needed here. It is only used as a
+        // means to impelement this type trait as a side effect of how
+        // this operator is view by the compiler.
+        // NOLINTNEXTLINE(bsl-ternary-operator-forbidden)
+        using type = decay_t<decltype(true ? declval<T1>() : declval<T2>())>;
     };
 
     template<typename T1, typename T2, typename... R>

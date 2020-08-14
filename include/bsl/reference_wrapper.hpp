@@ -82,8 +82,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns a reference to the wrapped thing
         ///
-        [[nodiscard]] constexpr T &
-        get() const noexcept
+        [[nodiscard]] constexpr auto
+        get() const noexcept -> T &
         {
             return *m_ptr;
         }
@@ -103,8 +103,8 @@ namespace bsl
         ///   @throw throws if the wrapped function throws
         ///
         template<typename... ARGS>
-        [[nodiscard]] constexpr invoke_result_t<T &, ARGS...>
-        operator()(ARGS &&... a) const
+        [[nodiscard]] constexpr auto
+        operator()(ARGS &&... a) const -> invoke_result_t<T &, ARGS...>
         {
             return invoke(this->get(), bsl::forward<ARGS>(a)...);
         }
@@ -124,8 +124,8 @@ namespace bsl
     ///   @return return o
     ///
     template<typename T1, typename T2>
-    [[maybe_unused]] constexpr out<T1>
-    operator<<(out<T1> const o, bsl::reference_wrapper<T2> const &val) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T1> const o, bsl::reference_wrapper<T2> const &val) noexcept -> out<T1>
     {
         if constexpr (!o) {
             return o;

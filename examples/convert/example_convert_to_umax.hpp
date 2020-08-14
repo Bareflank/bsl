@@ -35,6 +35,6 @@ namespace bsl
     example_convert_to_umax() noexcept
     {
         constexpr bsl::safe_uintmax val{bsl::to_umax(42)};
-        bsl::print() << "success: " << val << '\n';
+        bsl::print() << "success: " << val << bsl::endl;
     }
 }

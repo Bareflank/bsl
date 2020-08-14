@@ -38,11 +38,14 @@ namespace bsl
         constexpr bsl::uint8 expected{0x10U};
 
         bsl::byte b1{val1};
-        bsl::byte const b2{val2};
+        constexpr bsl::byte b2{val2};
 
         b1 &= b2;
         if (b1.to_integer() == expected) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

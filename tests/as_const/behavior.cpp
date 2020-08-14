@@ -25,29 +25,32 @@
 #include <bsl/as_const.hpp>
 #include <bsl/ut.hpp>
 
-/// <!-- description -->
-///   @brief Used to execute the actual checks. We put the checks in this
-///     function so that we can validate the tests both at compile-time
-///     and at run-time. If a bsl::ut_check fails, the tests will either
-///     fail fast at run-time, or will produce a compile-time error.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-constexpr bsl::exit_code
-tests() noexcept
+namespace
 {
-    bsl::ut_scenario{"verify as_const result"} = []() {
-        bsl::ut_given{} = []() {
-            bool mydata1{true};
-            bool const mydata2{bsl::as_const(mydata1)};
-            bsl::ut_then{} = [&mydata1, &mydata2]() {
-                bsl::ut_check(mydata1 == mydata2);
+    /// <!-- description -->
+    ///   @brief Used to execute the actual checks. We put the checks in this
+    ///     function so that we can validate the tests both at compile-time
+    ///     and at run-time. If a bsl::ut_check fails, the tests will either
+    ///     fail fast at run-time, or will produce a compile-time error.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @return Always returns bsl::exit_success.
+    ///
+    [[nodiscard]] constexpr auto
+    tests() noexcept -> bsl::exit_code
+    {
+        bsl::ut_scenario{"verify as_const result"} = []() {
+            bsl::ut_given{} = []() {
+                bool mydata1{true};
+                bool const mydata2{bsl::as_const(mydata1)};
+                bsl::ut_then{} = [&mydata1, &mydata2]() {
+                    bsl::ut_check(mydata1 == mydata2);
+                };
             };
         };
-    };
 
-    return bsl::ut_success();
+        return bsl::ut_success();
+    }
 }
 
 /// <!-- description -->
@@ -58,8 +61,8 @@ tests() noexcept
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     static_assert(tests() == bsl::ut_success());
     return tests();

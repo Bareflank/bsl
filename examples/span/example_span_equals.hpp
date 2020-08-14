@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/span.hpp>
 #include <bsl/array.hpp>
 #include <bsl/debug.hpp>
 
@@ -33,10 +34,9 @@ namespace bsl
     inline void
     example_span_equals() noexcept
     {
-        constexpr bsl::safe_uintmax size{bsl::to_umax(2)};
-        constexpr bsl::array<bool, size.get()> arr1{true, false};
-        constexpr bsl::array<bool, size.get()> arr2{true, false};
-        constexpr bsl::array<bool, size.get()> arr3{false, false};
+        constexpr bsl::array arr1{true, false};
+        constexpr bsl::array arr2{true, false};
+        constexpr bsl::array arr3{false, false};
 
         bsl::span const spn1{arr1.data(), arr1.size()};
         bsl::span const spn2{arr2.data(), arr2.size()};
@@ -45,9 +45,15 @@ namespace bsl
         if (spn1 == spn2) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
 
         if (spn1 != spn3) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

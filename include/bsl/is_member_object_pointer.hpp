@@ -45,8 +45,8 @@ namespace bsl
         ///     otherwise returns false.
         ///
         template<typename T>
-        [[nodiscard]] constexpr bool
-        check_is_member_object_pointer() noexcept
+        [[nodiscard]] constexpr auto
+        check_is_member_object_pointer() noexcept -> bool
         {
             if (bsl::is_member_function_pointer<T>::value) {
                 return false;

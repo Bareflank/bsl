@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_is_trivially_default_constructible_overview() noexcept
     {
-        if (bsl::is_trivially_default_constructible<bool>::value) {
+        if constexpr (bsl::is_trivially_default_constructible<bool>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

@@ -36,9 +36,12 @@ namespace bsl
         constexpr bsl::uint8 val{0x10U};
         constexpr bsl::uint8 expected{static_cast<bsl::uint8>(0xEF)};
 
-        bsl::byte const b{val};
-        if ((~b).to_integer() == expected) {
+        constexpr bsl::byte b{val};
+        if constexpr ((~b).to_integer() == expected) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

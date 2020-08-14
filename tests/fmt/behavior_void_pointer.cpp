@@ -22,93 +22,75 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#pragma clang diagnostic ignored "-Wreserved-id-macro"
-#define BAREFLANK
+#define BSL_DETAILS_PUTC_STDOUT_HPP
+#define BSL_DETAILS_PUTS_STDOUT_HPP
 
-#include <stdio.h>    // NOLINT
+#include <bsl/details/carray.hpp>
 
 #include <bsl/char_type.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/cstdint.hpp>
+#include <bsl/cstdio.hpp>
+#include <bsl/cstdlib.hpp>
 #include <bsl/cstring.hpp>
 #include <bsl/cstr_type.hpp>
+#include <bsl/discard.hpp>
 #include <bsl/safe_integral.hpp>
-
-#include <bsl/details/putc_stdout.hpp>
-#include <bsl/details/puts_stdout.hpp>
-#include <bsl/details/putc_stderr.hpp>
-#include <bsl/details/puts_stderr.hpp>
 
 namespace
 {
     template<bsl::uintmax N>
     struct test_string_view final
     {
-        bsl::char_type data[N]{};    // NOLINT
+        bsl::details::carray<bsl::char_type, N> data{};
         bsl::safe_uintmax size{};
     };
 
-    constexpr bsl::safe_uintmax res_size{bsl::to_umax(256)};
-    test_string_view<res_size.get()> res{};    // NOLINT
+    constexpr bsl::safe_uintmax res_size{bsl::to_umax(10000)};
+    test_string_view<res_size.get()> res{};
 
     template<bsl::uintmax N>
-    bool
-    operator==(test_string_view<N> const &lhs, bsl::cstr_type const str) noexcept
+    [[nodiscard]] auto
+    operator==(test_string_view<N> const &lhs, bsl::cstr_type const str) noexcept -> bool
     {
         if (bsl::builtin_strlen(str) != lhs.size) {
             return false;
         }
 
-        for (bsl::safe_uintmax i{}; i < lhs.size; ++i) {
-            if (lhs.data[i.get()] != str[i.get()]) {    // NOLINT
-                return false;
-            }
-        }
-
-        return true;
+        return __builtin_memcmp(lhs.data.data(), str, lhs.size.get()) == 0;
     }
 
     void
     reset() noexcept
     {
-        for (auto &e : res.data) {
-            e = 0;
+        for (bsl::safe_uintmax i{}; i < res.data.size(); ++i) {
+            *res.data.at_if(i) = 0;
         }
 
         res.size = bsl::to_umax(0);
     }
 }
 
-namespace bsl
+namespace bsl::details
 {
-    namespace details
+    static void
+    putc_stdout(bsl::char_type const c) noexcept
     {
-        void
-        putc_stdout(bsl::char_type const c) noexcept
-        {
-            res.data[res.size.get()] = c;    // NOLINT
-            ++res.size;
+        if (auto *const ptr{res.data.at_if(res.size)}) {
+            *ptr = c;
         }
-
-        void
-        puts_stdout(bsl::cstr_type const str) noexcept
-        {
-            for (bsl::safe_uintmax i{}; i < bsl::builtin_strlen(str); ++i) {
-                res.data[res.size.get()] = str[i.get()];    // NOLINT
-                ++res.size;
-            }
+        else {
+            bsl::discard(fputs("res.data too small\n", stderr));
+            exit(1);
         }
+        ++res.size;
+    }
 
-        void
-        putc_stderr(char_type const c) noexcept
-        {
-            bsl::discard(fputc(c, stderr));    // NOLINT
-        }
-
-        void
-        puts_stderr(cstr_type const str) noexcept
-        {
-            bsl::discard(fputs(str, stderr));    // NOLINT
+    static void
+    puts_stdout(bsl::cstr_type const str) noexcept
+    {
+        for (bsl::safe_uintmax i{}; i < bsl::builtin_strlen(str); ++i) {
+            putc_stdout(str[i.get()]);
         }
     }
 }
@@ -124,8 +106,8 @@ namespace bsl
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     bsl::ut_scenario{"void pointer"} = []() {
         bsl::ut_when{} = []() {
@@ -139,7 +121,9 @@ main() noexcept
 
         bsl::ut_when{} = []() {
             reset();
-            void *val{reinterpret_cast<void *>(0x0000000000000042)};    // NOLINT
+            // Needed to validate the output of the fmt logic for a pointer
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+            void *val{reinterpret_cast<void *>(0x0000000000000042)};
             bsl::print() << val;
             bsl::ut_then{} = []() {
                 bsl::ut_check(res == "0x0000000000000042");

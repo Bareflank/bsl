@@ -35,7 +35,10 @@ namespace bsl
     {
         using union_type = bsl::aligned_union_t<0, bool, bsl::int64>;
 
-        if (sizeof(union_type) >= sizeof(bsl::int64)) {
+        if constexpr (sizeof(union_type) < sizeof(bsl::int64)) {
+            bsl::error() << "failure\n";
+        }
+        else {
             bsl::print() << "success\n";
         }
     }

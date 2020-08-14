@@ -33,10 +33,14 @@ namespace bsl
     inline void
     example_integer_sequence_min() noexcept
     {
-        constexpr bsl::uintmax min{0};
+        constexpr auto min{to_umax(0)};
+        constexpr auto num{to_umax(6)};
 
-        if (bsl::make_index_sequence<6>::min() == min) {
+        if constexpr (bsl::make_index_sequence<num.get()>::min() == min.get()) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

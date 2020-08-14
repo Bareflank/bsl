@@ -28,10 +28,12 @@
 #ifndef BSL_MOVE_IF_NOEXCEPT_HPP
 #define BSL_MOVE_IF_NOEXCEPT_HPP
 
+#include "conjunction.hpp"
 #include "conditional.hpp"
 #include "is_copy_constructible.hpp"
 #include "is_nothrow_move_constructible.hpp"
 #include "move.hpp"
+#include "negation.hpp"
 
 namespace bsl
 {
@@ -49,15 +51,14 @@ namespace bsl
     ///   @return std::move(val) or val, depending on exception guarantees.
     ///
     template<typename T>
-    constexpr conditional_t<
-        !is_nothrow_move_constructible<T>::value && is_copy_constructible<T>::value,
+    [[nodiscard]] constexpr auto
+    move_if_noexcept(T &val) noexcept -> conditional_t<
+        conjunction<negation<is_nothrow_move_constructible<T>>, is_copy_constructible<T>>::value,
         T const &,
         T &&>
-    move_if_noexcept(T &val) noexcept
     {
         return move(val);
     }
-
 }
 
 #endif

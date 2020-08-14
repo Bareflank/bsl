@@ -28,6 +28,7 @@
 #ifndef BSL_IS_NOTHROW_CONVERTIBLE_HPP
 #define BSL_IS_NOTHROW_CONVERTIBLE_HPP
 
+#include "conjunction.hpp"
 #include "bool_constant.hpp"
 #include "declval.hpp"
 #include "false_type.hpp"
@@ -49,7 +50,8 @@ namespace bsl
         ///   @return returns true if T is returnable, false otherwise
         ///
         template<typename T>
-        auto test_is_nothrow_convertible1(bsl::int32 ignored) noexcept -> true_type_for<T()>;
+        [[maybe_unused]] auto test_is_nothrow_convertible1(bsl::int32 ignored) noexcept
+            -> true_type_for<T()>;
 
         /// <!-- description -->
         ///   @brief Tests if the provided type is returnable, which is
@@ -62,7 +64,7 @@ namespace bsl
         ///   @return returns true if T is returnable, false otherwise
         ///
         template<typename T>
-        auto test_is_nothrow_convertible1(bool ignored) noexcept -> false_type;
+        [[maybe_unused]] auto test_is_nothrow_convertible1(bool ignored) noexcept -> false_type;
 
         /// <!-- description -->
         ///   @brief Tests whether or not the provided to can be converted from
@@ -78,8 +80,8 @@ namespace bsl
         ///   @return returns true if T is returnable, false otherwise
         ///
         template<typename From, typename To>
-        auto test_is_nothrow_convertible2(bsl::int32 ignored) noexcept -> bool_constant<
-            noexcept(declval<void (&)(To) noexcept>()(declval<From>()))>;    // NOLINT
+        [[maybe_unused]] auto test_is_nothrow_convertible2(bsl::int32 ignored) noexcept
+            -> bool_constant<noexcept(declval<void (&)(To) noexcept>()(declval<From>()))>;
 
         /// <!-- description -->
         ///   @brief Tests whether or not the provided to can be converted from
@@ -95,7 +97,7 @@ namespace bsl
         ///   @return returns true if T is returnable, false otherwise
         ///
         template<typename From, typename To>
-        auto test_is_nothrow_convertible2(bool ignored) noexcept -> false_type;
+        [[maybe_unused]] auto test_is_nothrow_convertible2(bool ignored) noexcept -> false_type;
 
         /// <!-- description -->
         ///   @brief Performs all of the tests including testing if both
@@ -107,15 +109,16 @@ namespace bsl
         ///   @return returns true if T is returnable, false otherwise
         ///
         template<typename From, typename To>
-        [[nodiscard]] constexpr bool
-        check_is_nothrow_convertible() noexcept
+        [[nodiscard]] constexpr auto
+        check_is_nothrow_convertible() noexcept -> bool
         {
-            if constexpr (is_void<From>::value && is_void<To>::value) {
+            if constexpr (conjunction<is_void<From>, is_void<To>>::value) {
                 return true;
             }
 
-            return decltype(test_is_nothrow_convertible2<From, To>(0))::value &&
-                   decltype(test_is_nothrow_convertible1<To>(0))::value;
+            return conjunction<
+                decltype(test_is_nothrow_convertible2<From, To>(0)),
+                decltype(test_is_nothrow_convertible1<To>(0))>::value;
         }
     }
 

@@ -25,160 +25,164 @@
 #ifndef BSL_DETAILS_SWAPPABLE_TRAITS_HPP
 #define BSL_DETAILS_SWAPPABLE_TRAITS_HPP
 
+#include "../bool_constant.hpp"
+#include "../conjunction.hpp"
 #include "../declval.hpp"
 #include "../swap.hpp"
 #include "../void_t.hpp"
 
-namespace bsl
+namespace bsl::details
 {
-    namespace details
+    /// @brief defines the function type for swap based on the provided
+    ///   arguments.
+    template<typename T, typename U>
+    using swappable_type = decltype(swap(declval<T>(), declval<U>()));
+
+    /// @class bsl::details::swappable_traits
+    ///
+    /// <!-- description -->
+    ///   @brief The swappable_traits class is used to determine if a set of
+    ///     arguments are swappable and if so, how. To do this, we define
+    ///     a default swappable_traits that states the provided args are not
+    ///     swappable. We then define a specialized version of
+    ///     swappable_traits that is only selected if a call to swap with
+    ///     the provided arguments is valid. If this is true, this class
+    ///     defines the states that T and U are swappable. In addition,
+    ///     we use the noexcept operator to determine if T and U are
+    ///     nothrow swappable. This design ensures deleting a swap function
+    ///     is still supported.
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam AlwaysVoid1 is always "void"
+    ///   @tparam AlwaysVoid2 is always "void"
+    ///   @tparam T the first type to query
+    ///   @tparam U the second type to query
+    ///
+    template<typename AlwaysVoid1, typename AlwaysVoid2, typename T, typename U>
+    class swappable_traits
     {
-        /// @brief defines the function type for swap based on the provided
-        ///   arguments.
-        template<typename T, typename U>
-        using swappable_type = decltype(swap(declval<T>(), declval<U>()));
+    public:
+        /// @brief states that the provided args are swappable
+        static constexpr bool m_is_swappable_with{false};
 
-        /// @class bsl::details::swappable_traits
-        ///
+        /// @brief states that the provided args are nothrow swappable
+        static constexpr bool m_is_nothrow_swappable_with{false};
+
+    protected:
         /// <!-- description -->
-        ///   @brief The swappable_traits class is used to determine if a set of
-        ///     arguments are swappable and if so, how. To do this, we define
-        ///     a default swappable_traits that states the provided args are not
-        ///     swappable. We then define a specialized version of
-        ///     swappable_traits that is only selected if a call to swap with
-        ///     the provided arguments is valid. If this is true, this class
-        ///     defines the states that T and U are swappable. In addition,
-        ///     we use the noexcept operator to determine if T and U are
-        ///     nothrow swappable. This design ensures deleting a swap function
-        ///     is still supported.
+        ///   @brief Destroyes a previously created bsl::swappable_traits
         ///
-        /// <!-- template parameters -->
-        ///   @tparam AlwaysVoid1 is always "void"
-        ///   @tparam AlwaysVoid2 is always "void"
-        ///   @tparam T the first type to query
-        ///   @tparam U the second type to query
-        ///
-        template<typename AlwaysVoid1, typename AlwaysVoid2, typename T, typename U>
-        class swappable_traits
-        {
-        public:
-            /// @brief states that the provided args are swappable
-            static constexpr bool m_is_swappable_with{false};
+        constexpr ~swappable_traits() noexcept = default;
 
-            /// @brief states that the provided args are nothrow swappable
-            static constexpr bool m_is_nothrow_swappable_with{false};
-
-        protected:
-            /// <!-- description -->
-            ///   @brief Destroyes a previously created bsl::swappable_traits
-            ///
-            ~swappable_traits() noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief copy constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///
-            constexpr swappable_traits(swappable_traits const &o) noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief move constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///
-            constexpr swappable_traits(swappable_traits &&o) noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief copy assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///   @return a reference to *this
-            ///
-            constexpr swappable_traits &operator=(swappable_traits const &o) &noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief move assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///   @return a reference to *this
-            ///
-            constexpr swappable_traits &operator=(swappable_traits &&o) &noexcept = default;
-        };
-
-        /// @class bsl::details::swappable_traits
-        ///
         /// <!-- description -->
-        ///   @brief The swappable_traits class is used to determine if a set of
-        ///     arguments are swappable and if so, how. To do this, we define
-        ///     a default swappable_traits that states the provided args are not
-        ///     swappable. We then define a specialized version of
-        ///     swappable_traits that is only selected if a call to swap with
-        ///     the provided arguments is valid. If this is true, this class
-        ///     defines the states that T and U are swappable. In addition,
-        ///     we use the noexcept operator to determine if T and U are
-        ///     nothrow swappable. This design ensures deleting a swap function
-        ///     is still supported.
+        ///   @brief copy constructor
         ///
-        /// <!-- template parameters -->
-        ///   @tparam T the first type to query
-        ///   @tparam U the second type to query
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
         ///
-        template<typename T, typename U>
-        class swappable_traits<void_t<swappable_type<T, U>>, void_t<swappable_type<U, T>>, T, U>
-        {
-        public:
-            /// @brief states that the provided args are swappable
-            static constexpr bool m_is_swappable_with{true};
+        constexpr swappable_traits(swappable_traits const &o) noexcept = default;
 
-            /// @brief states that the provided args are nothrow swappable
-            static constexpr bool m_is_nothrow_swappable_with{noexcept(
-                swap(declval<T>(), declval<U>())) &&noexcept(swap(declval<U>(), declval<T>()))};
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr swappable_traits(swappable_traits &&o) noexcept = default;
 
-        protected:
-            /// <!-- description -->
-            ///   @brief Destroyes a previously created bsl::swappable_traits
-            ///
-            ~swappable_traits() noexcept = default;
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(swappable_traits const &o) &noexcept
+            -> swappable_traits & = default;
 
-            /// <!-- description -->
-            ///   @brief copy constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///
-            constexpr swappable_traits(swappable_traits const &o) noexcept = default;
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(swappable_traits &&o) &noexcept
+            -> swappable_traits & = default;
+    };
 
-            /// <!-- description -->
-            ///   @brief move constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///
-            constexpr swappable_traits(swappable_traits &&o) noexcept = default;
+    /// @class bsl::details::swappable_traits
+    ///
+    /// <!-- description -->
+    ///   @brief The swappable_traits class is used to determine if a set of
+    ///     arguments are swappable and if so, how. To do this, we define
+    ///     a default swappable_traits that states the provided args are not
+    ///     swappable. We then define a specialized version of
+    ///     swappable_traits that is only selected if a call to swap with
+    ///     the provided arguments is valid. If this is true, this class
+    ///     defines the states that T and U are swappable. In addition,
+    ///     we use the noexcept operator to determine if T and U are
+    ///     nothrow swappable. This design ensures deleting a swap function
+    ///     is still supported.
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the first type to query
+    ///   @tparam U the second type to query
+    ///
+    template<typename T, typename U>
+    class swappable_traits<void_t<swappable_type<T, U>>, void_t<swappable_type<U, T>>, T, U>
+    {
+    public:
+        /// @brief states that the provided args are swappable
+        static constexpr bool m_is_swappable_with{true};
 
-            /// <!-- description -->
-            ///   @brief copy assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///   @return a reference to *this
-            ///
-            constexpr swappable_traits &operator=(swappable_traits const &o) &noexcept = default;
+        /// @brief states that the provided args are nothrow swappable
+        static constexpr bool m_is_nothrow_swappable_with{conjunction<
+            bool_constant<noexcept(swap(declval<T>(), declval<U>()))>,
+            bool_constant<noexcept(swap(declval<U>(), declval<T>()))>>::value};
 
-            /// <!-- description -->
-            ///   @brief move assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///   @return a reference to *this
-            ///
-            constexpr swappable_traits &operator=(swappable_traits &&o) &noexcept = default;
-        };
-    }
+    protected:
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::swappable_traits
+        ///
+        constexpr ~swappable_traits() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr swappable_traits(swappable_traits const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr swappable_traits(swappable_traits &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(swappable_traits const &o) &noexcept
+            -> swappable_traits & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(swappable_traits &&o) &noexcept
+            -> swappable_traits & = default;
+    };
 }
 
 #endif

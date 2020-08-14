@@ -22,7 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/string_view.hpp>
+#include <bsl/result.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -31,35 +31,15 @@ namespace bsl
     ///   @brief Provides the example's main function
     ///
     inline void
-    example_reverse_iterator_gt_equals() noexcept
+    example_result_default_constructor() noexcept
     {
-        bsl::string_view const str{"Hello"};
-        bsl::string_view::reverse_iterator_type const iter1{str.rbegin()};
-        bsl::string_view::reverse_iterator_type const iter2{str.rbegin()};
-        bsl::string_view::reverse_iterator_type const iter3{str.rend()};
+        constexpr bsl::result<bool> res{};
 
-        if (iter1 == iter2) {
-            bsl::print() << "success\n";
+        if constexpr (nullptr != res.get_if()) {
+            bsl::print() << "success: " << *res.get_if() << bsl::endl;
         }
-
-        if (iter1 != iter3) {
-            bsl::print() << "success\n";
-        }
-
-        if (iter1 < iter3) {
-            bsl::print() << "success\n";
-        }
-
-        if (iter1 <= iter2) {
-            bsl::print() << "success\n";
-        }
-
-        if (iter3 > iter1) {
-            bsl::print() << "success\n";
-        }
-
-        if (iter3 >= iter1) {
-            bsl::print() << "success\n";
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

@@ -33,12 +33,15 @@ namespace bsl
     inline void
     example_result_copy_assignment() noexcept
     {
-        bsl::result<bool> const res1{bsl::in_place, true};
+        constexpr bsl::result<bool> res1{bsl::in_place, true};
         bsl::result<bool> res2{bsl::errc_failure};
 
         res2 = res1;
-        if (auto const *const ptr = res2.get_if()) {
-            bsl::print() << "success: " << *ptr << bsl::endl;
+        if (nullptr != res2.get_if()) {
+            bsl::print() << "success: " << *res2.get_if() << bsl::endl;
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

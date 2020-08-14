@@ -25,14 +25,17 @@
 #ifndef BSL_DETAILS_IFMAP_WINDOWS_HPP
 #define BSL_DETAILS_IFMAP_WINDOWS_HPP
 
-#include "../byte.hpp"
-#include "../convert.hpp"
-#include "../cstdint.hpp"
-#include "../debug.hpp"
-#include "../discard.hpp"
-#include "../safe_integral.hpp"
-#include "../span.hpp"
-#include "../string_view.hpp"
+#include "../../../byte.hpp"
+#include "../../../convert.hpp"
+#include "../../../cstdint.hpp"
+#include "../../../debug.hpp"
+#include "../../../discard.hpp"
+#include "../../../move.hpp"
+#include "../../../safe_integral.hpp"
+#include "../../../span.hpp"
+#include "../../../swap.hpp"
+#include "../../../string_view.hpp"
+#include "../../../touch.hpp"
 
 #include <Windows.h>
 #undef max
@@ -55,6 +58,21 @@ namespace bsl
         HANDLE m_view{};
         /// @brief stores a view of the file that is mapped.
         span<byte> m_data{};
+
+        /// <!-- description -->
+        ///   @brief Swaps *this with other
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param lhs the left hand side of the exchange
+        ///   @param rhs the right hand side of the exchange
+        ///
+        static constexpr void
+        private_swap(ifmap &lhs, ifmap &rhs) noexcept
+        {
+            bsl::swap(lhs.m_file, rhs.m_file);
+            bsl::swap(lhs.m_view, rhs.m_view);
+            bsl::swap(lhs.m_data, rhs.m_data);
+        }
 
     public:
         /// @brief alias for: void
@@ -103,11 +121,15 @@ namespace bsl
 
             DWORD high{};
             DWORD size{GetFileSize(m_file, &high)};
-            if (size == INVALID_FILE_SIZE) {
+            if (INVALID_FILE_SIZE == size) {
                 bsl::alert() << "failed to get the size of the read-only file: "    // --
                              << filename                                            // --
                              << bsl::endl;
+
+                CloseHandle(m_view);
                 CloseHandle(m_file);
+                m_file = nullptr;
+                m_view = nullptr;
                 return;
             }
 
@@ -116,7 +138,11 @@ namespace bsl
                 bsl::alert() << "failed to map read-only file: "    // --
                              << filename                            // --
                              << bsl::endl;
+
+                CloseHandle(m_view);
                 CloseHandle(m_file);
+                m_file = nullptr;
+                m_view = nullptr;
                 return;
             }
 
@@ -128,9 +154,16 @@ namespace bsl
         ///
         ~ifmap() noexcept
         {
-            UnmapViewOfFile(m_data.data());
-            CloseHandle(m_view);
-            CloseHandle(m_file);
+            if (nullptr != m_file) {
+                UnmapViewOfFile(m_data.data());
+                CloseHandle(m_view);
+                CloseHandle(m_file);
+                m_file = nullptr;
+                m_view = nullptr;
+            }
+            else {
+                bsl::touch();
+            }
         }
 
         /// <!-- description -->
@@ -139,7 +172,7 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param o the object being copied
         ///
-        constexpr ifmap(ifmap const &o) noexcept = default;
+        constexpr ifmap(ifmap const &o) noexcept = delete;
 
         /// <!-- description -->
         ///   @brief move constructor
@@ -147,7 +180,13 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param o the object being moved
         ///
-        constexpr ifmap(ifmap &&o) noexcept = default;
+        constexpr ifmap(ifmap &&o) noexcept
+            : m_file{bsl::move(o.m_file)}, m_view{bsl::move(o.m_view)}, m_data{bsl::move(o.m_data)}
+        {
+            o.m_file = nullptr;
+            o.m_view = nullptr;
+            o.m_data = {};
+        }
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -156,7 +195,7 @@ namespace bsl
         ///   @param o the object being copied
         ///   @return a reference to *this
         ///
-        ifmap &operator=(ifmap const &o) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(ifmap const &o) &noexcept -> ifmap & = delete;
 
         /// <!-- description -->
         ///   @brief move assignment
@@ -165,7 +204,13 @@ namespace bsl
         ///   @param o the object being moved
         ///   @return a reference to *this
         ///
-        ifmap &operator=(ifmap &&o) &noexcept = default;
+        [[maybe_unused]] auto
+        operator=(ifmap &&o) &noexcept -> ifmap &
+        {
+            ifmap tmp{bsl::move(o)};
+            this->private_swap(*this, tmp);
+            return *this;
+        }
 
         /// <!-- description -->
         ///   @brief Returns a pointer to the read-only mapped file.
@@ -174,8 +219,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns a pointer to the read-only mapped file.
         ///
-        [[nodiscard]] constexpr const_pointer_type
-        data() const noexcept
+        [[nodiscard]] constexpr auto
+        data() const noexcept -> const_pointer_type
         {
             return m_data.data();
         }
@@ -189,8 +234,8 @@ namespace bsl
         ///   @return Returns true if the file failed to be mapped, false
         ///     otherwise.
         ///
-        [[nodiscard]] constexpr bool
-        empty() const noexcept
+        [[nodiscard]] constexpr auto
+        empty() const noexcept -> bool
         {
             return m_data.empty();
         }
@@ -216,8 +261,8 @@ namespace bsl
         ///   @return Returns the number of bytes in the file being
         ///     mapped.
         ///
-        [[nodiscard]] constexpr size_type const &
-        size() const noexcept
+        [[nodiscard]] constexpr auto
+        size() const noexcept -> size_type const &
         {
             return m_data.size();
         }
@@ -229,8 +274,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max number of bytes the BSL supports.
         ///
-        [[nodiscard]] static constexpr size_type
-        max_size() noexcept
+        [[nodiscard]] static constexpr auto
+        max_size() noexcept -> size_type
         {
             return to_umax(size_type::max());
         }
@@ -244,8 +289,8 @@ namespace bsl
         ///   @return Returns the number of bytes in the file being
         ///     mapped.
         ///
-        [[nodiscard]] constexpr size_type const &
-        size_bytes() const noexcept
+        [[nodiscard]] constexpr auto
+        size_bytes() const noexcept -> size_type const &
         {
             return m_data.size();
         }

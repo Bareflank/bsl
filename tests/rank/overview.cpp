@@ -33,20 +33,25 @@
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 
     static_assert(rank<void>::value == 0);
     static_assert(rank<bool>::value == 0);
 
-    static_assert(rank<bool[]>::value == 1);              // NOLINT
-    static_assert(rank<bool[][42]>::value == 2);          // NOLINT
-    static_assert(rank<bool[][42][42]>::value == 3);      // NOLINT
-    static_assert(rank<bool[42]>::value == 1);            // NOLINT
-    static_assert(rank<bool[42][42]>::value == 2);        // NOLINT
-    static_assert(rank<bool[42][42][42]>::value == 3);    // NOLINT
-
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(rank<bool[]>::value == 1);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(rank<bool[][42]>::value == 2);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(rank<bool[][42][42]>::value == 3);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(rank<bool[42]>::value == 1);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(rank<bool[42][42]>::value == 2);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(rank<bool[42][42][42]>::value == 3);
     return bsl::ut_success();
 }

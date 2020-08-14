@@ -34,8 +34,11 @@ namespace bsl
     inline void
     example_remove_pointer_overview() noexcept
     {
-        if (bsl::is_same<bsl::remove_pointer_t<void *>, void>::value) {
+        if constexpr (bsl::is_same<bsl::remove_pointer_t<void *>, void>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

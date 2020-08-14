@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_is_nothrow_copyable_overview() noexcept
     {
-        if (bsl::is_nothrow_copyable<bool>::value) {
+        if constexpr (bsl::is_nothrow_copyable<bool>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

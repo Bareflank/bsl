@@ -34,12 +34,14 @@ namespace bsl
     inline void
     example_span_back_if() noexcept
     {
-        constexpr bsl::safe_uintmax size{bsl::to_umax(2)};
-        constexpr bsl::array<bool, size.get()> arr{true, false};
+        constexpr bsl::array arr{true, false};
         bsl::span const spn{arr.data(), arr.size()};
 
-        if (auto const *const ptr = spn.back_if()) {
+        if (auto const *const ptr{spn.back_if()}) {
             bsl::print() << "success: " << *ptr << bsl::endl;
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

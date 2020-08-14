@@ -76,7 +76,7 @@ namespace bsl
         ///   @param lck the spinlock/mutex to guard
         ///   @param al tells the bsl::lock_guard not to lock on construction
         ///
-        explicit constexpr lock_guard(T &lck, adopt_lock_t const al) noexcept    // --
+        constexpr lock_guard(T &lck, adopt_lock_t const al) noexcept    // --
             : m_lock{lck}
         {
             bsl::discard(al);
@@ -88,12 +88,12 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param lck the spinlock/mutex to guard
         ///
-        explicit constexpr lock_guard(T const &lck) noexcept = delete;
+        constexpr lock_guard(T const &lck) noexcept = delete;
 
         /// <!-- description -->
         ///   @brief Destructor
         ///
-        BSL_CONSTEXPR ~lock_guard() noexcept
+        constexpr ~lock_guard() noexcept
         {
             m_lock.unlock();
         }
@@ -121,7 +121,7 @@ namespace bsl
         ///   @param o the object being copied
         ///   @return a reference to *this
         ///
-        lock_guard &operator=(lock_guard const &o) &noexcept = delete;
+        [[maybe_unused]] auto operator=(lock_guard const &o) &noexcept -> lock_guard & = delete;
 
         /// <!-- description -->
         ///   @brief move assignment
@@ -130,7 +130,7 @@ namespace bsl
         ///   @param o the object being moved
         ///   @return a reference to *this
         ///
-        lock_guard &operator=(lock_guard &&o) &noexcept = default;
+        [[maybe_unused]] auto operator=(lock_guard &&o) &noexcept -> lock_guard & = default;
     };
 }
 

@@ -34,9 +34,11 @@ namespace
         constexpr copy_except() noexcept = default;
         ~copy_except() noexcept = default;
         constexpr copy_except(copy_except const &) noexcept(false) = default;
-        constexpr copy_except &operator=(copy_except const &) &noexcept(false) = default;
+        [[maybe_unused]] constexpr auto operator=(copy_except const &) &noexcept(false)
+            -> copy_except & = default;
         constexpr copy_except(copy_except &&) noexcept = delete;
-        constexpr copy_except &operator=(copy_except &&) &noexcept = delete;
+        [[maybe_unused]] constexpr auto operator=(copy_except &&) &noexcept
+            -> copy_except & = delete;
     };
 
     class copy_noexcept final
@@ -45,9 +47,11 @@ namespace
         constexpr copy_noexcept() noexcept = default;
         ~copy_noexcept() noexcept = default;
         constexpr copy_noexcept(copy_noexcept const &) noexcept = default;
-        constexpr copy_noexcept &operator=(copy_noexcept const &) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(copy_noexcept const &) &noexcept
+            -> copy_noexcept & = default;
         constexpr copy_noexcept(copy_noexcept &&) noexcept = delete;
-        constexpr copy_noexcept &operator=(copy_noexcept &&) &noexcept = delete;
+        [[maybe_unused]] constexpr auto operator=(copy_noexcept &&) &noexcept
+            -> copy_noexcept & = delete;
     };
 
     constexpr bsl::array<copy_except, 42> g_arr1{};
@@ -62,8 +66,8 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 

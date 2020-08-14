@@ -28,6 +28,8 @@
 #ifndef BSL_BASIC_STRING_VIEW_HPP
 #define BSL_BASIC_STRING_VIEW_HPP
 
+#include "details/out.hpp"
+
 #include "char_traits.hpp"
 #include "contiguous_iterator.hpp"
 #include "convert.hpp"
@@ -35,6 +37,7 @@
 #include "npos.hpp"
 #include "reverse_iterator.hpp"
 #include "safe_integral.hpp"
+#include "touch.hpp"
 
 // TODO:
 // - Need to finish implementing the find functions.
@@ -54,7 +57,7 @@ namespace bsl
     ///   @tparam Traits the traits class used to work with the string
     ///
     template<typename CharT, typename Traits = char_traits<CharT>>
-    class basic_string_view final    // NOLINT
+    class basic_string_view final
     {
     public:
         /// @brief alias for: CharT const
@@ -81,23 +84,12 @@ namespace bsl
         using const_reverse_iterator_type = reverse_iterator<const_iterator_type>;
 
         /// <!-- description -->
-        ///   @brief Default constructor that creates a basic_string_view with
-        ///     data() == nullptr and size() == 0. All accessors
-        ///     will return a nullptr if used. Note that like other view types
-        ///     in the BSL, the bsl::basic_string_view is a POD type. This
-        ///     means that when declaring a global, default constructed
-        ///     bsl::basic_string_view, DO NOT include the {} for
-        ///     initialization. Instead, remove the {} and the global
-        ///     bsl::basic_string_view will be included in the BSS section of
-        ///     the executable, and initialized to 0 for you. All other
-        ///     instantiations of a bsl::basic_string_view (or any POD
-        ///     type), should be initialized using {} to ensure the POD is
-        ///     properly initialized. Using the above method for global
-        ///     initialization ensures that global constructors are not
-        ///     executed at runtime, which is required by AUTOSAR.
+        ///   @brief Default constructor.
         ///   @include basic_string_view/example_basic_string_view_default_constructor.hpp
         ///
-        constexpr basic_string_view() noexcept = default;
+        constexpr basic_string_view() noexcept    // --
+            : m_ptr{}, m_count{}
+        {}
 
         /// <!-- description -->
         ///   @brief ptr constructor. This creates a bsl::basic_string_view
@@ -106,25 +98,26 @@ namespace bsl
         ///     which scans for '\0'.
         ///   @include basic_string_view/example_basic_string_view_s_constructor.hpp
         ///
-        ///   SUPPRESSION: PRQA 2180 - false positive
-        ///   - We suppress this because A12-1-4 states that all constructors
-        ///     that are callable from a fundamental type should be marked as
-        ///     explicit. This is not a fundamental type and there for does
-        ///     not apply (as pointers are not fundamental types).
-        ///
         /// <!-- inputs/outputs -->
         ///   @param s a pointer to the string
         ///
-        constexpr basic_string_view(pointer_type const s) noexcept    // PRQA S 2180 // NOLINT
+        // We use a deleted single argument template constructor to prevent
+        // implicit conversions, so this rule is OBE.
+        // NOLINTNEXTLINE(hicpp-explicit-conversions)
+        constexpr basic_string_view(pointer_type const s) noexcept
             : m_ptr{s}, m_count{Traits::length(s)}
         {
-            if ((nullptr == m_ptr) || m_count.is_zero()) {
-                bsl::alert() << "basic_string_view: invalid constructor args\n";
-                bsl::alert() << "  - ptr: " << static_cast<void const *>(s) << bsl::endl;
-                bsl::alert() << "  - count: " << m_count << bsl::endl;
-
+            if (nullptr == m_ptr) {
                 *this = basic_string_view{};
+                return;
             }
+
+            if (m_count.is_zero()) {
+                *this = basic_string_view{};
+                return;
+            }
+
+            bsl::touch();
         }
 
         /// <!-- description -->
@@ -140,14 +133,30 @@ namespace bsl
         constexpr basic_string_view(pointer_type const s, size_type const count) noexcept
             : m_ptr{s}, m_count{count}
         {
-            if ((nullptr == m_ptr) || m_count.is_zero()) {
-                bsl::alert() << "basic_string_view: invalid constructor args\n";
-                bsl::alert() << "  - ptr: " << static_cast<void const *>(s) << bsl::endl;
-                bsl::alert() << "  - count: " << m_count << bsl::endl;
-
+            if (nullptr == m_ptr) {
                 *this = basic_string_view{};
+                return;
             }
+
+            if (m_count.is_zero()) {
+                *this = basic_string_view{};
+                return;
+            }
+
+            bsl::touch();
         }
+
+        /// <!-- description -->
+        ///   @brief This constructor allows for single argument constructors
+        ///     without the need to mark them as explicit as it will absorb
+        ///     any incoming potential implicit conversion and prevent it.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam O the type that could be implicitly converted
+        ///   @param val the value that could be implicitly converted
+        ///
+        template<typename O>
+        constexpr basic_string_view(O val) noexcept = delete;
 
         /// <!-- description -->
         ///   @brief ptr assignment. This assigns a bsl::basic_string_view
@@ -160,8 +169,8 @@ namespace bsl
         ///   @param s a pointer to the string
         ///   @return Returns *this
         ///
-        constexpr basic_string_view &
-        operator=(pointer_type const s) &noexcept
+        [[maybe_unused]] constexpr auto
+        operator=(pointer_type const s) &noexcept -> basic_string_view &
         {
             *this = basic_string_view{s};
             return *this;
@@ -173,27 +182,29 @@ namespace bsl
         ///     this function returns a nullptr.
         ///   @include basic_string_view/example_basic_string_view_at_if.hpp
         ///
-        ///   SUPPRESSION: PRQA 4024 - false positive
-        ///   - We suppress this because A9-3-1 states that we should
-        ///     not provide a non-const reference or pointer to private
-        ///     member function, unless the class mimics a smart pointer or
-        ///     a containter. This class mimics a container.
-        ///
         /// <!-- inputs/outputs -->
         ///   @param index the index of the instance to return
         ///   @return Returns a pointer to the instance of T stored at index
         ///     "index". If the index is out of bounds, or the view is invalid,
         ///     this function returns a nullptr.
         ///
-        [[nodiscard]] constexpr pointer_type
-        at_if(size_type const &index) noexcept
+        [[nodiscard]] constexpr auto
+        at_if(size_type const &index) noexcept -> pointer_type
         {
-            if ((!index) || (index >= m_count)) {
-                bsl::error() << "basic_string_view: index out of range: " << index << '\n';
+            if (!index) {
+                bsl::error() << "basic_string_view: index invalid\n";
                 return nullptr;
             }
 
-            return &m_ptr[index.get()];    // PRQA S 4024 // NOLINT
+            if (index < m_count) {
+                // We are implementing std::array here, which is what this test
+                // wants you to use instead.
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                return &m_ptr[index.get()];
+            }
+
+            bsl::error() << "basic_string_view: index out of range: " << index << '\n';
+            return nullptr;
         }
 
         /// <!-- description -->
@@ -208,15 +219,23 @@ namespace bsl
         ///     "index". If the index is out of bounds, or the view is invalid,
         ///     this function returns a nullptr.
         ///
-        [[nodiscard]] constexpr const_pointer_type
-        at_if(size_type const &index) const noexcept
+        [[nodiscard]] constexpr auto
+        at_if(size_type const &index) const noexcept -> const_pointer_type
         {
-            if ((!index) || (index >= m_count)) {
-                bsl::error() << "basic_string_view: index out of range: " << index << '\n';
+            if (!index) {
+                bsl::error() << "basic_string_view: index invalid\n";
                 return nullptr;
             }
 
-            return &m_ptr[index.get()];    // NOLINT
+            if (index < m_count) {
+                // We are implementing std::array here, which is what this test
+                // wants you to use instead.
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                return &m_ptr[index.get()];
+            }
+
+            bsl::error() << "basic_string_view: index out of range: " << index << '\n';
+            return nullptr;
         }
 
         /// <!-- description -->
@@ -230,10 +249,10 @@ namespace bsl
         ///     "0". If the index is out of bounds, or the view is invalid,
         ///     this function returns a nullptr.
         ///
-        [[nodiscard]] constexpr pointer_type
-        front_if() noexcept
+        [[nodiscard]] constexpr auto
+        front_if() noexcept -> pointer_type
         {
-            return this->at_if(to_umax(0));
+            return this->at_if(size_type::zero());
         }
 
         /// <!-- description -->
@@ -247,10 +266,10 @@ namespace bsl
         ///     "0". If the index is out of bounds, or the view is invalid,
         ///     this function returns a nullptr.
         ///
-        [[nodiscard]] constexpr const_pointer_type
-        front_if() const noexcept
+        [[nodiscard]] constexpr auto
+        front_if() const noexcept -> const_pointer_type
         {
-            return this->at_if(to_umax(0));
+            return this->at_if(size_type::zero());
         }
 
         /// <!-- description -->
@@ -264,10 +283,14 @@ namespace bsl
         ///     "size() - 1". If the index is out of bounds, or the view is
         ///     invalid, this function returns a nullptr.
         ///
-        [[nodiscard]] constexpr pointer_type
-        back_if() noexcept
+        [[nodiscard]] constexpr auto
+        back_if() noexcept -> pointer_type
         {
-            return this->at_if(m_count.is_pos() ? (m_count - to_umax(1)) : to_umax(0));
+            if (m_count.is_zero()) {
+                return this->at_if(size_type::zero());
+            }
+
+            return this->at_if(m_count - size_type::one());
         }
 
         /// <!-- description -->
@@ -281,10 +304,14 @@ namespace bsl
         ///     "size() - 1". If the index is out of bounds, or the view is
         ///     invalid, this function returns a nullptr.
         ///
-        [[nodiscard]] constexpr const_pointer_type
-        back_if() const noexcept
+        [[nodiscard]] constexpr auto
+        back_if() const noexcept -> const_pointer_type
         {
-            return this->at_if(m_count.is_pos() ? (m_count - to_umax(1)) : to_umax(0));
+            if (m_count.is_zero()) {
+                return this->at_if(size_type::zero());
+            }
+
+            return this->at_if(m_count - size_type::one());
         }
 
         /// <!-- description -->
@@ -298,8 +325,8 @@ namespace bsl
         ///     a default constructed view, or the view was constructed in
         ///     error, this will return a nullptr.
         ///
-        [[nodiscard]] constexpr pointer_type
-        data() noexcept
+        [[nodiscard]] constexpr auto
+        data() noexcept -> pointer_type
         {
             return m_ptr;
         }
@@ -315,8 +342,8 @@ namespace bsl
         ///     a default constructed view, or the view was constructed in
         ///     error, this will return a nullptr.
         ///
-        [[nodiscard]] constexpr const_pointer_type
-        data() const noexcept
+        [[nodiscard]] constexpr auto
+        data() const noexcept -> const_pointer_type
         {
             return m_ptr;
         }
@@ -328,10 +355,10 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns an iterator to the first element of the view.
         ///
-        [[nodiscard]] constexpr iterator_type
-        begin() noexcept
+        [[nodiscard]] constexpr auto
+        begin() noexcept -> iterator_type
         {
-            return iterator_type{m_ptr, m_count, to_umax(0)};
+            return iterator_type{m_ptr, m_count, size_type::zero()};
         }
 
         /// <!-- description -->
@@ -341,10 +368,10 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns an iterator to the first element of the view.
         ///
-        [[nodiscard]] constexpr const_iterator_type
-        begin() const noexcept
+        [[nodiscard]] constexpr auto
+        begin() const noexcept -> const_iterator_type
         {
-            return const_iterator_type{m_ptr, m_count, to_umax(0)};
+            return const_iterator_type{m_ptr, m_count, size_type::zero()};
         }
 
         /// <!-- description -->
@@ -354,10 +381,10 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns an iterator to the first element of the view.
         ///
-        [[nodiscard]] constexpr const_iterator_type
-        cbegin() const noexcept
+        [[nodiscard]] constexpr auto
+        cbegin() const noexcept -> const_iterator_type
         {
-            return const_iterator_type{m_ptr, m_count, to_umax(0)};
+            return const_iterator_type{m_ptr, m_count, size_type::zero()};
         }
 
         /// <!-- description -->
@@ -368,8 +395,8 @@ namespace bsl
         ///   @param i the element in the string to return an iterator for.
         ///   @return Returns an iterator to the element "i" in the view.
         ///
-        [[nodiscard]] constexpr iterator_type
-        iter(size_type const &i) noexcept
+        [[nodiscard]] constexpr auto
+        iter(size_type const &i) noexcept -> iterator_type
         {
             return iterator_type{m_ptr, m_count, i};
         }
@@ -382,8 +409,8 @@ namespace bsl
         ///   @param i the element in the string to return an iterator for.
         ///   @return Returns an iterator to the element "i" in the view.
         ///
-        [[nodiscard]] constexpr const_iterator_type
-        iter(size_type const &i) const noexcept
+        [[nodiscard]] constexpr auto
+        iter(size_type const &i) const noexcept -> const_iterator_type
         {
             return const_iterator_type{m_ptr, m_count, i};
         }
@@ -396,8 +423,8 @@ namespace bsl
         ///   @param i the element in the string to return an iterator for.
         ///   @return Returns an iterator to the element "i" in the view.
         ///
-        [[nodiscard]] constexpr const_iterator_type
-        citer(size_type const &i) const noexcept
+        [[nodiscard]] constexpr auto
+        citer(size_type const &i) const noexcept -> const_iterator_type
         {
             return const_iterator_type{m_ptr, m_count, i};
         }
@@ -413,8 +440,8 @@ namespace bsl
         ///     view. If you attempt to access this iterator, a nullptr will
         ///     always be returned.
         ///
-        [[nodiscard]] constexpr iterator_type
-        end() noexcept
+        [[nodiscard]] constexpr auto
+        end() noexcept -> iterator_type
         {
             return iterator_type{m_ptr, m_count, m_count};
         }
@@ -430,8 +457,8 @@ namespace bsl
         ///     view. If you attempt to access this iterator, a nullptr will
         ///     always be returned.
         ///
-        [[nodiscard]] constexpr const_iterator_type
-        end() const noexcept
+        [[nodiscard]] constexpr auto
+        end() const noexcept -> const_iterator_type
         {
             return const_iterator_type{m_ptr, m_count, m_count};
         }
@@ -447,8 +474,8 @@ namespace bsl
         ///     view. If you attempt to access this iterator, a nullptr will
         ///     always be returned.
         ///
-        [[nodiscard]] constexpr const_iterator_type
-        cend() const noexcept
+        [[nodiscard]] constexpr auto
+        cend() const noexcept -> const_iterator_type
         {
             return const_iterator_type{m_ptr, m_count, m_count};
         }
@@ -466,8 +493,8 @@ namespace bsl
         ///   @return Returns a reverse iterator to the last element of the
         ///     view.
         ///
-        [[nodiscard]] constexpr reverse_iterator_type
-        rbegin() noexcept
+        [[nodiscard]] constexpr auto
+        rbegin() noexcept -> reverse_iterator_type
         {
             return reverse_iterator_type{this->end()};
         }
@@ -485,8 +512,8 @@ namespace bsl
         ///   @return Returns a reverse iterator to the last element of the
         ///     view.
         ///
-        [[nodiscard]] constexpr const_reverse_iterator_type
-        rbegin() const noexcept
+        [[nodiscard]] constexpr auto
+        rbegin() const noexcept -> const_reverse_iterator_type
         {
             return const_reverse_iterator_type{this->end()};
         }
@@ -504,8 +531,8 @@ namespace bsl
         ///   @return Returns a reverse iterator to the last element of the
         ///     view.
         ///
-        [[nodiscard]] constexpr const_reverse_iterator_type
-        crbegin() const noexcept
+        [[nodiscard]] constexpr auto
+        crbegin() const noexcept -> const_reverse_iterator_type
         {
             return const_reverse_iterator_type{this->cend()};
         }
@@ -524,14 +551,18 @@ namespace bsl
         ///   @return Returns a reverse iterator element "i" in the
         ///     view.
         ///
-        [[nodiscard]] constexpr reverse_iterator_type
-        riter(size_type const &i) noexcept
+        [[nodiscard]] constexpr auto
+        riter(size_type const &i) noexcept -> reverse_iterator_type
         {
-            if ((!!i) && (i >= m_count)) {
-                return reverse_iterator_type{this->iter(m_count)};
+            if (!i) {
+                return reverse_iterator_type{this->iter(size_type::zero())};
             }
 
-            return reverse_iterator_type{this->iter(i + to_umax(1))};
+            if (i < m_count) {
+                return reverse_iterator_type{this->iter(i + size_type::one())};
+            }
+
+            return reverse_iterator_type{this->iter(size_type::zero())};
         }
 
         /// <!-- description -->
@@ -548,14 +579,18 @@ namespace bsl
         ///   @return Returns a reverse iterator element "i" in the
         ///     view.
         ///
-        [[nodiscard]] constexpr const_reverse_iterator_type
-        riter(size_type const &i) const noexcept
+        [[nodiscard]] constexpr auto
+        riter(size_type const &i) const noexcept -> const_reverse_iterator_type
         {
-            if ((!!i) && (i >= m_count)) {
-                return const_reverse_iterator_type{this->iter(m_count)};
+            if (!i) {
+                return const_reverse_iterator_type{this->iter(size_type::zero())};
             }
 
-            return const_reverse_iterator_type{this->iter(i + to_umax(1))};
+            if (i < m_count) {
+                return const_reverse_iterator_type{this->iter(i + size_type::one())};
+            }
+
+            return const_reverse_iterator_type{this->iter(size_type::zero())};
         }
 
         /// <!-- description -->
@@ -572,14 +607,18 @@ namespace bsl
         ///   @return Returns a reverse iterator element "i" in the
         ///     view.
         ///
-        [[nodiscard]] constexpr const_reverse_iterator_type
-        criter(size_type const &i) const noexcept
+        [[nodiscard]] constexpr auto
+        criter(size_type const &i) const noexcept -> const_reverse_iterator_type
         {
-            if ((!!i) && (i >= m_count)) {
-                return const_reverse_iterator_type{this->citer(m_count)};
+            if (!i) {
+                return const_reverse_iterator_type{this->iter(size_type::zero())};
             }
 
-            return const_reverse_iterator_type{this->citer(i + to_umax(1))};
+            if (i < m_count) {
+                return const_reverse_iterator_type{this->iter(i + size_type::one())};
+            }
+
+            return const_reverse_iterator_type{this->iter(size_type::zero())};
         }
 
         /// <!-- description -->
@@ -595,8 +634,8 @@ namespace bsl
         ///   @return Returns a reverse iterator first element of the
         ///     view.
         ///
-        [[nodiscard]] constexpr reverse_iterator_type
-        rend() noexcept
+        [[nodiscard]] constexpr auto
+        rend() noexcept -> reverse_iterator_type
         {
             return reverse_iterator_type{this->begin()};
         }
@@ -614,8 +653,8 @@ namespace bsl
         ///   @return Returns a reverse iterator first element of the
         ///     view.
         ///
-        [[nodiscard]] constexpr const_reverse_iterator_type
-        rend() const noexcept
+        [[nodiscard]] constexpr auto
+        rend() const noexcept -> const_reverse_iterator_type
         {
             return const_reverse_iterator_type{this->begin()};
         }
@@ -633,8 +672,8 @@ namespace bsl
         ///   @return Returns a reverse iterator first element of the
         ///     view.
         ///
-        [[nodiscard]] constexpr const_reverse_iterator_type
-        crend() const noexcept
+        [[nodiscard]] constexpr auto
+        crend() const noexcept -> const_reverse_iterator_type
         {
             return const_reverse_iterator_type{this->cbegin()};
         }
@@ -646,8 +685,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns size() == 0
         ///
-        [[nodiscard]] constexpr bool
-        empty() const noexcept
+        [[nodiscard]] constexpr auto
+        empty() const noexcept -> bool
         {
             return m_count.is_zero();
         }
@@ -675,8 +714,8 @@ namespace bsl
         ///     viewed. If this is a default constructed view, or the view
         ///     was constructed in error, this will return 0.
         ///
-        [[nodiscard]] constexpr size_type const &
-        size() const noexcept
+        [[nodiscard]] constexpr auto
+        size() const noexcept -> size_type const &
         {
             return m_count;
         }
@@ -692,8 +731,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the length of the string being viewed.
         ///
-        [[nodiscard]] constexpr size_type const &
-        length() const noexcept
+        [[nodiscard]] constexpr auto
+        length() const noexcept -> size_type const &
         {
             return this->size();
         }
@@ -705,8 +744,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max number of elements the BSL supports.
         ///
-        [[nodiscard]] static constexpr size_type
-        max_size() noexcept
+        [[nodiscard]] static constexpr auto
+        max_size() noexcept -> size_type
         {
             return size_type::max() / to_umax(sizeof(CharT));
         }
@@ -718,8 +757,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns size() * sizeof(T)
         ///
-        [[nodiscard]] constexpr size_type
-        size_bytes() const noexcept
+        [[nodiscard]] constexpr auto
+        size_bytes() const noexcept -> size_type
         {
             return m_count * to_umax(sizeof(CharT));
         }
@@ -735,15 +774,20 @@ namespace bsl
         ///     the string.
         ///   @return returns *this
         ///
-        [[maybe_unused]] constexpr basic_string_view &
-        remove_prefix(size_type const &n) noexcept
+        [[maybe_unused]] constexpr auto
+        remove_prefix(size_type const &n) noexcept -> basic_string_view &
         {
-            if ((!n) || (n >= this->size())) {
+            if (!n) {
                 *this = basic_string_view{};
                 return *this;
             }
 
-            *this = basic_string_view{this->at_if(n), this->size() - n};
+            if (n < this->size()) {
+                *this = basic_string_view{this->at_if(n), this->size() - n};
+                return *this;
+            }
+
+            *this = basic_string_view{};
             return *this;
         }
 
@@ -758,15 +802,20 @@ namespace bsl
         ///     the string.
         ///   @return returns *this
         ///
-        [[maybe_unused]] constexpr basic_string_view &
-        remove_suffix(size_type const &n) noexcept
+        [[maybe_unused]] constexpr auto
+        remove_suffix(size_type const &n) noexcept -> basic_string_view &
         {
-            if ((!n) || (n >= this->size())) {
+            if (!n) {
                 *this = basic_string_view{};
                 return *this;
             }
 
-            *this = basic_string_view{this->front_if(), this->size() - n};
+            if (n < this->size()) {
+                *this = basic_string_view{this->front_if(), this->size() - n};
+                return *this;
+            }
+
+            *this = basic_string_view{};
             return *this;
         }
 
@@ -789,14 +838,23 @@ namespace bsl
         ///     substring view of the original. The substring starts at "pos"
         ///     and ends at "pos" + "count".
         ///
-        [[nodiscard]] constexpr basic_string_view
+        [[nodiscard]] constexpr auto
         substr(size_type const &pos = {}, size_type const &count = npos) const noexcept
+            -> basic_string_view
         {
-            if ((!pos) || (!count) || (pos >= this->size())) {
+            if (!pos) {
                 return basic_string_view{};
             }
 
-            return basic_string_view{this->at_if(pos), count.min(this->size() - pos)};
+            if (!count) {
+                return basic_string_view{};
+            }
+
+            if (pos < this->size()) {
+                return basic_string_view{this->at_if(pos), count.min(this->size() - pos)};
+            }
+
+            return basic_string_view{};
         }
 
         /// <!-- description -->
@@ -807,8 +865,8 @@ namespace bsl
         ///   @param str the bsl::basic_string_view to compare with
         ///   @return Returns the same results as std::strncmp
         ///
-        [[nodiscard]] constexpr safe_int32
-        compare(basic_string_view const &str) const noexcept
+        [[nodiscard]] constexpr auto
+        compare(basic_string_view const &str) const noexcept -> safe_int32
         {
             return Traits::compare(this->data(), str.data(), this->size().min(str.size()));
         }
@@ -823,11 +881,11 @@ namespace bsl
         ///   @param str the bsl::basic_string_view to compare with
         ///   @return Returns the same results as std::strncmp
         ///
-        [[nodiscard]] constexpr safe_int32
+        [[nodiscard]] constexpr auto
         compare(                       // --
             size_type const &pos,      // --
             size_type const &count,    // --
-            basic_string_view const &str) const noexcept
+            basic_string_view const &str) const noexcept -> safe_int32
         {
             return this->substr(pos, count).compare(str);
         }
@@ -844,13 +902,13 @@ namespace bsl
         ///   @param count2 the number of characters of "v" to compare
         ///   @return Returns the same results as std::strncmp
         ///
-        [[nodiscard]] constexpr safe_int32
+        [[nodiscard]] constexpr auto
         compare(                             // --
             size_type const &pos1,           // --
             size_type const &count1,         // --
             basic_string_view const &str,    // --
             size_type const &pos2,           // --
-            size_type const &count2) const noexcept
+            size_type const &count2) const noexcept -> safe_int32
         {
             return this->substr(pos1, count1).compare(str.substr(pos2, count2));
         }
@@ -863,8 +921,8 @@ namespace bsl
         ///   @param str a pointer to a string to compare with "this"
         ///   @return Returns the same results as std::strncmp
         ///
-        [[nodiscard]] constexpr safe_int32
-        compare(pointer_type const str) const noexcept
+        [[nodiscard]] constexpr auto
+        compare(pointer_type const str) const noexcept -> safe_int32
         {
             return this->compare(basic_string_view{str});
         }
@@ -879,8 +937,9 @@ namespace bsl
         ///   @param str a pointer to a string to compare with "this"
         ///   @return Returns the same results as std::strncmp
         ///
-        [[nodiscard]] constexpr safe_int32
+        [[nodiscard]] constexpr auto
         compare(size_type const &pos, size_type const &count, pointer_type const str) const noexcept
+            -> safe_int32
         {
             return this->substr(pos, count).compare(basic_string_view{str});
         }
@@ -902,14 +961,14 @@ namespace bsl
         ///   @param count2 the number of characters of "s" to compare
         ///   @return Returns the same results as std::strncmp
         ///
-        [[nodiscard]] constexpr safe_int32
+        [[nodiscard]] constexpr auto
         compare(                        // --
             size_type const &pos,       // --
             size_type const &count1,    // --
             pointer_type const str,     // --
-            size_type const &count2) const noexcept
+            size_type const &count2) const noexcept -> safe_int32
         {
-            return this->compare(pos, count1, basic_string_view{str}, to_umax(0), count2);
+            return this->compare(pos, count1, basic_string_view{str}, size_type::zero(), count2);
         }
 
         /// <!-- description -->
@@ -921,14 +980,14 @@ namespace bsl
         ///   @return Returns true if the string begins with the given prefix,
         ///     false otherwise.
         ///
-        [[nodiscard]] constexpr bool
-        starts_with(basic_string_view const &str) const noexcept
+        [[nodiscard]] constexpr auto
+        starts_with(basic_string_view const &str) const noexcept -> bool
         {
             if (this->size() < str.size()) {
                 return false;
             }
 
-            return this->substr(to_umax(0), str.size()) == str;
+            return this->substr(size_type::zero(), str.size()) == str;
         }
 
         /// <!-- description -->
@@ -940,10 +999,10 @@ namespace bsl
         ///   @return Returns true if the string begins with the given prefix,
         ///     false otherwise.
         ///
-        [[nodiscard]] constexpr bool
-        starts_with(value_type const c) const noexcept
+        [[nodiscard]] constexpr auto
+        starts_with(value_type const c) const noexcept -> bool
         {
-            if (auto *const ptr = this->front_if()) {
+            if (auto const *const ptr{this->front_if()}) {
                 return Traits::eq(*ptr, c);
             }
 
@@ -959,8 +1018,8 @@ namespace bsl
         ///   @return Returns true if the string begins with the given prefix,
         ///     false otherwise.
         ///
-        [[nodiscard]] constexpr bool
-        starts_with(pointer_type const str) const noexcept
+        [[nodiscard]] constexpr auto
+        starts_with(pointer_type const str) const noexcept -> bool
         {
             return this->starts_with(basic_string_view{str});
         }
@@ -974,8 +1033,8 @@ namespace bsl
         ///   @return Returns true if the string ends with the given suffix,
         ///     false otherwise.
         ///
-        [[nodiscard]] constexpr bool
-        ends_with(basic_string_view const &str) const noexcept
+        [[nodiscard]] constexpr auto
+        ends_with(basic_string_view const &str) const noexcept -> bool
         {
             if (this->size() < str.size()) {
                 return false;
@@ -993,10 +1052,10 @@ namespace bsl
         ///   @return Returns true if the string ends with the given suffix,
         ///     false otherwise.
         ///
-        [[nodiscard]] constexpr bool
-        ends_with(value_type const c) const noexcept
+        [[nodiscard]] constexpr auto
+        ends_with(value_type const c) const noexcept -> bool
         {
-            if (auto *const ptr = this->back_if()) {
+            if (auto const *const ptr{this->back_if()}) {
                 return Traits::eq(*ptr, c);
             }
 
@@ -1012,8 +1071,8 @@ namespace bsl
         ///   @return Returns true if the string ends with the given suffix,
         ///     false otherwise.
         ///
-        [[nodiscard]] constexpr bool
-        ends_with(pointer_type const str) const noexcept
+        [[nodiscard]] constexpr auto
+        ends_with(pointer_type const str) const noexcept -> bool
         {
             return this->ends_with(basic_string_view{str});
         }
@@ -1029,17 +1088,31 @@ namespace bsl
         ///   @return Returns the index of the first occurrence of the provided
         ///     string. If the string does not occur, bsl::npos is returned.
         ///
-        [[nodiscard]] constexpr size_type
-        find(basic_string_view const &str, size_type const &pos = {}) const noexcept
+        [[nodiscard]] constexpr auto
+        find(basic_string_view const &str, size_type const &pos = {}) const noexcept -> size_type
         {
-            if (str.empty() || (!pos) || (pos >= m_count) || (str.length() > m_count)) {
+            if (str.empty()) {
                 return npos;
             }
 
-            for (size_type i{pos}; i < m_count - (str.length() - to_umax(1)); ++i) {
-                if (this->compare(i, npos, str) == 0) {
-                    return i;
+            if (str.length() > m_count) {
+                return npos;
+            }
+
+            if (!pos) {
+                return npos;
+            }
+
+            if (pos < m_count) {
+                for (size_type i{pos}; i < m_count - (str.length() - size_type::one()); ++i) {
+                    if (this->compare(i, npos, str) == 0) {
+                        return i;
+                    }
+
+                    bsl::touch();
                 }
+
+                return npos;
             }
 
             return npos;
@@ -1058,17 +1131,23 @@ namespace bsl
         ///     character. If the character does not occur, bsl::npos is
         ///     returned.
         ///
-        [[nodiscard]] constexpr size_type
-        find(CharT const ch, size_type const &pos = {}) const noexcept
+        [[nodiscard]] constexpr auto
+        find(CharT const ch, size_type const &pos = {}) const noexcept -> size_type
         {
-            if ((!pos) || (pos >= m_count)) {
+            if (!pos) {
                 return npos;
             }
 
-            for (size_type i{pos}; i < m_count; ++i) {
-                if (*this->at_if(i) == ch) {
-                    return i;
+            if (pos < m_count) {
+                for (size_type i{pos}; i < m_count; ++i) {
+                    if (*this->at_if(i) == ch) {
+                        return i;
+                    }
+
+                    bsl::touch();
                 }
+
+                return npos;
             }
 
             return npos;
@@ -1085,8 +1164,8 @@ namespace bsl
         ///   @return Returns the index of the first occurrence of the provided
         ///     string. If the string does not occur, bsl::npos is returned.
         ///
-        [[nodiscard]] constexpr size_type
-        find(pointer_type const str, size_type const &pos = {}) const noexcept
+        [[nodiscard]] constexpr auto
+        find(pointer_type const str, size_type const &pos = {}) const noexcept -> size_type
         {
             return this->find(basic_string_view{str}, pos);
         }
@@ -1117,10 +1196,10 @@ namespace bsl
     ///     false otherwise.
     ///
     template<typename CharT, typename Traits>
-    constexpr bool
+    [[nodiscard]] constexpr auto
     operator==(
         bsl::basic_string_view<CharT, Traits> const &lhs,
-        bsl::basic_string_view<CharT, Traits> const &rhs) noexcept
+        bsl::basic_string_view<CharT, Traits> const &rhs) noexcept -> bool
     {
         if (lhs.size() != rhs.size()) {
             return false;
@@ -1148,8 +1227,9 @@ namespace bsl
     ///     false otherwise.
     ///
     template<typename CharT, typename Traits>
-    constexpr bool
+    [[nodiscard]] constexpr auto
     operator==(bsl::basic_string_view<CharT, Traits> const &lhs, CharT const *const rhs) noexcept
+        -> bool
     {
         return lhs == bsl::basic_string_view<CharT, Traits>{rhs};
     }
@@ -1173,8 +1253,9 @@ namespace bsl
     ///     false otherwise.
     ///
     template<typename CharT, typename Traits>
-    constexpr bool
+    [[nodiscard]] constexpr auto
     operator==(CharT const *const lhs, bsl::basic_string_view<CharT, Traits> const &rhs) noexcept
+        -> bool
     {
         return bsl::basic_string_view<CharT, Traits>{lhs} == rhs;
     }
@@ -1198,10 +1279,10 @@ namespace bsl
     ///     false otherwise.
     ///
     template<typename CharT, typename Traits>
-    constexpr bool
+    [[nodiscard]] constexpr auto
     operator!=(
         bsl::basic_string_view<CharT, Traits> const &lhs,
-        bsl::basic_string_view<CharT, Traits> const &rhs) noexcept
+        bsl::basic_string_view<CharT, Traits> const &rhs) noexcept -> bool
     {
         return !(lhs == rhs);
     }
@@ -1225,8 +1306,9 @@ namespace bsl
     ///     false otherwise.
     ///
     template<typename CharT, typename Traits>
-    constexpr bool
+    [[nodiscard]] constexpr auto
     operator!=(bsl::basic_string_view<CharT, Traits> const &lhs, CharT const *const rhs) noexcept
+        -> bool
     {
         return !(lhs == rhs);
     }
@@ -1250,8 +1332,9 @@ namespace bsl
     ///     false otherwise.
     ///
     template<typename CharT, typename Traits>
-    constexpr bool
+    [[nodiscard]] constexpr auto
     operator!=(CharT const *const lhs, bsl::basic_string_view<CharT, Traits> const &rhs) noexcept
+        -> bool
     {
         return !(lhs == rhs);
     }
@@ -1291,8 +1374,8 @@ namespace bsl
     ///   @return return o
     ///
     template<typename T, typename CharT>
-    [[maybe_unused]] constexpr out<T>
-    operator<<(out<T> const o, basic_string_view<CharT> const &str) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T> const o, basic_string_view<CharT> const &str) noexcept -> out<T>
     {
         if constexpr (!o) {
             return o;

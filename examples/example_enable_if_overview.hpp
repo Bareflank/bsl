@@ -37,8 +37,8 @@ namespace bsl
     template<          // --
         typename T,    // --
         bsl::enable_if_t<bsl::is_same<T, bool>::value, bool> = true>
-    constexpr bool
-    foo() noexcept
+    [[nodiscard]] constexpr auto
+    foo() noexcept -> bool
     {
         return true;
     }
@@ -53,8 +53,8 @@ namespace bsl
     template<          // --
         typename T,    // --
         bsl::enable_if_t<!bsl::is_same<T, bool>::value, bool> = true>
-    constexpr bool
-    foo() noexcept
+    [[nodiscard]] constexpr auto
+    foo() noexcept -> bool
     {
         return false;
     }
@@ -65,12 +65,18 @@ namespace bsl
     inline void
     example_enable_if_overview() noexcept
     {
-        if (foo<bool>()) {
+        if constexpr (foo<bool>()) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
 
-        if (!foo<void>()) {
+        if constexpr (!foo<void>()) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

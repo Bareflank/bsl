@@ -28,6 +28,7 @@
 #ifndef BSL_ALIGNED_UNION_HPP
 #define BSL_ALIGNED_UNION_HPP
 
+#include "array.hpp"
 #include "byte.hpp"
 #include "cstdint.hpp"
 #include "integer_sequence.hpp"
@@ -64,8 +65,8 @@ namespace bsl
         struct type
         {
             /// @brief defines the storage component of the bsl::aligned_union
-            alignas(alignment_value) byte m_data[    // NOLINT
-                index_sequence<LEN, sizeof(TYPES)...>::max()];
+            alignas(
+                alignment_value) array<byte, index_sequence<LEN, sizeof(TYPES)...>::max()> m_data;
         };
     };
 

@@ -45,8 +45,8 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 
@@ -69,9 +69,7 @@ main() noexcept
                 static_assert(noexcept(ci1 == ci2));
                 static_assert(noexcept(ci1 != ci2));
                 static_assert(noexcept(ci1 < ci2));
-                static_assert(noexcept(ci1 <= ci2));
                 static_assert(noexcept(ci1 > ci2));
-                static_assert(noexcept(ci1 >= ci2));
             };
         };
     };

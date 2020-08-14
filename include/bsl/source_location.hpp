@@ -28,6 +28,8 @@
 #ifndef BSL_SOURCE_LOCATION_HPP
 #define BSL_SOURCE_LOCATION_HPP
 
+#include "details/out.hpp"
+
 #include "color.hpp"
 #include "cstdint.hpp"
 #include "cstr_type.hpp"
@@ -35,6 +37,16 @@
 
 namespace bsl
 {
+    namespace details
+    {
+        /// @brief defines an invalid file.
+        constexpr bsl::cstr_type invalid_file{"unknown"};
+        /// @brief defines an invalid function.
+        constexpr bsl::cstr_type invalid_func{"unknown"};
+        /// @brief defines an invalid line number.
+        constexpr bsl::int32 invalid_line{-1};
+    }
+
     /// <!-- description -->
     ///   @brief This class implements the source_location specification that
     ///     will eventually be included in C++20. We make some changes to the
@@ -78,9 +90,9 @@ namespace bsl
         ///   @include source_location/example_source_location_default_constructor.hpp
         ///
         constexpr source_location() noexcept    // --
-            : m_file{"unknown"}                 // --
-            , m_func{"unknown"}                 // --
-            , m_line{-1}
+            : m_file{details::invalid_file}     // --
+            , m_func{details::invalid_func}     // --
+            , m_line{details::invalid_line}
         {}
 
         /// <!-- description -->
@@ -108,11 +120,11 @@ namespace bsl
         ///   @return returns a new source_location object corresponding to
         ///     the location of the call site of current().
         ///
-        static constexpr source_location
+        [[nodiscard]] static constexpr auto
         current(
             file_type const current_file = __builtin_FILE(),
             func_type const current_func = __builtin_FUNCTION(),
-            line_type const current_line = __builtin_LINE()) noexcept
+            line_type const current_line = __builtin_LINE()) noexcept -> source_location
         {
             return {current_file, current_func, current_line};
         }
@@ -125,8 +137,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return returns the file name associated with the
         ///
-        [[nodiscard]] constexpr file_type
-        file_name() const noexcept
+        [[nodiscard]] constexpr auto
+        file_name() const noexcept -> file_type
         {
             return m_file;
         }
@@ -139,8 +151,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return returns the function name associated with the
         ///
-        [[nodiscard]] constexpr func_type
-        function_name() const noexcept
+        [[nodiscard]] constexpr auto
+        function_name() const noexcept -> func_type
         {
             return m_func;
         }
@@ -153,8 +165,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return returns the line location associated with the
         ///
-        [[nodiscard]] constexpr line_type
-        line() const noexcept
+        [[nodiscard]] constexpr auto
+        line() const noexcept -> line_type
         {
             return m_line;
         }
@@ -181,8 +193,8 @@ namespace bsl
     ///   @return the source_location object corresponding to
     ///     the location of the call site.
     ///
-    constexpr source_location
-    here(source_location const &sloc = source_location::current()) noexcept
+    [[nodiscard]] constexpr auto
+    here(source_location const &sloc = source_location::current()) noexcept -> source_location
     {
         return sloc;
     }
@@ -200,8 +212,8 @@ namespace bsl
     ///   @return return o
     ///
     template<typename T>
-    [[maybe_unused]] constexpr out<T>
-    operator<<(out<T> const o, source_location const &sloc) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T> const o, source_location const &sloc) noexcept -> out<T>
     {
         if constexpr (!o) {
             return o;

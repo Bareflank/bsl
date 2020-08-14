@@ -33,7 +33,6 @@ namespace bsl
     inline void
     example_basic_errc_type_ostream() noexcept
     {
-        constexpr bsl::basic_errc_type<> e{42};
-        bsl::print() << e << bsl::endl;
+        bsl::print() << bsl::errc_success << bsl::endl;
     }
 }

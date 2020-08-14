@@ -35,8 +35,11 @@ namespace bsl
     inline void
     example_disjunction_overview() noexcept
     {
-        if (bsl::disjunction<is_void<void>, is_bool<void>>::value) {
+        if constexpr (bsl::disjunction<is_void<void>, is_bool<void>>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

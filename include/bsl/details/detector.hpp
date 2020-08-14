@@ -33,51 +33,48 @@
 #include "../type_identity.hpp"
 #include "../void_t.hpp"
 
-namespace bsl
+namespace bsl::details
 {
-    namespace details
+    /// @class bsl::detector
+    ///
+    /// <!-- description -->
+    ///   @brief The alias template detector is an alias for an unspecified
+    ///     class type with two public member typedefs value_t and type,
+    ///     which are defined as follows:
+    ///     - If the template-id OP<ARGS...> denotes a valid type, then
+    ///       value_t is an alias for bsl::true_type, and type is an alias
+    ///       for OP<ARGS...>;
+    ///     - Otherwise, value_t is an alias for bsl::false_type and type is
+    ///       an alias for DEFAULT.
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam DEFAULT the default type to return when OP<ARGS...> is
+    ///     invalid
+    ///   @tparam VOID Always void (performs that actual detection)
+    ///   @tparam OP the operation to detect
+    ///   @tparam ARGS the arguments to the operation to detect
+    ///
+    template<typename DEFAULT, typename VOID, template<class...> class OP, typename... ARGS>
+    struct detector final
     {
-        /// @class bsl::detector
-        ///
-        /// <!-- description -->
-        ///   @brief The alias template detector is an alias for an unspecified
-        ///     class type with two public member typedefs value_t and type,
-        ///     which are defined as follows:
-        ///     - If the template-id OP<ARGS...> denotes a valid type, then
-        ///       value_t is an alias for bsl::true_type, and type is an alias
-        ///       for OP<ARGS...>;
-        ///     - Otherwise, value_t is an alias for bsl::false_type and type is
-        ///       an alias for DEFAULT.
-        ///
-        /// <!-- template parameters -->
-        ///   @tparam DEFAULT the default type to return when OP<ARGS...> is
-        ///     invalid
-        ///   @tparam VOID Always void (performs that actual detection)
-        ///   @tparam OP the operation to detect
-        ///   @tparam ARGS the arguments to the operation to detect
-        ///
-        template<typename DEFAULT, typename VOID, template<class...> class OP, typename... ARGS>
-        struct detector final
-        {
-            /// @brief provides the member typedef "type"
-            using type = DEFAULT;
-            /// @brief provides the member typedef "value_t"
-            using value_t = false_type;
-        };
+        /// @brief provides the member typedef "type"
+        using type = DEFAULT;
+        /// @brief provides the member typedef "value_t"
+        using value_t = false_type;
+    };
 
-        /// @cond doxygen off
+    /// @cond doxygen off
 
-        template<typename DEFAULT, template<class...> class OP, typename... ARGS>
-        struct detector<DEFAULT, void_t<OP<ARGS...>>, OP, ARGS...> final
-        {
-            /// @brief provides the member typedef "type"
-            using type = OP<ARGS...>;
-            /// @brief provides the member typedef "value_t"
-            using value_t = true_type;
-        };
+    template<typename DEFAULT, template<class...> class OP, typename... ARGS>
+    struct detector<DEFAULT, void_t<OP<ARGS...>>, OP, ARGS...> final
+    {
+        /// @brief provides the member typedef "type"
+        using type = OP<ARGS...>;
+        /// @brief provides the member typedef "value_t"
+        using value_t = true_type;
+    };
 
-        /// @endcond doxygen on
-    }
+    /// @endcond doxygen on
 }
 
 #endif

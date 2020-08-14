@@ -40,7 +40,7 @@ namespace bsl
         /// <!-- description -->
         ///   @brief Deleted default constructor
         ///
-        example_class_nodefault() noexcept = delete;
+        constexpr example_class_nodefault() noexcept = delete;
 
         /// <!-- description -->
         ///   @brief Simple example of a getter
@@ -48,8 +48,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return returns the value of m_data1;
         ///
-        [[nodiscard]] constexpr bool
-        get() const noexcept
+        [[nodiscard]] constexpr auto
+        get() const noexcept -> bool
         {
             return m_data1;
         }

@@ -28,244 +28,258 @@
 #include "../cstdint.hpp"
 #include "../integral_constant.hpp"
 
-namespace bsl
+namespace bsl::details
 {
-    namespace details
+    /// @brief defines the number of extents too remove.
+    constexpr bsl::uintmax num_extents_to_remove{1U};
+
+    /// @class bsl::details::extent_base
+    ///
+    /// <!-- description -->
+    ///   @brief Implements bsl::extent. This is needed so that bsl::extent
+    ///     can be marked as final.
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to get the extent from
+    ///   @tparam N the dimension of T to the the extent from
+    ///
+    template<typename T, bsl::uintmax N = 0>
+    class extent_base : public integral_constant<bsl::uintmax, 0>
     {
-        /// @class bsl::details::extent_base
-        ///
+    protected:
         /// <!-- description -->
-        ///   @brief Implements bsl::extent. This is needed so that bsl::extent
-        ///     can be marked as final.
+        ///   @brief Destroyes a previously created bsl::extent_base
         ///
-        /// <!-- template parameters -->
-        ///   @tparam T the type to get the extent from
-        ///   @tparam N the dimension of T to the the extent from
+        constexpr ~extent_base() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
         ///
-        template<typename T, bsl::uintmax N = 0>
-        class extent_base : public integral_constant<bsl::uintmax, 0>
-        {
-        protected:
-            /// <!-- description -->
-            ///   @brief Destroyes a previously created bsl::extent_base
-            ///
-            ~extent_base() noexcept = default;
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr extent_base(extent_base const &o) noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief copy constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///
-            constexpr extent_base(extent_base const &o) noexcept = default;
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr extent_base(extent_base &&o) noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief move constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///
-            constexpr extent_base(extent_base &&o) noexcept = default;
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(extent_base const &o) &noexcept
+            -> extent_base & = default;
 
-            /// <!-- description -->
-            ///   @brief copy assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///   @return a reference to *this
-            ///
-            constexpr extent_base &operator=(extent_base const &o) &noexcept = default;
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(extent_base &&o) &noexcept
+            -> extent_base & = default;
+    };
 
-            /// <!-- description -->
-            ///   @brief move assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///   @return a reference to *this
-            ///
-            constexpr extent_base &operator=(extent_base &&o) &noexcept = default;
-        };
+    template<typename T>
+    // This is needed to implement the type traits.
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    class extent_base<T[], 0> : public integral_constant<bsl::uintmax, 0>
+    {
+    protected:
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::extent_base
+        ///
+        constexpr ~extent_base() noexcept = default;
 
-        /// @cond doxygen off
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr extent_base(extent_base const &o) noexcept = default;
 
-        template<typename T>
-        class extent_base<T[], 0> : public integral_constant<bsl::uintmax, 0>    // NOLINT
-        {
-        protected:
-            /// <!-- description -->
-            ///   @brief Destroyes a previously created bsl::extent_base
-            ///
-            ~extent_base() noexcept = default;
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr extent_base(extent_base &&o) noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief copy constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///
-            constexpr extent_base(extent_base const &o) noexcept = default;
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(extent_base const &o) &noexcept
+            -> extent_base & = default;
 
-            /// <!-- description -->
-            ///   @brief move constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///
-            constexpr extent_base(extent_base &&o) noexcept = default;
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(extent_base &&o) &noexcept
+            -> extent_base & = default;
+    };
 
-            /// <!-- description -->
-            ///   @brief copy assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///   @return a reference to *this
-            ///
-            constexpr extent_base &operator=(extent_base const &o) &noexcept = default;
+    template<typename T, bsl::uintmax N>
+    // This is needed to implement the type traits.
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    class extent_base<T[], N> : public extent_base<T, N - num_extents_to_remove>
+    {
+    protected:
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::extent_base
+        ///
+        constexpr ~extent_base() noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief move assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///   @return a reference to *this
-            ///
-            constexpr extent_base &operator=(extent_base &&o) &noexcept = default;
-        };
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr extent_base(extent_base const &o) noexcept = default;
 
-        template<typename T, bsl::uintmax N>
-        class extent_base<T[], N> : public extent_base<T, N - 1>    // NOLINT
-        {
-        protected:
-            /// <!-- description -->
-            ///   @brief Destroyes a previously created bsl::extent_base
-            ///
-            ~extent_base() noexcept = default;
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr extent_base(extent_base &&o) noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief copy constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///
-            constexpr extent_base(extent_base const &o) noexcept = default;
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(extent_base const &o) &noexcept
+            -> extent_base & = default;
 
-            /// <!-- description -->
-            ///   @brief move constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///
-            constexpr extent_base(extent_base &&o) noexcept = default;
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(extent_base &&o) &noexcept
+            -> extent_base & = default;
+    };
 
-            /// <!-- description -->
-            ///   @brief copy assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///   @return a reference to *this
-            ///
-            constexpr extent_base &operator=(extent_base const &o) &noexcept = default;
+    template<typename T, bsl::uintmax I>
+    // This is needed to implement the type traits.
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    class extent_base<T[I], 0> : public integral_constant<bsl::uintmax, I>
+    {
+    protected:
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::extent_base
+        ///
+        constexpr ~extent_base() noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief move assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///   @return a reference to *this
-            ///
-            constexpr extent_base &operator=(extent_base &&o) &noexcept = default;
-        };
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr extent_base(extent_base const &o) noexcept = default;
 
-        template<typename T, bsl::uintmax I>
-        class extent_base<T[I], 0> : public integral_constant<bsl::uintmax, I>    // NOLINT
-        {
-        protected:
-            /// <!-- description -->
-            ///   @brief Destroyes a previously created bsl::extent_base
-            ///
-            ~extent_base() noexcept = default;
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr extent_base(extent_base &&o) noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief copy constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///
-            constexpr extent_base(extent_base const &o) noexcept = default;
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(extent_base const &o) &noexcept
+            -> extent_base & = default;
 
-            /// <!-- description -->
-            ///   @brief move constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///
-            constexpr extent_base(extent_base &&o) noexcept = default;
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(extent_base &&o) &noexcept
+            -> extent_base & = default;
+    };
 
-            /// <!-- description -->
-            ///   @brief copy assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///   @return a reference to *this
-            ///
-            constexpr extent_base &operator=(extent_base const &o) &noexcept = default;
+    template<typename T, bsl::uintmax I, bsl::uintmax N>
+    // This is needed to implement the type traits.
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    class extent_base<T[I], N> : public extent_base<T, N - num_extents_to_remove>
+    {
+    protected:
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::extent_base
+        ///
+        constexpr ~extent_base() noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief move assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///   @return a reference to *this
-            ///
-            constexpr extent_base &operator=(extent_base &&o) &noexcept = default;
-        };
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr extent_base(extent_base const &o) noexcept = default;
 
-        template<typename T, bsl::uintmax I, bsl::uintmax N>
-        class extent_base<T[I], N> : public extent_base<T, N - 1>    // NOLINT
-        {
-        protected:
-            /// <!-- description -->
-            ///   @brief Destroyes a previously created bsl::extent_base
-            ///
-            ~extent_base() noexcept = default;
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr extent_base(extent_base &&o) noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief copy constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///
-            constexpr extent_base(extent_base const &o) noexcept = default;
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(extent_base const &o) &noexcept
+            -> extent_base & = default;
 
-            /// <!-- description -->
-            ///   @brief move constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///
-            constexpr extent_base(extent_base &&o) noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief copy assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///   @return a reference to *this
-            ///
-            constexpr extent_base &operator=(extent_base const &o) &noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief move assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///   @return a reference to *this
-            ///
-            constexpr extent_base &operator=(extent_base &&o) &noexcept = default;
-        };
-
-        /// @endcond doxygen on
-    }
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(extent_base &&o) &noexcept
+            -> extent_base & = default;
+    };
 }
 
 #endif

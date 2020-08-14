@@ -28,6 +28,7 @@
 #ifndef BSL_ALIGNED_STORAGE_HPP
 #define BSL_ALIGNED_STORAGE_HPP
 
+#include "array.hpp"
 #include "cstdint.hpp"
 #include "byte.hpp"
 
@@ -61,7 +62,7 @@ namespace bsl
         struct type final
         {
             /// @brief an array that provides the underlying storage
-            alignas(A) byte m_data[N];    // NOLINT
+            alignas(A) array<byte, N> m_data;
         };
     };
 

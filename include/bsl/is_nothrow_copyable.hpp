@@ -28,6 +28,7 @@
 #ifndef BSL_IS_NOTHROW_COPYABLE_HPP
 #define BSL_IS_NOTHROW_COPYABLE_HPP
 
+#include "conjunction.hpp"
 #include "bool_constant.hpp"
 #include "is_nothrow_copy_assignable.hpp"
 #include "is_nothrow_copy_constructible.hpp"
@@ -48,7 +49,7 @@ namespace bsl
     template<typename T>
     class is_nothrow_copyable final :
         public bool_constant<
-            is_nothrow_copy_assignable<T>::value && is_nothrow_copy_constructible<T>::value>
+            conjunction<is_nothrow_copy_assignable<T>, is_nothrow_copy_constructible<T>>::value>
     {};
 }
 

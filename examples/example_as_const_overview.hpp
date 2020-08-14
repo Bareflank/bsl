@@ -36,8 +36,11 @@ namespace bsl
     inline void
     example_as_const_overview() noexcept
     {
-        if (is_same<decltype(as_const(example_as_const_var)), bool const &>::value) {
+        if constexpr (is_same<decltype(as_const(example_as_const_var)), bool const &>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

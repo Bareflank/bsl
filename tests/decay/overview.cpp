@@ -35,26 +35,32 @@
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 
     using example_decay_f_type = bool(bool);
     using example_decay_fp_type = bool (*)(bool);
 
-    static_assert(is_same<decay_t<bool[42]>, bool *>::value);                     // NOLINT
-    static_assert(is_same<decay_t<bool[42][42]>, bool(*)[42]>::value);            // NOLINT
-    static_assert(is_same<decay_t<bool[42][42][42]>, bool(*)[42][42]>::value);    // NOLINT
-
-    static_assert(is_same<decay_t<bool(&)[42]>, bool *>::value);                     // NOLINT
-    static_assert(is_same<decay_t<bool(&)[42][42]>, bool(*)[42]>::value);            // NOLINT
-    static_assert(is_same<decay_t<bool(&)[42][42][42]>, bool(*)[42][42]>::value);    // NOLINT
-
-    static_assert(is_same<decay_t<bool(&&)[42]>, bool *>::value);                     // NOLINT
-    static_assert(is_same<decay_t<bool(&&)[42][42]>, bool(*)[42]>::value);            // NOLINT
-    static_assert(is_same<decay_t<bool(&&)[42][42][42]>, bool(*)[42][42]>::value);    // NOLINT
-
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_same<decay_t<bool[42]>, bool *>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_same<decay_t<bool[42][42]>, bool(*)[42]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_same<decay_t<bool[42][42][42]>, bool(*)[42][42]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_same<decay_t<bool(&)[42]>, bool *>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_same<decay_t<bool(&)[42][42]>, bool(*)[42]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_same<decay_t<bool(&)[42][42][42]>, bool(*)[42][42]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_same<decay_t<bool(&&)[42]>, bool *>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_same<decay_t<bool(&&)[42][42]>, bool(*)[42]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_same<decay_t<bool(&&)[42][42][42]>, bool(*)[42][42]>::value);
     static_assert(is_same<decay_t<example_decay_f_type>, example_decay_fp_type>::value);
     static_assert(is_same<decay_t<example_decay_f_type &>, example_decay_fp_type>::value);
     static_assert(is_same<decay_t<example_decay_f_type &&>, example_decay_fp_type>::value);

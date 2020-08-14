@@ -35,15 +35,15 @@
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 
     bsl::ut_scenario{"verify noexcept"} = []() {
         bsl::ut_given{} = []() {
-            string_view str;
-            safe_uint32 val;
+            string_view str{};
+            safe_uint32 val{};
             bsl::ut_then{} = []() {
                 static_assert(noexcept(from_chars(str, val)));
             };

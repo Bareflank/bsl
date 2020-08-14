@@ -25,193 +25,196 @@
 #include <bsl/basic_string_view.hpp>
 #include <bsl/ut.hpp>
 
-/// <!-- description -->
-///   @brief Used to execute the actual checks. We put the checks in this
-///     function so that we can validate the tests both at compile-time
-///     and at run-time. If a bsl::ut_check fails, the tests will either
-///     fail fast at run-time, or will produce a compile-time error.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-constexpr bsl::exit_code
-tests() noexcept
+namespace
 {
-    using namespace bsl;
+    /// <!-- description -->
+    ///   @brief Used to execute the actual checks. We put the checks in this
+    ///     function so that we can validate the tests both at compile-time
+    ///     and at run-time. If a bsl::ut_check fails, the tests will either
+    ///     fail fast at run-time, or will produce a compile-time error.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @return Always returns bsl::exit_success.
+    ///
+    [[nodiscard]] constexpr auto
+    tests() noexcept -> bsl::exit_code
+    {
+        using namespace bsl;
 
-    bsl::ut_scenario{"find with string"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find("") == npos);
+        bsl::ut_scenario{"find with string"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find("") == npos);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find("Hello") == npos);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find("") == npos);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello World"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find("42") == npos);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello World"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find("Hello", npos) == npos);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello World"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find("Hello", safe_uintmax::zero(true)) == npos);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello World"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find("World 42") == npos);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello World"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find("World World 42") == npos);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello World"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find("Hello World") == to_umax(0));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello World"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find("Hello Worl") == to_umax(0));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello World"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find("ello World") == to_umax(1));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello World"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find("ello World", to_umax(1)) == to_umax(1));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello World"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find("H") == to_umax(0));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello World"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find("d") == to_umax(10));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello World"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find("d", to_umax(10)) == to_umax(10));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello World"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find("Hello") == to_umax(0));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello World"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find("World") == to_umax(6));
+                };
             };
         };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find("Hello") == npos);
+        bsl::ut_scenario{"find with char"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find(' ') == npos);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find('*') == npos);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello World"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find('H', npos) == npos);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello World"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find('H', safe_uintmax::zero(true)) == npos);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello World"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find('H') == to_umax(0));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello World"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find('d') == to_umax(10));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello World"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.find('d', to_umax(10)) == to_umax(10));
+                };
             };
         };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find("") == npos);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find("42") == npos);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find("Hello", npos) == npos);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find("Hello", safe_uintmax::zero(true)) == npos);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find("World 42") == npos);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find("World World 42") == npos);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find("Hello World") == to_umax(0));
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find("Hello Worl") == to_umax(0));
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find("ello World") == to_umax(1));
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find("ello World", to_umax(1)) == to_umax(1));
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find("H") == to_umax(0));
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find("d") == to_umax(10));
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find("d", to_umax(10)) == to_umax(10));
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find("Hello") == to_umax(0));
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find("World") == to_umax(6));
-            };
-        };
-    };
-
-    bsl::ut_scenario{"find with char"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find(' ') == npos);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find('*') == npos);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find('H', npos) == npos);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find('H', safe_uintmax::zero(true)) == npos);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find('H') == to_umax(0));
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find('d') == to_umax(10));
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.find('d', to_umax(10)) == to_umax(10));
-            };
-        };
-    };
-
-    return bsl::ut_success();
+        return bsl::ut_success();
+    }
 }
 
 /// <!-- description -->
@@ -222,8 +225,8 @@ tests() noexcept
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     static_assert(tests() == bsl::ut_success());
     return tests();

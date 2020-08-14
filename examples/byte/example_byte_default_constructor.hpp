@@ -41,5 +41,8 @@ namespace bsl
         if (b.to_integer() == expected) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
     }
 }

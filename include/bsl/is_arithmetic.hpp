@@ -28,6 +28,7 @@
 #ifndef BSL_IS_ARITHMETIC_HPP
 #define BSL_IS_ARITHMETIC_HPP
 
+#include "disjunction.hpp"
 #include "is_integral.hpp"
 #include "is_floating_point.hpp"
 #include "is_same.hpp"
@@ -47,7 +48,7 @@ namespace bsl
     ///
     template<typename T>
     class is_arithmetic final :    // --
-        public bool_constant<is_integral<T>::value || is_floating_point<T>::value>
+        public bool_constant<disjunction<is_integral<T>, is_floating_point<T>>::value>
     {};
 }
 

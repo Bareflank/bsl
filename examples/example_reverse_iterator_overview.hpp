@@ -23,7 +23,6 @@
 /// SOFTWARE.
 
 #include <bsl/string_view.hpp>
-#include <bsl/for_each.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -34,11 +33,11 @@ namespace bsl
     inline void
     example_reverse_iterator_overview() noexcept
     {
-        bsl::string_view const str{"Hello"};
-        bsl::for_each(str.rbegin(), str.rend(), [](auto &e) noexcept {
-            bsl::print() << e;
-        });
+        constexpr bsl::string_view str{"Hello"};
 
+        for (auto iter{str.rbegin()}; iter != str.rend(); ++iter) {
+            bsl::print() << iter;
+        }
         bsl::print() << bsl::endl;
     }
 }

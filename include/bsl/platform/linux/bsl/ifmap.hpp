@@ -25,14 +25,17 @@
 #ifndef BSL_DETAILS_IFMAP_LINUX_HPP
 #define BSL_DETAILS_IFMAP_LINUX_HPP
 
-#include "../byte.hpp"
-#include "../convert.hpp"
-#include "../cstdint.hpp"
-#include "../debug.hpp"
-#include "../discard.hpp"
-#include "../safe_integral.hpp"
-#include "../span.hpp"
-#include "../string_view.hpp"
+#include "../../../byte.hpp"
+#include "../../../convert.hpp"
+#include "../../../cstdint.hpp"
+#include "../../../debug.hpp"
+#include "../../../discard.hpp"
+#include "../../../move.hpp"
+#include "../../../safe_integral.hpp"
+#include "../../../span.hpp"
+#include "../../../swap.hpp"
+#include "../../../string_view.hpp"
+#include "../../../touch.hpp"
 
 #include <fcntl.h>
 #include <sys/mman.h>
@@ -42,6 +45,14 @@
 
 namespace bsl
 {
+    namespace details
+    {
+        /// @brief defines what an error looks like from a POSIX call.
+        constexpr bsl::int32 ifmap_posix_error{-1};
+        /// @brief defines what an invalid file is.
+        constexpr bsl::int32 ifmap_invalid_file{-1};
+    }
+
     /// @class bsl::ifmap
     ///
     /// <!-- description -->
@@ -52,9 +63,23 @@ namespace bsl
     class ifmap final
     {
         /// @brief stores a handle to the mapped file.
-        bsl::int32 m_file{};
+        bsl::int32 m_file{details::ifmap_invalid_file};
         /// @brief stores a view of the file that is mapped.
         span<byte> m_data{};
+
+        /// <!-- description -->
+        ///   @brief Swaps *this with other
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param lhs the left hand side of the exchange
+        ///   @param rhs the right hand side of the exchange
+        ///
+        static constexpr auto
+        private_swap(ifmap &lhs, ifmap &rhs) noexcept -> void
+        {
+            bsl::swap(lhs.m_file, rhs.m_file);
+            bsl::swap(lhs.m_data, rhs.m_data);
+        }
 
     public:
         /// @brief alias for: void
@@ -86,36 +111,49 @@ namespace bsl
         {
             using stat_t = struct stat;
 
-            m_file = open(filename.data(), O_RDONLY);    // NOLINT
-            if (m_file == -1) {
+            // We don't have a choice here
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg, hicpp-vararg)
+            m_file = open(filename.data(), O_RDONLY);
+            if (details::ifmap_posix_error == m_file) {
                 bsl::alert() << "failed to open read-only file: "    // --
                              << filename                             // --
                              << bsl::endl;
-                close(m_file);
+
+                m_file = details::ifmap_invalid_file;
                 return;
             }
 
             stat_t s{};
-            if (fstat(m_file, &s) == -1) {
+            if (details::ifmap_posix_error == fstat(m_file, &s)) {
                 bsl::alert() << "failed to get the size of the read-only file: "    // --
                              << filename                                            // --
                              << bsl::endl;
+
                 close(m_file);
+                m_file = details::ifmap_invalid_file;
+                return;
             }
 
             pointer_type const ptr{mmap(
                 nullptr,
                 static_cast<bsl::uintmax>(s.st_size),
                 PROT_READ,
-                MAP_SHARED | MAP_POPULATE,    // NOLINT
+                // We don't have a choice here
+                // NOLINTNEXTLINE(hicpp-signed-bitwise)
+                MAP_SHARED | MAP_POPULATE,
                 m_file,
                 0)};
 
-            if (ptr == MAP_FAILED) {                                // NOLINT
+            // We don't have a choice here
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast)
+            if (MAP_FAILED == ptr) {
                 bsl::alert() << "failed to map read-only file: "    // --
                              << filename                            // --
                              << bsl::endl;
+
                 close(m_file);
+                m_file = details::ifmap_invalid_file;
+                return;
             }
 
             m_data = as_writable_bytes(ptr, to_umax(s.st_size));
@@ -126,8 +164,14 @@ namespace bsl
         ///
         ~ifmap() noexcept
         {
-            munmap(m_data.data(), m_data.size().get());
-            close(m_file);
+            if (details::ifmap_invalid_file != m_file) {
+                munmap(m_data.data(), m_data.size().get());
+                close(m_file);
+                m_file = details::ifmap_invalid_file;
+            }
+            else {
+                bsl::touch();
+            }
         }
 
         /// <!-- description -->
@@ -136,7 +180,7 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param o the object being copied
         ///
-        constexpr ifmap(ifmap const &o) noexcept = default;
+        constexpr ifmap(ifmap const &o) noexcept = delete;
 
         /// <!-- description -->
         ///   @brief move constructor
@@ -144,7 +188,12 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param o the object being moved
         ///
-        constexpr ifmap(ifmap &&o) noexcept = default;
+        constexpr ifmap(ifmap &&o) noexcept
+            : m_file{bsl::move(o.m_file)}, m_data{bsl::move(o.m_data)}
+        {
+            o.m_file = details::ifmap_invalid_file;
+            o.m_data = {};
+        }
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -153,7 +202,7 @@ namespace bsl
         ///   @param o the object being copied
         ///   @return a reference to *this
         ///
-        ifmap &operator=(ifmap const &o) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(ifmap const &o) &noexcept -> ifmap & = delete;
 
         /// <!-- description -->
         ///   @brief move assignment
@@ -162,7 +211,13 @@ namespace bsl
         ///   @param o the object being moved
         ///   @return a reference to *this
         ///
-        ifmap &operator=(ifmap &&o) &noexcept = default;
+        [[maybe_unused]] auto
+        operator=(ifmap &&o) &noexcept -> ifmap &
+        {
+            ifmap tmp{bsl::move(o)};
+            this->private_swap(*this, tmp);
+            return *this;
+        }
 
         /// <!-- description -->
         ///   @brief Returns a pointer to the read-only mapped file.
@@ -171,8 +226,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns a pointer to the read-only mapped file.
         ///
-        [[nodiscard]] constexpr const_pointer_type
-        data() const noexcept
+        [[nodiscard]] constexpr auto
+        data() const noexcept -> const_pointer_type
         {
             return m_data.data();
         }
@@ -186,8 +241,8 @@ namespace bsl
         ///   @return Returns true if the file failed to be mapped, false
         ///     otherwise.
         ///
-        [[nodiscard]] constexpr bool
-        empty() const noexcept
+        [[nodiscard]] constexpr auto
+        empty() const noexcept -> bool
         {
             return m_data.empty();
         }
@@ -213,8 +268,8 @@ namespace bsl
         ///   @return Returns the number of bytes in the file being
         ///     mapped.
         ///
-        [[nodiscard]] constexpr size_type const &
-        size() const noexcept
+        [[nodiscard]] constexpr auto
+        size() const noexcept -> size_type const &
         {
             return m_data.size();
         }
@@ -226,8 +281,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max number of bytes the BSL supports.
         ///
-        [[nodiscard]] static constexpr size_type
-        max_size() noexcept
+        [[nodiscard]] static constexpr auto
+        max_size() noexcept -> size_type
         {
             return to_umax(size_type::max());
         }
@@ -241,8 +296,8 @@ namespace bsl
         ///   @return Returns the number of bytes in the file being
         ///     mapped.
         ///
-        [[nodiscard]] constexpr size_type const &
-        size_bytes() const noexcept
+        [[nodiscard]] constexpr auto
+        size_bytes() const noexcept -> size_type const &
         {
             return m_data.size();
         }

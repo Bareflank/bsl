@@ -34,8 +34,11 @@ namespace bsl
     inline void
     example_add_const_overview() noexcept
     {
-        if (bsl::is_same<bsl::add_const_t<bool>, bool const>::value) {
+        if constexpr (bsl::is_same<bsl::add_const_t<bool>, bool const>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

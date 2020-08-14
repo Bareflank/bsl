@@ -32,8 +32,8 @@ namespace
         bsl::fmt_options ops{""};
 
     public:
-        [[nodiscard]] constexpr bool
-        test_member_const() const
+        [[nodiscard]] constexpr auto
+        test_member_const() const noexcept -> bool
         {
             bsl::discard(ops.fill());
             bsl::discard(ops.align());
@@ -46,8 +46,8 @@ namespace
             return true;
         }
 
-        [[nodiscard]] constexpr bool
-        test_member_nonconst()
+        [[nodiscard]] constexpr auto
+        test_member_nonconst() noexcept -> bool
         {
             bsl::discard(ops.fill());
             ops.set_fill(' ');
@@ -79,8 +79,8 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     bsl::ut_scenario{"verify noexcept"} = []() {
         bsl::ut_given{} = []() {

@@ -46,8 +46,8 @@ namespace bsl
         ///   @return Returns true if "T" is fundamental, false otherwise.
         ///
         template<typename T>
-        [[nodiscard]] constexpr bool
-        check_is_fundamental() noexcept
+        [[nodiscard]] constexpr auto
+        check_is_fundamental() noexcept -> bool
         {
             if (is_arithmetic<T>::value) {
                 return true;
@@ -73,7 +73,8 @@ namespace bsl
     ///   @tparam T the type to query
     ///
     template<typename T>
-    class is_fundamental final : public bool_constant<details::check_is_fundamental<T>()>
+    class is_fundamental final : // --
+        public bool_constant<details::check_is_fundamental<T>()>
     {};
 }
 

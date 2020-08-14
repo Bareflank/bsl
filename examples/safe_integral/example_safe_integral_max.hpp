@@ -36,7 +36,7 @@ namespace bsl
         constexpr bsl::safe_int32 val1{42};
         constexpr bsl::safe_int32 val2{23};
 
-        bsl::print() << "max bsl::safe_int32: " << val1.max() << '\n';
-        bsl::print() << "max: " << val1.max(val2) << '\n';
+        bsl::print() << "max bsl::safe_int32: " << val1.max() << bsl::endl;
+        bsl::print() << "max: " << val1.max(val2) << bsl::endl;
     }
 }

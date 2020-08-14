@@ -42,264 +42,269 @@
 #include "../is_reference_wrapper.hpp"
 #include "../remove_cvref.hpp"
 
-namespace bsl
+namespace bsl::details
 {
-    namespace details
+    /// @class bsl::details::invoke_impl_base
+    ///
+    /// <!-- description -->
+    ///   @brief The "invoke" function is implemented by executing the
+    ///     "call" function from invoke_impl. The invoke_impl class uses
+    ///     SFINAE to figure out which invoke_impl_xxx function to inherit
+    ///     from. If the compiler can find a valid invoke_impl_xxx, it will
+    ///     inherit from it, otherwise, it will pick the default invoke_impl
+    ///     implementation which is an empty class (i.e., it does not
+    ///     provide a call function). This will either result in a compiler
+    ///     error, or an SFINAE substitution error, which is used to
+    ///     implement is_invocable, which is why invoke is implemented
+    ///     using class logic instead of a constexpr-if statement as
+    ///     documented by cppreference.
+    ///
+    template<
+        typename FUNC,
+        typename T1,
+        bool is_mfp = is_member_function_pointer<remove_cvref_t<FUNC>>::value,
+        bool is_mop = is_member_object_pointer<remove_cvref_t<FUNC>>::value>
+    class invoke_impl_base
     {
-        /// @class bsl::details::invoke_impl_base
-        ///
+    protected:
         /// <!-- description -->
-        ///   @brief The "invoke" function is implemented by executing the
-        ///     "call" function from invoke_impl. The invoke_impl class uses
-        ///     SFINAE to figure out which invoke_impl_xxx function to inherit
-        ///     from. If the compiler can find a valid invoke_impl_xxx, it will
-        ///     inherit from it, otherwise, it will pick the default invoke_impl
-        ///     implementation which is an empty class (i.e., it does not
-        ///     provide a call function). This will either result in a compiler
-        ///     error, or an SFINAE substitution error, which is used to
-        ///     implement is_invocable, which is why invoke is implemented
-        ///     using class logic instead of a constexpr-if statement as
-        ///     documented by cppreference.
+        ///   @brief Destroyes a previously created bsl::invoke_impl_base
         ///
-        template<
-            typename FUNC,
-            typename T1,
-            bool is_mfp = is_member_function_pointer<remove_cvref_t<FUNC>>::value,
-            bool is_mop = is_member_object_pointer<remove_cvref_t<FUNC>>::value>
-        class invoke_impl_base
-        {
-        protected:
-            /// <!-- description -->
-            ///   @brief Destroyes a previously created bsl::invoke_impl_base
-            ///
-            ~invoke_impl_base() noexcept = default;
+        constexpr ~invoke_impl_base() noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief copy constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///
-            invoke_impl_base(invoke_impl_base const &o) noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief move constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///
-            invoke_impl_base(invoke_impl_base &&o) noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief copy assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///   @return a reference to *this
-            ///
-            invoke_impl_base &operator=(invoke_impl_base const &o) &noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief move assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///   @return a reference to *this
-            ///
-            invoke_impl_base &operator=(invoke_impl_base &&o) &noexcept = default;
-        };
-
-        /// @class bsl::details::invoke_impl_base
-        ///
         /// <!-- description -->
-        ///   @brief The "invoke" function is implemented by executing the
-        ///     "call" function from invoke_impl. The invoke_impl class uses
-        ///     SFINAE to figure out which invoke_impl_xxx function to inherit
-        ///     from. If the compiler can find a valid invoke_impl_xxx, it will
-        ///     inherit from it, otherwise, it will pick the default invoke_impl
-        ///     implementation which is an empty class (i.e., it does not
-        ///     provide a call function). This will either result in a compiler
-        ///     error, or an SFINAE substitution error, which is used to
-        ///     implement is_invocable, which is why invoke is implemented
-        ///     using class logic instead of a constexpr-if statement as
-        ///     documented by cppreference.
+        ///   @brief copy constructor
         ///
-        template<typename FUNC, typename U, typename T1>
-        class invoke_impl_base<FUNC U::*, T1, true, false> :
-            public conditional_t<
-                is_base_of<U, decay_t<T1>>::value,
-                invoke_impl_mfp_o,
-                conditional_t<
-                    is_reference_wrapper<decay_t<T1>>::value,
-                    invoke_impl_mfp_r,
-                    invoke_impl_mfp_p>>
-        {
-        protected:
-            /// <!-- description -->
-            ///   @brief Destroyes a previously created bsl::invoke_impl_base
-            ///
-            ~invoke_impl_base() noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief copy constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///
-            invoke_impl_base(invoke_impl_base const &o) noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief move constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///
-            invoke_impl_base(invoke_impl_base &&o) noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief copy assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///   @return a reference to *this
-            ///
-            invoke_impl_base &operator=(invoke_impl_base const &o) &noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief move assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///   @return a reference to *this
-            ///
-            invoke_impl_base &operator=(invoke_impl_base &&o) &noexcept = default;
-        };
-
-        /// @class bsl::details::invoke_impl_base
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
         ///
+        constexpr invoke_impl_base(invoke_impl_base const &o) noexcept = default;
+
         /// <!-- description -->
-        ///   @brief The "invoke" function is implemented by executing the
-        ///     "call" function from invoke_impl. The invoke_impl class uses
-        ///     SFINAE to figure out which invoke_impl_xxx function to inherit
-        ///     from. If the compiler can find a valid invoke_impl_xxx, it will
-        ///     inherit from it, otherwise, it will pick the default invoke_impl
-        ///     implementation which is an empty class (i.e., it does not
-        ///     provide a call function). This will either result in a compiler
-        ///     error, or an SFINAE substitution error, which is used to
-        ///     implement is_invocable, which is why invoke is implemented
-        ///     using class logic instead of a constexpr-if statement as
-        ///     documented by cppreference.
+        ///   @brief move constructor
         ///
-        template<typename FUNC, typename U, typename T1>
-        class invoke_impl_base<FUNC U::*, T1, false, true> :
-            public conditional_t<
-                is_base_of<U, decay_t<T1>>::value,
-                invoke_impl_mop_o,
-                conditional_t<
-                    is_reference_wrapper<decay_t<T1>>::value,
-                    invoke_impl_mop_r,
-                    invoke_impl_mop_p>>
-        {
-        protected:
-            /// <!-- description -->
-            ///   @brief Destroyes a previously created bsl::invoke_impl_base
-            ///
-            ~invoke_impl_base() noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief copy constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///
-            invoke_impl_base(invoke_impl_base const &o) noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief move constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///
-            invoke_impl_base(invoke_impl_base &&o) noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief copy assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///   @return a reference to *this
-            ///
-            invoke_impl_base &operator=(invoke_impl_base const &o) &noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief move assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///   @return a reference to *this
-            ///
-            invoke_impl_base &operator=(invoke_impl_base &&o) &noexcept = default;
-        };
-
-        /// @class bsl::details::invoke_impl_base
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
         ///
+        constexpr invoke_impl_base(invoke_impl_base &&o) noexcept = default;
+
         /// <!-- description -->
-        ///   @brief The "invoke" function is implemented by executing the
-        ///     "call" function from invoke_impl. The invoke_impl class uses
-        ///     SFINAE to figure out which invoke_impl_xxx function to inherit
-        ///     from. If the compiler can find a valid invoke_impl_xxx, it will
-        ///     inherit from it, otherwise, it will pick the default invoke_impl
-        ///     implementation which is an empty class (i.e., it does not
-        ///     provide a call function). This will either result in a compiler
-        ///     error, or an SFINAE substitution error, which is used to
-        ///     implement is_invocable, which is why invoke is implemented
-        ///     using class logic instead of a constexpr-if statement as
-        ///     documented by cppreference.
+        ///   @brief copy assignment
         ///
-        template<typename FUNC, typename T1>
-        class invoke_impl_base<FUNC, T1, false, false> : public invoke_impl_fp
-        {
-        protected:
-            /// <!-- description -->
-            ///   @brief Destroyes a previously created bsl::invoke_impl_base
-            ///
-            ~invoke_impl_base() noexcept = default;
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(invoke_impl_base const &o) &noexcept
+            -> invoke_impl_base & = default;
 
-            /// <!-- description -->
-            ///   @brief copy constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///
-            invoke_impl_base(invoke_impl_base const &o) noexcept = default;
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(invoke_impl_base &&o) &noexcept
+            -> invoke_impl_base & = default;
+    };
 
-            /// <!-- description -->
-            ///   @brief move constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///
-            invoke_impl_base(invoke_impl_base &&o) noexcept = default;
+    /// @class bsl::details::invoke_impl_base
+    ///
+    /// <!-- description -->
+    ///   @brief The "invoke" function is implemented by executing the
+    ///     "call" function from invoke_impl. The invoke_impl class uses
+    ///     SFINAE to figure out which invoke_impl_xxx function to inherit
+    ///     from. If the compiler can find a valid invoke_impl_xxx, it will
+    ///     inherit from it, otherwise, it will pick the default invoke_impl
+    ///     implementation which is an empty class (i.e., it does not
+    ///     provide a call function). This will either result in a compiler
+    ///     error, or an SFINAE substitution error, which is used to
+    ///     implement is_invocable, which is why invoke is implemented
+    ///     using class logic instead of a constexpr-if statement as
+    ///     documented by cppreference.
+    ///
+    template<typename FUNC, typename U, typename T1>
+    class invoke_impl_base<FUNC U::*, T1, true, false> :
+        public conditional_t<
+            is_base_of<U, decay_t<T1>>::value,
+            invoke_impl_mfp_o,
+            conditional_t<
+                is_reference_wrapper<decay_t<T1>>::value,
+                invoke_impl_mfp_r,
+                invoke_impl_mfp_p>>
+    {
+    protected:
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::invoke_impl_base
+        ///
+        constexpr ~invoke_impl_base() noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief copy assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///   @return a reference to *this
-            ///
-            invoke_impl_base &operator=(invoke_impl_base const &o) &noexcept = default;
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr invoke_impl_base(invoke_impl_base const &o) noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief move assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///   @return a reference to *this
-            ///
-            invoke_impl_base &operator=(invoke_impl_base &&o) &noexcept = default;
-        };
-    }
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr invoke_impl_base(invoke_impl_base &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(invoke_impl_base const &o) &noexcept
+            -> invoke_impl_base & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(invoke_impl_base &&o) &noexcept
+            -> invoke_impl_base & = default;
+    };
+
+    /// @class bsl::details::invoke_impl_base
+    ///
+    /// <!-- description -->
+    ///   @brief The "invoke" function is implemented by executing the
+    ///     "call" function from invoke_impl. The invoke_impl class uses
+    ///     SFINAE to figure out which invoke_impl_xxx function to inherit
+    ///     from. If the compiler can find a valid invoke_impl_xxx, it will
+    ///     inherit from it, otherwise, it will pick the default invoke_impl
+    ///     implementation which is an empty class (i.e., it does not
+    ///     provide a call function). This will either result in a compiler
+    ///     error, or an SFINAE substitution error, which is used to
+    ///     implement is_invocable, which is why invoke is implemented
+    ///     using class logic instead of a constexpr-if statement as
+    ///     documented by cppreference.
+    ///
+    template<typename FUNC, typename U, typename T1>
+    class invoke_impl_base<FUNC U::*, T1, false, true> :
+        public conditional_t<
+            is_base_of<U, decay_t<T1>>::value,
+            invoke_impl_mop_o,
+            conditional_t<
+                is_reference_wrapper<decay_t<T1>>::value,
+                invoke_impl_mop_r,
+                invoke_impl_mop_p>>
+    {
+    protected:
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::invoke_impl_base
+        ///
+        constexpr ~invoke_impl_base() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr invoke_impl_base(invoke_impl_base const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr invoke_impl_base(invoke_impl_base &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(invoke_impl_base const &o) &noexcept
+            -> invoke_impl_base & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(invoke_impl_base &&o) &noexcept
+            -> invoke_impl_base & = default;
+    };
+
+    /// @class bsl::details::invoke_impl_base
+    ///
+    /// <!-- description -->
+    ///   @brief The "invoke" function is implemented by executing the
+    ///     "call" function from invoke_impl. The invoke_impl class uses
+    ///     SFINAE to figure out which invoke_impl_xxx function to inherit
+    ///     from. If the compiler can find a valid invoke_impl_xxx, it will
+    ///     inherit from it, otherwise, it will pick the default invoke_impl
+    ///     implementation which is an empty class (i.e., it does not
+    ///     provide a call function). This will either result in a compiler
+    ///     error, or an SFINAE substitution error, which is used to
+    ///     implement is_invocable, which is why invoke is implemented
+    ///     using class logic instead of a constexpr-if statement as
+    ///     documented by cppreference.
+    ///
+    template<typename FUNC, typename T1>
+    class invoke_impl_base<FUNC, T1, false, false> : public invoke_impl_fp
+    {
+    protected:
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::invoke_impl_base
+        ///
+        constexpr ~invoke_impl_base() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr invoke_impl_base(invoke_impl_base const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr invoke_impl_base(invoke_impl_base &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(invoke_impl_base const &o) &noexcept
+            -> invoke_impl_base & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(invoke_impl_base &&o) &noexcept
+            -> invoke_impl_base & = default;
+    };
 }
 
 #endif

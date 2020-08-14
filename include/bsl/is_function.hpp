@@ -28,9 +28,11 @@
 #ifndef BSL_IS_FUNCTION_HPP
 #define BSL_IS_FUNCTION_HPP
 
+#include "conjunction.hpp"
 #include "bool_constant.hpp"
 #include "is_const.hpp"
 #include "is_reference.hpp"
+#include "negation.hpp"
 
 namespace bsl
 {
@@ -46,8 +48,9 @@ namespace bsl
     ///   @tparam T the type to query
     ///
     template<typename T>
-    class is_function final :    // --
-        public bool_constant<(!is_const<T const>::value) && (!is_reference<T>::value)>
+    class is_function final :
+        public bool_constant<
+            conjunction<negation<is_const<T const>>, negation<is_reference<T>>>::value>
     {};
 }
 

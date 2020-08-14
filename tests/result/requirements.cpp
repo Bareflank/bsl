@@ -33,8 +33,8 @@ namespace
         bsl::result<bool> res{bsl::in_place, true};
 
     public:
-        [[nodiscard]] constexpr bool
-        test_member_const() const
+        [[nodiscard]] constexpr auto
+        test_member_const() const noexcept -> bool
         {
             bsl::discard(res.get_if());
             bsl::discard(res.errc());
@@ -45,8 +45,8 @@ namespace
             return true;
         }
 
-        [[nodiscard]] constexpr bool
-        test_member_nonconst()
+        [[nodiscard]] constexpr auto
+        test_member_nonconst() noexcept -> bool
         {
             bsl::discard(res.get_if());
             bsl::discard(res.errc());
@@ -69,8 +69,8 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 

@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_is_scalar_overview() noexcept
     {
-        if (bsl::is_scalar<bool>::value) {
+        if constexpr (bsl::is_scalar<bool>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

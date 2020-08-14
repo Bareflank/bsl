@@ -33,8 +33,8 @@
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 
@@ -43,19 +43,30 @@ main() noexcept
     static_assert(extent<bool, 1>::value == 0);
     static_assert(extent<bool, 2>::value == 0);
 
-    static_assert(extent<bool[]>::value == 0);          // NOLINT
-    static_assert(extent<bool[], 0>::value == 0);       // NOLINT
-    static_assert(extent<bool[][4]>::value == 0);       // NOLINT
-    static_assert(extent<bool[][4], 0>::value == 0);    // NOLINT
-    static_assert(extent<bool[][4], 1>::value == 4);    // NOLINT
-    static_assert(extent<bool[][4], 2>::value == 0);    // NOLINT
-
-    static_assert(extent<bool[2]>::value == 2);          // NOLINT
-    static_assert(extent<bool[2], 0>::value == 2);       // NOLINT
-    static_assert(extent<bool[2][4]>::value == 2);       // NOLINT
-    static_assert(extent<bool[2][4], 0>::value == 2);    // NOLINT
-    static_assert(extent<bool[2][4], 1>::value == 4);    // NOLINT
-    static_assert(extent<bool[2][4], 2>::value == 0);    // NOLINT
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(extent<bool[]>::value == 0);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(extent<bool[], 0>::value == 0);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(extent<bool[][4]>::value == 0);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(extent<bool[][4], 0>::value == 0);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(extent<bool[][4], 1>::value == 4);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(extent<bool[][4], 2>::value == 0);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(extent<bool[2]>::value == 2);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(extent<bool[2], 0>::value == 2);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(extent<bool[2][4]>::value == 2);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(extent<bool[2][4], 0>::value == 2);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(extent<bool[2][4], 1>::value == 4);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(extent<bool[2][4], 2>::value == 0);
 
     return bsl::ut_success();
 }

@@ -33,10 +33,13 @@ namespace bsl
     inline void
     example_result_t_in_place_constructor() noexcept
     {
-        bsl::result<bool> const res{bsl::in_place, true};
+        constexpr bsl::result<bool> res{bsl::in_place, true};
 
-        if (auto const *const ptr = res.get_if()) {
-            bsl::print() << "success: " << *ptr << bsl::endl;
+        if constexpr (nullptr != res.get_if()) {
+            bsl::print() << "success: " << *res.get_if() << bsl::endl;
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

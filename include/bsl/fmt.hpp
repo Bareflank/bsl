@@ -364,11 +364,14 @@ namespace bsl
             : m_ops{ops}, m_val{val}
         {
             constexpr safe_uintmax max_width{to_umax(999)};
-            if ((!width) || (width > max_width)) {
+            if (!width) {
                 m_ops.set_width(max_width);
             }
-            else {
+            else if (width < max_width) {
                 m_ops.set_width(width);
+            }
+            else {
+                m_ops.set_width(max_width);
             }
         }
 
@@ -424,8 +427,14 @@ namespace bsl
         ///   @return return o
         ///
         template<typename T, typename U>
-        friend constexpr out<T>
-        operator<<(out<T> const o, fmt<U> &&arg) noexcept;    // PRQA S 2107 // NOLINT
+        // We don't want users of fmt being able to accidentally create a
+        // dangling reference. To prevent this, we prevent bsl::move from
+        // being usable, we delete the l-value version of the << operator,
+        // and we friend the << operator, so that only this operator can
+        // see the pointer being stored. You would have to really go out
+        // of your way to make a mistake.
+        // NOLINTNEXTLINE(bsl-decl-forbidden)
+        friend constexpr auto operator<<(out<T> const o, fmt<U> &&arg) noexcept -> out<T>;
     };
 
     /// <!-- description -->
@@ -444,16 +453,25 @@ namespace bsl
     ///   @return return o
     ///
     template<typename T, typename U>
-    [[maybe_unused]] constexpr out<T>
-    operator<<(out<T> const o, fmt<U> &&arg) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T> const o, fmt<U> &&arg) noexcept -> out<T>
     {
         if constexpr (!o) {
             return o;
         }
 
-        fmt_impl(o, arg.m_ops, arg.m_val);    // NOLINT
+        // This triggers for c-style strings. Not really sure if this is a
+        // false positive for this test, but either way, this is something
+        // we wish to support.
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay, hicpp-no-array-decay)
+        fmt_impl(o, arg.m_ops, arg.m_val);
         return o;
     }
+
+    /// @brief the l-value version of this function is not supported
+    template<typename T, typename U>
+    [[maybe_unused]] constexpr auto operator<<(out<T> const o, fmt<U> const &arg) noexcept
+        -> out<T> = delete;
 
     /// <!-- description -->
     ///   @brief Outputs the provided argument to the provided
@@ -477,14 +495,14 @@ namespace bsl
         enable_if_t<!is_pointer<U>::value, bool> = true,
         enable_if_t<!is_integral<U>::value, bool> = true,
         enable_if_t<!is_null_pointer<U>::value, bool> = true>
-    [[maybe_unused]] constexpr out<T>
-    operator<<(out<T> const o, U const &arg) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T> const o, U const &arg) noexcept -> out<T>
     {
         if constexpr (!o) {
             return o;
         }
 
-        fmt_impl(o, nullops, arg);    // NOLINT
+        fmt_impl(o, nullops, arg);
         return o;
     }
 }

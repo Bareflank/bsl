@@ -35,6 +35,6 @@ namespace bsl
     example_convert_to_imax() noexcept
     {
         constexpr bsl::safe_intmax val{bsl::to_imax(42)};
-        bsl::print() << "success: " << val << '\n';
+        bsl::print() << "success: " << val << bsl::endl;
     }
 }

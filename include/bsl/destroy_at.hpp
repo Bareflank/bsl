@@ -28,17 +28,13 @@
 #ifndef BSL_DESTROY_AT_HPP
 #define BSL_DESTROY_AT_HPP
 
+#include "touch.hpp"
+
 namespace bsl
 {
     /// <!-- description -->
     ///   @brief Calls the destructor of the object pointed to by ptr
     ///   @include example_destroy_at_overview.hpp
-    ///
-    ///   SUPPRESSION: PRQA 4213 - false positive
-    ///   - We suppress this because M7-1-2 states that a parameter should
-    ///     be marked as a pointer to const if the parameter is not modified.
-    ///     This class call's the pointer's destructor, and therefor cannot
-    ///     labeled as const.
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T defines the type pointer to by ptr
@@ -49,10 +45,13 @@ namespace bsl
     ///
     template<typename T>
     constexpr void
-    destroy_at(T *const ptr) noexcept(noexcept(ptr->T::~T()))    // PRQA S 4213
+    destroy_at(T *const ptr) noexcept(noexcept(ptr->T::~T()))
     {
         if (nullptr != ptr) {
             ptr->T::~T();
+        }
+        else {
+            bsl::touch();
         }
     }
 }

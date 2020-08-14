@@ -33,7 +33,7 @@ namespace
     class test_base
     {
     public:
-        bsl::int32 data{42};    // NOLINT
+        bsl::int32 data{42};
     };
 
     class test_final final : public test_base
@@ -42,7 +42,7 @@ namespace
     class test_noexcept final
     {
     public:
-        bsl::int32 data{42};    // NOLINT
+        bsl::int32 data{42};
     };
 }
 
@@ -54,8 +54,8 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 

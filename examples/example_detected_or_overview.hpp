@@ -42,8 +42,11 @@ namespace bsl
         using example_detected_or_type =
             bsl::detected_or_t<void, example_detected_or, example_class_base>;
 
-        if (is_same<example_detected_or_type, void>::value) {
+        if constexpr (is_same<example_detected_or_type, void>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

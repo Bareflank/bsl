@@ -34,8 +34,7 @@ namespace bsl
     inline void
     example_span_size() noexcept
     {
-        constexpr bsl::safe_uintmax size{bsl::to_umax(2)};
-        constexpr bsl::array<bool, size.get()> arr{true, false};
+        constexpr bsl::array arr{true, false};
         bsl::span const spn{arr.data(), arr.size()};
 
         bsl::print() << "size: " << spn.size() << bsl::endl;

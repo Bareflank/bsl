@@ -28,19 +28,21 @@
 
 namespace
 {
-    [[nodiscard]] constexpr bsl::safe_int32
-    func(bsl::safe_int32 const val) noexcept
+    [[nodiscard]] constexpr auto
+    func(bsl::safe_int32 const val) noexcept -> bsl::safe_int32
     {
         return val;
     }
 
     class fixture_t final
     {
+        // BUG: Need to figure out why we cannot use & here
+        // NOLINTNEXTLINE(bsl-function-name-use)
         bsl::reference_wrapper<bsl::safe_int32(bsl::safe_int32)> rw{func};
 
     public:
-        [[nodiscard]] constexpr bool
-        test_member_const() const
+        [[nodiscard]] constexpr auto
+        test_member_const() const noexcept -> bool
         {
             bsl::discard(rw.get());
             bsl::discard(rw(bsl::to_i32(42)));
@@ -48,8 +50,8 @@ namespace
             return true;
         }
 
-        [[nodiscard]] constexpr bool
-        test_member_nonconst()
+        [[nodiscard]] constexpr auto
+        test_member_nonconst() noexcept -> bool
         {
             bsl::discard(rw.get());
             bsl::discard(rw(bsl::to_i32(42)));
@@ -69,17 +71,22 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 
+    // clang-format off
+
     bsl::ut_scenario{"verify noexcept"} = []() {
         bsl::ut_given{} = []() {
+            // BUG: Need to figure out why we cannot use & here
+            // NOLINTNEXTLINE(bsl-function-name-use)
             bsl::reference_wrapper<bsl::safe_int32(bsl::safe_int32)> rw{func};
             bsl::ut_then{} = []() {
-                static_assert(
-                    noexcept(bsl::reference_wrapper<bsl::safe_int32(bsl::safe_int32)>{func}));
+                // BUG: Need to figure out why we cannot use & here
+                // NOLINTNEXTLINE(bsl-function-name-use)
+                static_assert(noexcept(bsl::reference_wrapper<bsl::safe_int32(bsl::safe_int32)>{func}));
                 static_assert(noexcept(rw.get()));
                 static_assert(!noexcept(rw(bsl::to_i32(42))));
             };

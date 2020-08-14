@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_is_trivial_overview() noexcept
     {
-        if (bsl::is_trivial<bool>::value) {
+        if constexpr (bsl::is_trivial<bool>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

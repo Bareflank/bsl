@@ -39,5 +39,8 @@ namespace bsl
         if (str.remove_suffix(num) == "Hello") {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
     }
 }

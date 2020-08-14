@@ -33,22 +33,34 @@ namespace bsl
     inline void
     example_basic_errc_type_overview() noexcept
     {
-        if (errc_success.success()) {
+        if constexpr (errc_success.success()) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
 
-        if (errc_failure.failure()) {
+        if constexpr (errc_failure.failure()) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
 
         constexpr errc_type my_errc{42};
 
-        if (my_errc.failure()) {
+        if constexpr (my_errc.failure()) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
 
-        if (my_errc.is_unchecked()) {
+        if constexpr (my_errc.is_unchecked()) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

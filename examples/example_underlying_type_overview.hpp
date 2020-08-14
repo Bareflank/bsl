@@ -36,8 +36,11 @@ namespace bsl
     inline void
     example_underlying_type_overview() noexcept
     {
-        if (bsl::is_same<underlying_type_t<example_enum>, bsl::int32>::value) {
+        if constexpr (bsl::is_same<underlying_type_t<example_enum>, bsl::int32>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

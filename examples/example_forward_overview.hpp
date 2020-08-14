@@ -41,8 +41,8 @@ namespace bsl
     ///     true. Otherwise this function will return false.
     ///
     template<typename T>
-    constexpr bool
-    detector(T &&t) noexcept
+    [[nodiscard]] constexpr auto
+    detector(T &&t) noexcept -> bool
     {
         bsl::discard(t);
         return bsl::is_lvalue_reference<decltype(t)>::value;
@@ -60,8 +60,8 @@ namespace bsl
     ///     true. Otherwise this function will return false.
     ///
     template<typename T>
-    constexpr bool
-    forwarder(T &&t) noexcept
+    [[nodiscard]] constexpr auto
+    forwarder(T &&t) noexcept -> bool
     {
         return detector(bsl::forward<T>(t));
     }
@@ -75,12 +75,18 @@ namespace bsl
         constexpr bsl::safe_int32 val1{42};
         bsl::safe_int32 val2{val1};
 
-        if (forwarder(val1)) {
+        if constexpr (forwarder(val1)) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
 
         if (!forwarder(bsl::move(val2))) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

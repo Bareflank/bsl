@@ -35,8 +35,11 @@ namespace bsl
     inline void
     example_is_base_of_overview() noexcept
     {
-        if (bsl::is_base_of<example_class_base, example_class_subclass>::value) {
+        if constexpr (bsl::is_base_of<example_class_base, example_class_subclass>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

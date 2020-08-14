@@ -46,24 +46,37 @@ namespace bsl
         ///   @return Returns the index of the first character in the
         ///     string that is not whitespace.
         ///
-        [[nodiscard]] constexpr safe_uintmax
-        from_chars_ignore_whitespace(string_view const &str) noexcept
+        [[nodiscard]] constexpr auto
+        from_chars_ignore_whitespace(string_view const &str) noexcept -> safe_uintmax
         {
             for (safe_uintmax i{}; i < str.length(); ++i) {
-                switch (*str.at_if(i)) {
-                    case ' ':
-                    case '\t':
-                    case '\n':
-                    case '\v':
-                    case '\f':
-                    case '\r': {
-                        break;
-                    }
+                auto c{*str.at_if(i)};
 
-                    default: {
-                        return i;
-                    }
+                if (' ' == c) {
+                    continue;
                 }
+
+                if ('\t' == c) {
+                    continue;
+                }
+
+                if ('\n' == c) {
+                    continue;
+                }
+
+                if ('\v' == c) {
+                    continue;
+                }
+
+                if ('\f' == c) {
+                    continue;
+                }
+
+                if ('\r' == c) {
+                    continue;
+                }
+
+                return i;
             }
 
             return str.length();
@@ -80,10 +93,12 @@ namespace bsl
         ///   @return Returns the resulting base 10 number.
         ///
         template<typename T>
-        [[nodiscard]] constexpr safe_integral<T>
-        from_chars_parse_dec(string_view const &str, safe_uintmax &idx) noexcept
+        [[nodiscard]] constexpr auto
+        from_chars_parse_dec(string_view const &str, safe_uintmax &idx) noexcept -> safe_integral<T>
         {
-            bool negate{};    // PRQA S 1-10000
+            constexpr T base10{static_cast<T>(10)};
+
+            bool negate{};
             bool found_digits{};
             safe_integral<T> val{};
 
@@ -95,20 +110,29 @@ namespace bsl
                         negate = true;
                         continue;
                     }
+
+                    bsl::touch();
                 }
 
-                if ((digit >= '0') && (digit <= '9')) {
-                    found_digits = true;
-                    if (negate) {
-                        val *= bsl::convert<T>(10);
-                        val -= (bsl::convert<T>(digit) - bsl::convert<T>('0'));
-                    }
-                    else {
-                        val *= bsl::convert<T>(10);
-                        val += (bsl::convert<T>(digit) - bsl::convert<T>('0'));
+                if (digit > '/') {
+                    if (digit < ':') {
+                        found_digits = true;
+                        if (negate) {
+                            val *= bsl::convert<T>(base10);
+                            val -= (bsl::convert<T>(digit) - bsl::convert<T>('0'));
+                        }
+                        else {
+                            val *= bsl::convert<T>(base10);
+                            val += (bsl::convert<T>(digit) - bsl::convert<T>('0'));
+                        }
+
+                        continue;
                     }
 
-                    continue;
+                    bsl::touch();
+                }
+                else {
+                    bsl::touch();
                 }
 
                 break;
@@ -116,6 +140,9 @@ namespace bsl
 
             if (!found_digits) {
                 val.set_failure();
+            }
+            else {
+                bsl::touch();
             }
 
             return val;
@@ -132,9 +159,12 @@ namespace bsl
         ///   @return Returns the resulting base 16 number.
         ///
         template<typename T>
-        [[nodiscard]] constexpr safe_integral<T>
-        from_chars_parse_hex(string_view const &str, safe_uintmax &idx) noexcept
+        [[nodiscard]] constexpr auto
+        from_chars_parse_hex(string_view const &str, safe_uintmax &idx) noexcept -> safe_integral<T>
         {
+            constexpr T base10{static_cast<T>(10)};
+            constexpr T base16{static_cast<T>(16)};
+
             bool found_digits{};
             safe_integral<T> val{};
 
@@ -145,27 +175,48 @@ namespace bsl
             for (; idx < str.length(); ++idx) {
                 char_type const digit{*str.at_if(idx)};
 
-                if ((digit >= '0') && (digit <= '9')) {
-                    found_digits = true;
-                    val *= bsl::convert<T>(16);
-                    val += bsl::convert<T>(digit) - bsl::convert<T>('0');
-                    continue;
+                if (digit > '/') {
+                    if (digit < ':') {
+                        found_digits = true;
+                        val *= bsl::convert<T>(base16);
+                        val += bsl::convert<T>(digit) - bsl::convert<T>('0');
+                        continue;
+                    }
+
+                    bsl::touch();
+                }
+                else {
+                    bsl::touch();
                 }
 
-                if ((digit >= 'A') && (digit <= 'F')) {
-                    found_digits = true;
-                    val *= bsl::convert<T>(16);
-                    val += bsl::convert<T>(10);
-                    val += bsl::convert<T>(digit) - bsl::convert<T>('A');
-                    continue;
+                if (digit > '@') {
+                    if (digit < 'G') {
+                        found_digits = true;
+                        val *= bsl::convert<T>(base16);
+                        val += bsl::convert<T>(base10);
+                        val += bsl::convert<T>(digit) - bsl::convert<T>('A');
+                        continue;
+                    }
+
+                    bsl::touch();
+                }
+                else {
+                    bsl::touch();
                 }
 
-                if ((digit >= 'a') && (digit <= 'f')) {
-                    found_digits = true;
-                    val *= bsl::convert<T>(16);
-                    val += bsl::convert<T>(10);
-                    val += bsl::convert<T>(digit) - bsl::convert<T>('a');
-                    continue;
+                if (digit > '`') {
+                    if (digit < 'g') {
+                        found_digits = true;
+                        val *= bsl::convert<T>(base16);
+                        val += bsl::convert<T>(base10);
+                        val += bsl::convert<T>(digit) - bsl::convert<T>('a');
+                        continue;
+                    }
+
+                    bsl::touch();
+                }
+                else {
+                    bsl::touch();
                 }
 
                 break;
@@ -173,6 +224,9 @@ namespace bsl
 
             if (!found_digits) {
                 val.set_failure();
+            }
+            else {
+                bsl::touch();
             }
 
             return val;
@@ -227,19 +281,27 @@ namespace bsl
     ///     at when converting the number, or 0 in the event of an error.
     ///
     template<typename T>
-    [[maybe_unused]] constexpr safe_uintmax
+    [[maybe_unused]] constexpr auto
     from_chars(
         string_view const &str,
         safe_integral<T> &val,
-        safe_int32 const base = safe_int32{10}) noexcept
+        safe_int32 const base = safe_int32{10}) noexcept -> safe_uintmax
     {
-        if ((!val) || str.empty()) {
+        constexpr safe_int32 base10{10};
+        constexpr safe_int32 base16{16};
+
+        if (!val) {
+            val = safe_integral<T>::zero(true);
+            return safe_uintmax::zero();
+        }
+
+        if (str.empty()) {
             val = safe_integral<T>::zero(true);
             return safe_uintmax::zero();
         }
 
         switch (base.get()) {
-            case 10: {
+            case base10.get(): {
                 safe_uintmax idx{details::from_chars_ignore_whitespace(str)};
                 val = details::from_chars_parse_dec<T>(str, idx);
                 if (!val) {
@@ -248,7 +310,7 @@ namespace bsl
                 return idx;
             }
 
-            case 16: {
+            case base16.get(): {
                 safe_uintmax idx{details::from_chars_ignore_whitespace(str)};
                 val = details::from_chars_parse_hex<T>(str, idx);
                 if (!val) {

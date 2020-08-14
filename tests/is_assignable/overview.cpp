@@ -36,9 +36,11 @@ namespace
         constexpr myclass_copy_only() noexcept = default;
         ~myclass_copy_only() noexcept = default;
         constexpr myclass_copy_only(myclass_copy_only const &) noexcept = default;
-        constexpr myclass_copy_only &operator=(myclass_copy_only const &) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_copy_only const &) &noexcept
+            -> myclass_copy_only & = default;
         constexpr myclass_copy_only(myclass_copy_only &&) noexcept = delete;
-        constexpr myclass_copy_only &operator=(myclass_copy_only &&) &noexcept = delete;
+        [[maybe_unused]] constexpr auto operator=(myclass_copy_only &&) &noexcept
+            -> myclass_copy_only & = delete;
     };
 
     class myclass_move_only final
@@ -47,9 +49,11 @@ namespace
         constexpr myclass_move_only() noexcept = default;
         ~myclass_move_only() noexcept = default;
         constexpr myclass_move_only(myclass_move_only const &) noexcept = delete;
-        constexpr myclass_move_only &operator=(myclass_move_only const &) &noexcept = delete;
+        [[maybe_unused]] constexpr auto operator=(myclass_move_only const &) &noexcept
+            -> myclass_move_only & = delete;
         constexpr myclass_move_only(myclass_move_only &&) noexcept = default;
-        constexpr myclass_move_only &operator=(myclass_move_only &&) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_move_only &&) &noexcept
+            -> myclass_move_only & = default;
     };
 
     class myclass_no_assign final
@@ -58,9 +62,11 @@ namespace
         constexpr myclass_no_assign() noexcept = default;
         ~myclass_no_assign() noexcept = default;
         constexpr myclass_no_assign(myclass_no_assign const &) noexcept = delete;
-        constexpr myclass_no_assign &operator=(myclass_no_assign const &) &noexcept = delete;
+        [[maybe_unused]] constexpr auto operator=(myclass_no_assign const &) &noexcept
+            -> myclass_no_assign & = delete;
         constexpr myclass_no_assign(myclass_no_assign &&) noexcept = delete;
-        constexpr myclass_no_assign &operator=(myclass_no_assign &&) &noexcept = delete;
+        [[maybe_unused]] constexpr auto operator=(myclass_no_assign &&) &noexcept
+            -> myclass_no_assign & = delete;
     };
 }
 
@@ -72,17 +78,15 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 
     // NOTE: --
-    //
     // This leverages a builtin so we do not exhaustively test this as we
     // assume the compiler already has the proper tests. These test are to
     // ensure we are using the right builtin
-    //
 
     static_assert(!is_assignable<bool, bool>::value);
     static_assert(!is_assignable<bool, bool const>::value);

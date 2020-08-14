@@ -28,15 +28,12 @@
 #ifndef BSL_CSTR_TYPE_HPP
 #define BSL_CSTR_TYPE_HPP
 
+#include "char_type.hpp"
+
 namespace bsl
 {
     /// @brief C-style string type
-    ///
-    /// SUPPRESSION: PRQA 2428 - false positive
-    /// - We suppress this because A3-9-1 is referring to integer types, not
-    ///   c-style strings.
-    ///
-    using cstr_type = char const *;    // PRQA S 2428
+    using cstr_type = char_type const *;
 }
 
 #endif

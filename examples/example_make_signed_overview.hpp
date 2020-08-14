@@ -34,8 +34,11 @@ namespace bsl
     inline void
     example_make_signed_overview() noexcept
     {
-        if (bsl::is_same<bsl::make_signed_t<bsl::uint32>, bsl::int32>::value) {
+        if constexpr (bsl::is_same<bsl::make_signed_t<bsl::uint32>, bsl::int32>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

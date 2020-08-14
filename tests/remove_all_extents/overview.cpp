@@ -35,18 +35,24 @@
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 
     static_assert(is_same<remove_all_extents_t<bool>, bool>::value);
-    static_assert(is_same<remove_all_extents_t<bool[]>, bool>::value);              // NOLINT
-    static_assert(is_same<remove_all_extents_t<bool[][42]>, bool>::value);          // NOLINT
-    static_assert(is_same<remove_all_extents_t<bool[][42][42]>, bool>::value);      // NOLINT
-    static_assert(is_same<remove_all_extents_t<bool[42]>, bool>::value);            // NOLINT
-    static_assert(is_same<remove_all_extents_t<bool[42][42]>, bool>::value);        // NOLINT
-    static_assert(is_same<remove_all_extents_t<bool[42][42][42]>, bool>::value);    // NOLINT
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_same<remove_all_extents_t<bool[]>, bool>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_same<remove_all_extents_t<bool[][42]>, bool>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_same<remove_all_extents_t<bool[][42][42]>, bool>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_same<remove_all_extents_t<bool[42]>, bool>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_same<remove_all_extents_t<bool[42][42]>, bool>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_same<remove_all_extents_t<bool[42][42][42]>, bool>::value);
 
     return bsl::ut_success();
 }

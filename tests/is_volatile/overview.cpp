@@ -33,17 +33,15 @@
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 
     // Note:
-    //
     // The following test cases work if you take out the asserts. We only have
     // these to ensure we are hitting all of the cases where volatile might
     // be used. BSL does not support the use of volatile.
-    //
 
     // static_assert(is_volatile<bool volatile>::value);
     // static_assert(is_volatile<bool const volatile>::value);

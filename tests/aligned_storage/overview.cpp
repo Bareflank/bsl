@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/array.hpp>
 #include <bsl/aligned_storage.hpp>
 #include <bsl/alignment_of.hpp>
 
@@ -30,8 +31,8 @@
 namespace
 {
     template<typename T, bsl::uintmax align>
-    constexpr void
-    test_aligned_storage() noexcept
+    constexpr auto
+    test_aligned_storage() noexcept -> void
     {
         using namespace bsl;
 
@@ -48,22 +49,22 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 
-    test_aligned_storage<bsl::int8, 64>();
-    test_aligned_storage<bsl::int16, 64>();
-    test_aligned_storage<bsl::int32, 64>();
-    test_aligned_storage<bsl::int64, 64>();
+    test_aligned_storage<bsl::int8, 64ULL>();
+    test_aligned_storage<bsl::int16, 64ULL>();
+    test_aligned_storage<bsl::int32, 64ULL>();
+    test_aligned_storage<bsl::int64, 64ULL>();
 
-    test_aligned_storage<bsl::uint8, 64>();
-    test_aligned_storage<bsl::uint16, 64>();
-    test_aligned_storage<bsl::uint32, 64>();
-    test_aligned_storage<bsl::uint64, 64>();
+    test_aligned_storage<bsl::uint8, 64ULL>();
+    test_aligned_storage<bsl::uint16, 64ULL>();
+    test_aligned_storage<bsl::uint32, 64ULL>();
+    test_aligned_storage<bsl::uint64, 64ULL>();
 
-    test_aligned_storage<bsl::uint8[BSL_PAGE_SIZE], BSL_PAGE_SIZE>();    // NOLINT
+    test_aligned_storage<bsl::array<bsl::uint8, BSL_PAGE_SIZE>, BSL_PAGE_SIZE>();
 
     return ut_success();
 }

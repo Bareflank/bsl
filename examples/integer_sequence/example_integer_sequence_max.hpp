@@ -23,7 +23,9 @@
 /// SOFTWARE.
 
 #include <bsl/integer_sequence.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
+#include <bsl/safe_integral.hpp>
 
 namespace bsl
 {
@@ -33,10 +35,14 @@ namespace bsl
     inline void
     example_integer_sequence_max() noexcept
     {
-        constexpr bsl::uintmax max{5};
+        constexpr auto max{to_umax(5)};
+        constexpr auto num{to_umax(6)};
 
-        if (bsl::make_index_sequence<6>::max() == max) {
+        if constexpr (bsl::make_index_sequence<num.get()>::max() == max.get()) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

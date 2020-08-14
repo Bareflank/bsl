@@ -34,11 +34,12 @@ namespace
         bsl::arguments args{0, nullptr};
 
     public:
-        [[nodiscard]] constexpr bool
-        test_member_const() const
+        [[nodiscard]] constexpr auto
+        test_member_const() const noexcept -> bool
         {
             bsl::discard(args.args());
-            bsl::discard(!!args);
+            bsl::discard(args.index());
+            bsl::discard(args.get<bool>(bsl::to_umax(0)));
             bsl::discard(args.get<bsl::string_view>(bsl::to_umax(0)));
             bsl::discard(args.get<bsl::safe_int8>(bsl::to_umax(0)));
             bsl::discard(args.get<bsl::safe_int16>(bsl::to_umax(0)));
@@ -58,15 +59,40 @@ namespace
             bsl::discard(args.get<bsl::safe_uint16>(""));
             bsl::discard(args.get<bsl::safe_uint32>(""));
             bsl::discard(args.get<bsl::safe_uint64>(""));
+            bsl::discard(args.at<bool>(bsl::to_umax(0)));
+            bsl::discard(args.at<bsl::string_view>(bsl::to_umax(0)));
+            bsl::discard(args.at<bsl::safe_int8>(bsl::to_umax(0)));
+            bsl::discard(args.at<bsl::safe_int16>(bsl::to_umax(0)));
+            bsl::discard(args.at<bsl::safe_int32>(bsl::to_umax(0)));
+            bsl::discard(args.at<bsl::safe_int64>(bsl::to_umax(0)));
+            bsl::discard(args.at<bsl::safe_uint8>(bsl::to_umax(0)));
+            bsl::discard(args.at<bsl::safe_uint16>(bsl::to_umax(0)));
+            bsl::discard(args.at<bsl::safe_uint32>(bsl::to_umax(0)));
+            bsl::discard(args.at<bsl::safe_uint64>(bsl::to_umax(0)));
+            bsl::discard(args.front<bool>());
+            bsl::discard(args.front<bsl::string_view>());
+            bsl::discard(args.front<bsl::safe_int8>());
+            bsl::discard(args.front<bsl::safe_int16>());
+            bsl::discard(args.front<bsl::safe_int32>());
+            bsl::discard(args.front<bsl::safe_int64>());
+            bsl::discard(args.front<bsl::safe_uint8>());
+            bsl::discard(args.front<bsl::safe_uint16>());
+            bsl::discard(args.front<bsl::safe_uint32>());
+            bsl::discard(args.front<bsl::safe_uint64>());
+            bsl::discard(args.empty());
+            bsl::discard(!!args);
+            bsl::discard(args.size());
+            bsl::discard(args.remaining());
 
             return true;
         }
 
-        [[nodiscard]] constexpr bool
-        test_member_nonconst()
+        [[nodiscard]] constexpr auto
+        test_member_nonconst() noexcept -> bool
         {
             bsl::discard(args.args());
-            bsl::discard(!!args);
+            bsl::discard(args.index());
+            bsl::discard(args.get<bool>(bsl::to_umax(0)));
             bsl::discard(args.get<bsl::string_view>(bsl::to_umax(0)));
             bsl::discard(args.get<bsl::safe_int8>(bsl::to_umax(0)));
             bsl::discard(args.get<bsl::safe_int16>(bsl::to_umax(0)));
@@ -86,6 +112,31 @@ namespace
             bsl::discard(args.get<bsl::safe_uint16>(""));
             bsl::discard(args.get<bsl::safe_uint32>(""));
             bsl::discard(args.get<bsl::safe_uint64>(""));
+            bsl::discard(args.at<bool>(bsl::to_umax(0)));
+            bsl::discard(args.at<bsl::string_view>(bsl::to_umax(0)));
+            bsl::discard(args.at<bsl::safe_int8>(bsl::to_umax(0)));
+            bsl::discard(args.at<bsl::safe_int16>(bsl::to_umax(0)));
+            bsl::discard(args.at<bsl::safe_int32>(bsl::to_umax(0)));
+            bsl::discard(args.at<bsl::safe_int64>(bsl::to_umax(0)));
+            bsl::discard(args.at<bsl::safe_uint8>(bsl::to_umax(0)));
+            bsl::discard(args.at<bsl::safe_uint16>(bsl::to_umax(0)));
+            bsl::discard(args.at<bsl::safe_uint32>(bsl::to_umax(0)));
+            bsl::discard(args.at<bsl::safe_uint64>(bsl::to_umax(0)));
+            bsl::discard(args.front<bool>());
+            bsl::discard(args.front<bsl::string_view>());
+            bsl::discard(args.front<bsl::safe_int8>());
+            bsl::discard(args.front<bsl::safe_int16>());
+            bsl::discard(args.front<bsl::safe_int32>());
+            bsl::discard(args.front<bsl::safe_int64>());
+            bsl::discard(args.front<bsl::safe_uint8>());
+            bsl::discard(args.front<bsl::safe_uint16>());
+            bsl::discard(args.front<bsl::safe_uint32>());
+            bsl::discard(args.front<bsl::safe_uint64>());
+            bsl::discard(args.empty());
+            bsl::discard(!!args);
+            bsl::discard(args.size());
+            bsl::discard(args.remaining());
+            bsl::discard(++args);
 
             return true;
         }
@@ -102,8 +153,8 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 

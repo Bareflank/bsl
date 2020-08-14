@@ -28,42 +28,51 @@
 #include "../convert.hpp"
 #include "../fmt_options.hpp"
 #include "../safe_integral.hpp"
+#include "../touch.hpp"
 
-namespace bsl
+namespace bsl::details
 {
-    namespace details
+    /// <!-- description -->
+    ///   @brief This implements alignment for all of the fmt_impl
+    ///     functions. Once the impl functions know what the total length
+    ///     of their output will be, this function will output padding
+    ///     as needed given whatever width, alignment and fill type the
+    ///     user provided. This specific version will output the padding
+    ///     on the left side.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam OUT the type of out (i.e., debug, alert, etc)
+    ///   @param o the instance of out<T> to output to
+    ///   @param ops ops the fmt options used to format the output
+    ///   @param len the length of the output the fmt_impl function will
+    ///      use up. The align functions will use the rest.
+    ///   @return Returns the size of the padding
+    ///
+    template<typename OUT>
+    [[maybe_unused]] constexpr auto
+    fmt_impl_align_pre(
+        OUT const &o, fmt_options const &ops, safe_uintmax const &len, bool const left) noexcept
+        -> safe_uintmax
     {
-        /// <!-- description -->
-        ///   @brief This implements alignment for all of the fmt_impl
-        ///     functions. Once the impl functions know what the total length
-        ///     of their output will be, this function will output padding
-        ///     as needed given whatever width, alignment and fill type the
-        ///     user provided. This specific version will output the padding
-        ///     on the left side.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @tparam OUT the type of out (i.e., debug, alert, etc)
-        ///   @param o the instance of out<T> to output to
-        ///   @param ops ops the fmt options used to format the output
-        ///   @param len the length of the output the fmt_impl function will
-        ///      use up. The align functions will use the rest.
-        ///   @return Returns the size of the padding
-        ///
-        template<typename OUT>
-        [[maybe_unused]] constexpr safe_uintmax
-        fmt_impl_align_pre(
-            OUT const &o, fmt_options const &ops, safe_uintmax const &len, bool const left) noexcept
-        {
-            safe_uintmax const padding{(len < ops.width()) ? ops.width() - len : to_umax(0)};
+        safe_uintmax padding{};
 
-            if ((!ops.sign_aware()) && (padding != to_umax(0))) {
+        if (len < ops.width()) {
+            padding = ops.width() - len;
+        }
+        else {
+            padding = to_umax(0);
+        }
+
+        if (!ops.sign_aware()) {
+            if (padding != to_umax(0)) {
                 switch (ops.align()) {
                     case fmt_align::fmt_align_left: {
                         break;
                     }
 
                     case fmt_align::fmt_align_center: {
-                        for (safe_uintmax i{}; i < (padding >> 1U); ++i) {
+                        safe_uintmax half{padding >> safe_uintmax::one()};
+                        for (safe_uintmax i{}; i < half; ++i) {
                             o.write(ops.fill());
                         }
                         break;
@@ -82,37 +91,56 @@ namespace bsl
                                 o.write(ops.fill());
                             }
                         }
+                        else {
+                            bsl::touch();
+                        }
                         break;
                     }
                 }
             }
-
-            return padding;
+            else {
+                bsl::touch();
+            }
+        }
+        else {
+            bsl::touch();
         }
 
-        /// <!-- description -->
-        ///   @brief This implements alignment for all of the fmt_impl
-        ///     functions. Once the impl functions know what the total length
-        ///     of their output will be, this function will output padding
-        ///     as needed given whatever width, alignment and fill type the
-        ///     user provided. This specific version will output the padding
-        ///     on the right side.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @tparam OUT the type of out (i.e., debug, alert, etc)
-        ///   @param o the instance of out<T> to output to
-        ///   @param ops ops the fmt options used to format the output
-        ///   @param len the length of the output the fmt_impl function will
-        ///      use up. The align functions will use the rest.
-        ///
-        template<typename OUT>
-        constexpr void
-        fmt_impl_align_suf(
-            OUT const &o, fmt_options const &ops, safe_uintmax const &len, bool const left) noexcept
-        {
-            safe_uintmax const padding{(len < ops.width()) ? ops.width() - len : to_umax(0)};
+        return padding;
+    }
 
-            if ((!ops.sign_aware()) && (padding != to_umax(0))) {
+    /// <!-- description -->
+    ///   @brief This implements alignment for all of the fmt_impl
+    ///     functions. Once the impl functions know what the total length
+    ///     of their output will be, this function will output padding
+    ///     as needed given whatever width, alignment and fill type the
+    ///     user provided. This specific version will output the padding
+    ///     on the right side.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam OUT the type of out (i.e., debug, alert, etc)
+    ///   @param o the instance of out<T> to output to
+    ///   @param ops ops the fmt options used to format the output
+    ///   @param len the length of the output the fmt_impl function will
+    ///      use up. The align functions will use the rest.
+    ///
+    template<typename OUT>
+    constexpr auto
+    fmt_impl_align_suf(
+        OUT const &o, fmt_options const &ops, safe_uintmax const &len, bool const left) noexcept
+        -> void
+    {
+        safe_uintmax padding{};
+
+        if (len < ops.width()) {
+            padding = ops.width() - len;
+        }
+        else {
+            padding = to_umax(0);
+        }
+
+        if (!ops.sign_aware()) {
+            if (padding != to_umax(0)) {
                 switch (ops.align()) {
                     case fmt_align::fmt_align_left: {
                         for (safe_uintmax i{}; i < padding; ++i) {
@@ -122,7 +150,8 @@ namespace bsl
                     }
 
                     case fmt_align::fmt_align_center: {
-                        for (safe_uintmax i{}; i < (padding - (padding >> 1U)); ++i) {
+                        safe_uintmax half{padding - (padding >> safe_uintmax::one())};
+                        for (safe_uintmax i{}; i < half; ++i) {
                             o.write(ops.fill());
                         }
                         break;
@@ -138,10 +167,19 @@ namespace bsl
                                 o.write(ops.fill());
                             }
                         }
+                        else {
+                            bsl::touch();
+                        }
                         break;
                     }
                 }
             }
+            else {
+                bsl::touch();
+            }
+        }
+        else {
+            bsl::touch();
         }
     }
 }

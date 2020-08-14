@@ -27,83 +27,86 @@
 #include <bsl/cstr_type.hpp>
 #include <bsl/ut.hpp>
 
-/// <!-- description -->
-///   @brief Used to execute the actual checks. We put the checks in this
-///     function so that we can validate the tests both at compile-time
-///     and at run-time. If a bsl::ut_check fails, the tests will either
-///     fail fast at run-time, or will produce a compile-time error.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-constexpr bsl::exit_code
-tests() noexcept
+namespace
 {
-    using namespace bsl;
+    /// <!-- description -->
+    ///   @brief Used to execute the actual checks. We put the checks in this
+    ///     function so that we can validate the tests both at compile-time
+    ///     and at run-time. If a bsl::ut_check fails, the tests will either
+    ///     fail fast at run-time, or will produce a compile-time error.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @return Always returns bsl::exit_success.
+    ///
+    [[nodiscard]] constexpr auto
+    tests() noexcept -> bsl::exit_code
+    {
+        using namespace bsl;
 
-    bsl::ut_scenario{"get positional safe_int64"} = []() {
-        bsl::ut_given{} = []() {
-            arguments args{0, nullptr};
-            bsl::ut_then{} = [&args]() {
-                bsl::ut_check(!args.get<safe_int64>(to_umax(0)));
+        bsl::ut_scenario{"get positional safe_int64"} = []() {
+            bsl::ut_given{} = []() {
+                arguments args{0, nullptr};
+                bsl::ut_then{} = [&args]() {
+                    bsl::ut_check(!args.get<safe_int64>(to_umax(0)));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                array argv{"app"};
+                arguments args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&args]() {
+                    bsl::ut_check(!args.get<safe_int64>(safe_uintmax::zero(true)));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                array argv{"-app"};
+                arguments args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&args]() {
+                    bsl::ut_check(!args.get<safe_int64>(to_umax(0)));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                array argv{"42"};
+                arguments args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&args]() {
+                    bsl::ut_check(!args.get<safe_int64>(to_umax(1)));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                array argv{"app"};
+                arguments args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&args]() {
+                    bsl::ut_check(!args.get<safe_int64>(to_umax(0)));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                array argv{"42 "};
+                arguments args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&args]() {
+                    bsl::ut_check(!args.get<safe_int64>(to_umax(0)));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                array argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
+                arguments args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&args]() {
+                    bsl::ut_check(args.get<safe_int64>(to_umax(0)) == to_i64(4));
+                    bsl::ut_check(args.get<safe_int64>(to_umax(1)) == to_i64(8));
+                    bsl::ut_check(args.get<safe_int64>(to_umax(2)) == to_i64(15));
+                    bsl::ut_check(args.get<safe_int64>(to_umax(3)) == to_i64(16));
+                    bsl::ut_check(args.get<safe_int64>(to_umax(4)) == to_i64(23));
+                    bsl::ut_check(args.get<safe_int64>(to_umax(5)) == to_i64(42));
+                };
             };
         };
 
-        bsl::ut_given{} = []() {
-            array argv{"app"};
-            arguments args{argv.size(), argv.data()};
-            bsl::ut_then{} = [&args]() {
-                bsl::ut_check(!args.get<safe_int64>(safe_uintmax::zero(true)));
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            array argv{"-app"};
-            arguments args{argv.size(), argv.data()};
-            bsl::ut_then{} = [&args]() {
-                bsl::ut_check(!args.get<safe_int64>(to_umax(0)));
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            array argv{"42"};
-            arguments args{argv.size(), argv.data()};
-            bsl::ut_then{} = [&args]() {
-                bsl::ut_check(!args.get<safe_int64>(to_umax(1)));
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            array argv{"app"};
-            arguments args{argv.size(), argv.data()};
-            bsl::ut_then{} = [&args]() {
-                bsl::ut_check(!args.get<safe_int64>(to_umax(0)));
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            array argv{"42 "};
-            arguments args{argv.size(), argv.data()};
-            bsl::ut_then{} = [&args]() {
-                bsl::ut_check(!args.get<safe_int64>(to_umax(0)));
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            array argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-            arguments args{argv.size(), argv.data()};
-            bsl::ut_then{} = [&args]() {
-                bsl::ut_check(args.get<safe_int64>(to_umax(0)) == to_i64(4));
-                bsl::ut_check(args.get<safe_int64>(to_umax(1)) == to_i64(8));
-                bsl::ut_check(args.get<safe_int64>(to_umax(2)) == to_i64(15));
-                bsl::ut_check(args.get<safe_int64>(to_umax(3)) == to_i64(16));
-                bsl::ut_check(args.get<safe_int64>(to_umax(4)) == to_i64(23));
-                bsl::ut_check(args.get<safe_int64>(to_umax(5)) == to_i64(42));
-            };
-        };
-    };
-
-    return bsl::ut_success();
+        return bsl::ut_success();
+    }
 }
 
 /// <!-- description -->
@@ -114,8 +117,8 @@ tests() noexcept
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     static_assert(tests() == bsl::ut_success());
     return tests();

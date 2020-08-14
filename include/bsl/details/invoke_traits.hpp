@@ -25,199 +25,214 @@
 #ifndef BSL_DETAILS_INVOKE_TRAITS_HPP
 #define BSL_DETAILS_INVOKE_TRAITS_HPP
 
+#include "../bool_constant.hpp"
+#include "../conjunction.hpp"
 #include "../declval.hpp"
+#include "../declval.hpp"
+#include "../disjunction.hpp"
 #include "../is_convertible.hpp"
 #include "../is_nothrow_convertible.hpp"
 #include "../is_void.hpp"
 #include "../invoke.hpp"
 #include "../void_t.hpp"
 
-namespace bsl
+namespace bsl::details
 {
-    namespace details
+    /// @brief defines the function type for invoke based on the provided
+    ///   arguments.
+    template<typename FUNC, typename... TN>
+    using invoke_type = decltype(invoke(declval<FUNC>(), declval<TN>()...));
+
+    /// @class bsl::details::invoke_traits
+    ///
+    /// <!-- description -->
+    ///   @brief The invoke_traits class is used to determine if a set of
+    ///     arguments are invocable and if so, how. To do this, we define
+    ///     a default invoke_traits that states the provided args are not
+    ///     callable. We then define a specialized version of invoke_traits
+    ///     that is only selected if a call to invoke with the provided
+    ///     arguments is valid. If this is true, this class defines the
+    ///     "type" alias which is used by invoke_result, as well as 4
+    ///     bools that define the different ways in which the args are
+    ///     callable (based on the APIs that C++ supports) which are all
+    ///     used by is_vocable and friends. The reason we define the
+    ///     "type" alias is that the invoke_result should be capable of
+    ///     acting as is_invocable as well, meaning invoke_result only
+    ///     defines the "type" alias when the arguments define a callable.
+    ///     If a callable cannot be formed, this alias is not provided,
+    ///     allowing invoke_result to be used in SFINAE.
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam AlwaysVoid is always "void"
+    ///   @tparam FUNC the type that defines the function being called
+    ///   @tparam TN the types that define the arguments passed to the
+    ///     provided function when called.
+    ///
+    template<typename AlwaysVoid, typename FUNC, typename... TN>
+    class invoke_traits
     {
-        /// @brief defines the function type for invoke based on the provided
-        ///   arguments.
-        template<typename FUNC, typename... TN>
-        using invoke_type = decltype(invoke(declval<FUNC>(), declval<TN>()...));
+    public:
+        /// @brief states that the provided args do not form a callable
+        static constexpr bool m_is_invocable{false};
 
-        /// @class bsl::details::invoke_traits
-        ///
+        /// @brief states that the provided args do not form a callable
+        static constexpr bool m_is_nothrow_invocable{false};
+
+        /// @brief states that the provided args do not form a callable
+        template<typename R>
+        static constexpr bool m_is_invocable_r{false};
+
+        /// @brief states that the provided args do not form a callable
+        template<typename R>
+        static constexpr bool m_is_nothrow_invocable_r{false};
+
         /// <!-- description -->
-        ///   @brief The invoke_traits class is used to determine if a set of
-        ///     arguments are invocable and if so, how. To do this, we define
-        ///     a default invoke_traits that states the provided args are not
-        ///     callable. We then define a specialized version of invoke_traits
-        ///     that is only selected if a call to invoke with the provided
-        ///     arguments is valid. If this is true, this class defines the
-        ///     "type" alias which is used by invoke_result, as well as 4
-        ///     bools that define the different ways in which the args are
-        ///     callable (based on the APIs that C++ supports) which are all
-        ///     used by is_vocable and friends. The reason we define the
-        ///     "type" alias is that the invoke_result should be capable of
-        ///     acting as is_invocable as well, meaning invoke_result only
-        ///     defines the "type" alias when the arguments define a callable.
-        ///     If a callable cannot be formed, this alias is not provided,
-        ///     allowing invoke_result to be used in SFINAE.
+        ///   @brief Default constructor
         ///
-        /// <!-- template parameters -->
-        ///   @tparam AlwaysVoid is always "void"
-        ///   @tparam FUNC the type that defines the function being called
-        ///   @tparam TN the types that define the arguments passed to the
-        ///     provided function when called.
-        ///
-        template<typename AlwaysVoid, typename FUNC, typename... TN>
-        class invoke_traits
-        {
-        public:
-            /// @brief states that the provided args do not form a callable
-            static constexpr bool m_is_invocable{false};
+        constexpr invoke_traits() noexcept = default;
 
-            /// @brief states that the provided args do not form a callable
-            static constexpr bool m_is_nothrow_invocable{false};
-
-            /// @brief states that the provided args do not form a callable
-            template<typename R>
-            static constexpr bool m_is_invocable_r{false};
-
-            /// @brief states that the provided args do not form a callable
-            template<typename R>
-            static constexpr bool m_is_nothrow_invocable_r{false};
-
-        protected:
-            /// <!-- description -->
-            ///   @brief Destroyes a previously created bsl::invoke_traits
-            ///
-            ~invoke_traits() noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief copy constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///
-            constexpr invoke_traits(invoke_traits const &o) noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief move constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///
-            constexpr invoke_traits(invoke_traits &&o) noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief copy assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///   @return a reference to *this
-            ///
-            constexpr invoke_traits &operator=(invoke_traits const &o) &noexcept = default;
-
-            /// <!-- description -->
-            ///   @brief move assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///   @return a reference to *this
-            ///
-            constexpr invoke_traits &operator=(invoke_traits &&o) &noexcept = default;
-        };
-
-        /// @class bsl::details::invoke_traits
-        ///
+    protected:
         /// <!-- description -->
-        ///   @brief The invoke_traits class is used to determine if a set of
-        ///     arguments are invocable and if so, how. To do this, we define
-        ///     a default invoke_traits that states the provided args are not
-        ///     callable. We then define a specialized version of invoke_traits
-        ///     that is only selected if a call to invoke with the provided
-        ///     arguments is valid. If this is true, this class defines the
-        ///     "type" alias which is used by invoke_result, as well as 4
-        ///     bools that define the different ways in which the args are
-        ///     callable (based on the APIs that C++ supports) which are all
-        ///     used by is_vocable and friends. The reason we define the
-        ///     "type" alias is that the invoke_result should be capable of
-        ///     acting as is_invocable as well, meaning invoke_result only
-        ///     defines the "type" alias when the arguments define a callable.
-        ///     If a callable cannot be formed, this alias is not provided,
-        ///     allowing invoke_result to be used in SFINAE.
+        ///   @brief Destroyes a previously created bsl::invoke_traits
         ///
-        /// <!-- template parameters -->
-        ///   @tparam FUNC the type that defines the function being called
-        ///   @tparam TN the types that define the arguments passed to the
-        ///     provided function when called.
+        constexpr ~invoke_traits() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
         ///
-        template<typename FUNC, typename... TN>
-        class invoke_traits<void_t<invoke_type<FUNC, TN...>>, FUNC, TN...>
-        {
-        public:
-            /// @brief provides the member typedef "type"
-            using type = invoke_type<FUNC, TN...>;
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr invoke_traits(invoke_traits const &o) noexcept = default;
 
-            /// @brief states that the provided args form a callable
-            static constexpr bool m_is_invocable{true};
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr invoke_traits(invoke_traits &&o) noexcept = default;
 
-            /// @brief states whether or not the provided args form a nothrow
-            ///   callable
-            static constexpr bool m_is_nothrow_invocable{
-                noexcept(invoke(declval<FUNC>(), declval<TN>()...))};
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(invoke_traits const &o) &noexcept
+            -> invoke_traits & = default;
 
-            /// @brief states whether or not the provided args form a callable
-            ///   that is convertible to R
-            template<typename R>
-            static constexpr bool m_is_invocable_r{
-                (is_void<R>::value || is_convertible<R, type>::value)};
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(invoke_traits &&o) &noexcept
+            -> invoke_traits & = default;
+    };
 
-            /// @brief states whether or not the provided args form a nothrow
-            ///   callable that is convertible to R
-            template<typename R>
-            static constexpr bool m_is_nothrow_invocable_r{
-                noexcept(invoke(declval<FUNC>(), declval<TN>()...)) &&
-                (is_void<R>::value || is_nothrow_convertible<R, type>::value)};
+    /// @class bsl::details::invoke_traits
+    ///
+    /// <!-- description -->
+    ///   @brief The invoke_traits class is used to determine if a set of
+    ///     arguments are invocable and if so, how. To do this, we define
+    ///     a default invoke_traits that states the provided args are not
+    ///     callable. We then define a specialized version of invoke_traits
+    ///     that is only selected if a call to invoke with the provided
+    ///     arguments is valid. If this is true, this class defines the
+    ///     "type" alias which is used by invoke_result, as well as 4
+    ///     bools that define the different ways in which the args are
+    ///     callable (based on the APIs that C++ supports) which are all
+    ///     used by is_vocable and friends. The reason we define the
+    ///     "type" alias is that the invoke_result should be capable of
+    ///     acting as is_invocable as well, meaning invoke_result only
+    ///     defines the "type" alias when the arguments define a callable.
+    ///     If a callable cannot be formed, this alias is not provided,
+    ///     allowing invoke_result to be used in SFINAE.
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam FUNC the type that defines the function being called
+    ///   @tparam TN the types that define the arguments passed to the
+    ///     provided function when called.
+    ///
+    template<typename FUNC, typename... TN>
+    class invoke_traits<void_t<invoke_type<FUNC, TN...>>, FUNC, TN...>
+    {
+    public:
+        /// @brief provides the member typedef "type"
+        using type = invoke_type<FUNC, TN...>;
 
-        protected:
-            /// <!-- description -->
-            ///   @brief Destroyes a previously created bsl::invoke_traits
-            ///
-            ~invoke_traits() noexcept = default;
+        /// @brief states that the provided args form a callable
+        static constexpr bool m_is_invocable{true};
 
-            /// <!-- description -->
-            ///   @brief copy constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///
-            constexpr invoke_traits(invoke_traits const &o) noexcept = default;
+        /// @brief states whether or not the provided args form a nothrow
+        ///   callable
+        static constexpr bool m_is_nothrow_invocable{
+            noexcept(invoke(declval<FUNC>(), declval<TN>()...))};
 
-            /// <!-- description -->
-            ///   @brief move constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///
-            constexpr invoke_traits(invoke_traits &&o) noexcept = default;
+        /// @brief states whether or not the provided args form a callable
+        ///   that is convertible to R
+        template<typename R>
+        static constexpr bool m_is_invocable_r{
+            (disjunction<is_void<R>, is_convertible<R, type>>::value)};
 
-            /// <!-- description -->
-            ///   @brief copy assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///   @return a reference to *this
-            ///
-            constexpr invoke_traits &operator=(invoke_traits const &o) &noexcept = default;
+        /// @brief states whether or not the provided args form a nothrow
+        ///   callable that is convertible to R
+        template<typename R>
+        static constexpr bool m_is_nothrow_invocable_r{conjunction<
+            bool_constant<noexcept(invoke(declval<FUNC>(), declval<TN>()...))>,
+            disjunction<is_void<R>, is_nothrow_convertible<R, type>>>::value};
 
-            /// <!-- description -->
-            ///   @brief move assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///   @return a reference to *this
-            ///
-            constexpr invoke_traits &operator=(invoke_traits &&o) &noexcept = default;
-        };
-    }
+        /// <!-- description -->
+        ///   @brief Default constructor
+        ///
+        constexpr invoke_traits() noexcept = default;
+
+    protected:
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::invoke_traits
+        ///
+        constexpr ~invoke_traits() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr invoke_traits(invoke_traits const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr invoke_traits(invoke_traits &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(invoke_traits const &o) &noexcept
+            -> invoke_traits & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(invoke_traits &&o) &noexcept
+            -> invoke_traits & = default;
+    };
 }
 
 #endif

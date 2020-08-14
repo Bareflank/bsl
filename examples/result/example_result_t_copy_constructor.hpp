@@ -33,11 +33,14 @@ namespace bsl
     inline void
     example_result_t_copy_constructor() noexcept
     {
-        bool const val{true};
-        bsl::result<bool> res{val};
+        constexpr bool val{true};
+        constexpr bsl::result<bool> res{val};
 
-        if (auto const *const ptr = res.get_if()) {
-            bsl::print() << "success: " << *ptr << bsl::endl;
+        if constexpr (nullptr != res.get_if()) {
+            bsl::print() << "success: " << *res.get_if() << bsl::endl;
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

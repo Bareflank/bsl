@@ -39,5 +39,8 @@ namespace bsl
         if (val2) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
     }
 }

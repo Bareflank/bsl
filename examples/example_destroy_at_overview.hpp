@@ -39,10 +39,16 @@ namespace bsl
         if (myclass.get()) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
 
         bsl::destroy_at(&myclass);
         if (!myclass.get()) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

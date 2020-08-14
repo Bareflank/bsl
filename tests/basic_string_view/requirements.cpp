@@ -25,20 +25,19 @@
 #include <bsl/basic_string_view.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/discard.hpp>
-#include <bsl/is_pod.hpp>
 #include <bsl/ut.hpp>
 
 namespace
 {
-    bsl::basic_string_view<bsl::char_type> const pod{};
+    constinit bsl::basic_string_view<bsl::char_type> const verify_constinit{};
 
     class fixture_t final
     {
         bsl::basic_string_view<bsl::char_type> msg{"Hello World"};
 
     public:
-        [[nodiscard]] constexpr bool
-        test_member_const() const
+        [[nodiscard]] constexpr auto
+        test_member_const() const noexcept -> bool
         {
             bsl::discard(msg.at_if(bsl::to_umax(0)));
             bsl::discard(msg.front_if());
@@ -79,8 +78,8 @@ namespace
             return true;
         }
 
-        [[nodiscard]] constexpr bool
-        test_member_nonconst()
+        [[nodiscard]] constexpr auto
+        test_member_nonconst() noexcept -> bool
         {
             bsl::discard(msg.at_if(bsl::to_umax(0)));
             bsl::discard(msg.front_if());
@@ -135,15 +134,14 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
     using bsv_type = bsl::basic_string_view<bsl::char_type>;
 
-    bsl::ut_scenario{"verify supports global POD"} = []() {
-        bsl::discard(pod);
-        static_assert(is_pod<decltype(pod)>::value);
+    bsl::ut_scenario{"verify supports constinit "} = []() {
+        bsl::discard(verify_constinit);
     };
 
     bsl::ut_scenario{"verify noexcept"} = []() {
@@ -190,12 +188,12 @@ main() noexcept
                 static_assert(noexcept(msg1.ends_with(bsv_type{})));
                 static_assert(noexcept(msg1.ends_with('H')));
                 static_assert(noexcept(msg1.ends_with("")));
-                static_assert(noexcept(msg1 == msg2));    // NOLINT
-                static_assert(noexcept(msg1 == ""));      // NOLINT
-                static_assert(noexcept("" == msg2));      // NOLINT
-                static_assert(noexcept(msg1 != msg2));    // NOLINT
-                static_assert(noexcept(msg1 != ""));      // NOLINT
-                static_assert(noexcept("" != msg2));      // NOLINT
+                static_assert(noexcept(msg1 == msg2));
+                static_assert(noexcept(msg1 == ""));
+                static_assert(noexcept("" == msg2));
+                static_assert(noexcept(msg1 != msg2));
+                static_assert(noexcept(msg1 != ""));
+                static_assert(noexcept("" != msg2));
             };
         };
     };

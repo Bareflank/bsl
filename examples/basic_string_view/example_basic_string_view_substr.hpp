@@ -35,10 +35,13 @@ namespace bsl
     {
         constexpr bsl::safe_uintmax pos{to_umax(0)};
         constexpr bsl::safe_uintmax count{to_umax(5)};
-        bsl::basic_string_view<bsl::char_type> const str{"Hello World"};
+        constexpr bsl::basic_string_view<bsl::char_type> str{"Hello World"};
 
-        if (str.substr(pos, count) == "Hello") {
+        if constexpr (str.substr(pos, count) == "Hello") {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

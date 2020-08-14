@@ -50,12 +50,12 @@ namespace bsl
         /// <!-- description -->
         ///   @brief Creates a default bsl::example_class_subclass
         ///
-        example_class_subclass() noexcept = default;
+        constexpr example_class_subclass() noexcept = default;
 
         /// <!-- description -->
         ///   @brief Destroyes a previously created bsl::example_class_subclass
         ///
-        ~example_class_subclass() noexcept
+        constexpr ~example_class_subclass() noexcept
         {
             m_data2 = false;
         }
@@ -66,7 +66,7 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param o the object being copied
         ///
-        example_class_subclass(example_class_subclass const &o) noexcept = default;
+        constexpr example_class_subclass(example_class_subclass const &o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief move constructor
@@ -74,7 +74,7 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param o the object being moved
         ///
-        example_class_subclass(example_class_subclass &&o) noexcept = default;
+        constexpr example_class_subclass(example_class_subclass &&o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -83,8 +83,8 @@ namespace bsl
         ///   @param o the object being copied
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] example_class_subclass &
-        operator=(example_class_subclass const &o) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(example_class_subclass const &o) &noexcept
+            -> example_class_subclass & = default;
 
         /// <!-- description -->
         ///   @brief copy constructor
@@ -93,8 +93,8 @@ namespace bsl
         ///   @param o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] example_class_subclass &
-        operator=(example_class_subclass &&o) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(example_class_subclass &&o) &noexcept
+            -> example_class_subclass & = default;
 
     private:
         /// @brief dummy data #1

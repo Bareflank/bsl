@@ -24,7 +24,6 @@
 
 #include <bsl/span.hpp>
 #include <bsl/array.hpp>
-#include <bsl/for_each.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -35,14 +34,13 @@ namespace bsl
     inline void
     example_span_iter() noexcept
     {
-        constexpr bsl::safe_uintmax size{bsl::to_umax(2)};
         constexpr bsl::safe_uintmax idx{bsl::to_umax(1)};
 
-        constexpr bsl::array<bool, size.get()> arr{true, false};
+        constexpr bsl::array arr{true, false};
         bsl::span const spn{arr.data(), arr.size()};
 
-        bsl::for_each(spn.iter(idx), spn.end(), [](auto &e, auto const &i) noexcept {
-            bsl::print() << "element [" << i << "] == " << e << bsl::endl;
-        });
+        for (auto iter{spn.iter(idx)}; iter != spn.end(); ++iter) {
+            bsl::print() << "element [" << iter.index() << "] == " << iter << bsl::endl;
+        }
     }
 }

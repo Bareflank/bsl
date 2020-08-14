@@ -28,6 +28,8 @@
 #ifndef BSL_BASIC_ERRC_TYPE_HPP
 #define BSL_BASIC_ERRC_TYPE_HPP
 
+#include "details/out.hpp"
+
 #include "cstdint.hpp"
 #include "debug.hpp"
 #include "discard.hpp"
@@ -64,11 +66,13 @@ namespace bsl
         using const_reference_type = T const &;
 
         /// <!-- description -->
-        ///   @brief Default constructor. This ensures the type is a
-        ///     POD type, allowing it to be constructed as a global resource.
+        ///   @brief Default constructor.
         ///   @include basic_errc_type/example_basic_errc_type_default_constructor.hpp
         ///
-        constexpr basic_errc_type() noexcept = default;
+        constexpr basic_errc_type() noexcept
+            :    // --
+            m_errc{}
+        {}
 
         /// <!-- description -->
         ///   @brief Value initialization constructor
@@ -77,7 +81,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param errc the error code to store
         ///
-        explicit constexpr basic_errc_type(value_type const &errc) noexcept : m_errc{errc}
+        explicit constexpr basic_errc_type(value_type const &errc) noexcept    // --
+            : m_errc{errc}
         {}
 
         /// <!-- description -->
@@ -90,8 +95,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the integer value that represents the error code.
         ///
-        [[nodiscard]] constexpr const_reference_type
-        get() const noexcept
+        [[nodiscard]] constexpr auto
+        get() const &noexcept -> const_reference_type
         {
             return m_errc;
         }
@@ -119,8 +124,8 @@ namespace bsl
         ///     otherwise, if the error code contains an error code,
         ///     returns false.
         ///
-        [[nodiscard]] constexpr bool
-        success() const noexcept
+        [[nodiscard]] constexpr auto
+        success() const noexcept -> bool
         {
             return m_errc == T{};
         }
@@ -136,8 +141,8 @@ namespace bsl
         ///     otherwise, if the error code contains T{},
         ///     returns false.
         ///
-        [[nodiscard]] constexpr bool
-        failure() const noexcept
+        [[nodiscard]] constexpr auto
+        failure() const noexcept -> bool
         {
             return m_errc != T{};
         }
@@ -153,8 +158,8 @@ namespace bsl
         ///     that is the error code is negative), false otherwise. If this
         ///     error code is bsl::errc_success, returns false.
         ///
-        [[nodiscard]] constexpr bool
-        is_checked() const noexcept
+        [[nodiscard]] constexpr auto
+        is_checked() const noexcept -> bool
         {
             return m_errc < T{};
         }
@@ -170,8 +175,8 @@ namespace bsl
         ///     (i.e., that is the error code is positive), false otherwise.
         ///     If this error code is bsl::errc_success, returns false.
         ///
-        [[nodiscard]] constexpr bool
-        is_unchecked() const noexcept
+        [[nodiscard]] constexpr auto
+        is_unchecked() const noexcept -> bool
         {
             return m_errc > T{};
         }
@@ -187,7 +192,7 @@ namespace bsl
         ///     the error code is a custom, user defined error code, returns
         ///     a nullptr.
         ///
-        [[nodiscard]] constexpr bsl::string_view message() const noexcept;
+        [[nodiscard]] constexpr auto message() const noexcept -> bsl::string_view;
 
     private:
         /// @brief stores the error code
@@ -205,8 +210,8 @@ namespace bsl
     ///   @return Returns true if the lhs is equal to the rhs, false otherwise
     ///
     template<typename T>
-    constexpr bool
-    operator==(basic_errc_type<T> const &lhs, basic_errc_type<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator==(basic_errc_type<T> const &lhs, basic_errc_type<T> const &rhs) noexcept -> bool
     {
         return lhs.get() == rhs.get();
     }
@@ -222,8 +227,8 @@ namespace bsl
     ///   @return Returns false if the lhs is equal to the rhs, true otherwise
     ///
     template<typename T>
-    constexpr bool
-    operator!=(basic_errc_type<T> const &lhs, basic_errc_type<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator!=(basic_errc_type<T> const &lhs, basic_errc_type<T> const &rhs) noexcept -> bool
     {
         return !(lhs == rhs);
     }
@@ -250,14 +255,12 @@ namespace bsl
     constexpr basic_errc_type<> errc_invalid_argument{10};
     /// @brief Defines an out of bounds error code
     constexpr basic_errc_type<> errc_index_out_of_bounds{11};
-    /// @brief Defines an out of bounds error code
-    constexpr basic_errc_type<> errc_bad_function{12};
 
-    /// @brief Defines an overflow, underflow or unsigned wrap error
+    /// @brief Defines an unsigned wrap error
     constexpr basic_errc_type<> errc_unsigned_wrap{30};
-    /// @brief Defines an overflow, underflow or unsigned wrap error
+    /// @brief Defines a narrow overflow error
     constexpr basic_errc_type<> errc_narrow_overflow{31};
-    /// @brief Defines an overflow, underflow or unsigned wrap error
+    /// @brief Defines a signed overflow error
     constexpr basic_errc_type<> errc_signed_overflow{32};
     /// @brief Defines a divide by zero error
     constexpr basic_errc_type<> errc_divide_by_zero{33};
@@ -283,8 +286,8 @@ namespace bsl
     ///     a nullptr.
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::string_view
-    basic_errc_type<T>::message() const noexcept
+    [[nodiscard]] constexpr auto
+    basic_errc_type<T>::message() const noexcept -> bsl::string_view
     {
         bsl::string_view msg{};
 
@@ -321,11 +324,6 @@ namespace bsl
 
             case errc_index_out_of_bounds.get(): {
                 msg = "index out of bounds (precondition) failure";
-                break;
-            }
-
-            case errc_bad_function.get(): {
-                msg = "function not callable (precondition) failure";
                 break;
             }
 
@@ -376,8 +374,8 @@ namespace bsl
     ///   @return return o
     ///
     template<typename T1, typename T2>
-    [[maybe_unused]] constexpr out<T1>
-    operator<<(out<T1> const o, basic_errc_type<T2> const &val) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T1> const o, basic_errc_type<T2> const &val) noexcept -> out<T1>
     {
         if constexpr (!o) {
             return o;

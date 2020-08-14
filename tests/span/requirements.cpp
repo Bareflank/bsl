@@ -25,12 +25,11 @@
 #include <bsl/span.hpp>
 #include <bsl/array.hpp>
 #include <bsl/discard.hpp>
-#include <bsl/is_pod.hpp>
 #include <bsl/ut.hpp>
 
 namespace
 {
-    bsl::span<bool> const pod{};
+    constinit bsl::span<bool> const verify_constinit{};
 
     class fixture_t final
     {
@@ -38,8 +37,8 @@ namespace
         bsl::span<bool> spn{arr.data(), arr.size()};
 
     public:
-        [[nodiscard]] constexpr bool
-        test_member_const() const
+        [[nodiscard]] constexpr auto
+        test_member_const() const noexcept -> bool
         {
             bsl::discard(spn.at_if(bsl::to_umax(0)));
             bsl::discard(spn.front_if());
@@ -69,8 +68,8 @@ namespace
             return true;
         }
 
-        [[nodiscard]] constexpr bool
-        test_member_nonconst()
+        [[nodiscard]] constexpr auto
+        test_member_nonconst() noexcept -> bool
         {
             bsl::discard(spn.at_if(bsl::to_umax(0)));
             bsl::discard(spn.front_if());
@@ -112,14 +111,13 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 
-    bsl::ut_scenario{"verify supports global POD"} = []() {
-        bsl::discard(pod);
-        static_assert(is_pod<decltype(pod)>::value);
+    bsl::ut_scenario{"verify supports constinit "} = []() {
+        bsl::discard(verify_constinit);
     };
 
     bsl::ut_scenario{"verify noexcept"} = []() {

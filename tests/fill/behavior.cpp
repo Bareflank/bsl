@@ -24,185 +24,185 @@
 
 #include <bsl/fill.hpp>
 #include <bsl/array.hpp>
-#include <bsl/for_each.hpp>
 #include <bsl/span.hpp>
 #include <bsl/ut.hpp>
 
 namespace
 {
-    enum myenum : bsl::uintmax
+    enum class myenum : bsl::uintmax
     {
         init = 1,
         zero = 0
     };
-}
 
-/// <!-- description -->
-///   @brief Used to execute the actual checks. We put the checks in this
-///     function so that we can validate the tests both at compile-time
-///     and at run-time. If a bsl::ut_check fails, the tests will either
-///     fail fast at run-time, or will produce a compile-time error.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-constexpr bsl::exit_code
-tests() noexcept
-{
-    using namespace bsl;
+    /// <!-- description -->
+    ///   @brief Used to execute the actual checks. We put the checks in this
+    ///     function so that we can validate the tests both at compile-time
+    ///     and at run-time. If a bsl::ut_check fails, the tests will either
+    ///     fail fast at run-time, or will produce a compile-time error.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @return Always returns bsl::exit_success.
+    ///
+    [[nodiscard]] constexpr auto
+    tests() noexcept -> bsl::exit_code
+    {
+        using namespace bsl;
 
-    bsl::ut_scenario{"empty span doesn't crash"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::span<bool> spn{};
-            bsl::ut_when{} = [&spn]() {
-                fill(spn, true);
-            };
-        };
-    };
-
-    bsl::ut_scenario{"fill view"} = []() {
-        bsl::ut_given{} = []() {
-            array<bool, 5> arr{};
-            bsl::ut_when{} = [&arr]() {
-                fill(arr, true);
-                bsl::ut_then{} = [&arr]() {
-                    bsl::for_each(arr, [](auto &e) {
-                        bsl::ut_check(e);
-                    });
+        bsl::ut_scenario{"empty span doesn't crash"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::span<bool> spn{};
+                bsl::ut_when{} = [&spn]() {
+                    fill(spn, true);
                 };
             };
         };
 
-        bsl::ut_given{} = []() {
-            array<myenum, 5> arr{init, init, init, init, init};
-            bsl::ut_when{} = [&arr]() {
-                fill(arr, zero);
-                bsl::ut_then{} = [&arr]() {
-                    bsl::for_each(arr, [](auto &e) {
-                        bsl::ut_check(e == zero);
-                    });
+        bsl::ut_scenario{"fill view"} = []() {
+            bsl::ut_given{} = []() {
+                array<bool, 5> arr{};
+                bsl::ut_when{} = [&arr]() {
+                    fill(arr, true);
+                    bsl::ut_then{} = [&arr]() {
+                        for (auto const elem : arr) {
+                            bsl::ut_check(*elem.data);
+                        }
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                array<myenum, 5> arr{
+                    myenum::init, myenum::init, myenum::init, myenum::init, myenum::init};
+                bsl::ut_when{} = [&arr]() {
+                    fill(arr, myenum::zero);
+                    bsl::ut_then{} = [&arr]() {
+                        for (auto const elem : arr) {
+                            bsl::ut_check(*elem.data == myenum::zero);
+                        }
+                    };
                 };
             };
         };
-    };
 
-    bsl::ut_scenario{"fill with being()/end()"} = []() {
-        bsl::ut_given{} = []() {
-            array<bool, 5> arr{};
-            bsl::ut_when{} = [&arr]() {
-                fill(arr.begin(), arr.end(), true);
-                bsl::ut_then{} = [&arr]() {
-                    bsl::for_each(arr, [](auto &e) {
-                        bsl::ut_check(e);
-                    });
+        bsl::ut_scenario{"fill with being()/end()"} = []() {
+            bsl::ut_given{} = []() {
+                array<bool, 5> arr{};
+                bsl::ut_when{} = [&arr]() {
+                    fill(arr.begin(), arr.end(), true);
+                    bsl::ut_then{} = [&arr]() {
+                        for (auto const elem : arr) {
+                            bsl::ut_check(*elem.data);
+                        }
+                    };
                 };
             };
         };
-    };
 
-    bsl::ut_scenario{"fill with rbeing()/rend()"} = []() {
-        bsl::ut_given{} = []() {
-            array<bool, 5> arr{};
-            bsl::ut_when{} = [&arr]() {
-                fill(arr.rbegin(), arr.rend(), true);
-                bsl::ut_then{} = [&arr]() {
-                    bsl::for_each(arr, [](auto &e) {
-                        bsl::ut_check(e);
-                    });
+        bsl::ut_scenario{"fill with rbeing()/rend()"} = []() {
+            bsl::ut_given{} = []() {
+                array<bool, 5> arr{};
+                bsl::ut_when{} = [&arr]() {
+                    fill(arr.rbegin(), arr.rend(), true);
+                    bsl::ut_then{} = [&arr]() {
+                        for (auto const elem : arr) {
+                            bsl::ut_check(*elem.data);
+                        }
+                    };
                 };
             };
         };
-    };
 
-    bsl::ut_scenario{"fill with iter()"} = []() {
-        bsl::ut_given{} = []() {
-            array<bool, 5> arr{};
-            bsl::ut_when{} = [&arr]() {
-                fill(arr.iter(to_umax(1)), arr.iter(to_umax(4)), true);
-                bsl::ut_then{} = [&arr]() {
-                    bsl::ut_check(!*arr.at_if(to_umax(0)));
-                    bsl::ut_check(*arr.at_if(to_umax(1)));
-                    bsl::ut_check(*arr.at_if(to_umax(2)));
-                    bsl::ut_check(*arr.at_if(to_umax(3)));
-                    bsl::ut_check(!*arr.at_if(to_umax(4)));
+        bsl::ut_scenario{"fill with iter()"} = []() {
+            bsl::ut_given{} = []() {
+                array<bool, 5> arr{};
+                bsl::ut_when{} = [&arr]() {
+                    fill(arr.iter(to_umax(1)), arr.iter(to_umax(4)), true);
+                    bsl::ut_then{} = [&arr]() {
+                        bsl::ut_check(!*arr.at_if(to_umax(0)));
+                        bsl::ut_check(*arr.at_if(to_umax(1)));
+                        bsl::ut_check(*arr.at_if(to_umax(2)));
+                        bsl::ut_check(*arr.at_if(to_umax(3)));
+                        bsl::ut_check(!*arr.at_if(to_umax(4)));
+                    };
                 };
             };
         };
-    };
 
-    bsl::ut_scenario{"fill with riter()"} = []() {
-        bsl::ut_given{} = []() {
-            array<bool, 5> arr{};
-            bsl::ut_when{} = [&arr]() {
-                fill(arr.riter(to_umax(3)), arr.riter(to_umax(0)), true);
-                bsl::ut_then{} = [&arr]() {
-                    bsl::ut_check(!*arr.at_if(to_umax(0)));
-                    bsl::ut_check(*arr.at_if(to_umax(1)));
-                    bsl::ut_check(*arr.at_if(to_umax(2)));
-                    bsl::ut_check(*arr.at_if(to_umax(3)));
-                    bsl::ut_check(!*arr.at_if(to_umax(4)));
+        bsl::ut_scenario{"fill with riter()"} = []() {
+            bsl::ut_given{} = []() {
+                array<bool, 5> arr{};
+                bsl::ut_when{} = [&arr]() {
+                    fill(arr.riter(to_umax(3)), arr.riter(to_umax(0)), true);
+                    bsl::ut_then{} = [&arr]() {
+                        bsl::ut_check(!*arr.at_if(to_umax(0)));
+                        bsl::ut_check(*arr.at_if(to_umax(1)));
+                        bsl::ut_check(*arr.at_if(to_umax(2)));
+                        bsl::ut_check(*arr.at_if(to_umax(3)));
+                        bsl::ut_check(!*arr.at_if(to_umax(4)));
+                    };
                 };
             };
         };
-    };
 
-    bsl::ut_scenario{"fill with invalid being()/end()"} = []() {
-        bsl::ut_given{} = []() {
-            array<bool, 5> arr{};
-            bsl::ut_when{} = [&arr]() {
-                fill(arr.end(), arr.begin(), true);
-                bsl::ut_then{} = [&arr]() {
-                    bsl::for_each(arr, [](auto &e) {
-                        bsl::ut_check(!e);
-                    });
+        bsl::ut_scenario{"fill with invalid being()/end()"} = []() {
+            bsl::ut_given{} = []() {
+                array<bool, 5> arr{};
+                bsl::ut_when{} = [&arr]() {
+                    fill(arr.end(), arr.begin(), true);
+                    bsl::ut_then{} = [&arr]() {
+                        for (auto const elem : arr) {
+                            bsl::ut_check(!(*elem.data));
+                        }
+                    };
                 };
             };
         };
-    };
 
-    bsl::ut_scenario{"fill with invalid rbeing()/rend()"} = []() {
-        bsl::ut_given{} = []() {
-            array<bool, 5> arr{};
-            bsl::ut_when{} = [&arr]() {
-                fill(arr.rend(), arr.rbegin(), true);
-                bsl::ut_then{} = [&arr]() {
-                    bsl::for_each(arr, [](auto &e) {
-                        bsl::ut_check(!e);
-                    });
+        bsl::ut_scenario{"fill with invalid rbeing()/rend()"} = []() {
+            bsl::ut_given{} = []() {
+                array<bool, 5> arr{};
+                bsl::ut_when{} = [&arr]() {
+                    fill(arr.rend(), arr.rbegin(), true);
+                    bsl::ut_then{} = [&arr]() {
+                        for (auto const elem : arr) {
+                            bsl::ut_check(!(*elem.data));
+                        }
+                    };
                 };
             };
         };
-    };
 
-    bsl::ut_scenario{"fill with invalid iter()"} = []() {
-        bsl::ut_given{} = []() {
-            array<bool, 5> arr{};
-            bsl::ut_when{} = [&arr]() {
-                fill(arr.iter(to_umax(4)), arr.iter(to_umax(1)), true);
-                bsl::ut_then{} = [&arr]() {
-                    bsl::for_each(arr, [](auto &e) {
-                        bsl::ut_check(!e);
-                    });
+        bsl::ut_scenario{"fill with invalid iter()"} = []() {
+            bsl::ut_given{} = []() {
+                array<bool, 5> arr{};
+                bsl::ut_when{} = [&arr]() {
+                    fill(arr.iter(to_umax(4)), arr.iter(to_umax(1)), true);
+                    bsl::ut_then{} = [&arr]() {
+                        for (auto const elem : arr) {
+                            bsl::ut_check(!(*elem.data));
+                        }
+                    };
                 };
             };
         };
-    };
 
-    bsl::ut_scenario{"fill with invalid riter()"} = []() {
-        bsl::ut_given{} = []() {
-            array<bool, 5> arr{};
-            bsl::ut_when{} = [&arr]() {
-                fill(arr.riter(to_umax(0)), arr.riter(to_umax(3)), true);
-                bsl::ut_then{} = [&arr]() {
-                    bsl::for_each(arr, [](auto &e) {
-                        bsl::ut_check(!e);
-                    });
+        bsl::ut_scenario{"fill with invalid riter()"} = []() {
+            bsl::ut_given{} = []() {
+                array<bool, 5> arr{};
+                bsl::ut_when{} = [&arr]() {
+                    fill(arr.riter(to_umax(0)), arr.riter(to_umax(3)), true);
+                    bsl::ut_then{} = [&arr]() {
+                        for (auto const elem : arr) {
+                            bsl::ut_check(!(*elem.data));
+                        }
+                    };
                 };
             };
         };
-    };
 
-    return bsl::ut_success();
+        return bsl::ut_success();
+    }
 }
 
 /// <!-- description -->
@@ -213,8 +213,8 @@ tests() noexcept
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     static_assert(tests() == bsl::ut_success());
     return tests();

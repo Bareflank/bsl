@@ -33,13 +33,23 @@ namespace bsl
     inline void
     example_is_array_overview() noexcept
     {
-        if (bsl::is_array<bool[]>::value) {    // NOLINT
+        // This is needed to demonstrate how to use this type trait
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+        if constexpr (bsl::is_array<bool[]>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
 
         constexpr bsl::uintmax bounds{42U};
-        if (bsl::is_array<bool[bounds]>::value) {    // NOLINT
+        // This is needed to demonstrate how to use this type trait
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+        if constexpr (bsl::is_array<bool[bounds]>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

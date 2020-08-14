@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_is_reference_wrapper_overview() noexcept
     {
-        if (bsl::is_reference_wrapper<reference_wrapper<bool>>::value) {
+        if constexpr (bsl::is_reference_wrapper<reference_wrapper<bool>>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

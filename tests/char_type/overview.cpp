@@ -35,10 +35,13 @@
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
+
+    // We are validating char_type, which requires the use of the char type
+    // NOLINTNEXTLINE(bsl-types-fixed-width-ints)
     static_assert(is_same<char_type, char>::value);
 
     return bsl::ut_success();

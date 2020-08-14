@@ -33,10 +33,13 @@ namespace bsl
     inline void
     example_result_operator_bool() noexcept
     {
-        bsl::result<bool> const res{bsl::in_place, true};
+        constexpr bsl::result<bool> res{bsl::in_place, true};
 
-        if (!!res) {
+        if constexpr (!!res) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

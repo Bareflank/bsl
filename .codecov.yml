@@ -35,19 +35,14 @@ coverage:
 parsers:
   gcov:
     branch_detection:
-      conditional: no
-      loop: no
+      conditional: yes
+      loop: yes
       method: no
       macro: no
 
 ignore:
   - "examples/**"
-  - "include/bsl/ifmap.hpp"
-  - "include/bsl/details/ifmap_linux.hpp"
-  - "include/bsl/details/ifmap_windows.hpp"
-  - "include/bsl/ioctl.hpp"
-  - "include/bsl/details/ioctl_linux.hpp"
-  - "include/bsl/details/ioctl_windows.hpp"
+  - "include/bsl/platform/**"
   - "include/bsl/spinlock.hpp"
   - "include/bsl/ut.hpp"
   - "include/bsl/details/putc_stderr.hpp"

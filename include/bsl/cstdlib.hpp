@@ -21,44 +21,15 @@
 /// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
+///
+/// @file cstdlib.hpp
+///
 
-#include <bsl/safe_integral.hpp>
-#include <bsl/debug.hpp>
+#ifndef BSL_CSTDLIB_HPP
+#define BSL_CSTDLIB_HPP
 
-namespace bsl
-{
-    /// <!-- description -->
-    ///   @brief Provides the example's main function
-    ///
-    inline void
-    example_safe_integral_lt_equals() noexcept
-    {
-        constexpr bsl::safe_int32 val1{42};
-        constexpr bsl::safe_int32 val2{42};
-        constexpr bsl::safe_int32 val3{23};
+// We are implementing cstdlib
+// NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
+#include <stdlib.h>
 
-        if (val1 == val2) {
-            bsl::print() << "success\n";
-        }
-
-        if (val1 != val3) {
-            bsl::print() << "success\n";
-        }
-
-        if (val3 < val1) {
-            bsl::print() << "success\n";
-        }
-
-        if (val3 <= val1) {
-            bsl::print() << "success\n";
-        }
-
-        if (val1 > val3) {
-            bsl::print() << "success\n";
-        }
-
-        if (val1 >= val3) {
-            bsl::print() << "success\n";
-        }
-    }
-}
+#endif

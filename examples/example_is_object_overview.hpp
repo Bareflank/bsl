@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_is_object_overview() noexcept
     {
-        if (bsl::is_object<bool>::value) {
+        if constexpr (bsl::is_object<bool>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

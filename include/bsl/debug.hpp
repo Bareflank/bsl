@@ -35,9 +35,11 @@
 #include "details/out_type_print.hpp"
 #include "details/out.hpp"
 
+#include "bool_constant.hpp"
 #include "char_type.hpp"
 #include "conditional.hpp"
 #include "cstdint.hpp"
+#include "disjunction.hpp"
 #include "fmt.hpp"
 
 namespace bsl
@@ -54,7 +56,12 @@ namespace bsl
 
     /// @brief used to disable debugging for debug() and alert()
     template<bsl::uintmax DL, typename T>
-    using out_t = conditional_t<DL <= BSL_DEBUG_LEVEL, out<T>, out<details::out_type_empty>>;
+    using out_t =
+        conditional_t <
+        disjunction<
+            bool_constant<DL<BSL_DEBUG_LEVEL>, bool_constant<DL == BSL_DEBUG_LEVEL>>::value,
+            out<T>,
+            out<details::out_type_empty>>;
 
     namespace details
     {
@@ -67,8 +74,8 @@ namespace bsl
         ///   @return Returns the current thread id
         ///
         template<typename T = void>
-        [[nodiscard]] constexpr safe_uintmax
-        thread_id() noexcept
+        [[nodiscard]] constexpr auto
+        thread_id() noexcept -> safe_uintmax
         {
             return safe_uintmax::zero();
         }
@@ -86,8 +93,8 @@ namespace bsl
     /// <!-- inputs/outputs -->
     ///   @return Returns and instance of bsl::out<T>
     ///
-    [[nodiscard]] constexpr out<details::out_type_print>
-    print() noexcept
+    [[nodiscard]] constexpr auto
+    print() noexcept -> out<details::out_type_print>
     {
         return {};
     }
@@ -105,9 +112,11 @@ namespace bsl
     ///   @return Returns and instance of bsl::out<T>
     ///
     template<bsl::uintmax DL = 0>
-    [[nodiscard]] constexpr out_t<DL, details::out_type_debug>
-    debug() noexcept
+    [[nodiscard]] constexpr auto
+    debug() noexcept -> out_t<DL, details::out_type_debug>
     {
+        // False positive
+        // NOLINTNEXTLINE(cppcoreguidelines-init-variables)
         out_t<DL, details::out_type_debug> o{};
 
         if constexpr (!o) {
@@ -131,9 +140,11 @@ namespace bsl
     ///   @return Returns and instance of bsl::out<T>
     ///
     template<bsl::uintmax DL = 0>
-    [[nodiscard]] constexpr out_t<DL, details::out_type_alert>
-    alert() noexcept
+    [[nodiscard]] constexpr auto
+    alert() noexcept -> out_t<DL, details::out_type_alert>
     {
+        // False positive
+        // NOLINTNEXTLINE(cppcoreguidelines-init-variables)
         out_t<DL, details::out_type_alert> o{};
 
         if constexpr (!o) {
@@ -156,12 +167,14 @@ namespace bsl
     /// <!-- inputs/outputs -->
     ///   @return Returns and instance of bsl::out<T>
     ///
-    [[nodiscard]] constexpr out<details::out_type_error>
-    error() noexcept
+    [[nodiscard]] constexpr auto
+    error() noexcept -> out<details::out_type_error>
     {
+        // False positive
+        // NOLINTNEXTLINE(cppcoreguidelines-init-variables)
         out<details::out_type_error> o{};
-        o << '[' << bsl::cyan << details::thread_id() << bsl::reset_color << "]: ";
 
+        o << '[' << bsl::cyan << details::thread_id() << bsl::reset_color << "]: ";
         return o;
     }
 }

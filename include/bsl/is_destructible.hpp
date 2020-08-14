@@ -56,14 +56,22 @@ namespace bsl
         ///     false.
         ///
         template<typename T>
-        [[nodiscard]] constexpr bool
-        check_is_destructible() noexcept
+        [[nodiscard]] constexpr auto
+        check_is_destructible() noexcept -> bool
         {
             if (is_reference<T>::value) {
                 return true;
             }
 
-            if (is_void<T>::value || is_function<T>::value || is_unbounded_array<T>::value) {
+            if (is_void<T>::value) {
+                return false;
+            }
+
+            if (is_function<T>::value) {
+                return false;
+            }
+
+            if (is_unbounded_array<T>::value) {
                 return false;
             }
 

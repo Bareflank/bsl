@@ -33,15 +33,21 @@ namespace bsl
     inline void
     example_char_traits_not_eof() noexcept
     {
-        bsl::intmax const val1{23};
-        bsl::intmax const val2{bsl::char_traits<bsl::char_type>::eof()};
+        constexpr bsl::intmax val1{23};
+        constexpr bsl::intmax val2{bsl::char_traits<bsl::char_type>::eof()};
 
-        if (bsl::char_traits<bsl::char_type>::not_eof(val1) == val1) {
+        if constexpr (bsl::char_traits<bsl::char_type>::not_eof(val1) == val1) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
 
-        if (bsl::char_traits<bsl::char_type>::not_eof(val2) == 0) {
+        if constexpr (bsl::char_traits<bsl::char_type>::not_eof(val2) == 0) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

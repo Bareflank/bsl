@@ -27,219 +27,222 @@
 #include <bsl/numeric_limits.hpp>
 #include <bsl/ut.hpp>
 
-/// <!-- description -->
-///   @brief Used to execute the actual checks. We put the checks in this
-///     function so that we can validate the tests both at compile-time
-///     and at run-time. If a bsl::ut_check fails, the tests will either
-///     fail fast at run-time, or will produce a compile-time error.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-constexpr bsl::exit_code
-tests() noexcept
+namespace
 {
-    using namespace bsl;
+    /// <!-- description -->
+    ///   @brief Used to execute the actual checks. We put the checks in this
+    ///     function so that we can validate the tests both at compile-time
+    ///     and at run-time. If a bsl::ut_check fails, the tests will either
+    ///     fail fast at run-time, or will produce a compile-time error.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @return Always returns bsl::exit_success.
+    ///
+    [[nodiscard]] constexpr auto
+    tests() noexcept -> bsl::exit_code
+    {
+        using namespace bsl;
 
-    bsl::ut_scenario{"equals/not equals"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{};
-            basic_string_view<char_type> const msg2{};
+        bsl::ut_scenario{"equals/not equals"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{};
+                basic_string_view<char_type> const msg2{};
 
-            bsl::ut_then{} = [&msg1, &msg2]() {
-                bsl::ut_check(msg1 == msg2);
-                bsl::ut_check(!(msg1 != msg2));
+                bsl::ut_then{} = [&msg1, &msg2]() {
+                    bsl::ut_check(msg1 == msg2);
+                    bsl::ut_check(!(msg1 != msg2));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{};
+
+                bsl::ut_then{} = [&msg1]() {
+                    bsl::ut_check(msg1 == "");
+                    bsl::ut_check(!(msg1 != ""));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{};
+
+                bsl::ut_then{} = [&msg1]() {
+                    bsl::ut_check("" == msg1);
+                    bsl::ut_check(!("" != msg1));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{"Hello"};
+                basic_string_view<char_type> const msg2{};
+
+                bsl::ut_then{} = [&msg1, &msg2]() {
+                    bsl::ut_check(!(msg1 == msg2));
+                    bsl::ut_check(msg1 != msg2);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{"Hello"};
+
+                bsl::ut_then{} = [&msg1]() {
+                    bsl::ut_check(!(msg1 == ""));
+                    bsl::ut_check(msg1 != "");
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{"Hello"};
+
+                bsl::ut_then{} = [&msg1]() {
+                    bsl::ut_check(!("" == msg1));
+                    bsl::ut_check("" != msg1);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{};
+                basic_string_view<char_type> const msg2{"Hello"};
+
+                bsl::ut_then{} = [&msg1, &msg2]() {
+                    bsl::ut_check(!(msg1 == msg2));
+                    bsl::ut_check(msg1 != msg2);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{};
+
+                bsl::ut_then{} = [&msg1]() {
+                    bsl::ut_check(!(msg1 == "Hello"));
+                    bsl::ut_check(msg1 != "Hello");
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{};
+
+                bsl::ut_then{} = [&msg1]() {
+                    bsl::ut_check(!("Hello" == msg1));
+                    bsl::ut_check("Hello" != msg1);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{"Hello"};
+                basic_string_view<char_type> const msg2{"42"};
+
+                bsl::ut_then{} = [&msg1, &msg2]() {
+                    bsl::ut_check(!(msg1 == msg2));
+                    bsl::ut_check(msg1 != msg2);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{"Hello"};
+
+                bsl::ut_then{} = [&msg1]() {
+                    bsl::ut_check(!(msg1 == "42"));
+                    bsl::ut_check(msg1 != "42");
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{"Hello"};
+
+                bsl::ut_then{} = [&msg1]() {
+                    bsl::ut_check(!("42" == msg1));
+                    bsl::ut_check("42" != msg1);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{"42"};
+                basic_string_view<char_type> const msg2{"Hello"};
+
+                bsl::ut_then{} = [&msg1, &msg2]() {
+                    bsl::ut_check(!(msg1 == msg2));
+                    bsl::ut_check(msg1 != msg2);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{"42"};
+
+                bsl::ut_then{} = [&msg1]() {
+                    bsl::ut_check(!(msg1 == "Hello"));
+                    bsl::ut_check(msg1 != "Hello");
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{"42"};
+
+                bsl::ut_then{} = [&msg1]() {
+                    bsl::ut_check(!("Hello" == msg1));
+                    bsl::ut_check("Hello" != msg1);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{"Hello"};
+                basic_string_view<char_type> const msg2{"World"};
+
+                bsl::ut_then{} = [&msg1, &msg2]() {
+                    bsl::ut_check(!(msg1 == msg2));
+                    bsl::ut_check(msg1 != msg2);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{"Hello"};
+
+                bsl::ut_then{} = [&msg1]() {
+                    bsl::ut_check(!(msg1 == "World"));
+                    bsl::ut_check(msg1 != "World");
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{"Hello"};
+
+                bsl::ut_then{} = [&msg1]() {
+                    bsl::ut_check(!("World" == msg1));
+                    bsl::ut_check("World" != msg1);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{"Hello"};
+                basic_string_view<char_type> const msg2{"Hello"};
+
+                bsl::ut_then{} = [&msg1, &msg2]() {
+                    bsl::ut_check(msg1 == msg2);
+                    bsl::ut_check(!(msg1 != msg2));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{"Hello"};
+
+                bsl::ut_then{} = [&msg1]() {
+                    bsl::ut_check(msg1 == "Hello");
+                    bsl::ut_check(!(msg1 != "Hello"));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg1{"Hello"};
+
+                bsl::ut_then{} = [&msg1]() {
+                    bsl::ut_check("Hello" == msg1);
+                    bsl::ut_check(!("Hello" != msg1));
+                };
             };
         };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{};
-
-            bsl::ut_then{} = [&msg1]() {
-                bsl::ut_check(msg1 == "");       // NOLINT
-                bsl::ut_check(!(msg1 != ""));    // NOLINT
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{};
-
-            bsl::ut_then{} = [&msg1]() {
-                bsl::ut_check("" == msg1);       // NOLINT
-                bsl::ut_check(!("" != msg1));    // NOLINT
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{"Hello"};
-            basic_string_view<char_type> const msg2{};
-
-            bsl::ut_then{} = [&msg1, &msg2]() {
-                bsl::ut_check(!(msg1 == msg2));
-                bsl::ut_check(msg1 != msg2);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{"Hello"};
-
-            bsl::ut_then{} = [&msg1]() {
-                bsl::ut_check(!(msg1 == ""));    // NOLINT
-                bsl::ut_check(msg1 != "");       // NOLINT
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{"Hello"};
-
-            bsl::ut_then{} = [&msg1]() {
-                bsl::ut_check(!("" == msg1));    // NOLINT
-                bsl::ut_check("" != msg1);       // NOLINT
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{};
-            basic_string_view<char_type> const msg2{"Hello"};
-
-            bsl::ut_then{} = [&msg1, &msg2]() {
-                bsl::ut_check(!(msg1 == msg2));
-                bsl::ut_check(msg1 != msg2);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{};
-
-            bsl::ut_then{} = [&msg1]() {
-                bsl::ut_check(!(msg1 == "Hello"));    // NOLINT
-                bsl::ut_check(msg1 != "Hello");       // NOLINT
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{};
-
-            bsl::ut_then{} = [&msg1]() {
-                bsl::ut_check(!("Hello" == msg1));    // NOLINT
-                bsl::ut_check("Hello" != msg1);       // NOLINT
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{"Hello"};
-            basic_string_view<char_type> const msg2{"42"};
-
-            bsl::ut_then{} = [&msg1, &msg2]() {
-                bsl::ut_check(!(msg1 == msg2));
-                bsl::ut_check(msg1 != msg2);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{"Hello"};
-
-            bsl::ut_then{} = [&msg1]() {
-                bsl::ut_check(!(msg1 == "42"));    // NOLINT
-                bsl::ut_check(msg1 != "42");       // NOLINT
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{"Hello"};
-
-            bsl::ut_then{} = [&msg1]() {
-                bsl::ut_check(!("42" == msg1));    // NOLINT
-                bsl::ut_check("42" != msg1);       // NOLINT
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{"42"};
-            basic_string_view<char_type> const msg2{"Hello"};
-
-            bsl::ut_then{} = [&msg1, &msg2]() {
-                bsl::ut_check(!(msg1 == msg2));
-                bsl::ut_check(msg1 != msg2);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{"42"};
-
-            bsl::ut_then{} = [&msg1]() {
-                bsl::ut_check(!(msg1 == "Hello"));    // NOLINT
-                bsl::ut_check(msg1 != "Hello");       // NOLINT
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{"42"};
-
-            bsl::ut_then{} = [&msg1]() {
-                bsl::ut_check(!("Hello" == msg1));    // NOLINT
-                bsl::ut_check("Hello" != msg1);       // NOLINT
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{"Hello"};
-            basic_string_view<char_type> const msg2{"World"};
-
-            bsl::ut_then{} = [&msg1, &msg2]() {
-                bsl::ut_check(!(msg1 == msg2));
-                bsl::ut_check(msg1 != msg2);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{"Hello"};
-
-            bsl::ut_then{} = [&msg1]() {
-                bsl::ut_check(!(msg1 == "World"));    // NOLINT
-                bsl::ut_check(msg1 != "World");       // NOLINT
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{"Hello"};
-
-            bsl::ut_then{} = [&msg1]() {
-                bsl::ut_check(!("World" == msg1));    // NOLINT
-                bsl::ut_check("World" != msg1);       // NOLINT
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{"Hello"};
-            basic_string_view<char_type> const msg2{"Hello"};
-
-            bsl::ut_then{} = [&msg1, &msg2]() {
-                bsl::ut_check(msg1 == msg2);
-                bsl::ut_check(!(msg1 != msg2));
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{"Hello"};
-
-            bsl::ut_then{} = [&msg1]() {
-                bsl::ut_check(msg1 == "Hello");       // NOLINT
-                bsl::ut_check(!(msg1 != "Hello"));    // NOLINT
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg1{"Hello"};
-
-            bsl::ut_then{} = [&msg1]() {
-                bsl::ut_check("Hello" == msg1);       // NOLINT
-                bsl::ut_check(!("Hello" != msg1));    // NOLINT
-            };
-        };
-    };
-
-    return bsl::ut_success();
+        return bsl::ut_success();
+    }
 }
 
 /// <!-- description -->
@@ -250,8 +253,8 @@ tests() noexcept
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     static_assert(tests() == bsl::ut_success());
     return tests();

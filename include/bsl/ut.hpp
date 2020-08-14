@@ -30,16 +30,15 @@
 
 #include "color.hpp"
 #include "convert.hpp"
+#include "cstdlib.hpp"
 #include "cstr_type.hpp"
 #include "debug.hpp"
 #include "discard.hpp"
 #include "exit_code.hpp"
 #include "is_constant_evaluated.hpp"
-#include "main.hpp"
 #include "source_location.hpp"
 #include "safe_integral.hpp"
-
-#include <stdlib.h>    // NOLINT
+#include "touch.hpp"
 
 #pragma clang diagnostic ignored "-Wunused-member-function"
 #pragma clang diagnostic ignored "-Wunneeded-member-function"
@@ -97,8 +96,8 @@ namespace bsl
         ///   @return Returns a reference to the scenario.
         ///
         template<typename FUNC>
-        [[maybe_unused]] constexpr ut_scenario &
-        operator=(FUNC &&func) noexcept
+        [[maybe_unused]] constexpr auto
+        operator=(FUNC &&func) noexcept -> ut_scenario &
         {
             func();
             return *this;
@@ -125,8 +124,8 @@ namespace bsl
         ///   @return Returns a reference to the ut_given.
         ///
         template<typename FUNC>
-        [[maybe_unused]] constexpr ut_given &
-        operator=(FUNC &&func) noexcept
+        [[maybe_unused]] constexpr auto
+        operator=(FUNC &&func) noexcept -> ut_given &
         {
             func();
             return *this;
@@ -153,11 +152,14 @@ namespace bsl
         ///   @return Returns a reference to the ut_given_at_runtime.
         ///
         template<typename FUNC>
-        [[maybe_unused]] constexpr ut_given_at_runtime &
-        operator=(FUNC &&func) noexcept
+        [[maybe_unused]] constexpr auto
+        operator=(FUNC &&func) noexcept -> ut_given_at_runtime &
         {
             if (!is_constant_evaluated()) {
                 func();
+            }
+            else {
+                bsl::touch();
             }
 
             return *this;
@@ -182,8 +184,8 @@ namespace bsl
         ///   @return Returns a reference to the ut_when.
         ///
         template<typename FUNC>
-        [[maybe_unused]] constexpr ut_when &
-        operator=(FUNC &&func) noexcept
+        [[maybe_unused]] constexpr auto
+        operator=(FUNC &&func) noexcept -> ut_when &
         {
             func();
             return *this;
@@ -208,8 +210,8 @@ namespace bsl
         ///   @return Returns a reference to the ut_then.
         ///
         template<typename FUNC>
-        [[maybe_unused]] constexpr ut_then &
-        operator=(FUNC &&func) noexcept
+        [[maybe_unused]] constexpr auto
+        operator=(FUNC &&func) noexcept -> ut_then &
         {
             func();
             return *this;
@@ -222,8 +224,8 @@ namespace bsl
     /// <!-- inputs/outputs -->
     ///   @return returns bsl::exit_success
     ///
-    constexpr bsl::exit_code
-    ut_success() noexcept
+    [[nodiscard]] constexpr auto
+    ut_success() noexcept -> bsl::exit_code
     {
         bsl::print() << bsl::green << "All tests passed" << bsl::reset_color << bsl::endl;
         return bsl::exit_success;
@@ -250,8 +252,8 @@ namespace bsl
     ///     check failed.
     ///   @return returns test
     ///
-    [[maybe_unused]] constexpr bool
-    ut_check(bool const test, sloc_type const &sloc = here()) noexcept
+    [[maybe_unused]] constexpr auto
+    ut_check(bool const test, sloc_type const &sloc = here()) noexcept -> bool
     {
         if (!test) {
             bsl::error() << bsl::magenta << "[CHECK FAILED]" << bsl::reset_color << bsl::endl;
@@ -259,6 +261,9 @@ namespace bsl
 
             ut_check_failed();
             exit(1);
+        }
+        else {
+            bsl::touch();
         }
 
         return test;

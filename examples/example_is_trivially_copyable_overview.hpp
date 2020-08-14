@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_is_trivially_copyable_overview() noexcept
     {
-        if (bsl::is_trivially_copyable<bool>::value) {
+        if constexpr (bsl::is_trivially_copyable<bool>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

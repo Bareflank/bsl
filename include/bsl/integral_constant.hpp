@@ -57,7 +57,7 @@ namespace bsl
         /// <!-- description -->
         ///   @brief Destroyes a previously created bsl::integral_constant
         ///
-        ~integral_constant() noexcept = default;
+        constexpr ~integral_constant() noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy constructor
@@ -82,7 +82,8 @@ namespace bsl
         ///   @param o the object being copied
         ///   @return a reference to *this
         ///
-        constexpr integral_constant &operator=(integral_constant const &o) &noexcept = default;
+        [[nodiscard]] constexpr auto operator=(integral_constant const &o) &noexcept
+            -> integral_constant & = default;
 
         /// <!-- description -->
         ///   @brief move assignment
@@ -91,7 +92,8 @@ namespace bsl
         ///   @param o the object being moved
         ///   @return a reference to *this
         ///
-        constexpr integral_constant &operator=(integral_constant &&o) &noexcept = default;
+        [[nodiscard]] constexpr auto operator=(integral_constant &&o) &noexcept
+            -> integral_constant & = default;
     };
 }
 

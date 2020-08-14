@@ -33,10 +33,13 @@ namespace bsl
     inline void
     example_result_failure() noexcept
     {
-        bsl::result<bool> const res{bsl::errc_failure};
+        constexpr bsl::result<bool> res{bsl::errc_failure};
 
-        if (res.failure()) {
+        if constexpr (res.failure()) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

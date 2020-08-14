@@ -34,8 +34,8 @@ namespace bsl
     ///   @param val the value to return
     ///   @return returns val
     ///
-    [[nodiscard]] constexpr bool
-    example_function(bool const val) noexcept
+    [[nodiscard]] constexpr auto
+    example_function(bool const val) noexcept -> bool
     {
         return val;
     }

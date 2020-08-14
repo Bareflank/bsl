@@ -31,6 +31,7 @@ endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL CLANG_TIDY)
     bf_find_program(CMAKE_CXX_CLANG_TIDY "clang-tidy" "https://clang.llvm.org/extra/clang-tidy/")
+    # set(CMAKE_CXX_CLANG_TIDY "${CMAKE_CXX_CLANG_TIDY};--fix")
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL CODECOV)

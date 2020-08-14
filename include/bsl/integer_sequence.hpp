@@ -62,8 +62,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Equivalent to sizeof...(INTS)
         ///
-        [[nodiscard]] static constexpr bsl::uintmax
-        size() noexcept
+        [[nodiscard]] static constexpr auto
+        size() noexcept -> bsl::uintmax
         {
             return sizeof...(INTS);
         }
@@ -75,8 +75,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max integer in the sequence
         ///
-        [[nodiscard]] static constexpr T
-        max() noexcept
+        [[nodiscard]] static constexpr auto
+        max() noexcept -> T
         {
             return details::integer_sequence_max<T, INTS...>::value;
         }
@@ -88,8 +88,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the min integer in the sequence
         ///
-        [[nodiscard]] static constexpr T
-        min() noexcept
+        [[nodiscard]] static constexpr auto
+        min() noexcept -> T
         {
             return details::integer_sequence_min<T, INTS...>::value;
         }

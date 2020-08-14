@@ -22,17 +22,18 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef BSL_DETAILS_IOCTL_LINUX_HPP
-#define BSL_DETAILS_IOCTL_LINUX_HPP
+#ifndef BSL_DETAILS_IOCTL_WINDOWS_HPP
+#define BSL_DETAILS_IOCTL_WINDOWS_HPP
 
-#include "../cstdint.hpp"
-#include "../debug.hpp"
-#include "../discard.hpp"
-#include "../safe_integral.hpp"
+#include "../../../debug.hpp"
+#include "../../../move.hpp"
+#include "../../../safe_integral.hpp"
+#include "../../../swap.hpp"
 
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/ioctl.h>
+#include <Windows.h>
+#include <SetupAPI.h>
+#undef max
+#undef min
 
 namespace bsl
 {
@@ -44,7 +45,20 @@ namespace bsl
     class ioctl final
     {
         /// @brief stores a handle to the device driver.
-        bsl::int32 m_hndl{};
+        HANDLE m_hndl{};
+
+        /// <!-- description -->
+        ///   @brief Swaps *this with other
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param lhs the left hand side of the exchange
+        ///   @param rhs the right hand side of the exchange
+        ///
+        static constexpr auto
+        private_swap(ioctl &lhs, ioctl &rhs) noexcept -> void
+        {
+            bsl::swap(lhs.m_hndl, rhs.m_hndl);
+        }
 
     public:
         /// <!-- description -->
@@ -54,13 +68,78 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param name the name of the device driver to IOCTL.
         ///
-        template<typename CSTR>
-        explicit ioctl(CSTR name) noexcept
+        template<typename GUID>
+        explicit ioctl(GUID name) noexcept
         {
-            m_hndl = open(name, O_RDWR);    // NOLINT
+            BOOL ret{};
+            DWORD size{};
+            HANDLE info{};
+            SP_INTERFACE_DEVICE_DETAIL_DATA *dev_data{};
 
-            if (0 == m_hndl) {
-                bsl::error() << "ioctl open failed\n";
+            SP_DEVINFO_DATA dev_info{};
+            dev_info.cbSize = sizeof(SP_DEVINFO_DATA);
+
+            SP_INTERFACE_DEVICE_DATA if_info{};
+            if_info.cbSize = sizeof(SP_INTERFACE_DEVICE_DATA);
+
+            info = SetupDiGetClassDevs(&name, 0, 0, DIGCF_DEVICEINTERFACE | DIGCF_PRESENT);
+            if (INVALID_HANDLE_VALUE == info) {
+                bsl::error() << "SetupDiGetClassDevs failed\n";
+                return;
+            }
+
+            ret = SetupDiEnumDeviceInfo(info, 0, &dev_info);
+            if (ret == FALSE) {
+                bsl::error() << "SetupDiEnumDeviceInfo failed\n";
+                CloseHandle(info);
+                return;
+            }
+
+            ret = SetupDiEnumDeviceInterfaces(info, &dev_info, &(name), 0, &if_info);
+            if (ret == FALSE) {
+                bsl::error() << "SetupDiEnumDeviceInterfaces failed\n";
+                CloseHandle(info);
+                return;
+            }
+
+            ret = SetupDiGetDeviceInterfaceDetail(info, &if_info, nullptr, 0, &size, nullptr);
+            if (ret == FALSE) {
+                bsl::error() << "SetupDiGetDeviceInterfaceDetail failed\n";
+                CloseHandle(info);
+                return;
+            }
+
+            dev_data = static_cast<SP_INTERFACE_DEVICE_DETAIL_DATA *>(malloc(size));
+            if (nullptr == dev_data) {
+                bsl::error() << "malloc failed in ioctl\n";
+                CloseHandle(info);
+                return;
+            }
+
+            dev_data->cbSize = sizeof(SP_INTERFACE_DEVICE_DETAIL_DATA);
+
+            ret = SetupDiGetDeviceInterfaceDetail(info, &if_info, dev_data, size, nullptr, nullptr);
+            if (ret == FALSE) {
+                bsl::error() << "SetupDiGetDeviceInterfaceDetail failed\n";
+                free(dev_data);
+                CloseHandle(info);
+                return;
+            }
+
+            m_hndl = CreateFile(
+                dev_data->DevicePath,
+                GENERIC_READ | GENERIC_WRITE,
+                0,
+                nullptr,
+                CREATE_ALWAYS,
+                FILE_ATTRIBUTE_NORMAL,
+                nullptr);
+
+            free(dev_data);
+            CloseHandle(info);
+
+            if (nullptr == m_hndl) {
+                bsl::error() << "ioctl CreateFile failed\n";
                 return;
             }
         }
@@ -70,7 +149,9 @@ namespace bsl
         ///
         ~ioctl() noexcept
         {
-            close(m_hndl);
+            if (nullptr != m_hndl) {
+                CloseHandle(m_hndl);
+            }
         }
 
         /// <!-- description -->
@@ -79,7 +160,7 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param o the object being copied
         ///
-        constexpr ioctl(ioctl const &o) noexcept = default;
+        constexpr ioctl(ioctl const &o) noexcept = delete;
 
         /// <!-- description -->
         ///   @brief move constructor
@@ -87,7 +168,10 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param o the object being moved
         ///
-        constexpr ioctl(ioctl &&o) noexcept = default;
+        constexpr ioctl(ioctl &&o) noexcept : m_hndl{bsl::move(o.m_hndl)}
+        {
+            o.m_hndl = nullptr;
+        }
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -96,7 +180,7 @@ namespace bsl
         ///   @param o the object being copied
         ///   @return a reference to *this
         ///
-        ioctl &operator=(ioctl const &o) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(ioctl const &o) &noexcept -> ioctl & = delete;
 
         /// <!-- description -->
         ///   @brief move assignment
@@ -105,7 +189,13 @@ namespace bsl
         ///   @param o the object being moved
         ///   @return a reference to *this
         ///
-        ioctl &operator=(ioctl &&o) &noexcept = default;
+        [[maybe_unused]] auto
+        operator=(ioctl &&o) &noexcept -> ioctl &
+        {
+            ioctl tmp{bsl::move(o)};
+            this->private_swap(*this, tmp);
+            return *this;
+        }
 
         /// <!-- description -->
         ///   @brief Sends a request to the driver without read or writing
@@ -117,16 +207,17 @@ namespace bsl
         ///   @return Returns true if the IOCTL succeeded, false otherwise.
         ///
         template<typename REQUEST>
-        [[nodiscard]] constexpr bool
-        send(REQUEST req) const noexcept
+        [[nodiscard]] constexpr auto
+        send(REQUEST req) const noexcept -> bool
         {
-            if (0 == m_hndl) {
+            if (nullptr == m_hndl) {
                 bsl::error() << "failed to send, ioctl not properly initialized\n";
                 return false;
             }
 
-            if (::ioctl(m_hndl, req) < 0) {    // NOLINT
-                bsl::error() << "ioctl failed\n";
+            DWORD bytes{};
+            if (!DeviceIoControl(m_hndl, req, nullptr, 0, nullptr, 0, &bytes, nullptr)) {
+                bsl::error() << "DeviceIoControl failed\n";
                 return false;
             }
 
@@ -144,18 +235,17 @@ namespace bsl
         ///   @return Returns true if the IOCTL succeeded, false otherwise.
         ///
         template<typename REQUEST>
-        [[nodiscard]] constexpr bool
-        read(REQUEST req, void *const data, safe_uintmax const &size) const noexcept
+        [[nodiscard]] constexpr auto
+        read(REQUEST req, void *const data, safe_uintmax const &size) const noexcept -> bool
         {
-            bsl::discard(size);
-
-            if (0 == m_hndl) {
+            if (nullptr == m_hndl) {
                 bsl::error() << "failed to read, ioctl not properly initialized\n";
                 return false;
             }
 
-            if (::ioctl(m_hndl, req, data) < 0) {    // NOLINT
-                bsl::error() << "ioctl failed\n";
+            DWORD bytes{};
+            if (!DeviceIoControl(m_hndl, req, nullptr, 0, data, size, &bytes, nullptr)) {
+                bsl::error() << "DeviceIoControl failed\n";
                 return false;
             }
 
@@ -173,18 +263,20 @@ namespace bsl
         ///   @return Returns true if the IOCTL succeeded, false otherwise.
         ///
         template<typename REQUEST>
-        [[nodiscard]] constexpr bool
-        write(REQUEST req, void const *const data, safe_uintmax const &size) const noexcept
+        [[nodiscard]] constexpr auto
+        write(REQUEST req, void const *const data, safe_uintmax const &size) const noexcept -> bool
         {
-            bsl::discard(size);
+            void *const ptr{const_cast<void *>(data)};
+            ;
 
-            if (0 == m_hndl) {
+            if (nullptr == m_hndl) {
                 bsl::error() << "failed to write, ioctl not properly initialized\n";
                 return false;
             }
 
-            if (::ioctl(m_hndl, req, data) < 0) {    // NOLINT
-                bsl::error() << "ioctl failed\n";
+            DWORD bytes{};
+            if (!DeviceIoControl(m_hndl, req, ptr, size, nullptr, 0, &bytes, nullptr)) {
+                bsl::error() << "DeviceIoControl failed\n";
                 return false;
             }
 
@@ -202,18 +294,17 @@ namespace bsl
         ///   @return Returns true if the IOCTL succeeded, false otherwise.
         ///
         template<typename REQUEST>
-        [[nodiscard]] constexpr bool
-        read_write(REQUEST req, void *const data, safe_uintmax const &size) const noexcept
+        [[nodiscard]] constexpr auto
+        read_write(REQUEST req, void *const data, safe_uintmax const &size) const noexcept -> bool
         {
-            bsl::discard(size);
-
-            if (0 == m_hndl) {
+            if (nullptr == m_hndl) {
                 bsl::error() << "failed to read/write, ioctl not properly initialized\n";
                 return false;
             }
 
-            if (::ioctl(m_hndl, req, data) < 0) {    // NOLINT
-                bsl::error() << "ioctl failed\n";
+            DWORD bytes{};
+            if (!DeviceIoControl(m_hndl, req, data, size, data, size, &bytes, nullptr)) {
+                bsl::error() << "DeviceIoControl failed\n";
                 return false;
             }
 

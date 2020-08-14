@@ -35,7 +35,7 @@ namespace bsl
     /// @class bsl::is_polymorphic
     ///
     /// <!-- description -->
-    ///   @brief If the provided type is a POD type, provides the member
+    ///   @brief If the provided type is a polymorphic type, provides the member
     ///     constant value equal to true. Otherwise the member constant value
     ///     is false.
     ///   @include example_is_polymorphic_overview.hpp

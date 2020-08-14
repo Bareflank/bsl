@@ -35,8 +35,11 @@ namespace bsl
     inline void
     example_has_unique_object_representations_overview() noexcept
     {
-        if (bsl::has_unique_object_representations<example_class_pod>::value) {
+        if constexpr (bsl::has_unique_object_representations<example_class_pod>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

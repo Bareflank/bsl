@@ -28,6 +28,7 @@
 #ifndef BSL_IS_NOTHROW_DESTRUCTIBLE_HPP
 #define BSL_IS_NOTHROW_DESTRUCTIBLE_HPP
 
+#include "conjunction.hpp"
 #include "bool_constant.hpp"
 #include "declval.hpp"
 #include "is_detected.hpp"
@@ -61,8 +62,8 @@ namespace bsl
         ///   @return returns true if T is nothrow destructible, false otherwise
         ///
         template<typename T>
-        auto destructor_is_marked_nothrow(bsl::int32 ignored) noexcept
-            -> bool_constant<noexcept(bsl::declval<T &>().~T())>;    // NOLINT
+        [[maybe_unused]] auto destructor_is_marked_nothrow(bsl::int32 ignored) noexcept
+            -> bool_constant<noexcept(bsl::declval<T &>().~T())>;
 
         /// <!-- description -->
         ///   @brief Tests if a destructor is marked noexcept or not. It does
@@ -77,7 +78,7 @@ namespace bsl
         ///   @return returns true if T is nothrow destructible, false otherwise
         ///
         template<typename T>
-        auto destructor_is_marked_nothrow(bool ignored) noexcept -> false_type;
+        [[maybe_unused]] auto destructor_is_marked_nothrow(bool ignored) noexcept -> false_type;
 
         /// <!-- description -->
         ///   @brief Checks if a type "T" is destructible and if so, returns
@@ -89,19 +90,28 @@ namespace bsl
         ///     false.
         ///
         template<typename T>
-        [[nodiscard]] constexpr bool
-        check_is_nothrow_destructible() noexcept
+        [[nodiscard]] constexpr auto
+        check_is_nothrow_destructible() noexcept -> bool
         {
             if (is_reference<T>::value) {
                 return true;
             }
 
-            if (is_void<T>::value || is_function<T>::value || is_unbounded_array<T>::value) {
+            if (is_void<T>::value) {
                 return false;
             }
 
-            return is_detected<is_nothrow_destructible_type, remove_all_extents_t<T>>::value &&
-                   decltype(destructor_is_marked_nothrow<remove_all_extents_t<T>>(0))::value;
+            if (is_function<T>::value) {
+                return false;
+            }
+
+            if (is_unbounded_array<T>::value) {
+                return false;
+            }
+
+            return conjunction<
+                is_detected<is_nothrow_destructible_type, remove_all_extents_t<T>>,
+                decltype(destructor_is_marked_nothrow<remove_all_extents_t<T>>(0))>::value;
         }
     }
 

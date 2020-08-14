@@ -38,8 +38,11 @@ namespace bsl
     inline void
     example_is_detected_overview() noexcept
     {
-        if (bsl::is_detected<example_is_detect_t, example_class_base>::value) {
+        if constexpr (bsl::is_detected<example_is_detect_t, example_class_base>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

@@ -112,8 +112,8 @@ namespace bsl
         ///     occurs when the debug statement's debug level is greater
         ///     than the current global debug level.
         ///
-        [[nodiscard]] static constexpr bool
-        empty() noexcept
+        [[nodiscard]] static constexpr auto
+        empty() noexcept -> bool
         {
             return is_same<T, details::out_type_empty>::value;
         }
@@ -137,8 +137,8 @@ namespace bsl
         ///   @return Returns true if this bsl::out functions as a print()
         ///     which outputs to stdout and does not contain a label.
         ///
-        [[nodiscard]] static constexpr bool
-        is_print() noexcept
+        [[nodiscard]] static constexpr auto
+        is_print() noexcept -> bool
         {
             return is_same<T, details::out_type_print>::value;
         }
@@ -151,8 +151,8 @@ namespace bsl
         ///   @return Returns true if this bsl::out functions as a debug()
         ///     which outputs to stdout and contains the "DEBUG" label.
         ///
-        [[nodiscard]] static constexpr bool
-        is_debug() noexcept
+        [[nodiscard]] static constexpr auto
+        is_debug() noexcept -> bool
         {
             return is_same<T, details::out_type_debug>::value;
         }
@@ -165,8 +165,8 @@ namespace bsl
         ///   @return Returns true if this bsl::out functions as an alert()
         ///     which outputs to stderr and contains the "ALERT" label.
         ///
-        [[nodiscard]] static constexpr bool
-        is_alert() noexcept
+        [[nodiscard]] static constexpr auto
+        is_alert() noexcept -> bool
         {
             return is_same<T, details::out_type_alert>::value;
         }
@@ -179,8 +179,8 @@ namespace bsl
         ///   @return Returns true if this bsl::out functions as an error()
         ///     which outputs to stderr and contains the "ERROR" label.
         ///
-        [[nodiscard]] static constexpr bool
-        is_error() noexcept
+        [[nodiscard]] static constexpr auto
+        is_error() noexcept -> bool
         {
             return is_same<T, details::out_type_error>::value;
         }
@@ -192,14 +192,10 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param c the character to output
         ///
-        static constexpr void
-        write(char_type const c) noexcept
+        static constexpr auto
+        write(char_type const c) noexcept -> void
         {
             if (is_constant_evaluated()) {
-                return;
-            }
-
-            if constexpr (BSL_PERFORCE) {
                 return;
             }
 
@@ -228,14 +224,10 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param str the string to output
         ///
-        static constexpr void
-        write(cstr_type const str) noexcept
+        static constexpr auto
+        write(cstr_type const str) noexcept -> void
         {
             if (is_constant_evaluated()) {
-                return;
-            }
-
-            if constexpr (BSL_PERFORCE) {
                 return;
             }
 

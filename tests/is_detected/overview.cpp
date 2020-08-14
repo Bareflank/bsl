@@ -32,8 +32,8 @@ namespace
     class myclass final
     {
     public:
-        [[nodiscard]] constexpr bool
-        get() const noexcept    // NOLINT
+        [[nodiscard]] constexpr auto
+        get() const noexcept -> bool
         {
             return true;
         }
@@ -54,8 +54,8 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 

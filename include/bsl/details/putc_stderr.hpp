@@ -25,45 +25,23 @@
 #ifndef BSL_DETAILS_PUTC_STDERR_HPP
 #define BSL_DETAILS_PUTC_STDERR_HPP
 
+#include "../cstdio.hpp"
 #include "../char_type.hpp"
 #include "../discard.hpp"
 
-namespace bsl
+namespace bsl::details
 {
-    namespace details
+    /// <!-- description -->
+    ///   @brief Outputs a character to stderr.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param c the character to output to stderr
+    ///
+    inline auto
+    putc_stderr(char_type const c) noexcept -> void
     {
-        /// <!-- description -->
-        ///   @brief Outputs a character to stderr.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param c the character to output to stderr
-        ///
-        void putc_stderr(char_type const c) noexcept;
+        bsl::discard(fputc(c, stderr));
     }
 }
-
-#ifndef BAREFLANK
-
-#include <stdio.h>    // PRQA S 1-10000 // NOLINT
-
-namespace bsl
-{
-    namespace details
-    {
-        /// <!-- description -->
-        ///   @brief Outputs a character to stderr.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param c the character to output to stderr
-        ///
-        inline void
-        putc_stderr(char_type const c) noexcept
-        {
-            bsl::discard(fputc(c, stderr));    // PRQA S 1-10000 // NOLINT
-        }
-    }
-}
-
-#endif
 
 #endif

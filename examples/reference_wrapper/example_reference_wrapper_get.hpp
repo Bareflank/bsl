@@ -39,5 +39,8 @@ namespace bsl
         if (rw.get() == data) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
     }
 }

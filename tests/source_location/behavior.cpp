@@ -25,57 +25,60 @@
 #include <bsl/source_location.hpp>
 #include <bsl/ut.hpp>
 
-/// <!-- description -->
-///   @brief Used to execute the actual checks. We put the checks in this
-///     function so that we can validate the tests both at compile-time
-///     and at run-time. If a bsl::ut_check fails, the tests will either
-///     fail fast at run-time, or will produce a compile-time error.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-constexpr bsl::exit_code
-tests() noexcept
+namespace
 {
-    bsl::ut_scenario{"empty source location"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::source_location sloc{};
-            bsl::ut_then{} = [&sloc]() {
-                bsl::ut_check(sloc.file_name() != nullptr);
-                bsl::ut_check(sloc.function_name() != nullptr);
-                bsl::ut_check(sloc.line() == -1);
-            };
-        };
-    };
-
-    bsl::ut_scenario{"source location"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::source_location sloc = bsl::here();
-            bsl::ut_then{} = [&sloc]() {
-                bsl::ut_check(sloc.file_name() != nullptr);
-                bsl::ut_check(sloc.function_name() != nullptr);
-                bsl::ut_check(sloc.line() == 53);    // NOLINT
-            };
-        };
-    };
-
-    bsl::ut_scenario{"output doesn't crash"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::source_location sloc{};
-            bsl::ut_then{} = [&sloc]() {
-                bsl::debug() << sloc;
+    /// <!-- description -->
+    ///   @brief Used to execute the actual checks. We put the checks in this
+    ///     function so that we can validate the tests both at compile-time
+    ///     and at run-time. If a bsl::ut_check fails, the tests will either
+    ///     fail fast at run-time, or will produce a compile-time error.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @return Always returns bsl::exit_success.
+    ///
+    [[nodiscard]] constexpr auto
+    tests() noexcept -> bsl::exit_code
+    {
+        bsl::ut_scenario{"empty source location"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::source_location sloc{};
+                bsl::ut_then{} = [&sloc]() {
+                    bsl::ut_check(sloc.file_name() != nullptr);
+                    bsl::ut_check(sloc.function_name() != nullptr);
+                    bsl::ut_check(sloc.line() == -1);
+                };
             };
         };
 
-        bsl::ut_given{} = []() {
-            bsl::source_location sloc = bsl::here();
-            bsl::ut_then{} = [&sloc]() {
-                bsl::debug() << sloc;
+        bsl::ut_scenario{"source location"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::source_location sloc{bsl::here()};
+                bsl::ut_then{} = [&sloc]() {
+                    bsl::ut_check(sloc.file_name() != nullptr);
+                    bsl::ut_check(sloc.function_name() != nullptr);
+                    bsl::ut_check(sloc.line() == 55);
+                };
             };
         };
-    };
 
-    return bsl::ut_success();
+        bsl::ut_scenario{"output doesn't crash"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::source_location sloc{};
+                bsl::ut_then{} = [&sloc]() {
+                    bsl::debug() << sloc;
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::source_location sloc{bsl::here()};
+                bsl::ut_then{} = [&sloc]() {
+                    bsl::debug() << sloc;
+                };
+            };
+        };
+
+        return bsl::ut_success();
+    }
 }
 
 /// <!-- description -->
@@ -86,8 +89,8 @@ tests() noexcept
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     static_assert(tests() == bsl::ut_success());
     return tests();

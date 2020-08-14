@@ -34,8 +34,12 @@ namespace bsl
     example_char_traits_length() noexcept
     {
         constexpr bsl::safe_uintmax len{bsl::to_umax(2)};
-        if (bsl::char_traits<bsl::char_type>::length("42") == len) {
+
+        if constexpr (bsl::char_traits<bsl::char_type>::length("42") == len) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

@@ -26,712 +26,715 @@
 #include <bsl/numeric_limits.hpp>
 #include <bsl/ut.hpp>
 
-/// <!-- description -->
-///   @brief Used to execute the actual checks. We put the checks in this
-///     function so that we can validate the tests both at compile-time
-///     and at run-time. If a bsl::ut_check fails, the tests will either
-///     fail fast at run-time, or will produce a compile-time error.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-constexpr bsl::exit_code
-tests() noexcept
+namespace
 {
-    bsl::ut_scenario{"add"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42};
-            bsl::safe_int32 val2{42};
-            bsl::ut_then{} = [&val1, &val2]() {
-                bsl::ut_check(val1 + val2 == 42 + 42);
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val1{bsl::numeric_limits<bsl::int32>::max()};
-            bsl::safe_int32 val2{1};
-            bsl::ut_when{} = [&val1, &val2]() {
+    /// <!-- description -->
+    ///   @brief Used to execute the actual checks. We put the checks in this
+    ///     function so that we can validate the tests both at compile-time
+    ///     and at run-time. If a bsl::ut_check fails, the tests will either
+    ///     fail fast at run-time, or will produce a compile-time error.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @return Always returns bsl::exit_success.
+    ///
+    [[nodiscard]] constexpr auto
+    tests() noexcept -> bsl::exit_code
+    {
+        bsl::ut_scenario{"add"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42};
+                bsl::safe_int32 val2{42};
                 bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 + val2).failure());
+                    bsl::ut_check(val1 + val2 == 42 + 42);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val1{bsl::numeric_limits<bsl::int32>::max()};
+                bsl::safe_int32 val2{1};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 + val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val1{bsl::numeric_limits<bsl::int32>::min()};
+                bsl::safe_int32 val2{-1};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 + val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42, true};
+                bsl::safe_int32 val2{42, false};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 + val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42, false};
+                bsl::safe_int32 val2{42, true};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 + val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42, true};
+                bsl::safe_int32 val2{42, true};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 + val2).failure());
+                    };
                 };
             };
         };
 
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val1{bsl::numeric_limits<bsl::int32>::min()};
-            bsl::safe_int32 val2{-1};
-            bsl::ut_when{} = [&val1, &val2]() {
+        bsl::ut_scenario{"add with value"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check(val + 42 == 42 + 42);
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check(42 + val == 42 + 42);
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::max()};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((val + 1).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::max()};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((1 + val).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::min()};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((val + (-1)).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::min()};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check(((-1) + val).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42, true};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((val + 42).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42, true};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((42 + val).failure());
+                    };
+                };
+            };
+        };
+
+        bsl::ut_scenario{"sub"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42};
+                bsl::safe_int32 val2{23};
                 bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 + val2).failure());
+                    bsl::ut_check(val1 - val2 == 42 - 23);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val1{bsl::numeric_limits<bsl::int32>::max()};
+                bsl::safe_int32 val2{-1};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 - val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val1{bsl::numeric_limits<bsl::int32>::min()};
+                bsl::safe_int32 val2{1};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 - val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42, true};
+                bsl::safe_int32 val2{23, false};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 - val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42, false};
+                bsl::safe_int32 val2{23, true};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 - val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42, true};
+                bsl::safe_int32 val2{23, true};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 - val2).failure());
+                    };
                 };
             };
         };
 
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42, true};
-            bsl::safe_int32 val2{42, false};
-            bsl::ut_when{} = [&val1, &val2]() {
+        bsl::ut_scenario{"sub with value"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check(val - 23 == 42 - 23);
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{23};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check(42 - val == 42 - 23);
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::max()};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((val - (-1)).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{-1};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((bsl::numeric_limits<bsl::int32>::max() - val).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::min()};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((val - 1).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{1};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((bsl::numeric_limits<bsl::int32>::min() - val).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42, true};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((val - 23).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{23, true};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((42 - val).failure());
+                    };
+                };
+            };
+        };
+
+        bsl::ut_scenario{"mul"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42};
+                bsl::safe_int32 val2{42};
                 bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 + val2).failure());
+                    bsl::ut_check(val1 * val2 == 42 * 42);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val1{bsl::numeric_limits<bsl::int32>::max()};
+                bsl::safe_int32 val2{2};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 * val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val1{bsl::numeric_limits<bsl::int32>::min()};
+                bsl::safe_int32 val2{-2};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 * val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42, true};
+                bsl::safe_int32 val2{42, false};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 * val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42, false};
+                bsl::safe_int32 val2{42, true};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 * val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42, true};
+                bsl::safe_int32 val2{42, true};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 * val2).failure());
+                    };
                 };
             };
         };
 
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42, false};
-            bsl::safe_int32 val2{42, true};
-            bsl::ut_when{} = [&val1, &val2]() {
+        bsl::ut_scenario{"mul with value"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check(val * 42 == 42 * 42);
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check(42 * val == 42 * 42);
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::max()};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((val * 2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::max()};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((2 * val).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::min()};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((val * (-2)).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::min()};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check(((-2) * val).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42, true};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((val * 42).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42, true};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((42 * val).failure());
+                    };
+                };
+            };
+        };
+
+        bsl::ut_scenario{"div"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42};
+                bsl::safe_int32 val2{23};
                 bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 + val2).failure());
+                    bsl::ut_check(val1 / val2 == 42 / 23);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val1{42};
+                bsl::safe_int32 val2{0};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 / val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val1{bsl::numeric_limits<bsl::int32>::min()};
+                bsl::safe_int32 val2{-1};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 / val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42, true};
+                bsl::safe_int32 val2{23, false};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 / val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42, false};
+                bsl::safe_int32 val2{23, true};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 / val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42, true};
+                bsl::safe_int32 val2{23, true};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 / val2).failure());
+                    };
                 };
             };
         };
 
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42, true};
-            bsl::safe_int32 val2{42, true};
-            bsl::ut_when{} = [&val1, &val2]() {
+        bsl::ut_scenario{"div with value"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check(val / 23 == 42 / 23);
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{23};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check(42 / val == 42 / 23);
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{42};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((val / 0).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{0};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((42 / val).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::min()};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((val / (-1)).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{-1};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((bsl::numeric_limits<bsl::int32>::min() / val).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42, true};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((val / 23).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{23, true};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((42 / val).failure());
+                    };
+                };
+            };
+        };
+
+        bsl::ut_scenario{"mod"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42};
+                bsl::safe_int32 val2{23};
                 bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 + val2).failure());
+                    bsl::ut_check(val1 % val2 == 42 % 23);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val1{42};
+                bsl::safe_int32 val2{0};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 % val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val1{bsl::numeric_limits<bsl::int32>::min()};
+                bsl::safe_int32 val2{-1};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 % val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42, true};
+                bsl::safe_int32 val2{23, false};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 % val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42, false};
+                bsl::safe_int32 val2{23, true};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 % val2).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val1{42, true};
+                bsl::safe_int32 val2{23, true};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    bsl::ut_then{} = [&val1, &val2]() {
+                        bsl::ut_check((val1 % val2).failure());
+                    };
                 };
             };
         };
-    };
 
-    bsl::ut_scenario{"add with value"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{42};
-            bsl::ut_when{} = [&val]() {
+        bsl::ut_scenario{"mod with value"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check(val % 23 == 42 % 23);
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{23};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check(42 % val == 42 % 23);
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{42};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((val % 0).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{0};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((42 % val).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::min()};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((val % (-1)).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{-1};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((bsl::numeric_limits<bsl::int32>::min() % val).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42, true};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((val % 23).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{23, true};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check((42 % val).failure());
+                    };
+                };
+            };
+        };
+
+        bsl::ut_scenario{"unary"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42};
                 bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(val + 42 == 42 + 42);
+                    bsl::ut_check(-val == -42);
                 };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{42};
-            bsl::ut_when{} = [&val]() {
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::min()};
                 bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(42 + val == 42 + 42);
+                    bsl::ut_check((-val).failure());
                 };
             };
-        };
 
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::max()};
-            bsl::ut_when{} = [&val]() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42, true};
                 bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((val + 1).failure());
+                    bsl::ut_check((-val).failure());
                 };
             };
         };
 
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::max()};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((1 + val).failure());
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::min()};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((val + (-1)).failure());
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::min()};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(((-1) + val).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{42, true};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((val + 42).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{42, true};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((42 + val).failure());
-                };
-            };
-        };
-    };
-
-    bsl::ut_scenario{"sub"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42};
-            bsl::safe_int32 val2{23};
-            bsl::ut_then{} = [&val1, &val2]() {
-                bsl::ut_check(val1 - val2 == 42 - 23);
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val1{bsl::numeric_limits<bsl::int32>::max()};
-            bsl::safe_int32 val2{-1};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 - val2).failure());
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val1{bsl::numeric_limits<bsl::int32>::min()};
-            bsl::safe_int32 val2{1};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 - val2).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42, true};
-            bsl::safe_int32 val2{23, false};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 - val2).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42, false};
-            bsl::safe_int32 val2{23, true};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 - val2).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42, true};
-            bsl::safe_int32 val2{23, true};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 - val2).failure());
-                };
-            };
-        };
-    };
-
-    bsl::ut_scenario{"sub with value"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{42};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(val - 23 == 42 - 23);
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{23};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(42 - val == 42 - 23);
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::max()};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((val - (-1)).failure());
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{-1};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((bsl::numeric_limits<bsl::int32>::max() - val).failure());
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::min()};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((val - 1).failure());
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{1};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((bsl::numeric_limits<bsl::int32>::min() - val).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{42, true};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((val - 23).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{23, true};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((42 - val).failure());
-                };
-            };
-        };
-    };
-
-    bsl::ut_scenario{"mul"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42};
-            bsl::safe_int32 val2{42};
-            bsl::ut_then{} = [&val1, &val2]() {
-                bsl::ut_check(val1 * val2 == 42 * 42);
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val1{bsl::numeric_limits<bsl::int32>::max()};
-            bsl::safe_int32 val2{2};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 * val2).failure());
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val1{bsl::numeric_limits<bsl::int32>::min()};
-            bsl::safe_int32 val2{-2};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 * val2).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42, true};
-            bsl::safe_int32 val2{42, false};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 * val2).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42, false};
-            bsl::safe_int32 val2{42, true};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 * val2).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42, true};
-            bsl::safe_int32 val2{42, true};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 * val2).failure());
-                };
-            };
-        };
-    };
-
-    bsl::ut_scenario{"mul with value"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{42};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(val * 42 == 42 * 42);
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{42};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(42 * val == 42 * 42);
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::max()};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((val * 2).failure());
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::max()};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((2 * val).failure());
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::min()};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((val * (-2)).failure());
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::min()};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(((-2) * val).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{42, true};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((val * 42).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{42, true};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((42 * val).failure());
-                };
-            };
-        };
-    };
-
-    bsl::ut_scenario{"div"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42};
-            bsl::safe_int32 val2{23};
-            bsl::ut_then{} = [&val1, &val2]() {
-                bsl::ut_check(val1 / val2 == 42 / 23);
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val1{42};
-            bsl::safe_int32 val2{0};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 / val2).failure());
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val1{bsl::numeric_limits<bsl::int32>::min()};
-            bsl::safe_int32 val2{-1};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 / val2).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42, true};
-            bsl::safe_int32 val2{23, false};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 / val2).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42, false};
-            bsl::safe_int32 val2{23, true};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 / val2).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42, true};
-            bsl::safe_int32 val2{23, true};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 / val2).failure());
-                };
-            };
-        };
-    };
-
-    bsl::ut_scenario{"div with value"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{42};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(val / 23 == 42 / 23);
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{23};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(42 / val == 42 / 23);
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{42};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((val / 0).failure());
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{0};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((42 / val).failure());
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::min()};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((val / (-1)).failure());
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{-1};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((bsl::numeric_limits<bsl::int32>::min() / val).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{42, true};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((val / 23).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{23, true};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((42 / val).failure());
-                };
-            };
-        };
-    };
-
-    bsl::ut_scenario{"mod"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42};
-            bsl::safe_int32 val2{23};
-            bsl::ut_then{} = [&val1, &val2]() {
-                bsl::ut_check(val1 % val2 == 42 % 23);
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val1{42};
-            bsl::safe_int32 val2{0};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 % val2).failure());
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val1{bsl::numeric_limits<bsl::int32>::min()};
-            bsl::safe_int32 val2{-1};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 % val2).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42, true};
-            bsl::safe_int32 val2{23, false};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 % val2).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42, false};
-            bsl::safe_int32 val2{23, true};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 % val2).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42, true};
-            bsl::safe_int32 val2{23, true};
-            bsl::ut_when{} = [&val1, &val2]() {
-                bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 % val2).failure());
-                };
-            };
-        };
-    };
-
-    bsl::ut_scenario{"mod with value"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{42};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(val % 23 == 42 % 23);
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{23};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(42 % val == 42 % 23);
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{42};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((val % 0).failure());
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{0};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((42 % val).failure());
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::min()};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((val % (-1)).failure());
-                };
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{-1};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((bsl::numeric_limits<bsl::int32>::min() % val).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{42, true};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((val % 23).failure());
-                };
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{23, true};
-            bsl::ut_when{} = [&val]() {
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((42 % val).failure());
-                };
-            };
-        };
-    };
-
-    bsl::ut_scenario{"unary"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{42};
-            bsl::ut_then{} = [&val]() {
-                bsl::ut_check(-val == -42);
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::min()};
-            bsl::ut_then{} = [&val]() {
-                bsl::ut_check((-val).failure());
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{42, true};
-            bsl::ut_then{} = [&val]() {
-                bsl::ut_check((-val).failure());
-            };
-        };
-    };
-
-    return bsl::ut_success();
+        return bsl::ut_success();
+    }
 }
 
 /// <!-- description -->
@@ -742,8 +745,8 @@ tests() noexcept
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     static_assert(tests() == bsl::ut_success());
     return tests();

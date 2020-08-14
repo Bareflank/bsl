@@ -35,8 +35,11 @@ namespace bsl
     inline void
     example_is_final_overview() noexcept
     {
-        if (bsl::is_final<example_class_subclass>::value) {
+        if constexpr (bsl::is_final<example_class_subclass>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

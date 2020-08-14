@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_is_move_assignable_overview() noexcept
     {
-        if (bsl::is_move_assignable<bool>::value) {
+        if constexpr (bsl::is_move_assignable<bool>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

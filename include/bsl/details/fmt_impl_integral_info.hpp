@@ -21,22 +21,40 @@
 /// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
-///
-/// @file main.hpp
-///
 
-#ifndef BSL_MAIN_HPP
-#define BSL_MAIN_HPP
+#ifndef BSL_DETAILS_FMT_IMPL_INTEGRAL_INFO_HPP
+#define BSL_DETAILS_FMT_IMPL_INTEGRAL_INFO_HPP
 
-#include "exit_code.hpp"
+#include "carray.hpp"
 
-/// <!-- description -->
-///   @brief Provides the definiton of the main function used by
-///     the BSL
-///
-/// <!-- inputs/outputs -->
-///   @return bsl::exit_success on success, bsl::exit_failure otherwise
-///
-bsl::exit_code main() noexcept;
+#include "../char_type.hpp"
+#include "../safe_integral.hpp"
+
+namespace bsl::details
+{
+    /// @brief stores the maximum number of digits.
+    constexpr safe_uintmax max_num_digits{to_umax(64)};
+
+    /// @class bsl::details::fmt_impl_integral_info
+    ///
+    /// <!-- description -->
+    ///   @brief Used to store information about an integral. This is used
+    ///     by the fmt logic to output a number. Note that this this is not a
+    ///     trivial type, this has to be implemented as a class.
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type of integral to get info from
+    ///
+    template<typename T>
+    struct fmt_impl_integral_info final
+    {
+        /// @brief stores the total number of extra characters needed
+        safe_uintmax extras{};
+        /// @brief stores the total number digits that make up the integral
+        safe_uintmax digits{};
+        /// @brief stores the integral as a string in reverse
+        carray<char_type, max_num_digits.get()> buf{};
+    };
+}
 
 #endif

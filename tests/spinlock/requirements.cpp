@@ -23,12 +23,11 @@
 /// SOFTWARE.
 
 #include <bsl/spinlock.hpp>
-#include <bsl/is_pod.hpp>
 #include <bsl/ut.hpp>
 
 namespace
 {
-    bsl::spinlock const pod{};
+    constinit bsl::spinlock const verify_constinit{};
 }
 
 /// <!-- description -->
@@ -39,14 +38,13 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 
-    bsl::ut_scenario{"verify supports global POD"} = []() {
-        bsl::discard(pod);
-        static_assert(is_pod<decltype(pod)>::value);
+    bsl::ut_scenario{"verify supports constinit "} = []() {
+        bsl::discard(verify_constinit);
     };
 
     bsl::ut_scenario{"verify noexcept"} = []() {

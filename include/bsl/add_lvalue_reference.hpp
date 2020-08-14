@@ -44,7 +44,8 @@ namespace bsl
         ///   @return only used for decltype
         ///
         template<typename T>
-        auto try_add_lvalue_reference(bsl::int32 ignored) noexcept -> type_identity<T &>;
+        [[maybe_unused]] auto try_add_lvalue_reference(bsl::int32 ignored) noexcept
+            -> type_identity<T &>;
 
         /// <!-- description -->
         ///   @brief Returns T if & cannot be added
@@ -55,7 +56,7 @@ namespace bsl
         ///   @return only used for decltype
         ///
         template<typename T>
-        auto try_add_lvalue_reference(bool ignored) noexcept -> type_identity<T>;
+        [[maybe_unused]] auto try_add_lvalue_reference(bool ignored) noexcept -> type_identity<T>;
     }
 
     /// @class bsl::add_lvalue_reference

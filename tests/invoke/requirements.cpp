@@ -28,14 +28,14 @@
 
 namespace
 {
-    [[nodiscard]] constexpr bool
-    test_func(bool val)
+    [[nodiscard]] constexpr auto
+    test_func(bool val) -> bool
     {
         return val;
     }
 
-    [[nodiscard]] constexpr bool
-    test_func_noexcept(bool val) noexcept
+    [[nodiscard]] constexpr auto
+    test_func_noexcept(bool val) noexcept -> bool
     {
         return val;
     }
@@ -45,13 +45,15 @@ namespace
     public:
         constexpr test_base() noexcept = default;
 
-        [[nodiscard]] constexpr bool
-        operator()(bool val) const
+        [[nodiscard]] constexpr auto
+        operator()(bool val) const -> bool
         {
             return val;
         }
 
-        bsl::int32 data{42};    // NOLINT
+        // This is needed to prove that invoke works properly
+        // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
+        bsl::int32 data{42};
     };
 
     class test_final final : public test_base
@@ -65,13 +67,15 @@ namespace
     public:
         constexpr test_noexcept() noexcept = default;
 
-        [[nodiscard]] constexpr bool
-        operator()(bool val) const noexcept
+        [[nodiscard]] constexpr auto
+        operator()(bool val) const noexcept -> bool
         {
             return val;
         }
 
-        bsl::int32 data{42};    // NOLINT
+        // This is needed to prove that invoke works properly
+        // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
+        bsl::int32 data{42};
     };
 
     constexpr test_final g_test_final{};
@@ -89,8 +93,8 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     bsl::ut_scenario{"1.1 noexceptness"} = []() {
         static_assert(!noexcept(bsl::invoke(&test_base::operator(), g_test_final, true)));

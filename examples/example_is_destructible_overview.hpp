@@ -35,8 +35,11 @@ namespace bsl
     inline void
     example_is_destructible_overview() noexcept
     {
-        if (bsl::is_destructible<example_class_subclass>::value) {
+        if constexpr (bsl::is_destructible<example_class_subclass>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

@@ -42,8 +42,8 @@ namespace bsl
     ///   @return Forms lvalue reference to const type of t
     ///
     template<typename T>
-    constexpr add_const_t<T> &
-    as_const(T &t) noexcept
+    [[nodiscard]] constexpr auto
+    as_const(T &t) noexcept -> add_const_t<T> &
     {
         return t;
     }
@@ -58,7 +58,7 @@ namespace bsl
     ///   @param t the object of type T to form the const lvalue reference of
     ///
     template<typename T>
-    constexpr void as_const(T const &&t) noexcept = delete;
+    constexpr auto as_const(T const &&t) noexcept -> void = delete;
 }
 
 #endif

@@ -37,16 +37,25 @@ namespace bsl
         constexpr bsl::uintmax max{5};
         constexpr bsl::uintmax min{0};
 
-        if (bsl::make_index_sequence<6>::size() == size) {
+        if constexpr (bsl::make_index_sequence<size>::size() == size) {
             bsl::print() << "success\n";
         }
-
-        if (bsl::make_index_sequence<6>::max() == max) {
-            bsl::print() << "success\n";
+        else {
+            bsl::error() << "failure\n";
         }
 
-        if (bsl::make_index_sequence<6>::min() == min) {
+        if constexpr (bsl::make_index_sequence<size>::max() == max) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
+        }
+
+        if constexpr (bsl::make_index_sequence<size>::min() == min) {
+            bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

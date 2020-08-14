@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_is_standard_layout_overview() noexcept
     {
-        if (bsl::is_standard_layout<bool>::value) {
+        if constexpr (bsl::is_standard_layout<bool>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

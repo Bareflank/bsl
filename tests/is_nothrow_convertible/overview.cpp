@@ -28,16 +28,30 @@
 
 namespace
 {
-    class myclass_copy_noexcept final    // NOLINT
+    class myclass_copy_noexcept final
     {
     public:
+        constexpr myclass_copy_noexcept() noexcept = default;
+        constexpr ~myclass_copy_noexcept() noexcept = default;
         constexpr myclass_copy_noexcept(myclass_copy_noexcept const &) noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_copy_noexcept const &) &noexcept
+            -> myclass_copy_noexcept & = default;
+        constexpr myclass_copy_noexcept(myclass_copy_noexcept &&) noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_copy_noexcept &&) &noexcept
+            -> myclass_copy_noexcept & = default;
     };
 
-    class myclass_copy_except final    // NOLINT
+    class myclass_copy_except final
     {
     public:
+        constexpr myclass_copy_except() noexcept(false) = default;
+        constexpr ~myclass_copy_except() noexcept(false) = default;
         constexpr myclass_copy_except(myclass_copy_except const &) noexcept(false) = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_copy_except const &) &noexcept(false)
+            -> myclass_copy_except & = default;
+        constexpr myclass_copy_except(myclass_copy_except &&) noexcept(false) = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_copy_except &&) &noexcept(false)
+            -> myclass_copy_except & = default;
     };
 }
 
@@ -49,10 +63,12 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
+
+    // clang-format off
 
     static_assert(is_nothrow_convertible<bool, bool>::value);
     static_assert(is_nothrow_convertible<bool, bool const>::value);
@@ -63,11 +79,10 @@ main() noexcept
     static_assert(is_nothrow_convertible<bool *, bool const *>::value);
     static_assert(is_nothrow_convertible<bool *, void *>::value);
     static_assert(is_nothrow_convertible<bool *, void const *>::value);
-    static_assert(is_nothrow_convertible<bool[42], bool *>::value);          // NOLINT
-    static_assert(is_nothrow_convertible<bool[42], bool const *>::value);    // NOLINT
-    static_assert(is_nothrow_convertible<bool[42], void *>::value);          // NOLINT
-    static_assert(is_nothrow_convertible<bool[42], void const *>::value);    // NOLINT
-
+    // static_assert(is_nothrow_convertible<bool[42], bool *>::value);
+    // static_assert(is_nothrow_convertible<bool[42], bool const *>::value);
+    // static_assert(is_nothrow_convertible<bool[42], void *>::value);
+    // static_assert(is_nothrow_convertible<bool[42], void const *>::value);
     static_assert(is_nothrow_convertible<bool &, bool>::value);
     static_assert(is_nothrow_convertible<bool &, bool const>::value);
     static_assert(is_nothrow_convertible<bool &, bool &>::value);
@@ -102,10 +117,8 @@ main() noexcept
     static_assert(is_convertible<myclass_copy_noexcept const &, myclass_copy_noexcept>::value);
 
     static_assert(is_nothrow_convertible<myclass_copy_noexcept, myclass_copy_noexcept>::value);
-    static_assert(
-        is_nothrow_convertible<myclass_copy_noexcept const, myclass_copy_noexcept>::value);
-    static_assert(
-        is_nothrow_convertible<myclass_copy_noexcept const &, myclass_copy_noexcept>::value);
+    static_assert(is_nothrow_convertible<myclass_copy_noexcept const, myclass_copy_noexcept>::value);
+    static_assert(is_nothrow_convertible<myclass_copy_noexcept const &, myclass_copy_noexcept>::value);
 
     static_assert(is_convertible<myclass_copy_except, myclass_copy_except>::value);
     static_assert(is_convertible<myclass_copy_except const, myclass_copy_except>::value);
@@ -114,6 +127,8 @@ main() noexcept
     static_assert(!is_nothrow_convertible<myclass_copy_except, myclass_copy_except>::value);
     static_assert(!is_nothrow_convertible<myclass_copy_except &, myclass_copy_except>::value);
     static_assert(!is_nothrow_convertible<myclass_copy_except const &, myclass_copy_except>::value);
+
+    // clang-format on
 
     return bsl::ut_success();
 }

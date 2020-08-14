@@ -40,5 +40,8 @@ namespace bsl
         if (!args.empty()) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
     }
 }

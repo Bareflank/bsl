@@ -31,35 +31,17 @@ namespace bsl
     ///   @brief Provides the example's main function
     ///
     inline void
-    example_reverse_iterator_lt_equals() noexcept
+    example_contiguous_iterator_operator_star() noexcept
     {
-        bsl::string_view const str{"Hello"};
-        bsl::string_view::reverse_iterator_type const iter1{str.rbegin()};
-        bsl::string_view::reverse_iterator_type const iter2{str.rbegin()};
-        bsl::string_view::reverse_iterator_type const iter3{str.rend()};
+        constexpr bsl::string_view str{"Hello"};
+        constexpr bsl::string_view::iterator_type iter{str.begin()};
 
-        if (iter1 == iter2) {
-            bsl::print() << "success\n";
+        auto elem{*iter};
+        if (nullptr != elem.data) {
+            bsl::print() << "success: " << *elem.data << bsl::endl;
         }
-
-        if (iter1 != iter3) {
-            bsl::print() << "success\n";
-        }
-
-        if (iter1 < iter3) {
-            bsl::print() << "success\n";
-        }
-
-        if (iter1 <= iter2) {
-            bsl::print() << "success\n";
-        }
-
-        if (iter3 > iter1) {
-            bsl::print() << "success\n";
-        }
-
-        if (iter3 >= iter1) {
-            bsl::print() << "success\n";
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

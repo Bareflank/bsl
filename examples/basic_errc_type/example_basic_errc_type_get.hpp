@@ -36,8 +36,11 @@ namespace bsl
         constexpr bsl::int32 errc{42};
         constexpr bsl::basic_errc_type<> my_errc{errc};
 
-        if (my_errc.get() == errc) {
+        if constexpr (my_errc.get() == errc) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

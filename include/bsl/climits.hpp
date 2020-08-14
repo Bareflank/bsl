@@ -28,9 +28,8 @@
 #ifndef BSL_CLIMITS_HPP
 #define BSL_CLIMITS_HPP
 
-#include <limits.h>    // NOLINT
-
-namespace bsl
-{}
+// We are implementing climits
+// NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
+#include <limits.h>
 
 #endif

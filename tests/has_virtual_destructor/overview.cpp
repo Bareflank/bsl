@@ -28,11 +28,29 @@
 namespace
 {
     class myclass final
-    {};
-
-    class myclass_virtual    // NOLINT
     {
-        virtual ~myclass_virtual() = default;
+    public:
+        constexpr myclass() noexcept = default;
+        constexpr ~myclass() noexcept = default;
+        constexpr myclass(myclass const &) noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass const &) &noexcept -> myclass & = default;
+        constexpr myclass(myclass &&) noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass &&) &noexcept -> myclass & = default;
+    };
+
+    class myclass_virtual
+    {
+    public:
+        constexpr myclass_virtual() noexcept = default;
+        virtual ~myclass_virtual() noexcept = default;
+
+    protected:
+        constexpr myclass_virtual(myclass_virtual const &) noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_virtual const &) &noexcept
+            -> myclass_virtual & = default;
+        constexpr myclass_virtual(myclass_virtual &&) noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_virtual &&) &noexcept
+            -> myclass_virtual & = default;
     };
 
     class myclass_subclass final : public myclass_virtual
@@ -47,8 +65,8 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 

@@ -21,45 +21,15 @@
 /// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
+///
+/// @file cstdio.hpp
+///
 
-#include <bsl/string_view.hpp>
-#include <bsl/debug.hpp>
+#ifndef BSL_CSTDIO_HPP
+#define BSL_CSTDIO_HPP
 
-namespace bsl
-{
-    /// <!-- description -->
-    ///   @brief Provides the example's main function
-    ///
-    inline void
-    example_contiguous_iterator_lt_equals() noexcept
-    {
-        bsl::string_view const str{"Hello"};
-        bsl::string_view::iterator_type const iter1{str.begin()};
-        bsl::string_view::iterator_type const iter2{str.begin()};
-        bsl::string_view::iterator_type const iter3{str.end()};
+// We are implementing cstdio
+// NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
+#include <stdio.h>
 
-        if (iter1 == iter2) {
-            bsl::print() << "success\n";
-        }
-
-        if (iter1 != iter3) {
-            bsl::print() << "success\n";
-        }
-
-        if (iter1 < iter3) {
-            bsl::print() << "success\n";
-        }
-
-        if (iter1 <= iter2) {
-            bsl::print() << "success\n";
-        }
-
-        if (iter3 > iter1) {
-            bsl::print() << "success\n";
-        }
-
-        if (iter3 >= iter1) {
-            bsl::print() << "success\n";
-        }
-    }
-}
+#endif

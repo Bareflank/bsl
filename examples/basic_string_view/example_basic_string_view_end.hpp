@@ -23,7 +23,6 @@
 /// SOFTWARE.
 
 #include <bsl/basic_string_view.hpp>
-#include <bsl/for_each.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -34,10 +33,10 @@ namespace bsl
     inline void
     example_basic_string_view_end() noexcept
     {
-        bsl::basic_string_view<bsl::char_type> const str{"Hello"};
+        constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
 
-        bsl::for_each(str.begin(), str.end(), [](auto &e, auto const &i) noexcept {
-            bsl::print() << "element [" << i << "] == " << e << bsl::endl;
-        });
+        for (auto iter{str.begin()}; iter != str.end(); ++iter) {
+            bsl::print() << "element [" << iter.index() << "] == " << iter << bsl::endl;
+        }
     }
 }

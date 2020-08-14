@@ -31,14 +31,10 @@
 namespace bsl
 {
     /// @brief Standard Char Type
-    ///
-    /// SUPPRESSION: PRQA 2428 - false positive
-    /// - We suppress this because A3-9-1 is referring to integer types, not
-    ///   c-style strings. Within the BSL, the char_type is used to define a
-    ///   character in a C-style string, not as an integer type. Char for
-    ///   strings is allowed.
-    ///
-    using char_type = char;    // PRQA S 2428
+    // This BSL check wants you to use char_type instead of char, which is
+    // what we are defining here (chicken/egg issue)
+    // NOLINTNEXTLINE(bsl-types-fixed-width-ints)
+    using char_type = char;
 }
 
 #endif

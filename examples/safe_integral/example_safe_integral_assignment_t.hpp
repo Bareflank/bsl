@@ -33,11 +33,15 @@ namespace bsl
     inline void
     example_safe_integral_assignment_t() noexcept
     {
-        bsl::safe_int32 val{23};
+        bsl::safe_int32 val1{};
+        constexpr bsl::int32 val2{42};
 
-        val = 42;
-        if (val == 42) {
+        val1 = val2;
+        if (val1 == val2) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

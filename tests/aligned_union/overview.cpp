@@ -30,8 +30,8 @@
 namespace
 {
     template<bsl::uintmax align, bsl::uintmax size, bsl::uintmax LEN, typename... TYPES>
-    constexpr void
-    test_aligned_union() noexcept
+    constexpr auto
+    test_aligned_union() noexcept -> void
     {
         using namespace bsl;
 
@@ -48,8 +48,8 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 

@@ -36,11 +36,14 @@ namespace bsl
         constexpr bsl::uint8 val1{0x10U};
         constexpr bsl::uint8 val2{0x10U};
 
-        bsl::byte const b1{val1};
-        bsl::byte const b2{val2};
+        constexpr bsl::byte b1{val1};
+        constexpr bsl::byte b2{val2};
 
-        if (b1 == b2) {
+        if constexpr (b1 == b2) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

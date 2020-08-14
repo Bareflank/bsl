@@ -44,7 +44,7 @@ namespace bsl
     ///     case the return type is T.
     ///
     template<typename T>
-    constexpr add_rvalue_reference_t<T> declval() noexcept;
+    [[maybe_unused]] constexpr auto declval() noexcept -> add_rvalue_reference_t<T>;
 }
 
 #endif

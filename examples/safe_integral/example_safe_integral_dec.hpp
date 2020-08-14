@@ -33,9 +33,9 @@ namespace bsl
     inline void
     example_safe_integral_dec() noexcept
     {
-        bsl::safe_int32 val{42};
+        bsl::safe_int32 val{};
 
         --val;
-        bsl::print() << "success: " << val << '\n';
+        bsl::print() << "success: " << val << bsl::endl;
     }
 }

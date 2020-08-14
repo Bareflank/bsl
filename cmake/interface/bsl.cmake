@@ -30,10 +30,11 @@ target_compile_options(bsl INTERFACE
 target_compile_definitions(bsl INTERFACE
     BSL_DEBUG_LEVEL=${BSL_DEBUG_LEVEL}
     BSL_PAGE_SIZE=${BSL_PAGE_SIZE}
-    BSL_PERFORCE=${BSL_PERFORCE}
     BSL_CONSTEXPR=${BSL_CONSTEXPR}
 )
 
 target_include_directories(bsl INTERFACE
     ${CMAKE_CURRENT_LIST_DIR}/../../include
+    $<$<PLATFORM_ID:Linux>:${CMAKE_CURRENT_LIST_DIR}/../../include/bsl/platform/linux>
+    $<$<PLATFORM_ID:Windows>:${CMAKE_CURRENT_LIST_DIR}/../../include/bsl/platform/windows>
 )

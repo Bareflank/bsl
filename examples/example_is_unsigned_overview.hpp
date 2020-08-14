@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_is_unsigned_overview() noexcept
     {
-        if (bsl::is_unsigned<bsl::uint32>::value) {
+        if constexpr (bsl::is_unsigned<bsl::uint32>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

@@ -35,8 +35,11 @@ namespace bsl
     inline void
     example_conjunction_overview() noexcept
     {
-        if (bsl::conjunction<is_void<void>, is_bool<bool>>::value) {
+        if constexpr (bsl::conjunction<is_void<void>, is_bool<bool>>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

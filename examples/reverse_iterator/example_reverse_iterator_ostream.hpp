@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_reverse_iterator_ostream() noexcept
     {
-        bsl::basic_string_view const str{"success"};
+        constexpr bsl::basic_string_view str{"success"};
         bsl::print() << str.rbegin() << bsl::endl;
     }
 }

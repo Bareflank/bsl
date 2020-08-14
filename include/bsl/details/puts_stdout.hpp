@@ -25,45 +25,23 @@
 #ifndef BSL_DETAILS_PUTS_STDOUT_HPP
 #define BSL_DETAILS_PUTS_STDOUT_HPP
 
+#include "../cstdio.hpp"
 #include "../cstr_type.hpp"
 #include "../discard.hpp"
 
-namespace bsl
+namespace bsl::details
 {
-    namespace details
+    /// <!-- description -->
+    ///   @brief Outputs a string to stdout.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param str the string to output to stdout
+    ///
+    inline auto
+    puts_stdout(cstr_type const str) noexcept -> void
     {
-        /// <!-- description -->
-        ///   @brief Outputs a string to stdout.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param str the string to output to stdout
-        ///
-        void puts_stdout(cstr_type const str) noexcept;
+        bsl::discard(fputs(str, stdout));
     }
 }
-
-#ifndef BAREFLANK
-
-#include <stdio.h>    // PRQA S 1-10000 // NOLINT
-
-namespace bsl
-{
-    namespace details
-    {
-        /// <!-- description -->
-        ///   @brief Outputs a string to stdout.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param str the string to output to stdout
-        ///
-        inline void
-        puts_stdout(cstr_type const str) noexcept
-        {
-            bsl::discard(fputs(str, stdout));    // PRQA S 1-10000 // NOLINT
-        }
-    }
-}
-
-#endif
 
 #endif

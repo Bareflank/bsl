@@ -29,11 +29,7 @@
 
 namespace
 {
-    enum myenum1 : bsl::int32
-    {
-    };
-
-    enum class myenum2 : bsl::int32
+    enum class myenum : bsl::int32
     {
     };
 }
@@ -46,13 +42,11 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
-
-    static_assert(is_same<underlying_type<myenum1>::type, bsl::int32>::value);
-    static_assert(is_same<underlying_type<myenum2>::type, bsl::int32>::value);
+    static_assert(is_same<underlying_type<myenum>::type, bsl::int32>::value);
 
     return bsl::ut_success();
 }

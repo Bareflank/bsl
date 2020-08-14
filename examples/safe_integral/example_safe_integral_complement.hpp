@@ -34,6 +34,6 @@ namespace bsl
     example_safe_integral_complement() noexcept
     {
         constexpr bsl::safe_uint32 val{42U};
-        bsl::print() << "success: " << (~val) << '\n';
+        bsl::print() << "success: " << (~val) << bsl::endl;
     }
 }

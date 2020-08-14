@@ -55,8 +55,8 @@ namespace bsl
     ///   @param b the bool being outputted
     ///
     template<typename OUT>
-    constexpr void
-    fmt_impl(OUT &&o, fmt_options const &ops, bool const b) noexcept
+    constexpr auto
+    fmt_impl(OUT &&o, fmt_options const &ops, bool const b) noexcept -> void
     {
         if (b) {
             switch (ops.type()) {
@@ -64,7 +64,7 @@ namespace bsl
                 case fmt_type::fmt_type_c:
                 case fmt_type::fmt_type_d:
                 case fmt_type::fmt_type_x: {
-                    details::fmt_impl_integral(bsl::forward<OUT>(o), ops, to_u32(1));
+                    details::fmt_impl_integral(bsl::forward<OUT>(o), ops, safe_uint32::one());
                     break;
                 }
 
@@ -111,8 +111,8 @@ namespace bsl
     ///   @return return o
     ///
     template<typename T>
-    [[maybe_unused]] constexpr out<T>
-    operator<<(out<T> const o, bool const b) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T> const o, bool const b) noexcept -> out<T>
     {
         if constexpr (!o) {
             return o;

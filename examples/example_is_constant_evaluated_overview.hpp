@@ -36,9 +36,15 @@ namespace bsl
         if constexpr (bsl::is_constant_evaluated()) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
 
         if (!bsl::is_constant_evaluated()) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

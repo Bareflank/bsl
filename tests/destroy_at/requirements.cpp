@@ -27,10 +27,15 @@
 
 namespace
 {
-    class myclass final    // NOLINT
+    class myclass final
     {
     public:
-        ~myclass() noexcept(false) = default;
+        constexpr myclass() noexcept = default;
+        constexpr ~myclass() noexcept(false) = default;
+        constexpr myclass(myclass const &) noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass const &) &noexcept -> myclass & = default;
+        constexpr myclass(myclass &&) noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass &&) &noexcept -> myclass & = default;
     };
 }
 
@@ -42,8 +47,8 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 

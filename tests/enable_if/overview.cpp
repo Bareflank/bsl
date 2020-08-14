@@ -38,8 +38,8 @@ namespace
     ///   @return Returns true if T is a bool, false otherwise
     ///
     template<typename T, bsl::enable_if_t<bsl::is_same<T, bool>::value, bool> = true>
-    constexpr bool
-    foo1() noexcept
+    [[nodiscard]] constexpr auto
+    foo1() noexcept -> bool
     {
         return true;
     }
@@ -52,8 +52,8 @@ namespace
     ///   @return Returns true if T is a bool, false otherwise
     ///
     template<typename T, bsl::enable_if_t<!bsl::is_same<T, bool>::value, bool> = true>
-    constexpr bool
-    foo1() noexcept
+    [[nodiscard]] constexpr auto
+    foo1() noexcept -> bool
     {
         return false;
     }
@@ -66,8 +66,8 @@ namespace
     ///   @return Returns true if T is a bool, false otherwise
     ///
     template<typename T, bsl::enable_if_t<bsl::is_same<T, bool>::value> * = nullptr>
-    constexpr bool
-    foo2() noexcept
+    [[nodiscard]] constexpr auto
+    foo2() noexcept -> bool
     {
         return true;
     }
@@ -80,8 +80,8 @@ namespace
     ///   @return Returns true if T is a bool, false otherwise
     ///
     template<typename T, bsl::enable_if_t<!bsl::is_same<T, bool>::value> * = nullptr>
-    constexpr bool
-    foo2() noexcept
+    [[nodiscard]] constexpr auto
+    foo2() noexcept -> bool
     {
         return false;
     }
@@ -94,8 +94,8 @@ namespace
     ///   @return Returns true if T is a bool, false otherwise
     ///
     template<typename T, bsl::enable_if_t<bsl::is_same<T, bool>::value, bsl::int32> = 0>
-    constexpr bool
-    foo3() noexcept
+    [[nodiscard]] constexpr auto
+    foo3() noexcept -> bool
     {
         return true;
     }
@@ -108,8 +108,8 @@ namespace
     ///   @return Returns true if T is a bool, false otherwise
     ///
     template<typename T, bsl::enable_if_t<!bsl::is_same<T, bool>::value, bsl::int32> = 0>
-    constexpr bool
-    foo3() noexcept
+    [[nodiscard]] constexpr auto
+    foo3() noexcept -> bool
     {
         return false;
     }
@@ -123,8 +123,8 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 

@@ -25,37 +25,40 @@
 #include <bsl/construct_at.hpp>
 #include <bsl/ut.hpp>
 
-/// <!-- description -->
-///   @brief Used to execute the actual checks. We put the checks in this
-///     function so that we can validate the tests both at compile-time
-///     and at run-time. If a bsl::ut_check fails, the tests will either
-///     fail fast at run-time, or will produce a compile-time error.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-constexpr bsl::exit_code
-tests() noexcept
+namespace
 {
-    bsl::ut_scenario{"construct_at"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::ut_when{} = []() {
-                bsl::construct_at<bsl::safe_int32>(nullptr, bsl::to_i32(42));
+    /// <!-- description -->
+    ///   @brief Used to execute the actual checks. We put the checks in this
+    ///     function so that we can validate the tests both at compile-time
+    ///     and at run-time. If a bsl::ut_check fails, the tests will either
+    ///     fail fast at run-time, or will produce a compile-time error.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @return Always returns bsl::exit_success.
+    ///
+    [[nodiscard]] constexpr auto
+    tests() noexcept -> bsl::exit_code
+    {
+        bsl::ut_scenario{"construct_at"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::ut_when{} = []() {
+                    bsl::construct_at<bsl::safe_int32>(nullptr, bsl::to_i32(42));
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 mydata{};
-            bsl::ut_when{} = [&mydata]() {
-                bsl::construct_at<bsl::safe_int32>(&mydata, bsl::to_i32(42));
-                bsl::ut_then{} = [&mydata]() {
-                    bsl::ut_check(mydata == 42);
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 mydata{};
+                bsl::ut_when{} = [&mydata]() {
+                    bsl::construct_at<bsl::safe_int32>(&mydata, bsl::to_i32(42));
+                    bsl::ut_then{} = [&mydata]() {
+                        bsl::ut_check(mydata == 42);
+                    };
                 };
             };
         };
-    };
 
-    return bsl::ut_success();
+        return bsl::ut_success();
+    }
 }
 
 /// <!-- description -->
@@ -66,8 +69,8 @@ tests() noexcept
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     static_assert(tests() == bsl::ut_success());
     return tests();

@@ -31,64 +31,82 @@ namespace
     {
     public:
         constexpr myclass1() noexcept = default;
-        ~myclass1() noexcept = default;
+        constexpr ~myclass1() noexcept = default;
         constexpr myclass1(myclass1 const &) noexcept = default;
-        constexpr myclass1 &operator=(myclass1 const &) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass1 const &) &noexcept
+            -> myclass1 & = default;
         constexpr myclass1(myclass1 &&) noexcept = default;
-        constexpr myclass1 &operator=(myclass1 &&) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass1 &&) &noexcept -> myclass1 & = default;
 
-        explicit constexpr myclass1(bool val) noexcept : data{val}
+        explicit constexpr myclass1(bool val) noexcept    // --
+            : data{val}
         {}
 
-        bool data{};    // NOLINT
+        // This is needed to prove that swap works properly
+        // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
+        bool data;
     };
 
     class myclass2 final
     {
     public:
         constexpr myclass2() noexcept = default;
-        ~myclass2() noexcept = default;
+        constexpr ~myclass2() noexcept = default;
         constexpr myclass2(myclass2 const &) noexcept = default;
-        constexpr myclass2 &operator=(myclass2 const &) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass2 const &) &noexcept
+            -> myclass2 & = default;
         constexpr myclass2(myclass2 &&) noexcept(false) = default;
-        constexpr myclass2 &operator=(myclass2 &&) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass2 &&) &noexcept -> myclass2 & = default;
 
-        explicit constexpr myclass2(bool val) noexcept : data{val}
+        explicit constexpr myclass2(bool val) noexcept    // --
+            : data{val}
         {}
 
-        bool data{};    // NOLINT
+        // This is needed to prove that swap works properly
+        // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
+        bool data;
     };
 
     class myclass3 final
     {
     public:
         constexpr myclass3() noexcept = default;
-        ~myclass3() noexcept = default;
+        constexpr ~myclass3() noexcept = default;
         constexpr myclass3(myclass3 const &) noexcept = default;
-        constexpr myclass3 &operator=(myclass3 const &) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass3 const &) &noexcept
+            -> myclass3 & = default;
         constexpr myclass3(myclass3 &&) noexcept = default;
-        constexpr myclass3 &operator=(myclass3 &&) &noexcept(false) = default;
+        [[maybe_unused]] constexpr auto operator=(myclass3 &&) &noexcept(false)
+            -> myclass3 & = default;
 
-        explicit constexpr myclass3(bool val) noexcept : data{val}
+        explicit constexpr myclass3(bool val) noexcept    // --
+            : data{val}
         {}
 
-        bool data{};    // NOLINT
+        // This is needed to prove that swap works properly
+        // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
+        bool data;
     };
 
     class myclass4 final
     {
     public:
         constexpr myclass4() noexcept = default;
-        ~myclass4() noexcept = default;
+        constexpr ~myclass4() noexcept = default;
         constexpr myclass4(myclass4 const &) noexcept = default;
-        constexpr myclass4 &operator=(myclass4 const &) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass4 const &) &noexcept
+            -> myclass4 & = default;
         constexpr myclass4(myclass4 &&) noexcept(false) = default;
-        constexpr myclass4 &operator=(myclass4 &&) &noexcept(false) = default;
+        [[maybe_unused]] constexpr auto operator=(myclass4 &&) &noexcept(false)
+            -> myclass4 & = default;
 
-        explicit constexpr myclass4(bool val) noexcept : data{val}
+        explicit constexpr myclass4(bool val) noexcept    // --
+            : data{val}
         {}
 
-        bool data{};    // NOLINT
+        // This is needed to prove that swap works properly
+        // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
+        bool data;
     };
 }
 
@@ -100,8 +118,8 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 

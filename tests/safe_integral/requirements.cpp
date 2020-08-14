@@ -23,12 +23,11 @@
 /// SOFTWARE.
 
 #include <bsl/safe_integral.hpp>
-#include <bsl/is_pod.hpp>
 #include <bsl/ut.hpp>
 
 namespace
 {
-    bsl::safe_int32 const pod{};
+    constinit bsl::safe_int32 const verify_constinit{};
 
     class fixture_t final
     {
@@ -36,8 +35,8 @@ namespace
         bsl::safe_int32 val2{};
 
     public:
-        [[nodiscard]] constexpr bool
-        test_member_const() const
+        [[nodiscard]] constexpr auto
+        test_member_const() const noexcept -> bool
         {
             bsl::discard(val1.get());
             bsl::discard(!!val1);
@@ -54,8 +53,8 @@ namespace
             return true;
         }
 
-        [[nodiscard]] constexpr bool
-        test_member_nonconst()
+        [[nodiscard]] constexpr auto
+        test_member_nonconst() noexcept -> bool
         {
             bsl::discard(val1 = 42);
             bsl::discard(val1.get());
@@ -97,14 +96,13 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 
-    bsl::ut_scenario{"verify supports global POD"} = []() {
-        bsl::discard(pod);
-        static_assert(is_pod<decltype(pod)>::value);
+    bsl::ut_scenario{"verify supports constinit "} = []() {
+        bsl::discard(verify_constinit);
     };
 
     bsl::ut_scenario{"verify noexcept"} = []() {
@@ -150,15 +148,9 @@ main() noexcept
                 static_assert(noexcept(val1 < val2));
                 static_assert(noexcept(val1 < 42));
                 static_assert(noexcept(42 < val1));
-                static_assert(noexcept(val1 <= val2));
-                static_assert(noexcept(val1 <= 42));
-                static_assert(noexcept(42 <= val1));
                 static_assert(noexcept(val1 > val2));
                 static_assert(noexcept(val1 > 42));
                 static_assert(noexcept(42 > val1));
-                static_assert(noexcept(val1 >= val2));
-                static_assert(noexcept(val1 >= 42));
-                static_assert(noexcept(42 >= val1));
                 static_assert(noexcept(val1 + val2));
                 static_assert(noexcept(val1 + 42));
                 static_assert(noexcept(42 + val1));

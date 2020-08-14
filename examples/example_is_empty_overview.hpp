@@ -35,8 +35,11 @@ namespace bsl
     inline void
     example_is_empty_overview() noexcept
     {
-        if (bsl::is_empty<example_class_empty>::value) {
+        if constexpr (bsl::is_empty<example_class_empty>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

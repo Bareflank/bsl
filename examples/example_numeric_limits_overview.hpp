@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_numeric_limits_overview() noexcept
     {
-        if (bsl::numeric_limits<bsl::uint64>::min() == 0U) {
+        if constexpr (bsl::numeric_limits<bsl::uint64>::min() == 0U) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

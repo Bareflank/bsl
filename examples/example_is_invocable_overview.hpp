@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_is_invocable_overview() noexcept
     {
-        if (bsl::is_invocable<bool()>::value) {
+        if constexpr (bsl::is_invocable<bool()>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

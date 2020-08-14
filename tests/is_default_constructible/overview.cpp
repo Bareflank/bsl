@@ -33,6 +33,8 @@ namespace
     struct mystruct final
     {};
 
+    // Needed for testing type traits
+    // NOLINTNEXTLINE(bsl-decl-forbidden)
     union myunion final
     {};
 
@@ -40,11 +42,21 @@ namespace
     {
     };
 
-    class myclass_abstract    // NOLINT
+    class myclass_abstract
     {
     public:
-        virtual ~myclass_abstract() noexcept = default;
+        constexpr myclass_abstract() noexcept = default;
+        virtual constexpr ~myclass_abstract() noexcept = default;
+
         virtual void foo() noexcept = 0;
+
+    protected:
+        constexpr myclass_abstract(myclass_abstract const &) noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_abstract const &) &noexcept
+            -> myclass_abstract & = default;
+        constexpr myclass_abstract(myclass_abstract &&) noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_abstract &&) &noexcept
+            -> myclass_abstract & = default;
     };
 
     class myclass_base
@@ -68,8 +80,8 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 
@@ -143,10 +155,14 @@ main() noexcept
     static_assert(is_default_constructible<myclass_base const>::value);
     static_assert(is_default_constructible<myclass_subclass>::value);
     static_assert(is_default_constructible<myclass_subclass const>::value);
-    static_assert(is_default_constructible<bool[1]>::value);             // NOLINT
-    static_assert(is_default_constructible<bool[1][1]>::value);          // NOLINT
-    static_assert(is_default_constructible<bool const[1]>::value);       // NOLINT
-    static_assert(is_default_constructible<bool const[1][1]>::value);    // NOLINT
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_default_constructible<bool[1]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_default_constructible<bool[1][1]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_default_constructible<bool const[1]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_default_constructible<bool const[1][1]>::value);
     static_assert(is_default_constructible<void *>::value);
     static_assert(is_default_constructible<void const *>::value);
     static_assert(is_default_constructible<void *const>::value);
@@ -155,10 +171,14 @@ main() noexcept
 
     static_assert(!is_default_constructible<myclass_abstract>::value);
     static_assert(!is_default_constructible<myclass_abstract const>::value);
-    static_assert(!is_default_constructible<bool[]>::value);             // NOLINT
-    static_assert(!is_default_constructible<bool[][1]>::value);          // NOLINT
-    static_assert(!is_default_constructible<bool const[]>::value);       // NOLINT
-    static_assert(!is_default_constructible<bool const[][1]>::value);    // NOLINT
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(!is_default_constructible<bool[]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(!is_default_constructible<bool[][1]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(!is_default_constructible<bool const[]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(!is_default_constructible<bool const[][1]>::value);
     static_assert(!is_default_constructible<void>::value);
     static_assert(!is_default_constructible<void const>::value);
     static_assert(!is_default_constructible<bool &>::value);

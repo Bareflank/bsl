@@ -36,7 +36,7 @@ namespace bsl
         constexpr bsl::safe_int32 val1{42};
         constexpr bsl::safe_int32 val2{23};
 
-        bsl::print() << "min bsl::safe_int32: " << val1.min() << '\n';
-        bsl::print() << "min: " << val1.min(val2) << '\n';
+        bsl::print() << "min bsl::safe_int32: " << val1.min() << bsl::endl;
+        bsl::print() << "min: " << val1.min(val2) << bsl::endl;
     }
 }

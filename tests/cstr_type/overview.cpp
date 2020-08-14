@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/cstr_type.hpp>
+#include <bsl/char_type.hpp>
 #include <bsl/is_same.hpp>
 
 #include <bsl/ut.hpp>
@@ -35,11 +36,11 @@
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
-    static_assert(is_same<cstr_type, char const *>::value);
+    static_assert(is_same<cstr_type, char_type const *>::value);
 
     return bsl::ut_success();
 }

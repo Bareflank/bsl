@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_is_signed_overview() noexcept
     {
-        if (bsl::is_signed<bsl::int32>::value) {
+        if constexpr (bsl::is_signed<bsl::int32>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

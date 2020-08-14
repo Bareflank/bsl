@@ -41,22 +41,16 @@ namespace bsl
     ///     another object.
     ///   @include example_move_overview.hpp
     ///
-    ///   SUPPRESSION: PRQA 4624 - false positive
-    ///   - We suppress this because A7-5-1 states that a function shall not
-    ///     return a pointer or reference to a parameter that is a const
-    ///     reference, and this is a false positive because this is the
-    ///     required definition for std::move
-    ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type that defines the value being moved
     ///   @param val the value being moved
     ///   @return returns an xvalue expression that identifies "val"
     ///
     template<typename T>
-    constexpr bsl::remove_reference_t<T> &&
-    move(T &&val) noexcept
+    [[nodiscard]] constexpr auto
+    move(T &&val) noexcept -> bsl::remove_reference_t<T> &&
     {
-        return static_cast<bsl::remove_reference_t<T> &&>(val);    // PRQA S 4624
+        return static_cast<bsl::remove_reference_t<T> &&>(val);
     }
 
     /// <!-- description -->
@@ -68,7 +62,7 @@ namespace bsl
     ///   @param val the value being moved
     ///
     template<typename V>
-    constexpr void move(fmt<V> &&val) noexcept = delete;
+    constexpr auto move(fmt<V> &&val) noexcept -> void = delete;
 }
 
 #endif

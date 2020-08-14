@@ -41,14 +41,6 @@ namespace bsl
     ///     account const qualifications), provides the member constant value
     ///     equal to true. Otherwise the member constant value is false.
     ///
-    ///   SUPPRESSION: PRQA 2427 - false positive
-    ///   - We suppress this because A3-9-1 states that you should not use
-    ///     any of the fundamental types. This is a false positive because
-    ///     A3-9-1 is only referring to the integer types as there are
-    ///     fixed width versions that should be used instead. This is not
-    ///     refering to the floating point types which do not have the
-    ///     same set of typedefs.
-    ///
     /// <!-- template parameters -->
     ///   @tparam T the type to query
     ///
@@ -59,19 +51,19 @@ namespace bsl
     /// @cond doxygen off
 
     template<>
-    class is_floating_point<float> final : public true_type    // PRQA S 2427
+    class is_floating_point<float> final : public true_type
     {};
 
     template<>
-    class is_floating_point<float const> final : public true_type    // PRQA S 2427
+    class is_floating_point<float const> final : public true_type
     {};
 
     template<>
-    class is_floating_point<double> final : public true_type    // PRQA S 2427
+    class is_floating_point<double> final : public true_type
     {};
 
     template<>
-    class is_floating_point<double const> final : public true_type    // PRQA S 2427
+    class is_floating_point<double const> final : public true_type
     {};
 
     /// @endcond doxygen on

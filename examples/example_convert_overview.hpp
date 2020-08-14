@@ -37,12 +37,18 @@ namespace bsl
         constexpr bsl::safe_intmax val1{bsl::to_imax(42)};
         constexpr bsl::safe_uintmax val2{bsl::safe_uintmax::max()};
 
-        if (val1) {
+        if constexpr (val1) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
 
         if (!bsl::to_i32(val2)) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

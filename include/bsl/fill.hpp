@@ -44,13 +44,12 @@ namespace bsl
     ///   @tparam T the type that defines the values being filled
     ///   @param vw the view to fill
     ///   @param value the value to set the view's elements to
-    ///   @return return's void
     ///
     /// <!-- inputs/outputs -->
     ///   @throw throws if the copy assignment of T throws
     ///
-    template<typename VIEW, typename T>
-    constexpr enable_if_t<is_copy_assignable<T>::value>
+    template<typename VIEW, typename T, enable_if_t<is_copy_assignable<T>::value, bool> = true>
+    constexpr void
     fill(VIEW &vw, T const &value) noexcept(    // --
         is_nothrow_copy_assignable<T>::value)
     {
@@ -69,13 +68,12 @@ namespace bsl
     ///   @param first the position to start the loop
     ///   @param last the position to end the loop
     ///   @param value the value to set the view's elements to
-    ///   @return return's void
     ///
     /// <!-- inputs/outputs -->
     ///   @throw throws if the copy assignment of T throws
     ///
-    template<typename ITER, typename T>
-    constexpr enable_if_t<is_copy_assignable<T>::value>
+    template<typename ITER, typename T, enable_if_t<is_copy_assignable<T>::value, bool> = true>
+    constexpr void
     fill(ITER first, ITER last, T const &value) noexcept(    // --
         is_nothrow_copy_assignable<T>::value)
     {

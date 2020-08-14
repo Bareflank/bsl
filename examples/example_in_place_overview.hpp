@@ -33,9 +33,13 @@ namespace bsl
     inline void
     example_in_place_overview() noexcept
     {
-        bsl::result<bool> res{bsl::in_place, true};
-        if (*res.get_if()) {
+        constexpr bsl::result<bool> res{bsl::in_place, true};
+
+        if constexpr (*res.get_if()) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

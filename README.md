@@ -2,7 +2,41 @@
 
 ## **Description**
 
-The Bareflank Support Library (BSL) is a header-only C++20 library that provides an API that is similar to the C++ Standard Library that is AUTOSAR and C++ Core Guideline compliant. To achieve this, the BSL does not adhere to the C++ Standard Library specification, but attempts to where possible (as the C++ Standard Library specification in its current form is not compliant with either set of guidelines). Since a number of critical systems applications do not support dynamic memory or C++ exceptions, the BSL uses neither, but is capable of supporting both if your environment supports them.
+The Bareflank Support Library (BSL) is a C++20, AUTOSAR and C++ Core Guideline
+compliant header-only library intended to support the development of critical
+systems applications on Windows and Linux using the Clang/LLVM compiler.
+Although the BSL does not adhere to the C++ Standard Library specification, it
+attempts to where possible, to ensure most of the APIs are as familiar as
+possible. Since a number of critical systems applications do not support
+dynamic memory or C++ exceptions, the BSL uses neither, but is capable of
+supporting both if exceptions are used.
+
+To ensure compliance with AUTOSAR and the C++ Core Guidelines, the development
+of the BSL makes heavy use of our own, custom version of
+[Clang Tidy](https://github.com/Bareflank/llvm-project). It should be noted
+that our implementation of Clang Tidy used to verify compliance with the
+AUTOSAR and C++ Core Guideline specifications is more restrictive than required
+and as such, you may find some of the rules implemented by our version of Clang
+Tidy more restrictive than is needed for your application. Furthermore,
+some of the rules in AUTOSAR and the C++ Core Guidelines are OBE due to the
+lack of dynamic memory, exceptions, and the required use of classes like
+bsl::safe_integral, which prevent implicit conversions, overflows, underflows, wrapping errors and ensure certain operations are not possible (like using the
+shift operators on signed integers). Other rules like the use of auto and
+braced initialization are also OBE thanks to C++17.
+
+With respect to testing, the BSL provides full
+[MC/DC](https://en.wikipedia.org/wiki/Modified_condition/decision_coverage) unit testing with 100% code coverage. To simplify this task, the BSL is
+written without the use of &&, ||, >= or <=, and all if statements follow a
+strict "if", "else if", "else" policy designed to ensure simple line coverage
+tools can be used to prove all MC/DC paths are taken during testing. Futhermore,
+the entire BSL is written as a "constexpr", meaning most (minus the bsl::ifmap and bsl::ioctl) APIs are unit tested both at compile-time and run-time (meaning most of the unit tests are actually executed from a static_assert).
+This allows us to ensure that the compiler's rules for constexpr and undefined
+behavior are leveraged to prove the BSL does not invoke UB at runtime. Unit
+tests are still executed at runtime after compilation so that we can use code
+coverage tools like CodeCov to ensure 100% coverage. Finally, we use GitHub
+Actions to verify compiler compatibility, as well as perform additional static/
+dynamic analysis tasks such as running the BSL unit tests with the Address and
+UB sanitizers enabled.
 
 ## **Quick start**
 
@@ -20,34 +54,61 @@ ninja
 Enjoy:
 
 ``` c++
+#include <bsl/arguments.hpp>
 #include <bsl/array.hpp>
+#include <bsl/as_const.hpp>
+#include <bsl/cstr_type.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
-#include <bsl/for_each.hpp>
-#include <bsl/main.hpp>
+#include <bsl/exit_code.hpp>
+#include <bsl/fmt.hpp>
 #include <bsl/safe_integral.hpp>
 
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main(bsl::int32 const argc, bsl::cstr_type const argv[]) noexcept -> bsl::exit_code
 {
-    constexpr bsl::safe_uintmax size{bsl::to_umax(42)};
-    bsl::array<bsl::safe_int32, size.get()> arr{};
+    constexpr auto num_expected_args{bsl::to_umax(2)};
+    bsl::arguments const args{argc, argv};
 
-    bsl::for_each(arr, [](auto &elem, auto const &index) noexcept {
-        elem = bsl::to_i32(index);
-    });
+    if (args.size() < num_expected_args) {
+        bsl::error() << "This application expected 2 arguments\n";
+        return bsl::exit_failure;
+    }
 
-    bsl::for_each(arr, [](auto const &elem) noexcept {
-        bsl::print() << elem << bsl::endl;
-    });
+    constexpr auto size_of_arr{bsl::to_umax(42)};
+    bsl::array<bsl::safe_int32, size_of_arr.get()> arr{};
 
-    bsl::print() << bsl::endl;
+    constexpr auto index_of_arg{bsl::to_umax(1)};
+    auto const val{args.at<bsl::safe_int32>(index_of_arg)};
+
+    if (!val) {
+        bsl::error() << "Invalid argument\n";
+        return bsl::exit_failure;
+    }
+
+    for (auto const elem : arr) {
+        if (nullptr != elem.data) {
+            *elem.data = val;
+        }
+        else {
+            bsl::error() << "Impossible when using ranged loops.\n";
+            return bsl::exit_failure;
+        }
+    }
+
+    for (auto const elem : bsl::as_const(arr)) {
+        bsl::print() << elem.index
+                     << " = "
+                     << bsl::fmt("#010x", *elem.data)
+                     << bsl::endl;
+    }
+
     return bsl::exit_success;
 }
 ```
 
 ## **Build Requirements**
-Currently, the BSL only supports the Clang/LLVM 10+ compiler. This, however, ensures the BSL can be natively compiled on Windows including support for cross-compiling. Support for other compilers that support C++20 can be added if needed, just let us know if that is something you need.
+Currently, the BSL only supports the Clang/LLVM 10+ compiler. This, however, ensures the BSL can be natively compiled on Windows including support for cross-compiling. Support for other C++20 compilers can be added if needed, just let us know if that is something you need.
 
 ### **Windows**
 To compile the BSL on Windows, you must first install the following:
@@ -63,7 +124,7 @@ To compile the BSL, use the following:
 ``` bash
 git clone https://github.com/bareflank/bsl
 mkdir bsl/build && cd bsl/build
-cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" ..
+cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DBUILD_EXAMPLES=ON -DBUILD_TESTS=ON ..
 ninja info
 ninja
 ```
@@ -75,27 +136,22 @@ To compile the BSL on Ubuntu, you must install the following:
 
 Once you have the above setup, you can install all dependencies using the following command
 ```bash
-sudo apt-get install -y clang-10 clang-tidy-10 clang-format-10 ninja-build doxygen git
+sudo apt-get install -y clang-10 build-essential git
 ```
 
 You might also have to update your build environment to point to the new version of LLVM as follows:
 ```
-sudo update-alternatives --remove-all clang
 sudo update-alternatives --remove-all clang++
-sudo update-alternatives --remove-all clang-format
-sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
 sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
-sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-10 100
-sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
 ```
 
 To compile the BSL, use the following:
 ``` bash
 git clone https://github.com/bareflank/bsl
 mkdir bsl/build && cd bsl/build
-cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" ..
-ninja info
-ninja
+cmake -DCMAKE_CXX_COMPILER="clang++" -DBUILD_EXAMPLES=ON -DBUILD_TESTS=ON ..
+make info
+make -j<number of cores>
 ```
 
 ## **Resources**
@@ -110,6 +166,7 @@ The Bareflank Support Library provides a ton of useful resources to learn how to
 
 If you have any questions, bugs, or feature requests, please feel free to ask on any of the following:
 
+-   **Slack**: <https://bareflank.herokuapp.com/>
 -   **Issue Tracker**: <https://github.com/Bareflank/bsl/issues>
 
 And as always, we are always looking for more help:
@@ -123,10 +180,10 @@ And as always, we are always looking for more help:
 
 The Bareflank Support Library leverages the following tools to ensure the highest possible code quality. Each pull request undergoes the following rigorous testing and review:
 
--   **Static Analysis:** Clang Tidy, Perforce Helix QAC
+-   **Static Analysis:** [Clang Tidy](https://github.com/Bareflank/llvm-project)
 -   **Dynamic Analysis:** Google's ASAN and UBSAN
--   **Code Coverage:** LLVM Code Coverage with CodeCov
--   **Coding Standards**: [AUTOSAR C++14](https://www.autosar.org/fileadmin/user_upload/standards/adaptive/17-03/AUTOSAR_RS_CPP14Guidelines.pdf)
+-   **Code Coverage:** Code Coverage with CodeCov
+-   **Coding Standards**: [AUTOSAR C++14](https://www.autosar.org/fileadmin/user_upload/standards/adaptive/17-03/AUTOSAR_RS_CPP14Guidelines.pdf) and [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md)
 -   **Style**: Clang Format
 -   **Documentation**: Doxygen
 
@@ -154,18 +211,16 @@ Bareflank project. This includes:
 
 The next version of this library will include (near the end of 2020):
 - All of the atomic APIs
-- All of the bit APIs
-- Most of the thread APIs (minus futures)
+- Some of the thread APIs (minus futures)
 - Some sort of Date/Time APIs
-- Some of the algorithms APIs (like copy, etc...)
-- Missing find functions in bsl::string_view
+- Support for bsl::deque
 
 In the future, we would like to add the following APIs, but we don't have a
 specific time frame for when these would be added:
 - All of the concept APIs
 - All of the algorithms APIs
 - Most of the remaining utility APIs
-- Non-allocating versions of a queue and stack
+- Support for more data structures
 
 Most of the C++ APIs that include floating point numbers, dynamic memory
 and exceptions are purposely being avoided at the moment. If a need for

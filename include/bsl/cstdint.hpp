@@ -28,7 +28,9 @@
 #ifndef BSL_CSTDINT_HPP
 #define BSL_CSTDINT_HPP
 
-#include <stdint.h>    // NOLINT
+// We are implementing cstdint
+// NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
+#include <stdint.h>
 
 namespace bsl
 {

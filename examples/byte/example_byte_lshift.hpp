@@ -35,11 +35,15 @@ namespace bsl
     {
         constexpr bsl::uint8 val{0x01U};
         constexpr bsl::uint8 expected{0x02U};
+        constexpr bsl::uint8 shift{1U};
 
-        bsl::byte const b{val};
+        constexpr bsl::byte b{val};
 
-        if ((b << 1U).to_integer() == expected) {
+        if constexpr ((b << shift).to_integer() == expected) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

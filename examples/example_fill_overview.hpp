@@ -24,7 +24,6 @@
 
 #include <bsl/fill.hpp>
 #include <bsl/array.hpp>
-#include <bsl/for_each.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -42,12 +41,15 @@ namespace bsl
         bsl::fill(arr, val);
 
         bsl::safe_uintmax sum{};
-        bsl::for_each(arr, [&sum](auto const &e) mutable noexcept {
-            sum += e;
-        });
+        for (auto const elem : arr) {
+            sum += *elem.data;
+        }
 
         if (size == sum) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

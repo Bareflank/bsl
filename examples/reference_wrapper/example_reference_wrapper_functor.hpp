@@ -35,10 +35,15 @@ namespace bsl
     inline void
     example_reference_wrapper_functor() noexcept
     {
+        // BUG: Need to figure out why we cannot use & here
+        // NOLINTNEXTLINE(bsl-function-name-use)
         bsl::reference_wrapper const rw{example_function};
 
         if (rw(true)) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

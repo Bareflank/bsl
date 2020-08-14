@@ -47,14 +47,16 @@ namespace bsl
         ///   @return Returns the number of Radix digits for a given type.
         ///
         template<typename T>
-        [[nodiscard]] constexpr bsl::int32
-        get_digits() noexcept
+        [[nodiscard]] constexpr auto
+        get_digits() noexcept -> bsl::int32
         {
+            constexpr bsl::int32 dec{1};
+
             if (is_unsigned<T>::value) {
                 return (CHAR_BIT * static_cast<bsl::int32>(sizeof(T)));
             }
 
-            return (CHAR_BIT * static_cast<bsl::int32>(sizeof(T))) - 1;
+            return (CHAR_BIT * static_cast<bsl::int32>(sizeof(T))) - dec;
         }
     }
 
@@ -121,8 +123,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the min value of T
         ///
-        static constexpr T
-        min() noexcept
+        [[nodiscard]] static constexpr auto
+        min() noexcept -> T
         {
             return {};
         }
@@ -134,8 +136,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the lowest value of T
         ///
-        static constexpr T
-        lowest() noexcept
+        [[nodiscard]] static constexpr auto
+        lowest() noexcept -> T
         {
             return {};
         }
@@ -147,8 +149,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr T
-        max() noexcept
+        [[nodiscard]] static constexpr auto
+        max() noexcept -> T
         {
             return {};
         }
@@ -160,8 +162,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr T
-        epsilon() noexcept
+        [[nodiscard]] static constexpr auto
+        epsilon() noexcept -> T
         {
             return {};
         }
@@ -173,8 +175,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the rounding error of T
         ///
-        static constexpr T
-        round_error() noexcept
+        [[nodiscard]] static constexpr auto
+        round_error() noexcept -> T
         {
             return {};
         }
@@ -186,8 +188,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the value of infinity for T
         ///
-        static constexpr T
-        infinity() noexcept
+        [[nodiscard]] static constexpr auto
+        infinity() noexcept -> T
         {
             return {};
         }
@@ -199,8 +201,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the quiet NaN value for T
         ///
-        static constexpr T
-        quiet_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        quiet_NaN() noexcept -> T
         {
             return {};
         }
@@ -212,8 +214,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the signaling NaN value for T
         ///
-        static constexpr T
-        signaling_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        signaling_NaN() noexcept -> T
         {
             return {};
         }
@@ -225,8 +227,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the smallest subnormal value for T
         ///
-        static constexpr T
-        denorm_min() noexcept
+        [[nodiscard]] static constexpr auto
+        denorm_min() noexcept -> T
         {
             return {};
         }
@@ -294,8 +296,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the min value of T
         ///
-        static constexpr bool
-        min() noexcept
+        [[nodiscard]] static constexpr auto
+        min() noexcept -> bool
         {
             return false;
         }
@@ -307,8 +309,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the lowest value of T
         ///
-        static constexpr bool
-        lowest() noexcept
+        [[nodiscard]] static constexpr auto
+        lowest() noexcept -> bool
         {
             return false;
         }
@@ -320,8 +322,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr bool
-        max() noexcept
+        [[nodiscard]] static constexpr auto
+        max() noexcept -> bool
         {
             return true;
         }
@@ -333,8 +335,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr bool
-        epsilon() noexcept
+        [[nodiscard]] static constexpr auto
+        epsilon() noexcept -> bool
         {
             return false;
         }
@@ -346,8 +348,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the rounding error of T
         ///
-        static constexpr bool
-        round_error() noexcept
+        [[nodiscard]] static constexpr auto
+        round_error() noexcept -> bool
         {
             return false;
         }
@@ -359,8 +361,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the value of infinity for T
         ///
-        static constexpr bool
-        infinity() noexcept
+        [[nodiscard]] static constexpr auto
+        infinity() noexcept -> bool
         {
             return false;
         }
@@ -372,8 +374,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the quiet NaN value for T
         ///
-        static constexpr bool
-        quiet_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        quiet_NaN() noexcept -> bool
         {
             return false;
         }
@@ -385,8 +387,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the signaling NaN value for T
         ///
-        static constexpr bool
-        signaling_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        signaling_NaN() noexcept -> bool
         {
             return false;
         }
@@ -398,8 +400,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the smallest subnormal value for T
         ///
-        static constexpr bool
-        denorm_min() noexcept
+        [[nodiscard]] static constexpr auto
+        denorm_min() noexcept -> bool
         {
             return false;
         }
@@ -465,8 +467,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the min value of T
         ///
-        static constexpr char_type
-        min() noexcept
+        [[nodiscard]] static constexpr auto
+        min() noexcept -> char_type
         {
             return static_cast<char_type>(CHAR_MIN);
         }
@@ -478,8 +480,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the lowest value of T
         ///
-        static constexpr char_type
-        lowest() noexcept
+        [[nodiscard]] static constexpr auto
+        lowest() noexcept -> char_type
         {
             return static_cast<char_type>(CHAR_MIN);
         }
@@ -491,8 +493,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr char_type
-        max() noexcept
+        [[nodiscard]] static constexpr auto
+        max() noexcept -> char_type
         {
             return static_cast<char_type>(CHAR_MAX);
         }
@@ -504,8 +506,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr char_type
-        epsilon() noexcept
+        [[nodiscard]] static constexpr auto
+        epsilon() noexcept -> char_type
         {
             return static_cast<char_type>(0);
         }
@@ -517,8 +519,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the rounding error of T
         ///
-        static constexpr char_type
-        round_error() noexcept
+        [[nodiscard]] static constexpr auto
+        round_error() noexcept -> char_type
         {
             return static_cast<char_type>(0);
         }
@@ -530,8 +532,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the value of infinity for T
         ///
-        static constexpr char_type
-        infinity() noexcept
+        [[nodiscard]] static constexpr auto
+        infinity() noexcept -> char_type
         {
             return static_cast<char_type>(0);
         }
@@ -543,8 +545,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the quiet NaN value for T
         ///
-        static constexpr char_type
-        quiet_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        quiet_NaN() noexcept -> char_type
         {
             return static_cast<char_type>(0);
         }
@@ -556,8 +558,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the signaling NaN value for T
         ///
-        static constexpr char_type
-        signaling_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        signaling_NaN() noexcept -> char_type
         {
             return static_cast<char_type>(0);
         }
@@ -569,8 +571,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the smallest subnormal value for T
         ///
-        static constexpr char_type
-        denorm_min() noexcept
+        [[nodiscard]] static constexpr auto
+        denorm_min() noexcept -> char_type
         {
             return static_cast<char_type>(0);
         }
@@ -636,8 +638,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the min value of T
         ///
-        static constexpr bsl::int8
-        min() noexcept
+        [[nodiscard]] static constexpr auto
+        min() noexcept -> bsl::int8
         {
             return INT8_MIN;
         }
@@ -649,8 +651,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the lowest value of T
         ///
-        static constexpr bsl::int8
-        lowest() noexcept
+        [[nodiscard]] static constexpr auto
+        lowest() noexcept -> bsl::int8
         {
             return INT8_MIN;
         }
@@ -662,8 +664,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr bsl::int8
-        max() noexcept
+        [[nodiscard]] static constexpr auto
+        max() noexcept -> bsl::int8
         {
             return INT8_MAX;
         }
@@ -675,8 +677,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr bsl::int8
-        epsilon() noexcept
+        [[nodiscard]] static constexpr auto
+        epsilon() noexcept -> bsl::int8
         {
             return 0;
         }
@@ -688,8 +690,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the rounding error of T
         ///
-        static constexpr bsl::int8
-        round_error() noexcept
+        [[nodiscard]] static constexpr auto
+        round_error() noexcept -> bsl::int8
         {
             return 0;
         }
@@ -701,8 +703,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the value of infinity for T
         ///
-        static constexpr bsl::int8
-        infinity() noexcept
+        [[nodiscard]] static constexpr auto
+        infinity() noexcept -> bsl::int8
         {
             return 0;
         }
@@ -714,8 +716,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the quiet NaN value for T
         ///
-        static constexpr bsl::int8
-        quiet_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        quiet_NaN() noexcept -> bsl::int8
         {
             return 0;
         }
@@ -727,8 +729,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the signaling NaN value for T
         ///
-        static constexpr bsl::int8
-        signaling_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        signaling_NaN() noexcept -> bsl::int8
         {
             return 0;
         }
@@ -740,8 +742,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the smallest subnormal value for T
         ///
-        static constexpr bsl::int8
-        denorm_min() noexcept
+        [[nodiscard]] static constexpr auto
+        denorm_min() noexcept -> bsl::int8
         {
             return 0;
         }
@@ -807,8 +809,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the min value of T
         ///
-        static constexpr bsl::int16
-        min() noexcept
+        [[nodiscard]] static constexpr auto
+        min() noexcept -> bsl::int16
         {
             return INT16_MIN;
         }
@@ -820,8 +822,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the lowest value of T
         ///
-        static constexpr bsl::int16
-        lowest() noexcept
+        [[nodiscard]] static constexpr auto
+        lowest() noexcept -> bsl::int16
         {
             return INT16_MIN;
         }
@@ -833,8 +835,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr bsl::int16
-        max() noexcept
+        [[nodiscard]] static constexpr auto
+        max() noexcept -> bsl::int16
         {
             return INT16_MAX;
         }
@@ -846,8 +848,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr bsl::int16
-        epsilon() noexcept
+        [[nodiscard]] static constexpr auto
+        epsilon() noexcept -> bsl::int16
         {
             return 0;
         }
@@ -859,8 +861,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the rounding error of T
         ///
-        static constexpr bsl::int16
-        round_error() noexcept
+        [[nodiscard]] static constexpr auto
+        round_error() noexcept -> bsl::int16
         {
             return 0;
         }
@@ -872,8 +874,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the value of infinity for T
         ///
-        static constexpr bsl::int16
-        infinity() noexcept
+        [[nodiscard]] static constexpr auto
+        infinity() noexcept -> bsl::int16
         {
             return 0;
         }
@@ -885,8 +887,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the quiet NaN value for T
         ///
-        static constexpr bsl::int16
-        quiet_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        quiet_NaN() noexcept -> bsl::int16
         {
             return 0;
         }
@@ -898,8 +900,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the signaling NaN value for T
         ///
-        static constexpr bsl::int16
-        signaling_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        signaling_NaN() noexcept -> bsl::int16
         {
             return 0;
         }
@@ -911,8 +913,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the smallest subnormal value for T
         ///
-        static constexpr bsl::int16
-        denorm_min() noexcept
+        [[nodiscard]] static constexpr auto
+        denorm_min() noexcept -> bsl::int16
         {
             return 0;
         }
@@ -978,8 +980,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the min value of T
         ///
-        static constexpr bsl::int32
-        min() noexcept
+        [[nodiscard]] static constexpr auto
+        min() noexcept -> bsl::int32
         {
             return INT32_MIN;
         }
@@ -991,8 +993,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the lowest value of T
         ///
-        static constexpr bsl::int32
-        lowest() noexcept
+        [[nodiscard]] static constexpr auto
+        lowest() noexcept -> bsl::int32
         {
             return INT32_MIN;
         }
@@ -1004,8 +1006,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr bsl::int32
-        max() noexcept
+        [[nodiscard]] static constexpr auto
+        max() noexcept -> bsl::int32
         {
             return INT32_MAX;
         }
@@ -1017,8 +1019,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr bsl::int32
-        epsilon() noexcept
+        [[nodiscard]] static constexpr auto
+        epsilon() noexcept -> bsl::int32
         {
             return 0;
         }
@@ -1030,8 +1032,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the rounding error of T
         ///
-        static constexpr bsl::int32
-        round_error() noexcept
+        [[nodiscard]] static constexpr auto
+        round_error() noexcept -> bsl::int32
         {
             return 0;
         }
@@ -1043,8 +1045,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the value of infinity for T
         ///
-        static constexpr bsl::int32
-        infinity() noexcept
+        [[nodiscard]] static constexpr auto
+        infinity() noexcept -> bsl::int32
         {
             return 0;
         }
@@ -1056,8 +1058,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the quiet NaN value for T
         ///
-        static constexpr bsl::int32
-        quiet_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        quiet_NaN() noexcept -> bsl::int32
         {
             return 0;
         }
@@ -1069,8 +1071,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the signaling NaN value for T
         ///
-        static constexpr bsl::int32
-        signaling_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        signaling_NaN() noexcept -> bsl::int32
         {
             return 0;
         }
@@ -1082,8 +1084,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the smallest subnormal value for T
         ///
-        static constexpr bsl::int32
-        denorm_min() noexcept
+        [[nodiscard]] static constexpr auto
+        denorm_min() noexcept -> bsl::int32
         {
             return 0;
         }
@@ -1149,8 +1151,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the min value of T
         ///
-        static constexpr bsl::int64
-        min() noexcept
+        [[nodiscard]] static constexpr auto
+        min() noexcept -> bsl::int64
         {
             return INT64_MIN;
         }
@@ -1162,8 +1164,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the lowest value of T
         ///
-        static constexpr bsl::int64
-        lowest() noexcept
+        [[nodiscard]] static constexpr auto
+        lowest() noexcept -> bsl::int64
         {
             return INT64_MIN;
         }
@@ -1175,8 +1177,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr bsl::int64
-        max() noexcept
+        [[nodiscard]] static constexpr auto
+        max() noexcept -> bsl::int64
         {
             return INT64_MAX;
         }
@@ -1188,8 +1190,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr bsl::int64
-        epsilon() noexcept
+        [[nodiscard]] static constexpr auto
+        epsilon() noexcept -> bsl::int64
         {
             return 0;
         }
@@ -1201,8 +1203,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the rounding error of T
         ///
-        static constexpr bsl::int64
-        round_error() noexcept
+        [[nodiscard]] static constexpr auto
+        round_error() noexcept -> bsl::int64
         {
             return 0;
         }
@@ -1214,8 +1216,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the value of infinity for T
         ///
-        static constexpr bsl::int64
-        infinity() noexcept
+        [[nodiscard]] static constexpr auto
+        infinity() noexcept -> bsl::int64
         {
             return 0;
         }
@@ -1227,8 +1229,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the quiet NaN value for T
         ///
-        static constexpr bsl::int64
-        quiet_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        quiet_NaN() noexcept -> bsl::int64
         {
             return 0;
         }
@@ -1240,8 +1242,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the signaling NaN value for T
         ///
-        static constexpr bsl::int64
-        signaling_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        signaling_NaN() noexcept -> bsl::int64
         {
             return 0;
         }
@@ -1253,8 +1255,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the smallest subnormal value for T
         ///
-        static constexpr bsl::int64
-        denorm_min() noexcept
+        [[nodiscard]] static constexpr auto
+        denorm_min() noexcept -> bsl::int64
         {
             return 0;
         }
@@ -1320,8 +1322,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the min value of T
         ///
-        static constexpr bsl::uint8
-        min() noexcept
+        [[nodiscard]] static constexpr auto
+        min() noexcept -> bsl::uint8
         {
             return 0U;
         }
@@ -1333,8 +1335,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the lowest value of T
         ///
-        static constexpr bsl::uint8
-        lowest() noexcept
+        [[nodiscard]] static constexpr auto
+        lowest() noexcept -> bsl::uint8
         {
             return 0U;
         }
@@ -1343,18 +1345,13 @@ namespace bsl
         ///   @brief Returns the max value of T
         ///   @include example_numeric_limits_overview.hpp
         ///
-        ///   SUPPRESSION: PRQA 3130 - false positive
-        ///   - We suppress this because M5-0-3 states that implicit
-        ///     conversions should not be performed. There is no implicit
-        ///     conversion here, verified by Clang Tidy.
-        ///
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr bsl::uint8
-        max() noexcept
+        [[nodiscard]] static constexpr auto
+        max() noexcept -> bsl::uint8
         {
-            return UINT8_MAX;    // PRQA S 1-10000
+            return UINT8_MAX;
         }
 
         /// <!-- description -->
@@ -1364,8 +1361,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr bsl::uint8
-        epsilon() noexcept
+        [[nodiscard]] static constexpr auto
+        epsilon() noexcept -> bsl::uint8
         {
             return 0U;
         }
@@ -1377,8 +1374,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the rounding error of T
         ///
-        static constexpr bsl::uint8
-        round_error() noexcept
+        [[nodiscard]] static constexpr auto
+        round_error() noexcept -> bsl::uint8
         {
             return 0U;
         }
@@ -1390,8 +1387,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the value of infinity for T
         ///
-        static constexpr bsl::uint8
-        infinity() noexcept
+        [[nodiscard]] static constexpr auto
+        infinity() noexcept -> bsl::uint8
         {
             return 0U;
         }
@@ -1403,8 +1400,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the quiet NaN value for T
         ///
-        static constexpr bsl::uint8
-        quiet_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        quiet_NaN() noexcept -> bsl::uint8
         {
             return 0U;
         }
@@ -1416,8 +1413,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the signaling NaN value for T
         ///
-        static constexpr bsl::uint8
-        signaling_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        signaling_NaN() noexcept -> bsl::uint8
         {
             return 0U;
         }
@@ -1429,8 +1426,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the smallest subnormal value for T
         ///
-        static constexpr bsl::uint8
-        denorm_min() noexcept
+        [[nodiscard]] static constexpr auto
+        denorm_min() noexcept -> bsl::uint8
         {
             return 0U;
         }
@@ -1496,8 +1493,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the min value of T
         ///
-        static constexpr bsl::uint16
-        min() noexcept
+        [[nodiscard]] static constexpr auto
+        min() noexcept -> bsl::uint16
         {
             return 0U;
         }
@@ -1509,8 +1506,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the lowest value of T
         ///
-        static constexpr bsl::uint16
-        lowest() noexcept
+        [[nodiscard]] static constexpr auto
+        lowest() noexcept -> bsl::uint16
         {
             return 0U;
         }
@@ -1519,18 +1516,13 @@ namespace bsl
         ///   @brief Returns the max value of T
         ///   @include example_numeric_limits_overview.hpp
         ///
-        ///   SUPPRESSION: PRQA 3130 - false positive
-        ///   - We suppress this because M5-0-3 states that implicit
-        ///     conversions should not be performed. There is no implicit
-        ///     conversion here, verified by Clang Tidy.
-        ///
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr bsl::uint16
-        max() noexcept
+        [[nodiscard]] static constexpr auto
+        max() noexcept -> bsl::uint16
         {
-            return UINT16_MAX;    // PRQA S 1-10000
+            return UINT16_MAX;
         }
 
         /// <!-- description -->
@@ -1540,8 +1532,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr bsl::uint16
-        epsilon() noexcept
+        [[nodiscard]] static constexpr auto
+        epsilon() noexcept -> bsl::uint16
         {
             return 0U;
         }
@@ -1553,8 +1545,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the rounding error of T
         ///
-        static constexpr bsl::uint16
-        round_error() noexcept
+        [[nodiscard]] static constexpr auto
+        round_error() noexcept -> bsl::uint16
         {
             return 0U;
         }
@@ -1566,8 +1558,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the value of infinity for T
         ///
-        static constexpr bsl::uint16
-        infinity() noexcept
+        [[nodiscard]] static constexpr auto
+        infinity() noexcept -> bsl::uint16
         {
             return 0U;
         }
@@ -1579,8 +1571,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the quiet NaN value for T
         ///
-        static constexpr bsl::uint16
-        quiet_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        quiet_NaN() noexcept -> bsl::uint16
         {
             return 0U;
         }
@@ -1592,8 +1584,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the signaling NaN value for T
         ///
-        static constexpr bsl::uint16
-        signaling_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        signaling_NaN() noexcept -> bsl::uint16
         {
             return 0U;
         }
@@ -1605,8 +1597,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the smallest subnormal value for T
         ///
-        static constexpr bsl::uint16
-        denorm_min() noexcept
+        [[nodiscard]] static constexpr auto
+        denorm_min() noexcept -> bsl::uint16
         {
             return 0U;
         }
@@ -1672,8 +1664,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the min value of T
         ///
-        static constexpr bsl::uint32
-        min() noexcept
+        [[nodiscard]] static constexpr auto
+        min() noexcept -> bsl::uint32
         {
             return 0U;
         }
@@ -1685,8 +1677,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the lowest value of T
         ///
-        static constexpr bsl::uint32
-        lowest() noexcept
+        [[nodiscard]] static constexpr auto
+        lowest() noexcept -> bsl::uint32
         {
             return 0U;
         }
@@ -1698,8 +1690,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr bsl::uint32
-        max() noexcept
+        [[nodiscard]] static constexpr auto
+        max() noexcept -> bsl::uint32
         {
             return UINT32_MAX;
         }
@@ -1711,8 +1703,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr bsl::uint32
-        epsilon() noexcept
+        [[nodiscard]] static constexpr auto
+        epsilon() noexcept -> bsl::uint32
         {
             return 0U;
         }
@@ -1724,8 +1716,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the rounding error of T
         ///
-        static constexpr bsl::uint32
-        round_error() noexcept
+        [[nodiscard]] static constexpr auto
+        round_error() noexcept -> bsl::uint32
         {
             return 0U;
         }
@@ -1737,8 +1729,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the value of infinity for T
         ///
-        static constexpr bsl::uint32
-        infinity() noexcept
+        [[nodiscard]] static constexpr auto
+        infinity() noexcept -> bsl::uint32
         {
             return 0U;
         }
@@ -1750,8 +1742,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the quiet NaN value for T
         ///
-        static constexpr bsl::uint32
-        quiet_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        quiet_NaN() noexcept -> bsl::uint32
         {
             return 0U;
         }
@@ -1763,8 +1755,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the signaling NaN value for T
         ///
-        static constexpr bsl::uint32
-        signaling_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        signaling_NaN() noexcept -> bsl::uint32
         {
             return 0U;
         }
@@ -1776,8 +1768,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the smallest subnormal value for T
         ///
-        static constexpr bsl::uint32
-        denorm_min() noexcept
+        [[nodiscard]] static constexpr auto
+        denorm_min() noexcept -> bsl::uint32
         {
             return 0U;
         }
@@ -1843,8 +1835,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the min value of T
         ///
-        static constexpr bsl::uint64
-        min() noexcept
+        [[nodiscard]] static constexpr auto
+        min() noexcept -> bsl::uint64
         {
             return 0U;
         }
@@ -1856,8 +1848,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the lowest value of T
         ///
-        static constexpr bsl::uint64
-        lowest() noexcept
+        [[nodiscard]] static constexpr auto
+        lowest() noexcept -> bsl::uint64
         {
             return 0U;
         }
@@ -1869,8 +1861,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr bsl::uint64
-        max() noexcept
+        [[nodiscard]] static constexpr auto
+        max() noexcept -> bsl::uint64
         {
             return UINT64_MAX;
         }
@@ -1882,8 +1874,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value of T
         ///
-        static constexpr bsl::uint64
-        epsilon() noexcept
+        [[nodiscard]] static constexpr auto
+        epsilon() noexcept -> bsl::uint64
         {
             return 0U;
         }
@@ -1895,8 +1887,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the rounding error of T
         ///
-        static constexpr bsl::uint64
-        round_error() noexcept
+        [[nodiscard]] static constexpr auto
+        round_error() noexcept -> bsl::uint64
         {
             return 0U;
         }
@@ -1908,8 +1900,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the value of infinity for T
         ///
-        static constexpr bsl::uint64
-        infinity() noexcept
+        [[nodiscard]] static constexpr auto
+        infinity() noexcept -> bsl::uint64
         {
             return 0U;
         }
@@ -1921,8 +1913,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the quiet NaN value for T
         ///
-        static constexpr bsl::uint64
-        quiet_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        quiet_NaN() noexcept -> bsl::uint64
         {
             return 0U;
         }
@@ -1934,8 +1926,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the signaling NaN value for T
         ///
-        static constexpr bsl::uint64
-        signaling_NaN() noexcept
+        [[nodiscard]] static constexpr auto
+        signaling_NaN() noexcept -> bsl::uint64
         {
             return 0U;
         }
@@ -1947,8 +1939,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the smallest subnormal value for T
         ///
-        static constexpr bsl::uint64
-        denorm_min() noexcept
+        [[nodiscard]] static constexpr auto
+        denorm_min() noexcept -> bsl::uint64
         {
             return 0U;
         }

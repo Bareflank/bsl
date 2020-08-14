@@ -35,8 +35,11 @@ namespace bsl
     {
         constexpr bsl::safe_int32 val{42};
 
-        if (val) {
-            bsl::print() << "success: " << val << '\n';
+        if constexpr (val) {
+            bsl::print() << "success: " << val << bsl::endl;
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

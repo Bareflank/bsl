@@ -34,8 +34,7 @@ namespace bsl
     inline void
     example_span_as_writable_bytes() noexcept
     {
-        constexpr bsl::safe_uintmax size{bsl::to_umax(2)};
-        bsl::array<bool, size.get()> arr{true, false};
+        bsl::array arr{true, false};
         bsl::span const spn{arr.data(), arr.size()};
 
         bsl::print() << bsl::as_writable_bytes(spn) << bsl::endl;

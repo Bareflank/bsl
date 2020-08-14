@@ -21,24 +21,32 @@
 /// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
+///
+/// @file always_false.hpp
+///
 
-#include <bsl/arguments.hpp>
-#include <bsl/array.hpp>
-#include <bsl/debug.hpp>
+#ifndef BSL_ALWAYS_FALSE_HPP
+#define BSL_ALWAYS_FALSE_HPP
 
 namespace bsl
 {
     /// <!-- description -->
-    ///   @brief Provides the example's main function
+    ///   @brief Always returns false. This can be used in a static_assert
+    ///     to cause the static_assert to trigger if a function is used.
     ///
-    inline void
-    example_arguments_back() noexcept
+    /// <!-- inputs/outputs -->
+    ///   @return Always returns false.
+    ///
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    always_false() noexcept -> bool
     {
-        constexpr bsl::array argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-        bsl::arguments args{argv.size(), argv.data()};
-
-        if (args.back<bsl::string_view>() == "42") {
-            bsl::print() << "success\n";
-        }
+        // The following redundent statement is one of the best ways to
+        // ensure "false" is not determined in a static_assert until after
+        // the function with the static_assert is used.
+        // NOLINTNEXTLINE(misc-redundant-expression)
+        return sizeof(T) != sizeof(T);
     }
 }
+
+#endif

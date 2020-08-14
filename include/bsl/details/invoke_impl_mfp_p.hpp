@@ -27,97 +27,101 @@
 
 #include "../forward.hpp"
 
-namespace bsl
+namespace bsl::details
 {
-    namespace details
+    /// @class bsl::details::invoke_impl_mfp_p
+    ///
+    /// <!-- description -->
+    ///   @brief The "invoke" function is implemented by executing the
+    ///     "call" function from invoke_impl. The invoke_impl class uses
+    ///     SFINAE to figure out which invoke_impl_xxx function to inherit
+    ///     from. If the compiler can find a valid invoke_impl_xxx, like
+    ///     possibly this class, it will inherit from it, otherwise, it
+    ///     will pick the default invoke_impl implementation which is an
+    ///     empty class (i.e., it does not provide a call function). This
+    ///     will either result in a compiler error, or an SFINAE
+    ///     substitution error, which is used to implement is_invocable,
+    ///     which is why invoke is implemented using class logic instead
+    ///     of a constexpr-if statement as documented by cppreference.
+    ///
+    class invoke_impl_mfp_p
     {
-        /// @class bsl::details::invoke_impl_mfp_p
-        ///
+    public:
         /// <!-- description -->
-        ///   @brief The "invoke" function is implemented by executing the
-        ///     "call" function from invoke_impl. The invoke_impl class uses
-        ///     SFINAE to figure out which invoke_impl_xxx function to inherit
-        ///     from. If the compiler can find a valid invoke_impl_xxx, like
-        ///     possibly this class, it will inherit from it, otherwise, it
-        ///     will pick the default invoke_impl implementation which is an
-        ///     empty class (i.e., it does not provide a call function). This
-        ///     will either result in a compiler error, or an SFINAE
-        ///     substitution error, which is used to implement is_invocable,
-        ///     which is why invoke is implemented using class logic instead
-        ///     of a constexpr-if statement as documented by cppreference.
+        ///   @brief Default constructor
         ///
-        class invoke_impl_mfp_p
+        constexpr invoke_impl_mfp_p() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief Invokes a member function pointer given a pointer to
+        ///     an object.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam FUNC the type that defines the function being called
+        ///   @tparam U the type that defines the class that encapsulates
+        ///     the function being called.
+        ///   @tparam T1 the type that defines the provided object. Note
+        ///     that normally, U == T, but if inheritance is used, it might
+        ///     not which is why U is provided instead of just using T.
+        ///   @tparam TN the types that define the arguments passed to the
+        ///     provided function when called.
+        ///   @param f a pointer to the function being called.
+        ///   @param t1 a pointer to the object for which the function is
+        ///     called from.
+        ///   @param tn the arguments passed to the function f when called.
+        ///   @return Returns the result of calling "f" from "t1" with "tn"
+        ///
+        template<typename FUNC, typename U, typename T1, typename... TN>
+        [[maybe_unused]] static constexpr auto
+        call(FUNC U::*f, T1 &&t1, TN &&... tn) noexcept(
+            noexcept(((*bsl::forward<T1>(t1)).*f)(bsl::forward<TN>(tn)...)))
+            -> decltype(((*bsl::forward<T1>(t1)).*f)(bsl::forward<TN>(tn)...))
         {
-        public:
-            /// <!-- description -->
-            ///   @brief Invokes a member function pointer given a pointer to
-            ///     an object.
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @tparam FUNC the type that defines the function being called
-            ///   @tparam U the type that defines the class that encapsulates
-            ///     the function being called.
-            ///   @tparam T1 the type that defines the provided object. Note
-            ///     that normally, U == T, but if inheritance is used, it might
-            ///     not which is why U is provided instead of just using T.
-            ///   @tparam TN the types that define the arguments passed to the
-            ///     provided function when called.
-            ///   @param f a pointer to the function being called.
-            ///   @param t1 a pointer to the object for which the function is
-            ///     called from.
-            ///   @param tn the arguments passed to the function f when called.
-            ///   @return Returns the result of calling "f" from "t1" with "tn"
-            ///
-            template<typename FUNC, typename U, typename T1, typename... TN>
-            static constexpr auto
-            call(FUNC U::*f, T1 &&t1, TN &&... tn) noexcept(
-                noexcept(((*bsl::forward<T1>(t1)).*f)(bsl::forward<TN>(tn)...)))
-                -> decltype(((*bsl::forward<T1>(t1)).*f)(bsl::forward<TN>(tn)...))
-            {
-                return ((*bsl::forward<T1>(t1)).*f)(bsl::forward<TN>(tn)...);
-            }
+            return ((*bsl::forward<T1>(t1)).*f)(bsl::forward<TN>(tn)...);
+        }
 
-        protected:
-            /// <!-- description -->
-            ///   @brief Destroyes a previously created bsl::invoke_impl_mfp_p
-            ///
-            ~invoke_impl_mfp_p() noexcept = default;
+    protected:
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::invoke_impl_mfp_p
+        ///
+        constexpr ~invoke_impl_mfp_p() noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief copy constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///
-            invoke_impl_mfp_p(invoke_impl_mfp_p const &o) noexcept = default;
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr invoke_impl_mfp_p(invoke_impl_mfp_p const &o) noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief move constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///
-            invoke_impl_mfp_p(invoke_impl_mfp_p &&o) noexcept = default;
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr invoke_impl_mfp_p(invoke_impl_mfp_p &&o) noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief copy assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///   @return a reference to *this
-            ///
-            invoke_impl_mfp_p &operator=(invoke_impl_mfp_p const &o) &noexcept = default;
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(invoke_impl_mfp_p const &o) &noexcept
+            -> invoke_impl_mfp_p & = default;
 
-            /// <!-- description -->
-            ///   @brief move assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///   @return a reference to *this
-            ///
-            invoke_impl_mfp_p &operator=(invoke_impl_mfp_p &&o) &noexcept = default;
-        };
-    }
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(invoke_impl_mfp_p &&o) &noexcept
+            -> invoke_impl_mfp_p & = default;
+    };
 }
 
 #endif

@@ -23,7 +23,6 @@
 /// SOFTWARE.
 
 #include <bsl/string_view.hpp>
-#include <bsl/for_each.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -34,11 +33,11 @@ namespace bsl
     inline void
     example_contiguous_iterator_overview() noexcept
     {
-        bsl::string_view const str{"Hello"};
-        bsl::for_each(str.begin(), str.end(), [](auto &e) noexcept {
-            bsl::print() << e;
-        });
+        constexpr bsl::string_view str{"Hello"};
 
+        for (auto iter{str.begin()}; iter != str.end(); ++iter) {
+            bsl::print() << iter;
+        }
         bsl::print() << bsl::endl;
     }
 }

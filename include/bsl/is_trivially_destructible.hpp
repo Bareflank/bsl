@@ -29,6 +29,7 @@
 #define BSL_IS_TRIVIALLY_DESTRUCTIBLE_HPP
 
 #include "bool_constant.hpp"
+#include "conjunction.hpp"
 #include "is_destructible.hpp"
 
 namespace bsl
@@ -46,7 +47,8 @@ namespace bsl
     ///
     template<typename T>
     class is_trivially_destructible final :
-        public bool_constant<is_destructible<T>::value &&__has_trivial_destructor(T)>
+        public bool_constant<
+            conjunction<is_destructible<T>, bool_constant<__has_trivial_destructor(T)>>::value>
     {};
 }
 

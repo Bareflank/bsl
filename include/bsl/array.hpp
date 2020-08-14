@@ -28,12 +28,15 @@
 #ifndef BSL_ARRAY_HPP
 #define BSL_ARRAY_HPP
 
+#include "details/out.hpp"
+
 #include "contiguous_iterator.hpp"
 #include "convert.hpp"
 #include "cstdint.hpp"
 #include "debug.hpp"
 #include "reverse_iterator.hpp"
 #include "safe_integral.hpp"
+#include "touch.hpp"
 
 namespace bsl
 {
@@ -65,7 +68,13 @@ namespace bsl
 
     public:
         /// @brief stores the array being wrapped
-        T m_data[N];    // NOLINT
+        // The *-c-arrays tests wants you to use a std::array, which is what
+        // this class is implementing (chicken/egg issue). The non-private
+        // member check is complaining about the use of non-private member
+        // variables. In this case, std::array should be an aggregate type
+        // which means that the array must be made public.
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays, misc-non-private-member-variables-in-classes)
+        T m_data[N];
 
         /// @brief alias for: T
         using value_type = T;
@@ -96,27 +105,29 @@ namespace bsl
         ///     this function returns a nullptr.
         ///   @include array/example_array_at_if.hpp
         ///
-        ///   SUPPRESSION: PRQA 4024 - false positive
-        ///   - We suppress this because A9-3-1 states that we should
-        ///     not provide a non-const reference or pointer to private
-        ///     member function, unless the class mimics a smart pointer or
-        ///     a containter. This class mimics a container.
-        ///
         /// <!-- inputs/outputs -->
         ///   @param index the index of the instance to return
         ///   @return Returns a pointer to the instance of T stored at index
         ///     "index". If the index is out of bounds, or the array is invalid,
         ///     this function returns a nullptr.
         ///
-        [[nodiscard]] constexpr pointer_type
-        at_if(size_type const &index) noexcept
+        [[nodiscard]] constexpr auto
+        at_if(size_type const &index) &noexcept -> pointer_type
         {
-            if ((!index) || (index >= to_umax(N))) {
-                bsl::error() << "array: index out of range: " << index << '\n';
+            if (!index) {
+                bsl::error() << "array: index invalid\n";
                 return nullptr;
             }
 
-            return &m_data[index.get()];    // PRQA S 4024 // NOLINT
+            if (index < to_umax(N)) {
+                // We are implementing std::array here, which is what this test
+                // wants you to use instead.
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                return &m_data[index.get()];
+            }
+
+            bsl::error() << "array: index out of range: " << index << '\n';
+            return nullptr;
         }
 
         /// <!-- description -->
@@ -131,15 +142,40 @@ namespace bsl
         ///     "index". If the index is out of bounds, or the array is invalid,
         ///     this function returns a nullptr.
         ///
-        [[nodiscard]] constexpr const_pointer_type
-        at_if(size_type const &index) const noexcept
+        [[nodiscard]] constexpr auto
+        at_if(size_type const &index) const &noexcept -> const_pointer_type
         {
-            if ((!index) || (index >= to_umax(N))) {
-                bsl::error() << "array: index out of range: " << index << '\n';
+            if (!index) {
+                bsl::error() << "array: index invalid\n";
                 return nullptr;
             }
 
-            return &m_data[index.get()];    // NOLINT
+            if (index < to_umax(N)) {
+                // We are implementing std::array here, which is what this test
+                // wants you to use instead.
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                return &m_data[index.get()];
+            }
+
+            bsl::error() << "array: index out of range: " << index << '\n';
+            return nullptr;
+        }
+
+        /// @brief the r-value version of this function is not supported
+        [[nodiscard]] constexpr auto at_if(size_type const &index) const &&noexcept
+            -> const_pointer_type = delete;
+
+        /// <!-- description -->
+        ///   @brief Returns a reference to the first element in the array.
+        ///   @include array/example_array_front.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns a reference to the first element in the array.
+        ///
+        [[nodiscard]] constexpr auto
+        front() &noexcept -> reference_type
+        {
+            return *this->at_if(size_type::zero());
         }
 
         /// <!-- description -->
@@ -149,23 +185,26 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns a reference to the first element in the array.
         ///
-        [[nodiscard]] constexpr reference_type
-        front() noexcept
+        [[nodiscard]] constexpr auto
+        front() const &noexcept -> const_reference_type
         {
-            return *this->at_if(to_umax(0));
+            return *this->at_if(size_type::zero());
         }
 
+        /// @brief the r-value version of this function is not supported
+        [[nodiscard]] constexpr auto front() const &&noexcept -> const_reference_type = delete;
+
         /// <!-- description -->
-        ///   @brief Returns a reference to the first element in the array.
-        ///   @include array/example_array_front.hpp
+        ///   @brief Returns a pointer to the first element in the array.
+        ///   @include array/example_array_front_if.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Returns a reference to the first element in the array.
+        ///   @return Returns a pointer to the first element in the array.
         ///
-        [[nodiscard]] constexpr const_reference_type
-        front() const noexcept
+        [[nodiscard]] constexpr auto
+        front_if() &noexcept -> pointer_type
         {
-            return *this->at_if(to_umax(0));
+            return this->at_if(size_type::zero());
         }
 
         /// <!-- description -->
@@ -175,23 +214,26 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns a pointer to the first element in the array.
         ///
-        [[nodiscard]] constexpr pointer_type
-        front_if() noexcept
+        [[nodiscard]] constexpr auto
+        front_if() const &noexcept -> const_pointer_type
         {
-            return this->at_if(to_umax(0));
+            return this->at_if(size_type::zero());
         }
 
+        /// @brief the r-value version of this function is not supported
+        [[nodiscard]] constexpr auto front_if() const &&noexcept -> const_pointer_type = delete;
+
         /// <!-- description -->
-        ///   @brief Returns a pointer to the first element in the array.
-        ///   @include array/example_array_front_if.hpp
+        ///   @brief Returns a reference to the last element in the array.
+        ///   @include array/example_array_back.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Returns a pointer to the first element in the array.
+        ///   @return Returns a reference to the last element in the array.
         ///
-        [[nodiscard]] constexpr const_pointer_type
-        front_if() const noexcept
+        [[nodiscard]] constexpr auto
+        back() &noexcept -> reference_type
         {
-            return this->at_if(to_umax(0));
+            return *this->at_if(to_umax(N) - size_type::one());
         }
 
         /// <!-- description -->
@@ -201,23 +243,26 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns a reference to the last element in the array.
         ///
-        [[nodiscard]] constexpr reference_type
-        back() noexcept
+        [[nodiscard]] constexpr auto
+        back() const &noexcept -> const_reference_type
         {
-            return *this->at_if(to_umax(N) - to_umax(1));
+            return *this->at_if(to_umax(N) - size_type::one());
         }
 
+        /// @brief the r-value version of this function is not supported
+        [[nodiscard]] constexpr auto back() const &&noexcept -> const_reference_type = delete;
+
         /// <!-- description -->
-        ///   @brief Returns a reference to the last element in the array.
-        ///   @include array/example_array_back.hpp
+        ///   @brief Returns a pointer to the last element in the array.
+        ///   @include array/example_array_back_if.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Returns a reference to the last element in the array.
+        ///   @return Returns a pointer to the last element in the array.
         ///
-        [[nodiscard]] constexpr const_reference_type
-        back() const noexcept
+        [[nodiscard]] constexpr auto
+        back_if() &noexcept -> pointer_type
         {
-            return *this->at_if(to_umax(N) - to_umax(1));
+            return this->at_if(to_umax(N) - size_type::one());
         }
 
         /// <!-- description -->
@@ -227,23 +272,26 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns a pointer to the last element in the array.
         ///
-        [[nodiscard]] constexpr pointer_type
-        back_if() noexcept
+        [[nodiscard]] constexpr auto
+        back_if() const &noexcept -> const_pointer_type
         {
-            return this->at_if(to_umax(N) - to_umax(1));
+            return this->at_if(to_umax(N) - size_type::one());
         }
 
+        /// @brief the r-value version of this function is not supported
+        [[nodiscard]] constexpr auto back_if() const &&noexcept -> const_pointer_type = delete;
+
         /// <!-- description -->
-        ///   @brief Returns a pointer to the last element in the array.
-        ///   @include array/example_array_back_if.hpp
+        ///   @brief Returns a pointer to the array being encapsulated.
+        ///   @include array/example_array_data.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Returns a pointer to the last element in the array.
+        ///   @return Returns a pointer to the array being encapsulated.
         ///
-        [[nodiscard]] constexpr const_pointer_type
-        back_if() const noexcept
+        [[nodiscard]] constexpr auto
+        data() &noexcept -> pointer_type
         {
-            return this->at_if(to_umax(N) - to_umax(1));
+            return static_cast<pointer_type>(m_data);
         }
 
         /// <!-- description -->
@@ -253,23 +301,26 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns a pointer to the array being encapsulated.
         ///
-        [[nodiscard]] constexpr pointer_type
-        data() noexcept
+        [[nodiscard]] constexpr auto
+        data() const &noexcept -> const_pointer_type
         {
-            return m_data;    // NOLINT
+            return static_cast<const_pointer_type>(m_data);
         }
 
+        /// @brief the r-value version of this function is not supported
+        [[nodiscard]] constexpr auto data() const &&noexcept -> const_pointer_type = delete;
+
         /// <!-- description -->
-        ///   @brief Returns a pointer to the array being encapsulated.
-        ///   @include array/example_array_data.hpp
+        ///   @brief Returns an iterator to the first element of the array.
+        ///   @include array/example_array_begin.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Returns a pointer to the array being encapsulated.
+        ///   @return Returns an iterator to the first element of the array.
         ///
-        [[nodiscard]] constexpr const_pointer_type
-        data() const noexcept
+        [[nodiscard]] constexpr auto
+        begin() &noexcept -> iterator_type
         {
-            return m_data;    // NOLINT
+            return iterator_type{this->front_if(), to_umax(N), size_type::zero()};
         }
 
         /// <!-- description -->
@@ -279,11 +330,14 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns an iterator to the first element of the array.
         ///
-        [[nodiscard]] constexpr iterator_type
-        begin() noexcept
+        [[nodiscard]] constexpr auto
+        begin() const &noexcept -> const_iterator_type
         {
-            return iterator_type{this->front_if(), to_umax(N), to_umax(0)};
+            return const_iterator_type{this->front_if(), to_umax(N), size_type::zero()};
         }
+
+        /// @brief the r-value version of this function is not supported
+        [[nodiscard]] constexpr auto begin() const &&noexcept -> const_iterator_type = delete;
 
         /// <!-- description -->
         ///   @brief Returns an iterator to the first element of the array.
@@ -292,24 +346,14 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns an iterator to the first element of the array.
         ///
-        [[nodiscard]] constexpr const_iterator_type
-        begin() const noexcept
+        [[nodiscard]] constexpr auto
+        cbegin() const &noexcept -> const_iterator_type
         {
-            return const_iterator_type{this->front_if(), to_umax(N), to_umax(0)};
+            return const_iterator_type{this->front_if(), to_umax(N), size_type::zero()};
         }
 
-        /// <!-- description -->
-        ///   @brief Returns an iterator to the first element of the array.
-        ///   @include array/example_array_begin.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return Returns an iterator to the first element of the array.
-        ///
-        [[nodiscard]] constexpr const_iterator_type
-        cbegin() const noexcept
-        {
-            return const_iterator_type{this->front_if(), to_umax(N), to_umax(0)};
-        }
+        /// @brief the r-value version of this function is not supported
+        [[nodiscard]] constexpr auto cbegin() const &&noexcept -> const_iterator_type = delete;
 
         /// <!-- description -->
         ///   @brief Returns an iterator to the element "i" in the array.
@@ -319,8 +363,8 @@ namespace bsl
         ///   @param i the element in the array to return an iterator for.
         ///   @return Returns an iterator to the element "i" in the array.
         ///
-        [[nodiscard]] constexpr iterator_type
-        iter(size_type const &i) noexcept
+        [[nodiscard]] constexpr auto
+        iter(size_type const &i) &noexcept -> iterator_type
         {
             return iterator_type{this->front_if(), to_umax(N), i};
         }
@@ -333,11 +377,15 @@ namespace bsl
         ///   @param i the element in the array to return an iterator for.
         ///   @return Returns an iterator to the element "i" in the array.
         ///
-        [[nodiscard]] constexpr const_iterator_type
-        iter(size_type const &i) const noexcept
+        [[nodiscard]] constexpr auto
+        iter(size_type const &i) const &noexcept -> const_iterator_type
         {
             return const_iterator_type{this->front_if(), to_umax(N), i};
         }
+
+        /// @brief the r-value version of this function is not supported
+        [[nodiscard]] constexpr auto iter(size_type const &i) const &&noexcept
+            -> const_iterator_type = delete;
 
         /// <!-- description -->
         ///   @brief Returns an iterator to the element "i" in the array.
@@ -347,11 +395,15 @@ namespace bsl
         ///   @param i the element in the array to return an iterator for.
         ///   @return Returns an iterator to the element "i" in the array.
         ///
-        [[nodiscard]] constexpr const_iterator_type
-        citer(size_type const &i) const noexcept
+        [[nodiscard]] constexpr auto
+        citer(size_type const &i) const &noexcept -> const_iterator_type
         {
             return const_iterator_type{this->front_if(), to_umax(N), i};
         }
+
+        /// @brief the r-value version of this function is not supported
+        [[nodiscard]] constexpr auto citer(size_type const &i) const &&noexcept
+            -> const_iterator_type = delete;
 
         /// <!-- description -->
         ///   @brief Returns an iterator to one past the last element of the
@@ -364,8 +416,8 @@ namespace bsl
         ///     array. If you attempt to access this iterator, a nullptr will
         ///     always be returned.
         ///
-        [[nodiscard]] constexpr iterator_type
-        end() noexcept
+        [[nodiscard]] constexpr auto
+        end() &noexcept -> iterator_type
         {
             return iterator_type{this->front_if(), to_umax(N), to_umax(N)};
         }
@@ -381,11 +433,14 @@ namespace bsl
         ///     array. If you attempt to access this iterator, a nullptr will
         ///     always be returned.
         ///
-        [[nodiscard]] constexpr const_iterator_type
-        end() const noexcept
+        [[nodiscard]] constexpr auto
+        end() const &noexcept -> const_iterator_type
         {
             return const_iterator_type{this->front_if(), to_umax(N), to_umax(N)};
         }
+
+        /// @brief the r-value version of this function is not supported
+        [[nodiscard]] constexpr auto end() const &&noexcept -> const_iterator_type = delete;
 
         /// <!-- description -->
         ///   @brief Returns an iterator to one past the last element of the
@@ -398,11 +453,14 @@ namespace bsl
         ///     array. If you attempt to access this iterator, a nullptr will
         ///     always be returned.
         ///
-        [[nodiscard]] constexpr const_iterator_type
-        cend() const noexcept
+        [[nodiscard]] constexpr auto
+        cend() const &noexcept -> const_iterator_type
         {
             return const_iterator_type{this->front_if(), to_umax(N), to_umax(N)};
         }
+
+        /// @brief the r-value version of this function is not supported
+        [[nodiscard]] constexpr auto cend() const &&noexcept -> const_iterator_type = delete;
 
         /// <!-- description -->
         ///   @brief Returns a reverse iterator to one past the last element
@@ -417,8 +475,8 @@ namespace bsl
         ///   @return Returns a reverse iterator to the last element of the
         ///     array.
         ///
-        [[nodiscard]] constexpr reverse_iterator_type
-        rbegin() noexcept
+        [[nodiscard]] constexpr auto
+        rbegin() &noexcept -> reverse_iterator_type
         {
             return reverse_iterator_type{this->end()};
         }
@@ -436,11 +494,15 @@ namespace bsl
         ///   @return Returns a reverse iterator to the last element of the
         ///     array.
         ///
-        [[nodiscard]] constexpr const_reverse_iterator_type
-        rbegin() const noexcept
+        [[nodiscard]] constexpr auto
+        rbegin() const &noexcept -> const_reverse_iterator_type
         {
             return const_reverse_iterator_type{this->end()};
         }
+
+        /// @brief the r-value version of this function is not supported
+        [[nodiscard]] constexpr auto rbegin() const &&noexcept
+            -> const_reverse_iterator_type = delete;
 
         /// <!-- description -->
         ///   @brief Returns a reverse iterator to one past the last element
@@ -455,12 +517,16 @@ namespace bsl
         ///   @return Returns a reverse iterator to the last element of the
         ///     array.
         ///
-        [[nodiscard]] constexpr const_reverse_iterator_type
-        crbegin() const noexcept
+        [[nodiscard]] constexpr auto
+        crbegin() const &noexcept -> const_reverse_iterator_type
         {
             return const_reverse_iterator_type{this->cend()};
         }
 
+        /// @brief the r-value version of this function is not supported
+        [[nodiscard]] constexpr auto crbegin() const &&noexcept
+            -> const_reverse_iterator_type = delete;
+
         /// <!-- description -->
         ///   @brief Returns a reverse iterator element "i" in the
         ///     array. When accessing the iterator, the iterator will
@@ -475,14 +541,18 @@ namespace bsl
         ///   @return Returns a reverse iterator element "i" in the
         ///     array.
         ///
-        [[nodiscard]] constexpr reverse_iterator_type
-        riter(size_type const &i) noexcept
+        [[nodiscard]] constexpr auto
+        riter(size_type const &i) &noexcept -> reverse_iterator_type
         {
-            if ((!!i) && (i >= to_umax(N))) {
-                return reverse_iterator_type{this->iter(to_umax(N))};
+            if (!i) {
+                return reverse_iterator_type{this->iter(size_type::zero())};
             }
 
-            return reverse_iterator_type{this->iter(i + to_umax(1))};
+            if (i < to_umax(N)) {
+                return reverse_iterator_type{this->iter(i + size_type::one())};
+            }
+
+            return reverse_iterator_type{this->iter(size_type::zero())};
         }
 
         /// <!-- description -->
@@ -499,15 +569,23 @@ namespace bsl
         ///   @return Returns a reverse iterator element "i" in the
         ///     array.
         ///
-        [[nodiscard]] constexpr const_reverse_iterator_type
-        riter(size_type const &i) const noexcept
+        [[nodiscard]] constexpr auto
+        riter(size_type const &i) const &noexcept -> const_reverse_iterator_type
         {
-            if ((!!i) && (i >= to_umax(N))) {
-                return const_reverse_iterator_type{this->iter(to_umax(N))};
+            if (!i) {
+                return const_reverse_iterator_type{this->iter(size_type::zero())};
             }
 
-            return const_reverse_iterator_type{this->iter(i + to_umax(1))};
+            if (i < to_umax(N)) {
+                return const_reverse_iterator_type{this->iter(i + size_type::one())};
+            }
+
+            return const_reverse_iterator_type{this->iter(size_type::zero())};
         }
+
+        /// @brief the r-value version of this function is not supported
+        [[nodiscard]] constexpr auto riter(size_type const &i) const &&noexcept
+            -> const_reverse_iterator_type = delete;
 
         /// <!-- description -->
         ///   @brief Returns a reverse iterator element "i" in the
@@ -523,15 +601,23 @@ namespace bsl
         ///   @return Returns a reverse iterator element "i" in the
         ///     array.
         ///
-        [[nodiscard]] constexpr const_reverse_iterator_type
-        criter(size_type const &i) const noexcept
+        [[nodiscard]] constexpr auto
+        criter(size_type const &i) const &noexcept -> const_reverse_iterator_type
         {
-            if ((!!i) && (i >= to_umax(N))) {
-                return const_reverse_iterator_type{this->citer(to_umax(N))};
+            if (!i) {
+                return const_reverse_iterator_type{this->iter(size_type::zero())};
             }
 
-            return const_reverse_iterator_type{this->citer(i + to_umax(1))};
+            if (i < to_umax(N)) {
+                return const_reverse_iterator_type{this->iter(i + size_type::one())};
+            }
+
+            return const_reverse_iterator_type{this->iter(size_type::zero())};
         }
+
+        /// @brief the r-value version of this function is not supported
+        [[nodiscard]] constexpr auto criter(size_type const &i) const &&noexcept
+            -> const_reverse_iterator_type = delete;
 
         /// <!-- description -->
         ///   @brief Returns a reverse iterator first element of the
@@ -546,8 +632,8 @@ namespace bsl
         ///   @return Returns a reverse iterator first element of the
         ///     array.
         ///
-        [[nodiscard]] constexpr reverse_iterator_type
-        rend() noexcept
+        [[nodiscard]] constexpr auto
+        rend() &noexcept -> reverse_iterator_type
         {
             return reverse_iterator_type{this->begin()};
         }
@@ -565,11 +651,15 @@ namespace bsl
         ///   @return Returns a reverse iterator first element of the
         ///     array.
         ///
-        [[nodiscard]] constexpr const_reverse_iterator_type
-        rend() const noexcept
+        [[nodiscard]] constexpr auto
+        rend() const &noexcept -> const_reverse_iterator_type
         {
             return const_reverse_iterator_type{this->begin()};
         }
+
+        /// @brief the r-value version of this function is not supported
+        [[nodiscard]] constexpr auto rend() const &&noexcept
+            -> const_reverse_iterator_type = delete;
 
         /// <!-- description -->
         ///   @brief Returns a reverse iterator first element of the
@@ -584,11 +674,15 @@ namespace bsl
         ///   @return Returns a reverse iterator first element of the
         ///     array.
         ///
-        [[nodiscard]] constexpr const_reverse_iterator_type
-        crend() const noexcept
+        [[nodiscard]] constexpr auto
+        crend() const &noexcept -> const_reverse_iterator_type
         {
             return const_reverse_iterator_type{this->cbegin()};
         }
+
+        /// @brief the r-value version of this function is not supported
+        [[nodiscard]] constexpr auto crend() const &&noexcept
+            -> const_reverse_iterator_type = delete;
 
         /// <!-- description -->
         ///   @brief Since arrays of size 0 are not allowed, always returns
@@ -599,8 +693,8 @@ namespace bsl
         ///   @return Since arrays of size 0 are not allowed, always returns
         ///     false.
         ///
-        [[nodiscard]] static constexpr bool
-        empty() noexcept
+        [[nodiscard]] static constexpr auto
+        empty() noexcept -> bool
         {
             return false;
         }
@@ -626,8 +720,8 @@ namespace bsl
         ///   @return Returns the number of elements in the array being
         ///     encapsulated.
         ///
-        [[nodiscard]] static constexpr size_type
-        size() noexcept
+        [[nodiscard]] static constexpr auto
+        size() noexcept -> size_type
         {
             return to_umax(N);
         }
@@ -639,8 +733,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max number of elements the BSL supports.
         ///
-        [[nodiscard]] static constexpr size_type
-        max_size() noexcept
+        [[nodiscard]] static constexpr auto
+        max_size() noexcept -> size_type
         {
             return size_type::max() / to_umax(sizeof(T));
         }
@@ -652,12 +746,16 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns size() * sizeof(T)
         ///
-        [[nodiscard]] static constexpr size_type
-        size_bytes() noexcept
+        [[nodiscard]] static constexpr auto
+        size_bytes() noexcept -> size_type
         {
             return to_umax(N) * to_umax(sizeof(T));
         }
     };
+
+    /// @brief deduction guideline for bsl::array
+    template<typename T, typename... U>
+    array(T, U...) -> array<T, safe_uintmax::one().get() + sizeof...(U)>;
 
     /// <!-- description -->
     ///   @brief Returns true if two arrays contain the same contents.
@@ -674,13 +772,15 @@ namespace bsl
     ///     Returns false otherwise.
     ///
     template<typename T, bsl::uintmax N>
-    constexpr bool
-    operator==(bsl::array<T, N> const &lhs, bsl::array<T, N> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator==(bsl::array<T, N> const &lhs, bsl::array<T, N> const &rhs) noexcept -> bool
     {
         for (safe_uintmax i{}; i < lhs.size(); ++i) {
             if (*lhs.at_if(i) != *rhs.at_if(i)) {
                 return false;
             }
+
+            bsl::touch();
         }
 
         return true;
@@ -701,15 +801,11 @@ namespace bsl
     ///     the same contents. Returns false otherwise.
     ///
     template<typename T, bsl::uintmax N>
-    constexpr bool
-    operator!=(bsl::array<T, N> const &lhs, bsl::array<T, N> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator!=(bsl::array<T, N> const &lhs, bsl::array<T, N> const &rhs) noexcept -> bool
     {
         return !(lhs == rhs);
     }
-
-    /// @brief deduction guideline for bsl::array
-    template<typename T, typename... U>
-    array(T, U...) -> array<T, 1 + sizeof...(U)>;
 
     /// <!-- description -->
     ///   @brief Outputs the provided bsl::array to the provided
@@ -725,15 +821,20 @@ namespace bsl
     ///   @return return o
     ///
     template<typename T1, typename T2, bsl::uintmax N>
-    [[maybe_unused]] constexpr out<T1>
-    operator<<(out<T1> const o, bsl::array<T2, N> const &val) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T1> const o, bsl::array<T2, N> const &val) noexcept -> out<T1>
     {
         if constexpr (!o) {
             return o;
         }
 
         for (safe_uintmax i{}; i < val.size(); ++i) {
-            o << (i.is_zero() ? "[" : ", ") << *val.at_if(i);
+            if (i.is_zero()) {
+                o << "[" << *val.at_if(i);
+            }
+            else {
+                o << ", " << *val.at_if(i);
+            }
         }
 
         return o << ']';

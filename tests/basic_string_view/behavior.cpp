@@ -28,944 +28,947 @@
 #include <bsl/npos.hpp>
 #include <bsl/ut.hpp>
 
-/// <!-- description -->
-///   @brief Used to execute the actual checks. We put the checks in this
-///     function so that we can validate the tests both at compile-time
-///     and at run-time. If a bsl::ut_check fails, the tests will either
-///     fail fast at run-time, or will produce a compile-time error.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-constexpr bsl::exit_code
-tests() noexcept
+namespace
 {
-    using namespace bsl;
+    /// <!-- description -->
+    ///   @brief Used to execute the actual checks. We put the checks in this
+    ///     function so that we can validate the tests both at compile-time
+    ///     and at run-time. If a bsl::ut_check fails, the tests will either
+    ///     fail fast at run-time, or will produce a compile-time error.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @return Always returns bsl::exit_success.
+    ///
+    [[nodiscard]] constexpr auto
+    tests() noexcept -> bsl::exit_code
+    {
+        using namespace bsl;
 
-    bsl::ut_scenario{"construction"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.empty());
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{""};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.empty());
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg == "Hello");
-            };
-        };
-    };
-
-    bsl::ut_scenario{"assignment"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_when{} = [&msg]() {
-                msg = "";
+        bsl::ut_scenario{"construction"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
                 bsl::ut_then{} = [&msg]() {
                     bsl::ut_check(msg.empty());
                 };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_when{} = [&msg]() {
-                msg = "";
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{""};
                 bsl::ut_then{} = [&msg]() {
                     bsl::ut_check(msg.empty());
                 };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{""};
-            bsl::ut_when{} = [&msg]() {
-                msg = "Hello";
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
                 bsl::ut_then{} = [&msg]() {
                     bsl::ut_check(msg == "Hello");
                 };
             };
         };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"World"};
-            bsl::ut_when{} = [&msg]() {
-                msg = "Hello";
-                bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(msg == "Hello");
+        bsl::ut_scenario{"assignment"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
+                bsl::ut_when{} = [&msg]() {
+                    msg = "";
+                    bsl::ut_then{} = [&msg]() {
+                        bsl::ut_check(msg.empty());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
+                bsl::ut_when{} = [&msg]() {
+                    msg = "";
+                    bsl::ut_then{} = [&msg]() {
+                        bsl::ut_check(msg.empty());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{""};
+                bsl::ut_when{} = [&msg]() {
+                    msg = "Hello";
+                    bsl::ut_then{} = [&msg]() {
+                        bsl::ut_check(msg == "Hello");
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"World"};
+                bsl::ut_when{} = [&msg]() {
+                    msg = "Hello";
+                    bsl::ut_then{} = [&msg]() {
+                        bsl::ut_check(msg == "Hello");
+                    };
                 };
             };
         };
-    };
-
-    bsl::ut_scenario{"at_if"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.at_if(to_umax(0)) == nullptr);
-                bsl::ut_check(msg.at_if(npos) == nullptr);
-                bsl::ut_check(msg.at_if(safe_uintmax::zero(true)) == nullptr);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.at_if(to_umax(0)) == nullptr);
-                bsl::ut_check(msg.at_if(npos) == nullptr);
-                bsl::ut_check(msg.at_if(safe_uintmax::zero(true)) == nullptr);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*msg.at_if(to_umax(0)) == 'H');
-                bsl::ut_check(*msg.at_if(to_umax(1)) == 'e');
-                bsl::ut_check(*msg.at_if(to_umax(2)) == 'l');
-                bsl::ut_check(*msg.at_if(to_umax(3)) == 'l');
-                bsl::ut_check(*msg.at_if(to_umax(4)) == 'o');
-                bsl::ut_check(msg.at_if(to_umax(5)) == nullptr);
-                bsl::ut_check(msg.at_if(npos) == nullptr);
-                bsl::ut_check(msg.at_if(safe_uintmax::zero(true)) == nullptr);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*msg.at_if(to_umax(0)) == 'H');
-                bsl::ut_check(*msg.at_if(to_umax(1)) == 'e');
-                bsl::ut_check(*msg.at_if(to_umax(2)) == 'l');
-                bsl::ut_check(*msg.at_if(to_umax(3)) == 'l');
-                bsl::ut_check(*msg.at_if(to_umax(4)) == 'o');
-                bsl::ut_check(msg.at_if(to_umax(5)) == nullptr);
-                bsl::ut_check(msg.at_if(npos) == nullptr);
-                bsl::ut_check(msg.at_if(safe_uintmax::zero(true)) == nullptr);
-            };
-        };
-    };
-
-    bsl::ut_scenario{"front_if"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.front_if() == nullptr);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.front_if() == nullptr);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*msg.front_if() == 'H');
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*msg.front_if() == 'H');
-            };
-        };
-    };
-
-    bsl::ut_scenario{"back_if"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.back_if() == nullptr);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.back_if() == nullptr);
-            };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*msg.back_if() == 'o');
+        bsl::ut_scenario{"at_if"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.at_if(to_umax(0)) == nullptr);
+                    bsl::ut_check(msg.at_if(npos) == nullptr);
+                    bsl::ut_check(msg.at_if(safe_uintmax::zero(true)) == nullptr);
+                };
             };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*msg.back_if() == 'o');
-            };
-        };
-    };
-
-    bsl::ut_scenario{"data"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.data() == nullptr);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.data() == nullptr);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.data() != nullptr);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.data() != nullptr);
-            };
-        };
-    };
-
-    bsl::ut_scenario{"begin"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.begin().get_if() == nullptr);
-                bsl::ut_check(msg.begin().index() == to_umax(0));
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.begin().get_if() == nullptr);
-                bsl::ut_check(msg.begin().index() == to_umax(0));
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.cbegin().get_if() == nullptr);
-                bsl::ut_check(msg.cbegin().index() == to_umax(0));
-            };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*(msg.begin().get_if()) == 'H');
-                bsl::ut_check(msg.begin().index() == to_umax(0));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.at_if(to_umax(0)) == nullptr);
+                    bsl::ut_check(msg.at_if(npos) == nullptr);
+                    bsl::ut_check(msg.at_if(safe_uintmax::zero(true)) == nullptr);
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*(msg.begin().get_if()) == 'H');
-                bsl::ut_check(msg.begin().index() == to_umax(0));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(*msg.at_if(to_umax(0)) == 'H');
+                    bsl::ut_check(*msg.at_if(to_umax(1)) == 'e');
+                    bsl::ut_check(*msg.at_if(to_umax(2)) == 'l');
+                    bsl::ut_check(*msg.at_if(to_umax(3)) == 'l');
+                    bsl::ut_check(*msg.at_if(to_umax(4)) == 'o');
+                    bsl::ut_check(msg.at_if(to_umax(5)) == nullptr);
+                    bsl::ut_check(msg.at_if(npos) == nullptr);
+                    bsl::ut_check(msg.at_if(safe_uintmax::zero(true)) == nullptr);
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*(msg.cbegin().get_if()) == 'H');
-                bsl::ut_check(msg.cbegin().index() == to_umax(0));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(*msg.at_if(to_umax(0)) == 'H');
+                    bsl::ut_check(*msg.at_if(to_umax(1)) == 'e');
+                    bsl::ut_check(*msg.at_if(to_umax(2)) == 'l');
+                    bsl::ut_check(*msg.at_if(to_umax(3)) == 'l');
+                    bsl::ut_check(*msg.at_if(to_umax(4)) == 'o');
+                    bsl::ut_check(msg.at_if(to_umax(5)) == nullptr);
+                    bsl::ut_check(msg.at_if(npos) == nullptr);
+                    bsl::ut_check(msg.at_if(safe_uintmax::zero(true)) == nullptr);
+                };
             };
         };
-    };
-
-    bsl::ut_scenario{"end"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.end().get_if() == nullptr);
-                bsl::ut_check(msg.end().index() == msg.size());
-            };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.end().get_if() == nullptr);
-                bsl::ut_check(msg.end().index() == msg.size());
+        bsl::ut_scenario{"front_if"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.front_if() == nullptr);
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.cend().get_if() == nullptr);
-                bsl::ut_check(msg.cend().index() == msg.size());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.front_if() == nullptr);
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.end().get_if() == nullptr);
-                bsl::ut_check(msg.end().index() == msg.size());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(*msg.front_if() == 'H');
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.end().get_if() == nullptr);
-                bsl::ut_check(msg.end().index() == msg.size());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(*msg.front_if() == 'H');
+                };
             };
         };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.cend().get_if() == nullptr);
-                bsl::ut_check(msg.cend().index() == msg.size());
-            };
-        };
-    };
-
-    bsl::ut_scenario{"iter"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.iter(to_umax(1)).get_if() == nullptr);
-                bsl::ut_check(msg.iter(to_umax(1)).index() == msg.size());
+        bsl::ut_scenario{"back_if"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.back_if() == nullptr);
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.iter(to_umax(1)).get_if() == nullptr);
-                bsl::ut_check(msg.iter(to_umax(1)).index() == msg.size());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.back_if() == nullptr);
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.citer(to_umax(1)).get_if() == nullptr);
-                bsl::ut_check(msg.citer(to_umax(1)).index() == msg.size());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(*msg.back_if() == 'o');
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*(msg.iter(to_umax(1)).get_if()) == 'e');
-                bsl::ut_check(msg.iter(to_umax(1)).index() == to_umax(1));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(*msg.back_if() == 'o');
+                };
             };
         };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*(msg.iter(to_umax(1)).get_if()) == 'e');
-                bsl::ut_check(msg.iter(to_umax(1)).index() == to_umax(1));
+        bsl::ut_scenario{"data"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.data() == nullptr);
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*(msg.citer(to_umax(1)).get_if()) == 'e');
-                bsl::ut_check(msg.citer(to_umax(1)).index() == to_umax(1));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.data() == nullptr);
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.iter(npos).get_if() == nullptr);
-                bsl::ut_check(msg.iter(npos).index() == msg.size());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.data() != nullptr);
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.iter(npos).get_if() == nullptr);
-                bsl::ut_check(msg.iter(npos).index() == msg.size());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.data() != nullptr);
+                };
             };
         };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.citer(npos).get_if() == nullptr);
-                bsl::ut_check(msg.citer(npos).index() == msg.size());
+        bsl::ut_scenario{"begin"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.begin().get_if() == nullptr);
+                    bsl::ut_check(msg.begin().index() == to_umax(0));
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.iter(safe_uintmax::zero(true)).get_if() == nullptr);
-                bsl::ut_check(msg.iter(safe_uintmax::zero(true)).index() == msg.size());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.begin().get_if() == nullptr);
+                    bsl::ut_check(msg.begin().index() == to_umax(0));
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.iter(safe_uintmax::zero(true)).get_if() == nullptr);
-                bsl::ut_check(msg.iter(safe_uintmax::zero(true)).index() == msg.size());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.cbegin().get_if() == nullptr);
+                    bsl::ut_check(msg.cbegin().index() == to_umax(0));
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.citer(safe_uintmax::zero(true)).get_if() == nullptr);
-                bsl::ut_check(msg.citer(safe_uintmax::zero(true)).index() == msg.size());
-            };
-        };
-    };
-
-    bsl::ut_scenario{"rbegin"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.rbegin().get_if() == nullptr);
-                bsl::ut_check(msg.rbegin().index() == to_umax(0));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(*(msg.begin().get_if()) == 'H');
+                    bsl::ut_check(msg.begin().index() == to_umax(0));
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.rbegin().get_if() == nullptr);
-                bsl::ut_check(msg.rbegin().index() == to_umax(0));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(*(msg.begin().get_if()) == 'H');
+                    bsl::ut_check(msg.begin().index() == to_umax(0));
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.crbegin().get_if() == nullptr);
-                bsl::ut_check(msg.crbegin().index() == to_umax(0));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(*(msg.cbegin().get_if()) == 'H');
+                    bsl::ut_check(msg.cbegin().index() == to_umax(0));
+                };
             };
         };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*(msg.rbegin().get_if()) == 'o');
-                bsl::ut_check(msg.rbegin().index() == to_umax(4));
+        bsl::ut_scenario{"end"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.end().get_if() == nullptr);
+                    bsl::ut_check(msg.end().index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*(msg.rbegin().get_if()) == 'o');
-                bsl::ut_check(msg.rbegin().index() == to_umax(4));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.end().get_if() == nullptr);
+                    bsl::ut_check(msg.end().index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*(msg.crbegin().get_if()) == 'o');
-                bsl::ut_check(msg.crbegin().index() == to_umax(4));
-            };
-        };
-    };
-
-    bsl::ut_scenario{"rend"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.rend().get_if() == nullptr);
-                bsl::ut_check(msg.rend().index() == msg.size());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.cend().get_if() == nullptr);
+                    bsl::ut_check(msg.cend().index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.rend().get_if() == nullptr);
-                bsl::ut_check(msg.rend().index() == msg.size());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.end().get_if() == nullptr);
+                    bsl::ut_check(msg.end().index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.crend().get_if() == nullptr);
-                bsl::ut_check(msg.crend().index() == msg.size());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.end().get_if() == nullptr);
+                    bsl::ut_check(msg.end().index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.rend().get_if() == nullptr);
-                bsl::ut_check(msg.rend().index() == msg.size());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.cend().get_if() == nullptr);
+                    bsl::ut_check(msg.cend().index() == msg.size());
+                };
             };
         };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.rend().get_if() == nullptr);
-                bsl::ut_check(msg.rend().index() == msg.size());
+        bsl::ut_scenario{"iter"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.iter(to_umax(1)).get_if() == nullptr);
+                    bsl::ut_check(msg.iter(to_umax(1)).index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.crend().get_if() == nullptr);
-                bsl::ut_check(msg.crend().index() == msg.size());
-            };
-        };
-    };
-
-    bsl::ut_scenario{"riter"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.riter(to_umax(1)).get_if() == nullptr);
-                bsl::ut_check(msg.riter(to_umax(1)).index() == msg.size());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.iter(to_umax(1)).get_if() == nullptr);
+                    bsl::ut_check(msg.iter(to_umax(1)).index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.riter(to_umax(1)).get_if() == nullptr);
-                bsl::ut_check(msg.riter(to_umax(1)).index() == msg.size());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.citer(to_umax(1)).get_if() == nullptr);
+                    bsl::ut_check(msg.citer(to_umax(1)).index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.criter(to_umax(1)).get_if() == nullptr);
-                bsl::ut_check(msg.criter(to_umax(1)).index() == msg.size());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(*(msg.iter(to_umax(1)).get_if()) == 'e');
+                    bsl::ut_check(msg.iter(to_umax(1)).index() == to_umax(1));
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*(msg.riter(to_umax(1)).get_if()) == 'e');
-                bsl::ut_check(msg.riter(to_umax(1)).index() == to_umax(1));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(*(msg.iter(to_umax(1)).get_if()) == 'e');
+                    bsl::ut_check(msg.iter(to_umax(1)).index() == to_umax(1));
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*(msg.riter(to_umax(1)).get_if()) == 'e');
-                bsl::ut_check(msg.riter(to_umax(1)).index() == to_umax(1));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(*(msg.citer(to_umax(1)).get_if()) == 'e');
+                    bsl::ut_check(msg.citer(to_umax(1)).index() == to_umax(1));
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*(msg.criter(to_umax(1)).get_if()) == 'e');
-                bsl::ut_check(msg.criter(to_umax(1)).index() == to_umax(1));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.iter(npos).get_if() == nullptr);
+                    bsl::ut_check(msg.iter(npos).index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*(msg.riter(npos).get_if()) == 'o');
-                bsl::ut_check(msg.riter(npos).index() == to_umax(4));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.iter(npos).get_if() == nullptr);
+                    bsl::ut_check(msg.iter(npos).index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*(msg.riter(npos).get_if()) == 'o');
-                bsl::ut_check(msg.riter(npos).index() == to_umax(4));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.citer(npos).get_if() == nullptr);
+                    bsl::ut_check(msg.citer(npos).index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*(msg.criter(npos).get_if()) == 'o');
-                bsl::ut_check(msg.criter(npos).index() == to_umax(4));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.iter(safe_uintmax::zero(true)).get_if() == nullptr);
+                    bsl::ut_check(msg.iter(safe_uintmax::zero(true)).index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*(msg.riter(safe_uintmax::zero(true)).get_if()) == 'o');
-                bsl::ut_check(msg.riter(safe_uintmax::zero(true)).index() == to_umax(4));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.iter(safe_uintmax::zero(true)).get_if() == nullptr);
+                    bsl::ut_check(msg.iter(safe_uintmax::zero(true)).index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*(msg.riter(safe_uintmax::zero(true)).get_if()) == 'o');
-                bsl::ut_check(msg.riter(safe_uintmax::zero(true)).index() == to_umax(4));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.citer(safe_uintmax::zero(true)).get_if() == nullptr);
+                    bsl::ut_check(msg.citer(safe_uintmax::zero(true)).index() == msg.size());
+                };
             };
         };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(*(msg.criter(safe_uintmax::zero(true)).get_if()) == 'o');
-                bsl::ut_check(msg.criter(safe_uintmax::zero(true)).index() == to_umax(4));
+        bsl::ut_scenario{"rbegin"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.rbegin().get_if() == nullptr);
+                    bsl::ut_check(msg.rbegin().index() == to_umax(0));
+                };
             };
-        };
-    };
 
-    bsl::ut_scenario{"empty"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.empty());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.rbegin().get_if() == nullptr);
+                    bsl::ut_check(msg.rbegin().index() == to_umax(0));
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.empty());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.crbegin().get_if() == nullptr);
+                    bsl::ut_check(msg.crbegin().index() == to_umax(0));
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(!msg.empty());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(*(msg.rbegin().get_if()) == 'o');
+                    bsl::ut_check(msg.rbegin().index() == to_umax(4));
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(!msg.empty());
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(*(msg.rbegin().get_if()) == 'o');
+                    bsl::ut_check(msg.rbegin().index() == to_umax(4));
+                };
             };
-        };
-    };
 
-    bsl::ut_scenario{"operator bool"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(!msg);
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(*(msg.crbegin().get_if()) == 'o');
+                    bsl::ut_check(msg.crbegin().index() == to_umax(4));
+                };
             };
         };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(!msg);
+        bsl::ut_scenario{"rend"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.rend().get_if() == nullptr);
+                    bsl::ut_check(msg.rend().index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(!!msg);
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.rend().get_if() == nullptr);
+                    bsl::ut_check(msg.rend().index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(!!msg);
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.crend().get_if() == nullptr);
+                    bsl::ut_check(msg.crend().index() == msg.size());
+                };
             };
-        };
-    };
 
-    bsl::ut_scenario{"size"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.size() == to_umax(0));    // NOLINT
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.rend().get_if() == nullptr);
+                    bsl::ut_check(msg.rend().index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.size() == to_umax(0));    // NOLINT
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.rend().get_if() == nullptr);
+                    bsl::ut_check(msg.rend().index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.size() == to_umax(5));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.crend().get_if() == nullptr);
+                    bsl::ut_check(msg.crend().index() == msg.size());
+                };
             };
         };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.size() == to_umax(5));
+        bsl::ut_scenario{"riter"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.riter(to_umax(1)).get_if() == nullptr);
+                    bsl::ut_check(msg.riter(to_umax(1)).index() == msg.size());
+                };
             };
-        };
-    };
 
-    bsl::ut_scenario{"length"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.length() == to_umax(0));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.riter(to_umax(1)).get_if() == nullptr);
+                    bsl::ut_check(msg.riter(to_umax(1)).index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.length() == to_umax(0));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.criter(to_umax(1)).get_if() == nullptr);
+                    bsl::ut_check(msg.criter(to_umax(1)).index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.length() == to_umax(5));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(*(msg.riter(to_umax(1)).get_if()) == 'e');
+                    bsl::ut_check(msg.riter(to_umax(1)).index() == to_umax(1));
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.length() == to_umax(5));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(*(msg.riter(to_umax(1)).get_if()) == 'e');
+                    bsl::ut_check(msg.riter(to_umax(1)).index() == to_umax(1));
+                };
             };
-        };
-    };
 
-    bsl::ut_scenario{"max_size"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.max_size() == safe_uintmax::max() / sizeof(char_type));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(*(msg.criter(to_umax(1)).get_if()) == 'e');
+                    bsl::ut_check(msg.criter(to_umax(1)).index() == to_umax(1));
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.max_size() == safe_uintmax::max() / sizeof(char_type));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.riter(npos).get_if() == nullptr);
+                    bsl::ut_check(msg.riter(npos).index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.max_size() == safe_uintmax::max() / sizeof(char_type));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.riter(npos).get_if() == nullptr);
+                    bsl::ut_check(msg.riter(npos).index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.max_size() == safe_uintmax::max() / sizeof(char_type));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.criter(npos).get_if() == nullptr);
+                    bsl::ut_check(msg.criter(npos).index() == msg.size());
+                };
             };
-        };
-    };
 
-    bsl::ut_scenario{"size_bytes"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.size_bytes() == to_umax(0));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.riter(safe_uintmax::zero(true)).get_if() == nullptr);
+                    bsl::ut_check(msg.riter(safe_uintmax::zero(true)).index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.size_bytes() == to_umax(0));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.riter(safe_uintmax::zero(true)).get_if() == nullptr);
+                    bsl::ut_check(msg.riter(safe_uintmax::zero(true)).index() == msg.size());
+                };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.size_bytes() == to_umax(5) * sizeof(bsl::char_type));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.criter(safe_uintmax::zero(true)).get_if() == nullptr);
+                    bsl::ut_check(msg.criter(safe_uintmax::zero(true)).index() == msg.size());
+                };
             };
         };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.size_bytes() == to_umax(5) * sizeof(bsl::char_type));
-            };
-        };
-    };
-
-    bsl::ut_scenario{"remove_prefix"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_when{} = [&msg]() {
-                msg.remove_prefix(to_umax(0));
+        bsl::ut_scenario{"empty"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
                 bsl::ut_then{} = [&msg]() {
                     bsl::ut_check(msg.empty());
                 };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_when{} = [&msg]() {
-                msg.remove_prefix(npos);
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
                 bsl::ut_then{} = [&msg]() {
                     bsl::ut_check(msg.empty());
                 };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello World"};
-            bsl::ut_when{} = [&msg]() {
-                msg.remove_prefix(to_umax(0));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
                 bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(msg == "Hello World");
+                    bsl::ut_check(!msg.empty());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(!msg.empty());
                 };
             };
         };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello World"};
-            bsl::ut_when{} = [&msg]() {
-                msg.remove_prefix(to_umax(6));
+        bsl::ut_scenario{"operator bool"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
                 bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(msg == "World");
+                    bsl::ut_check(!msg);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(!msg);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(!!msg);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(!!msg);
                 };
             };
         };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello World"};
-            bsl::ut_when{} = [&msg]() {
-                msg.remove_prefix(npos);
+        bsl::ut_scenario{"size"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
                 bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(msg.empty());
+                    bsl::ut_check(msg.size() == to_umax(0));
                 };
             };
-        };
-    };
 
-    bsl::ut_scenario{"remove_suffix"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_when{} = [&msg]() {
-                msg.remove_suffix(to_umax(0));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
                 bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(msg.empty());
+                    bsl::ut_check(msg.size() == to_umax(0));
                 };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_when{} = [&msg]() {
-                msg.remove_suffix(npos);
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
                 bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(msg.empty());
+                    bsl::ut_check(msg.size() == to_umax(5));
                 };
             };
-        };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello World"};
-            bsl::ut_when{} = [&msg]() {
-                msg.remove_suffix(to_umax(0));
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
                 bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(msg == "Hello World");
+                    bsl::ut_check(msg.size() == to_umax(5));
                 };
             };
         };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello World"};
-            bsl::ut_when{} = [&msg]() {
-                msg.remove_suffix(to_umax(6));
+        bsl::ut_scenario{"length"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
                 bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(msg == "Hello");
+                    bsl::ut_check(msg.length() == to_umax(0));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.length() == to_umax(0));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.length() == to_umax(5));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.length() == to_umax(5));
                 };
             };
         };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello World"};
-            bsl::ut_when{} = [&msg]() {
-                msg.remove_suffix(npos);
+        bsl::ut_scenario{"max_size"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
                 bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(msg.empty());
+                    bsl::ut_check(msg.max_size() == safe_uintmax::max() / sizeof(char_type));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.max_size() == safe_uintmax::max() / sizeof(char_type));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.max_size() == safe_uintmax::max() / sizeof(char_type));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.max_size() == safe_uintmax::max() / sizeof(char_type));
                 };
             };
         };
-    };
 
-    bsl::ut_scenario{"substr"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{};
-            bsl::ut_when{} = [&msg]() {
+        bsl::ut_scenario{"size_bytes"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
                 bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(msg.substr(to_umax(0), to_umax(0)).empty());
-                    bsl::ut_check(msg.substr(to_umax(0), to_umax(3)).empty());
-                    bsl::ut_check(msg.substr(to_umax(0), npos).empty());
-                    bsl::ut_check(msg.substr(to_umax(1), to_umax(0)).empty());
-                    bsl::ut_check(msg.substr(to_umax(1), to_umax(3)).empty());
-                    bsl::ut_check(msg.substr(to_umax(1), npos).empty());
-                    bsl::ut_check(msg.substr(npos, to_umax(0)).empty());
-                    bsl::ut_check(msg.substr(npos, to_umax(3)).empty());
-                    bsl::ut_check(msg.substr(npos, npos).empty());
-                    bsl::ut_check(
-                        msg.substr(safe_uintmax::zero(true), safe_uintmax::zero(true)).empty());
+                    bsl::ut_check(msg.size_bytes() == to_umax(0));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.size_bytes() == to_umax(0));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.size_bytes() == to_umax(5) * sizeof(bsl::char_type));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.size_bytes() == to_umax(5) * sizeof(bsl::char_type));
                 };
             };
         };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> msg{"Hello World"};
-            bsl::ut_when{} = [&msg]() {
-                bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(msg.substr(to_umax(0), to_umax(0)).empty());
-                    bsl::ut_check(msg.substr(to_umax(0), to_umax(3)) == "Hel");
-                    bsl::ut_check(msg.substr(to_umax(0), npos) == "Hello World");
-                    bsl::ut_check(msg.substr(to_umax(1), to_umax(0)).empty());
-                    bsl::ut_check(msg.substr(to_umax(1), to_umax(3)) == "ell");
-                    bsl::ut_check(msg.substr(to_umax(1), npos) == "ello World");
-                    bsl::ut_check(msg.substr(npos, to_umax(0)).empty());
-                    bsl::ut_check(msg.substr(npos, to_umax(3)).empty());
-                    bsl::ut_check(msg.substr(npos, npos).empty());
-                    bsl::ut_check(
-                        msg.substr(safe_uintmax::zero(true), safe_uintmax::zero(true)).empty());
+        bsl::ut_scenario{"remove_prefix"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
+                bsl::ut_when{} = [&msg]() {
+                    msg.remove_prefix(to_umax(0));
+                    bsl::ut_then{} = [&msg]() {
+                        bsl::ut_check(msg.empty());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
+                bsl::ut_when{} = [&msg]() {
+                    msg.remove_prefix(npos);
+                    bsl::ut_then{} = [&msg]() {
+                        bsl::ut_check(msg.empty());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello World"};
+                bsl::ut_when{} = [&msg]() {
+                    msg.remove_prefix(to_umax(0));
+                    bsl::ut_then{} = [&msg]() {
+                        bsl::ut_check(msg == "Hello World");
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello World"};
+                bsl::ut_when{} = [&msg]() {
+                    msg.remove_prefix(to_umax(6));
+                    bsl::ut_then{} = [&msg]() {
+                        bsl::ut_check(msg == "World");
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello World"};
+                bsl::ut_when{} = [&msg]() {
+                    msg.remove_prefix(npos);
+                    bsl::ut_then{} = [&msg]() {
+                        bsl::ut_check(msg.empty());
+                    };
                 };
             };
         };
-    };
 
-    return bsl::ut_success();
+        bsl::ut_scenario{"remove_suffix"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
+                bsl::ut_when{} = [&msg]() {
+                    msg.remove_suffix(to_umax(0));
+                    bsl::ut_then{} = [&msg]() {
+                        bsl::ut_check(msg.empty());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
+                bsl::ut_when{} = [&msg]() {
+                    msg.remove_suffix(npos);
+                    bsl::ut_then{} = [&msg]() {
+                        bsl::ut_check(msg.empty());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello World"};
+                bsl::ut_when{} = [&msg]() {
+                    msg.remove_suffix(to_umax(0));
+                    bsl::ut_then{} = [&msg]() {
+                        bsl::ut_check(msg == "Hello World");
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello World"};
+                bsl::ut_when{} = [&msg]() {
+                    msg.remove_suffix(to_umax(6));
+                    bsl::ut_then{} = [&msg]() {
+                        bsl::ut_check(msg == "Hello");
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello World"};
+                bsl::ut_when{} = [&msg]() {
+                    msg.remove_suffix(npos);
+                    bsl::ut_then{} = [&msg]() {
+                        bsl::ut_check(msg.empty());
+                    };
+                };
+            };
+        };
+
+        bsl::ut_scenario{"substr"} = []() {
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{};
+                bsl::ut_when{} = [&msg]() {
+                    bsl::ut_then{} = [&msg]() {
+                        bsl::ut_check(msg.substr(to_umax(0), to_umax(0)).empty());
+                        bsl::ut_check(msg.substr(to_umax(0), to_umax(3)).empty());
+                        bsl::ut_check(msg.substr(to_umax(0), npos).empty());
+                        bsl::ut_check(msg.substr(to_umax(1), to_umax(0)).empty());
+                        bsl::ut_check(msg.substr(to_umax(1), to_umax(3)).empty());
+                        bsl::ut_check(msg.substr(to_umax(1), npos).empty());
+                        bsl::ut_check(msg.substr(npos, to_umax(0)).empty());
+                        bsl::ut_check(msg.substr(npos, to_umax(3)).empty());
+                        bsl::ut_check(msg.substr(npos, npos).empty());
+                        bsl::ut_check(
+                            msg.substr(safe_uintmax::zero(true), safe_uintmax::zero(true)).empty());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                basic_string_view<char_type> msg{"Hello World"};
+                bsl::ut_when{} = [&msg]() {
+                    bsl::ut_then{} = [&msg]() {
+                        bsl::ut_check(msg.substr(to_umax(0), to_umax(0)).empty());
+                        bsl::ut_check(msg.substr(to_umax(0), to_umax(3)) == "Hel");
+                        bsl::ut_check(msg.substr(to_umax(0), npos) == "Hello World");
+                        bsl::ut_check(msg.substr(to_umax(1), to_umax(0)).empty());
+                        bsl::ut_check(msg.substr(to_umax(1), to_umax(3)) == "ell");
+                        bsl::ut_check(msg.substr(to_umax(1), npos) == "ello World");
+                        bsl::ut_check(msg.substr(npos, to_umax(0)).empty());
+                        bsl::ut_check(msg.substr(npos, to_umax(3)).empty());
+                        bsl::ut_check(msg.substr(npos, npos).empty());
+                        bsl::ut_check(
+                            msg.substr(safe_uintmax::zero(true), safe_uintmax::zero(true)).empty());
+                    };
+                };
+            };
+        };
+
+        return bsl::ut_success();
+    }
 }
 
 /// <!-- description -->
@@ -976,8 +979,8 @@ tests() noexcept
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     static_assert(tests() == bsl::ut_success());
     return tests();

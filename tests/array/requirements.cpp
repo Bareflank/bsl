@@ -25,21 +25,20 @@
 #include <bsl/array.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/discard.hpp>
-#include <bsl/is_pod.hpp>
 #include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
 
 namespace
 {
-    bsl::array<bsl::safe_uintmax, 6> const pod{};
+    constinit bsl::array<bsl::safe_uintmax, 6> const verify_constinit{};
 
     class fixture_t final
     {
         bsl::array<bool, 5> arr{};
 
     public:
-        [[nodiscard]] constexpr bool
-        test_member_const() const
+        [[nodiscard]] constexpr auto
+        test_member_const() const noexcept -> bool
         {
             bsl::discard(arr.at_if(bsl::to_umax(0)));
             bsl::discard(arr.front());
@@ -68,8 +67,8 @@ namespace
             return true;
         }
 
-        [[nodiscard]] constexpr bool
-        test_member_nonconst()
+        [[nodiscard]] constexpr auto
+        test_member_nonconst() noexcept -> bool
         {
             bsl::discard(arr.at_if(bsl::to_umax(0)));
             bsl::discard(arr.front());
@@ -104,14 +103,13 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 
-    bsl::ut_scenario{"verify supports global POD"} = []() {
-        bsl::discard(pod);
-        static_assert(is_pod<decltype(pod)>::value);
+    bsl::ut_scenario{"verify supports constinit "} = []() {
+        bsl::discard(verify_constinit);
     };
 
     bsl::ut_scenario{"verify noexcept"} = []() {

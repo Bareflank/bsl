@@ -28,6 +28,7 @@
 #ifndef BSL_IS_COPY_HPP
 #define BSL_IS_COPY_HPP
 
+#include "conjunction.hpp"
 #include "bool_constant.hpp"
 #include "is_copy_assignable.hpp"
 #include "is_copy_constructible.hpp"
@@ -47,7 +48,7 @@ namespace bsl
     ///
     template<typename T>
     class is_copyable final :
-        public bool_constant<is_copy_assignable<T>::value && is_copy_constructible<T>::value>
+        public bool_constant<conjunction<is_copy_assignable<T>, is_copy_constructible<T>>::value>
     {};
 }
 

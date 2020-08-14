@@ -28,6 +28,9 @@
 #ifndef BSL_RESULT_HPP
 #define BSL_RESULT_HPP
 
+#include "details/out.hpp"
+
+#include "conjunction.hpp"
 #include "construct_at.hpp"
 #include "cstdint.hpp"
 #include "destroy_at.hpp"
@@ -37,6 +40,7 @@
 #include "is_nothrow_constructible.hpp"
 #include "is_nothrow_copy_constructible.hpp"
 #include "is_nothrow_copy_assignable.hpp"
+#include "is_nothrow_default_constructible.hpp"
 #include "is_nothrow_destructible.hpp"
 #include "is_nothrow_move_constructible.hpp"
 #include "is_nothrow_move_assignable.hpp"
@@ -95,26 +99,26 @@ namespace bsl
         {
             if (details::result_type::contains_t == lhs.m_which) {
                 if (details::result_type::contains_t == rhs.m_which) {
-                    bsl::swap(lhs.m_t, rhs.m_t);    // NOLINT
+                    bsl::swap(lhs.m_t, rhs.m_t);
                 }
                 else {
-                    E tmp_e{bsl::move(rhs.m_e)};                      // NOLINT
-                    destroy_at(&rhs.m_e);                             // NOLINT
-                    construct_at<T>(&rhs.m_t, bsl::move(lhs.m_t));    // NOLINT
-                    destroy_at(&lhs.m_t);                             // NOLINT
-                    construct_at<E>(&lhs.m_e, bsl::move(tmp_e));      // NOLINT
+                    E tmp_e{bsl::move(rhs.m_e)};
+                    destroy_at(&rhs.m_e);
+                    construct_at<T>(&rhs.m_t, bsl::move(lhs.m_t));
+                    destroy_at(&lhs.m_t);
+                    construct_at<E>(&lhs.m_e, bsl::move(tmp_e));
                 }
             }
             else {
                 if (details::result_type::contains_t == rhs.m_which) {
-                    E tmp_e{bsl::move(lhs.m_e)};                      // NOLINT
-                    destroy_at(&lhs.m_e);                             // NOLINT
-                    construct_at<T>(&lhs.m_t, bsl::move(rhs.m_t));    // NOLINT
-                    destroy_at(&rhs.m_t);                             // NOLINT
-                    construct_at<E>(&rhs.m_e, bsl::move(tmp_e));      // NOLINT
+                    E tmp_e{bsl::move(lhs.m_e)};
+                    destroy_at(&lhs.m_e);
+                    construct_at<T>(&lhs.m_t, bsl::move(rhs.m_t));
+                    destroy_at(&rhs.m_t);
+                    construct_at<E>(&rhs.m_e, bsl::move(tmp_e));
                 }
                 else {
-                    bsl::swap(lhs.m_e, rhs.m_e);    // NOLINT
+                    bsl::swap(lhs.m_e, rhs.m_e);
                 }
             }
 
@@ -123,20 +127,27 @@ namespace bsl
 
     public:
         /// @brief alias for: T
-        using type = T;
+        using value_type = T;
+
+        /// <!-- description -->
+        ///   @brief Constructs a bsl::result that contains T,
+        ///     by default constructing "t"
+        ///   @include result/example_result_default_constructor.hpp
+        ///
+        /// <!-- exceptions -->
+        ///   @throw throws if T's default constructor throws
+        ///
+        // The bsl-class-member-init has issues with union types,
+        // which is not worth fixing as they are not supported in general.
+        // NOLINTNEXTLINE(bsl-class-member-init)
+        constexpr result() noexcept(is_nothrow_default_constructible<T>::value)
+            : m_which{details::result_type::contains_t}, m_t{}
+        {}
 
         /// <!-- description -->
         ///   @brief Constructs a bsl::result that contains T,
         ///     by copying "t"
         ///   @include result/example_result_t_copy_constructor.hpp
-        ///
-        ///   SUPPRESSION: PRQA 2180 - exception required
-        ///   - We suppress this because A12-1-4 states that all constructors
-        ///     that are callable from a fundamental type should be marked as
-        ///     explicit. This is a fundamental type, but all implicit
-        ///     conversions are disabled through the use of the implicit
-        ///     general template constructor that is deleted which absorbs all
-        ///     incoming potential implicit conversions.
         ///
         /// <!-- inputs/outputs -->
         ///   @param t the value being copied
@@ -144,8 +155,13 @@ namespace bsl
         /// <!-- exceptions -->
         ///   @throw throws if T's copy constructor throws
         ///
-        constexpr result(T const &t) noexcept(    // PRQA S 2180 // NOLINT
-            is_nothrow_copy_constructible<T>::value)
+        // We use a deleted single argument template constructor to prevent
+        // implicit conversions, so this rule is OBE. Also, we cannot pass
+        // by value here as we would lose the noexcept information as a result.
+        // Finally, the bsl-class-member-init has issues with union types,
+        // which is not worth fixing as they are not supported in general.
+        // NOLINTNEXTLINE(hicpp-explicit-conversions, modernize-pass-by-value, bsl-class-member-init)
+        constexpr result(T const &t) noexcept(is_nothrow_copy_constructible<T>::value)
             : m_which{details::result_type::contains_t}, m_t{t}
         {}
 
@@ -154,22 +170,19 @@ namespace bsl
         ///     by moving "t"
         ///   @include result/example_result_t_move_constructor.hpp
         ///
-        ///   SUPPRESSION: PRQA 2180 - exception required
-        ///   - We suppress this because A12-1-4 states that all constructors
-        ///     that are callable from a fundamental type should be marked as
-        ///     explicit. This is a fundamental type, but all implicit
-        ///     conversions are disabled through the use of the implicit
-        ///     general template constructor that is deleted which absorbs all
-        ///     incoming potential implicit conversions.
-        ///
         /// <!-- inputs/outputs -->
         ///   @param t the value being moved
         ///
         /// <!-- exceptions -->
         ///   @throw throws if T's move constructor throws
         ///
-        constexpr result(T &&t) noexcept(    // PRQA S 2180 // NOLINT
-            is_nothrow_move_constructible<T>::value)
+        // We use a deleted single argument template constructor to prevent
+        // implicit conversions, so this rule is OBE. Also, we cannot pass
+        // by value here as we would lose the noexcept information as a result.
+        // Finally, the bsl-class-member-init has issues with union types,
+        // which is not worth fixing as they are not supported in general.
+        // NOLINTNEXTLINE(hicpp-explicit-conversions, modernize-pass-by-value, bsl-class-member-init)
+        constexpr result(T &&t) noexcept(is_nothrow_move_constructible<T>::value)
             : m_which{details::result_type::contains_t}, m_t{bsl::move(t)}
         {}
 
@@ -186,9 +199,13 @@ namespace bsl
         ///   @throw throws if T's constructor throws
         ///
         template<typename... ARGS>
-        constexpr result(    // NOLINT
-            bsl::in_place_t const &ip,
-            ARGS &&... args) noexcept(is_nothrow_constructible<T, ARGS...>::value)
+        // We use a deleted single argument template constructor to prevent
+        // implicit conversions, so this rule is OBE. The bsl-class-member-init
+        // has issues with union types, which is not worth fixing as they are
+        // not supported in general.
+        // NOLINTNEXTLINE(hicpp-explicit-conversions, bsl-class-member-init)
+        constexpr result(bsl::in_place_t const &ip, ARGS &&... args) noexcept(
+            is_nothrow_constructible<T, ARGS...>::value)
             : m_which{details::result_type::contains_t}, m_t{bsl::forward<ARGS>(args)...}
         {
             bsl::discard(ip);
@@ -199,18 +216,18 @@ namespace bsl
         ///     by copying "e"
         ///   @include result/example_result_errc_copy_constructor.hpp
         ///
-        ///   SUPPRESSION: PRQA 2180 - false positive
-        ///   - We suppress this because A12-1-4 states that all constructors
-        ///     that are callable from a fundamental type should be marked as
-        ///     explicit. This is not a fundamental type and there for does
-        ///     not apply.
-        ///
         /// <!-- inputs/outputs -->
         ///   @param e the error code being copied
         ///
-        constexpr result(    // PRQA S 2180 // NOLINT
-            E const &e) noexcept
-            : m_which{details::result_type::contains_e}, m_e{e}
+        // We use a deleted single argument template constructor to prevent
+        // implicit conversions, so this rule is OBE. The bsl-class-member-init
+        // has issues with union types, which is not worth fixing as they are
+        // not supported in general.
+        // NOLINTNEXTLINE(hicpp-explicit-conversions, bsl-class-member-init)
+        constexpr result(E const &e) noexcept
+            :    // --
+            m_which{details::result_type::contains_e}
+            , m_e{e}
         {}
 
         /// <!-- description -->
@@ -218,17 +235,15 @@ namespace bsl
         ///     by moving "e"
         ///   @include result/example_result_errc_move_constructor.hpp
         ///
-        ///   SUPPRESSION: PRQA 2180 - false positive
-        ///   - We suppress this because A12-1-4 states that all constructors
-        ///     that are callable from a fundamental type should be marked as
-        ///     explicit. This is not a fundamental type and there for does
-        ///     not apply.
-        ///
         /// <!-- inputs/outputs -->
         ///   @param e the error code being moved
         ///
-        constexpr result(    // PRQA S 2180 // NOLINT
-            E &&e) noexcept
+        // We use a deleted single argument template constructor to prevent
+        // implicit conversions, so this rule is OBE. The bsl-class-member-init
+        // has issues with union types, which is not worth fixing as they are
+        // not supported in general.
+        // NOLINTNEXTLINE(hicpp-explicit-conversions, bsl-class-member-init)
+        constexpr result(E &&e) noexcept
             : m_which{details::result_type::contains_e}, m_e{bsl::move(e)}
         {}
 
@@ -241,34 +256,19 @@ namespace bsl
         ///   @throw throws if the bsl::result stores a T and T's destructor
         ///     throws
         ///
-        BSL_CONSTEXPR ~result() noexcept(is_nothrow_destructible<T>::value)
+        constexpr ~result() noexcept(is_nothrow_destructible<T>::value)
         {
             if (details::result_type::contains_t == m_which) {
-                destroy_at(&m_t);    // NOLINT
+                destroy_at(&m_t);
             }
             else {
-                destroy_at(&m_e);    // NOLINT
+                destroy_at(&m_e);
             }
         }
 
         /// <!-- description -->
         ///   @brief copy constructor
         ///   @include result/example_result_copy_constructor.hpp
-        ///
-        ///   SUPPRESSION: PRQA 4285 - false positive
-        ///   - We suppress this because A12-8-1 states a copy/move should
-        ///     not have a side effect other than the copy/move itself.
-        ///     This is a false positive because there are not side effects
-        ///     in this code below. PRQA is not properly handling
-        ///     the union as allowed by AUTOSAR.
-        ///
-        ///   SUPPRESSION: PRQA 4050 - false positive
-        ///   - We suppress this because A12-1-1 states that all member
-        ///     variables should be explicitly initialized. It does not
-        ///     state that they must be in the initializer list.
-        ///     Furthermore, it is impossible to initialize union members
-        ///     in an initializer list in a copy/move constructor, which
-        ///     PRQA should be capable of detecting, and it doesn't.
         ///
         /// <!-- inputs/outputs -->
         ///   @param o the object being copied
@@ -277,36 +277,20 @@ namespace bsl
         ///   @throw throws if the bsl::result stores a T and T's copy
         ///     constructor throws
         ///
-        constexpr result(result const &o) noexcept(    // PRQA S 4285
-            is_nothrow_copy_constructible<T>::value)
-            : m_which{o.m_which}    // PRQA S 4050
+        constexpr result(result const &o) noexcept(is_nothrow_copy_constructible<T>::value)
+            : m_which{o.m_which}
         {
             if (details::result_type::contains_t == m_which) {
-                construct_at<T>(&m_t, o.m_t);    // NOLINT
+                construct_at<T>(&m_t, o.m_t);
             }
             else {
-                construct_at<E>(&m_e, o.m_e);    // NOLINT
+                construct_at<E>(&m_e, o.m_e);
             }
         }
 
         /// <!-- description -->
         ///   @brief move constructor
         ///   @include result/example_result_move_constructor.hpp
-        ///
-        ///   SUPPRESSION: PRQA 4285 - false positive
-        ///   - We suppress this because A12-8-1 states a copy/move should
-        ///     not have a side effect other than the copy/move itself.
-        ///     This is a false positive because the only side effect is
-        ///     the copy/move as required. PRQA is not properly handling
-        ///     the union as allows by AUTOSAR.
-        ///
-        ///   SUPPRESSION: PRQA 4050 - false positive
-        ///   - We suppress this because A12-1-1 states that all member
-        ///     variables should be explicitly initialized. It does not
-        ///     state that they must be in the initializer list.
-        ///     Furthermore, it is impossible to initialize union members
-        ///     in an initializer list in a copy/move constructor, which
-        ///     PRQA should be capable of detecting, and it doesn't.
         ///
         /// <!-- inputs/outputs -->
         ///   @param o the object being moved
@@ -315,15 +299,14 @@ namespace bsl
         ///   @throw throws if the bsl::result stores a T and T's move
         ///     constructor throws
         ///
-        constexpr result(result &&o) noexcept(    // PRQA S 4285
-            is_nothrow_move_constructible<T>::value)
-            : m_which{o.m_which}    // PRQA S 4050
+        constexpr result(result &&o) noexcept(is_nothrow_move_constructible<T>::value)
+            : m_which{o.m_which}
         {
             if (details::result_type::contains_t == m_which) {
-                construct_at<T>(&m_t, bsl::move(o.m_t));    // NOLINT
+                construct_at<T>(&m_t, bsl::move(o.m_t));
             }
             else {
-                construct_at<E>(&m_e, bsl::move(o.m_e));    // NOLINT
+                construct_at<E>(&m_e, bsl::move(o.m_e));
             }
         }
 
@@ -339,12 +322,13 @@ namespace bsl
         ///   @throw throws if the bsl::result stores a T and T's copy
         ///     constructor throws or swapping T throws
         ///
-        constexpr result &
+        [[maybe_unused]] constexpr auto
         operator=(result const &o) &noexcept(
-            is_nothrow_copy_constructible<T>::value &&is_nothrow_swappable<T>::value)
+            conjunction<is_nothrow_copy_constructible<T>, is_nothrow_swappable<T>>::value)
+            -> result &
         {
             result tmp{o};
-            private_swap(*this, tmp);
+            this->private_swap(*this, tmp);
             return *this;
         }
 
@@ -360,12 +344,13 @@ namespace bsl
         ///   @throw throws if the bsl::result stores a T and T's move
         ///     constructor throws or swapping T throws
         ///
-        constexpr result &
+        [[maybe_unused]] constexpr auto
         operator=(result &&o) &noexcept(
-            is_nothrow_move_constructible<T>::value &&is_nothrow_swappable<T>::value)
+            conjunction<is_nothrow_move_constructible<T>, is_nothrow_swappable<T>>::value)
+            -> result &
         {
             result tmp{bsl::move(o)};
-            private_swap(*this, tmp);
+            this->private_swap(*this, tmp);
             return *this;
         }
 
@@ -374,56 +359,12 @@ namespace bsl
         ///     without the need to mark them as explicit as it will absorb
         ///     any incoming potential implicit conversion and prevent it.
         ///
-        ///   SUPPRESSION: PRQA 2180 - false positive
-        ///   - We suppress this because A12-1-4 states that all constructors
-        ///     that are callable from a fundamental type should be marked as
-        ///     explicit. This is callable with a fundamental type, but it
-        ///     is marked as "delete" which means it does not apply.
-        ///
         /// <!-- inputs/outputs -->
         ///   @tparam O the type that could be implicitly converted
         ///   @param val the value that could be implicitly converted
         ///
         template<typename O>
-        constexpr result(O val) noexcept = delete;    // PRQA S 2180
-
-        /// <!-- description -->
-        ///   @brief Returns a handle to T if this object contains T,
-        ///     otherwise it returns a nullptr.
-        ///   @include result/example_result_get_if.hpp
-        ///
-        ///   SUPPRESSION: PRQA 4024 - false positive - non-automated
-        ///   - We suppress this because A9-3-1 states that a class should
-        ///     not return a non-const handle to an object. AUTOSAR
-        ///     provides an exception for classes that mimic a smart
-        ///     pointer or a container, which is what this class is doing.
-        ///     It should be noted that such exceptions are likely not
-        ///     detectable by PRQA, and thus, this suppression will likely
-        ///     always be required.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return Returns a handle to T if this object contains T,
-        ///     otherwise it returns a nullptr.
-        ///
-        [[nodiscard]] constexpr T *
-        get_if() &noexcept
-        {
-            if (details::result_type::contains_t == m_which) {
-                return &m_t;    // PRQA S 4024 // NOLINT
-            }
-
-            return nullptr;
-        }
-
-        /// <!-- description -->
-        ///   @brief Prevents the use of get_if() on temporary objects, which
-        ///     would result in UB.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return Returns a handle to T if this object contains T,
-        ///     otherwise it returns a nullptr.
-        ///
-        [[nodiscard]] constexpr T *get_if() &&noexcept = delete;
+        constexpr result(O val) noexcept = delete;
 
         /// <!-- description -->
         ///   @brief Returns a handle to T if this object contains T,
@@ -434,25 +375,37 @@ namespace bsl
         ///   @return Returns a handle to T if this object contains T,
         ///     otherwise it returns a nullptr.
         ///
-        [[nodiscard]] constexpr T const *
-        get_if() const &noexcept
+        [[nodiscard]] constexpr auto
+        get_if() &noexcept -> T *
         {
             if (details::result_type::contains_t == m_which) {
-                return &m_t;    // NOLINT
+                return &m_t;
             }
 
             return nullptr;
         }
 
         /// <!-- description -->
-        ///   @brief Prevents the use of get_if() on temporary objects, which
-        ///     would result in UB.
+        ///   @brief Returns a handle to T if this object contains T,
+        ///     otherwise it returns a nullptr.
+        ///   @include result/example_result_get_if.hpp
         ///
         /// <!-- inputs/outputs -->
         ///   @return Returns a handle to T if this object contains T,
         ///     otherwise it returns a nullptr.
         ///
-        [[nodiscard]] constexpr T const *get_if() const &&noexcept = delete;
+        [[nodiscard]] constexpr auto
+        get_if() const &noexcept -> T const *
+        {
+            if (details::result_type::contains_t == m_which) {
+                return &m_t;
+            }
+
+            return nullptr;
+        }
+
+        /// @brief the r-value version of this function is not supported
+        [[nodiscard]] constexpr auto get_if() const &&noexcept -> T const * = delete;
 
         /// <!-- description -->
         ///   @brief Returns an error code if this object contains E,
@@ -464,11 +417,11 @@ namespace bsl
         ///   @return Returns an error code if this object contains E,
         ///     otherwise it returns "or".
         ///
-        [[nodiscard]] constexpr E
-        errc(E const &fallback = E{}) const noexcept
+        [[nodiscard]] constexpr auto
+        errc(E const &fallback = E{}) const noexcept -> E
         {
             if (details::result_type::contains_e == m_which) {
-                return m_e;    // NOLINT
+                return m_e;
             }
 
             return fallback;
@@ -497,8 +450,8 @@ namespace bsl
         ///     otherwise, if the bsl::result contains an error code,
         ///     returns false.
         ///
-        [[nodiscard]] constexpr bool
-        success() const noexcept
+        [[nodiscard]] constexpr auto
+        success() const noexcept -> bool
         {
             return details::result_type::contains_t == m_which;
         }
@@ -514,8 +467,8 @@ namespace bsl
         ///     otherwise, if the bsl::result contains T,
         ///     returns false.
         ///
-        [[nodiscard]] constexpr bool
-        failure() const noexcept
+        [[nodiscard]] constexpr auto
+        failure() const noexcept -> bool
         {
             return details::result_type::contains_e == m_which;
         }
@@ -525,19 +478,11 @@ namespace bsl
         details::result_type m_which;
 
         /// @brief Provides access to T or an error code
-        ///
-        ///   SUPPRESSION: PRQA 2176 - false positive
-        ///   - We suppress this because A9-5-1 states that unions are
-        ///     not allowed with the exception of tagged unions. In this
-        ///     case, we have implemented a tagged union. We tried to keep
-        ///     the implementation as close to the example in the spec as
-        ///     possible, and PRQA is still not able to detect this.
-        ///
-        ///   SUPPRESSION: PRQA 2176 - false positive
-        ///   - We suppress this because A2-7-3 states that all class members
-        ///     should be documented. This is clearly documented.
-        ///
-        union    // PRQA S 2176, 2026, 2177
+        // This class implements a version of std::variant, and as a result,
+        // a union is needed. Note that this is a tagged union, which is
+        // allowed by AUTOSAR.
+        // NOLINTNEXTLINE(bsl-decl-forbidden)
+        union
         {
             /// @brief stores T when not storing an error code
             T m_t;
@@ -557,8 +502,8 @@ namespace bsl
     ///   @return Returns true if the lhs is equal to the rhs, false otherwise
     ///
     template<typename T, typename E>
-    constexpr bool
-    operator==(result<T, E> const &lhs, result<T, E> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator==(result<T, E> const &lhs, result<T, E> const &rhs) noexcept -> bool
     {
         if (lhs.success() != rhs.success()) {
             return false;
@@ -582,8 +527,8 @@ namespace bsl
     ///   @return Returns false if the lhs is equal to the rhs, true otherwise
     ///
     template<typename T, typename E>
-    constexpr bool
-    operator!=(result<T, E> const &lhs, result<T, E> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator!=(result<T, E> const &lhs, result<T, E> const &rhs) noexcept -> bool
     {
         return !(lhs == rhs);
     }
@@ -602,14 +547,14 @@ namespace bsl
     ///   @return return o
     ///
     template<typename T1, typename T2, typename E>
-    [[maybe_unused]] constexpr out<T1>
-    operator<<(out<T1> const o, bsl::result<T2, E> const &val) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T1> const o, bsl::result<T2, E> const &val) noexcept -> out<T1>
     {
         if constexpr (!o) {
             return o;
         }
 
-        if (auto const *const ptr = val.get_if()) {
+        if (auto const *const ptr{val.get_if()}) {
             return o << *ptr;
         }
 

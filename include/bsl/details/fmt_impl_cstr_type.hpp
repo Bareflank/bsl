@@ -53,8 +53,8 @@ namespace bsl
     ///   @param str the cstr_type being outputted
     ///
     template<typename OUT>
-    constexpr void
-    fmt_impl(OUT &&o, fmt_options const &ops, cstr_type const str) noexcept
+    constexpr auto
+    fmt_impl(OUT &&o, fmt_options const &ops, cstr_type const str) noexcept -> void
     {
         safe_uintmax const len{bsl::builtin_strlen(str)};
         details::fmt_impl_align_pre(o, ops, len, true);
@@ -73,8 +73,8 @@ namespace bsl
     ///   @return return o
     ///
     template<typename T>
-    [[maybe_unused]] constexpr out<T>
-    operator<<(out<T> const o, cstr_type const str) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T> const o, cstr_type const str) noexcept -> out<T>
     {
         if constexpr (!o) {
             return o;

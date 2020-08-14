@@ -45,8 +45,8 @@ namespace bsl
     ///   @return return o
     ///
     template<typename T>
-    [[maybe_unused]] constexpr out<T>
-    operator<<(out<T> const o, void const *const ptr) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T> const o, void const *const ptr) noexcept -> out<T>
     {
         if constexpr (!o) {
             return o;
@@ -61,7 +61,10 @@ namespace bsl
             o.write("nullptr");
         }
         else {
-            details::fmt_impl_integral(o, ptrops, to_uptr(ptr));
+            // We must convert the pointer to an integer before we can use
+            // output it. There is no math being performed to this number.
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+            details::fmt_impl_integral(o, ptrops, to_umax(reinterpret_cast<bsl::uintmax>(ptr)));
         }
 
         return o;

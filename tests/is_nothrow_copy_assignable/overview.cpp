@@ -33,6 +33,8 @@ namespace
     struct mystruct final
     {};
 
+    // Needed for testing type traits
+    // NOLINTNEXTLINE(bsl-decl-forbidden)
     union myunion final
     {};
 
@@ -40,11 +42,21 @@ namespace
     {
     };
 
-    class myclass_abstract    // NOLINT
+    class myclass_abstract
     {
     public:
-        virtual ~myclass_abstract() noexcept = default;
+        constexpr myclass_abstract() noexcept = default;
+        virtual constexpr ~myclass_abstract() noexcept = default;
+
         virtual void foo() noexcept = 0;
+
+    protected:
+        constexpr myclass_abstract(myclass_abstract const &) noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_abstract const &) &noexcept
+            -> myclass_abstract & = default;
+        constexpr myclass_abstract(myclass_abstract &&) noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_abstract &&) &noexcept
+            -> myclass_abstract & = default;
     };
 
     class myclass_base
@@ -57,44 +69,52 @@ namespace
     {
     public:
         constexpr myclass_copy_only() noexcept = default;
-        ~myclass_copy_only() noexcept = default;
+        constexpr ~myclass_copy_only() noexcept = default;
         constexpr myclass_copy_only(myclass_copy_only const &) noexcept = default;
-        constexpr myclass_copy_only &operator=(myclass_copy_only const &) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_copy_only const &) &noexcept
+            -> myclass_copy_only & = default;
         constexpr myclass_copy_only(myclass_copy_only &&) noexcept = delete;
-        constexpr myclass_copy_only &operator=(myclass_copy_only &&) &noexcept = delete;
+        [[maybe_unused]] constexpr auto operator=(myclass_copy_only &&) &noexcept
+            -> myclass_copy_only & = delete;
     };
 
     class myclass_move_only final
     {
     public:
         constexpr myclass_move_only() noexcept = default;
-        ~myclass_move_only() noexcept = default;
+        constexpr ~myclass_move_only() noexcept = default;
         constexpr myclass_move_only(myclass_move_only const &) noexcept = delete;
-        constexpr myclass_move_only &operator=(myclass_move_only const &) &noexcept = delete;
+        [[maybe_unused]] constexpr auto operator=(myclass_move_only const &) &noexcept
+            -> myclass_move_only & = delete;
         constexpr myclass_move_only(myclass_move_only &&) noexcept = default;
-        constexpr myclass_move_only &operator=(myclass_move_only &&) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_move_only &&) &noexcept
+            -> myclass_move_only & = default;
     };
 
     class myclass_no_assign final
     {
     public:
         constexpr myclass_no_assign() noexcept = default;
-        ~myclass_no_assign() noexcept = default;
+        constexpr ~myclass_no_assign() noexcept = default;
         constexpr myclass_no_assign(myclass_no_assign const &) noexcept = delete;
-        constexpr myclass_no_assign &operator=(myclass_no_assign const &) &noexcept = delete;
+        [[maybe_unused]] constexpr auto operator=(myclass_no_assign const &) &noexcept
+            -> myclass_no_assign & = delete;
         constexpr myclass_no_assign(myclass_no_assign &&) noexcept = delete;
-        constexpr myclass_no_assign &operator=(myclass_no_assign &&) &noexcept = delete;
+        [[maybe_unused]] constexpr auto operator=(myclass_no_assign &&) &noexcept
+            -> myclass_no_assign & = delete;
     };
 
     class myclass_except final
     {
     public:
         constexpr myclass_except() noexcept(false) = default;
-        ~myclass_except() noexcept(false) = default;
-        constexpr myclass_except(myclass_except const &) noexcept(false) = delete;
-        constexpr myclass_except &operator=(myclass_except const &) &noexcept(false) = delete;
-        constexpr myclass_except(myclass_except &&) noexcept(false) = delete;
-        constexpr myclass_except &operator=(myclass_except &&) &noexcept(false) = delete;
+        constexpr ~myclass_except() noexcept(false) = default;
+        constexpr myclass_except(myclass_except const &) noexcept(false) = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_except const &) &noexcept(false)
+            -> myclass_except & = default;
+        constexpr myclass_except(myclass_except &&) noexcept(false) = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_except &&) &noexcept(false)
+            -> myclass_except & = default;
     };
 }
 
@@ -106,8 +126,8 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 
@@ -190,14 +210,22 @@ main() noexcept
     static_assert(!is_nothrow_copy_assignable<myenum const>::value);
     static_assert(!is_nothrow_copy_assignable<myclass_base const>::value);
     static_assert(!is_nothrow_copy_assignable<myclass_subclass const>::value);
-    static_assert(!is_nothrow_copy_assignable<bool[]>::value);              // NOLINT
-    static_assert(!is_nothrow_copy_assignable<bool[1]>::value);             // NOLINT
-    static_assert(!is_nothrow_copy_assignable<bool[][1]>::value);           // NOLINT
-    static_assert(!is_nothrow_copy_assignable<bool[1][1]>::value);          // NOLINT
-    static_assert(!is_nothrow_copy_assignable<bool const[]>::value);        // NOLINT
-    static_assert(!is_nothrow_copy_assignable<bool const[1]>::value);       // NOLINT
-    static_assert(!is_nothrow_copy_assignable<bool const[][1]>::value);     // NOLINT
-    static_assert(!is_nothrow_copy_assignable<bool const[1][1]>::value);    // NOLINT
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(!is_nothrow_copy_assignable<bool[]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(!is_nothrow_copy_assignable<bool[1]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(!is_nothrow_copy_assignable<bool[][1]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(!is_nothrow_copy_assignable<bool[1][1]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(!is_nothrow_copy_assignable<bool const[]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(!is_nothrow_copy_assignable<bool const[1]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(!is_nothrow_copy_assignable<bool const[][1]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(!is_nothrow_copy_assignable<bool const[1][1]>::value);
     static_assert(!is_nothrow_copy_assignable<void>::value);
     static_assert(!is_nothrow_copy_assignable<void const>::value);
     static_assert(!is_nothrow_copy_assignable<void *const>::value);

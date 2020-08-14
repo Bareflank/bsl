@@ -33,17 +33,22 @@ namespace bsl
     inline void
     example_array_not_equals() noexcept
     {
-        constexpr bsl::safe_uintmax size{bsl::to_umax(2)};
-        constexpr bsl::array<bool, size.get()> arr1{true, false};
-        constexpr bsl::array<bool, size.get()> arr2{true, false};
-        constexpr bsl::array<bool, size.get()> arr3{false, false};
+        constexpr bsl::array arr1{true, false};
+        constexpr bsl::array arr2{true, false};
+        constexpr bsl::array arr3{false, false};
 
-        if (arr1 == arr2) {
+        if constexpr (arr1 == arr2) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
 
-        if (arr1 != arr3) {
+        if constexpr (arr1 != arr3) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

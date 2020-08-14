@@ -34,12 +34,18 @@ namespace bsl
     inline void
     example_conditional_overview() noexcept
     {
-        if (bsl::is_same<bsl::conditional_t<true, bool, void>, bool>::value) {
+        if constexpr (bsl::is_same<bsl::conditional_t<true, bool, void>, bool>::value) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
 
-        if (bsl::is_same<bsl::conditional_t<false, bool, void>, void>::value) {
+        if constexpr (bsl::is_same<bsl::conditional_t<false, bool, void>, void>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

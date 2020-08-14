@@ -28,6 +28,8 @@
 #ifndef BSL_REVERSE_ITERATOR_HPP
 #define BSL_REVERSE_ITERATOR_HPP
 
+#include "details/out.hpp"
+
 #include "convert.hpp"
 #include "debug.hpp"
 #include "safe_integral.hpp"
@@ -108,8 +110,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns a pointer to the array being iterated
         ///
-        [[nodiscard]] constexpr Iter
-        base() const noexcept
+        [[nodiscard]] constexpr auto
+        base() const noexcept -> Iter
         {
             return m_i;
         }
@@ -121,8 +123,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns a pointer to the array being iterated
         ///
-        [[nodiscard]] constexpr pointer_type
-        data() noexcept
+        [[nodiscard]] constexpr auto
+        data() noexcept -> pointer_type
         {
             return m_i.data();
         }
@@ -134,8 +136,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns a pointer to the array being iterated
         ///
-        [[nodiscard]] constexpr const_pointer_type
-        data() const noexcept
+        [[nodiscard]] constexpr auto
+        data() const noexcept -> const_pointer_type
         {
             return m_i.data();
         }
@@ -147,8 +149,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the number of elements in the array being iterated
         ///
-        [[nodiscard]] constexpr size_type const &
-        size() const noexcept
+        [[nodiscard]] constexpr auto
+        size() const noexcept -> size_type const &
         {
             return m_i.size();
         }
@@ -161,14 +163,14 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the iterator's current index
         ///
-        [[nodiscard]] constexpr size_type
-        index() const noexcept
+        [[nodiscard]] constexpr auto
+        index() const noexcept -> size_type
         {
             if (m_i.index().is_zero()) {
                 return m_i.size();
             }
 
-            return m_i.index() - to_umax(1);
+            return m_i.index() - size_type::one();
         }
 
         /// <!-- description -->
@@ -178,8 +180,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns nullptr == data()
         ///
-        [[nodiscard]] constexpr bool
-        empty() const noexcept
+        [[nodiscard]] constexpr auto
+        empty() const noexcept -> bool
         {
             return m_i.empty();
         }
@@ -203,8 +205,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns index() == size()
         ///
-        [[nodiscard]] constexpr bool
-        is_end() const noexcept
+        [[nodiscard]] constexpr auto
+        is_end() const noexcept -> bool
         {
             return m_i.index().is_zero();
         }
@@ -215,19 +217,13 @@ namespace bsl
         ///     or the iterator is invalid, this function returns a nullptr.
         ///   @include reverse_iterator/example_reverse_iterator_get_if.hpp
         ///
-        ///   SUPPRESSION: PRQA 4024 - false positive
-        ///   - We suppress this because A9-3-1 states that pointer we should
-        ///     not provide a non-const reference or pointer to private
-        ///     member function, unless the class mimics a smart pointer or
-        ///     a containter. This class mimics a container.
-        ///
         /// <!-- inputs/outputs -->
         ///   @return Returns a pointer to the instance of T stored at the
         ///     iterator's current index. If the index is out of bounds,
         ///     or the iterator is invalid, this function returns a nullptr.
         ///
-        [[nodiscard]] constexpr pointer_type
-        get_if() noexcept
+        [[nodiscard]] constexpr auto
+        get_if() noexcept -> pointer_type
         {
             if (nullptr == m_i.data()) {
                 bsl::error() << "reverse_iterator: null iterator\n";
@@ -239,7 +235,7 @@ namespace bsl
                 return nullptr;
             }
 
-            return &m_i.data()[(m_i.index() - to_umax(1)).get()];    // PRQA S 4024 // NOLINT
+            return &m_i.data()[(m_i.index() - size_type::one()).get()];
         }
 
         /// <!-- description -->
@@ -248,19 +244,13 @@ namespace bsl
         ///     or the iterator is invalid, this function returns a nullptr.
         ///   @include reverse_iterator/example_reverse_iterator_get_if.hpp
         ///
-        ///   SUPPRESSION: PRQA 4024 - false positive
-        ///   - We suppress this because A9-3-1 states that pointer we should
-        ///     not provide a non-const reference or pointer to private
-        ///     member function, unless the class mimics a smart pointer or
-        ///     a containter. This class mimics a container.
-        ///
         /// <!-- inputs/outputs -->
         ///   @return Returns a pointer to the instance of T stored at the
         ///     iterator's current index. If the index is out of bounds,
         ///     or the iterator is invalid, this function returns a nullptr.
         ///
-        [[nodiscard]] constexpr const_pointer_type
-        get_if() const noexcept
+        [[nodiscard]] constexpr auto
+        get_if() const noexcept -> const_pointer_type
         {
             if (nullptr == m_i.data()) {
                 bsl::error() << "reverse_iterator: null iterator\n";
@@ -272,7 +262,7 @@ namespace bsl
                 return nullptr;
             }
 
-            return &m_i.data()[(m_i.index() - to_umax(1)).get()];    // PRQA S 4024 // NOLINT
+            return &m_i.data()[(m_i.index() - size_type::one()).get()];
         }
 
         /// <!-- description -->
@@ -282,8 +272,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return returns *this
         ///
-        [[maybe_unused]] constexpr reverse_iterator &
-        operator++() noexcept
+        [[maybe_unused]] constexpr auto
+        operator++() noexcept -> reverse_iterator &
         {
             --m_i;
             return *this;
@@ -296,8 +286,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return returns *this
         ///
-        [[maybe_unused]] constexpr reverse_iterator &
-        operator--() noexcept
+        [[maybe_unused]] constexpr auto
+        operator--() noexcept -> reverse_iterator &
         {
             ++m_i;
             return *this;
@@ -320,8 +310,8 @@ namespace bsl
     ///   @return Returns lhs.base() == rhs.base()
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    operator==(reverse_iterator<T> const &lhs, reverse_iterator<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator==(reverse_iterator<T> const &lhs, reverse_iterator<T> const &rhs) noexcept -> bool
     {
         return lhs.base() == rhs.base();
     }
@@ -338,8 +328,8 @@ namespace bsl
     ///   @return Returns lhs.base() != rhs.base()
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    operator!=(reverse_iterator<T> const &lhs, reverse_iterator<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator!=(reverse_iterator<T> const &lhs, reverse_iterator<T> const &rhs) noexcept -> bool
     {
         return !(lhs == rhs);
     }
@@ -356,28 +346,10 @@ namespace bsl
     ///   @return Returns lhs.base() < rhs.base()
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    operator<(reverse_iterator<T> const &lhs, reverse_iterator<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator<(reverse_iterator<T> const &lhs, reverse_iterator<T> const &rhs) noexcept -> bool
     {
         return lhs.base() > rhs.base();
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns lhs.base() <= rhs.base()
-    ///   @include reverse_iterator/example_reverse_iterator_lt_equals.hpp
-    ///   @related bsl::reverse_iterator
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the type of element being iterated.
-    ///   @param lhs the left hand side of the operation
-    ///   @param rhs the rhs hand side of the operation
-    ///   @return Returns lhs.base() <= rhs.base()
-    ///
-    template<typename T>
-    [[nodiscard]] constexpr bool
-    operator<=(reverse_iterator<T> const &lhs, reverse_iterator<T> const &rhs) noexcept
-    {
-        return lhs.base() >= rhs.base();
     }
 
     /// <!-- description -->
@@ -392,28 +364,10 @@ namespace bsl
     ///   @return Returns lhs.base() > rhs.base()
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    operator>(reverse_iterator<T> const &lhs, reverse_iterator<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator>(reverse_iterator<T> const &lhs, reverse_iterator<T> const &rhs) noexcept -> bool
     {
         return lhs.base() < rhs.base();
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns lhs.base() >= rhs.base()
-    ///   @include reverse_iterator/example_reverse_iterator_gt_equals.hpp
-    ///   @related bsl::reverse_iterator
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the type of element being iterated.
-    ///   @param lhs the left hand side of the operation
-    ///   @param rhs the rhs hand side of the operation
-    ///   @return Returns lhs.base() >= rhs.base()
-    ///
-    template<typename T>
-    [[nodiscard]] constexpr bool
-    operator>=(reverse_iterator<T> const &lhs, reverse_iterator<T> const &rhs) noexcept
-    {
-        return lhs.base() <= rhs.base();
     }
 
     /// <!-- description -->
@@ -426,8 +380,8 @@ namespace bsl
     ///   @return a newly constructed reverse iterator.
     ///
     template<typename Iter>
-    constexpr reverse_iterator<Iter>
-    make_reverse_iterator(Iter const &i) noexcept
+    [[nodiscard]] constexpr auto
+    make_reverse_iterator(Iter const &i) noexcept -> reverse_iterator<Iter>
     {
         return {i};
     }
@@ -446,18 +400,18 @@ namespace bsl
     ///   @return return o
     ///
     template<typename T1, typename T2>
-    [[maybe_unused]] constexpr out<T1>
-    operator<<(out<T1> const o, reverse_iterator<T2> const &val) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T1> const o, reverse_iterator<T2> const &val) noexcept -> out<T1>
     {
         if constexpr (!o) {
             return o;
         }
 
-        if (val.is_end()) {
-            return o << "[null]";
+        if (auto const *const ptr{val.get_if()}) {
+            return o << *ptr;
         }
 
-        return o << *val.get_if();
+        return o << "[error]";
     }
 }
 

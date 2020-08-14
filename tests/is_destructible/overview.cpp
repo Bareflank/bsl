@@ -33,6 +33,8 @@ namespace
     struct mystruct final
     {};
 
+    // Needed for testing type traits
+    // NOLINTNEXTLINE(bsl-decl-forbidden)
     union myunion final
     {};
 
@@ -40,11 +42,21 @@ namespace
     {
     };
 
-    class myclass_abstract    // NOLINT
+    class myclass_abstract
     {
     public:
-        virtual ~myclass_abstract() noexcept = default;
+        constexpr myclass_abstract() noexcept = default;
+        virtual constexpr ~myclass_abstract() noexcept = default;
+
         virtual void foo() noexcept = 0;
+
+    protected:
+        constexpr myclass_abstract(myclass_abstract const &) noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_abstract const &) &noexcept
+            -> myclass_abstract & = default;
+        constexpr myclass_abstract(myclass_abstract &&) noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_abstract &&) &noexcept
+            -> myclass_abstract & = default;
     };
 
     class myclass_base
@@ -53,10 +65,19 @@ namespace
     class myclass_subclass : public myclass_base
     {};
 
-    class myclass_no_destructor final    // NOLINT
+    class myclass_no_destructor final
     {
     public:
-        ~myclass_no_destructor() = delete;
+        constexpr myclass_no_destructor() noexcept = default;
+        constexpr ~myclass_no_destructor() noexcept = delete;
+
+    protected:
+        constexpr myclass_no_destructor(myclass_no_destructor const &) noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_no_destructor const &) &noexcept
+            -> myclass_no_destructor & = default;
+        constexpr myclass_no_destructor(myclass_no_destructor &&) noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(myclass_no_destructor &&) &noexcept
+            -> myclass_no_destructor & = default;
     };
 }
 
@@ -68,8 +89,8 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 
@@ -145,10 +166,14 @@ main() noexcept
     static_assert(is_destructible<myclass_base const>::value);
     static_assert(is_destructible<myclass_subclass>::value);
     static_assert(is_destructible<myclass_subclass const>::value);
-    static_assert(is_destructible<bool[1]>::value);             // NOLINT
-    static_assert(is_destructible<bool[1][1]>::value);          // NOLINT
-    static_assert(is_destructible<bool const[1]>::value);       // NOLINT
-    static_assert(is_destructible<bool const[1][1]>::value);    // NOLINT
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_destructible<bool[1]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_destructible<bool[1][1]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_destructible<bool const[1]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(is_destructible<bool const[1][1]>::value);
     static_assert(is_destructible<void *>::value);
     static_assert(is_destructible<void const *>::value);
     static_assert(is_destructible<void *const>::value);
@@ -159,10 +184,14 @@ main() noexcept
     static_assert(is_destructible<bool const &&>::value);
     static_assert(is_destructible<bool (*)(bool)>::value);
 
-    static_assert(!is_destructible<bool[]>::value);             // NOLINT
-    static_assert(!is_destructible<bool[][1]>::value);          // NOLINT
-    static_assert(!is_destructible<bool const[]>::value);       // NOLINT
-    static_assert(!is_destructible<bool const[][1]>::value);    // NOLINT
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(!is_destructible<bool[]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(!is_destructible<bool[][1]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(!is_destructible<bool const[]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(!is_destructible<bool const[][1]>::value);
     static_assert(!is_destructible<void>::value);
     static_assert(!is_destructible<void const>::value);
     static_assert(!is_destructible<bool(bool)>::value);

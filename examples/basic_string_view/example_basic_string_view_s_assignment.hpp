@@ -39,5 +39,8 @@ namespace bsl
         if (str == "Hello") {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
     }
 }

@@ -37,8 +37,11 @@ namespace bsl
         using example_declval_type =    // --
             decltype(bsl::declval<example_class_nodefault>().get());
 
-        if (bsl::is_same<example_declval_type, bool>::value) {
+        if constexpr (bsl::is_same<example_declval_type, bool>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

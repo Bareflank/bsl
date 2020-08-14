@@ -33,12 +33,18 @@ namespace bsl
     inline void
     example_safe_integral_assign_lshift() noexcept
     {
-        bsl::safe_uint32 val{42U};
-        constexpr bsl::safe_uint32 expected{42U << 2U};
+        constexpr bsl::safe_uint32 val1{42U};
+        constexpr bsl::safe_uint32 val2{2U};
 
-        val <<= 2U;
-        if (val == expected) {
+        bsl::safe_uint32 val{val1};
+        constexpr bsl::safe_uint32 expected{val1.get() << val2.get()};
+
+        val <<= val2;
+        if (expected == val) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

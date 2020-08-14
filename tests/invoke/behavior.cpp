@@ -28,14 +28,14 @@
 
 namespace
 {
-    [[nodiscard]] constexpr bool
-    test_func(bool val)
+    [[nodiscard]] constexpr auto
+    test_func(bool val) -> bool
     {
         return val;
     }
 
-    [[nodiscard]] constexpr bool
-    test_func_noexcept(bool val)
+    [[nodiscard]] constexpr auto
+    test_func_noexcept(bool val) -> bool
     {
         return val;
     }
@@ -45,13 +45,15 @@ namespace
     public:
         constexpr test_base() noexcept = default;
 
-        [[nodiscard]] constexpr bool
-        operator()(bool val) const
+        [[nodiscard]] constexpr auto
+        operator()(bool val) const -> bool
         {
             return val;
         }
 
-        bsl::int32 data{42};    // NOLINT
+        // This is needed to prove that invoke works properly
+        // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
+        bsl::int32 data{42};
     };
 
     class test_final final : public test_base
@@ -65,13 +67,15 @@ namespace
     public:
         constexpr test_noexcept() noexcept = default;
 
-        [[nodiscard]] constexpr bool
-        operator()(bool val) const noexcept
+        [[nodiscard]] constexpr auto
+        operator()(bool val) const noexcept -> bool
         {
             return val;
         }
 
-        bsl::int32 data{42};    // NOLINT
+        // This is needed to prove that invoke works properly
+        // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
+        bsl::int32 data{42};
     };
 
     constexpr test_final g_test_final{};
@@ -79,62 +83,62 @@ namespace
 
     constexpr bsl::reference_wrapper<test_final const> g_rw_test_final{g_test_final};
     constexpr bsl::reference_wrapper<test_noexcept const> g_rw_test_noexcept{g_test_noexcept};
-}
 
-/// <!-- description -->
-///   @brief Used to execute the actual checks. We put the checks in this
-///     function so that we can validate the tests both at compile-time
-///     and at run-time. If a bsl::ut_check fails, the tests will either
-///     fail fast at run-time, or will produce a compile-time error.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-constexpr bsl::exit_code
-tests() noexcept
-{
-    bsl::ut_scenario{"1.1"} = []() {
-        bsl::ut_check(bsl::invoke(&test_base::operator(), g_test_final, true));
-        bsl::ut_check(bsl::invoke(&test_final::operator(), g_test_final, true));
-        bsl::ut_check(bsl::invoke(&test_noexcept::operator(), g_test_noexcept, true));
-    };
+    /// <!-- description -->
+    ///   @brief Used to execute the actual checks. We put the checks in this
+    ///     function so that we can validate the tests both at compile-time
+    ///     and at run-time. If a bsl::ut_check fails, the tests will either
+    ///     fail fast at run-time, or will produce a compile-time error.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @return Always returns bsl::exit_success.
+    ///
+    [[nodiscard]] constexpr auto
+    tests() noexcept -> bsl::exit_code
+    {
+        bsl::ut_scenario{"1.1"} = []() {
+            bsl::ut_check(bsl::invoke(&test_base::operator(), g_test_final, true));
+            bsl::ut_check(bsl::invoke(&test_final::operator(), g_test_final, true));
+            bsl::ut_check(bsl::invoke(&test_noexcept::operator(), g_test_noexcept, true));
+        };
 
-    bsl::ut_scenario{"1.2"} = []() {
-        bsl::ut_check(bsl::invoke(&test_base::operator(), g_rw_test_final, true));
-        bsl::ut_check(bsl::invoke(&test_final::operator(), g_rw_test_final, true));
-        bsl::ut_check(bsl::invoke(&test_noexcept::operator(), g_rw_test_noexcept, true));
-    };
+        bsl::ut_scenario{"1.2"} = []() {
+            bsl::ut_check(bsl::invoke(&test_base::operator(), g_rw_test_final, true));
+            bsl::ut_check(bsl::invoke(&test_final::operator(), g_rw_test_final, true));
+            bsl::ut_check(bsl::invoke(&test_noexcept::operator(), g_rw_test_noexcept, true));
+        };
 
-    bsl::ut_scenario{"1.3"} = []() {
-        bsl::ut_check(bsl::invoke(&test_base::operator(), &g_test_final, true));
-        bsl::ut_check(bsl::invoke(&test_final::operator(), &g_test_final, true));
-        bsl::ut_check(bsl::invoke(&test_noexcept::operator(), &g_test_noexcept, true));
-    };
+        bsl::ut_scenario{"1.3"} = []() {
+            bsl::ut_check(bsl::invoke(&test_base::operator(), &g_test_final, true));
+            bsl::ut_check(bsl::invoke(&test_final::operator(), &g_test_final, true));
+            bsl::ut_check(bsl::invoke(&test_noexcept::operator(), &g_test_noexcept, true));
+        };
 
-    bsl::ut_scenario{"2.1"} = []() {
-        bsl::ut_check(bsl::invoke(&test_base::data, g_test_final) == 42);
-        bsl::ut_check(bsl::invoke(&test_final::data, g_test_final) == 42);
-        bsl::ut_check(bsl::invoke(&test_noexcept::data, g_test_noexcept) == 42);
-    };
+        bsl::ut_scenario{"2.1"} = []() {
+            bsl::ut_check(bsl::invoke(&test_base::data, g_test_final) == 42);
+            bsl::ut_check(bsl::invoke(&test_final::data, g_test_final) == 42);
+            bsl::ut_check(bsl::invoke(&test_noexcept::data, g_test_noexcept) == 42);
+        };
 
-    bsl::ut_scenario{"2.2"} = []() {
-        bsl::ut_check(bsl::invoke(&test_base::data, g_rw_test_final) == 42);
-        bsl::ut_check(bsl::invoke(&test_final::data, g_rw_test_final) == 42);
-        bsl::ut_check(bsl::invoke(&test_noexcept::data, g_rw_test_noexcept) == 42);
-    };
+        bsl::ut_scenario{"2.2"} = []() {
+            bsl::ut_check(bsl::invoke(&test_base::data, g_rw_test_final) == 42);
+            bsl::ut_check(bsl::invoke(&test_final::data, g_rw_test_final) == 42);
+            bsl::ut_check(bsl::invoke(&test_noexcept::data, g_rw_test_noexcept) == 42);
+        };
 
-    bsl::ut_scenario{"2.3"} = []() {
-        bsl::ut_check(bsl::invoke(&test_base::data, &g_test_final) == 42);
-        bsl::ut_check(bsl::invoke(&test_final::data, &g_test_final) == 42);
-        bsl::ut_check(bsl::invoke(&test_noexcept::data, &g_test_noexcept) == 42);
-    };
+        bsl::ut_scenario{"2.3"} = []() {
+            bsl::ut_check(bsl::invoke(&test_base::data, &g_test_final) == 42);
+            bsl::ut_check(bsl::invoke(&test_final::data, &g_test_final) == 42);
+            bsl::ut_check(bsl::invoke(&test_noexcept::data, &g_test_noexcept) == 42);
+        };
 
-    bsl::ut_scenario{"3.1"} = []() {
-        bsl::ut_check(bsl::invoke(&test_func, true));
-        bsl::ut_check(bsl::invoke(&test_func_noexcept, true));
-    };
+        bsl::ut_scenario{"3.1"} = []() {
+            bsl::ut_check(bsl::invoke(&test_func, true));
+            bsl::ut_check(bsl::invoke(&test_func_noexcept, true));
+        };
 
-    return bsl::ut_success();
+        return bsl::ut_success();
+    }
 }
 
 /// <!-- description -->
@@ -145,8 +149,8 @@ tests() noexcept
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     static_assert(tests() == bsl::ut_success());
     return tests();

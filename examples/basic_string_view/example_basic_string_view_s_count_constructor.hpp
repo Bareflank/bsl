@@ -34,11 +34,14 @@ namespace bsl
     inline void
     example_basic_string_view_s_count_constructor() noexcept
     {
-        bsl::basic_string_view<bsl::char_type> const str1{"Hello", bsl::to_umax(3)};
-        bsl::basic_string_view<bsl::char_type> const str2{"Hello", bsl::to_umax(3)};
+        constexpr bsl::basic_string_view<bsl::char_type> str1{"Hello", bsl::to_umax(3)};
+        constexpr bsl::basic_string_view<bsl::char_type> str2{"Helicopter", bsl::to_umax(3)};
 
-        if (str1 == str2) {
+        if constexpr (str1 == str2) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

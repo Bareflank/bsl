@@ -33,16 +33,14 @@
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     using namespace bsl;
 
     // Note
-    //
     // The bsl::is_convertible test relies on the proper function of declval.
     // As such, testing is_convertible also tests declval
-    //
 
     static_assert(is_convertible<bool *, bool const *>::value);
     static_assert(!is_convertible<bool const *, bool *>::value);

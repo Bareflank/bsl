@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_true_type_overview() noexcept
     {
-        if (bsl::true_type::value) {
+        if constexpr (bsl::true_type::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

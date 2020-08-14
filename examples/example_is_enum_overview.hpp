@@ -35,8 +35,11 @@ namespace bsl
     inline void
     example_is_enum_overview() noexcept
     {
-        if (bsl::is_enum<example_enum>::value) {
+        if constexpr (bsl::is_enum<example_enum>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

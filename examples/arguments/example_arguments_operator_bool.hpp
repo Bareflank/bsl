@@ -38,7 +38,10 @@ namespace bsl
         bsl::arguments const args{argv.size(), argv.data()};
 
         if (args) {
-            bsl::print() << "success: " << args << '\n';
+            bsl::print() << "success: " << args << bsl::endl;
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

@@ -26,8 +26,8 @@
 #include <bsl/ut.hpp>
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -36,22 +36,21 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
-    static_assert(rank<void>::value == 0);
-    static_assert(rank<bool>::value == 0);
+    static_assert(bsl::rank<void>::value == static_cast<bsl::uintmax>(0));
+    static_assert(bsl::rank<bool>::value == static_cast<bsl::uintmax>(0));
 
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(rank<bool[]>::value == 1);
+    static_assert(bsl::rank<bool[]>::value == static_cast<bsl::uintmax>(1));
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(rank<bool[][42]>::value == 2);
+    static_assert(bsl::rank<bool[][42]>::value == static_cast<bsl::uintmax>(2));
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(rank<bool[][42][42]>::value == 3);
+    static_assert(bsl::rank<bool[][42][42]>::value == static_cast<bsl::uintmax>(3));
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(rank<bool[42]>::value == 1);
+    static_assert(bsl::rank<bool[42]>::value == static_cast<bsl::uintmax>(1));
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(rank<bool[42][42]>::value == 2);
+    static_assert(bsl::rank<bool[42][42]>::value == static_cast<bsl::uintmax>(2));
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(rank<bool[42][42][42]>::value == 3);
+    static_assert(bsl::rank<bool[42][42][42]>::value == static_cast<bsl::uintmax>(3));
+
     return bsl::ut_success();
 }

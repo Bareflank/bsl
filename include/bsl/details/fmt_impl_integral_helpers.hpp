@@ -137,7 +137,7 @@ namespace bsl::details
             ++info.digits;
         }
         else {
-            for (info.digits = {}; info.digits < max_num_digits; ++info.digits) {
+            for (info.digits = {}; info.digits < MAX_NUM_DIGITS; ++info.digits) {
                 if (val.is_zero()) {
                     break;
                 }
@@ -175,15 +175,16 @@ namespace bsl::details
     ///     must be accounted for.
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam OUT the type of out (i.e., debug, alert, etc)
+    ///   @tparam OUT_T the type of out (i.e., debug, alert, etc)
     ///   @tparam T the type of integral to output
     ///   @param o the instance of out<T> to output to
     ///   @param ops ops the fmt options used to format the output
     ///   @param val the integral being outputted
     ///
-    template<typename OUT, typename T>
+    template<typename OUT_T, typename T>
     constexpr auto
-    fmt_impl_integral(OUT &&o, fmt_options const &ops, safe_integral<T> const &val) noexcept -> void
+    fmt_impl_integral(OUT_T &&o, fmt_options const &ops, safe_integral<T> const &val) noexcept
+        -> void
     {
         fmt_impl_integral_info<T> const info{get_integral_info(ops, val)};
         safe_uintmax const padding{fmt_impl_align_pre(o, ops, info.digits + info.extras, false)};
@@ -253,7 +254,7 @@ namespace bsl::details
         }
 
         if (ops.sign_aware()) {
-            for (safe_uintmax i{}; i < padding; ++i) {
+            for (safe_uintmax pi{}; pi < padding; ++pi) {
                 o.write('0');
             }
         }

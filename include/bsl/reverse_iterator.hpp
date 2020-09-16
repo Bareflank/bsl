@@ -69,26 +69,26 @@ namespace bsl
     ///   @include example_reverse_iterator_overview.hpp
     ///
     /// <!-- template parameters -->
-    ///   @tparam Iter The type of iterator to reverse
+    ///   @tparam ITER The type of iterator to reverse
     ///
-    template<typename Iter>
+    template<typename ITER>
     class reverse_iterator final
     {
     public:
-        /// @brief alias for: typename Iter::value_type
-        using value_type = typename Iter::value_type;
+        /// @brief alias for: typename ITER::value_type
+        using value_type = typename ITER::value_type;
         /// @brief alias for: safe_uintmax
         using size_type = safe_uintmax;
         /// @brief alias for: safe_uintmax
         using difference_type = safe_uintmax;
-        /// @brief alias for: typename Iter::value_type &
-        using reference_type = typename Iter::value_type &;
-        /// @brief alias for: typename Iter::value_type const &
-        using const_reference_type = typename Iter::value_type const &;
-        /// @brief alias for: typename Iter::value_type *
-        using pointer_type = typename Iter::value_type *;
-        /// @brief alias for: typename Iter::value_type const *
-        using const_pointer_type = typename Iter::value_type const *;
+        /// @brief alias for: typename ITER::value_type &
+        using reference_type = typename ITER::value_type &;
+        /// @brief alias for: typename ITER::value_type const &
+        using const_reference_type = typename ITER::value_type const &;
+        /// @brief alias for: typename ITER::value_type *
+        using pointer_type = typename ITER::value_type *;
+        /// @brief alias for: typename ITER::value_type const *
+        using const_pointer_type = typename ITER::value_type const *;
 
         /// <!-- description -->
         ///   @brief Creates a reverse iterator given a an iterator to reverse.
@@ -99,7 +99,7 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param i the iterator to use
         ///
-        explicit constexpr reverse_iterator(Iter const &i) noexcept    // --
+        explicit constexpr reverse_iterator(ITER const &i) noexcept    // --
             : m_i{i}
         {}
 
@@ -111,7 +111,7 @@ namespace bsl
         ///   @return Returns a pointer to the array being iterated
         ///
         [[nodiscard]] constexpr auto
-        base() const noexcept -> Iter
+        base() const noexcept -> ITER
         {
             return m_i;
         }
@@ -295,7 +295,7 @@ namespace bsl
 
     private:
         /// @brief Stores the iterator being reversed.
-        Iter m_i;
+        ITER m_i;
     };
 
     /// <!-- description -->
@@ -375,13 +375,13 @@ namespace bsl
     ///   @related bsl::reverse_iterator
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam Iter the type of iterator to make the reverse iterator from.
+    ///   @tparam ITER the type of iterator to make the reverse iterator from.
     ///   @param i the iterator to make the reverse iterator from.
     ///   @return a newly constructed reverse iterator.
     ///
-    template<typename Iter>
+    template<typename ITER>
     [[nodiscard]] constexpr auto
-    make_reverse_iterator(Iter const &i) noexcept -> reverse_iterator<Iter>
+    make_reverse_iterator(ITER const &i) noexcept -> reverse_iterator<ITER>
     {
         return {i};
     }

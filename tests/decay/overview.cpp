@@ -28,8 +28,8 @@
 #include <bsl/ut.hpp>
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -38,40 +38,40 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
+    // clang-format off
 
     using example_decay_f_type = bool(bool);
     using example_decay_fp_type = bool (*)(bool);
 
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(is_same<decay_t<bool[42]>, bool *>::value);
+    static_assert(bsl::is_same<bsl::decay_t<bool[42]>, bool *>::value);
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(is_same<decay_t<bool[42][42]>, bool(*)[42]>::value);
+    static_assert(bsl::is_same<bsl::decay_t<bool[42][42]>, bool(*)[42]>::value);
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(is_same<decay_t<bool[42][42][42]>, bool(*)[42][42]>::value);
+    static_assert(bsl::is_same<bsl::decay_t<bool[42][42][42]>, bool(*)[42][42]>::value);
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(is_same<decay_t<bool(&)[42]>, bool *>::value);
+    static_assert(bsl::is_same<bsl::decay_t<bool(&)[42]>, bool *>::value);
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(is_same<decay_t<bool(&)[42][42]>, bool(*)[42]>::value);
+    static_assert(bsl::is_same<bsl::decay_t<bool(&)[42][42]>, bool(*)[42]>::value);
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(is_same<decay_t<bool(&)[42][42][42]>, bool(*)[42][42]>::value);
+    static_assert(bsl::is_same<bsl::decay_t<bool(&)[42][42][42]>, bool(*)[42][42]>::value);
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(is_same<decay_t<bool(&&)[42]>, bool *>::value);
+    static_assert(bsl::is_same<bsl::decay_t<bool(&&)[42]>, bool *>::value);
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(is_same<decay_t<bool(&&)[42][42]>, bool(*)[42]>::value);
+    static_assert(bsl::is_same<bsl::decay_t<bool(&&)[42][42]>, bool(*)[42]>::value);
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(is_same<decay_t<bool(&&)[42][42][42]>, bool(*)[42][42]>::value);
-    static_assert(is_same<decay_t<example_decay_f_type>, example_decay_fp_type>::value);
-    static_assert(is_same<decay_t<example_decay_f_type &>, example_decay_fp_type>::value);
-    static_assert(is_same<decay_t<example_decay_f_type &&>, example_decay_fp_type>::value);
+    static_assert(bsl::is_same<bsl::decay_t<bool(&&)[42][42][42]>, bool(*)[42][42]>::value);
+    static_assert(bsl::is_same<bsl::decay_t<example_decay_f_type>, example_decay_fp_type>::value);
+    static_assert(bsl::is_same<bsl::decay_t<example_decay_f_type &>, example_decay_fp_type>::value);
+    static_assert(bsl::is_same<bsl::decay_t<example_decay_f_type &&>, example_decay_fp_type>::value);
 
-    static_assert(is_same<decay_t<bool>, bool>::value);
-    static_assert(is_same<decay_t<bool &>, bool>::value);
-    static_assert(is_same<decay_t<bool &&>, bool>::value);
+    static_assert(bsl::is_same<bsl::decay_t<bool>, bool>::value);
+    static_assert(bsl::is_same<bsl::decay_t<bool &>, bool>::value);
+    static_assert(bsl::is_same<bsl::decay_t<bool &&>, bool>::value);
 
-    static_assert(is_same<decay_t<bool const>, bool>::value);
-    static_assert(is_same<decay_t<bool const &>, bool>::value);
-    static_assert(is_same<decay_t<bool const &&>, bool>::value);
+    static_assert(bsl::is_same<bsl::decay_t<bool const>, bool>::value);
+    static_assert(bsl::is_same<bsl::decay_t<bool const &>, bool>::value);
+    static_assert(bsl::is_same<bsl::decay_t<bool const &&>, bool>::value);
 
     return bsl::ut_success();
 }

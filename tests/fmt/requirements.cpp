@@ -27,8 +27,8 @@
 #include <bsl/ut.hpp>
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -40,6 +40,8 @@ main() noexcept -> bsl::exit_code
     bsl::ut_scenario{"verify noexcept"} = []() {
         bsl::ut_given{} = []() {
             bsl::ut_then{} = []() {
+                static_assert(noexcept(bsl::fmt{bsl::fmt_options{""}, ""}));
+                static_assert(noexcept(bsl::fmt{bsl::fmt_options{""}, "", bsl::to_umax(42)}));
                 static_assert(noexcept(bsl::fmt{"", ""}));
                 static_assert(noexcept(bsl::fmt{"", "", bsl::to_umax(42)}));
                 static_assert(noexcept(bsl::fmt_impl(bsl::print(), {""}, true)));

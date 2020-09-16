@@ -25,9 +25,10 @@
 #ifndef BSL_DETAILS_INVOKE_TRAITS_HPP
 #define BSL_DETAILS_INVOKE_TRAITS_HPP
 
+#include "invoke_type.hpp"
+
 #include "../bool_constant.hpp"
 #include "../conjunction.hpp"
-#include "../declval.hpp"
 #include "../declval.hpp"
 #include "../disjunction.hpp"
 #include "../is_convertible.hpp"
@@ -38,11 +39,6 @@
 
 namespace bsl::details
 {
-    /// @brief defines the function type for invoke based on the provided
-    ///   arguments.
-    template<typename FUNC, typename... TN>
-    using invoke_type = decltype(invoke(declval<FUNC>(), declval<TN>()...));
-
     /// @class bsl::details::invoke_traits
     ///
     /// <!-- description -->
@@ -63,28 +59,72 @@ namespace bsl::details
     ///     allowing invoke_result to be used in SFINAE.
     ///
     /// <!-- template parameters -->
-    ///   @tparam AlwaysVoid is always "void"
+    ///   @tparam ALWAYS_VOID is always "void"
     ///   @tparam FUNC the type that defines the function being called
     ///   @tparam TN the types that define the arguments passed to the
     ///     provided function when called.
     ///
-    template<typename AlwaysVoid, typename FUNC, typename... TN>
+    template<typename ALWAYS_VOID, typename FUNC, typename... TN>
     class invoke_traits
     {
     public:
-        /// @brief states that the provided args do not form a callable
-        static constexpr bool m_is_invocable{false};
+        /// <!-- description -->
+        ///   @brief Returns true if the provided args form a callable
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns true if the provided args form a callable
+        ///
+        [[nodiscard]] static constexpr auto
+        get_is_invocable() noexcept -> bool
+        {
+            return false;
+        }
 
-        /// @brief states that the provided args do not form a callable
-        static constexpr bool m_is_nothrow_invocable{false};
+        /// <!-- description -->
+        ///   @brief Returns true if the provided args form a callable that
+        ///     never throws.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns true if the provided args form a callable that
+        ///     never throws.
+        ///
+        [[nodiscard]] static constexpr auto
+        get_is_nothrow_invocable() noexcept -> bool
+        {
+            return false;
+        }
 
-        /// @brief states that the provided args do not form a callable
+        /// <!-- description -->
+        ///   @brief Returns true if the provided args form a callable that
+        ///     is convertible to R
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam R the type of function FUNC is convertible to.
+        ///   @return Returns true if the provided args form a callable that
+        ///     is convertible to R
+        ///
         template<typename R>
-        static constexpr bool m_is_invocable_r{false};
+        [[nodiscard]] static constexpr auto
+        get_is_invocable_r() noexcept -> bool
+        {
+            return false;
+        }
 
-        /// @brief states that the provided args do not form a callable
+        /// <!-- description -->
+        ///   @brief Returns true if the provided args form a callable that
+        ///     never throws and is convertible to R
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam R the type of function FUNC is convertible to.
+        ///   @return Returns true if the provided args form a callable that
+        ///     never throws and is convertible to R
+        ///
         template<typename R>
-        static constexpr bool m_is_nothrow_invocable_r{false};
+        [[nodiscard]] static constexpr auto
+        get_is_nothrow_invocable_r() noexcept -> bool
+        {
+            return false;
+        }
 
         /// <!-- description -->
         ///   @brief Default constructor
@@ -165,26 +205,65 @@ namespace bsl::details
         /// @brief provides the member typedef "type"
         using type = invoke_type<FUNC, TN...>;
 
-        /// @brief states that the provided args form a callable
-        static constexpr bool m_is_invocable{true};
+        /// <!-- description -->
+        ///   @brief Returns true if the provided args form a callable
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns true if the provided args form a callable
+        ///
+        [[nodiscard]] static constexpr auto
+        get_is_invocable() noexcept -> bool
+        {
+            return true;
+        }
 
-        /// @brief states whether or not the provided args form a nothrow
-        ///   callable
-        static constexpr bool m_is_nothrow_invocable{
-            noexcept(invoke(declval<FUNC>(), declval<TN>()...))};
+        /// <!-- description -->
+        ///   @brief Returns true if the provided args form a callable that
+        ///     never throws.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns true if the provided args form a callable that
+        ///     never throws.
+        ///
+        [[nodiscard]] static constexpr auto
+        get_is_nothrow_invocable() noexcept -> bool
+        {
+            return noexcept(invoke(declval<FUNC>(), declval<TN>()...));
+        }
 
-        /// @brief states whether or not the provided args form a callable
-        ///   that is convertible to R
+        /// <!-- description -->
+        ///   @brief Returns true if the provided args form a callable that
+        ///     is convertible to R
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam R the type of function FUNC is convertible to.
+        ///   @return Returns true if the provided args form a callable that
+        ///     is convertible to R
+        ///
         template<typename R>
-        static constexpr bool m_is_invocable_r{
-            (disjunction<is_void<R>, is_convertible<R, type>>::value)};
+        [[nodiscard]] static constexpr auto
+        get_is_invocable_r() noexcept -> bool
+        {
+            return disjunction<is_void<R>, is_convertible<R, type>>::value;
+        }
 
-        /// @brief states whether or not the provided args form a nothrow
-        ///   callable that is convertible to R
+        /// <!-- description -->
+        ///   @brief Returns true if the provided args form a callable that
+        ///     never throws and is convertible to R
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam R the type of function FUNC is convertible to.
+        ///   @return Returns true if the provided args form a callable that
+        ///     never throws and is convertible to R
+        ///
         template<typename R>
-        static constexpr bool m_is_nothrow_invocable_r{conjunction<
-            bool_constant<noexcept(invoke(declval<FUNC>(), declval<TN>()...))>,
-            disjunction<is_void<R>, is_nothrow_convertible<R, type>>>::value};
+        [[nodiscard]] static constexpr auto
+        get_is_nothrow_invocable_r() noexcept -> bool
+        {
+            return conjunction<
+                bool_constant<noexcept(invoke(declval<FUNC>(), declval<TN>()...))>,
+                disjunction<is_void<R>, is_nothrow_convertible<R, type>>>::value;
+        }
 
         /// <!-- description -->
         ///   @brief Default constructor

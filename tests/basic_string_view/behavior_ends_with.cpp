@@ -39,21 +39,19 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        using namespace bsl;
-
         bsl::ut_scenario{"ends_with"} = []() {
             bsl::ut_given{} = []() {
-                basic_string_view<char_type> const msg{};
+                bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(msg.ends_with(basic_string_view<char_type>{}));
+                    bsl::ut_check(msg.ends_with(bsl::basic_string_view<bsl::char_type>{}));
                 };
 
                 bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(!msg.ends_with(basic_string_view<char_type>{"Hell"}));
+                    bsl::ut_check(!msg.ends_with(bsl::basic_string_view<bsl::char_type>{"Hell"}));
                 };
 
                 bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(!msg.ends_with(basic_string_view<char_type>{"ello"}));
+                    bsl::ut_check(!msg.ends_with(bsl::basic_string_view<bsl::char_type>{"ello"}));
                 };
 
                 bsl::ut_then{} = [&msg]() {
@@ -74,17 +72,17 @@ namespace
             };
 
             bsl::ut_given{} = []() {
-                basic_string_view<char_type> const msg{"Hello"};
+                bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
                 bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(msg.ends_with(basic_string_view<char_type>{}));
+                    bsl::ut_check(msg.ends_with(bsl::basic_string_view<bsl::char_type>{}));
                 };
 
                 bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(!msg.ends_with(basic_string_view<char_type>{"Hell"}));
+                    bsl::ut_check(!msg.ends_with(bsl::basic_string_view<bsl::char_type>{"Hell"}));
                 };
 
                 bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(msg.ends_with(basic_string_view<char_type>{"ello"}));
+                    bsl::ut_check(msg.ends_with(bsl::basic_string_view<bsl::char_type>{"ello"}));
                 };
 
                 bsl::ut_then{} = [&msg]() {
@@ -110,8 +108,8 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->

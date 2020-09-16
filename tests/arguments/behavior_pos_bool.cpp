@@ -41,67 +41,65 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        using namespace bsl;
-
         bsl::ut_scenario{"get positional bool"} = []() {
             bsl::ut_given{} = []() {
-                arguments args{0, nullptr};
+                bsl::arguments args{bsl::to_umax(0), nullptr};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<bool>(to_umax(0)));
+                    bsl::ut_check(!args.get<bool>(bsl::to_umax(0)));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"app"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"app"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<bool>(safe_uintmax::zero(true)));
+                    bsl::ut_check(!args.get<bool>(bsl::safe_uintmax::zero(true)));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"-app"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"-app"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<bool>(to_umax(0)));
+                    bsl::ut_check(!args.get<bool>(bsl::to_umax(0)));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"42"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"42"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<bool>(to_umax(1)));
+                    bsl::ut_check(!args.get<bool>(bsl::to_umax(1)));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"app"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"app"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<bool>(to_umax(0)));
+                    bsl::ut_check(!args.get<bool>(bsl::to_umax(0)));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"42 "};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"42 "};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<bool>(to_umax(0)));
+                    bsl::ut_check(!args.get<bool>(bsl::to_umax(0)));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"true", "-opt1", "false", "1", "0", "42", "-opt2", "hello", "42 "};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"true", "-opt1", "false", "1", "0", "42", "-opt2", "hello", "42 "};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(args.get<bool>(to_umax(0)));
-                    bsl::ut_check(!args.get<bool>(to_umax(1)));
-                    bsl::ut_check(args.get<bool>(to_umax(2)));
-                    bsl::ut_check(!args.get<bool>(to_umax(3)));
-                    bsl::ut_check(args.get<bool>(to_umax(4)));
-                    bsl::ut_check(!args.get<bool>(to_umax(5)));
-                    bsl::ut_check(!args.get<bool>(to_umax(6)));
+                    bsl::ut_check(args.get<bool>(bsl::to_umax(0)));
+                    bsl::ut_check(!args.get<bool>(bsl::to_umax(1)));
+                    bsl::ut_check(args.get<bool>(bsl::to_umax(2)));
+                    bsl::ut_check(!args.get<bool>(bsl::to_umax(3)));
+                    bsl::ut_check(args.get<bool>(bsl::to_umax(4)));
+                    bsl::ut_check(!args.get<bool>(bsl::to_umax(5)));
+                    bsl::ut_check(!args.get<bool>(bsl::to_umax(6)));
                 };
             };
         };
@@ -111,8 +109,8 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->

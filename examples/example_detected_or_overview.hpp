@@ -22,17 +22,15 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/detected_or.hpp>
+#include <bsl/detected_or_t.hpp>
 #include <bsl/is_same.hpp>
 #include <bsl/debug.hpp>
 
 #include "example_class_base.hpp"
+#include "example_detected_alias.hpp"
 
 namespace bsl
 {
-    template<typename T>
-    using example_detected_or = decltype(bsl::declval<T &>().blah());
-
     /// <!-- description -->
     ///   @brief Provides the example's main function
     ///
@@ -40,7 +38,7 @@ namespace bsl
     example_detected_or_overview() noexcept
     {
         using example_detected_or_type =
-            bsl::detected_or_t<void, example_detected_or, example_class_base>;
+            bsl::detected_or_t<void, example_detected_alias, example_class_base>;
 
         if constexpr (is_same<example_detected_or_type, void>::value) {
             bsl::print() << "success\n";

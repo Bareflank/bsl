@@ -34,9 +34,9 @@ namespace bsl
     example_safe_integral_assignment_t() noexcept
     {
         bsl::safe_int32 val1{};
-        constexpr bsl::int32 val2{42};
+        constexpr bsl::safe_int32 val2{42};
 
-        val1 = val2;
+        val1 = val2.get();
         if (val1 == val2) {
             bsl::print() << "success\n";
         }

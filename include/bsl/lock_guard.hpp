@@ -28,7 +28,7 @@
 #ifndef BSL_LOCK_GUARD_HPP
 #define BSL_LOCK_GUARD_HPP
 
-#include "adopt_lock.hpp"
+#include "adopt_lock_t.hpp"
 #include "discard.hpp"
 
 namespace bsl
@@ -45,6 +45,9 @@ namespace bsl
     ///     not attempt any backoff algorithms, but it does use pause, and
     ///     attempts to handle caching properly.
     ///   @include example_lock_guard_overview.hpp
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type of mutex being locked
     ///
     template<typename T>
     class lock_guard final

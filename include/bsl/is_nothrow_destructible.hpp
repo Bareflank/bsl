@@ -28,27 +28,23 @@
 #ifndef BSL_IS_NOTHROW_DESTRUCTIBLE_HPP
 #define BSL_IS_NOTHROW_DESTRUCTIBLE_HPP
 
+#include "details/is_nothrow_destructible_type.hpp"
+
 #include "conjunction.hpp"
 #include "bool_constant.hpp"
 #include "declval.hpp"
 #include "is_detected.hpp"
 #include "is_function.hpp"
 #include "is_reference.hpp"
-#include "is_scalar.hpp"
 #include "is_unbounded_array.hpp"
 #include "is_void.hpp"
 #include "remove_all_extents.hpp"
-#include "true_type.hpp"
 #include "false_type.hpp"
 
 namespace bsl
 {
     namespace details
     {
-        /// @brief used to detect the presence of a destructor in T
-        template<typename T>
-        using is_nothrow_destructible_type = decltype(bsl::declval<T &>().~T());
-
         /// <!-- description -->
         ///   @brief Tests if a destructor is marked noexcept or not. It does
         ///     this by creating a function that returns true if T's
@@ -111,6 +107,8 @@ namespace bsl
 
             return conjunction<
                 is_detected<is_nothrow_destructible_type, remove_all_extents_t<T>>,
+                // We need the implicit conversion for this to work
+                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 decltype(destructor_is_marked_nothrow<remove_all_extents_t<T>>(0))>::value;
         }
     }

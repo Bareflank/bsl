@@ -34,10 +34,6 @@ namespace bsl
 {
     /// @brief provides a bool_constant that represents "true"
     using true_type = bool_constant<true>;
-
-    /// @brief provides a bool_constant that represents "true"
-    template<typename>
-    using true_type_for = true_type;
 }
 
 #endif

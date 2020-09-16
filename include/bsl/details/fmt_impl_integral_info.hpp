@@ -33,7 +33,7 @@
 namespace bsl::details
 {
     /// @brief stores the maximum number of digits.
-    constexpr safe_uintmax max_num_digits{to_umax(64)};
+    constexpr safe_uintmax MAX_NUM_DIGITS{to_umax(64)};
 
     /// @class bsl::details::fmt_impl_integral_info
     ///
@@ -53,7 +53,7 @@ namespace bsl::details
         /// @brief stores the total number digits that make up the integral
         safe_uintmax digits{};
         /// @brief stores the integral as a string in reverse
-        carray<char_type, max_num_digits.get()> buf{};
+        carray<char_type, MAX_NUM_DIGITS.get()> buf{};
     };
 }
 

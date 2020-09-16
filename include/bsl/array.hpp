@@ -62,9 +62,11 @@ namespace bsl
     ///   @tparam N the total number of elements in the array. Cannot be 0
     ///
     template<typename T, bsl::uintmax N>
+    // This triggers on ArrayToPointerDecay which is needed
+    // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
     class array final
     {
-        static_assert(N != 0, "arrays of size 0 are not supported");
+        static_assert(N != static_cast<bsl::uintmax>(0), "arrays of size 0 are not supported");
 
     public:
         /// @brief stores the array being wrapped
@@ -73,7 +75,7 @@ namespace bsl
         // member check is complaining about the use of non-private member
         // variables. In this case, std::array should be an aggregate type
         // which means that the array must be made public.
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays, misc-non-private-member-variables-in-classes)
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays, misc-non-private-member-variables-in-classes, bsl-non-pod-classdef)
         T m_data[N];
 
         /// @brief alias for: T
@@ -122,7 +124,7 @@ namespace bsl
             if (index < to_umax(N)) {
                 // We are implementing std::array here, which is what this test
                 // wants you to use instead.
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index, bsl-implicit-conversions-forbidden)
                 return &m_data[index.get()];
             }
 
@@ -153,7 +155,7 @@ namespace bsl
             if (index < to_umax(N)) {
                 // We are implementing std::array here, which is what this test
                 // wants you to use instead.
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index, bsl-implicit-conversions-forbidden)
                 return &m_data[index.get()];
             }
 
@@ -816,6 +818,7 @@ namespace bsl
     /// <!-- inputs/outputs -->
     ///   @tparam T1 the type of outputter provided
     ///   @tparam T2 the type of element being encapsulated.
+    ///   @tparam N the total number of elements in the array. Cannot be 0
     ///   @param o the instance of the outputter used to output the value.
     ///   @param val the array to output
     ///   @return return o

@@ -41,50 +41,49 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        using namespace bsl;
-
         bsl::ut_scenario{"get positional string_view"} = []() {
             bsl::ut_given{} = []() {
-                arguments args{0, nullptr};
+                bsl::arguments args{bsl::to_umax(0), nullptr};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(args.get<string_view>(to_umax(0)).empty());
+                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umax(0)).empty());
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"app"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"app"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(args.get<string_view>(safe_uintmax::zero(true)).empty());
+                    bsl::ut_check(
+                        args.get<bsl::string_view>(bsl::safe_uintmax::zero(true)).empty());
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"-app"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"-app"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(args.get<string_view>(to_umax(0)).empty());
+                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umax(0)).empty());
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"42"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"42"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(args.get<string_view>(to_umax(1)).empty());
+                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umax(1)).empty());
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(args.get<string_view>(to_umax(0)) == "4");
-                    bsl::ut_check(args.get<string_view>(to_umax(1)) == "8");
-                    bsl::ut_check(args.get<string_view>(to_umax(2)) == "15");
-                    bsl::ut_check(args.get<string_view>(to_umax(3)) == "16");
-                    bsl::ut_check(args.get<string_view>(to_umax(4)) == "23");
-                    bsl::ut_check(args.get<string_view>(to_umax(5)) == "42");
+                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umax(0)) == "4");
+                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umax(1)) == "8");
+                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umax(2)) == "15");
+                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umax(3)) == "16");
+                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umax(4)) == "23");
+                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umax(5)) == "42");
                 };
             };
         };
@@ -94,8 +93,8 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->

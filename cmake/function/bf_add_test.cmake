@@ -33,7 +33,6 @@ macro(bf_add_test NAME)
     string(REPLACE " " "_" REL_NAME ${REL_NAME})
 
     add_executable(${REL_NAME}_${NAME} ${NAME}.cpp)
-    target_compile_options(${REL_NAME}_${NAME} PRIVATE -fno-access-control)
     target_link_libraries(${REL_NAME}_${NAME} PRIVATE bsl)
     if(WIN32)
         target_link_libraries(${REL_NAME}_${NAME} PRIVATE libcmt.lib)

@@ -49,14 +49,14 @@ namespace bsl
     ///     fmt support for their own types.
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam OUT the type of out (i.e., debug, alert, etc)
+    ///   @tparam OUT_T the type of out (i.e., debug, alert, etc)
     ///   @param o the instance of out<T> to output to
     ///   @param ops ops the fmt options used to format the output
     ///   @param b the bool being outputted
     ///
-    template<typename OUT>
+    template<typename OUT_T>
     constexpr auto
-    fmt_impl(OUT &&o, fmt_options const &ops, bool const b) noexcept -> void
+    fmt_impl(OUT_T &&o, fmt_options const &ops, bool const b) noexcept -> void
     {
         if (b) {
             switch (ops.type()) {
@@ -64,7 +64,7 @@ namespace bsl
                 case fmt_type::fmt_type_c:
                 case fmt_type::fmt_type_d:
                 case fmt_type::fmt_type_x: {
-                    details::fmt_impl_integral(bsl::forward<OUT>(o), ops, safe_uint32::one());
+                    details::fmt_impl_integral(bsl::forward<OUT_T>(o), ops, safe_uint32::one());
                     break;
                 }
 
@@ -84,7 +84,7 @@ namespace bsl
                 case fmt_type::fmt_type_c:
                 case fmt_type::fmt_type_d:
                 case fmt_type::fmt_type_x: {
-                    details::fmt_impl_integral(bsl::forward<OUT>(o), ops, to_u32(0));
+                    details::fmt_impl_integral(bsl::forward<OUT_T>(o), ops, to_u32(0));
                     break;
                 }
 

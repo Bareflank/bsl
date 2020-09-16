@@ -154,6 +154,47 @@ namespace bsl
         }
 
         /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::contiguous_iterator
+        ///
+        constexpr ~contiguous_iterator() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr contiguous_iterator(contiguous_iterator const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr contiguous_iterator(contiguous_iterator &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(contiguous_iterator const &o) &noexcept
+            -> contiguous_iterator & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(contiguous_iterator &&o) &noexcept
+            -> contiguous_iterator & = default;
+
+        /// <!-- description -->
         ///   @brief Returns a pointer to the array being iterated
         ///   @include contiguous_iterator/example_contiguous_iterator_data.hpp
         ///

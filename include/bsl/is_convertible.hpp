@@ -35,17 +35,17 @@ namespace bsl
     /// @class bsl::is_convertible
     ///
     /// <!-- description -->
-    ///   @brief If the provided type is convertible from "From" to "To",
+    ///   @brief If the provided type is convertible from "FROM" to "TO",
     ///     provides the member constant value equal to true. Otherwise the
     ///     member constant value is false.
     ///   @include example_is_convertible_overview.hpp
     ///
     /// <!-- template parameters -->
-    ///   @tparam From the type to convert to
-    ///   @tparam To the type to convert from
+    ///   @tparam FROM the type to convert to
+    ///   @tparam TO the type to convert from
     ///
-    template<typename From, typename To>
-    class is_convertible final : public bool_constant<__is_convertible_to(From, To)>
+    template<typename FROM, typename TO>
+    class is_convertible final : public bool_constant<__is_convertible_to(FROM, TO)>
     {};
 }
 

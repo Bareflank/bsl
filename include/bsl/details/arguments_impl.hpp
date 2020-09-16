@@ -39,7 +39,7 @@
 namespace bsl::details
 {
     /** @brief defines the default base for getting an argument */
-    constexpr bsl::int32 arguments_default_base{10};
+    constexpr bsl::safe_int32 ARGUMENTS_DEFAULT_BASE{10};
 
     /// @class bsl::details::arguments_impl
     ///
@@ -54,7 +54,7 @@ namespace bsl::details
     ///   @tparam B the base of the number to get. This defaults to 10
     ///     and is ignored for all types except bsl::safe_integral types.
     ///
-    template<typename T, bsl::int32 B = arguments_default_base>
+    template<typename T, bsl::int32 B = ARGUMENTS_DEFAULT_BASE.get()>
     class arguments_impl final
     {
         static_assert(always_false<T>(), "unsupported type provided to bsl::arguments");
@@ -81,6 +81,7 @@ namespace bsl::details
         ///     this function will return an empty bsl::string_view.
         ///
         /// <!-- inputs/outputs -->
+        ///   @param args the list of arguments to get the argument from
         ///   @param pos the position of the positional argument to get.
         ///   @return Returns the requested positional argument as a
         ///     bsl::string_view. If the provided "pos" is invalid,
@@ -122,6 +123,7 @@ namespace bsl::details
         ///     command line.
         ///
         /// <!-- inputs/outputs -->
+        ///   @param args the list of arguments to get the argument from
         ///   @param opt the optional argument to get.
         ///   @return Returns the requested optional argument as a
         ///     bsl::string_view. If the provided "opt" is invalid,
@@ -176,6 +178,7 @@ namespace bsl::details
         ///     this function will return an invalid bsl::safe_int8.
         ///
         /// <!-- inputs/outputs -->
+        ///   @param args the list of arguments to get the argument from
         ///   @param pos the position of the positional argument to get.
         ///   @return Returns the requested positional argument as a
         ///     bsl::safe_int8. If the provided "pos" is invalid,
@@ -207,6 +210,7 @@ namespace bsl::details
         ///     is present. Returns false otherwise.
         ///
         /// <!-- inputs/outputs -->
+        ///   @param args the list of arguments to get the argument from
         ///   @param opt the optional argument to get.
         ///   @return Returns true if the requested optional argument
         ///     is present. Returns false otherwise.
@@ -256,6 +260,7 @@ namespace bsl::details
         ///     this function will return an invalid bsl::safe_int8.
         ///
         /// <!-- inputs/outputs -->
+        ///   @param args the list of arguments to get the argument from
         ///   @param pos the position of the positional argument to get.
         ///   @return Returns the requested positional argument as a
         ///     bsl::safe_int8. If the provided "pos" is invalid,
@@ -283,6 +288,7 @@ namespace bsl::details
         ///     command line..
         ///
         /// <!-- inputs/outputs -->
+        ///   @param args the list of arguments to get the argument from
         ///   @param opt the optional argument to get.
         ///   @return Returns the requested optional argument as a
         ///     bsl::safe_int64. If the provided "opt" is invalid,

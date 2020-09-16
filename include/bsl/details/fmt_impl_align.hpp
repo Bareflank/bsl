@@ -41,17 +41,19 @@ namespace bsl::details
     ///     on the left side.
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam OUT the type of out (i.e., debug, alert, etc)
+    ///   @tparam OUT_T the type of out (i.e., debug, alert, etc)
     ///   @param o the instance of out<T> to output to
     ///   @param ops ops the fmt options used to format the output
     ///   @param len the length of the output the fmt_impl function will
     ///      use up. The align functions will use the rest.
+    ///   @param left true if the default behavior is to left align, false
+    ///     otherwise
     ///   @return Returns the size of the padding
     ///
-    template<typename OUT>
+    template<typename OUT_T>
     [[maybe_unused]] constexpr auto
     fmt_impl_align_pre(
-        OUT const &o, fmt_options const &ops, safe_uintmax const &len, bool const left) noexcept
+        OUT_T const &o, fmt_options const &ops, safe_uintmax const &len, bool const left) noexcept
         -> safe_uintmax
     {
         safe_uintmax padding{};
@@ -72,14 +74,14 @@ namespace bsl::details
 
                     case fmt_align::fmt_align_center: {
                         safe_uintmax half{padding >> safe_uintmax::one()};
-                        for (safe_uintmax i{}; i < half; ++i) {
+                        for (safe_uintmax cpi{}; cpi < half; ++cpi) {
                             o.write(ops.fill());
                         }
                         break;
                     }
 
                     case fmt_align::fmt_align_right: {
-                        for (safe_uintmax i{}; i < padding; ++i) {
+                        for (safe_uintmax rpi{}; rpi < padding; ++rpi) {
                             o.write(ops.fill());
                         }
                         break;
@@ -87,7 +89,7 @@ namespace bsl::details
 
                     case fmt_align::fmt_align_default: {
                         if (!left) {
-                            for (safe_uintmax i{}; i < padding; ++i) {
+                            for (safe_uintmax dpi{}; dpi < padding; ++dpi) {
                                 o.write(ops.fill());
                             }
                         }
@@ -118,16 +120,18 @@ namespace bsl::details
     ///     on the right side.
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam OUT the type of out (i.e., debug, alert, etc)
+    ///   @tparam OUT_T the type of out (i.e., debug, alert, etc)
     ///   @param o the instance of out<T> to output to
     ///   @param ops ops the fmt options used to format the output
     ///   @param len the length of the output the fmt_impl function will
     ///      use up. The align functions will use the rest.
+    ///   @param left true if the default behavior is to left align, false
+    ///     otherwise
     ///
-    template<typename OUT>
+    template<typename OUT_T>
     constexpr auto
     fmt_impl_align_suf(
-        OUT const &o, fmt_options const &ops, safe_uintmax const &len, bool const left) noexcept
+        OUT_T const &o, fmt_options const &ops, safe_uintmax const &len, bool const left) noexcept
         -> void
     {
         safe_uintmax padding{};
@@ -143,7 +147,7 @@ namespace bsl::details
             if (padding != to_umax(0)) {
                 switch (ops.align()) {
                     case fmt_align::fmt_align_left: {
-                        for (safe_uintmax i{}; i < padding; ++i) {
+                        for (safe_uintmax lpi{}; lpi < padding; ++lpi) {
                             o.write(ops.fill());
                         }
                         break;
@@ -151,7 +155,7 @@ namespace bsl::details
 
                     case fmt_align::fmt_align_center: {
                         safe_uintmax half{padding - (padding >> safe_uintmax::one())};
-                        for (safe_uintmax i{}; i < half; ++i) {
+                        for (safe_uintmax cpi{}; cpi < half; ++cpi) {
                             o.write(ops.fill());
                         }
                         break;
@@ -163,7 +167,7 @@ namespace bsl::details
 
                     case fmt_align::fmt_align_default: {
                         if (left) {
-                            for (safe_uintmax i{}; i < padding; ++i) {
+                            for (safe_uintmax dpi{}; dpi < padding; ++dpi) {
                                 o.write(ops.fill());
                             }
                         }

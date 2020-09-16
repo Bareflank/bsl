@@ -34,9 +34,9 @@ namespace bsl
     example_char_traits_to_int_type() noexcept
     {
         constexpr bsl::char_type val1{static_cast<bsl::char_type>(42)};
-        constexpr bsl::intmax val2{42};
+        constexpr bsl::safe_intmax val2{bsl::to_imax(42)};
 
-        if constexpr (bsl::char_traits<bsl::char_type>::to_int_type(val1) == val2) {
+        if constexpr (bsl::char_traits<bsl::char_type>::to_int_type(val1) == val2.get()) {
             bsl::print() << "success\n";
         }
         else {

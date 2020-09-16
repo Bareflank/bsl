@@ -34,19 +34,19 @@ namespace bsl::details
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam T the type of values being compared
-        ///   @param T1 the first integer to compare
-        ///   @param T2 the second integer to compare
+        ///   @param t1 the first integer to compare
+        ///   @param t2 the second integer to compare
         ///   @return Returns the min of T1 and T2
         ///
         template<typename T>
         [[nodiscard]] constexpr auto
-        integer_sequence_min_impl(T const T1, T const T2) noexcept -> T
+        integer_sequence_min_impl(T const t1, T const t2) noexcept -> T
         {
-            if (T1 < T2) {
-                return T1;
+            if (t1 < t2) {
+                return t1;
             }
 
-            return T2;
+            return t2;
         }
     }
 
@@ -64,8 +64,10 @@ namespace bsl::details
     template<typename T, T T1, T... R>
     struct integer_sequence_min final
     {
-        static constexpr T T2{integer_sequence_min<T, R...>::value};
-        static constexpr T value{details::integer_sequence_min_impl(T1, T2)};
+        /// @brief the max value between T2 to TR
+        static constexpr T t2{integer_sequence_min<T, R...>::value};
+        /// @brief the max value between T2 to T1
+        static constexpr T value{details::integer_sequence_min_impl(T1, t2)};
     };
 
     /// @class bsl::details::integer_sequence_min
@@ -84,6 +86,7 @@ namespace bsl::details
     template<typename T, T T1, T T2>
     struct integer_sequence_min<T, T1, T2> final
     {
+        /// @brief the max value between T2 to T1
         static constexpr T value{details::integer_sequence_min_impl(T1, T2)};
     };
 
@@ -102,6 +105,7 @@ namespace bsl::details
     template<typename T, T T1>
     struct integer_sequence_min<T, T1> final
     {
+        /// @brief the value of T1
         static constexpr T value{T1};
     };
 }

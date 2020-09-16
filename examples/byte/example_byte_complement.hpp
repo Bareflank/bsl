@@ -33,8 +33,8 @@ namespace bsl
     inline void
     example_byte_complement() noexcept
     {
-        constexpr bsl::uint8 val{0x10U};
-        constexpr bsl::uint8 expected{static_cast<bsl::uint8>(0xEF)};
+        constexpr bsl::safe_uint8 val{bsl::to_u8(0x10)};
+        constexpr bsl::safe_uint8 expected{bsl::to_u8(0xEF)};
 
         constexpr bsl::byte b{val};
         if constexpr ((~b).to_integer() == expected) {

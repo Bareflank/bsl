@@ -48,7 +48,7 @@ namespace bsl
     ///
     template<typename FUNC, typename... TN>
     class is_nothrow_invocable final :
-        public bool_constant<details::invoke_traits<void, FUNC, TN...>::m_is_nothrow_invocable>
+        public bool_constant<details::invoke_traits<void, FUNC, TN...>::get_is_nothrow_invocable()>
     {};
 }
 

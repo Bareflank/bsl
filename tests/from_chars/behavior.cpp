@@ -39,382 +39,380 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        using namespace bsl;
-
         bsl::ut_scenario{"invalid arguments"} = []() {
             bsl::ut_given{} = []() {
-                cstr_type str{"42"};
-                safe_int32 val{0, true};
+                bsl::cstr_type str{"42"};
+                bsl::safe_int32 val{0, true};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
                     bsl::ut_check(!val);
-                    bsl::ut_check(idx == to_umax(0));
+                    bsl::ut_check(idx == bsl::to_umax(0));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"42"};
-                safe_int32 val{0};
+                bsl::cstr_type str{"42"};
+                bsl::safe_int32 val{0};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val, safe_int32::zero(true))};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val, bsl::safe_int32::zero(true))};
                     bsl::ut_check(!val);
-                    bsl::ut_check(idx == to_umax(0));
+                    bsl::ut_check(idx == bsl::to_umax(0));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{""};
-                safe_int32 val{};
+                bsl::cstr_type str{""};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
                     bsl::ut_check(!val);
-                    bsl::ut_check(idx == to_umax(0));
+                    bsl::ut_check(idx == bsl::to_umax(0));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{" "};
-                safe_int32 val{};
+                bsl::cstr_type str{" "};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
                     bsl::ut_check(!val);
-                    bsl::ut_check(idx == to_umax(0));
+                    bsl::ut_check(idx == bsl::to_umax(0));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{" \t\n\v\f\r"};
-                safe_int32 val{};
+                bsl::cstr_type str{" \t\n\v\f\r"};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
                     bsl::ut_check(!val);
-                    bsl::ut_check(idx == to_umax(0));
+                    bsl::ut_check(idx == bsl::to_umax(0));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"Hello World"};
-                safe_int32 val{};
+                bsl::cstr_type str{"Hello World"};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
                     bsl::ut_check(!val);
-                    bsl::ut_check(idx == to_umax(0));
+                    bsl::ut_check(idx == bsl::to_umax(0));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"-"};
-                safe_int32 val{};
+                bsl::cstr_type str{"-"};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
                     bsl::ut_check(!val);
-                    bsl::ut_check(idx == to_umax(0));
+                    bsl::ut_check(idx == bsl::to_umax(0));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"  -"};
-                safe_int32 val{};
+                bsl::cstr_type str{"  -"};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
                     bsl::ut_check(!val);
-                    bsl::ut_check(idx == to_umax(0));
+                    bsl::ut_check(idx == bsl::to_umax(0));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"42"};
-                safe_int32 val{};
+                bsl::cstr_type str{"42"};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val, to_i32(42))};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val, bsl::to_i32(42))};
                     bsl::ut_check(!val);
-                    bsl::ut_check(idx == to_umax(0));
+                    bsl::ut_check(idx == bsl::to_umax(0));
                 };
             };
 
             bsl::ut_given_at_runtime{} = []() {
-                cstr_type str{"12345678901234567890"};
-                safe_int32 val{};
+                bsl::cstr_type str{"12345678901234567890"};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
                     bsl::ut_check(!val);
-                    bsl::ut_check(idx == to_umax(0));
+                    bsl::ut_check(idx == bsl::to_umax(0));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"42"};
-                safe_int32 val{};
+                bsl::cstr_type str{"42"};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val, to_i32(16))};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val, bsl::to_i32(16))};
                     bsl::ut_check(!val);
-                    bsl::ut_check(idx == to_umax(0));
+                    bsl::ut_check(idx == bsl::to_umax(0));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"-42"};
-                safe_uint32 val{};
+                bsl::cstr_type str{"-42"};
+                bsl::safe_uint32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
                     bsl::ut_check(!val);
-                    bsl::ut_check(idx == to_umax(0));
+                    bsl::ut_check(idx == bsl::to_umax(0));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"-42"};
-                safe_uint32 val{};
+                bsl::cstr_type str{"-42"};
+                bsl::safe_uint32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val, to_i32(16))};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val, bsl::to_i32(16))};
                     bsl::ut_check(!val);
-                    bsl::ut_check(idx == to_umax(0));
+                    bsl::ut_check(idx == bsl::to_umax(0));
                 };
             };
 
             bsl::ut_given_at_runtime{} = []() {
-                cstr_type str{"12345678901234567890"};
-                safe_uint32 val{};
+                bsl::cstr_type str{"12345678901234567890"};
+                bsl::safe_uint32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val, to_i32(16))};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val, bsl::to_i32(16))};
                     bsl::ut_check(!val);
-                    bsl::ut_check(idx == to_umax(0));
+                    bsl::ut_check(idx == bsl::to_umax(0));
                 };
             };
         };
 
         bsl::ut_scenario{"whitespace"} = []() {
             bsl::ut_given{} = []() {
-                cstr_type str{" \t\n\v\f\r42"};
-                safe_int32 val{};
+                bsl::cstr_type str{" \t\n\v\f\r42"};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
                     bsl::ut_check(val == 42);
-                    bsl::ut_check(idx == to_umax(8));
+                    bsl::ut_check(idx == bsl::to_umax(8));
                 };
             };
         };
 
         bsl::ut_scenario{"dec"} = []() {
             bsl::ut_given{} = []() {
-                cstr_type str{"0"};
-                safe_int32 val{};
+                bsl::cstr_type str{"0"};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
                     bsl::ut_check(val == 0);
-                    bsl::ut_check(idx == to_umax(1));
+                    bsl::ut_check(idx == bsl::to_umax(1));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"42"};
-                safe_int32 val{};
+                bsl::cstr_type str{"42"};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
                     bsl::ut_check(val == 42);
-                    bsl::ut_check(idx == to_umax(2));
+                    bsl::ut_check(idx == bsl::to_umax(2));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"042"};
-                safe_int32 val{};
+                bsl::cstr_type str{"042"};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
                     bsl::ut_check(val == 42);
-                    bsl::ut_check(idx == to_umax(3));
+                    bsl::ut_check(idx == bsl::to_umax(3));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"420"};
-                safe_int32 val{};
+                bsl::cstr_type str{"420"};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
                     bsl::ut_check(val == 420);
-                    bsl::ut_check(idx == to_umax(3));
+                    bsl::ut_check(idx == bsl::to_umax(3));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"1234567890"};
-                safe_int32 val{};
+                bsl::cstr_type str{"1234567890"};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
                     bsl::ut_check(val == 1234567890);
-                    bsl::ut_check(idx == to_umax(10));
+                    bsl::ut_check(idx == bsl::to_umax(10));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"42 "};
-                safe_int32 val{};
+                bsl::cstr_type str{"42 "};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
                     bsl::ut_check(val == 42);
-                    bsl::ut_check(idx == to_umax(2));
+                    bsl::ut_check(idx == bsl::to_umax(2));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"-42"};
-                safe_int32 val{};
+                bsl::cstr_type str{"-42"};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
                     bsl::ut_check(val == -42);
-                    bsl::ut_check(idx == to_umax(3));
+                    bsl::ut_check(idx == bsl::to_umax(3));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"42"};
-                safe_int32 val{};
+                bsl::cstr_type str{"42"};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val, to_i32(10))};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val, bsl::to_i32(10))};
                     bsl::ut_check(val == 42);
-                    bsl::ut_check(idx == to_umax(2));
+                    bsl::ut_check(idx == bsl::to_umax(2));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"2147483647"};
-                safe_int32 val{};
+                bsl::cstr_type str{"2147483647"};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
-                    bsl::ut_check(val == safe_int32::max());
-                    bsl::ut_check(idx == to_umax(10));
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
+                    bsl::ut_check(val == bsl::safe_int32::max());
+                    bsl::ut_check(idx == bsl::to_umax(10));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"-2147483648"};
-                safe_int32 val{};
+                bsl::cstr_type str{"-2147483648"};
+                bsl::safe_int32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
-                    bsl::ut_check(val == safe_int32::min());
-                    bsl::ut_check(idx == to_umax(11));
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
+                    bsl::ut_check(val == bsl::safe_int32::min());
+                    bsl::ut_check(idx == bsl::to_umax(11));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"42"};
-                safe_uint32 val{};
+                bsl::cstr_type str{"42"};
+                bsl::safe_uint32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
                     bsl::ut_check(val == 42U);
-                    bsl::ut_check(idx == to_umax(2));
+                    bsl::ut_check(idx == bsl::to_umax(2));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"4294967295"};
-                safe_uint32 val{};
+                bsl::cstr_type str{"4294967295"};
+                bsl::safe_uint32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val)};
-                    bsl::ut_check(val == safe_uint32::max());
-                    bsl::ut_check(idx == to_umax(10));
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val)};
+                    bsl::ut_check(val == bsl::safe_uint32::max());
+                    bsl::ut_check(idx == bsl::to_umax(10));
                 };
             };
         };
 
         bsl::ut_scenario{"hex"} = []() {
             bsl::ut_given{} = []() {
-                cstr_type str{"0"};
-                safe_uint32 val{};
+                bsl::cstr_type str{"0"};
+                bsl::safe_uint32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val, to_i32(16))};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val, bsl::to_i32(16))};
                     bsl::ut_check(val == 0U);
-                    bsl::ut_check(idx == to_umax(1));
+                    bsl::ut_check(idx == bsl::to_umax(1));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"42"};
-                safe_uint32 val{};
+                bsl::cstr_type str{"42"};
+                bsl::safe_uint32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val, to_i32(16))};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val, bsl::to_i32(16))};
                     bsl::ut_check(val == 0x42U);
-                    bsl::ut_check(idx == to_umax(2));
+                    bsl::ut_check(idx == bsl::to_umax(2));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"042"};
-                safe_uint32 val{};
+                bsl::cstr_type str{"042"};
+                bsl::safe_uint32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val, to_i32(16))};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val, bsl::to_i32(16))};
                     bsl::ut_check(val == 0x42U);
-                    bsl::ut_check(idx == to_umax(3));
+                    bsl::ut_check(idx == bsl::to_umax(3));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"420"};
-                safe_uint32 val{};
+                bsl::cstr_type str{"420"};
+                bsl::safe_uint32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val, to_i32(16))};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val, bsl::to_i32(16))};
                     bsl::ut_check(val == 0x420U);
-                    bsl::ut_check(idx == to_umax(3));
+                    bsl::ut_check(idx == bsl::to_umax(3));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"12345"};
-                safe_uint32 val{};
+                bsl::cstr_type str{"12345"};
+                bsl::safe_uint32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val, to_i32(16))};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val, bsl::to_i32(16))};
                     bsl::ut_check(val == 0x12345U);
-                    bsl::ut_check(idx == to_umax(5));
+                    bsl::ut_check(idx == bsl::to_umax(5));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"67890"};
-                safe_uint32 val{};
+                bsl::cstr_type str{"67890"};
+                bsl::safe_uint32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val, to_i32(16))};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val, bsl::to_i32(16))};
                     bsl::ut_check(val == 0x67890U);
-                    bsl::ut_check(idx == to_umax(5));
+                    bsl::ut_check(idx == bsl::to_umax(5));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"abcdef"};
-                safe_uint32 val{};
+                bsl::cstr_type str{"abcdef"};
+                bsl::safe_uint32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val, to_i32(16))};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val, bsl::to_i32(16))};
                     bsl::ut_check(val == 0xabcdefU);
-                    bsl::ut_check(idx == to_umax(6));
+                    bsl::ut_check(idx == bsl::to_umax(6));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"ABCDEF"};
-                safe_uint32 val{};
+                bsl::cstr_type str{"ABCDEF"};
+                bsl::safe_uint32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val, to_i32(16))};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val, bsl::to_i32(16))};
                     bsl::ut_check(val == 0xABCDEFU);
-                    bsl::ut_check(idx == to_umax(6));
+                    bsl::ut_check(idx == bsl::to_umax(6));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"42 "};
-                safe_uint32 val{};
+                bsl::cstr_type str{"42 "};
+                bsl::safe_uint32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val, to_i32(16))};
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val, bsl::to_i32(16))};
                     bsl::ut_check(val == 0x42U);
-                    bsl::ut_check(idx == to_umax(2));
+                    bsl::ut_check(idx == bsl::to_umax(2));
                 };
             };
 
             bsl::ut_given{} = []() {
-                cstr_type str{"FFFFFFFF"};
-                safe_uint32 val{};
+                bsl::cstr_type str{"FFFFFFFF"};
+                bsl::safe_uint32 val{};
                 bsl::ut_then{} = [&str, &val]() {
-                    safe_uintmax idx{from_chars(str, val, to_i32(16))};
-                    bsl::ut_check(val == safe_uint32::max());
-                    bsl::ut_check(idx == to_umax(8));
+                    bsl::safe_uintmax idx{bsl::from_chars(str, val, bsl::to_i32(16))};
+                    bsl::ut_check(val == bsl::safe_uint32::max());
+                    bsl::ut_check(idx == bsl::to_umax(8));
                 };
             };
         };
@@ -424,8 +422,8 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->

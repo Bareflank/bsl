@@ -64,15 +64,20 @@ namespace bsl::details
         ///     that normally, U == T, but if inheritance is used, it might
         ///     not which is why U is provided instead of just using T.
         ///   @param f a pointer to the function being called.
-        ///   @param t1 a reference wrapper to the object for which the
+        ///   @param val1 a reference wrapper to the object for which the
         ///     function is called from.
-        ///   @return Returns the result of calling "f" from "t1" with "tn"
+        ///   @return Returns the result of calling "f" from "val1" with "tn"
         ///
         template<typename FUNC, typename U, typename T1>
         [[maybe_unused]] static constexpr auto
-        call(FUNC U::*f, T1 &&t1) noexcept(noexcept(t1.get().*f)) -> decltype(t1.get().*f)
+        call(FUNC U::*f, T1 &&val1) noexcept(noexcept(val1.get().*f))    // --
+            // Subclass to base conversions are needed here for invoke to work
+            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
+            -> decltype(val1.get().*f)
         {
-            return t1.get().*f;
+            // Subclass to base conversions are needed here for invoke to work
+            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
+            return val1.get().*f;
         }
 
     protected:

@@ -28,6 +28,8 @@
 
 namespace
 {
+    // Needed for requirements testing
+    // NOLINTNEXTLINE(bsl-user-defined-type-names-match-header-name)
     class fixture_t final
     {
         bsl::source_location sloc{bsl::here()};
@@ -58,8 +60,8 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -68,8 +70,6 @@ namespace
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
     bsl::ut_scenario{"verify noexcept"} = []() {
         bsl::ut_given{} = []() {
             bsl::ut_then{} = []() {
@@ -87,7 +87,7 @@ main() noexcept -> bsl::exit_code
             fixture_t fixture2{};
             bsl::ut_then{} = [&fixture2]() {
                 static_assert(fixture1.test_member_const());
-                ut_check(fixture2.test_member_nonconst());
+                bsl::ut_check(fixture2.test_member_nonconst());
             };
         };
     };

@@ -66,18 +66,22 @@ namespace bsl::details
         ///   @tparam TN the types that define the arguments passed to the
         ///     provided function when called.
         ///   @param f a pointer to the function being called.
-        ///   @param t1 a reference_wrapper to the object for which the
+        ///   @param val1 a reference_wrapper to the object for which the
         ///     function is called from.
-        ///   @param tn the arguments passed to the function f when called.
-        ///   @return Returns the result of calling "f" from "t1" with "tn"
+        ///   @param valn the arguments passed to the function f when called.
+        ///   @return Returns the result of calling "f" from "val1" with "valn"
         ///
         template<typename FUNC, typename U, typename T1, typename... TN>
         [[maybe_unused]] static constexpr auto
-        call(FUNC U::*f, T1 &&t1, TN &&... tn) noexcept(
-            noexcept((t1.get().*f)(bsl::forward<TN>(tn)...)))
-            -> decltype((t1.get().*f)(bsl::forward<TN>(tn)...))
+        call(FUNC U::*f, T1 &&val1, TN &&... valn) noexcept(
+            noexcept((val1.get().*f)(bsl::forward<TN>(valn)...)))
+            // Subclass to base conversions are needed here for invoke to work
+            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
+            -> decltype((val1.get().*f)(bsl::forward<TN>(valn)...))
         {
-            return (t1.get().*f)(bsl::forward<TN>(tn)...);
+            // Subclass to base conversions are needed here for invoke to work
+            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
+            return (val1.get().*f)(bsl::forward<TN>(valn)...);
         }
 
     protected:

@@ -48,6 +48,10 @@ namespace bsl
     };
 
     /// @brief a helper that reduces the verbosity of bsl::remove_const
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to remove the const qualifier from
+    ///
     template<typename T>
     using remove_const_t = typename remove_const<T>::type;
 

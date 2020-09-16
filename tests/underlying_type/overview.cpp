@@ -24,19 +24,13 @@
 
 #include <bsl/underlying_type.hpp>
 #include <bsl/is_same.hpp>
-
 #include <bsl/ut.hpp>
 
-namespace
-{
-    enum class myenum : bsl::int32
-    {
-    };
-}
+#include "../enum_empty.hpp"
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -45,8 +39,6 @@ namespace
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-    static_assert(is_same<underlying_type<myenum>::type, bsl::int32>::value);
-
+    static_assert(bsl::is_same<bsl::underlying_type<test::enum_empty>::type, bsl::int32>::value);
     return bsl::ut_success();
 }

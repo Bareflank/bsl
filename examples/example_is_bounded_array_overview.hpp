@@ -32,11 +32,11 @@ namespace bsl
     inline void
     example_is_bounded_array_overview() noexcept
     {
-        constexpr bsl::int32 bounds{42};
+        constexpr bsl::safe_int32 bounds{42};
 
         // This is needed to demonstrate how to use this type trait
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-        if constexpr (bsl::is_bounded_array<bool[bounds]>::value) {
+        if constexpr (bsl::is_bounded_array<bool[bounds.get()]>::value) {
             bsl::print() << "success\n";
         }
         else {

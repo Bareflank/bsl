@@ -42,7 +42,8 @@ namespace bsl
     ///   @include example_is_same_overview.hpp
     ///
     /// <!-- template parameters -->
-    ///   @tparam T the type to query
+    ///   @tparam T the type that should be the same as U
+    ///   @tparam U the type that should be the same as T
     ///
     template<typename T, typename U>
     class is_same final : public false_type

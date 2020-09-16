@@ -28,11 +28,16 @@
 #ifndef BSL_FMT_OPTIONS_HPP
 #define BSL_FMT_OPTIONS_HPP
 
+#include "details/fmt_fsm.hpp"
+
 #include "char_type.hpp"
 #include "convert.hpp"
 #include "cstr_type.hpp"
 #include "cstdint.hpp"
 #include "cstring.hpp"
+#include "fmt_align.hpp"
+#include "fmt_sign.hpp"
+#include "fmt_type.hpp"
 #include "npos.hpp"
 #include "safe_integral.hpp"
 #include "touch.hpp"
@@ -48,77 +53,6 @@
 
 namespace bsl
 {
-    namespace details
-    {
-        /// @enum bsl::details::fmt_fsm
-        ///
-        /// <!-- description -->
-        ///   @brief Used to define a finite state machine that is used to
-        ///     parse the {fmt} style syntax for formatting. Although there
-        ///     are many ways to implement a parser, the FSM proved to be
-        ///     a really simple approach, even though the FSM in this case
-        ///     is overly simplified. What makes this approach so simple is
-        ///     each field is accounted for in the FSM, yet each parser is
-        ///     optional based on what the user provides, so everything is
-        ///     accounted for.
-        ///
-        enum class fmt_fsm : bsl::uint32
-        {
-            fmt_fsm_align = 0U,
-            fmt_fsm_sign = 1U,
-            fmt_fsm_alternate_form = 2U,
-            fmt_fsm_sign_aware = 3U,
-            fmt_fsm_width = 4U,
-            fmt_fsm_type = 5U,
-        };
-    }
-
-    /// @enum bsl::fmt_align
-    ///
-    /// <!-- description -->
-    ///   @brief Used to determine what the alignment of the output
-    ///     should be. If the width is not defined, this field does
-    ///     nothing.
-    ///
-    enum class fmt_align : bsl::uint32
-    {
-        fmt_align_default = 0U,
-        fmt_align_left = 1U,
-        fmt_align_right = 2U,
-        fmt_align_center = 3U
-    };
-
-    /// @enum bsl::fmt_sign
-    ///
-    /// <!-- description -->
-    ///   @brief Used to determine how an integral's sign field is
-    ///     handled. This only has an effect on signed types.
-    ///
-    enum class fmt_sign : bsl::uint32
-    {
-        fmt_sign_neg_only = 0U,
-        fmt_sign_pos_neg = 1U,
-        fmt_sign_space_for_pos = 3U,
-    };
-
-    /// @enum bsl::fmt_type
-    ///
-    /// <!-- description -->
-    ///   @brief Used to determine how to output an unsigned integer
-    ///     type (either as hex or dec). All ofther {fmt} types are
-    ///     currently not supported and this has no effect on signed
-    ///     integer types.
-    ///
-    enum class fmt_type : bsl::uint32
-    {
-        fmt_type_default = 0U,
-        fmt_type_b = 1U,
-        fmt_type_c = 2U,
-        fmt_type_d = 3U,
-        fmt_type_s = 4U,
-        fmt_type_x = 5U,
-    };
-
     /// @class bsl::fmt_options
     ///
     /// <!-- description -->
@@ -219,6 +153,47 @@ namespace bsl
                 }
             }
         }
+
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::fmt_options
+        ///
+        constexpr ~fmt_options() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr fmt_options(fmt_options const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr fmt_options(fmt_options &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(fmt_options const &o) &noexcept
+            -> fmt_options & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(fmt_options &&o) &noexcept
+            -> fmt_options & = default;
 
         /// <!-- description -->
         ///   @brief This constructor allows for single argument constructors
@@ -447,6 +422,9 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @param f the provided format string to parse
+        ///   @param idx the index in the fmt options string to start from
+        ///   @param len the total number of characters in the fmt options
+        ///     string being parsed.
         ///
         constexpr auto
         fmt_options_impl_align(
@@ -534,6 +512,7 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @param f the provided format string to parse
+        ///   @param idx the index in the fmt options string to start from
         ///
         constexpr auto
         fmt_options_impl_sign(cstr_type const f, bsl::safe_uintmax &idx) noexcept -> void
@@ -571,6 +550,7 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @param f the provided format string to parse
+        ///   @param idx the index in the fmt options string to start from
         ///
         constexpr auto
         fmt_options_impl_alternate_form(cstr_type const f, bsl::safe_uintmax &idx) noexcept -> void
@@ -592,6 +572,7 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @param f the provided format string to parse
+        ///   @param idx the index in the fmt options string to start from
         ///
         constexpr auto
         fmt_options_impl_sign_aware(cstr_type const f, bsl::safe_uintmax &idx) noexcept -> void
@@ -613,6 +594,9 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @param f the provided format string to parse
+        ///   @param idx the index in the fmt options string to start from
+        ///   @param len the total number of characters in the fmt options
+        ///     string being parsed.
         ///
         constexpr auto
         fmt_options_impl_width(
@@ -656,6 +640,7 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @param f the provided format string to parse
+        ///   @param idx the index in the fmt options string to start from
         ///
         constexpr auto
         fmt_options_impl_type(cstr_type const f, bsl::safe_uintmax &idx) noexcept -> void
@@ -719,8 +704,12 @@ namespace bsl
     }
 
     /// @brief defines no formatting.
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
     constexpr fmt_options nullops{""};
     /// @brief defines how to format a ptr like type.
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
     constexpr fmt_options ptrops{details::get_ptrops()};
 }
 

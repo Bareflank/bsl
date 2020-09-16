@@ -43,8 +43,6 @@ namespace
             if (lhs[i.get()] != rhs[i.get()]) {
                 return false;
             }
-
-            bsl::touch();
         }
 
         return lhs[i.get()] == rhs[i.get()];
@@ -52,8 +50,8 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -62,75 +60,73 @@ namespace
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
+    // Defining colors using octals is the standard way of doing this.
+    // NOLINTNEXTLINE(bsl-literals-no-octal)
+    static_assert(check(bsl::reset_color, "\033[0m"));
 
     // Defining colors using octals is the standard way of doing this.
     // NOLINTNEXTLINE(bsl-literals-no-octal)
-    static_assert(check(reset_color, "\033[0m"));
+    static_assert(check(bsl::black, "\033[0;90m"));
 
     // Defining colors using octals is the standard way of doing this.
     // NOLINTNEXTLINE(bsl-literals-no-octal)
-    static_assert(check(black, "\033[0;90m"));
+    static_assert(check(bsl::red, "\033[0;91m"));
 
     // Defining colors using octals is the standard way of doing this.
     // NOLINTNEXTLINE(bsl-literals-no-octal)
-    static_assert(check(red, "\033[0;91m"));
+    static_assert(check(bsl::green, "\033[0;92m"));
 
     // Defining colors using octals is the standard way of doing this.
     // NOLINTNEXTLINE(bsl-literals-no-octal)
-    static_assert(check(green, "\033[0;92m"));
+    static_assert(check(bsl::yellow, "\033[0;93m"));
 
     // Defining colors using octals is the standard way of doing this.
     // NOLINTNEXTLINE(bsl-literals-no-octal)
-    static_assert(check(yellow, "\033[0;93m"));
+    static_assert(check(bsl::blue, "\033[0;94m"));
 
     // Defining colors using octals is the standard way of doing this.
     // NOLINTNEXTLINE(bsl-literals-no-octal)
-    static_assert(check(blue, "\033[0;94m"));
+    static_assert(check(bsl::magenta, "\033[0;95m"));
 
     // Defining colors using octals is the standard way of doing this.
     // NOLINTNEXTLINE(bsl-literals-no-octal)
-    static_assert(check(magenta, "\033[0;95m"));
+    static_assert(check(bsl::cyan, "\033[0;96m"));
 
     // Defining colors using octals is the standard way of doing this.
     // NOLINTNEXTLINE(bsl-literals-no-octal)
-    static_assert(check(cyan, "\033[0;96m"));
+    static_assert(check(bsl::white, "\033[0;97m"));
 
     // Defining colors using octals is the standard way of doing this.
     // NOLINTNEXTLINE(bsl-literals-no-octal)
-    static_assert(check(white, "\033[0;97m"));
+    static_assert(check(bsl::bold_black, "\033[1;90m"));
 
     // Defining colors using octals is the standard way of doing this.
     // NOLINTNEXTLINE(bsl-literals-no-octal)
-    static_assert(check(bold_black, "\033[1;90m"));
+    static_assert(check(bsl::bold_red, "\033[1;91m"));
 
     // Defining colors using octals is the standard way of doing this.
     // NOLINTNEXTLINE(bsl-literals-no-octal)
-    static_assert(check(bold_red, "\033[1;91m"));
+    static_assert(check(bsl::bold_green, "\033[1;92m"));
 
     // Defining colors using octals is the standard way of doing this.
     // NOLINTNEXTLINE(bsl-literals-no-octal)
-    static_assert(check(bold_green, "\033[1;92m"));
+    static_assert(check(bsl::bold_yellow, "\033[1;93m"));
 
     // Defining colors using octals is the standard way of doing this.
     // NOLINTNEXTLINE(bsl-literals-no-octal)
-    static_assert(check(bold_yellow, "\033[1;93m"));
+    static_assert(check(bsl::bold_blue, "\033[1;94m"));
 
     // Defining colors using octals is the standard way of doing this.
     // NOLINTNEXTLINE(bsl-literals-no-octal)
-    static_assert(check(bold_blue, "\033[1;94m"));
+    static_assert(check(bsl::bold_magenta, "\033[1;95m"));
 
     // Defining colors using octals is the standard way of doing this.
     // NOLINTNEXTLINE(bsl-literals-no-octal)
-    static_assert(check(bold_magenta, "\033[1;95m"));
+    static_assert(check(bsl::bold_cyan, "\033[1;96m"));
 
     // Defining colors using octals is the standard way of doing this.
     // NOLINTNEXTLINE(bsl-literals-no-octal)
-    static_assert(check(bold_cyan, "\033[1;96m"));
-
-    // Defining colors using octals is the standard way of doing this.
-    // NOLINTNEXTLINE(bsl-literals-no-octal)
-    static_assert(check(bold_white, "\033[1;97m"));
+    static_assert(check(bsl::bold_white, "\033[1;97m"));
 
     return bsl::ut_success();
 }

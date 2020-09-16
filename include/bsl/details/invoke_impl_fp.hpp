@@ -60,16 +60,16 @@ namespace bsl::details
         ///   @tparam TN the types that define the arguments passed to the
         ///     provided function when called.
         ///   @param f a pointer to the function being called.
-        ///   @param tn the arguments passed to the function f when called.
-        ///   @return Returns the result of calling "f" with "tn"
+        ///   @param valn the arguments passed to the function f when called.
+        ///   @return Returns the result of calling "f" with "valn"
         ///
         template<typename FUNC, typename... TN>
         [[maybe_unused]] static constexpr auto
-        call(FUNC &&f, TN &&... tn) noexcept(
-            noexcept(bsl::forward<FUNC>(f)(bsl::forward<TN>(tn)...)))
-            -> decltype(bsl::forward<FUNC>(f)(bsl::forward<TN>(tn)...))
+        call(FUNC &&f, TN &&... valn) noexcept(
+            noexcept(bsl::forward<FUNC>(f)(bsl::forward<TN>(valn)...)))
+            -> decltype(bsl::forward<FUNC>(f)(bsl::forward<TN>(valn)...))
         {
-            return bsl::forward<FUNC>(f)(bsl::forward<TN>(tn)...);
+            return bsl::forward<FUNC>(f)(bsl::forward<TN>(valn)...);
         }
 
     protected:

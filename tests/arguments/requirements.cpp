@@ -29,9 +29,11 @@
 
 namespace
 {
+    // Needed for requirements testing
+    // NOLINTNEXTLINE(bsl-user-defined-type-names-match-header-name)
     class fixture_t final
     {
-        bsl::arguments args{0, nullptr};
+        bsl::arguments args{bsl::to_umax(0), nullptr};
 
     public:
         [[nodiscard]] constexpr auto
@@ -146,8 +148,8 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -156,16 +158,14 @@ namespace
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
     bsl::ut_scenario{"verify noexcept"} = []() {
         bsl::ut_given{} = []() {
-            bsl::arguments args{0, nullptr};
+            bsl::arguments args{bsl::to_umax(0), nullptr};
             bsl::ut_then{} = []() {
                 static_assert(noexcept(bsl::arguments{bsl::to_umax(0), nullptr}));
-                static_assert(noexcept(bsl::arguments{0, nullptr}));
                 static_assert(noexcept(args.args()));
-                static_assert(noexcept(!!args));
+                static_assert(noexcept(args.index()));
+                static_assert(noexcept(args.get<bool>(bsl::to_umax(0))));
                 static_assert(noexcept(args.get<bsl::string_view>(bsl::to_umax(0))));
                 static_assert(noexcept(args.get<bsl::safe_int8>(bsl::to_umax(0))));
                 static_assert(noexcept(args.get<bsl::safe_int16>(bsl::to_umax(0))));
@@ -185,6 +185,31 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(args.get<bsl::safe_uint16>("")));
                 static_assert(noexcept(args.get<bsl::safe_uint32>("")));
                 static_assert(noexcept(args.get<bsl::safe_uint64>("")));
+                static_assert(noexcept(args.at<bool>(bsl::to_umax(0))));
+                static_assert(noexcept(args.at<bsl::string_view>(bsl::to_umax(0))));
+                static_assert(noexcept(args.at<bsl::safe_int8>(bsl::to_umax(0))));
+                static_assert(noexcept(args.at<bsl::safe_int16>(bsl::to_umax(0))));
+                static_assert(noexcept(args.at<bsl::safe_int32>(bsl::to_umax(0))));
+                static_assert(noexcept(args.at<bsl::safe_int64>(bsl::to_umax(0))));
+                static_assert(noexcept(args.at<bsl::safe_uint8>(bsl::to_umax(0))));
+                static_assert(noexcept(args.at<bsl::safe_uint16>(bsl::to_umax(0))));
+                static_assert(noexcept(args.at<bsl::safe_uint32>(bsl::to_umax(0))));
+                static_assert(noexcept(args.at<bsl::safe_uint64>(bsl::to_umax(0))));
+                static_assert(noexcept(args.front<bool>()));
+                static_assert(noexcept(args.front<bsl::string_view>()));
+                static_assert(noexcept(args.front<bsl::safe_int8>()));
+                static_assert(noexcept(args.front<bsl::safe_int16>()));
+                static_assert(noexcept(args.front<bsl::safe_int32>()));
+                static_assert(noexcept(args.front<bsl::safe_int64>()));
+                static_assert(noexcept(args.front<bsl::safe_uint8>()));
+                static_assert(noexcept(args.front<bsl::safe_uint16>()));
+                static_assert(noexcept(args.front<bsl::safe_uint32>()));
+                static_assert(noexcept(args.front<bsl::safe_uint64>()));
+                static_assert(noexcept(args.empty()));
+                static_assert(noexcept(!!args));
+                static_assert(noexcept(args.size()));
+                static_assert(noexcept(args.remaining()));
+                static_assert(noexcept(++args));
             };
         };
     };
@@ -194,7 +219,7 @@ main() noexcept -> bsl::exit_code
             fixture_t fixture2{};
             bsl::ut_then{} = [&fixture2]() {
                 static_assert(fixture1.test_member_const());
-                ut_check(fixture2.test_member_nonconst());
+                bsl::ut_check(fixture2.test_member_nonconst());
             };
         };
     };

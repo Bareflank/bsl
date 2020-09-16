@@ -43,6 +43,47 @@ namespace bsl
         constexpr example_class_nodefault() noexcept = delete;
 
         /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::example_class_nodefault
+        ///
+        constexpr ~example_class_nodefault() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr example_class_nodefault(example_class_nodefault const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr example_class_nodefault(example_class_nodefault &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(example_class_nodefault const &o) &noexcept
+            -> example_class_nodefault & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(example_class_nodefault &&o) &noexcept
+            -> example_class_nodefault & = default;
+
+        /// <!-- description -->
         ///   @brief Simple example of a getter
         ///
         /// <!-- inputs/outputs -->

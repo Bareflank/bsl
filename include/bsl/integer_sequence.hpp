@@ -94,22 +94,6 @@ namespace bsl
             return details::integer_sequence_min<T, INTS...>::value;
         }
     };
-
-    /// @brief helper alias template for the common case of bsl::uintmax
-    template<bsl::uintmax... INTS>
-    using index_sequence = integer_sequence<bsl::uintmax, INTS...>;
-
-    /// @brief helper alias that makes integer sequences
-    template<typename T, T N>
-    using make_integer_sequence = __make_integer_seq<integer_sequence, T, N>;
-
-    /// @brief helper alias that makes integer sequences for bsl::uintmax
-    template<bsl::uintmax N>
-    using make_index_sequence = make_integer_sequence<bsl::uintmax, N>;
-
-    /// @brief helper alias that makes an index sequence given a list of types
-    template<typename... T>
-    using index_sequence_for = make_index_sequence<sizeof...(T)>;
 }
 
 #endif

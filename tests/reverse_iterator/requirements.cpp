@@ -28,7 +28,7 @@
 
 namespace
 {
-    constexpr bsl::array<bsl::safe_int32, 6> arr{
+    constexpr bsl::array arr{
         bsl::to_i32(4),
         bsl::to_i32(8),
         bsl::to_i32(15),
@@ -38,8 +38,8 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -48,8 +48,6 @@ namespace
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
     bsl::ut_scenario{"verify noexcept"} = []() {
         bsl::ut_given{} = []() {
             bsl::reverse_iterator ri1{arr.begin()};

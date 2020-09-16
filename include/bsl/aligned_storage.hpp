@@ -49,16 +49,19 @@ namespace bsl
     ///   @tparam A the alignment of the sotrage buffer. This defaults to
     ///     0, which means this is "unaligned" by default.
     ///
-    template<typename GUARD, bsl::uintmax N, bsl::uintmax A = 0>
+    template<typename GUARD, bsl::uintmax N, bsl::uintmax A = static_cast<bsl::uintmax>(0)>
     struct aligned_storage final
     {
-        static_assert(N > 0, "empty aligned_storage is not supported");
+        static_assert(N > static_cast<bsl::uintmax>(0), "empty aligned_storage is not supported");
 
         /// @class bsl::aligned_storage::type
         ///
         /// <!-- description -->
         ///   @brief Implements the std::aligned_storage type interface.
         ///
+        // The C++ spec requires that this is a struct within a class
+        // which is not supported by AUTOSAR using many rules.
+        // NOLINTNEXTLINE(bsl-identifier-typographically-unambiguous)
         struct type final
         {
             /// @brief an array that provides the underlying storage
@@ -67,7 +70,13 @@ namespace bsl
     };
 
     /// @brief a helper that reduces the verbosity of bsl::aligned_storage
-    template<bsl::uintmax N, bsl::uintmax A = 0>
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam N the size of the storage buffer in bytes
+    ///   @tparam A the alignment of the sotrage buffer. This defaults to
+    ///     0, which means this is "unaligned" by default.
+    ///
+    template<bsl::uintmax N, bsl::uintmax A = static_cast<bsl::uintmax>(0)>
     using aligned_storage_t = typename aligned_storage<void, N, A>::type;
 }
 

@@ -55,14 +55,15 @@ namespace bsl
     ///     fmt support for their own types.
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam OUT the type of out (i.e., debug, alert, etc)
+    ///   @tparam OUT_T the type of out (i.e., debug, alert, etc)
+    ///   @tparam T the type of integral to output
     ///   @param o the instance of out<T> to output to
     ///   @param ops ops the fmt options used to format the output
     ///   @param val the integral being outputted
     ///
-    template<typename OUT, typename T>
+    template<typename OUT_T, typename T>
     constexpr auto
-    fmt_impl(OUT &&o, fmt_options const &ops, safe_integral<T> const &val) noexcept -> void
+    fmt_impl(OUT_T &&o, fmt_options const &ops, safe_integral<T> const &val) noexcept -> void
     {
         if (!val) {
             constexpr safe_uintmax len_error{to_umax(7)};
@@ -77,7 +78,7 @@ namespace bsl
             case fmt_type::fmt_type_d:
             case fmt_type::fmt_type_x:
             case fmt_type::fmt_type_default: {
-                fmt_impl_integral(bsl::forward<OUT>(o), ops, val);
+                fmt_impl_integral(bsl::forward<OUT_T>(o), ops, val);
                 break;
             }
 
@@ -105,21 +106,22 @@ namespace bsl
     ///     fmt support for their own types.
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam OUT the type of out (i.e., debug, alert, etc)
+    ///   @tparam OUT_T the type of out (i.e., debug, alert, etc)
+    ///   @tparam T the type of integral to output
     ///   @param o the instance of out<T> to output to
     ///   @param ops ops the fmt options used to format the output
     ///   @param val the integral being outputted
     ///
-    template<typename OUT, typename T, enable_if_t<is_integral<T>::value, bool> = true>
+    template<typename OUT_T, typename T, enable_if_t<is_integral<T>::value, bool> = true>
     constexpr auto
-    fmt_impl(OUT &&o, fmt_options const &ops, T const val) noexcept -> void
+    fmt_impl(OUT_T &&o, fmt_options const &ops, T const val) noexcept -> void
     {
         switch (ops.type()) {
             case fmt_type::fmt_type_b:
             case fmt_type::fmt_type_d:
             case fmt_type::fmt_type_x:
             case fmt_type::fmt_type_default: {
-                fmt_impl_integral(bsl::forward<OUT>(o), ops, convert<T>(val));
+                fmt_impl_integral(bsl::forward<OUT_T>(o), ops, convert<T>(val));
                 break;
             }
 
@@ -200,7 +202,7 @@ namespace bsl
         details::fmt_impl_integral_info<T2> const info{
             details::get_integral_info(nullops, convert<T2>(val))};
 
-        if (val == static_cast<T2>(0)) {
+        if (static_cast<bsl::uintmax>(val) == static_cast<bsl::uintmax>(0)) {
             o.write('0');
         }
         else {

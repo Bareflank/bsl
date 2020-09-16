@@ -48,11 +48,13 @@ namespace bsl
     ///
     /// <!-- template parameters -->
     ///   @tparam T the type to decay
+    ///   @tparam IS_T_ARRAY defaults to true if T is an array type
+    ///   @tparam IS_T_FUNCTION defaults to true if T is an function type
     ///
     template<
         typename T,
-        bool IS_ARRAY = is_array<remove_reference_t<T>>::value,
-        bool IS_FUNCTION = is_function<remove_reference_t<T>>::value>
+        bool IS_T_ARRAY = is_array<remove_reference_t<T>>::value,
+        bool IS_T_FUNCTION = is_function<remove_reference_t<T>>::value>
     struct decay final
     {
         /// @brief provides the member typedef "type"
@@ -60,6 +62,10 @@ namespace bsl
     };
 
     /// @brief a helper that reduces the verbosity of bsl::decay
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to decay
+    ///
     template<typename T>
     using decay_t = typename decay<T>::type;
 

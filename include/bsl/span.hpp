@@ -154,6 +154,45 @@ namespace bsl
         }
 
         /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::span
+        ///
+        constexpr ~span() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr span(span const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr span(span &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(span const &o) &noexcept -> span & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(span &&o) &noexcept -> span & = default;
+
+        /// <!-- description -->
         ///   @brief Returns a pointer to the instance of T stored at index
         ///     "index". If the index is out of bounds, or the view is invalid,
         ///     this function returns a nullptr.
@@ -825,6 +864,7 @@ namespace bsl
     ///   @related bsl::span
     ///
     /// <!-- inputs/outputs -->
+    ///   @tparam T the type of element being viewed.
     ///   @param spn the span<T> to convert into a span<byte const>
     ///   @return Returns a span<byte const> given an existing span<T>
     ///
@@ -859,6 +899,7 @@ namespace bsl
     ///   @related bsl::span
     ///
     /// <!-- inputs/outputs -->
+    ///   @tparam T the type of element being viewed.
     ///   @param spn the span<T> to convert into a span<byte>
     ///   @return Returns a span<byte> given an existing span<T>
     ///

@@ -46,9 +46,9 @@ namespace bsl
     ///     error if you attempt to use it.
     ///
     /// <!-- template parameters -->
-    ///   @tparam CharT the character type that is not supported
+    ///   @tparam CHAR_T the character type that is not supported
     ///
-    template<typename CharT>
+    template<typename CHAR_T>
     class char_traits final
     {};
 
@@ -240,7 +240,7 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         eof() noexcept -> bsl::intmax
         {
-            constexpr bsl::intmax value_of_eof{-1};
+            constexpr bsl::intmax value_of_eof{static_cast<bsl::intmax>(-1)};
             return value_of_eof;
         }
 
@@ -259,7 +259,7 @@ namespace bsl
                 return e;
             }
 
-            return 0;
+            return static_cast<bsl::intmax>(0);
         }
     };
 }

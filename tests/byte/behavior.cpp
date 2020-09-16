@@ -39,48 +39,56 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        constexpr bsl::uint8 byte23{23};
-        constexpr bsl::uint8 byte42{42};
-        constexpr bsl::uint8 byte00{0x00};
-        constexpr bsl::uint8 byte01{0x01};
-        constexpr bsl::uint8 byte10{0x10};
-        constexpr bsl::uint8 byte11{0x11};
-        constexpr bsl::uint8 byteFE{0xFE};
+        constexpr bsl::safe_uint8 byte0{};
+        constexpr bsl::safe_uint8 byte23{bsl::to_u8(23)};
+        constexpr bsl::safe_uint8 byte42{bsl::to_u8(42)};
+        constexpr bsl::safe_uint8 byte00{bsl::to_u8(0x00)};
+        constexpr bsl::safe_uint8 byte01{bsl::to_u8(0x01)};
+        constexpr bsl::safe_uint8 byte10{bsl::to_u8(0x10)};
+        constexpr bsl::safe_uint8 byte11{bsl::to_u8(0x11)};
+        constexpr bsl::safe_uint8 byteFE{bsl::to_u8(0xFE)};
 
-        bsl::ut_scenario{"default construction"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"default construction"} = [&byte0]() {
+            bsl::ut_given{} = [&byte0]() {
                 bsl::byte b{};
-                bsl::ut_then{} = [&b]() {
-                    bsl::ut_check(b.to_integer() == 0);
+                bsl::ut_then{} = [&b, &byte0]() {
+                    bsl::ut_check(b.to_integer() == byte0);
                 };
             };
         };
 
-        bsl::ut_scenario{"by value construction"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"by value construction"} = [&byte42]() {
+            bsl::ut_given{} = [&byte42]() {
+                bsl::byte b{byte42.get()};
+                bsl::ut_then{} = [&b, &byte42]() {
+                    bsl::ut_check(b.to_integer() == byte42);
+                };
+            };
+
+            bsl::ut_given{} = [&byte42]() {
                 bsl::byte b{byte42};
-                bsl::ut_then{} = [&b]() {
+                bsl::ut_then{} = [&b, &byte42]() {
                     bsl::ut_check(b.to_integer() == byte42);
                 };
             };
         };
 
-        bsl::ut_scenario{"to integer"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"to integer"} = [&byte0, &byte42]() {
+            bsl::ut_given{} = [&byte0]() {
                 bsl::byte b{};
-                bsl::ut_then{} = [&b]() {
-                    bsl::ut_check(b.to_integer() == 0);
+                bsl::ut_then{} = [&b, &byte0]() {
+                    bsl::ut_check(b.to_integer() == byte0);
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = [&byte42]() {
                 bsl::byte b{byte42};
-                bsl::ut_then{} = [&b]() {
+                bsl::ut_then{} = [&b, &byte42]() {
                     bsl::ut_check(b.to_integer() == byte42);
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = [&byte42]() {
                 bsl::byte b{byte42};
                 bsl::ut_then{} = [&b]() {
                     bsl::ut_check(b.to_integer<bsl::int32>() == 42);
@@ -88,7 +96,7 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"equals"} = []() {
+        bsl::ut_scenario{"equals"} = [&byte42]() {
             bsl::ut_given{} = []() {
                 bsl::byte b1{};
                 bsl::byte b2{};
@@ -97,7 +105,7 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = [&byte42]() {
                 bsl::byte b1{byte42};
                 bsl::byte b2{byte42};
                 bsl::ut_then{} = [&b1, &b2]() {
@@ -106,8 +114,8 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"not equals"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"not equals"} = [&byte23, &byte42]() {
+            bsl::ut_given{} = [&byte42]() {
                 bsl::byte b1{};
                 bsl::byte b2{byte42};
                 bsl::ut_then{} = [&b1, &b2]() {
@@ -115,7 +123,7 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = [&byte42]() {
                 bsl::byte b1{byte42};
                 bsl::byte b2{};
                 bsl::ut_then{} = [&b1, &b2]() {
@@ -123,7 +131,7 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = [&byte23, &byte42]() {
                 bsl::byte b1{byte23};
                 bsl::byte b2{byte42};
                 bsl::ut_then{} = [&b1, &b2]() {
@@ -131,7 +139,7 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = [&byte23, &byte42]() {
                 bsl::byte b1{byte42};
                 bsl::byte b2{byte23};
                 bsl::ut_then{} = [&b1, &b2]() {
@@ -140,207 +148,207 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"left shift assign"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"left shift assign"} = [&byte00, &byte01, &byte10]() {
+            bsl::ut_given{} = [&byte00]() {
                 bsl::byte b{};
-                bsl::ut_when{} = [&b]() {
-                    b <<= 4;
-                    bsl::ut_then{} = [&b]() {
+                bsl::ut_when{} = [&b, &byte00]() {
+                    b <<= bsl::to_u8(4);
+                    bsl::ut_then{} = [&b, &byte00]() {
                         bsl::ut_check(b == bsl::byte{byte00});
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = [&byte01, &byte10]() {
                 bsl::byte b{byte01};
-                bsl::ut_when{} = [&b]() {
-                    b <<= 4;
-                    bsl::ut_then{} = [&b]() {
+                bsl::ut_when{} = [&b, &byte10]() {
+                    b <<= bsl::to_u8(4);
+                    bsl::ut_then{} = [&b, &byte10]() {
                         bsl::ut_check(b == bsl::byte{byte10});
                     };
                 };
             };
         };
 
-        bsl::ut_scenario{"right shift assign"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"right shift assign"} = [&byte00, &byte01, &byte10]() {
+            bsl::ut_given{} = [&byte00]() {
                 bsl::byte b{};
-                bsl::ut_when{} = [&b]() {
-                    b >>= 4;
-                    bsl::ut_then{} = [&b]() {
+                bsl::ut_when{} = [&b, &byte00]() {
+                    b >>= bsl::to_u8(4);
+                    bsl::ut_then{} = [&b, &byte00]() {
                         bsl::ut_check(b == bsl::byte{byte00});
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = [&byte01, &byte10]() {
                 bsl::byte b{byte10};
-                bsl::ut_when{} = [&b]() {
-                    b >>= 4;
-                    bsl::ut_then{} = [&b]() {
+                bsl::ut_when{} = [&b, &byte01]() {
+                    b >>= bsl::to_u8(4);
+                    bsl::ut_then{} = [&b, &byte01]() {
                         bsl::ut_check(b == bsl::byte{byte01});
                     };
                 };
             };
         };
 
-        bsl::ut_scenario{"left shift"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"left shift"} = [&byte00, &byte01, &byte10]() {
+            bsl::ut_given{} = [&byte00]() {
                 bsl::byte b{};
-                bsl::ut_then{} = [&b]() {
-                    bsl::ut_check((b << 4) == bsl::byte{byte00});
+                bsl::ut_then{} = [&b, &byte00]() {
+                    bsl::ut_check((b << bsl::to_u8(4)) == bsl::byte{byte00});
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = [&byte01, &byte10]() {
                 bsl::byte b{byte01};
-                bsl::ut_when{} = [&b]() {
-                    bsl::ut_check((b << 4) == bsl::byte{byte10});
+                bsl::ut_when{} = [&b, &byte10]() {
+                    bsl::ut_check((b << bsl::to_u8(4)) == bsl::byte{byte10});
                 };
             };
         };
 
-        bsl::ut_scenario{"right shift"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"right shift"} = [&byte00, &byte01, &byte10]() {
+            bsl::ut_given{} = [&byte00]() {
                 bsl::byte b{};
-                bsl::ut_then{} = [&b]() {
-                    bsl::ut_check((b >> 4) == bsl::byte{byte00});
+                bsl::ut_then{} = [&b, &byte00]() {
+                    bsl::ut_check((b >> bsl::to_u8(4)) == bsl::byte{byte00});
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = [&byte01, &byte10]() {
                 bsl::byte b{byte10};
-                bsl::ut_when{} = [&b]() {
-                    bsl::ut_check((b >> 4) == bsl::byte{byte01});
+                bsl::ut_when{} = [&b, &byte01]() {
+                    bsl::ut_check((b >> bsl::to_u8(4)) == bsl::byte{byte01});
                 };
             };
         };
 
-        bsl::ut_scenario{"or assign"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"or assign"} = [&byte01, &byte10, &byte11]() {
+            bsl::ut_given{} = [&byte10]() {
                 bsl::byte b{};
-                bsl::ut_when{} = [&b]() {
+                bsl::ut_when{} = [&b, &byte10]() {
                     b |= bsl::byte{byte10};
-                    bsl::ut_then{} = [&b]() {
+                    bsl::ut_then{} = [&b, &byte10]() {
                         bsl::ut_check(b == bsl::byte{byte10});
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = [&byte01, &byte10, &byte11]() {
                 bsl::byte b{byte01};
-                bsl::ut_when{} = [&b]() {
+                bsl::ut_when{} = [&b, &byte10, &byte11]() {
                     b |= bsl::byte{byte10};
-                    bsl::ut_then{} = [&b]() {
+                    bsl::ut_then{} = [&b, &byte11]() {
                         bsl::ut_check(b == bsl::byte{byte11});
                     };
                 };
             };
         };
 
-        bsl::ut_scenario{"and assign"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"and assign"} = [&byte00, &byte01, &byte10]() {
+            bsl::ut_given{} = [&byte00, &byte10]() {
                 bsl::byte b{};
-                bsl::ut_when{} = [&b]() {
+                bsl::ut_when{} = [&b, &byte00, &byte10]() {
                     b &= bsl::byte{byte10};
-                    bsl::ut_then{} = [&b]() {
+                    bsl::ut_then{} = [&b, &byte00]() {
                         bsl::ut_check(b == bsl::byte{byte00});
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = [&byte00, &byte01, &byte10]() {
                 bsl::byte b{byte01};
-                bsl::ut_when{} = [&b]() {
+                bsl::ut_when{} = [&b, &byte00, &byte10]() {
                     b &= bsl::byte{byte10};
-                    bsl::ut_then{} = [&b]() {
+                    bsl::ut_then{} = [&b, &byte00]() {
                         bsl::ut_check(b == bsl::byte{byte00});
                     };
                 };
             };
         };
 
-        bsl::ut_scenario{"xor assign"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"xor assign"} = [&byte01, &byte10, &byte11]() {
+            bsl::ut_given{} = [&byte10]() {
                 bsl::byte b{};
-                bsl::ut_when{} = [&b]() {
+                bsl::ut_when{} = [&b, &byte10]() {
                     b ^= bsl::byte{byte10};
-                    bsl::ut_then{} = [&b]() {
+                    bsl::ut_then{} = [&b, &byte10]() {
                         bsl::ut_check(b == bsl::byte{byte10});
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = [&byte01, &byte10, &byte11]() {
                 bsl::byte b{byte01};
-                bsl::ut_when{} = [&b]() {
+                bsl::ut_when{} = [&b, &byte10, &byte11]() {
                     b ^= bsl::byte{byte10};
-                    bsl::ut_then{} = [&b]() {
+                    bsl::ut_then{} = [&b, &byte11]() {
                         bsl::ut_check(b == bsl::byte{byte11});
                     };
                 };
             };
         };
 
-        bsl::ut_scenario{"or"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"or"} = [&byte01, &byte10, &byte11]() {
+            bsl::ut_given{} = [&byte10]() {
                 bsl::byte b{};
-                bsl::ut_then{} = [&b]() {
+                bsl::ut_then{} = [&b, &byte10]() {
                     bsl::ut_check((b | bsl::byte{byte10}) == bsl::byte{byte10});
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = [&byte01, &byte10, &byte11]() {
                 bsl::byte b{byte01};
-                bsl::ut_then{} = [&b]() {
+                bsl::ut_then{} = [&b, &byte10, &byte11]() {
                     bsl::ut_check((b | bsl::byte{byte10}) == bsl::byte{byte11});
                 };
             };
         };
 
-        bsl::ut_scenario{"and"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"and"} = [&byte00, &byte01, &byte10]() {
+            bsl::ut_given{} = [&byte00, &byte10]() {
                 bsl::byte b{};
-                bsl::ut_then{} = [&b]() {
+                bsl::ut_then{} = [&b, &byte00, &byte10]() {
                     bsl::ut_check((b & bsl::byte{byte10}) == bsl::byte{byte00});
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = [&byte00, &byte01, &byte10]() {
                 bsl::byte b{byte01};
-                bsl::ut_then{} = [&b]() {
+                bsl::ut_then{} = [&b, &byte00, &byte10]() {
                     bsl::ut_check((b & bsl::byte{byte10}) == bsl::byte{byte00});
                 };
             };
         };
 
-        bsl::ut_scenario{"and"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"and"} = [&byte01, &byte10, &byte11]() {
+            bsl::ut_given{} = [&byte10]() {
                 bsl::byte b{};
-                bsl::ut_then{} = [&b]() {
+                bsl::ut_then{} = [&b, &byte10]() {
                     bsl::ut_check((b ^ bsl::byte{byte10}) == bsl::byte{byte10});
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = [&byte01, &byte10, &byte11]() {
                 bsl::byte b{byte01};
-                bsl::ut_then{} = [&b]() {
+                bsl::ut_then{} = [&b, &byte10, &byte11]() {
                     bsl::ut_check((b ^ bsl::byte{byte10}) == bsl::byte{byte11});
                 };
             };
         };
 
-        bsl::ut_scenario{"complement"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"complement"} = [&byte01, &byteFE]() {
+            bsl::ut_given{} = [&byte01, &byteFE]() {
                 bsl::byte b{byte01};
-                bsl::ut_then{} = [&b]() {
+                bsl::ut_then{} = [&b, &byteFE]() {
                     bsl::ut_check(~b == bsl::byte{byteFE});
                 };
             };
         };
 
-        bsl::ut_scenario{"output doesn't crash"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"output doesn't crash"} = [&byte42]() {
+            bsl::ut_given{} = [&byte42]() {
                 bsl::byte b{byte42};
                 bsl::ut_then{} = [&b]() {
                     bsl::debug() << b << '\n';
@@ -353,8 +361,8 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->

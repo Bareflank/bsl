@@ -41,66 +41,64 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        using namespace bsl;
-
         bsl::ut_scenario{"get positional safe_int8"} = []() {
             bsl::ut_given{} = []() {
-                arguments args{0, nullptr};
+                bsl::arguments args{bsl::to_umax(0), nullptr};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<safe_int8>(to_umax(0)));
+                    bsl::ut_check(!args.get<bsl::safe_int8>(bsl::to_umax(0)));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"app"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"app"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<safe_int8>(safe_uintmax::zero(true)));
+                    bsl::ut_check(!args.get<bsl::safe_int8>(bsl::safe_uintmax::zero(true)));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"-app"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"-app"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<safe_int8>(to_umax(0)));
+                    bsl::ut_check(!args.get<bsl::safe_int8>(bsl::to_umax(0)));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"42"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"42"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<safe_int8>(to_umax(1)));
+                    bsl::ut_check(!args.get<bsl::safe_int8>(bsl::to_umax(1)));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"app"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"app"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<safe_int8>(to_umax(0)));
+                    bsl::ut_check(!args.get<bsl::safe_int8>(bsl::to_umax(0)));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"42 "};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"42 "};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<safe_int8>(to_umax(0)));
+                    bsl::ut_check(!args.get<bsl::safe_int8>(bsl::to_umax(0)));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(args.get<safe_int8>(to_umax(0)) == to_i8(4));
-                    bsl::ut_check(args.get<safe_int8>(to_umax(1)) == to_i8(8));
-                    bsl::ut_check(args.get<safe_int8>(to_umax(2)) == to_i8(15));
-                    bsl::ut_check(args.get<safe_int8>(to_umax(3)) == to_i8(16));
-                    bsl::ut_check(args.get<safe_int8>(to_umax(4)) == to_i8(23));
-                    bsl::ut_check(args.get<safe_int8>(to_umax(5)) == to_i8(42));
+                    bsl::ut_check(args.get<bsl::safe_int8>(bsl::to_umax(0)) == bsl::to_i8(4));
+                    bsl::ut_check(args.get<bsl::safe_int8>(bsl::to_umax(1)) == bsl::to_i8(8));
+                    bsl::ut_check(args.get<bsl::safe_int8>(bsl::to_umax(2)) == bsl::to_i8(15));
+                    bsl::ut_check(args.get<bsl::safe_int8>(bsl::to_umax(3)) == bsl::to_i8(16));
+                    bsl::ut_check(args.get<bsl::safe_int8>(bsl::to_umax(4)) == bsl::to_i8(23));
+                    bsl::ut_check(args.get<bsl::safe_int8>(bsl::to_umax(5)) == bsl::to_i8(42));
                 };
             };
         };
@@ -110,8 +108,8 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->

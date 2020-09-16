@@ -33,12 +33,6 @@
 
 namespace bsl
 {
-    namespace details
-    {
-        /// @brief used to increment during the calculation of rank
-        constexpr bsl::uintmax rank_inc{1U};
-    }
-
     /// @class bsl::rank
     ///
     /// <!-- description -->
@@ -52,7 +46,7 @@ namespace bsl
     ///
     template<typename T>
     class rank final :    // --
-        public integral_constant<bsl::uintmax, 0>
+        public integral_constant<bsl::uintmax, static_cast<bsl::uintmax>(0)>
     {};
 
     /// @cond doxygen off
@@ -61,14 +55,14 @@ namespace bsl
     // This is needed to implement the type traits.
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
     class rank<T[]> final :
-        public integral_constant<bsl::uintmax, rank<T>::value + details::rank_inc>
+        public integral_constant<bsl::uintmax, rank<T>::value + static_cast<bsl::uintmax>(1)>
     {};
 
     template<typename T, bsl::uintmax N>
     // This is needed to implement the type traits.
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
     class rank<T[N]> final :
-        public integral_constant<bsl::uintmax, rank<T>::value + details::rank_inc>
+        public integral_constant<bsl::uintmax, rank<T>::value + static_cast<bsl::uintmax>(1)>
     {};
 
     /// @endcond doxygen on

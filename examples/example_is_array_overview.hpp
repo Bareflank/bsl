@@ -42,10 +42,10 @@ namespace bsl
             bsl::error() << "failure\n";
         }
 
-        constexpr bsl::uintmax bounds{42U};
+        constexpr bsl::safe_uintmax bounds{bsl::to_umax(42)};
         // This is needed to demonstrate how to use this type trait
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-        if constexpr (bsl::is_array<bool[bounds]>::value) {
+        if constexpr (bsl::is_array<bool[bounds.get()]>::value) {
             bsl::print() << "success\n";
         }
         else {

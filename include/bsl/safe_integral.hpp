@@ -141,16 +141,17 @@ namespace bsl
     [[nodiscard]] constexpr auto
     builtin_div_overflow(T const lhs, T const rhs, T *const res) noexcept -> bool
     {
-        constexpr T neg_one{static_cast<T>(-1)};
+        constexpr bsl::intmax neg_one{static_cast<bsl::intmax>(-1)};
 
-        if (T{} == rhs) {
+        if (static_cast<bsl::uintmax>(T{}) == static_cast<bsl::uintmax>(rhs)) {
             integral_overflow_underflow_wrap_error();
             return true;
         }
 
         if constexpr (is_signed<T>::value) {
-            if (numeric_limits<T>::min() == lhs) {
-                if (static_cast<T>(neg_one) == rhs) {
+            if (static_cast<bsl::intmax>(numeric_limits<T>::min()) ==
+                static_cast<bsl::intmax>(lhs)) {
+                if (neg_one == static_cast<bsl::intmax>(rhs)) {
                     integral_overflow_underflow_wrap_error();
                     return true;
                 }
@@ -162,7 +163,13 @@ namespace bsl
             }
         }
 
-        *res = lhs / rhs;
+        if constexpr (is_signed<T>::value) {
+            *res = static_cast<T>(static_cast<bsl::intmax>(lhs) / static_cast<bsl::intmax>(rhs));
+        }
+        else {
+            *res = static_cast<T>(static_cast<bsl::uintmax>(lhs) / static_cast<bsl::uintmax>(rhs));
+        }
+
         return false;
     }
 
@@ -182,16 +189,17 @@ namespace bsl
     [[nodiscard]] constexpr auto
     builtin_mod_overflow(T const lhs, T const rhs, T *const res) noexcept -> bool
     {
-        constexpr T neg_one{static_cast<T>(-1)};
+        constexpr bsl::intmax neg_one{static_cast<bsl::intmax>(-1)};
 
-        if (T{} == rhs) {
+        if (static_cast<bsl::uintmax>(T{}) == static_cast<bsl::uintmax>(rhs)) {
             integral_overflow_underflow_wrap_error();
             return true;
         }
 
         if constexpr (is_signed<T>::value) {
-            if (numeric_limits<T>::min() == lhs) {
-                if (static_cast<T>(neg_one) == rhs) {
+            if (static_cast<bsl::intmax>(numeric_limits<T>::min()) ==
+                static_cast<bsl::intmax>(lhs)) {
+                if (neg_one == static_cast<bsl::intmax>(rhs)) {
                     integral_overflow_underflow_wrap_error();
                     return true;
                 }
@@ -203,7 +211,13 @@ namespace bsl
             }
         }
 
-        *res = lhs % rhs;
+        if constexpr (is_signed<T>::value) {
+            *res = static_cast<T>(static_cast<bsl::intmax>(lhs) % static_cast<bsl::intmax>(rhs));
+        }
+        else {
+            *res = static_cast<T>(static_cast<bsl::uintmax>(lhs) % static_cast<bsl::uintmax>(rhs));
+        }
+
         return false;
     }
 
@@ -251,6 +265,9 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_constructor_t.hpp
         ///
         /// <!-- inputs/outputs -->
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param val the value to set the bsl::safe_integral to
         ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
@@ -264,6 +281,9 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_constructor_t_error.hpp
         ///
         /// <!-- inputs/outputs -->
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param val the value to set the bsl::safe_integral to
         ///   @param err used to create a safe_integer that has already
         ///     resulted in an error.
@@ -274,12 +294,56 @@ namespace bsl
         {}
 
         /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::safe_integral
+        ///
+        constexpr ~safe_integral() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr safe_integral(safe_integral const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr safe_integral(safe_integral &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(safe_integral const &o) &noexcept
+            -> safe_integral & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(safe_integral &&o) &noexcept
+            -> safe_integral & = default;
+
+        /// <!-- description -->
         ///   @brief Creates a bsl::safe_integral given a BSL fixed width
         ///     type. Note that this will clear the integral's error flag,
         ///     starting with a fresh value.
         ///   @include safe_integral/example_safe_integral_assignment_t.hpp
         ///
         /// <!-- inputs/outputs -->
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param val the value to set the bsl::safe_integral to
         ///   @return Returns *this
         ///
@@ -405,6 +469,9 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_max.hpp
         ///
         /// <!-- inputs/outputs -->
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param other the other value to compare with *this
         ///   @return Returns the max value between *this and other. If an
         ///     error has previously been encountered, this function returns
@@ -475,6 +542,9 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_min.hpp
         ///
         /// <!-- inputs/outputs -->
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param other the other value to compare with *this
         ///   @return Returns the min value between *this and other. If an
         ///     error has previously been encountered, this function returns
@@ -598,7 +668,7 @@ namespace bsl
                 return true;
             }
 
-            return zero().get() == m_val;
+            return zero() == *this;
         }
 
         /// <!-- description -->
@@ -644,7 +714,7 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         operator+=(safe_integral<value_type> const &rhs) &noexcept -> safe_integral<value_type> &
         {
-            bool const error{builtin_add_overflow(m_val, rhs.m_val, &m_val)};
+            bool const e{builtin_add_overflow(m_val, rhs.m_val, &m_val)};
 
             if (this->failure()) {
                 m_error = true;
@@ -656,7 +726,7 @@ namespace bsl
                 return *this;
             }
 
-            if (error) {
+            if (e) {
                 m_error = true;
                 return *this;
             }
@@ -677,7 +747,9 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_assign_add.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam U must be the same as T
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param rhs the value to add to *this
         ///   @return Returns *this += rhs. If this operation results in
         ///     an error (e.g., overflow, wrapping, etc.), the result of
@@ -687,14 +759,14 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         operator+=(U const rhs) &noexcept -> safe_integral<value_type> &
         {
-            bool const error{builtin_add_overflow(m_val, rhs, &m_val)};
+            bool const e{builtin_add_overflow(m_val, rhs, &m_val)};
 
             if (this->failure()) {
                 m_error = true;
                 return *this;
             }
 
-            if (error) {
+            if (e) {
                 m_error = true;
                 return *this;
             }
@@ -723,7 +795,7 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         operator-=(safe_integral<value_type> const &rhs) &noexcept -> safe_integral<value_type> &
         {
-            bool const error{builtin_sub_overflow(m_val, rhs.m_val, &m_val)};
+            bool const e{builtin_sub_overflow(m_val, rhs.m_val, &m_val)};
 
             if (this->failure()) {
                 m_error = true;
@@ -735,7 +807,7 @@ namespace bsl
                 return *this;
             }
 
-            if (error) {
+            if (e) {
                 m_error = true;
                 return *this;
             }
@@ -756,7 +828,9 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_assign_sub.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam U must be the same as T
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param rhs the value to sub from *this
         ///   @return Returns *this -= rhs. If this operation results in
         ///     an error (e.g., overflow, wrapping, etc.), the result of
@@ -766,14 +840,14 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         operator-=(U const rhs) &noexcept -> safe_integral<value_type> &
         {
-            bool const error{builtin_sub_overflow(m_val, rhs, &m_val)};
+            bool const e{builtin_sub_overflow(m_val, rhs, &m_val)};
 
             if (this->failure()) {
                 m_error = true;
                 return *this;
             }
 
-            if (error) {
+            if (e) {
                 m_error = true;
                 return *this;
             }
@@ -802,7 +876,7 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         operator*=(safe_integral<value_type> const &rhs) &noexcept -> safe_integral<value_type> &
         {
-            bool const error{builtin_mul_overflow(m_val, rhs.m_val, &m_val)};
+            bool const e{builtin_mul_overflow(m_val, rhs.m_val, &m_val)};
 
             if (this->failure()) {
                 m_error = true;
@@ -814,7 +888,7 @@ namespace bsl
                 return *this;
             }
 
-            if (error) {
+            if (e) {
                 m_error = true;
                 return *this;
             }
@@ -835,7 +909,9 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_assign_mul.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam U must be the same as T
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param rhs the value to multiply *this by
         ///   @return Returns *this *= rhs. If this operation results in
         ///     an error (e.g., overflow, wrapping, etc.), the result of
@@ -845,14 +921,14 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         operator*=(U const rhs) &noexcept -> safe_integral<value_type> &
         {
-            bool const error{builtin_mul_overflow(m_val, rhs, &m_val)};
+            bool const e{builtin_mul_overflow(m_val, rhs, &m_val)};
 
             if (this->failure()) {
                 m_error = true;
                 return *this;
             }
 
-            if (error) {
+            if (e) {
                 m_error = true;
                 return *this;
             }
@@ -881,7 +957,7 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         operator/=(safe_integral<value_type> const &rhs) &noexcept -> safe_integral<value_type> &
         {
-            bool const error{builtin_div_overflow(m_val, rhs.m_val, &m_val)};
+            bool const e{builtin_div_overflow(m_val, rhs.m_val, &m_val)};
 
             if (this->failure()) {
                 m_error = true;
@@ -893,7 +969,7 @@ namespace bsl
                 return *this;
             }
 
-            if (error) {
+            if (e) {
                 m_error = true;
                 return *this;
             }
@@ -914,7 +990,9 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_assign_div.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam U must be the same as T
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param rhs the value to divide *this by
         ///   @return Returns *this /= rhs. If this operation results in
         ///     an error (e.g., overflow, wrapping, etc.), the result of
@@ -924,14 +1002,14 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         operator/=(U const rhs) &noexcept -> safe_integral<value_type> &
         {
-            bool const error{builtin_div_overflow(m_val, rhs, &m_val)};
+            bool const e{builtin_div_overflow(m_val, rhs, &m_val)};
 
             if (this->failure()) {
                 m_error = true;
                 return *this;
             }
 
-            if (error) {
+            if (e) {
                 m_error = true;
                 return *this;
             }
@@ -960,7 +1038,7 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         operator%=(safe_integral<value_type> const &rhs) &noexcept -> safe_integral<value_type> &
         {
-            bool const error{builtin_mod_overflow(m_val, rhs.m_val, &m_val)};
+            bool const e{builtin_mod_overflow(m_val, rhs.m_val, &m_val)};
 
             if (this->failure()) {
                 m_error = true;
@@ -972,7 +1050,7 @@ namespace bsl
                 return *this;
             }
 
-            if (error) {
+            if (e) {
                 m_error = true;
                 return *this;
             }
@@ -993,7 +1071,9 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_assign_mod.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam U must be the same as T
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param rhs the value to modulo *this by
         ///   @return Returns *this %= rhs. If this operation results in
         ///     an error (e.g., overflow, wrapping, etc.), the result of
@@ -1003,14 +1083,14 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         operator%=(U const rhs) &noexcept -> safe_integral<value_type> &
         {
-            bool const error{builtin_mod_overflow(m_val, rhs, &m_val)};
+            bool const e{builtin_mod_overflow(m_val, rhs, &m_val)};
 
             if (this->failure()) {
                 m_error = true;
                 return *this;
             }
 
-            if (error) {
+            if (e) {
                 m_error = true;
                 return *this;
             }
@@ -1066,7 +1146,9 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_assign_lshift.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam U must be the same as T
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param rhs the value to shift *this by
         ///   @return Returns *this <<= rhs.
         ///
@@ -1137,7 +1219,9 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_assign_rshift.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam U must be the same as T
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param rhs the value to shift *this by
         ///   @return Returns *this >>= rhs.
         ///
@@ -1208,7 +1292,9 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_assign_and.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam U must be the same as T
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param rhs the value to and *this by
         ///   @return Returns *this &= rhs.
         ///
@@ -1279,7 +1365,9 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_assign_or.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam U must be the same as T
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param rhs the value to or *this by
         ///   @return Returns *this |= rhs.
         ///
@@ -1350,7 +1438,9 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_assign_xor.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam U must be the same as T
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param rhs the value to xor *this by
         ///   @return Returns *this ^= rhs.
         ///
@@ -1451,7 +1541,12 @@ namespace bsl
             return false;
         }
 
-        return lhs.get() == rhs.get();
+        if constexpr (is_signed<T>::value) {
+            return static_cast<bsl::intmax>(lhs.get()) == static_cast<bsl::intmax>(rhs.get());
+        }
+        else {
+            return static_cast<bsl::uintmax>(lhs.get()) == static_cast<bsl::uintmax>(rhs.get());
+        }
     }
 
     /// <!-- description -->
@@ -1475,7 +1570,12 @@ namespace bsl
             return false;
         }
 
-        return lhs.get() == rhs;
+        if constexpr (is_signed<T>::value) {
+            return static_cast<bsl::intmax>(lhs.get()) == static_cast<bsl::intmax>(rhs);
+        }
+        else {
+            return static_cast<bsl::uintmax>(lhs.get()) == static_cast<bsl::uintmax>(rhs);
+        }
     }
 
     /// <!-- description -->
@@ -1499,7 +1599,12 @@ namespace bsl
             return false;
         }
 
-        return lhs == rhs.get();
+        if constexpr (is_signed<T>::value) {
+            return static_cast<bsl::intmax>(lhs) == static_cast<bsl::intmax>(rhs.get());
+        }
+        else {
+            return static_cast<bsl::uintmax>(lhs) == static_cast<bsl::uintmax>(rhs.get());
+        }
     }
 
     /// <!-- description -->
@@ -1587,7 +1692,12 @@ namespace bsl
             return false;
         }
 
-        return lhs.get() < rhs.get();
+        if constexpr (is_signed<T>::value) {
+            return static_cast<bsl::intmax>(lhs.get()) < static_cast<bsl::intmax>(rhs.get());
+        }
+        else {
+            return static_cast<bsl::uintmax>(lhs.get()) < static_cast<bsl::uintmax>(rhs.get());
+        }
     }
 
     /// <!-- description -->
@@ -1611,7 +1721,12 @@ namespace bsl
             return false;
         }
 
-        return lhs.get() < rhs;
+        if constexpr (is_signed<T>::value) {
+            return static_cast<bsl::intmax>(lhs.get()) < static_cast<bsl::intmax>(rhs);
+        }
+        else {
+            return static_cast<bsl::uintmax>(lhs.get()) < static_cast<bsl::uintmax>(rhs);
+        }
     }
 
     /// <!-- description -->
@@ -1635,7 +1750,12 @@ namespace bsl
             return false;
         }
 
-        return lhs < rhs.get();
+        if constexpr (is_signed<T>::value) {
+            return static_cast<bsl::intmax>(lhs) < static_cast<bsl::intmax>(rhs.get());
+        }
+        else {
+            return static_cast<bsl::uintmax>(lhs) < static_cast<bsl::uintmax>(rhs.get());
+        }
     }
 
     /// <!-- description -->
@@ -1663,7 +1783,12 @@ namespace bsl
             return false;
         }
 
-        return lhs.get() > rhs.get();
+        if constexpr (is_signed<T>::value) {
+            return static_cast<bsl::intmax>(lhs.get()) > static_cast<bsl::intmax>(rhs.get());
+        }
+        else {
+            return static_cast<bsl::uintmax>(lhs.get()) > static_cast<bsl::uintmax>(rhs.get());
+        }
     }
 
     /// <!-- description -->
@@ -1687,7 +1812,12 @@ namespace bsl
             return false;
         }
 
-        return lhs.get() > rhs;
+        if constexpr (is_signed<T>::value) {
+            return static_cast<bsl::intmax>(lhs.get()) > static_cast<bsl::intmax>(rhs);
+        }
+        else {
+            return static_cast<bsl::uintmax>(lhs.get()) > static_cast<bsl::uintmax>(rhs);
+        }
     }
 
     /// <!-- description -->
@@ -1711,7 +1841,12 @@ namespace bsl
             return false;
         }
 
-        return lhs > rhs.get();
+        if constexpr (is_signed<T>::value) {
+            return static_cast<bsl::intmax>(lhs) > static_cast<bsl::intmax>(rhs.get());
+        }
+        else {
+            return static_cast<bsl::uintmax>(lhs) > static_cast<bsl::uintmax>(rhs.get());
+        }
     }
 
     // -------------------------------------------------------------------------

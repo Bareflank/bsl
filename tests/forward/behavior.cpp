@@ -33,19 +33,17 @@ namespace
 {
     template<typename T>
     [[nodiscard]] constexpr auto
-    detector(T &&t) noexcept -> bsl::safe_int32
+    detector(T &&val) noexcept -> bsl::safe_int32
     {
-        using namespace bsl;
-
-        if constexpr (is_const<remove_reference_t<T>>::value) {
+        if constexpr (bsl::is_const<bsl::remove_reference_t<T>>::value) {
             return bsl::to_i32(1);
         }
 
-        if constexpr (is_lvalue_reference<decltype(t)>::value) {
+        if constexpr (bsl::is_lvalue_reference<decltype(val)>::value) {
             return bsl::to_i32(2);
         }
 
-        if constexpr (is_rvalue_reference<decltype(t)>::value) {
+        if constexpr (bsl::is_rvalue_reference<decltype(val)>::value) {
             return bsl::to_i32(3);
         }
 
@@ -54,9 +52,9 @@ namespace
 
     template<typename T>
     [[nodiscard]] constexpr auto
-    forwarder(T &&t) noexcept -> bsl::safe_int32
+    forwarder(T &&val) noexcept -> bsl::safe_int32
     {
-        return detector(bsl::forward<T>(t));
+        return detector(bsl::forward<T>(val));
     }
 
     /// <!-- description -->
@@ -88,7 +86,7 @@ namespace
 
             bsl::ut_given{} = []() {
                 bsl::ut_then{} = []() {
-                    bsl::ut_check(forwarder(42) == 3);
+                    bsl::ut_check(forwarder(bsl::to_i32(42)) == 3);
                 };
             };
         };
@@ -98,8 +96,8 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->

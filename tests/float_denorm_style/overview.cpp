@@ -26,8 +26,8 @@
 #include <bsl/ut.hpp>
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -36,11 +36,9 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
-    static_assert(static_cast<bsl::int32>(float_denorm_style::denorm_indeterminate) == -1);
-    static_assert(static_cast<bsl::int32>(float_denorm_style::denorm_absent) == 0);
-    static_assert(static_cast<bsl::int32>(float_denorm_style::denorm_present) == 1);
+    static_assert(static_cast<bsl::int32>(bsl::float_denorm_style::denorm_indeterminate) == -1);
+    static_assert(static_cast<bsl::int32>(bsl::float_denorm_style::denorm_absent) == 0);
+    static_assert(static_cast<bsl::int32>(bsl::float_denorm_style::denorm_present) == 1);
 
     return bsl::ut_success();
 }

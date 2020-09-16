@@ -25,23 +25,11 @@
 #include <bsl/destroy_at.hpp>
 #include <bsl/ut.hpp>
 
-namespace
-{
-    class myclass final
-    {
-    public:
-        constexpr myclass() noexcept = default;
-        constexpr ~myclass() noexcept(false) = default;
-        constexpr myclass(myclass const &) noexcept = default;
-        [[maybe_unused]] constexpr auto operator=(myclass const &) &noexcept -> myclass & = default;
-        constexpr myclass(myclass &&) noexcept = default;
-        [[maybe_unused]] constexpr auto operator=(myclass &&) &noexcept -> myclass & = default;
-    };
-}
+#include "../class_destructor_throws.hpp"
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -50,20 +38,18 @@ namespace
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
     bsl::ut_scenario{"verify noexcept"} = []() {
         bsl::ut_given{} = []() {
             bool mydata{};
             bsl::ut_then{} = []() {
-                static_assert(noexcept(destroy_at(&mydata)));
+                static_assert(noexcept(bsl::destroy_at(&mydata)));
             };
         };
 
         bsl::ut_given{} = []() {
-            myclass c{};
+            test::class_destructor_throws c{};
             bsl::ut_then{} = []() {
-                static_assert(!noexcept(destroy_at(&c)));
+                static_assert(!noexcept(bsl::destroy_at(&c)));
             };
         };
     };

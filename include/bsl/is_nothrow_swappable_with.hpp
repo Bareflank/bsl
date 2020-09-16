@@ -48,7 +48,7 @@ namespace bsl
     template<typename T, typename U>
     class is_nothrow_swappable_with final :
         public bool_constant<
-            details::swappable_traits<void, void, T, U>::m_is_nothrow_swappable_with>
+            details::swappable_traits<void, void, T, U>::get_is_nothrow_swappable_with()>
     {};
 }
 

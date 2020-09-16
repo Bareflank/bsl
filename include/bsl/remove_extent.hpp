@@ -50,6 +50,10 @@ namespace bsl
     };
 
     /// @brief a helper that reduces the verbosity of bsl::remove_extent
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to remove the extent from
+    ///
     template<typename T>
     using remove_extent_t = typename remove_extent<T>::type;
 

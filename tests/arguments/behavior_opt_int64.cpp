@@ -41,96 +41,95 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        using namespace bsl;
-
         bsl::ut_scenario{"get optional safe_int64"} = []() {
             bsl::ut_given{} = []() {
-                arguments args{0, nullptr};
+                bsl::arguments args{bsl::to_umax(0), nullptr};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<safe_int64>("-app"));
+                    bsl::ut_check(!args.get<bsl::safe_int64>("-app"));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"-app"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"-app"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<safe_int64>(""));
+                    bsl::ut_check(!args.get<bsl::safe_int64>(""));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"app"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"app"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<safe_int64>("-app"));
+                    bsl::ut_check(!args.get<bsl::safe_int64>("-app"));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"-app"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"-app"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<safe_int64>("-app_blah"));
+                    bsl::ut_check(!args.get<bsl::safe_int64>("-app_blah"));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"-app"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"-app"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<safe_int64>("-ap"));
+                    bsl::ut_check(!args.get<bsl::safe_int64>("-ap"));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"-app"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"-app"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<safe_int64>("-app"));
+                    bsl::ut_check(!args.get<bsl::safe_int64>("-app"));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"-app="};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"-app="};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<safe_int64>("-app"));
+                    bsl::ut_check(!args.get<bsl::safe_int64>("-app"));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"-app=42"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"-app=42"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<safe_int64>("-app="));
+                    bsl::ut_check(!args.get<bsl::safe_int64>("-app="));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"-app=42 "};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"-app=42 "};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<safe_int64>("-app"));
+                    bsl::ut_check(!args.get<bsl::safe_int64>("-app"));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"-app=hello"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"-app=hello"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<safe_int64>("-app"));
+                    bsl::ut_check(!args.get<bsl::safe_int64>("-app"));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"-app=ignored", "pos1", "-4=16", "-8=23", "pos2", "-15=42", "-app=42"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{
+                    "-app=ignored", "pos1", "-4=16", "-8=23", "pos2", "-15=42", "-app=42"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(args.get<safe_int64>("-app") == to_i64(42));
-                    bsl::ut_check(args.get<safe_int64>("-4") == to_i64(16));
-                    bsl::ut_check(args.get<safe_int64>("-8") == to_i64(23));
-                    bsl::ut_check(args.get<safe_int64>("-15") == to_i64(42));
+                    bsl::ut_check(args.get<bsl::safe_int64>("-app") == bsl::to_i64(42));
+                    bsl::ut_check(args.get<bsl::safe_int64>("-4") == bsl::to_i64(16));
+                    bsl::ut_check(args.get<bsl::safe_int64>("-8") == bsl::to_i64(23));
+                    bsl::ut_check(args.get<bsl::safe_int64>("-15") == bsl::to_i64(42));
                 };
             };
         };
@@ -140,8 +139,8 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->

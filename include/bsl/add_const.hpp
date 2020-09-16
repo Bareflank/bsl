@@ -48,6 +48,10 @@ namespace bsl
     };
 
     /// @brief a helper that reduces the verbosity of bsl::add_const
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to add a const qualifier to
+    ///
     template<typename T>
     using add_const_t = typename add_const<T>::type;
 

@@ -25,41 +25,13 @@
 #include <bsl/has_virtual_destructor.hpp>
 #include <bsl/ut.hpp>
 
-namespace
-{
-    class myclass final
-    {
-    public:
-        constexpr myclass() noexcept = default;
-        constexpr ~myclass() noexcept = default;
-        constexpr myclass(myclass const &) noexcept = default;
-        [[maybe_unused]] constexpr auto operator=(myclass const &) &noexcept -> myclass & = default;
-        constexpr myclass(myclass &&) noexcept = default;
-        [[maybe_unused]] constexpr auto operator=(myclass &&) &noexcept -> myclass & = default;
-    };
-
-    class myclass_virtual
-    {
-    public:
-        constexpr myclass_virtual() noexcept = default;
-        virtual ~myclass_virtual() noexcept = default;
-
-    protected:
-        constexpr myclass_virtual(myclass_virtual const &) noexcept = default;
-        [[maybe_unused]] constexpr auto operator=(myclass_virtual const &) &noexcept
-            -> myclass_virtual & = default;
-        constexpr myclass_virtual(myclass_virtual &&) noexcept = default;
-        [[maybe_unused]] constexpr auto operator=(myclass_virtual &&) &noexcept
-            -> myclass_virtual & = default;
-    };
-
-    class myclass_subclass final : public myclass_virtual
-    {};
-}
+#include "../class_base.hpp"
+#include "../class_subclass.hpp"
+#include "../class_empty.hpp"
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -68,21 +40,9 @@ namespace
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
-    static_assert(has_virtual_destructor<myclass_virtual>::value);
-    static_assert(has_virtual_destructor<myclass_subclass>::value);
-
-    static_assert(!has_virtual_destructor<void>::value);
-    static_assert(!has_virtual_destructor<bool>::value);
-    static_assert(!has_virtual_destructor<bool &>::value);
-    static_assert(!has_virtual_destructor<bool &&>::value);
-    static_assert(!has_virtual_destructor<bool const>::value);
-    static_assert(!has_virtual_destructor<bool const &>::value);
-    static_assert(!has_virtual_destructor<bool const &&>::value);
-    static_assert(!has_virtual_destructor<bool(bool)>::value);
-    static_assert(!has_virtual_destructor<bool (*)(bool)>::value);
-    static_assert(!has_virtual_destructor<myclass>::value);
+    static_assert(bsl::has_virtual_destructor<test::class_base>::value);
+    static_assert(bsl::has_virtual_destructor<test::class_subclass>::value);
+    static_assert(!bsl::has_virtual_destructor<test::class_empty>::value);
 
     return bsl::ut_success();
 }

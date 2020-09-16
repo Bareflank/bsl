@@ -31,6 +31,8 @@ namespace
 {
     constinit bsl::basic_string_view<bsl::char_type> const verify_constinit{};
 
+    // Needed for requirements testing
+    // NOLINTNEXTLINE(bsl-user-defined-type-names-match-header-name)
     class fixture_t final
     {
         bsl::basic_string_view<bsl::char_type> msg{"Hello World"};
@@ -45,16 +47,16 @@ namespace
             bsl::discard(msg.data());
             bsl::discard(msg.begin());
             bsl::discard(msg.cbegin());
-            bsl::discard(msg.end());
-            bsl::discard(msg.cend());
             bsl::discard(msg.iter(bsl::to_umax(0)));
             bsl::discard(msg.citer(bsl::to_umax(0)));
+            bsl::discard(msg.end());
+            bsl::discard(msg.cend());
             bsl::discard(msg.rbegin());
             bsl::discard(msg.crbegin());
-            bsl::discard(msg.rend());
-            bsl::discard(msg.crend());
             bsl::discard(msg.riter(bsl::to_umax(0)));
             bsl::discard(msg.criter(bsl::to_umax(0)));
+            bsl::discard(msg.rend());
+            bsl::discard(msg.crend());
             bsl::discard(msg.empty());
             bsl::discard(!!msg);
             bsl::discard(msg.size());
@@ -74,6 +76,9 @@ namespace
             bsl::discard(msg.ends_with(bsl::basic_string_view<bsl::char_type>{}));
             bsl::discard(msg.ends_with('H'));
             bsl::discard(msg.ends_with(""));
+            bsl::discard(msg.find(bsl::basic_string_view<bsl::char_type>{}));
+            bsl::discard(msg.find('H'));
+            bsl::discard(msg.find(""));
 
             return true;
         }
@@ -81,22 +86,23 @@ namespace
         [[nodiscard]] constexpr auto
         test_member_nonconst() noexcept -> bool
         {
+            bsl::discard(msg = "");
             bsl::discard(msg.at_if(bsl::to_umax(0)));
             bsl::discard(msg.front_if());
             bsl::discard(msg.back_if());
             bsl::discard(msg.data());
             bsl::discard(msg.begin());
             bsl::discard(msg.cbegin());
-            bsl::discard(msg.end());
-            bsl::discard(msg.cend());
             bsl::discard(msg.iter(bsl::to_umax(0)));
             bsl::discard(msg.citer(bsl::to_umax(0)));
+            bsl::discard(msg.end());
+            bsl::discard(msg.cend());
             bsl::discard(msg.rbegin());
             bsl::discard(msg.crbegin());
-            bsl::discard(msg.rend());
-            bsl::discard(msg.crend());
             bsl::discard(msg.riter(bsl::to_umax(0)));
             bsl::discard(msg.criter(bsl::to_umax(0)));
+            bsl::discard(msg.rend());
+            bsl::discard(msg.crend());
             bsl::discard(msg.empty());
             bsl::discard(!!msg);
             bsl::discard(msg.size());
@@ -118,6 +124,9 @@ namespace
             bsl::discard(msg.ends_with(bsl::basic_string_view<bsl::char_type>{}));
             bsl::discard(msg.ends_with('H'));
             bsl::discard(msg.ends_with(""));
+            bsl::discard(msg.find(bsl::basic_string_view<bsl::char_type>{}));
+            bsl::discard(msg.find('H'));
+            bsl::discard(msg.find(""));
 
             return true;
         }
@@ -127,8 +136,8 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -137,7 +146,6 @@ namespace
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
     using bsv_type = bsl::basic_string_view<bsl::char_type>;
 
     bsl::ut_scenario{"verify supports constinit "} = []() {
@@ -151,22 +159,23 @@ main() noexcept -> bsl::exit_code
             bsl::ut_then{} = []() {
                 static_assert(noexcept(bsv_type{}));
                 static_assert(noexcept(bsv_type{""}));
+                static_assert(noexcept(bsv_type{"", bsl::to_umax(0)}));
                 static_assert(noexcept(msg1.at_if(bsl::to_umax(0))));
                 static_assert(noexcept(msg1.front_if()));
                 static_assert(noexcept(msg1.back_if()));
                 static_assert(noexcept(msg1.data()));
                 static_assert(noexcept(msg1.begin()));
                 static_assert(noexcept(msg1.cbegin()));
-                static_assert(noexcept(msg1.end()));
-                static_assert(noexcept(msg1.cend()));
                 static_assert(noexcept(msg1.iter(bsl::to_umax(0))));
                 static_assert(noexcept(msg1.citer(bsl::to_umax(0))));
+                static_assert(noexcept(msg1.end()));
+                static_assert(noexcept(msg1.cend()));
                 static_assert(noexcept(msg1.rbegin()));
                 static_assert(noexcept(msg1.crbegin()));
-                static_assert(noexcept(msg1.rend()));
-                static_assert(noexcept(msg1.crend()));
                 static_assert(noexcept(msg1.riter(bsl::to_umax(0))));
                 static_assert(noexcept(msg1.criter(bsl::to_umax(0))));
+                static_assert(noexcept(msg1.rend()));
+                static_assert(noexcept(msg1.crend()));
                 static_assert(noexcept(msg1.empty()));
                 static_assert(noexcept(!!msg1));
                 static_assert(noexcept(msg1.size()));
@@ -188,6 +197,9 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(msg1.ends_with(bsv_type{})));
                 static_assert(noexcept(msg1.ends_with('H')));
                 static_assert(noexcept(msg1.ends_with("")));
+                static_assert(noexcept(msg1.find(bsv_type{})));
+                static_assert(noexcept(msg1.find('H')));
+                static_assert(noexcept(msg1.find("")));
                 static_assert(noexcept(msg1 == msg2));
                 static_assert(noexcept(msg1 == ""));
                 static_assert(noexcept("" == msg2));
@@ -203,7 +215,7 @@ main() noexcept -> bsl::exit_code
             fixture_t fixture2{};
             bsl::ut_then{} = [&fixture2]() {
                 static_assert(fixture1.test_member_const());
-                ut_check(fixture2.test_member_nonconst());
+                bsl::ut_check(fixture2.test_member_nonconst());
             };
         };
     };

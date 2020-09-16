@@ -30,9 +30,6 @@
 
 namespace bsl::details
 {
-    /// @brief defines the number of extents too remove.
-    constexpr bsl::uintmax num_extents_to_remove{1U};
-
     /// @class bsl::details::extent_base
     ///
     /// <!-- description -->
@@ -43,8 +40,8 @@ namespace bsl::details
     ///   @tparam T the type to get the extent from
     ///   @tparam N the dimension of T to the the extent from
     ///
-    template<typename T, bsl::uintmax N = 0>
-    class extent_base : public integral_constant<bsl::uintmax, 0>
+    template<typename T, bsl::uintmax N = static_cast<bsl::uintmax>(0)>
+    class extent_base : public integral_constant<bsl::uintmax, static_cast<bsl::uintmax>(0)>
     {
     protected:
         /// <!-- description -->
@@ -92,7 +89,8 @@ namespace bsl::details
     template<typename T>
     // This is needed to implement the type traits.
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    class extent_base<T[], 0> : public integral_constant<bsl::uintmax, 0>
+    class extent_base<T[], static_cast<bsl::uintmax>(0)> :
+        public integral_constant<bsl::uintmax, static_cast<bsl::uintmax>(0)>
     {
     protected:
         /// <!-- description -->
@@ -140,7 +138,7 @@ namespace bsl::details
     template<typename T, bsl::uintmax N>
     // This is needed to implement the type traits.
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    class extent_base<T[], N> : public extent_base<T, N - num_extents_to_remove>
+    class extent_base<T[], N> : public extent_base<T, N - static_cast<bsl::uintmax>(1)>
     {
     protected:
         /// <!-- description -->
@@ -188,7 +186,8 @@ namespace bsl::details
     template<typename T, bsl::uintmax I>
     // This is needed to implement the type traits.
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    class extent_base<T[I], 0> : public integral_constant<bsl::uintmax, I>
+    class extent_base<T[I], static_cast<bsl::uintmax>(0)> :
+        public integral_constant<bsl::uintmax, I>
     {
     protected:
         /// <!-- description -->
@@ -236,7 +235,7 @@ namespace bsl::details
     template<typename T, bsl::uintmax I, bsl::uintmax N>
     // This is needed to implement the type traits.
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    class extent_base<T[I], N> : public extent_base<T, N - num_extents_to_remove>
+    class extent_base<T[I], N> : public extent_base<T, N - static_cast<bsl::uintmax>(1)>
     {
     protected:
         /// <!-- description -->

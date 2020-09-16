@@ -43,14 +43,6 @@ namespace bsl
         constexpr example_class_base() noexcept = default;
 
         /// <!-- description -->
-        ///   @brief Destroyes a previously created bsl::example_class_base
-        ///
-        constexpr ~example_class_base() noexcept
-        {
-            m_data1 = false;
-        }
-
-        /// <!-- description -->
         ///   @brief Simple example of a getter
         ///
         /// <!-- inputs/outputs -->
@@ -75,6 +67,14 @@ namespace bsl
         }
 
     protected:
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::example_class_base
+        ///
+        constexpr ~example_class_base() noexcept
+        {
+            m_data1 = false;
+        }
+
         /// <!-- description -->
         ///   @brief copy constructor
         ///

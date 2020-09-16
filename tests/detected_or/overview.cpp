@@ -22,34 +22,17 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/declval.hpp>
-#include <bsl/detected_or.hpp>
+#include <bsl/detected_or_t.hpp>
 #include <bsl/is_same.hpp>
-
 #include <bsl/ut.hpp>
 
-namespace
-{
-    class myclass final
-    {
-    public:
-        [[nodiscard]] constexpr auto
-        get() const noexcept -> bool
-        {
-            return true;
-        }
-    };
-
-    template<typename T>
-    using get_type = decltype(bsl::declval<T &>().get());
-
-    template<typename T>
-    using set_type = decltype(bsl::declval<T &>().set());
-}
+#include "../class_base.hpp"
+#include "../alias_get_op.hpp"
+#include "../alias_set_op.hpp"
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -58,10 +41,10 @@ namespace
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
+    // clang-format off
 
-    static_assert(is_same<detected_or_t<void, get_type, myclass>, get_type<myclass>>::value);
-    static_assert(is_same<detected_or_t<void, set_type, myclass>, void>::value);
+    static_assert(bsl::is_same<bsl::detected_or_t<void, test::alias_get_op, test::class_base>, test::alias_get_op<test::class_base>>::value);
+    static_assert(bsl::is_same<bsl::detected_or_t<void, test::alias_set_op, test::class_base>, void>::value);
 
     return bsl::ut_success();
 }

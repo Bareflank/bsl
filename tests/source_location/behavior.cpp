@@ -45,7 +45,7 @@ namespace
                 bsl::ut_then{} = [&sloc]() {
                     bsl::ut_check(sloc.file_name() != nullptr);
                     bsl::ut_check(sloc.function_name() != nullptr);
-                    bsl::ut_check(sloc.line() == -1);
+                    bsl::ut_check(sloc.line() == bsl::details::INVALID_LINE);
                 };
             };
         };
@@ -56,7 +56,7 @@ namespace
                 bsl::ut_then{} = [&sloc]() {
                     bsl::ut_check(sloc.file_name() != nullptr);
                     bsl::ut_check(sloc.function_name() != nullptr);
-                    bsl::ut_check(sloc.line() == 55);
+                    bsl::ut_check(sloc.line() == static_cast<bsl::source_location::line_type>(55));
                 };
             };
         };
@@ -82,8 +82,8 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->

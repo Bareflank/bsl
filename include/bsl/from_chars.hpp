@@ -50,7 +50,7 @@ namespace bsl
         from_chars_ignore_whitespace(string_view const &str) noexcept -> safe_uintmax
         {
             for (safe_uintmax i{}; i < str.length(); ++i) {
-                auto c{*str.at_if(i)};
+                char_type const c{*str.at_if(i)};
 
                 if (' ' == c) {
                     continue;
@@ -96,7 +96,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         from_chars_parse_dec(string_view const &str, safe_uintmax &idx) noexcept -> safe_integral<T>
         {
-            constexpr T base10{static_cast<T>(10)};
+            constexpr safe_integral<T> base10{convert<T>(10)};
 
             bool negate{};
             bool found_digits{};
@@ -118,12 +118,12 @@ namespace bsl
                     if (digit < ':') {
                         found_digits = true;
                         if (negate) {
-                            val *= bsl::convert<T>(base10);
-                            val -= (bsl::convert<T>(digit) - bsl::convert<T>('0'));
+                            val *= base10;
+                            val -= bsl::convert<T>(digit) - bsl::convert<T>('0');
                         }
                         else {
-                            val *= bsl::convert<T>(base10);
-                            val += (bsl::convert<T>(digit) - bsl::convert<T>('0'));
+                            val *= base10;
+                            val += bsl::convert<T>(digit) - bsl::convert<T>('0');
                         }
 
                         continue;
@@ -162,8 +162,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         from_chars_parse_hex(string_view const &str, safe_uintmax &idx) noexcept -> safe_integral<T>
         {
-            constexpr T base10{static_cast<T>(10)};
-            constexpr T base16{static_cast<T>(16)};
+            constexpr safe_integral<T> base10{convert<T>(10)};
+            constexpr safe_integral<T> base16{convert<T>(16)};
 
             bool found_digits{};
             safe_integral<T> val{};
@@ -178,7 +178,7 @@ namespace bsl
                 if (digit > '/') {
                     if (digit < ':') {
                         found_digits = true;
-                        val *= bsl::convert<T>(base16);
+                        val *= base16;
                         val += bsl::convert<T>(digit) - bsl::convert<T>('0');
                         continue;
                     }
@@ -192,8 +192,8 @@ namespace bsl
                 if (digit > '@') {
                     if (digit < 'G') {
                         found_digits = true;
-                        val *= bsl::convert<T>(base16);
-                        val += bsl::convert<T>(base10);
+                        val *= base16;
+                        val += base10;
                         val += bsl::convert<T>(digit) - bsl::convert<T>('A');
                         continue;
                     }
@@ -207,8 +207,8 @@ namespace bsl
                 if (digit > '`') {
                     if (digit < 'g') {
                         found_digits = true;
-                        val *= bsl::convert<T>(base16);
-                        val += bsl::convert<T>(base10);
+                        val *= base16;
+                        val += base10;
                         val += bsl::convert<T>(digit) - bsl::convert<T>('a');
                         continue;
                     }
@@ -302,21 +302,21 @@ namespace bsl
 
         switch (base.get()) {
             case base10.get(): {
-                safe_uintmax idx{details::from_chars_ignore_whitespace(str)};
-                val = details::from_chars_parse_dec<T>(str, idx);
+                safe_uintmax idx_for_10{details::from_chars_ignore_whitespace(str)};
+                val = details::from_chars_parse_dec<T>(str, idx_for_10);
                 if (!val) {
                     return safe_uintmax::zero();
                 }
-                return idx;
+                return idx_for_10;
             }
 
             case base16.get(): {
-                safe_uintmax idx{details::from_chars_ignore_whitespace(str)};
-                val = details::from_chars_parse_hex<T>(str, idx);
+                safe_uintmax idx_for_16{details::from_chars_ignore_whitespace(str)};
+                val = details::from_chars_parse_hex<T>(str, idx_for_16);
                 if (!val) {
                     return safe_uintmax::zero();
                 }
-                return idx;
+                return idx_for_16;
             }
 
             default: {

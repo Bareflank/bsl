@@ -25,94 +25,12 @@
 #include <bsl/swap.hpp>
 #include <bsl/ut.hpp>
 
-namespace
-{
-    class myclass1 final
-    {
-    public:
-        constexpr myclass1() noexcept = default;
-        constexpr ~myclass1() noexcept = default;
-        constexpr myclass1(myclass1 const &) noexcept = default;
-        [[maybe_unused]] constexpr auto operator=(myclass1 const &) &noexcept
-            -> myclass1 & = default;
-        constexpr myclass1(myclass1 &&) noexcept = default;
-        [[maybe_unused]] constexpr auto operator=(myclass1 &&) &noexcept -> myclass1 & = default;
-
-        explicit constexpr myclass1(bool val) noexcept    // --
-            : data{val}
-        {}
-
-        // This is needed to prove that swap works properly
-        // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-        bool data;
-    };
-
-    class myclass2 final
-    {
-    public:
-        constexpr myclass2() noexcept = default;
-        constexpr ~myclass2() noexcept = default;
-        constexpr myclass2(myclass2 const &) noexcept = default;
-        [[maybe_unused]] constexpr auto operator=(myclass2 const &) &noexcept
-            -> myclass2 & = default;
-        constexpr myclass2(myclass2 &&) noexcept(false) = default;
-        [[maybe_unused]] constexpr auto operator=(myclass2 &&) &noexcept -> myclass2 & = default;
-
-        explicit constexpr myclass2(bool val) noexcept    // --
-            : data{val}
-        {}
-
-        // This is needed to prove that swap works properly
-        // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-        bool data;
-    };
-
-    class myclass3 final
-    {
-    public:
-        constexpr myclass3() noexcept = default;
-        constexpr ~myclass3() noexcept = default;
-        constexpr myclass3(myclass3 const &) noexcept = default;
-        [[maybe_unused]] constexpr auto operator=(myclass3 const &) &noexcept
-            -> myclass3 & = default;
-        constexpr myclass3(myclass3 &&) noexcept = default;
-        [[maybe_unused]] constexpr auto operator=(myclass3 &&) &noexcept(false)
-            -> myclass3 & = default;
-
-        explicit constexpr myclass3(bool val) noexcept    // --
-            : data{val}
-        {}
-
-        // This is needed to prove that swap works properly
-        // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-        bool data;
-    };
-
-    class myclass4 final
-    {
-    public:
-        constexpr myclass4() noexcept = default;
-        constexpr ~myclass4() noexcept = default;
-        constexpr myclass4(myclass4 const &) noexcept = default;
-        [[maybe_unused]] constexpr auto operator=(myclass4 const &) &noexcept
-            -> myclass4 & = default;
-        constexpr myclass4(myclass4 &&) noexcept(false) = default;
-        [[maybe_unused]] constexpr auto operator=(myclass4 &&) &noexcept(false)
-            -> myclass4 & = default;
-
-        explicit constexpr myclass4(bool val) noexcept    // --
-            : data{val}
-        {}
-
-        // This is needed to prove that swap works properly
-        // NOLINTNEXTLINE(misc-non-private-member-variables-in-classes)
-        bool data;
-    };
-}
+#include "../class_empty.hpp"
+#include "../class_except.hpp"
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -121,19 +39,13 @@ namespace
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
     bsl::ut_scenario{"verify noexcept"} = []() {
-        myclass1 c1{};
-        myclass2 c2{};
-        myclass3 c3{};
-        myclass4 c4{};
         bsl::ut_given{} = []() {
+            test::class_empty c1{};
+            test::class_except c2{};
             bsl::ut_then{} = []() {
-                static_assert(noexcept(swap(c1, c1)));
-                static_assert(!noexcept(swap(c2, c2)));
-                static_assert(!noexcept(swap(c3, c3)));
-                static_assert(!noexcept(swap(c4, c4)));
+                static_assert(noexcept(bsl::swap(c1, c1)));
+                static_assert(!noexcept(bsl::swap(c2, c2)));
             };
         };
     };

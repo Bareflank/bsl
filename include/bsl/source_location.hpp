@@ -40,11 +40,12 @@ namespace bsl
     namespace details
     {
         /// @brief defines an invalid file.
-        constexpr bsl::cstr_type invalid_file{"unknown"};
+        constexpr bsl::cstr_type INVALID_FILE{"unknown"};
         /// @brief defines an invalid function.
-        constexpr bsl::cstr_type invalid_func{"unknown"};
+        constexpr bsl::cstr_type INVALID_FUNC{"unknown"};
         /// @brief defines an invalid line number.
-        constexpr bsl::int32 invalid_line{-1};
+        constexpr decltype(__builtin_LINE()) INVALID_LINE{
+            static_cast<decltype(__builtin_LINE())>(-1)};
     }
 
     /// <!-- description -->
@@ -58,13 +59,15 @@ namespace bsl
     ///
     class source_location final
     {
+    public:
         /// @brief defines the source location's file name type
         using file_type = bsl::cstr_type;
         /// @brief defines the source location's function name type
         using func_type = bsl::cstr_type;
         /// @brief defines the source location's line location type
-        using line_type = bsl::int32;
+        using line_type = decltype(__builtin_LINE());
 
+    private:
         /// <!-- description -->
         ///   @brief constructor
         ///
@@ -90,10 +93,51 @@ namespace bsl
         ///   @include source_location/example_source_location_default_constructor.hpp
         ///
         constexpr source_location() noexcept    // --
-            : m_file{details::invalid_file}     // --
-            , m_func{details::invalid_func}     // --
-            , m_line{details::invalid_line}
+            : m_file{details::INVALID_FILE}     // --
+            , m_func{details::INVALID_FUNC}     // --
+            , m_line{details::INVALID_LINE}
         {}
+
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::source_location
+        ///
+        constexpr ~source_location() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr source_location(source_location const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr source_location(source_location &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(source_location const &o) &noexcept
+            -> source_location & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(source_location &&o) &noexcept
+            -> source_location & = default;
 
         /// <!-- description -->
         ///   @brief Constructs a new source_location object corresponding to
@@ -227,9 +271,6 @@ namespace bsl
 
         return o;
     }
-
-    /// @brief defines the type used to describe a bsl::source_location
-    using sloc_type = source_location;
 }
 
 #endif

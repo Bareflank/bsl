@@ -22,7 +22,9 @@
 #ifndef BSL_CONVERT_HPP
 #define BSL_CONVERT_HPP
 
+#include "conditional.hpp"
 #include "enable_if.hpp"
+#include "forward.hpp"
 #include "is_constant_evaluated.hpp"
 #include "is_pointer.hpp"
 #include "is_same.hpp"
@@ -57,95 +59,108 @@ namespace bsl
     /// <!-- inputs/outputs -->
     ///   @tparam F the integral type to convert from
     ///   @tparam T the integral type to convert to
-    ///   @param f the integral to convert from F to T
+    ///   @param val the integral to convert from F to T
     ///   @return Returns f converted from F to T
     ///
     template<typename T, typename F>
     [[nodiscard]] constexpr auto
-    convert(F const &f) noexcept -> safe_integral<T>
+    convert(F const &val) noexcept -> safe_integral<T>
     {
         using t_limits = numeric_limits<T>;
         using f_limits = numeric_limits<F>;
 
         if constexpr (is_same<F, T>::value) {
-            return safe_integral<T>{static_cast<T>(f)};
+            return safe_integral<T>{static_cast<T>(val)};
         }
 
         if constexpr (is_signed<F>::value) {
             if constexpr (is_signed<T>::value) {
-                if constexpr (f_limits::max() < t_limits::max()) {
-                    return safe_integral<T>{static_cast<T>(f)};
+                constexpr bsl::intmax t_max{static_cast<bsl::intmax>(t_limits::max())};
+                constexpr bsl::intmax t_min{static_cast<bsl::intmax>(t_limits::min())};
+                constexpr bsl::intmax f_max{static_cast<bsl::intmax>(f_limits::max())};
+
+                if constexpr (f_max < t_max) {
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
-                else if constexpr (f_limits::max() == t_limits::max()) {
-                    return safe_integral<T>{static_cast<T>(f)};
+                else if constexpr (f_max == t_max) {
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
                 else {
-                    if (f > t_limits::max()) {
+                    if (static_cast<bsl::intmax>(val) > t_max) {
                         conversion_failure_narrowing_results_in_loss_of_data();
                         return safe_integral<T>::zero(true);
                     }
 
-                    if (f < t_limits::min()) {
+                    if (static_cast<bsl::intmax>(val) < t_min) {
                         conversion_failure_narrowing_results_in_loss_of_data();
                         return safe_integral<T>::zero(true);
                     }
 
-                    return safe_integral<T>{static_cast<T>(f)};
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
             }
             else {
-                if (f < static_cast<F>(0)) {
+                constexpr bsl::uintmax t_max{static_cast<bsl::uintmax>(t_limits::max())};
+                constexpr bsl::uintmax f_max{static_cast<bsl::uintmax>(f_limits::max())};
+
+                if (static_cast<bsl::intmax>(val) < static_cast<bsl::intmax>(0)) {
                     conversion_failure_narrowing_results_in_loss_of_data();
                     return safe_integral<T>::zero(true);
                 }
 
-                if constexpr (static_cast<bsl::uintmax>(f_limits::max()) < t_limits::max()) {
-                    return safe_integral<T>{static_cast<T>(f)};
+                if constexpr (f_max < t_max) {
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
-                else if constexpr (static_cast<bsl::uintmax>(f_limits::max()) == t_limits::max()) {
-                    return safe_integral<T>{static_cast<T>(f)};
+                else if constexpr (f_max == t_max) {
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
                 else {
-                    if (static_cast<bsl::uintmax>(f) > t_limits::max()) {
+                    if (static_cast<bsl::uintmax>(val) > t_max) {
                         conversion_failure_narrowing_results_in_loss_of_data();
                         return safe_integral<T>::zero(true);
                     }
 
-                    return safe_integral<T>{static_cast<T>(f)};
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
             }
         }
         else {
             if constexpr (is_signed<T>::value) {
-                if constexpr (f_limits::max() < static_cast<bsl::uintmax>(t_limits::max())) {
-                    return safe_integral<T>{static_cast<T>(f)};
+                constexpr bsl::uintmax t_max{static_cast<bsl::uintmax>(t_limits::max())};
+                constexpr bsl::uintmax f_max{static_cast<bsl::uintmax>(f_limits::max())};
+
+                if constexpr (f_max < t_max) {
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
-                else if constexpr (f_limits::max() == static_cast<bsl::uintmax>(t_limits::max())) {
-                    return safe_integral<T>{static_cast<T>(f)};
+                else if constexpr (f_max == t_max) {
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
                 else {
-                    if (f > static_cast<bsl::uintmax>(t_limits::max())) {
+                    if (static_cast<bsl::uintmax>(val) > t_max) {
                         conversion_failure_narrowing_results_in_loss_of_data();
                         return safe_integral<T>::zero(true);
                     }
 
-                    return safe_integral<T>{static_cast<T>(f)};
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
             }
             else {
-                if constexpr (f_limits::max() < t_limits::max()) {
-                    return safe_integral<T>{static_cast<T>(f)};
+                constexpr bsl::uintmax t_max{static_cast<bsl::uintmax>(t_limits::max())};
+                constexpr bsl::uintmax f_max{static_cast<bsl::uintmax>(f_limits::max())};
+
+                if constexpr (f_max < t_max) {
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
-                else if constexpr (f_limits::max() == t_limits::max()) {
-                    return safe_integral<T>{static_cast<T>(f)};
+                else if constexpr (f_max == t_max) {
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
                 else {
-                    if (f > t_limits::max()) {
+                    if (static_cast<bsl::uintmax>(val) > t_max) {
                         conversion_failure_narrowing_results_in_loss_of_data();
                         return safe_integral<T>::zero(true);
                     }
 
-                    return safe_integral<T>{static_cast<T>(f)};
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
             }
         }
@@ -167,18 +182,18 @@ namespace bsl
     /// <!-- inputs/outputs -->
     ///   @tparam F the integral type to convert from
     ///   @tparam T the integral type to convert to
-    ///   @param f the integral to convert from F to T
+    ///   @param val the integral to convert from F to T
     ///   @return Returns f converted from F to T
     ///
     template<typename T, typename F>
     [[nodiscard]] constexpr auto
-    convert(safe_integral<F> const &f) noexcept -> safe_integral<T>
+    convert(safe_integral<F> const &val) noexcept -> safe_integral<T>
     {
-        if (f.failure()) {
+        if (val.failure()) {
             return safe_integral<T>::zero(true);
         }
 
-        return convert<T>(f.get());
+        return convert<T>(val.get());
     }
 
     /// <!-- description -->

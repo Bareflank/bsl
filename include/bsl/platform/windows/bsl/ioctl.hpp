@@ -91,28 +91,28 @@ namespace bsl
             ret = SetupDiEnumDeviceInfo(info, 0, &dev_info);
             if (ret == FALSE) {
                 bsl::error() << "SetupDiEnumDeviceInfo failed\n";
-                CloseHandle(info);
+                bsl::discard(CloseHandle(info));
                 return;
             }
 
             ret = SetupDiEnumDeviceInterfaces(info, &dev_info, &(name), 0, &if_info);
             if (ret == FALSE) {
                 bsl::error() << "SetupDiEnumDeviceInterfaces failed\n";
-                CloseHandle(info);
+                bsl::discard(CloseHandle(info));
                 return;
             }
 
             ret = SetupDiGetDeviceInterfaceDetail(info, &if_info, nullptr, 0, &size, nullptr);
             if (ret == FALSE) {
                 bsl::error() << "SetupDiGetDeviceInterfaceDetail failed\n";
-                CloseHandle(info);
+                bsl::discard(CloseHandle(info));
                 return;
             }
 
             dev_data = static_cast<SP_INTERFACE_DEVICE_DETAIL_DATA *>(malloc(size));
             if (nullptr == dev_data) {
                 bsl::error() << "malloc failed in ioctl\n";
-                CloseHandle(info);
+                bsl::discard(CloseHandle(info));
                 return;
             }
 
@@ -122,7 +122,7 @@ namespace bsl
             if (ret == FALSE) {
                 bsl::error() << "SetupDiGetDeviceInterfaceDetail failed\n";
                 free(dev_data);
-                CloseHandle(info);
+                bsl::discard(CloseHandle(info));
                 return;
             }
 
@@ -136,7 +136,7 @@ namespace bsl
                 nullptr);
 
             free(dev_data);
-            CloseHandle(info);
+            bsl::discard(CloseHandle(info));
 
             if (nullptr == m_hndl) {
                 bsl::error() << "ioctl CreateFile failed\n";
@@ -150,7 +150,7 @@ namespace bsl
         ~ioctl() noexcept
         {
             if (nullptr != m_hndl) {
-                CloseHandle(m_hndl);
+                bsl::discard(CloseHandle(m_hndl));
             }
         }
 

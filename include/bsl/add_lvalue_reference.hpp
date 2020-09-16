@@ -73,10 +73,16 @@ namespace bsl
     struct add_lvalue_reference final
     {
         /// @brief provides the member typedef "type"
+        // We need the implicit conversion for this to work
+        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
         using type = typename decltype(details::try_add_lvalue_reference<T>(0))::type;
     };
 
     /// @brief a helper that reduces the verbosity of bsl::add_lvalue_reference
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to add an lvalue reference to
+    ///
     template<typename T>
     using add_lvalue_reference_t = typename add_lvalue_reference<T>::type;
 }

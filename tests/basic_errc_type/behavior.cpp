@@ -53,6 +53,13 @@ namespace
                     bsl::ut_check(errc.get() == 42);
                 };
             };
+
+            bsl::ut_given{} = []() {
+                bsl::basic_errc_type<> errc{bsl::to_i32(42)};
+                bsl::ut_then{} = [&errc]() {
+                    bsl::ut_check(errc.get() == 42);
+                };
+            };
         };
 
         bsl::ut_scenario{"operator bool"} = []() {
@@ -184,8 +191,8 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->

@@ -57,6 +57,10 @@ namespace bsl
     };
 
     /// @brief a helper that reduces the verbosity of bsl::add_volatile
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to add a volatile qualifier to
+    ///
     template<typename T>
     using add_volatile_t = typename add_volatile<T>::type;
 

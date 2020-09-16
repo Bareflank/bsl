@@ -46,9 +46,11 @@ namespace bsl::details
     ///   @tparam N the total number of elements in the carray. Cannot be 0
     ///
     template<typename T, bsl::uintmax N>
+    // This triggers on ArrayToPointerDecay which is needed
+    // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
     class carray final
     {
-        static_assert(N != 0, "carrays of size 0 are not supported");
+        static_assert(N != static_cast<bsl::uintmax>(0), "carrays of size 0 are not supported");
 
     public:
         /// @brief stores the carray being wrapped
@@ -57,7 +59,7 @@ namespace bsl::details
         // member check is complaining about the use of non-private member
         // variables. In this case, std::array should be an aggregate type
         // which means that the array must be made public.
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays, misc-non-private-member-variables-in-classes)
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays, misc-non-private-member-variables-in-classes, bsl-non-pod-classdef)
         T m_data[N];
 
         /// @brief alias for: T
@@ -96,7 +98,7 @@ namespace bsl::details
             if (index < N) {
                 // We are implementing std::array here, which is what this test
                 // wants you to use instead.
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index, bsl-implicit-conversions-forbidden)
                 return &m_data[index.get()];
             }
 
@@ -124,7 +126,7 @@ namespace bsl::details
             if (index < N) {
                 // We are implementing std::array here, which is what this test
                 // wants you to use instead.
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index, bsl-implicit-conversions-forbidden)
                 return &m_data[index.get()];
             }
 

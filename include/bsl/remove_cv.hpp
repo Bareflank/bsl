@@ -56,6 +56,10 @@ namespace bsl
     };
 
     /// @brief a helper that reduces the verbosity of bsl::remove_cv
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to remove the const and volatile qualifiers from
+    ///
     template<typename T>
     using remove_cv_t = typename remove_cv<T>::type;
 

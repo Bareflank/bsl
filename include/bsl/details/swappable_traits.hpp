@@ -25,6 +25,8 @@
 #ifndef BSL_DETAILS_SWAPPABLE_TRAITS_HPP
 #define BSL_DETAILS_SWAPPABLE_TRAITS_HPP
 
+#include "swappable_type.hpp"
+
 #include "../bool_constant.hpp"
 #include "../conjunction.hpp"
 #include "../declval.hpp"
@@ -33,11 +35,6 @@
 
 namespace bsl::details
 {
-    /// @brief defines the function type for swap based on the provided
-    ///   arguments.
-    template<typename T, typename U>
-    using swappable_type = decltype(swap(declval<T>(), declval<U>()));
-
     /// @class bsl::details::swappable_traits
     ///
     /// <!-- description -->
@@ -53,20 +50,40 @@ namespace bsl::details
     ///     is still supported.
     ///
     /// <!-- template parameters -->
-    ///   @tparam AlwaysVoid1 is always "void"
-    ///   @tparam AlwaysVoid2 is always "void"
+    ///   @tparam ALWAYS_VOID1 is always "void"
+    ///   @tparam ALWAYS_VOID2 is always "void"
     ///   @tparam T the first type to query
     ///   @tparam U the second type to query
     ///
-    template<typename AlwaysVoid1, typename AlwaysVoid2, typename T, typename U>
+    template<typename ALWAYS_VOID1, typename ALWAYS_VOID2, typename T, typename U>
     class swappable_traits
     {
     public:
-        /// @brief states that the provided args are swappable
-        static constexpr bool m_is_swappable_with{false};
+        /// <!-- description -->
+        ///   @brief Returns true if the provided args are swappable
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns true if the provided args are swappable
+        ///
+        [[nodiscard]] static constexpr auto
+        get_is_swappable_with() noexcept -> bool
+        {
+            return false;
+        }
 
-        /// @brief states that the provided args are nothrow swappable
-        static constexpr bool m_is_nothrow_swappable_with{false};
+        /// <!-- description -->
+        ///   @brief Returns true if the provided args are swappable without
+        ///     throwing an exception.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns true if the provided args are swappable without
+        ///     throwing an exception.
+        ///
+        [[nodiscard]] static constexpr auto
+        get_is_nothrow_swappable_with() noexcept -> bool
+        {
+            return false;
+        }
 
     protected:
         /// <!-- description -->
@@ -133,13 +150,33 @@ namespace bsl::details
     class swappable_traits<void_t<swappable_type<T, U>>, void_t<swappable_type<U, T>>, T, U>
     {
     public:
-        /// @brief states that the provided args are swappable
-        static constexpr bool m_is_swappable_with{true};
+        /// <!-- description -->
+        ///   @brief Returns true if the provided args are swappable
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns true if the provided args are swappable
+        ///
+        [[nodiscard]] static constexpr auto
+        get_is_swappable_with() noexcept -> bool
+        {
+            return true;
+        }
 
-        /// @brief states that the provided args are nothrow swappable
-        static constexpr bool m_is_nothrow_swappable_with{conjunction<
-            bool_constant<noexcept(swap(declval<T>(), declval<U>()))>,
-            bool_constant<noexcept(swap(declval<U>(), declval<T>()))>>::value};
+        /// <!-- description -->
+        ///   @brief Returns true if the provided args are swappable without
+        ///     throwing an exception.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns true if the provided args are swappable without
+        ///     throwing an exception.
+        ///
+        [[nodiscard]] static constexpr auto
+        get_is_nothrow_swappable_with() noexcept -> bool
+        {
+            return conjunction<
+                bool_constant<noexcept(swap(declval<T>(), declval<U>()))>,
+                bool_constant<noexcept(swap(declval<U>(), declval<T>()))>>::value;
+        }
 
     protected:
         /// <!-- description -->

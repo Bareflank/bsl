@@ -28,12 +28,12 @@
 #ifndef BSL_IS_DESTRUCTIBLE_HPP
 #define BSL_IS_DESTRUCTIBLE_HPP
 
+#include "details/is_destructible_type.hpp"
+
 #include "bool_constant.hpp"
-#include "declval.hpp"
 #include "is_detected.hpp"
 #include "is_function.hpp"
 #include "is_reference.hpp"
-#include "is_scalar.hpp"
 #include "is_unbounded_array.hpp"
 #include "is_void.hpp"
 #include "remove_all_extents.hpp"
@@ -42,10 +42,6 @@ namespace bsl
 {
     namespace details
     {
-        /// @brief used to detect the presence of a destructor in T
-        template<typename T>
-        using is_destructible_type = decltype(bsl::declval<T &>().~T());
-
         /// <!-- description -->
         ///   @brief Checks if a type "T" is destructible and if so, returns
         ///     true, otherwise returns false.

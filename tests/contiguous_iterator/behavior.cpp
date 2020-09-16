@@ -23,13 +23,14 @@
 /// SOFTWARE.
 
 #include <bsl/contiguous_iterator.hpp>
+
 #include <bsl/array.hpp>
 #include <bsl/npos.hpp>
 #include <bsl/ut.hpp>
 
 namespace
 {
-    constexpr bsl::array<bsl::safe_int32, 6> arr{
+    constexpr bsl::array arr{
         bsl::to_i32(4),
         bsl::to_i32(8),
         bsl::to_i32(15),
@@ -49,34 +50,32 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        using namespace bsl;
-
         bsl::ut_scenario{"constructor"} = []() {
             bsl::ut_given{} = []() {
-                contiguous_iterator<bool> ci{nullptr, arr.size(), to_umax(0)};
+                bsl::contiguous_iterator<bool> ci{nullptr, arr.size(), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.empty());
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), to_umax(0), to_umax(0)};
+                bsl::contiguous_iterator ci{arr.data(), bsl::to_umax(0), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.empty());
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(0)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.data() == arr.data());
                     bsl::ut_check(ci.size() == arr.size());
-                    bsl::ut_check(ci.index() == to_umax(0));
+                    bsl::ut_check(ci.index() == bsl::to_umax(0));
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), npos};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::npos};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.data() == arr.data());
                     bsl::ut_check(ci.size() == arr.size());
@@ -85,14 +84,15 @@ namespace
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), safe_uintmax::zero(true), to_umax(0)};
+                bsl::contiguous_iterator ci{
+                    arr.data(), bsl::safe_uintmax::zero(true), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.empty());
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), safe_uintmax::zero(true)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::safe_uintmax::zero(true)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.data() == arr.data());
                     bsl::ut_check(ci.size() == arr.size());
@@ -103,21 +103,21 @@ namespace
 
         bsl::ut_scenario{"data"} = []() {
             bsl::ut_given{} = []() {
-                contiguous_iterator<bool> ci{nullptr, to_umax(0), to_umax(0)};
+                bsl::contiguous_iterator<bool> ci{nullptr, bsl::to_umax(0), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.data() == nullptr);
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(0)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.data() == arr.data());
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator const ci{arr.data(), arr.size(), to_umax(0)};
+                bsl::contiguous_iterator const ci{arr.data(), arr.size(), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.data() == arr.data());
                 };
@@ -126,14 +126,14 @@ namespace
 
         bsl::ut_scenario{"size"} = []() {
             bsl::ut_given{} = []() {
-                contiguous_iterator<bool> ci{nullptr, to_umax(0), to_umax(0)};
+                bsl::contiguous_iterator<bool> ci{nullptr, bsl::to_umax(0), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
-                    bsl::ut_check(ci.size() == to_umax(0));
+                    bsl::ut_check(ci.size() == bsl::to_umax(0));
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(0)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.size() == arr.size());
                 };
@@ -142,28 +142,28 @@ namespace
 
         bsl::ut_scenario{"index"} = []() {
             bsl::ut_given{} = []() {
-                contiguous_iterator<bool> ci{nullptr, to_umax(0), to_umax(0)};
+                bsl::contiguous_iterator<bool> ci{nullptr, bsl::to_umax(0), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
-                    bsl::ut_check(ci.index() == to_umax(0));
+                    bsl::ut_check(ci.index() == bsl::to_umax(0));
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(0)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
-                    bsl::ut_check(ci.index() == to_umax(0));
+                    bsl::ut_check(ci.index() == bsl::to_umax(0));
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), arr.size()};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), arr.size()};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.index() == arr.size());
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), npos};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::npos};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.index() == arr.size());
                 };
@@ -172,14 +172,14 @@ namespace
 
         bsl::ut_scenario{"empty"} = []() {
             bsl::ut_given{} = []() {
-                contiguous_iterator<bool> ci{nullptr, to_umax(0), to_umax(0)};
+                bsl::contiguous_iterator<bool> ci{nullptr, bsl::to_umax(0), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.empty());
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(0)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(!ci.empty());
                 };
@@ -188,21 +188,21 @@ namespace
 
         bsl::ut_scenario{"operator bool"} = []() {
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(0)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(!!ci);
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator<bool> ci{nullptr, to_umax(0), to_umax(0)};
+                bsl::contiguous_iterator<bool> ci{nullptr, bsl::to_umax(0), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(!ci);
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), arr.size()};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), arr.size()};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(!ci);
                 };
@@ -211,21 +211,21 @@ namespace
 
         bsl::ut_scenario{"is_end"} = []() {
             bsl::ut_given{} = []() {
-                contiguous_iterator<bool> ci{nullptr, to_umax(0), to_umax(0)};
+                bsl::contiguous_iterator<bool> ci{nullptr, bsl::to_umax(0), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.is_end());
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), arr.size()};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), arr.size()};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.is_end());
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(0)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(!ci.is_end());
                 };
@@ -234,56 +234,56 @@ namespace
 
         bsl::ut_scenario{"get_if"} = []() {
             bsl::ut_given{} = []() {
-                contiguous_iterator<bool> ci{nullptr, to_umax(0), to_umax(0)};
+                bsl::contiguous_iterator<bool> ci{nullptr, bsl::to_umax(0), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.get_if() == nullptr);
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator<bool> const ci{nullptr, to_umax(0), to_umax(0)};
+                bsl::contiguous_iterator<bool> const ci{nullptr, bsl::to_umax(0), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.get_if() == nullptr);
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(0)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.get_if() == arr.front_if());
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator const ci{arr.data(), arr.size(), to_umax(0)};
+                bsl::contiguous_iterator const ci{arr.data(), arr.size(), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.get_if() == arr.front_if());
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(5)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(5)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.get_if() == arr.back_if());
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator const ci{arr.data(), arr.size(), to_umax(5)};
+                bsl::contiguous_iterator const ci{arr.data(), arr.size(), bsl::to_umax(5)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.get_if() == arr.back_if());
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(6)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(6)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.get_if() == nullptr);
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator const ci{arr.data(), arr.size(), to_umax(6)};
+                bsl::contiguous_iterator const ci{arr.data(), arr.size(), bsl::to_umax(6)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.get_if() == nullptr);
                 };
@@ -292,57 +292,57 @@ namespace
 
         bsl::ut_scenario{"operator *"} = []() {
             bsl::ut_given{} = []() {
-                contiguous_iterator<bool> ci{nullptr, to_umax(0), to_umax(0)};
+                bsl::contiguous_iterator<bool> ci{nullptr, bsl::to_umax(0), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check((*ci).data == nullptr);
-                    bsl::ut_check((*ci).index == to_umax(0));
+                    bsl::ut_check((*ci).index == bsl::to_umax(0));
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator<bool> const ci{nullptr, to_umax(0), to_umax(0)};
+                bsl::contiguous_iterator<bool> const ci{nullptr, bsl::to_umax(0), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.get_if() == nullptr);
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(0)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.get_if() == arr.front_if());
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator const ci{arr.data(), arr.size(), to_umax(0)};
+                bsl::contiguous_iterator const ci{arr.data(), arr.size(), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.get_if() == arr.front_if());
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(5)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(5)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.get_if() == arr.back_if());
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator const ci{arr.data(), arr.size(), to_umax(5)};
+                bsl::contiguous_iterator const ci{arr.data(), arr.size(), bsl::to_umax(5)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.get_if() == arr.back_if());
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(6)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(6)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.get_if() == nullptr);
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator const ci{arr.data(), arr.size(), to_umax(6)};
+                bsl::contiguous_iterator const ci{arr.data(), arr.size(), bsl::to_umax(6)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::ut_check(ci.get_if() == nullptr);
                 };
@@ -351,40 +351,40 @@ namespace
 
         bsl::ut_scenario{"++ operator"} = []() {
             bsl::ut_given{} = []() {
-                contiguous_iterator<bool> ci{nullptr, to_umax(0), to_umax(0)};
+                bsl::contiguous_iterator<bool> ci{nullptr, bsl::to_umax(0), bsl::to_umax(0)};
                 bsl::ut_when{} = [&ci]() {
                     ++ci;
                     bsl::ut_then{} = [&ci]() {
                         bsl::ut_check(ci.get_if() == nullptr);
-                        bsl::ut_check(ci.index() == to_umax(0));
+                        bsl::ut_check(ci.index() == bsl::to_umax(0));
                     };
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(0)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(0)};
                 bsl::ut_when{} = [&ci]() {
                     ++ci;
                     bsl::ut_then{} = [&ci]() {
-                        bsl::ut_check(ci.get_if() == arr.at_if(to_umax(1)));
-                        bsl::ut_check(ci.index() == to_umax(1));
+                        bsl::ut_check(ci.get_if() == arr.at_if(bsl::to_umax(1)));
+                        bsl::ut_check(ci.index() == bsl::to_umax(1));
                     };
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(4)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(4)};
                 bsl::ut_when{} = [&ci]() {
                     ++ci;
                     bsl::ut_then{} = [&ci]() {
-                        bsl::ut_check(ci.get_if() == arr.at_if(to_umax(5)));
-                        bsl::ut_check(ci.index() == to_umax(5));
+                        bsl::ut_check(ci.get_if() == arr.at_if(bsl::to_umax(5)));
+                        bsl::ut_check(ci.index() == bsl::to_umax(5));
                     };
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(5)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(5)};
                 bsl::ut_when{} = [&ci]() {
                     ++ci;
                     bsl::ut_then{} = [&ci]() {
@@ -395,7 +395,7 @@ namespace
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(6)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(6)};
                 bsl::ut_when{} = [&ci]() {
                     ++ci;
                     bsl::ut_then{} = [&ci]() {
@@ -416,23 +416,23 @@ namespace
 
         bsl::ut_scenario{"-- operator"} = []() {
             bsl::ut_given{} = []() {
-                contiguous_iterator<bool> ci{nullptr, to_umax(0), to_umax(0)};
+                bsl::contiguous_iterator<bool> ci{nullptr, bsl::to_umax(0), bsl::to_umax(0)};
                 bsl::ut_when{} = [&ci]() {
                     --ci;
                     bsl::ut_then{} = [&ci]() {
                         bsl::ut_check(ci.get_if() == nullptr);
-                        bsl::ut_check(ci.index() == to_umax(0));
+                        bsl::ut_check(ci.index() == bsl::to_umax(0));
                     };
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(0)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(0)};
                 bsl::ut_when{} = [&ci]() {
                     --ci;
                     bsl::ut_then{} = [&ci]() {
                         bsl::ut_check(ci.get_if() == arr.front_if());
-                        bsl::ut_check(ci.index() == to_umax(0));
+                        bsl::ut_check(ci.index() == bsl::to_umax(0));
                     };
                 };
 
@@ -440,38 +440,38 @@ namespace
                     --ci;
                     bsl::ut_then{} = [&ci]() {
                         bsl::ut_check(ci.get_if() == arr.front_if());
-                        bsl::ut_check(ci.index() == to_umax(0));
+                        bsl::ut_check(ci.index() == bsl::to_umax(0));
                     };
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(1)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(1)};
                 bsl::ut_when{} = [&ci]() {
                     --ci;
                     bsl::ut_then{} = [&ci]() {
                         bsl::ut_check(ci.get_if() == arr.front_if());
-                        bsl::ut_check(ci.index() == to_umax(0));
+                        bsl::ut_check(ci.index() == bsl::to_umax(0));
                     };
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(5)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(5)};
                 bsl::ut_when{} = [&ci]() {
                     --ci;
                     bsl::ut_then{} = [&ci]() {
-                        bsl::ut_check(ci.get_if() == arr.at_if(to_umax(4)));
+                        bsl::ut_check(ci.get_if() == arr.at_if(bsl::to_umax(4)));
                     };
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(6)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(6)};
                 bsl::ut_when{} = [&ci]() {
                     --ci;
                     bsl::ut_then{} = [&ci]() {
-                        bsl::ut_check(ci.get_if() == arr.at_if(to_umax(5)));
+                        bsl::ut_check(ci.get_if() == arr.at_if(bsl::to_umax(5)));
                     };
                 };
             };
@@ -479,40 +479,40 @@ namespace
 
         bsl::ut_scenario{"comparisons"} = []() {
             bsl::ut_given{} = []() {
-                contiguous_iterator ci1{arr.data(), arr.size(), to_umax(0)};
-                contiguous_iterator ci2{arr.data(), arr.size(), to_umax(0)};
+                bsl::contiguous_iterator ci1{arr.data(), arr.size(), bsl::to_umax(0)};
+                bsl::contiguous_iterator ci2{arr.data(), arr.size(), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci1, &ci2]() {
                     bsl::ut_check(ci1 == ci2);
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci1{arr.data(), arr.size(), to_umax(0)};
-                contiguous_iterator ci2{arr.data(), arr.size(), to_umax(1)};
+                bsl::contiguous_iterator ci1{arr.data(), arr.size(), bsl::to_umax(0)};
+                bsl::contiguous_iterator ci2{arr.data(), arr.size(), bsl::to_umax(1)};
                 bsl::ut_then{} = [&ci1, &ci2]() {
                     bsl::ut_check(ci1 != ci2);
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci1{arr.data(), arr.size(), to_umax(0)};
-                contiguous_iterator ci2{arr.data() + 1, arr.size(), to_umax(0)};
+                bsl::contiguous_iterator ci1{arr.data(), arr.size(), bsl::to_umax(0)};
+                bsl::contiguous_iterator ci2{arr.data() + 1, arr.size(), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci1, &ci2]() {
                     bsl::ut_check(ci1 != ci2);
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci1{arr.data(), arr.size(), to_umax(0)};
-                contiguous_iterator ci2{arr.data(), arr.size(), to_umax(1)};
+                bsl::contiguous_iterator ci1{arr.data(), arr.size(), bsl::to_umax(0)};
+                bsl::contiguous_iterator ci2{arr.data(), arr.size(), bsl::to_umax(1)};
                 bsl::ut_then{} = [&ci1, &ci2]() {
                     bsl::ut_check(ci1 < ci2);
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci1{arr.data(), arr.size(), to_umax(1)};
-                contiguous_iterator ci2{arr.data(), arr.size(), to_umax(0)};
+                bsl::contiguous_iterator ci1{arr.data(), arr.size(), bsl::to_umax(1)};
+                bsl::contiguous_iterator ci2{arr.data(), arr.size(), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci1, &ci2]() {
                     bsl::ut_check(ci1 > ci2);
                 };
@@ -521,35 +521,35 @@ namespace
 
         bsl::ut_scenario{"output doesn't crash"} = []() {
             bsl::ut_given{} = []() {
-                contiguous_iterator<bool> ci{nullptr, arr.size(), to_umax(0)};
+                bsl::contiguous_iterator<bool> ci{nullptr, arr.size(), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::debug() << ci << '\n';
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), to_umax(0), to_umax(0)};
+                bsl::contiguous_iterator ci{arr.data(), bsl::to_umax(0), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::debug() << ci << '\n';
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(0)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(0)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::debug() << ci << '\n';
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), to_umax(6)};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::to_umax(6)};
                 bsl::ut_then{} = [&ci]() {
                     bsl::debug() << ci << '\n';
                 };
             };
 
             bsl::ut_given{} = []() {
-                contiguous_iterator ci{arr.data(), arr.size(), npos};
+                bsl::contiguous_iterator ci{arr.data(), arr.size(), bsl::npos};
                 bsl::ut_then{} = [&ci]() {
                     bsl::debug() << ci << '\n';
                 };
@@ -561,8 +561,8 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->

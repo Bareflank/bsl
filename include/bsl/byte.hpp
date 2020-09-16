@@ -32,6 +32,7 @@
 
 #include "cstdint.hpp"
 #include "debug.hpp"
+#include "safe_integral.hpp"
 
 #include "enable_if.hpp"
 #include "is_integral.hpp"
@@ -72,6 +73,56 @@ namespace bsl
         {}
 
         /// <!-- description -->
+        ///   @brief Creates a bsl::byte from a value_type
+        ///   @include byte/example_byte_by_safe_int_constructor.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param val the value of the integer to create the bsl::byte from.
+        ///
+        explicit constexpr byte(bsl::safe_uint8 const val) noexcept    // --
+            : byte{val.get()}
+        {}
+
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::byte
+        ///
+        constexpr ~byte() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr byte(byte const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr byte(byte &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(byte const &o) &noexcept -> byte & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(byte &&o) &noexcept -> byte & = default;
+
+        /// <!-- description -->
         ///   @brief Returns the bsl::byte as a given integer type using a
         ///     static_cast to perform the conversion.
         ///   @include byte/example_byte_to_integer.hpp
@@ -81,7 +132,7 @@ namespace bsl
         ///   @return Returns the bsl::byte as a given integer type using a
         ///     static_cast to perform the conversion.
         ///
-        template<typename T = value_type, enable_if_t<is_integral<T>::value, bool> = true>
+        template<typename T = value_type>
         [[nodiscard]] constexpr auto
         to_integer() const noexcept -> T
         {
@@ -106,7 +157,8 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator==(byte const &lhs, byte const &rhs) noexcept -> bool
     {
-        return lhs.to_integer() == rhs.to_integer();
+        return static_cast<bsl::uint32>(lhs.to_integer()) ==
+               static_cast<bsl::uint32>(rhs.to_integer());
     }
 
     /// <!-- description -->
@@ -126,72 +178,148 @@ namespace bsl
     }
 
     /// <!-- description -->
-    ///   @brief The same as b = byte{b.to_integer() << shift}
+    ///   @brief The same as lhs = byte{lhs.to_integer() << rhs}
     ///   @include byte/example_byte_lshift_assign.hpp
     ///   @related bsl::byte
     ///
     /// <!-- inputs/outputs -->
-    ///   @param b the bsl::byte to shift
-    ///   @param shift the number of bits to shift b
-    ///   @return returns a reference to the provided "b"
+    ///   @param lhs the bsl::byte to shift
+    ///   @param rhs the number of bits to shift lhs
+    ///   @return returns a reference to the provided "lhs"
     ///
     [[maybe_unused]] constexpr auto
-    operator<<=(byte &b, bsl::uint32 const shift) noexcept -> byte &
+    operator<<=(byte &lhs, bsl::uint8 const rhs) noexcept -> byte &
     {
-        b = byte{static_cast<bsl::uint8>(b.to_integer<bsl::uint32>() << shift)};
-        return b;
+        bsl::uint32 const lhs32{lhs.to_integer<bsl::uint32>()};
+        bsl::uint32 const rhs32{static_cast<bsl::uint32>(rhs)};
+
+        lhs = byte{static_cast<bsl::uint8>(lhs32 << rhs32)};
+        return lhs;
     }
 
     /// <!-- description -->
-    ///   @brief The same as b = byte{b.to_integer() >> shift}
+    ///   @brief The same as lhs = byte{lhs.to_integer() << rhs.get()}
+    ///   @include byte/example_byte_lshift_assign_safe_int.hpp
+    ///   @related bsl::byte
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param lhs the bsl::byte to shift
+    ///   @param rhs the number of bits to shift lhs
+    ///   @return returns a reference to the provided "lhs"
+    ///
+    [[maybe_unused]] constexpr auto
+    operator<<=(byte &lhs, bsl::safe_uint8 const rhs) noexcept -> byte &
+    {
+        lhs <<= rhs.get();
+        return lhs;
+    }
+
+    /// <!-- description -->
+    ///   @brief The same as lhs = byte{lhs.to_integer() >> rhs}
     ///   @include byte/example_byte_rshift_assign.hpp
     ///   @related bsl::byte
     ///
     /// <!-- inputs/outputs -->
-    ///   @param b the bsl::byte to shift
-    ///   @param shift the number of bits to shift b
-    ///   @return returns a reference to the provided "b"
+    ///   @param lhs the bsl::byte to shift
+    ///   @param rhs the number of bits to shift lhs
+    ///   @return returns a reference to the provided "lhs"
     ///
     [[maybe_unused]] constexpr auto
-    operator>>=(byte &b, bsl::uint32 const shift) noexcept -> byte &
+    operator>>=(byte &lhs, bsl::uint8 const rhs) noexcept -> byte &
     {
-        b = byte{static_cast<bsl::uint8>(b.to_integer<bsl::uint32>() >> shift)};
-        return b;
+        bsl::uint32 const lhs32{lhs.to_integer<bsl::uint32>()};
+        bsl::uint32 const rhs32{static_cast<bsl::uint32>(rhs)};
+
+        lhs = byte{static_cast<bsl::uint8>(lhs32 >> rhs32)};
+        return lhs;
     }
 
     /// <!-- description -->
-    ///   @brief The same as byte tmp{b}; tmp <<= shift;
+    ///   @brief The same as lhs = byte{lhs.to_integer() >> rhs.get()}
+    ///   @include byte/example_byte_rshift_assign_safe_int.hpp
+    ///   @related bsl::byte
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param lhs the bsl::byte to shift
+    ///   @param rhs the number of bits to shift lhs
+    ///   @return returns a reference to the provided "lhs"
+    ///
+    [[maybe_unused]] constexpr auto
+    operator>>=(byte &lhs, bsl::safe_uint8 const rhs) noexcept -> byte &
+    {
+        lhs >>= rhs.get();
+        return lhs;
+    }
+
+    /// <!-- description -->
+    ///   @brief The same as byte tmp{lhs}; tmp <<= rhs;
     ///   @include byte/example_byte_lshift.hpp
     ///   @related bsl::byte
     ///
     /// <!-- inputs/outputs -->
-    ///   @param b the bsl::byte to shift
-    ///   @param shift the number of bits to shift b
-    ///   @return returns byte tmp{b}; tmp <<= shift;
+    ///   @param lhs the bsl::byte to shift
+    ///   @param rhs the number of bits to shift b
+    ///   @return returns byte tmp{lhs}; tmp <<= rhs;
     ///
     [[nodiscard]] constexpr auto
-    operator<<(byte const &b, bsl::uint32 const shift) noexcept -> byte
+    operator<<(byte const &lhs, bsl::uint8 const rhs) noexcept -> byte
     {
-        byte tmp{b};
-        tmp <<= shift;
+        byte tmp{lhs};
+        tmp <<= rhs;
         return tmp;
     }
 
     /// <!-- description -->
-    ///   @brief The same as byte tmp{b}; tmp >>= shift;
+    ///   @brief The same as byte tmp{lhs}; tmp <<= rhs;
+    ///   @include byte/example_byte_lshift_safe_int.hpp
+    ///   @related bsl::byte
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param lhs the bsl::byte to shift
+    ///   @param rhs the number of bits to shift b
+    ///   @return returns byte tmp{lhs}; tmp <<= rhs;
+    ///
+    [[nodiscard]] constexpr auto
+    operator<<(byte const &lhs, bsl::safe_uint8 const rhs) noexcept -> byte
+    {
+        byte tmp{lhs};
+        tmp <<= rhs;
+        return tmp;
+    }
+
+    /// <!-- description -->
+    ///   @brief The same as byte tmp{lhs}; tmp >>= rhs;
     ///   @include example_byte_rshift.hpp
     ///   @related bsl::byte
     ///
     /// <!-- inputs/outputs -->
-    ///   @param b the bsl::byte to shift
-    ///   @param shift the number of bits to shift b
-    ///   @return returns byte tmp{b}; tmp >>= shift;
+    ///   @param lhs the bsl::byte to shift
+    ///   @param rhs the number of bits to shift b
+    ///   @return returns byte tmp{lhs}; tmp >>= rhs.get();
     ///
     [[nodiscard]] constexpr auto
-    operator>>(byte const &b, bsl::uint32 const shift) noexcept -> byte
+    operator>>(byte const &lhs, bsl::uint8 const rhs) noexcept -> byte
     {
-        byte tmp{b};
-        tmp >>= shift;
+        byte tmp{lhs};
+        tmp >>= rhs;
+        return tmp;
+    }
+
+    /// <!-- description -->
+    ///   @brief The same as byte tmp{lhs}; tmp >>= rhs;
+    ///   @include example_byte_rshift_safe_int.hpp
+    ///   @related bsl::byte
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param lhs the bsl::byte to shift
+    ///   @param rhs the number of bits to shift b
+    ///   @return returns byte tmp{lhs}; tmp >>= rhs;
+    ///
+    [[nodiscard]] constexpr auto
+    operator>>(byte const &lhs, bsl::safe_uint8 const rhs) noexcept -> byte
+    {
+        byte tmp{lhs};
+        tmp >>= rhs;
         return tmp;
     }
 
@@ -208,8 +336,8 @@ namespace bsl
     [[maybe_unused]] constexpr auto
     operator|=(byte &lhs, byte const &rhs) noexcept -> byte &
     {
-        auto const lhs32{lhs.to_integer<bsl::uint32>()};
-        auto const rhs32{rhs.to_integer<bsl::uint32>()};
+        bsl::uint32 const lhs32{lhs.to_integer<bsl::uint32>()};
+        bsl::uint32 const rhs32{rhs.to_integer<bsl::uint32>()};
 
         lhs = byte{static_cast<bsl::uint8>(lhs32 | rhs32)};
         return lhs;
@@ -228,8 +356,8 @@ namespace bsl
     [[maybe_unused]] constexpr auto
     operator&=(byte &lhs, byte const &rhs) noexcept -> byte &
     {
-        auto const lhs32{lhs.to_integer<bsl::uint32>()};
-        auto const rhs32{rhs.to_integer<bsl::uint32>()};
+        bsl::uint32 const lhs32{lhs.to_integer<bsl::uint32>()};
+        bsl::uint32 const rhs32{rhs.to_integer<bsl::uint32>()};
 
         lhs = byte{static_cast<bsl::uint8>(lhs32 & rhs32)};
         return lhs;
@@ -248,8 +376,8 @@ namespace bsl
     [[maybe_unused]] constexpr auto
     operator^=(byte &lhs, byte const &rhs) noexcept -> byte &
     {
-        auto const lhs32{lhs.to_integer<bsl::uint32>()};
-        auto const rhs32{rhs.to_integer<bsl::uint32>()};
+        bsl::uint32 const lhs32{lhs.to_integer<bsl::uint32>()};
+        bsl::uint32 const rhs32{rhs.to_integer<bsl::uint32>()};
 
         lhs = byte{static_cast<bsl::uint8>(lhs32 ^ rhs32)};
         return lhs;

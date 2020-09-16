@@ -54,6 +54,10 @@ namespace bsl
     {};
 
     /// @brief a helper that reduces the verbosity of bsl::make_signed
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to query
+    ///
     template<typename T>
     using make_signed_t = typename make_signed<T>::type;
 

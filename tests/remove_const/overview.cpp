@@ -28,8 +28,8 @@
 #include <bsl/ut.hpp>
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -38,13 +38,11 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
-    static_assert(is_same<remove_const_t<bool>, bool>::value);
-    static_assert(is_same<remove_const_t<bool const>, bool>::value);
-    static_assert(is_same<remove_const_t<void *>, void *>::value);
-    static_assert(is_same<remove_const_t<void *const>, void *>::value);
-    static_assert(is_same<remove_const_t<void const *>, void const *>::value);
+    static_assert(bsl::is_same<bsl::remove_const_t<bool>, bool>::value);
+    static_assert(bsl::is_same<bsl::remove_const_t<bool const>, bool>::value);
+    static_assert(bsl::is_same<bsl::remove_const_t<void *>, void *>::value);
+    static_assert(bsl::is_same<bsl::remove_const_t<void *const>, void *>::value);
+    static_assert(bsl::is_same<bsl::remove_const_t<void const *>, void const *>::value);
 
     return bsl::ut_success();
 }

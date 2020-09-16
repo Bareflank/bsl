@@ -22,85 +22,14 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#define BSL_DETAILS_PUTC_STDOUT_HPP
-#define BSL_DETAILS_PUTS_STDOUT_HPP
-
-#include <bsl/details/carray.hpp>
-
-#include <bsl/char_type.hpp>
-#include <bsl/convert.hpp>
-#include <bsl/cstdint.hpp>
-#include <bsl/cstdio.hpp>
-#include <bsl/cstdlib.hpp>
-#include <bsl/cstring.hpp>
-#include <bsl/cstr_type.hpp>
-#include <bsl/discard.hpp>
-#include <bsl/safe_integral.hpp>
-
-namespace
-{
-    template<bsl::uintmax N>
-    struct test_string_view final
-    {
-        bsl::details::carray<bsl::char_type, N> data{};
-        bsl::safe_uintmax size{};
-    };
-
-    constexpr bsl::safe_uintmax res_size{bsl::to_umax(10000)};
-    test_string_view<res_size.get()> res{};
-
-    template<bsl::uintmax N>
-    [[nodiscard]] auto
-    operator==(test_string_view<N> const &lhs, bsl::cstr_type const str) noexcept -> bool
-    {
-        if (bsl::builtin_strlen(str) != lhs.size) {
-            return false;
-        }
-
-        return __builtin_memcmp(lhs.data.data(), str, lhs.size.get()) == 0;
-    }
-
-    void
-    reset() noexcept
-    {
-        for (bsl::safe_uintmax i{}; i < res.data.size(); ++i) {
-            *res.data.at_if(i) = 0;
-        }
-
-        res.size = bsl::to_umax(0);
-    }
-}
-
-namespace bsl::details
-{
-    static void
-    putc_stdout(bsl::char_type const c) noexcept
-    {
-        if (auto *const ptr{res.data.at_if(res.size)}) {
-            *ptr = c;
-        }
-        else {
-            bsl::discard(fputs("res.data too small\n", stderr));
-            exit(1);
-        }
-        ++res.size;
-    }
-
-    static void
-    puts_stdout(bsl::cstr_type const str) noexcept
-    {
-        for (bsl::safe_uintmax i{}; i < bsl::builtin_strlen(str); ++i) {
-            putc_stdout(str[i.get()]);
-        }
-    }
-}
+#include "../fmt_test.hpp"
 
 #include <bsl/debug.hpp>
 #include <bsl/ut.hpp>
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -111,1454 +40,1454 @@ main() noexcept -> bsl::exit_code
 {
     bsl::ut_scenario{"integral with no formatting"} = []() {
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << 0;
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0");
+                bsl::ut_check(fmt_test::was_this_outputted("0"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << 42;
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42");
+                bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << -42;
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-42");
+                bsl::ut_check(fmt_test::was_this_outputted("-42"));
             };
         };
     };
 
     bsl::ut_scenario{"safe_integral with no formatting"} = []() {
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::to_i32(0);
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0");
+                bsl::ut_check(fmt_test::was_this_outputted("0"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::to_i32(42);
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42");
+                bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::to_i32(-42);
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-42");
+                bsl::ut_check(fmt_test::was_this_outputted("-42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::safe_uintmax::zero(true);
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "[error]");
+                bsl::ut_check(fmt_test::was_this_outputted("[error]"));
             };
         };
     };
 
     bsl::ut_scenario{"integral with no formatting using fmt"} = []() {
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{bsl::nullops, 0};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0");
+                bsl::ut_check(fmt_test::was_this_outputted("0"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{bsl::nullops, 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42");
+                bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{bsl::nullops, -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-42");
+                bsl::ut_check(fmt_test::was_this_outputted("-42"));
             };
         };
     };
 
     bsl::ut_scenario{"integral with no formatting using fmt"} = []() {
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{bsl::nullops, bsl::to_i32(0)};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0");
+                bsl::ut_check(fmt_test::was_this_outputted("0"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{bsl::nullops, bsl::to_i32(42)};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42");
+                bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{bsl::nullops, bsl::to_i32(-42)};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-42");
+                bsl::ut_check(fmt_test::was_this_outputted("-42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{bsl::nullops, bsl::safe_uintmax::zero(true)};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "[error]");
+                bsl::ut_check(fmt_test::was_this_outputted("[error]"));
             };
         };
     };
 
     bsl::ut_scenario{"integral with minimal formatting"} = []() {
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"b", 0};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0");
+                bsl::ut_check(fmt_test::was_this_outputted("0"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"d", 0};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0");
+                bsl::ut_check(fmt_test::was_this_outputted("0"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"x", 0};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0");
+                bsl::ut_check(fmt_test::was_this_outputted("0"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"c", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "*");
+                bsl::ut_check(fmt_test::was_this_outputted("*"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"s", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "*");
+                bsl::ut_check(fmt_test::was_this_outputted("*"));
             };
         };
     };
 
     bsl::ut_scenario{"integral with minimal formatting using fmt"} = []() {
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"b", bsl::to_i32(0)};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0");
+                bsl::ut_check(fmt_test::was_this_outputted("0"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"d", bsl::to_i32(0)};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0");
+                bsl::ut_check(fmt_test::was_this_outputted("0"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"x", bsl::to_i32(0)};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0");
+                bsl::ut_check(fmt_test::was_this_outputted("0"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"c", bsl::to_i32(42)};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "*");
+                bsl::ut_check(fmt_test::was_this_outputted("*"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"s", bsl::to_i32(42)};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "*");
+                bsl::ut_check(fmt_test::was_this_outputted("*"));
             };
         };
     };
 
     bsl::ut_scenario{"integral with formatting type b"} = []() {
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "101010");
+                bsl::ut_check(fmt_test::was_this_outputted("101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"10b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "    101010");
+                bsl::ut_check(fmt_test::was_this_outputted("    101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "101010");
+                bsl::ut_check(fmt_test::was_this_outputted("101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "101010");
+                bsl::ut_check(fmt_test::was_this_outputted("101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "101010");
+                bsl::ut_check(fmt_test::was_this_outputted("101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<10b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "101010    ");
+                bsl::ut_check(fmt_test::was_this_outputted("101010    "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">10b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "    101010");
+                bsl::ut_check(fmt_test::was_this_outputted("    101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^10b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "  101010  ");
+                bsl::ut_check(fmt_test::was_this_outputted("  101010  "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#<10b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "101010####");
+                bsl::ut_check(fmt_test::was_this_outputted("101010####"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#>10b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "####101010");
+                bsl::ut_check(fmt_test::was_this_outputted("####101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#^10b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "##101010##");
+                bsl::ut_check(fmt_test::was_this_outputted("##101010##"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<#10b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0b101010  ");
+                bsl::ut_check(fmt_test::was_this_outputted("0b101010  "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">#10b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "  0b101010");
+                bsl::ut_check(fmt_test::was_this_outputted("  0b101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^#10b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == " 0b101010 ");
+                bsl::ut_check(fmt_test::was_this_outputted(" 0b101010 "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#<#10b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0b101010##");
+                bsl::ut_check(fmt_test::was_this_outputted("0b101010##"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#>#10b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "##0b101010");
+                bsl::ut_check(fmt_test::was_this_outputted("##0b101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#^#10b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "#0b101010#");
+                bsl::ut_check(fmt_test::was_this_outputted("#0b101010#"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0b101010");
+                bsl::ut_check(fmt_test::was_this_outputted("0b101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#10b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "  0b101010");
+                bsl::ut_check(fmt_test::was_this_outputted("  0b101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"0b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "101010");
+                bsl::ut_check(fmt_test::was_this_outputted("101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"010b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0000101010");
+                bsl::ut_check(fmt_test::was_this_outputted("0000101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#010b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0b00101010");
+                bsl::ut_check(fmt_test::was_this_outputted("0b00101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"+b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "+101010");
+                bsl::ut_check(fmt_test::was_this_outputted("+101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"+b", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-101010");
+                bsl::ut_check(fmt_test::was_this_outputted("-101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"-b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "101010");
+                bsl::ut_check(fmt_test::was_this_outputted("101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"-b", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-101010");
+                bsl::ut_check(fmt_test::was_this_outputted("-101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{" b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == " 101010");
+                bsl::ut_check(fmt_test::was_this_outputted(" 101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{" b", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-101010");
+                bsl::ut_check(fmt_test::was_this_outputted("-101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<+10b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "+101010   ");
+                bsl::ut_check(fmt_test::was_this_outputted("+101010   "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<+10b", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-101010   ");
+                bsl::ut_check(fmt_test::was_this_outputted("-101010   "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">+10b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "   +101010");
+                bsl::ut_check(fmt_test::was_this_outputted("   +101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">+10b", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "   -101010");
+                bsl::ut_check(fmt_test::was_this_outputted("   -101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^+10b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == " +101010  ");
+                bsl::ut_check(fmt_test::was_this_outputted(" +101010  "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^+10b", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == " -101010  ");
+                bsl::ut_check(fmt_test::was_this_outputted(" -101010  "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"+#010b", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "+0b0101010");
+                bsl::ut_check(fmt_test::was_this_outputted("+0b0101010"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"+#010b", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-0b0101010");
+                bsl::ut_check(fmt_test::was_this_outputted("-0b0101010"));
             };
         };
     };
 
     bsl::ut_scenario{"integral with formatting type d"} = []() {
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42");
+                bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"10d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "        42");
+                bsl::ut_check(fmt_test::was_this_outputted("        42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42");
+                bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42");
+                bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42");
+                bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<10d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42        ");
+                bsl::ut_check(fmt_test::was_this_outputted("42        "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">10d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "        42");
+                bsl::ut_check(fmt_test::was_this_outputted("        42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^10d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "    42    ");
+                bsl::ut_check(fmt_test::was_this_outputted("    42    "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#<10d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42########");
+                bsl::ut_check(fmt_test::was_this_outputted("42########"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#>10d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "########42");
+                bsl::ut_check(fmt_test::was_this_outputted("########42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#^10d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "####42####");
+                bsl::ut_check(fmt_test::was_this_outputted("####42####"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<#10d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42        ");
+                bsl::ut_check(fmt_test::was_this_outputted("42        "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">#10d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "        42");
+                bsl::ut_check(fmt_test::was_this_outputted("        42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^#10d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "    42    ");
+                bsl::ut_check(fmt_test::was_this_outputted("    42    "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#<#10d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42########");
+                bsl::ut_check(fmt_test::was_this_outputted("42########"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#>#10d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "########42");
+                bsl::ut_check(fmt_test::was_this_outputted("########42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#^#10d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "####42####");
+                bsl::ut_check(fmt_test::was_this_outputted("####42####"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42");
+                bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#10d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "        42");
+                bsl::ut_check(fmt_test::was_this_outputted("        42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"0d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42");
+                bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"010d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0000000042");
+                bsl::ut_check(fmt_test::was_this_outputted("0000000042"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#010d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0000000042");
+                bsl::ut_check(fmt_test::was_this_outputted("0000000042"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"+d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "+42");
+                bsl::ut_check(fmt_test::was_this_outputted("+42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"+d", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-42");
+                bsl::ut_check(fmt_test::was_this_outputted("-42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"-d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42");
+                bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"-d", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-42");
+                bsl::ut_check(fmt_test::was_this_outputted("-42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{" d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == " 42");
+                bsl::ut_check(fmt_test::was_this_outputted(" 42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{" d", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-42");
+                bsl::ut_check(fmt_test::was_this_outputted("-42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<+10d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "+42       ");
+                bsl::ut_check(fmt_test::was_this_outputted("+42       "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<+10d", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-42       ");
+                bsl::ut_check(fmt_test::was_this_outputted("-42       "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">+10d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "       +42");
+                bsl::ut_check(fmt_test::was_this_outputted("       +42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">+10d", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "       -42");
+                bsl::ut_check(fmt_test::was_this_outputted("       -42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^+10d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "   +42    ");
+                bsl::ut_check(fmt_test::was_this_outputted("   +42    "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^+10d", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "   -42    ");
+                bsl::ut_check(fmt_test::was_this_outputted("   -42    "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"+#010d", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "+000000042");
+                bsl::ut_check(fmt_test::was_this_outputted("+000000042"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"+#010d", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-000000042");
+                bsl::ut_check(fmt_test::was_this_outputted("-000000042"));
             };
         };
     };
 
     bsl::ut_scenario{"integral with formatting type x"} = []() {
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "2A");
+                bsl::ut_check(fmt_test::was_this_outputted("2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"10x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "        2A");
+                bsl::ut_check(fmt_test::was_this_outputted("        2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "2A");
+                bsl::ut_check(fmt_test::was_this_outputted("2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "2A");
+                bsl::ut_check(fmt_test::was_this_outputted("2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "2A");
+                bsl::ut_check(fmt_test::was_this_outputted("2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<10x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "2A        ");
+                bsl::ut_check(fmt_test::was_this_outputted("2A        "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">10x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "        2A");
+                bsl::ut_check(fmt_test::was_this_outputted("        2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^10x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "    2A    ");
+                bsl::ut_check(fmt_test::was_this_outputted("    2A    "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#<10x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "2A########");
+                bsl::ut_check(fmt_test::was_this_outputted("2A########"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#>10x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "########2A");
+                bsl::ut_check(fmt_test::was_this_outputted("########2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#^10x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "####2A####");
+                bsl::ut_check(fmt_test::was_this_outputted("####2A####"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<#10x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0x2A      ");
+                bsl::ut_check(fmt_test::was_this_outputted("0x2A      "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">#10x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "      0x2A");
+                bsl::ut_check(fmt_test::was_this_outputted("      0x2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^#10x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "   0x2A   ");
+                bsl::ut_check(fmt_test::was_this_outputted("   0x2A   "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#<#10x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0x2A######");
+                bsl::ut_check(fmt_test::was_this_outputted("0x2A######"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#>#10x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "######0x2A");
+                bsl::ut_check(fmt_test::was_this_outputted("######0x2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#^#10x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "###0x2A###");
+                bsl::ut_check(fmt_test::was_this_outputted("###0x2A###"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0x2A");
+                bsl::ut_check(fmt_test::was_this_outputted("0x2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#10x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "      0x2A");
+                bsl::ut_check(fmt_test::was_this_outputted("      0x2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"0x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "2A");
+                bsl::ut_check(fmt_test::was_this_outputted("2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"010x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "000000002A");
+                bsl::ut_check(fmt_test::was_this_outputted("000000002A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#010x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0x0000002A");
+                bsl::ut_check(fmt_test::was_this_outputted("0x0000002A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"+x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "+2A");
+                bsl::ut_check(fmt_test::was_this_outputted("+2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"+x", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-2A");
+                bsl::ut_check(fmt_test::was_this_outputted("-2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"-x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "2A");
+                bsl::ut_check(fmt_test::was_this_outputted("2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"-x", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-2A");
+                bsl::ut_check(fmt_test::was_this_outputted("-2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{" x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == " 2A");
+                bsl::ut_check(fmt_test::was_this_outputted(" 2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{" x", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-2A");
+                bsl::ut_check(fmt_test::was_this_outputted("-2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<+10x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "+2A       ");
+                bsl::ut_check(fmt_test::was_this_outputted("+2A       "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<+10x", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-2A       ");
+                bsl::ut_check(fmt_test::was_this_outputted("-2A       "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">+10x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "       +2A");
+                bsl::ut_check(fmt_test::was_this_outputted("       +2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">+10x", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "       -2A");
+                bsl::ut_check(fmt_test::was_this_outputted("       -2A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^+10x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "   +2A    ");
+                bsl::ut_check(fmt_test::was_this_outputted("   +2A    "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^+10x", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "   -2A    ");
+                bsl::ut_check(fmt_test::was_this_outputted("   -2A    "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"+#010x", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "+0x000002A");
+                bsl::ut_check(fmt_test::was_this_outputted("+0x000002A"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"+#010x", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-0x000002A");
+                bsl::ut_check(fmt_test::was_this_outputted("-0x000002A"));
             };
         };
     };
 
     bsl::ut_scenario{"integral with formatting type c"} = []() {
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"c", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "*");
+                bsl::ut_check(fmt_test::was_this_outputted("*"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"10c", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "*         ");
+                bsl::ut_check(fmt_test::was_this_outputted("*         "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<c", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "*");
+                bsl::ut_check(fmt_test::was_this_outputted("*"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">c", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "*");
+                bsl::ut_check(fmt_test::was_this_outputted("*"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^c", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "*");
+                bsl::ut_check(fmt_test::was_this_outputted("*"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<10c", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "*         ");
+                bsl::ut_check(fmt_test::was_this_outputted("*         "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">10c", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "         *");
+                bsl::ut_check(fmt_test::was_this_outputted("         *"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^10c", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "    *     ");
+                bsl::ut_check(fmt_test::was_this_outputted("    *     "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#<10c", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "*#########");
+                bsl::ut_check(fmt_test::was_this_outputted("*#########"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#>10c", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "#########*");
+                bsl::ut_check(fmt_test::was_this_outputted("#########*"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#^10c", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "####*#####");
+                bsl::ut_check(fmt_test::was_this_outputted("####*#####"));
             };
         };
     };
 
     bsl::ut_scenario{"integral with default formatting type"} = []() {
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42");
+                bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"10", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "        42");
+                bsl::ut_check(fmt_test::was_this_outputted("        42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42");
+                bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42");
+                bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42");
+                bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<10", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42        ");
+                bsl::ut_check(fmt_test::was_this_outputted("42        "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">10", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "        42");
+                bsl::ut_check(fmt_test::was_this_outputted("        42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^10", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "    42    ");
+                bsl::ut_check(fmt_test::was_this_outputted("    42    "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#<10", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42########");
+                bsl::ut_check(fmt_test::was_this_outputted("42########"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#>10", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "########42");
+                bsl::ut_check(fmt_test::was_this_outputted("########42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#^10", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "####42####");
+                bsl::ut_check(fmt_test::was_this_outputted("####42####"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<#10", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42        ");
+                bsl::ut_check(fmt_test::was_this_outputted("42        "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">#10", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "        42");
+                bsl::ut_check(fmt_test::was_this_outputted("        42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^#10", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "    42    ");
+                bsl::ut_check(fmt_test::was_this_outputted("    42    "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#<#10", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42########");
+                bsl::ut_check(fmt_test::was_this_outputted("42########"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#>#10", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "########42");
+                bsl::ut_check(fmt_test::was_this_outputted("########42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#^#10", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "####42####");
+                bsl::ut_check(fmt_test::was_this_outputted("####42####"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42");
+                bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#10", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "        42");
+                bsl::ut_check(fmt_test::was_this_outputted("        42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"0", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42");
+                bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"010", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0000000042");
+                bsl::ut_check(fmt_test::was_this_outputted("0000000042"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"#010", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "0000000042");
+                bsl::ut_check(fmt_test::was_this_outputted("0000000042"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"+", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "+42");
+                bsl::ut_check(fmt_test::was_this_outputted("+42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"+", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-42");
+                bsl::ut_check(fmt_test::was_this_outputted("-42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"-", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "42");
+                bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"-", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-42");
+                bsl::ut_check(fmt_test::was_this_outputted("-42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{" ", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == " 42");
+                bsl::ut_check(fmt_test::was_this_outputted(" 42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{" ", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-42");
+                bsl::ut_check(fmt_test::was_this_outputted("-42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<+10", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "+42       ");
+                bsl::ut_check(fmt_test::was_this_outputted("+42       "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"<+10", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-42       ");
+                bsl::ut_check(fmt_test::was_this_outputted("-42       "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">+10", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "       +42");
+                bsl::ut_check(fmt_test::was_this_outputted("       +42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{">+10", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "       -42");
+                bsl::ut_check(fmt_test::was_this_outputted("       -42"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^+10", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "   +42    ");
+                bsl::ut_check(fmt_test::was_this_outputted("   +42    "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"^+10", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "   -42    ");
+                bsl::ut_check(fmt_test::was_this_outputted("   -42    "));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"+#010", 42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "+000000042");
+                bsl::ut_check(fmt_test::was_this_outputted("+000000042"));
             };
         };
 
         bsl::ut_when{} = []() {
-            reset();
+            fmt_test::reset();
             bsl::print() << bsl::fmt{"+#010", -42};
             bsl::ut_then{} = []() {
-                bsl::ut_check(res == "-000000042");
+                bsl::ut_check(fmt_test::was_this_outputted("-000000042"));
             };
         };
     };

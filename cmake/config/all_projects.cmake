@@ -29,15 +29,15 @@ option(ENABLE_DOXYGEN "Turns on/off support for doxygen" OFF)
 bf_add_config(
     CONFIG_NAME BSL_DEBUG_LEVEL
     CONFIG_TYPE STRING
-    DEFAULT_VAL 0
+    DEFAULT_VAL "static_cast<bsl::uintmax>(0)"
     DESCRIPTION "Defines the debug level"
-    OPTIONS 0 v vv vvv
+    OPTIONS "static_cast<bsl::uintmax>(0)" "bsl::V" "bsl::VV" "bsl::VVV"
 )
 
 bf_add_config(
     CONFIG_NAME BSL_PAGE_SIZE
     CONFIG_TYPE STRING
-    DEFAULT_VAL "0x10'00U"
+    DEFAULT_VAL "static_cast<bsl::uintmax>(4096)"
     DESCRIPTION "Defines the size of a page"
     SKIP_VALIDATION
 )

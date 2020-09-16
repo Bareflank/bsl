@@ -27,8 +27,8 @@
 #include <bsl/ut.hpp>
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -37,16 +37,14 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
-    static_assert(is_same<make_signed_t<bsl::uint8>, bsl::int8>::value);
-    static_assert(is_same<make_signed_t<bsl::uint8 const>, bsl::int8 const>::value);
-    static_assert(is_same<make_signed_t<bsl::uint16>, bsl::int16>::value);
-    static_assert(is_same<make_signed_t<bsl::uint16 const>, bsl::int16 const>::value);
-    static_assert(is_same<make_signed_t<bsl::uint32>, bsl::int32>::value);
-    static_assert(is_same<make_signed_t<bsl::uint32 const>, bsl::int32 const>::value);
-    static_assert(is_same<make_signed_t<bsl::uint64>, bsl::int64>::value);
-    static_assert(is_same<make_signed_t<bsl::uint64 const>, bsl::int64 const>::value);
+    static_assert(bsl::is_same<bsl::make_signed_t<bsl::uint8>, bsl::int8>::value);
+    static_assert(bsl::is_same<bsl::make_signed_t<bsl::uint8 const>, bsl::int8 const>::value);
+    static_assert(bsl::is_same<bsl::make_signed_t<bsl::uint16>, bsl::int16>::value);
+    static_assert(bsl::is_same<bsl::make_signed_t<bsl::uint16 const>, bsl::int16 const>::value);
+    static_assert(bsl::is_same<bsl::make_signed_t<bsl::uint32>, bsl::int32>::value);
+    static_assert(bsl::is_same<bsl::make_signed_t<bsl::uint32 const>, bsl::int32 const>::value);
+    static_assert(bsl::is_same<bsl::make_signed_t<bsl::uint64>, bsl::int64>::value);
+    static_assert(bsl::is_same<bsl::make_signed_t<bsl::uint64 const>, bsl::int64 const>::value);
 
     return bsl::ut_success();
 }

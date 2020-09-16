@@ -321,15 +321,15 @@ namespace bsl
     /// @endcode
     ///
     /// <!-- template parameters -->
-    ///   @tparam V the type of value being formatted for output
+    ///   @tparam VAL_T the type of value being formatted for output
     ///
-    template<typename V>
+    template<typename VAL_T>
     class fmt final
     {
         /// @brief stores the fmt options for this bsl::fmt
         fmt_options m_ops;
         /// @brief stores a reference to the provided val.
-        V const &m_val;
+        VAL_T const &m_val;
 
     public:
         /// <!-- description -->
@@ -342,7 +342,10 @@ namespace bsl
         ///   @param ops the format options used to format the output of val
         ///   @param val the value to output given the provided format string
         ///
-        constexpr fmt(fmt_options const &ops, V const &val) noexcept    // --
+        // If we attempt to output an integer literal, this check with trigger
+        // which is a ok, since this functionality is needed.
+        // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
+        constexpr fmt(fmt_options const &ops, VAL_T const &val) noexcept    // --
             : m_ops{ops}, m_val{val}
         {}
 
@@ -360,7 +363,10 @@ namespace bsl
         ///   @param width a dynamic width which overrides the width field
         ///     in the format string (used to set the width field at runtime).
         ///
-        constexpr fmt(fmt_options const &ops, V const &val, safe_uintmax const &width) noexcept
+        // If we attempt to output an integer literal, this check with trigger
+        // which is a ok, since this functionality is needed.
+        // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
+        constexpr fmt(fmt_options const &ops, VAL_T const &val, safe_uintmax const &width) noexcept
             : m_ops{ops}, m_val{val}
         {
             constexpr safe_uintmax max_width{to_umax(999)};
@@ -385,7 +391,10 @@ namespace bsl
         ///   @param str the format options used to format the output of val
         ///   @param val the value to output given the provided format string
         ///
-        constexpr fmt(cstr_type const str, V const &val) noexcept    // --
+        // If we attempt to output an integer literal, this check with trigger
+        // which is a ok, since this functionality is needed.
+        // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
+        constexpr fmt(cstr_type const str, VAL_T const &val) noexcept    // --
             : fmt{fmt_options{str}, val}
         {}
 
@@ -403,9 +412,51 @@ namespace bsl
         ///   @param width a dynamic width which overrides the width field
         ///     in the format string (used to set the width field at runtime).
         ///
-        constexpr fmt(cstr_type const str, V const &val, safe_uintmax const &width) noexcept
+        // If we attempt to output an integer literal, this check with trigger
+        // which is a ok, since this functionality is needed.
+        // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
+        constexpr fmt(cstr_type const str, VAL_T const &val, safe_uintmax const &width) noexcept
             : fmt{fmt_options{str}, val, width}
         {}
+
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::fmt
+        ///
+        constexpr ~fmt() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr fmt(fmt const &o) noexcept = delete;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr fmt(fmt &&o) noexcept = delete;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(fmt const &o) &noexcept -> fmt & = delete;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(fmt &&o) &noexcept -> fmt & = delete;
 
         /// <!-- description -->
         ///   @brief Outputs the provided formatted argument to the provided
@@ -460,10 +511,10 @@ namespace bsl
             return o;
         }
 
-        // This triggers for c-style strings. Not really sure if this is a
+        // These trigger for c-style strings. Not really sure if this is a
         // false positive for this test, but either way, this is something
         // we wish to support.
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay, hicpp-no-array-decay)
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay, hicpp-no-array-decay, bsl-implicit-conversions-forbidden)
         fmt_impl(o, arg.m_ops, arg.m_val);
         return o;
     }

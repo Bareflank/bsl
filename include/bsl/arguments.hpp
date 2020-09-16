@@ -164,19 +164,6 @@ namespace bsl
         {}
 
         /// <!-- description -->
-        ///   @brief Creates a bsl::arguments object given a provided argc
-        ///     and argv.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param argc the total number of arguments passed to the
-        ///     application
-        ///   @param argv the arguments passed to the application
-        ///
-        constexpr arguments(bsl::int32 const argc, value_type *const argv) noexcept
-            : arguments{to_umax(argc), argv}
-        {}
-
-        /// <!-- description -->
         ///   @brief Returns the provided argc, argv parameters as a span
         ///     that can be parsed manually.
         ///
@@ -211,6 +198,7 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
+        ///   @tparam B the base to convert the argument to
         ///   @param pos the position of the positional argument to get.
         ///   @return Returns the positional argument at position "pos"
         ///     converted to "T". If the positional argument "pos" does not
@@ -218,7 +206,7 @@ namespace bsl
         ///     the result is bsl::safe_integral<T>{0, true}, meaning the
         ///     integral has it's error flag set. All other types return T{}.
         ///
-        template<typename T, bsl::int32 B = details::arguments_default_base>
+        template<typename T, bsl::int32 B = details::ARGUMENTS_DEFAULT_BASE.get()>
         [[nodiscard]] constexpr auto
         get(size_type const &pos) const noexcept -> T
         {
@@ -234,6 +222,7 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
+        ///   @tparam B the base to convert the argument to
         ///   @param opt the optional argument to get.
         ///   @return Returns the requested optional argument. If the optional
         ///     argument "pos" does not exist, the result depends on "T".
@@ -241,7 +230,7 @@ namespace bsl
         ///     bsl::safe_integral<T>{0, true}, meaning the integral has it's
         ///     error flag set. All other types return T{}.
         ///
-        template<typename T, bsl::int32 B = details::arguments_default_base>
+        template<typename T, bsl::int32 B = details::ARGUMENTS_DEFAULT_BASE.get()>
         [[nodiscard]] constexpr auto
         get(string_view const &opt) const noexcept -> T
         {
@@ -256,12 +245,13 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
+        ///   @tparam B the base to convert the argument to
         ///   @param pos the position of the positional argument to get.
         ///   @return Returns this->get<T, B>(pos + current_index), where the
         ///     current_index starts at 0 when the arguments are constructed,
         ///     and can be incremented using the ++ operator.
         ///
-        template<typename T, bsl::int32 B = details::arguments_default_base>
+        template<typename T, bsl::int32 B = details::ARGUMENTS_DEFAULT_BASE.get()>
         [[nodiscard]] constexpr auto
         at(size_type const &pos) const noexcept -> T
         {
@@ -274,9 +264,10 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
+        ///   @tparam B the base to convert the argument to
         ///   @return Returns this->at<T, B>(size_type::zero()).
         ///
-        template<typename T, bsl::int32 B = details::arguments_default_base>
+        template<typename T, bsl::int32 B = details::ARGUMENTS_DEFAULT_BASE.get()>
         [[nodiscard]] constexpr auto
         front() const noexcept -> T
         {

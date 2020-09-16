@@ -32,9 +32,6 @@
 
 namespace bsl
 {
-    template<typename V>
-    class fmt;
-
     /// <!-- description -->
     ///   @brief Used to indicate that an object "val" may be "moved from",
     ///     i.e. allowing the efficient transfer of resources from "val" to
@@ -52,17 +49,6 @@ namespace bsl
     {
         return static_cast<bsl::remove_reference_t<T> &&>(val);
     }
-
-    /// <!-- description -->
-    ///   @brief Used to prevent a move of bsl::fmt as it must always be a
-    ///     temporary r-value.
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam V the type of value being formatted for output
-    ///   @param val the value being moved
-    ///
-    template<typename V>
-    constexpr auto move(fmt<V> &&val) noexcept -> void = delete;
 }
 
 #endif

@@ -33,11 +33,11 @@ namespace bsl
     inline void
     example_extent_overview() noexcept
     {
-        constexpr bsl::int32 ext{2};
+        constexpr bsl::safe_uintmax ext{bsl::to_umax(2)};
 
         // This is needed to demonstrate how to use this type trait
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-        if constexpr (bsl::extent<bool[ext]>::value == ext) {
+        if constexpr (bsl::extent<bool[ext.get()]>::value == ext) {
             bsl::print() << "success\n";
         }
         else {

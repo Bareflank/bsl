@@ -49,6 +49,10 @@ namespace bsl
     };
 
     /// @brief a helper that reduces the verbosity of bsl::underlying_type
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to query
+    ///
     template<typename T>
     using underlying_type_t = typename underlying_type<T>::type;
 }

@@ -35,6 +35,8 @@ namespace bsl
     ///     to cause the static_assert to trigger if a function is used.
     ///
     /// <!-- inputs/outputs -->
+    ///   @tparam T used to ensure the call to always_false is only evaluated
+    ///     once a template type is instantiated.
     ///   @return Always returns false.
     ///
     template<typename T>

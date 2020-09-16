@@ -66,6 +66,7 @@
 #include "array/example_array_size.hpp"
 #include "example_as_const_overview.hpp"
 #include "example_basic_errc_type_overview.hpp"
+#include "basic_errc_type/example_basic_errc_type_constructor_t_safe_int.hpp"
 #include "basic_errc_type/example_basic_errc_type_constructor_t.hpp"
 #include "basic_errc_type/example_basic_errc_type_default_constructor.hpp"
 #include "basic_errc_type/example_basic_errc_type_equals.hpp"
@@ -113,17 +114,22 @@
 #include "example_byte_overview.hpp"
 #include "byte/example_byte_and_assign.hpp"
 #include "byte/example_byte_and.hpp"
+#include "byte/example_byte_by_safe_int_constructor.hpp"
 #include "byte/example_byte_by_value_constructor.hpp"
 #include "byte/example_byte_complement.hpp"
 #include "byte/example_byte_default_constructor.hpp"
 #include "byte/example_byte_equal.hpp"
+#include "byte/example_byte_lshift_assign_safe_int.hpp"
 #include "byte/example_byte_lshift_assign.hpp"
+#include "byte/example_byte_lshift_safe_int.hpp"
 #include "byte/example_byte_lshift.hpp"
 #include "byte/example_byte_not_equal.hpp"
 #include "byte/example_byte_or_assign.hpp"
 #include "byte/example_byte_or.hpp"
 #include "byte/example_byte_ostream.hpp"
+#include "byte/example_byte_rshift_assign_safe_int.hpp"
 #include "byte/example_byte_rshift_assign.hpp"
+#include "byte/example_byte_rshift_safe_int.hpp"
 #include "byte/example_byte_rshift.hpp"
 #include "byte/example_byte_to_integer.hpp"
 #include "byte/example_byte_xor_assign.hpp"
@@ -178,14 +184,13 @@
 #include "example_declval_overview.hpp"
 #include "example_destroy_at_overview.hpp"
 #include "example_detected_or_overview.hpp"
-#include "example_detected_overview.hpp"
+#include "example_detected_t_overview.hpp"
 #include "example_discard_overview.hpp"
 #include "example_disjunction_overview.hpp"
 #include "example_enable_if_overview.hpp"
 #include "example_exchange_overview.hpp"
 #include "example_extent_overview.hpp"
 #include "example_false_type_overview.hpp"
-#include "example_fill_overview.hpp"
 #include "fmt/example_fmt_align.hpp"
 #include "fmt/example_fmt_alt_form.hpp"
 #include "fmt/example_fmt_bool.hpp"
@@ -211,10 +216,11 @@
 #include "ifmap/example_ifmap_size_bytes.hpp"
 #include "ifmap/example_ifmap_size.hpp"
 #include "example_in_place_overview.hpp"
-#include "example_integer_sequence_overview.hpp"
+#include "example_make_index_sequence_overview.hpp"
 #include "integer_sequence/example_integer_sequence_max.hpp"
 #include "integer_sequence/example_integer_sequence_min.hpp"
 #include "integer_sequence/example_integer_sequence_size.hpp"
+#include "example_integer_sequence_overview.hpp"
 #include "example_integral_constant_overview.hpp"
 #include "example_invoke_result_overview.hpp"
 #include "example_invoke_overview.hpp"
@@ -451,6 +457,7 @@ namespace
     ///   @brief Executes an example with some possible pre/post logic
     ///
     /// <!-- inputs/outputs -->
+    ///   @tparam FUNC the type of example function to call
     ///   @param f the example function to call
     ///   @param name the name of the example
     ///
@@ -517,6 +524,7 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_array_size, "example_array_size");
     example(&bsl::example_as_const_overview, "example_as_const_overview");
     example(&bsl::example_basic_errc_type_overview, "example_basic_errc_type_overview");
+    example(&bsl::example_basic_errc_type_constructor_t_safe_int, "example_basic_errc_type_constructor_t_safe_int");
     example(&bsl::example_basic_errc_type_constructor_t, "example_basic_errc_type_constructor_t");
     example(&bsl::example_basic_errc_type_default_constructor, "example_basic_errc_type_default_constructor");
     example(&bsl::example_basic_errc_type_equals, "example_basic_errc_type_equals");
@@ -564,17 +572,22 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_byte_overview, "example_byte_overview");
     example(&bsl::example_byte_and_assign, "example_byte_and_assign");
     example(&bsl::example_byte_and, "example_byte_and");
+    example(&bsl::example_byte_by_safe_int_constructor, "example_byte_by_safe_int_constructor");
     example(&bsl::example_byte_by_value_constructor, "example_byte_by_value_constructor");
     example(&bsl::example_byte_complement, "example_byte_complement");
     example(&bsl::example_byte_default_constructor, "example_byte_default_constructor");
     example(&bsl::example_byte_equal, "example_byte_equal");
+    example(&bsl::example_byte_lshift_assign_safe_int, "example_byte_lshift_assign_safe_int");
     example(&bsl::example_byte_lshift_assign, "example_byte_lshift_assign");
+    example(&bsl::example_byte_lshift_safe_int, "example_byte_lshift_safe_int");
     example(&bsl::example_byte_lshift, "example_byte_lshift");
     example(&bsl::example_byte_not_equal, "example_byte_not_equal");
     example(&bsl::example_byte_or_assign, "example_byte_or_assign");
     example(&bsl::example_byte_or, "example_byte_or");
     example(&bsl::example_byte_ostream, "example_byte_ostream");
+    example(&bsl::example_byte_rshift_assign_safe_int, "example_byte_rshift_assign_safe_int");
     example(&bsl::example_byte_rshift_assign, "example_byte_rshift_assign");
+    example(&bsl::example_byte_rshift_safe_int, "example_byte_rshift_safe_int");
     example(&bsl::example_byte_rshift, "example_byte_rshift");
     example(&bsl::example_byte_to_integer, "example_byte_to_integer");
     example(&bsl::example_byte_xor_assign, "example_byte_xor_assign");
@@ -629,14 +642,13 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_declval_overview, "example_declval_overview");
     example(&bsl::example_destroy_at_overview, "example_destroy_at_overview");
     example(&bsl::example_detected_or_overview, "example_detected_or_overview");
-    example(&bsl::example_detected_overview, "example_detected_overview");
+    example(&bsl::example_detected_t_overview, "example_detected_t_overview");
     example(&bsl::example_discard_overview, "example_discard_overview");
     example(&bsl::example_disjunction_overview, "example_disjunction_overview");
     example(&bsl::example_enable_if_overview, "example_enable_if_overview");
     example(&bsl::example_exchange_overview, "example_exchange_overview");
     example(&bsl::example_extent_overview, "example_extent_overview");
     example(&bsl::example_false_type_overview, "example_false_type_overview");
-    example(&bsl::example_fill_overview, "example_fill_overview");
     example(&bsl::example_fmt_align, "example_fmt_align");
     example(&bsl::example_fmt_alt_form, "example_fmt_alt_form");
     example(&bsl::example_fmt_bool, "example_fmt_bool");
@@ -662,10 +674,11 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_ifmap_size_bytes, "example_ifmap_size_bytes");
     example(&bsl::example_ifmap_size, "example_ifmap_size");
     example(&bsl::example_in_place_overview, "example_in_place_overview");
-    example(&bsl::example_integer_sequence_overview, "example_integer_sequence_overview");
+    example(&bsl::example_make_index_sequence_overview, "example_make_index_sequence_overview");
     example(&bsl::example_integer_sequence_max, "example_integer_sequence_max");
     example(&bsl::example_integer_sequence_min, "example_integer_sequence_min");
     example(&bsl::example_integer_sequence_size, "example_integer_sequence_size");
+    example(&bsl::example_integer_sequence, "example_integer_sequence");
     example(&bsl::example_integral_constant_overview, "example_integral_constant_overview");
     example(&bsl::example_invoke_result_overview, "example_invoke_result_overview");
     example(&bsl::example_invoke_overview, "example_invoke_overview");

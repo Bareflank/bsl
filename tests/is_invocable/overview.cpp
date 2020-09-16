@@ -24,30 +24,15 @@
 
 #include <bsl/is_invocable.hpp>
 #include <bsl/reference_wrapper.hpp>
-
 #include <bsl/ut.hpp>
 
-namespace
-{
-    class test_base
-    {
-    public:
-        bsl::int32 data{42};
-    };
-
-    class test_final final : public test_base
-    {};
-
-    class test_noexcept final
-    {
-    public:
-        bsl::int32 data{42};
-    };
-}
+#include "../class_base.hpp"
+#include "../class_subclass.hpp"
+#include "../class_pod.hpp"
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -56,54 +41,45 @@ namespace
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
     // clang-format off
 
     // (1.1) If std::is_base_of<T, std::decay_t<decltype(t1)>>::value
     //       is true, then INVOKE(f, t1, t2, ..., tN) is equivalent to
     //       (t1.*f)(t2, ..., tN)
-    static_assert(is_invocable<bool (test_base::*)(), test_final>::value);
-    static_assert(is_invocable<bool (test_final::*)(), test_final>::value);
-    static_assert(is_invocable<bool (test_noexcept::*)() noexcept, test_noexcept>::value);
+    static_assert(bsl::is_invocable<bool (test::class_base::*)(), test::class_base>::value);
+    static_assert(bsl::is_invocable<bool (test::class_base::*)(), test::class_subclass>::value);
+    static_assert(bsl::is_invocable<bool (test::class_subclass::*)(), test::class_subclass>::value);
 
     // (1.2) If std::decay_t<decltype(t1)> is a specialization of
     //       std::reference_wrapper, then INVOKE(f, t1, t2, ..., tN) is
     //       equivalent to (t1.get().*f)(t2, ..., tN)
-    static_assert(is_invocable<bool (test_base::*)(), reference_wrapper<test_final>>::value);
-    static_assert(is_invocable<bool (test_final::*)(), reference_wrapper<test_final>>::value);
-    static_assert(is_invocable<bool (test_noexcept::*)() noexcept, reference_wrapper<test_noexcept>>::value);
+    static_assert(bsl::is_invocable<bool (test::class_base::*)(), bsl::reference_wrapper<test::class_base>>::value);
+    static_assert(bsl::is_invocable<bool (test::class_base::*)(), bsl::reference_wrapper<test::class_subclass>>::value);
+    static_assert(bsl::is_invocable<bool (test::class_subclass::*)(), bsl::reference_wrapper<test::class_subclass>>::value);
+
     // (1.3) If t1 does not satisfy the previous items, then
     //       INVOKE(f, t1, t2, ..., tN) is equivalent to
     //       ((*t1).*f)(t2, ..., tN)
-    static_assert(is_invocable<bool (test_base::*)(), test_final *>::value);
-    static_assert(is_invocable<bool (test_final::*)(), test_final *>::value);
-    static_assert(is_invocable<bool (test_noexcept::*)() noexcept, test_noexcept *>::value);
+    static_assert(bsl::is_invocable<bool (test::class_base::*)(), test::class_base *>::value);
+    static_assert(bsl::is_invocable<bool (test::class_base::*)(), test::class_subclass *>::value);
+    static_assert(bsl::is_invocable<bool (test::class_subclass::*)(), test::class_subclass *>::value);
 
     // (2.1) If std::is_base_of<T, std::decay_t<decltype(t1)>>::value is true,
     //       then INVOKE(f, t1) is equivalent to t1.*f
-    static_assert(is_invocable<decltype(&test_base::data), test_final>::value);
-    static_assert(is_invocable<decltype(&test_final::data), test_final>::value);
-    static_assert(is_invocable<decltype(&test_noexcept::data), test_noexcept>::value);
+    static_assert(bsl::is_invocable<decltype(&test::class_pod::val1), test::class_pod>::value);
 
     // (2.2) If std::decay_t<decltype(t1)> is a specialization of
     //       std::reference_wrapper, then INVOKE(f, t1) is
     //       equivalent to t1.get().*f
-    static_assert(is_invocable<decltype(&test_base::data), reference_wrapper<test_final>>::value);
-    static_assert(is_invocable<decltype(&test_final::data), reference_wrapper<test_final>>::value);
-    static_assert(is_invocable<decltype(&test_noexcept::data), reference_wrapper<test_noexcept>>::value);
+    static_assert(bsl::is_invocable<decltype(&test::class_pod::val1), bsl::reference_wrapper<test::class_pod>>::value);
 
     // (2.3) If t1 does not satisfy the previous items, then INVOKE(f, t1)
     //       is equivalent to (*t1).*f
-    static_assert(is_invocable<decltype(&test_base::data), test_final *>::value);
-    static_assert(is_invocable<decltype(&test_final::data), test_final *>::value);
-    static_assert(is_invocable<decltype(&test_noexcept::data), test_noexcept *>::value);
+    static_assert(bsl::is_invocable<decltype(&test::class_pod::val1), test::class_pod *>::value);
 
     // (3.1) Otherwise, INVOKE(f, t1, t2, ..., tN) is equivalent to
     //       f(t1, t2, ..., tN)
-    static_assert(is_invocable<bool ()>::value);
-
-    // clang-format on
+    static_assert(bsl::is_invocable<bool ()>::value);
 
     return bsl::ut_success();
 }

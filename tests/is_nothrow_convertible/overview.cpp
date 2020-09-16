@@ -26,38 +26,12 @@
 #include <bsl/is_nothrow_convertible.hpp>
 #include <bsl/ut.hpp>
 
-namespace
-{
-    class myclass_copy_noexcept final
-    {
-    public:
-        constexpr myclass_copy_noexcept() noexcept = default;
-        constexpr ~myclass_copy_noexcept() noexcept = default;
-        constexpr myclass_copy_noexcept(myclass_copy_noexcept const &) noexcept = default;
-        [[maybe_unused]] constexpr auto operator=(myclass_copy_noexcept const &) &noexcept
-            -> myclass_copy_noexcept & = default;
-        constexpr myclass_copy_noexcept(myclass_copy_noexcept &&) noexcept = default;
-        [[maybe_unused]] constexpr auto operator=(myclass_copy_noexcept &&) &noexcept
-            -> myclass_copy_noexcept & = default;
-    };
-
-    class myclass_copy_except final
-    {
-    public:
-        constexpr myclass_copy_except() noexcept(false) = default;
-        constexpr ~myclass_copy_except() noexcept(false) = default;
-        constexpr myclass_copy_except(myclass_copy_except const &) noexcept(false) = default;
-        [[maybe_unused]] constexpr auto operator=(myclass_copy_except const &) &noexcept(false)
-            -> myclass_copy_except & = default;
-        constexpr myclass_copy_except(myclass_copy_except &&) noexcept(false) = default;
-        [[maybe_unused]] constexpr auto operator=(myclass_copy_except &&) &noexcept(false)
-            -> myclass_copy_except & = default;
-    };
-}
+#include "../class_empty.hpp"
+#include "../class_except.hpp"
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -66,69 +40,55 @@ namespace
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
     // clang-format off
 
-    static_assert(is_nothrow_convertible<bool, bool>::value);
-    static_assert(is_nothrow_convertible<bool, bool const>::value);
-    static_assert(is_nothrow_convertible<bool, bsl::int32>::value);
-    static_assert(is_nothrow_convertible<bsl::int32, bool>::value);
+    static_assert(bsl::is_nothrow_convertible<bool, bool>::value);
+    static_assert(bsl::is_nothrow_convertible<bool &, bool>::value);
+    static_assert(bsl::is_nothrow_convertible<bool const &, bool>::value);
+    static_assert(bsl::is_nothrow_convertible<bool &&, bool>::value);
+    static_assert(!bsl::is_nothrow_convertible<bool, bool &>::value);
+    static_assert(bsl::is_nothrow_convertible<bool, bool const &>::value);
+    static_assert(bsl::is_nothrow_convertible<bool, bool &&>::value);
+    static_assert(bsl::is_nothrow_convertible<bool *, bool>::value);
+    static_assert(bsl::is_nothrow_convertible<bool *const, bool>::value);
+    static_assert(bsl::is_nothrow_convertible<bool const *, bool>::value);
+    static_assert(bsl::is_nothrow_convertible<bool const *const, bool>::value);
+    static_assert(!bsl::is_nothrow_convertible<bool, bool *>::value);
+    static_assert(!bsl::is_nothrow_convertible<bool, bool *const>::value);
+    static_assert(!bsl::is_nothrow_convertible<bool, bool const *>::value);
+    static_assert(!bsl::is_nothrow_convertible<bool, bool const *const>::value);
 
-    static_assert(is_nothrow_convertible<bool *, bool *>::value);
-    static_assert(is_nothrow_convertible<bool *, bool const *>::value);
-    static_assert(is_nothrow_convertible<bool *, void *>::value);
-    static_assert(is_nothrow_convertible<bool *, void const *>::value);
-    // static_assert(is_nothrow_convertible<bool[42], bool *>::value);
-    // static_assert(is_nothrow_convertible<bool[42], bool const *>::value);
-    // static_assert(is_nothrow_convertible<bool[42], void *>::value);
-    // static_assert(is_nothrow_convertible<bool[42], void const *>::value);
-    static_assert(is_nothrow_convertible<bool &, bool>::value);
-    static_assert(is_nothrow_convertible<bool &, bool const>::value);
-    static_assert(is_nothrow_convertible<bool &, bool &>::value);
-    static_assert(is_nothrow_convertible<bool &, bool const &>::value);
-    static_assert(is_nothrow_convertible<bool const &, bool>::value);
-    static_assert(is_nothrow_convertible<bool const &, bool const>::value);
-    static_assert(is_nothrow_convertible<bool const &, bool const &>::value);
+    static_assert(bsl::is_nothrow_convertible<test::class_empty, test::class_empty>::value);
+    static_assert(bsl::is_nothrow_convertible<test::class_empty &, test::class_empty>::value);
+    static_assert(bsl::is_nothrow_convertible<test::class_empty const &, test::class_empty>::value);
+    static_assert(bsl::is_nothrow_convertible<test::class_empty &&, test::class_empty>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_empty, test::class_empty &>::value);
+    static_assert(bsl::is_nothrow_convertible<test::class_empty, test::class_empty const &>::value);
+    static_assert(bsl::is_nothrow_convertible<test::class_empty, test::class_empty &&>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_empty *, test::class_empty>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_empty *const, test::class_empty>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_empty const *, test::class_empty>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_empty const *const, test::class_empty>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_empty, test::class_empty *>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_empty, test::class_empty *const>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_empty, test::class_empty const *>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_empty, test::class_empty const *const>::value);
 
-    static_assert(is_nothrow_convertible<bool *, bool const *>::value);
-    static_assert(!is_nothrow_convertible<bool const *, bool *>::value);
-    static_assert(is_nothrow_convertible<bool const *, bool const *>::value);
-
-    static_assert(is_nothrow_convertible<void *, void const *>::value);
-    static_assert(!is_nothrow_convertible<void const *, void *>::value);
-    static_assert(is_nothrow_convertible<void const *, void const *>::value);
-
-    static_assert(!is_nothrow_convertible<bool, bool *>::value);
-    static_assert(!is_nothrow_convertible<bool const, bool const *>::value);
-
-    static_assert(!is_nothrow_convertible<void, void *>::value);
-    static_assert(!is_nothrow_convertible<void const, void const *>::value);
-
-    static_assert(is_nothrow_convertible<bool(bool), bool (*)(bool)>::value);
-    static_assert(is_nothrow_convertible<bool (&)(bool), bool (*)(bool)>::value);
-    static_assert(is_nothrow_convertible<bool(&&)(bool), bool (*)(bool)>::value);
-
-    static_assert(is_nothrow_convertible<bool *, void *>::value);
-    static_assert(!is_nothrow_convertible<void *, bool *>::value);
-
-    static_assert(is_convertible<myclass_copy_noexcept, myclass_copy_noexcept>::value);
-    static_assert(is_convertible<myclass_copy_noexcept const, myclass_copy_noexcept>::value);
-    static_assert(is_convertible<myclass_copy_noexcept const &, myclass_copy_noexcept>::value);
-
-    static_assert(is_nothrow_convertible<myclass_copy_noexcept, myclass_copy_noexcept>::value);
-    static_assert(is_nothrow_convertible<myclass_copy_noexcept const, myclass_copy_noexcept>::value);
-    static_assert(is_nothrow_convertible<myclass_copy_noexcept const &, myclass_copy_noexcept>::value);
-
-    static_assert(is_convertible<myclass_copy_except, myclass_copy_except>::value);
-    static_assert(is_convertible<myclass_copy_except const, myclass_copy_except>::value);
-    static_assert(is_convertible<myclass_copy_except const &, myclass_copy_except>::value);
-
-    static_assert(!is_nothrow_convertible<myclass_copy_except, myclass_copy_except>::value);
-    static_assert(!is_nothrow_convertible<myclass_copy_except &, myclass_copy_except>::value);
-    static_assert(!is_nothrow_convertible<myclass_copy_except const &, myclass_copy_except>::value);
-
-    // clang-format on
+    static_assert(!bsl::is_nothrow_convertible<test::class_except, test::class_except>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_except &, test::class_except>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_except const &, test::class_except>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_except &&, test::class_except>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_except, test::class_except &>::value);
+    static_assert(bsl::is_nothrow_convertible<test::class_except, test::class_except const &>::value);
+    static_assert(bsl::is_nothrow_convertible<test::class_except, test::class_except &&>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_except *, test::class_except>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_except *const, test::class_except>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_except const *, test::class_except>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_except const *const, test::class_except>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_except, test::class_except *>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_except, test::class_except *const>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_except, test::class_except const *>::value);
+    static_assert(!bsl::is_nothrow_convertible<test::class_except, test::class_except const *const>::value);
 
     return bsl::ut_success();
 }

@@ -33,6 +33,6 @@ namespace bsl
     inline void
     example_source_location_current() noexcept
     {
-        bsl::print() << bsl::sloc_type::current();
+        bsl::print() << bsl::source_location::current();
     }
 }

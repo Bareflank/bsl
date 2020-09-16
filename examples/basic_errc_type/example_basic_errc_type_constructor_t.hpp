@@ -33,8 +33,8 @@ namespace bsl
     inline void
     example_basic_errc_type_constructor_t() noexcept
     {
-        constexpr bsl::int32 errc{42};
-        constexpr bsl::basic_errc_type<> my_errc{errc};
+        constexpr bsl::safe_int32 errc{42};
+        constexpr bsl::basic_errc_type<> my_errc{errc.get()};
 
         if constexpr (my_errc.get() == errc) {
             bsl::print() << "success\n";

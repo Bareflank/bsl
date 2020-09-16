@@ -55,6 +55,10 @@ namespace bsl
     };
 
     /// @brief a helper that reduces the verbosity of bsl::remove_volatile
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to remove the const qualifier from
+    ///
     template<typename T>
     using remove_volatile_t = typename remove_volatile<T>::type;
 

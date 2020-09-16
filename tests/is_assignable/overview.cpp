@@ -25,54 +25,9 @@
 #include <bsl/is_assignable.hpp>
 #include <bsl/ut.hpp>
 
-namespace
-{
-    class myclass final
-    {};
-
-    class myclass_copy_only final
-    {
-    public:
-        constexpr myclass_copy_only() noexcept = default;
-        ~myclass_copy_only() noexcept = default;
-        constexpr myclass_copy_only(myclass_copy_only const &) noexcept = default;
-        [[maybe_unused]] constexpr auto operator=(myclass_copy_only const &) &noexcept
-            -> myclass_copy_only & = default;
-        constexpr myclass_copy_only(myclass_copy_only &&) noexcept = delete;
-        [[maybe_unused]] constexpr auto operator=(myclass_copy_only &&) &noexcept
-            -> myclass_copy_only & = delete;
-    };
-
-    class myclass_move_only final
-    {
-    public:
-        constexpr myclass_move_only() noexcept = default;
-        ~myclass_move_only() noexcept = default;
-        constexpr myclass_move_only(myclass_move_only const &) noexcept = delete;
-        [[maybe_unused]] constexpr auto operator=(myclass_move_only const &) &noexcept
-            -> myclass_move_only & = delete;
-        constexpr myclass_move_only(myclass_move_only &&) noexcept = default;
-        [[maybe_unused]] constexpr auto operator=(myclass_move_only &&) &noexcept
-            -> myclass_move_only & = default;
-    };
-
-    class myclass_no_assign final
-    {
-    public:
-        constexpr myclass_no_assign() noexcept = default;
-        ~myclass_no_assign() noexcept = default;
-        constexpr myclass_no_assign(myclass_no_assign const &) noexcept = delete;
-        [[maybe_unused]] constexpr auto operator=(myclass_no_assign const &) &noexcept
-            -> myclass_no_assign & = delete;
-        constexpr myclass_no_assign(myclass_no_assign &&) noexcept = delete;
-        [[maybe_unused]] constexpr auto operator=(myclass_no_assign &&) &noexcept
-            -> myclass_no_assign & = delete;
-    };
-}
-
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -81,331 +36,115 @@ namespace
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
+    static_assert(!bsl::is_assignable<bool, bool>::value);
+    static_assert(!bsl::is_assignable<bool, bool const>::value);
+    static_assert(!bsl::is_assignable<bool, bool &>::value);
+    static_assert(!bsl::is_assignable<bool, bool &&>::value);
+    static_assert(!bsl::is_assignable<bool, bool const &>::value);
+    static_assert(!bsl::is_assignable<bool, bool const &&>::value);
+    static_assert(!bsl::is_assignable<bool, bool *>::value);
+    static_assert(!bsl::is_assignable<bool, bool const *>::value);
+    static_assert(!bsl::is_assignable<bool, bool *const>::value);
+    static_assert(!bsl::is_assignable<bool, bool const *const>::value);
 
-    // NOTE: --
-    // This leverages a builtin so we do not exhaustively test this as we
-    // assume the compiler already has the proper tests. These test are to
-    // ensure we are using the right builtin
+    static_assert(!bsl::is_assignable<bool const, bool>::value);
+    static_assert(!bsl::is_assignable<bool const, bool const>::value);
+    static_assert(!bsl::is_assignable<bool const, bool &>::value);
+    static_assert(!bsl::is_assignable<bool const, bool &&>::value);
+    static_assert(!bsl::is_assignable<bool const, bool const &>::value);
+    static_assert(!bsl::is_assignable<bool const, bool const &&>::value);
+    static_assert(!bsl::is_assignable<bool const, bool *>::value);
+    static_assert(!bsl::is_assignable<bool const, bool const *>::value);
+    static_assert(!bsl::is_assignable<bool const, bool *const>::value);
+    static_assert(!bsl::is_assignable<bool const, bool const *const>::value);
 
-    static_assert(!is_assignable<bool, bool>::value);
-    static_assert(!is_assignable<bool, bool const>::value);
-    static_assert(!is_assignable<bool, bool &>::value);
-    static_assert(!is_assignable<bool, bool &&>::value);
-    static_assert(!is_assignable<bool, bool const &>::value);
-    static_assert(!is_assignable<bool, bool const &&>::value);
-    static_assert(!is_assignable<bool, bool *>::value);
-    static_assert(!is_assignable<bool, bool const *>::value);
-    static_assert(!is_assignable<bool, bool *const>::value);
-    static_assert(!is_assignable<bool, bool const *const>::value);
+    static_assert(bsl::is_assignable<bool &, bool>::value);
+    static_assert(bsl::is_assignable<bool &, bool const>::value);
+    static_assert(bsl::is_assignable<bool &, bool &>::value);
+    static_assert(bsl::is_assignable<bool &, bool &&>::value);
+    static_assert(bsl::is_assignable<bool &, bool const &>::value);
+    static_assert(bsl::is_assignable<bool &, bool const &&>::value);
+    static_assert(bsl::is_assignable<bool &, bool *>::value);
+    static_assert(bsl::is_assignable<bool &, bool const *>::value);
+    static_assert(bsl::is_assignable<bool &, bool *const>::value);
+    static_assert(bsl::is_assignable<bool &, bool const *const>::value);
 
-    static_assert(!is_assignable<bool const, bool>::value);
-    static_assert(!is_assignable<bool const, bool const>::value);
-    static_assert(!is_assignable<bool const, bool &>::value);
-    static_assert(!is_assignable<bool const, bool &&>::value);
-    static_assert(!is_assignable<bool const, bool const &>::value);
-    static_assert(!is_assignable<bool const, bool const &&>::value);
-    static_assert(!is_assignable<bool const, bool *>::value);
-    static_assert(!is_assignable<bool const, bool const *>::value);
-    static_assert(!is_assignable<bool const, bool *const>::value);
-    static_assert(!is_assignable<bool const, bool const *const>::value);
+    static_assert(!bsl::is_assignable<bool &&, bool>::value);
+    static_assert(!bsl::is_assignable<bool &&, bool const>::value);
+    static_assert(!bsl::is_assignable<bool &&, bool &>::value);
+    static_assert(!bsl::is_assignable<bool &&, bool &&>::value);
+    static_assert(!bsl::is_assignable<bool &&, bool const &>::value);
+    static_assert(!bsl::is_assignable<bool &&, bool const &&>::value);
+    static_assert(!bsl::is_assignable<bool &&, bool *>::value);
+    static_assert(!bsl::is_assignable<bool &&, bool const *>::value);
+    static_assert(!bsl::is_assignable<bool &&, bool *const>::value);
+    static_assert(!bsl::is_assignable<bool &&, bool const *const>::value);
 
-    static_assert(is_assignable<bool &, bool>::value);
-    static_assert(is_assignable<bool &, bool const>::value);
-    static_assert(is_assignable<bool &, bool &>::value);
-    static_assert(is_assignable<bool &, bool &&>::value);
-    static_assert(is_assignable<bool &, bool const &>::value);
-    static_assert(is_assignable<bool &, bool const &&>::value);
-    static_assert(is_assignable<bool &, bool *>::value);
-    static_assert(is_assignable<bool &, bool const *>::value);
-    static_assert(is_assignable<bool &, bool *const>::value);
-    static_assert(is_assignable<bool &, bool const *const>::value);
+    static_assert(!bsl::is_assignable<bool const &, bool>::value);
+    static_assert(!bsl::is_assignable<bool const &, bool const>::value);
+    static_assert(!bsl::is_assignable<bool const &, bool &>::value);
+    static_assert(!bsl::is_assignable<bool const &, bool &&>::value);
+    static_assert(!bsl::is_assignable<bool const &, bool const &>::value);
+    static_assert(!bsl::is_assignable<bool const &, bool const &&>::value);
+    static_assert(!bsl::is_assignable<bool const &, bool *>::value);
+    static_assert(!bsl::is_assignable<bool const &, bool const *>::value);
+    static_assert(!bsl::is_assignable<bool const &, bool *const>::value);
+    static_assert(!bsl::is_assignable<bool const &, bool const *const>::value);
 
-    static_assert(!is_assignable<bool &&, bool>::value);
-    static_assert(!is_assignable<bool &&, bool const>::value);
-    static_assert(!is_assignable<bool &&, bool &>::value);
-    static_assert(!is_assignable<bool &&, bool &&>::value);
-    static_assert(!is_assignable<bool &&, bool const &>::value);
-    static_assert(!is_assignable<bool &&, bool const &&>::value);
-    static_assert(!is_assignable<bool &&, bool *>::value);
-    static_assert(!is_assignable<bool &&, bool const *>::value);
-    static_assert(!is_assignable<bool &&, bool *const>::value);
-    static_assert(!is_assignable<bool &&, bool const *const>::value);
+    static_assert(!bsl::is_assignable<bool const &&, bool>::value);
+    static_assert(!bsl::is_assignable<bool const &&, bool const>::value);
+    static_assert(!bsl::is_assignable<bool const &&, bool &>::value);
+    static_assert(!bsl::is_assignable<bool const &&, bool &&>::value);
+    static_assert(!bsl::is_assignable<bool const &&, bool const &>::value);
+    static_assert(!bsl::is_assignable<bool const &&, bool const &&>::value);
+    static_assert(!bsl::is_assignable<bool const &&, bool *>::value);
+    static_assert(!bsl::is_assignable<bool const &&, bool const *>::value);
+    static_assert(!bsl::is_assignable<bool const &&, bool *const>::value);
+    static_assert(!bsl::is_assignable<bool const &&, bool const *const>::value);
 
-    static_assert(!is_assignable<bool const &, bool>::value);
-    static_assert(!is_assignable<bool const &, bool const>::value);
-    static_assert(!is_assignable<bool const &, bool &>::value);
-    static_assert(!is_assignable<bool const &, bool &&>::value);
-    static_assert(!is_assignable<bool const &, bool const &>::value);
-    static_assert(!is_assignable<bool const &, bool const &&>::value);
-    static_assert(!is_assignable<bool const &, bool *>::value);
-    static_assert(!is_assignable<bool const &, bool const *>::value);
-    static_assert(!is_assignable<bool const &, bool *const>::value);
-    static_assert(!is_assignable<bool const &, bool const *const>::value);
+    static_assert(!bsl::is_assignable<bool *, bool>::value);
+    static_assert(!bsl::is_assignable<bool *, bool const>::value);
+    static_assert(!bsl::is_assignable<bool *, bool &>::value);
+    static_assert(!bsl::is_assignable<bool *, bool &&>::value);
+    static_assert(!bsl::is_assignable<bool *, bool const &>::value);
+    static_assert(!bsl::is_assignable<bool *, bool const &&>::value);
+    static_assert(!bsl::is_assignable<bool *, bool *>::value);
+    static_assert(!bsl::is_assignable<bool *, bool const *>::value);
+    static_assert(!bsl::is_assignable<bool *, bool *const>::value);
+    static_assert(!bsl::is_assignable<bool *, bool const *const>::value);
 
-    static_assert(!is_assignable<bool const &&, bool>::value);
-    static_assert(!is_assignable<bool const &&, bool const>::value);
-    static_assert(!is_assignable<bool const &&, bool &>::value);
-    static_assert(!is_assignable<bool const &&, bool &&>::value);
-    static_assert(!is_assignable<bool const &&, bool const &>::value);
-    static_assert(!is_assignable<bool const &&, bool const &&>::value);
-    static_assert(!is_assignable<bool const &&, bool *>::value);
-    static_assert(!is_assignable<bool const &&, bool const *>::value);
-    static_assert(!is_assignable<bool const &&, bool *const>::value);
-    static_assert(!is_assignable<bool const &&, bool const *const>::value);
+    static_assert(!bsl::is_assignable<bool const *, bool>::value);
+    static_assert(!bsl::is_assignable<bool const *, bool const>::value);
+    static_assert(!bsl::is_assignable<bool const *, bool &>::value);
+    static_assert(!bsl::is_assignable<bool const *, bool &&>::value);
+    static_assert(!bsl::is_assignable<bool const *, bool const &>::value);
+    static_assert(!bsl::is_assignable<bool const *, bool const &&>::value);
+    static_assert(!bsl::is_assignable<bool const *, bool *>::value);
+    static_assert(!bsl::is_assignable<bool const *, bool const *>::value);
+    static_assert(!bsl::is_assignable<bool const *, bool *const>::value);
+    static_assert(!bsl::is_assignable<bool const *, bool const *const>::value);
 
-    static_assert(!is_assignable<bool *, bool>::value);
-    static_assert(!is_assignable<bool *, bool const>::value);
-    static_assert(!is_assignable<bool *, bool &>::value);
-    static_assert(!is_assignable<bool *, bool &&>::value);
-    static_assert(!is_assignable<bool *, bool const &>::value);
-    static_assert(!is_assignable<bool *, bool const &&>::value);
-    static_assert(!is_assignable<bool *, bool *>::value);
-    static_assert(!is_assignable<bool *, bool const *>::value);
-    static_assert(!is_assignable<bool *, bool *const>::value);
-    static_assert(!is_assignable<bool *, bool const *const>::value);
+    static_assert(!bsl::is_assignable<bool *const, bool>::value);
+    static_assert(!bsl::is_assignable<bool *const, bool const>::value);
+    static_assert(!bsl::is_assignable<bool *const, bool &>::value);
+    static_assert(!bsl::is_assignable<bool *const, bool &&>::value);
+    static_assert(!bsl::is_assignable<bool *const, bool const &>::value);
+    static_assert(!bsl::is_assignable<bool *const, bool const &&>::value);
+    static_assert(!bsl::is_assignable<bool *const, bool *>::value);
+    static_assert(!bsl::is_assignable<bool *const, bool const *>::value);
+    static_assert(!bsl::is_assignable<bool *const, bool *const>::value);
+    static_assert(!bsl::is_assignable<bool *const, bool const *const>::value);
 
-    static_assert(!is_assignable<bool const *, bool>::value);
-    static_assert(!is_assignable<bool const *, bool const>::value);
-    static_assert(!is_assignable<bool const *, bool &>::value);
-    static_assert(!is_assignable<bool const *, bool &&>::value);
-    static_assert(!is_assignable<bool const *, bool const &>::value);
-    static_assert(!is_assignable<bool const *, bool const &&>::value);
-    static_assert(!is_assignable<bool const *, bool *>::value);
-    static_assert(!is_assignable<bool const *, bool const *>::value);
-    static_assert(!is_assignable<bool const *, bool *const>::value);
-    static_assert(!is_assignable<bool const *, bool const *const>::value);
-
-    static_assert(!is_assignable<bool *const, bool>::value);
-    static_assert(!is_assignable<bool *const, bool const>::value);
-    static_assert(!is_assignable<bool *const, bool &>::value);
-    static_assert(!is_assignable<bool *const, bool &&>::value);
-    static_assert(!is_assignable<bool *const, bool const &>::value);
-    static_assert(!is_assignable<bool *const, bool const &&>::value);
-    static_assert(!is_assignable<bool *const, bool *>::value);
-    static_assert(!is_assignable<bool *const, bool const *>::value);
-    static_assert(!is_assignable<bool *const, bool *const>::value);
-    static_assert(!is_assignable<bool *const, bool const *const>::value);
-
-    static_assert(!is_assignable<bool const *const, bool>::value);
-    static_assert(!is_assignable<bool const *const, bool const>::value);
-    static_assert(!is_assignable<bool const *const, bool &>::value);
-    static_assert(!is_assignable<bool const *const, bool &&>::value);
-    static_assert(!is_assignable<bool const *const, bool const &>::value);
-    static_assert(!is_assignable<bool const *const, bool const &&>::value);
-    static_assert(!is_assignable<bool const *const, bool *>::value);
-    static_assert(!is_assignable<bool const *const, bool const *>::value);
-    static_assert(!is_assignable<bool const *const, bool *const>::value);
-    static_assert(!is_assignable<bool const *const, bool const *const>::value);
-
-    static_assert(is_assignable<myclass, myclass>::value);
-    static_assert(is_assignable<myclass, myclass const>::value);
-    static_assert(is_assignable<myclass, myclass &>::value);
-    static_assert(is_assignable<myclass, myclass &&>::value);
-    static_assert(is_assignable<myclass, myclass const &>::value);
-    static_assert(is_assignable<myclass, myclass const &&>::value);
-    static_assert(!is_assignable<myclass, myclass *>::value);
-    static_assert(!is_assignable<myclass, myclass const *>::value);
-    static_assert(!is_assignable<myclass, myclass *const>::value);
-    static_assert(!is_assignable<myclass, myclass const *const>::value);
-
-    static_assert(!is_assignable<myclass const, myclass>::value);
-    static_assert(!is_assignable<myclass const, myclass const>::value);
-    static_assert(!is_assignable<myclass const, myclass &>::value);
-    static_assert(!is_assignable<myclass const, myclass &&>::value);
-    static_assert(!is_assignable<myclass const, myclass const &>::value);
-    static_assert(!is_assignable<myclass const, myclass const &&>::value);
-    static_assert(!is_assignable<myclass const, myclass *>::value);
-    static_assert(!is_assignable<myclass const, myclass const *>::value);
-    static_assert(!is_assignable<myclass const, myclass *const>::value);
-    static_assert(!is_assignable<myclass const, myclass const *const>::value);
-
-    static_assert(is_assignable<myclass &, myclass>::value);
-    static_assert(is_assignable<myclass &, myclass const>::value);
-    static_assert(is_assignable<myclass &, myclass &>::value);
-    static_assert(is_assignable<myclass &, myclass &&>::value);
-    static_assert(is_assignable<myclass &, myclass const &>::value);
-    static_assert(is_assignable<myclass &, myclass const &&>::value);
-    static_assert(!is_assignable<myclass &, myclass *>::value);
-    static_assert(!is_assignable<myclass &, myclass const *>::value);
-    static_assert(!is_assignable<myclass &, myclass *const>::value);
-    static_assert(!is_assignable<myclass &, myclass const *const>::value);
-
-    static_assert(is_assignable<myclass &&, myclass>::value);
-    static_assert(is_assignable<myclass &&, myclass const>::value);
-    static_assert(is_assignable<myclass &&, myclass &>::value);
-    static_assert(is_assignable<myclass &&, myclass &&>::value);
-    static_assert(is_assignable<myclass &&, myclass const &>::value);
-    static_assert(is_assignable<myclass &&, myclass const &&>::value);
-    static_assert(!is_assignable<myclass &&, myclass *>::value);
-    static_assert(!is_assignable<myclass &&, myclass const *>::value);
-    static_assert(!is_assignable<myclass &&, myclass *const>::value);
-    static_assert(!is_assignable<myclass &&, myclass const *const>::value);
-
-    static_assert(!is_assignable<myclass const &, myclass>::value);
-    static_assert(!is_assignable<myclass const &, myclass const>::value);
-    static_assert(!is_assignable<myclass const &, myclass &>::value);
-    static_assert(!is_assignable<myclass const &, myclass &&>::value);
-    static_assert(!is_assignable<myclass const &, myclass const &>::value);
-    static_assert(!is_assignable<myclass const &, myclass const &&>::value);
-    static_assert(!is_assignable<myclass const &, myclass *>::value);
-    static_assert(!is_assignable<myclass const &, myclass const *>::value);
-    static_assert(!is_assignable<myclass const &, myclass *const>::value);
-    static_assert(!is_assignable<myclass const &, myclass const *const>::value);
-
-    static_assert(!is_assignable<myclass const &&, myclass>::value);
-    static_assert(!is_assignable<myclass const &&, myclass const>::value);
-    static_assert(!is_assignable<myclass const &&, myclass &>::value);
-    static_assert(!is_assignable<myclass const &&, myclass &&>::value);
-    static_assert(!is_assignable<myclass const &&, myclass const &>::value);
-    static_assert(!is_assignable<myclass const &&, myclass const &&>::value);
-    static_assert(!is_assignable<myclass const &&, myclass *>::value);
-    static_assert(!is_assignable<myclass const &&, myclass const *>::value);
-    static_assert(!is_assignable<myclass const &&, myclass *const>::value);
-    static_assert(!is_assignable<myclass const &&, myclass const *const>::value);
-
-    static_assert(!is_assignable<myclass *, myclass>::value);
-    static_assert(!is_assignable<myclass *, myclass const>::value);
-    static_assert(!is_assignable<myclass *, myclass &>::value);
-    static_assert(!is_assignable<myclass *, myclass &&>::value);
-    static_assert(!is_assignable<myclass *, myclass const &>::value);
-    static_assert(!is_assignable<myclass *, myclass const &&>::value);
-    static_assert(!is_assignable<myclass *, myclass *>::value);
-    static_assert(!is_assignable<myclass *, myclass const *>::value);
-    static_assert(!is_assignable<myclass *, myclass *const>::value);
-    static_assert(!is_assignable<myclass *, myclass const *const>::value);
-
-    static_assert(!is_assignable<myclass const *, myclass>::value);
-    static_assert(!is_assignable<myclass const *, myclass const>::value);
-    static_assert(!is_assignable<myclass const *, myclass &>::value);
-    static_assert(!is_assignable<myclass const *, myclass &&>::value);
-    static_assert(!is_assignable<myclass const *, myclass const &>::value);
-    static_assert(!is_assignable<myclass const *, myclass const &&>::value);
-    static_assert(!is_assignable<myclass const *, myclass *>::value);
-    static_assert(!is_assignable<myclass const *, myclass const *>::value);
-    static_assert(!is_assignable<myclass const *, myclass *const>::value);
-    static_assert(!is_assignable<myclass const *, myclass const *const>::value);
-
-    static_assert(!is_assignable<myclass *const, myclass>::value);
-    static_assert(!is_assignable<myclass *const, myclass const>::value);
-    static_assert(!is_assignable<myclass *const, myclass &>::value);
-    static_assert(!is_assignable<myclass *const, myclass &&>::value);
-    static_assert(!is_assignable<myclass *const, myclass const &>::value);
-    static_assert(!is_assignable<myclass *const, myclass const &&>::value);
-    static_assert(!is_assignable<myclass *const, myclass *>::value);
-    static_assert(!is_assignable<myclass *const, myclass const *>::value);
-    static_assert(!is_assignable<myclass *const, myclass *const>::value);
-    static_assert(!is_assignable<myclass *const, myclass const *const>::value);
-
-    static_assert(!is_assignable<myclass const *const, myclass>::value);
-    static_assert(!is_assignable<myclass const *const, myclass const>::value);
-    static_assert(!is_assignable<myclass const *const, myclass &>::value);
-    static_assert(!is_assignable<myclass const *const, myclass &&>::value);
-    static_assert(!is_assignable<myclass const *const, myclass const &>::value);
-    static_assert(!is_assignable<myclass const *const, myclass const &&>::value);
-    static_assert(!is_assignable<myclass const *const, myclass *>::value);
-    static_assert(!is_assignable<myclass const *const, myclass const *>::value);
-    static_assert(!is_assignable<myclass const *const, myclass *const>::value);
-    static_assert(!is_assignable<myclass const *const, myclass const *const>::value);
-
-    static_assert(!is_assignable<myclass_copy_only, myclass_copy_only>::value);
-    static_assert(!is_assignable<myclass_copy_only, myclass_copy_only const>::value);
-    static_assert(!is_assignable<myclass_copy_only, myclass_copy_only &>::value);
-    static_assert(!is_assignable<myclass_copy_only, myclass_copy_only &&>::value);
-    static_assert(!is_assignable<myclass_copy_only, myclass_copy_only const &>::value);
-    static_assert(!is_assignable<myclass_copy_only, myclass_copy_only const &&>::value);
-    static_assert(!is_assignable<myclass_copy_only, myclass_copy_only *>::value);
-    static_assert(!is_assignable<myclass_copy_only, myclass_copy_only const *>::value);
-    static_assert(!is_assignable<myclass_copy_only, myclass_copy_only *const>::value);
-    static_assert(!is_assignable<myclass_copy_only, myclass_copy_only const *const>::value);
-
-    static_assert(!is_assignable<myclass_copy_only &, myclass_copy_only>::value);
-    static_assert(is_assignable<myclass_copy_only &, myclass_copy_only const>::value);
-    static_assert(is_assignable<myclass_copy_only &, myclass_copy_only &>::value);
-    static_assert(!is_assignable<myclass_copy_only &, myclass_copy_only &&>::value);
-    static_assert(is_assignable<myclass_copy_only &, myclass_copy_only const &>::value);
-    static_assert(is_assignable<myclass_copy_only &, myclass_copy_only const &&>::value);
-    static_assert(!is_assignable<myclass_copy_only &, myclass_copy_only *>::value);
-    static_assert(!is_assignable<myclass_copy_only &, myclass_copy_only const *>::value);
-    static_assert(!is_assignable<myclass_copy_only &, myclass_copy_only *const>::value);
-    static_assert(!is_assignable<myclass_copy_only &, myclass_copy_only const *const>::value);
-
-    static_assert(!is_assignable<myclass_copy_only &&, myclass_copy_only>::value);
-    static_assert(!is_assignable<myclass_copy_only &&, myclass_copy_only const>::value);
-    static_assert(!is_assignable<myclass_copy_only &&, myclass_copy_only &>::value);
-    static_assert(!is_assignable<myclass_copy_only &&, myclass_copy_only &&>::value);
-    static_assert(!is_assignable<myclass_copy_only &&, myclass_copy_only const &>::value);
-    static_assert(!is_assignable<myclass_copy_only &&, myclass_copy_only const &&>::value);
-    static_assert(!is_assignable<myclass_copy_only &&, myclass_copy_only *>::value);
-    static_assert(!is_assignable<myclass_copy_only &&, myclass_copy_only const *>::value);
-    static_assert(!is_assignable<myclass_copy_only &&, myclass_copy_only *const>::value);
-    static_assert(!is_assignable<myclass_copy_only &&, myclass_copy_only const *const>::value);
-
-    static_assert(!is_assignable<myclass_move_only, myclass_move_only>::value);
-    static_assert(!is_assignable<myclass_move_only, myclass_move_only const>::value);
-    static_assert(!is_assignable<myclass_move_only, myclass_move_only &>::value);
-    static_assert(!is_assignable<myclass_move_only, myclass_move_only &&>::value);
-    static_assert(!is_assignable<myclass_move_only, myclass_move_only const &>::value);
-    static_assert(!is_assignable<myclass_move_only, myclass_move_only const &&>::value);
-    static_assert(!is_assignable<myclass_move_only, myclass_move_only *>::value);
-    static_assert(!is_assignable<myclass_move_only, myclass_move_only const *>::value);
-    static_assert(!is_assignable<myclass_move_only, myclass_move_only *const>::value);
-    static_assert(!is_assignable<myclass_move_only, myclass_move_only const *const>::value);
-
-    static_assert(is_assignable<myclass_move_only &, myclass_move_only>::value);
-    static_assert(!is_assignable<myclass_move_only &, myclass_move_only const>::value);
-    static_assert(!is_assignable<myclass_move_only &, myclass_move_only &>::value);
-    static_assert(is_assignable<myclass_move_only &, myclass_move_only &&>::value);
-    static_assert(!is_assignable<myclass_move_only &, myclass_move_only const &>::value);
-    static_assert(!is_assignable<myclass_move_only &, myclass_move_only const &&>::value);
-    static_assert(!is_assignable<myclass_move_only &, myclass_move_only *>::value);
-    static_assert(!is_assignable<myclass_move_only &, myclass_move_only const *>::value);
-    static_assert(!is_assignable<myclass_move_only &, myclass_move_only *const>::value);
-    static_assert(!is_assignable<myclass_move_only &, myclass_move_only const *const>::value);
-
-    static_assert(!is_assignable<myclass_move_only &&, myclass_move_only>::value);
-    static_assert(!is_assignable<myclass_move_only &&, myclass_move_only const>::value);
-    static_assert(!is_assignable<myclass_move_only &&, myclass_move_only &>::value);
-    static_assert(!is_assignable<myclass_move_only &&, myclass_move_only &&>::value);
-    static_assert(!is_assignable<myclass_move_only &&, myclass_move_only const &>::value);
-    static_assert(!is_assignable<myclass_move_only &&, myclass_move_only const &&>::value);
-    static_assert(!is_assignable<myclass_move_only &&, myclass_move_only *>::value);
-    static_assert(!is_assignable<myclass_move_only &&, myclass_move_only const *>::value);
-    static_assert(!is_assignable<myclass_move_only &&, myclass_move_only *const>::value);
-    static_assert(!is_assignable<myclass_move_only &&, myclass_move_only const *const>::value);
-
-    static_assert(!is_assignable<myclass_no_assign, myclass_no_assign>::value);
-    static_assert(!is_assignable<myclass_no_assign, myclass_no_assign const>::value);
-    static_assert(!is_assignable<myclass_no_assign, myclass_no_assign &>::value);
-    static_assert(!is_assignable<myclass_no_assign, myclass_no_assign &&>::value);
-    static_assert(!is_assignable<myclass_no_assign, myclass_no_assign const &>::value);
-    static_assert(!is_assignable<myclass_no_assign, myclass_no_assign const &&>::value);
-    static_assert(!is_assignable<myclass_no_assign, myclass_no_assign *>::value);
-    static_assert(!is_assignable<myclass_no_assign, myclass_no_assign const *>::value);
-    static_assert(!is_assignable<myclass_no_assign, myclass_no_assign *const>::value);
-    static_assert(!is_assignable<myclass_no_assign, myclass_no_assign const *const>::value);
-
-    static_assert(!is_assignable<myclass_no_assign &, myclass_no_assign>::value);
-    static_assert(!is_assignable<myclass_no_assign &, myclass_no_assign const>::value);
-    static_assert(!is_assignable<myclass_no_assign &, myclass_no_assign &>::value);
-    static_assert(!is_assignable<myclass_no_assign &, myclass_no_assign &&>::value);
-    static_assert(!is_assignable<myclass_no_assign &, myclass_no_assign const &>::value);
-    static_assert(!is_assignable<myclass_no_assign &, myclass_no_assign const &&>::value);
-    static_assert(!is_assignable<myclass_no_assign &, myclass_no_assign *>::value);
-    static_assert(!is_assignable<myclass_no_assign &, myclass_no_assign const *>::value);
-    static_assert(!is_assignable<myclass_no_assign &, myclass_no_assign *const>::value);
-    static_assert(!is_assignable<myclass_no_assign &, myclass_no_assign const *const>::value);
-
-    static_assert(!is_assignable<myclass_no_assign &&, myclass_no_assign>::value);
-    static_assert(!is_assignable<myclass_no_assign &&, myclass_no_assign const>::value);
-    static_assert(!is_assignable<myclass_no_assign &&, myclass_no_assign &>::value);
-    static_assert(!is_assignable<myclass_no_assign &&, myclass_no_assign &&>::value);
-    static_assert(!is_assignable<myclass_no_assign &&, myclass_no_assign const &>::value);
-    static_assert(!is_assignable<myclass_no_assign &&, myclass_no_assign const &&>::value);
-    static_assert(!is_assignable<myclass_no_assign &&, myclass_no_assign *>::value);
-    static_assert(!is_assignable<myclass_no_assign &&, myclass_no_assign const *>::value);
-    static_assert(!is_assignable<myclass_no_assign &&, myclass_no_assign *const>::value);
-    static_assert(!is_assignable<myclass_no_assign &&, myclass_no_assign const *const>::value);
+    static_assert(!bsl::is_assignable<bool const *const, bool>::value);
+    static_assert(!bsl::is_assignable<bool const *const, bool const>::value);
+    static_assert(!bsl::is_assignable<bool const *const, bool &>::value);
+    static_assert(!bsl::is_assignable<bool const *const, bool &&>::value);
+    static_assert(!bsl::is_assignable<bool const *const, bool const &>::value);
+    static_assert(!bsl::is_assignable<bool const *const, bool const &&>::value);
+    static_assert(!bsl::is_assignable<bool const *const, bool *>::value);
+    static_assert(!bsl::is_assignable<bool const *const, bool const *>::value);
+    static_assert(!bsl::is_assignable<bool const *const, bool *const>::value);
+    static_assert(!bsl::is_assignable<bool const *const, bool const *const>::value);
 
     return bsl::ut_success();
 }

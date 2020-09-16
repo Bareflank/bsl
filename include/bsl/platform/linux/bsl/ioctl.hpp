@@ -42,7 +42,7 @@ namespace bsl
     namespace details
     {
         /// @brief defines what an invalid handle is.
-        constexpr bsl::int32 ioctl_invalid_hndl{-1};
+        constexpr bsl::safe_int32 IOCTL_INVALID_HNDL{-1};
     }
 
     /// @class bsl::ioctl
@@ -50,10 +50,12 @@ namespace bsl
     /// <!-- description -->
     ///   @brief Executes IOCTL commands to a driver.
     ///
+    // This is a name conflict with external code.
+    // NOLINTNEXTLINE(bsl-using-ident-unique-namespace)
     class ioctl final
     {
         /// @brief stores a handle to the device driver.
-        bsl::int32 m_hndl{details::ioctl_invalid_hndl};
+        bsl::int32 m_hndl{details::IOCTL_INVALID_HNDL.get()};
 
         /// <!-- description -->
         ///   @brief Swaps *this with other
@@ -74,6 +76,7 @@ namespace bsl
         ///     with a device driver through an IOCTL interface.
         ///
         /// <!-- inputs/outputs -->
+        ///   @tparam CSTR the string type that used to describe "name"
         ///   @param name the name of the device driver to IOCTL.
         ///
         template<typename CSTR>
@@ -82,7 +85,7 @@ namespace bsl
             // We don't have a choice here
             // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg, hicpp-vararg)
             m_hndl = open(name, O_RDWR);
-            if (details::ioctl_invalid_hndl == m_hndl) {
+            if (details::IOCTL_INVALID_HNDL.get() == m_hndl) {
                 bsl::error() << "ioctl open failed\n";
                 return;
             }
@@ -95,8 +98,8 @@ namespace bsl
         ///
         ~ioctl() noexcept
         {
-            if (details::ioctl_invalid_hndl != m_hndl) {
-                close(m_hndl);
+            if (details::IOCTL_INVALID_HNDL.get() != m_hndl) {
+                bsl::discard(close(m_hndl));
             }
             else {
                 bsl::touch();
@@ -119,7 +122,7 @@ namespace bsl
         ///
         constexpr ioctl(ioctl &&o) noexcept : m_hndl{bsl::move(o.m_hndl)}
         {
-            o.m_hndl = details::ioctl_invalid_hndl;
+            o.m_hndl = details::IOCTL_INVALID_HNDL.get();
         }
 
         /// <!-- description -->
@@ -157,7 +160,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         is_open() const noexcept -> bool
         {
-            return details::ioctl_invalid_hndl != m_hndl;
+            return details::IOCTL_INVALID_HNDL.get() != m_hndl;
         }
 
         /// <!-- description -->
@@ -184,7 +187,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         send(REQUEST req) const noexcept -> bool
         {
-            if (details::ioctl_invalid_hndl == m_hndl) {
+            if (details::IOCTL_INVALID_HNDL.get() == m_hndl) {
                 bsl::error() << "failed to send, ioctl not properly initialized\n";
                 return false;
             }
@@ -211,11 +214,13 @@ namespace bsl
         ///
         template<typename REQUEST>
         [[nodiscard]] constexpr auto
+        // This conflicts with read() from unistd.h when it is included.
+        // NOLINTNEXTLINE(bsl-using-ident-unique-namespace)
         read(REQUEST req, void *const data, safe_uintmax const &size) const noexcept -> bool
         {
             bsl::discard(size);
 
-            if (details::ioctl_invalid_hndl == m_hndl) {
+            if (details::IOCTL_INVALID_HNDL.get() == m_hndl) {
                 bsl::error() << "failed to read, ioctl not properly initialized\n";
                 return false;
             }
@@ -246,7 +251,7 @@ namespace bsl
         {
             bsl::discard(size);
 
-            if (details::ioctl_invalid_hndl == m_hndl) {
+            if (details::IOCTL_INVALID_HNDL.get() == m_hndl) {
                 bsl::error() << "failed to write, ioctl not properly initialized\n";
                 return false;
             }
@@ -277,7 +282,7 @@ namespace bsl
         {
             bsl::discard(size);
 
-            if (details::ioctl_invalid_hndl == m_hndl) {
+            if (details::IOCTL_INVALID_HNDL.get() == m_hndl) {
                 bsl::error() << "failed to read/write, ioctl not properly initialized\n";
                 return false;
             }

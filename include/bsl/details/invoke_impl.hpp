@@ -44,6 +44,11 @@ namespace bsl::details
     ///     using class logic instead of a constexpr-if statement as
     ///     documented by cppreference.
     ///
+    /// <!-- template parameters -->
+    ///   @tparam FUNC the type that defines the function being called
+    ///   @tparam TN the types that define the arguments passed to the
+    ///     provided function when called.
+    ///
     template<typename FUNC, typename... TN>
     class invoke_impl final : public invoke_impl_base<FUNC, void>
     {};
@@ -62,6 +67,12 @@ namespace bsl::details
     ///     implement is_invocable, which is why invoke is implemented
     ///     using class logic instead of a constexpr-if statement as
     ///     documented by cppreference.
+    ///
+    ///   @tparam FUNC the type that defines the function being called
+    ///   @tparam T1 the types that define the first argument passed to the
+    ///     provided function when called.
+    ///   @tparam TN the types that define the rest of the arguments passed to
+    ///     the provided function when called.
     ///
     template<typename FUNC, typename T1, typename... TN>
     class invoke_impl<FUNC, T1, TN...> final : public invoke_impl_base<FUNC, T1>

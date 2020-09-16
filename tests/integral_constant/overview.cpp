@@ -28,11 +28,9 @@
 
 #include <bsl/ut.hpp>
 
-// clang-format off
-
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -41,18 +39,16 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
+    // clang-format off
 
-    static_assert(integral_constant<bool, true>::value);
-    static_assert(integral_constant<bsl::int32, 42>::value == 42);
+    static_assert(bsl::integral_constant<bool, true>::value);
+    static_assert(bsl::integral_constant<bsl::int32, 42>::value == 42);
 
-    static_assert(is_same<integral_constant<bool, true>::value_type, bool>::value);
-    static_assert(is_same<integral_constant<bsl::int32, 42>::value_type, bsl::int32>::value);
+    static_assert(bsl::is_same<bsl::integral_constant<bool, true>::value_type, bool>::value);
+    static_assert(bsl::is_same<bsl::integral_constant<bsl::int32, 42>::value_type, bsl::int32>::value);
 
-    static_assert(is_same<integral_constant<bool, true>::type, integral_constant<bool, true>>::value);
-    static_assert(is_same<integral_constant<bsl::int32, 42>::type, integral_constant<bsl::int32, 42>>::value);
+    static_assert(bsl::is_same<bsl::integral_constant<bool, true>::type, bsl::integral_constant<bool, true>>::value);
+    static_assert(bsl::is_same<bsl::integral_constant<bsl::int32, 42>::type, bsl::integral_constant<bsl::int32, 42>>::value);
 
     return bsl::ut_success();
 }
-
-// clang-format on

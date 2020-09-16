@@ -59,11 +59,20 @@ namespace bsl::details
     ///     using class logic instead of a constexpr-if statement as
     ///     documented by cppreference.
     ///
+    /// <!-- template parameters -->
+    ///   @tparam FUNC the type that defines the function being called
+    ///   @tparam T1 defines the instance of the MFP/MOP whose function
+    ///     is to be called.
+    ///   @tparam IS_MFP defaults to true of the function is a member
+    ///     function pointer.
+    ///   @tparam IS_MOP defaults to true of the function is a member
+    ///     object pointer.
+    ///
     template<
         typename FUNC,
         typename T1,
-        bool is_mfp = is_member_function_pointer<remove_cvref_t<FUNC>>::value,
-        bool is_mop = is_member_object_pointer<remove_cvref_t<FUNC>>::value>
+        bool IS_MFP = is_member_function_pointer<remove_cvref_t<FUNC>>::value,
+        bool IS_MOP = is_member_object_pointer<remove_cvref_t<FUNC>>::value>
     class invoke_impl_base
     {
     protected:
@@ -123,6 +132,14 @@ namespace bsl::details
     ///     implement is_invocable, which is why invoke is implemented
     ///     using class logic instead of a constexpr-if statement as
     ///     documented by cppreference.
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam FUNC the type that defines the function being called
+    ///   @tparam T1 defines the instance of the MFP/MOP whose function
+    ///     is to be called.
+    ///   @tparam U if the provided function is a member function pointer,
+    ///     U defined the type of class the member function pointer belongs
+    ///     too
     ///
     template<typename FUNC, typename U, typename T1>
     class invoke_impl_base<FUNC U::*, T1, true, false> :
@@ -192,6 +209,14 @@ namespace bsl::details
     ///     using class logic instead of a constexpr-if statement as
     ///     documented by cppreference.
     ///
+    /// <!-- template parameters -->
+    ///   @tparam FUNC the type that defines the function being called
+    ///   @tparam T1 defines the instance of the MFP/MOP whose function
+    ///     is to be called.
+    ///   @tparam U if the provided function is a member object pointer,
+    ///     U defined the type of class the member object pointer belongs
+    ///     too
+    ///
     template<typename FUNC, typename U, typename T1>
     class invoke_impl_base<FUNC U::*, T1, false, true> :
         public conditional_t<
@@ -259,6 +284,11 @@ namespace bsl::details
     ///     implement is_invocable, which is why invoke is implemented
     ///     using class logic instead of a constexpr-if statement as
     ///     documented by cppreference.
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam FUNC the type that defines the function being called
+    ///   @tparam T1 the type that defines the argument passed to the
+    ///     provided function when called.
     ///
     template<typename FUNC, typename T1>
     class invoke_impl_base<FUNC, T1, false, false> : public invoke_impl_fp

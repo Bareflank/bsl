@@ -49,20 +49,20 @@ namespace bsl
     ///     fmt support for their own types.
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam OUT the type of out (i.e., debug, alert, etc)
+    ///   @tparam OUT_T the type of out (i.e., debug, alert, etc)
     ///   @param o the instance of out<T> to output to
     ///   @param ops ops the fmt options used to format the output
     ///   @param c the character being outputted
     ///
-    template<typename OUT>
+    template<typename OUT_T>
     constexpr auto
-    fmt_impl(OUT &&o, fmt_options const &ops, char_type const c) noexcept -> void
+    fmt_impl(OUT_T &&o, fmt_options const &ops, char_type const c) noexcept -> void
     {
         switch (ops.type()) {
             case fmt_type::fmt_type_b:
             case fmt_type::fmt_type_d:
             case fmt_type::fmt_type_x: {
-                details::fmt_impl_integral(bsl::forward<OUT>(o), ops, to_u8(c));
+                details::fmt_impl_integral(bsl::forward<OUT_T>(o), ops, to_u8(c));
                 break;
             }
 

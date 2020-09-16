@@ -30,38 +30,29 @@
 
 #include "details/out_type_alert.hpp"
 #include "details/out_type_debug.hpp"
-#include "details/out_type_empty.hpp"
 #include "details/out_type_error.hpp"
 #include "details/out_type_print.hpp"
+#include "details/out_type.hpp"
 #include "details/out.hpp"
 
-#include "bool_constant.hpp"
 #include "char_type.hpp"
-#include "conditional.hpp"
 #include "cstdint.hpp"
-#include "disjunction.hpp"
 #include "fmt.hpp"
+#include "safe_integral.hpp"
 
 namespace bsl
 {
     /// @brief defines "-v" verbose mode
-    constexpr bsl::uintmax v{1U};
+    constexpr bsl::uintmax V{static_cast<bsl::uintmax>(1)};
     /// @brief defines "-vv" verbose mode
-    constexpr bsl::uintmax vv{2U};
+    constexpr bsl::uintmax VV{static_cast<bsl::uintmax>(2)};
     /// @brief defines "-vvv" verbose mode
-    constexpr bsl::uintmax vvv{3U};
+    constexpr bsl::uintmax VVV{static_cast<bsl::uintmax>(3)};
 
     /// @brief newline constant
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
     constexpr bsl::char_type endl{'\n'};
-
-    /// @brief used to disable debugging for debug() and alert()
-    template<bsl::uintmax DL, typename T>
-    using out_t =
-        conditional_t <
-        disjunction<
-            bool_constant<DL<BSL_DEBUG_LEVEL>, bool_constant<DL == BSL_DEBUG_LEVEL>>::value,
-            out<T>,
-            out<details::out_type_empty>>;
 
     namespace details
     {
@@ -109,15 +100,16 @@ namespace bsl
     ///   @include debug/example_debug_debug.hpp
     ///
     /// <!-- inputs/outputs -->
+    ///   @tparam DL the debug level for this out statement
     ///   @return Returns and instance of bsl::out<T>
     ///
-    template<bsl::uintmax DL = 0>
+    template<bsl::uintmax DL = static_cast<bsl::uintmax>(0)>
     [[nodiscard]] constexpr auto
-    debug() noexcept -> out_t<DL, details::out_type_debug>
+    debug() noexcept -> details::out_type<DL, details::out_type_debug>
     {
         // False positive
         // NOLINTNEXTLINE(cppcoreguidelines-init-variables)
-        out_t<DL, details::out_type_debug> o{};
+        details::out_type<DL, details::out_type_debug> o{};
 
         if constexpr (!o) {
             return o;
@@ -137,15 +129,16 @@ namespace bsl
     ///   @include debug/example_debug_alert.hpp
     ///
     /// <!-- inputs/outputs -->
+    ///   @tparam DL the debug level for this out statement
     ///   @return Returns and instance of bsl::out<T>
     ///
-    template<bsl::uintmax DL = 0>
+    template<bsl::uintmax DL = static_cast<bsl::uintmax>(0)>
     [[nodiscard]] constexpr auto
-    alert() noexcept -> out_t<DL, details::out_type_alert>
+    alert() noexcept -> details::out_type<DL, details::out_type_alert>
     {
         // False positive
         // NOLINTNEXTLINE(cppcoreguidelines-init-variables)
-        out_t<DL, details::out_type_alert> o{};
+        details::out_type<DL, details::out_type_alert> o{};
 
         if constexpr (!o) {
             return o;

@@ -33,9 +33,9 @@ namespace bsl
     inline void
     example_byte_and_assign() noexcept
     {
-        constexpr bsl::uint8 val1{0x10U};
-        constexpr bsl::uint8 val2{0x11U};
-        constexpr bsl::uint8 expected{0x10U};
+        constexpr bsl::safe_uint8 val1{bsl::to_u8(0x10)};
+        constexpr bsl::safe_uint8 val2{bsl::to_u8(0x11)};
+        constexpr bsl::safe_uint8 expected{bsl::to_u8(0x10)};
 
         bsl::byte b1{val1};
         constexpr bsl::byte b2{val2};

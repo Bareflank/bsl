@@ -33,8 +33,8 @@ namespace bsl
     inline void
     example_basic_errc_type_equals() noexcept
     {
-        constexpr bsl::int32 errc1{42};
-        constexpr bsl::int32 errc2{42};
+        constexpr bsl::safe_int32 errc1{42};
+        constexpr bsl::safe_int32 errc2{42};
 
         constexpr bsl::basic_errc_type<> my_errc1{errc1};
         constexpr bsl::basic_errc_type<> my_errc2{errc2};

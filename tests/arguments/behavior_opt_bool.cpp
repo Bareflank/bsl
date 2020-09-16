@@ -41,75 +41,73 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        using namespace bsl;
-
         bsl::ut_scenario{"get optional bool"} = []() {
             bsl::ut_given{} = []() {
-                arguments args{0, nullptr};
+                bsl::arguments args{bsl::to_umax(0), nullptr};
                 bsl::ut_then{} = [&args]() {
                     bsl::ut_check(!args.get<bool>("-app"));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"-app"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"-app"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
                     bsl::ut_check(!args.get<bool>(""));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"app"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"app"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
                     bsl::ut_check(!args.get<bool>("-app"));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"-app"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"-app"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
                     bsl::ut_check(!args.get<bool>("-app_blah"));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"-app"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"-app"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
                     bsl::ut_check(!args.get<bool>("-ap"));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"-app="};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"-app="};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
                     bsl::ut_check(!args.get<bool>("-app"));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"-app=42"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"-app=42"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
                     bsl::ut_check(!args.get<bool>("-app="));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"-app=42"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"-app=42"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
                     bsl::ut_check(!args.get<bool>("-app"));
                 };
             };
 
             bsl::ut_given{} = []() {
-                array argv{"-app"};
-                arguments args{argv.size(), argv.data()};
+                bsl::array argv{"-app"};
+                bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
                     bsl::ut_check(args.get<bool>("-app"));
                 };
@@ -121,8 +119,8 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->

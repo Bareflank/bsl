@@ -53,31 +53,31 @@ namespace bsl
     ///   @include example_basic_string_view_overview.hpp
     ///
     /// <!-- template parameters -->
-    ///   @tparam CharT the type of characters in the string
-    ///   @tparam Traits the traits class used to work with the string
+    ///   @tparam CHAR_T the type of characters in the string
+    ///   @tparam TRAITS the traits class used to work with the string
     ///
-    template<typename CharT, typename Traits = char_traits<CharT>>
+    template<typename CHAR_T, typename TRAITS = char_traits<CHAR_T>>
     class basic_string_view final
     {
     public:
-        /// @brief alias for: CharT const
-        using value_type = CharT const;
+        /// @brief alias for: CHAR_T const
+        using value_type = CHAR_T const;
         /// @brief alias for: safe_uintmax
         using size_type = safe_uintmax;
         /// @brief alias for: safe_uintmax
         using difference_type = safe_uintmax;
-        /// @brief alias for: CharT const &
-        using reference_type = CharT const &;
-        /// @brief alias for: CharT const &
-        using const_reference_type = CharT const &;
-        /// @brief alias for: CharT const *
-        using pointer_type = CharT const *;
-        /// @brief alias for: CharT const const *
-        using const_pointer_type = CharT const *;
-        /// @brief alias for: contiguous_iterator<CharT const>
-        using iterator_type = contiguous_iterator<CharT const>;
-        /// @brief alias for: contiguous_iterator<CharT const const>
-        using const_iterator_type = contiguous_iterator<CharT const>;
+        /// @brief alias for: CHAR_T const &
+        using reference_type = CHAR_T const &;
+        /// @brief alias for: CHAR_T const &
+        using const_reference_type = CHAR_T const &;
+        /// @brief alias for: CHAR_T const *
+        using pointer_type = CHAR_T const *;
+        /// @brief alias for: CHAR_T const const *
+        using const_pointer_type = CHAR_T const *;
+        /// @brief alias for: contiguous_iterator<CHAR_T const>
+        using iterator_type = contiguous_iterator<CHAR_T const>;
+        /// @brief alias for: contiguous_iterator<CHAR_T const const>
+        using const_iterator_type = contiguous_iterator<CHAR_T const>;
         /// @brief alias for: reverse_iterator<iterator>
         using reverse_iterator_type = reverse_iterator<iterator_type>;
         /// @brief alias for: reverse_iterator<const_iterator>
@@ -94,7 +94,7 @@ namespace bsl
         /// <!-- description -->
         ///   @brief ptr constructor. This creates a bsl::basic_string_view
         ///     given a pointer to a string. The number of characters in the
-        ///     string is determined using Traits<CharT>::length,
+        ///     string is determined using TRAITS<CHAR_T>::length,
         ///     which scans for '\0'.
         ///   @include basic_string_view/example_basic_string_view_s_constructor.hpp
         ///
@@ -105,7 +105,7 @@ namespace bsl
         // implicit conversions, so this rule is OBE.
         // NOLINTNEXTLINE(hicpp-explicit-conversions)
         constexpr basic_string_view(pointer_type const s) noexcept
-            : m_ptr{s}, m_count{Traits::length(s)}
+            : m_ptr{s}, m_count{TRAITS::length(s)}
         {
             if (nullptr == m_ptr) {
                 *this = basic_string_view{};
@@ -147,6 +147,47 @@ namespace bsl
         }
 
         /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::basic_string_view
+        ///
+        constexpr ~basic_string_view() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr basic_string_view(basic_string_view const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr basic_string_view(basic_string_view &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(basic_string_view const &o) &noexcept
+            -> basic_string_view & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(basic_string_view &&o) &noexcept
+            -> basic_string_view & = default;
+
+        /// <!-- description -->
         ///   @brief This constructor allows for single argument constructors
         ///     without the need to mark them as explicit as it will absorb
         ///     any incoming potential implicit conversion and prevent it.
@@ -161,7 +202,7 @@ namespace bsl
         /// <!-- description -->
         ///   @brief ptr assignment. This assigns a bsl::basic_string_view
         ///     a pointer to a string. The number of characters in the
-        ///     string is determined using Traits<CharT>::length,
+        ///     string is determined using TRAITS<CHAR_T>::length,
         ///     which scans for '\0'.
         ///   @include basic_string_view/example_basic_string_view_s_assignment.hpp
         ///
@@ -747,7 +788,7 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         max_size() noexcept -> size_type
         {
-            return size_type::max() / to_umax(sizeof(CharT));
+            return size_type::max() / to_umax(sizeof(CHAR_T));
         }
 
         /// <!-- description -->
@@ -760,7 +801,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         size_bytes() const noexcept -> size_type
         {
-            return m_count * to_umax(sizeof(CharT));
+            return m_count * to_umax(sizeof(CHAR_T));
         }
 
         /// <!-- description -->
@@ -868,7 +909,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         compare(basic_string_view const &str) const noexcept -> safe_int32
         {
-            return Traits::compare(this->data(), str.data(), this->size().min(str.size()));
+            return TRAITS::compare(this->data(), str.data(), this->size().min(str.size()));
         }
 
         /// <!-- description -->
@@ -1003,7 +1044,7 @@ namespace bsl
         starts_with(value_type const c) const noexcept -> bool
         {
             if (auto const *const ptr{this->front_if()}) {
-                return Traits::eq(*ptr, c);
+                return TRAITS::eq(*ptr, c);
             }
 
             return false;
@@ -1056,7 +1097,7 @@ namespace bsl
         ends_with(value_type const c) const noexcept -> bool
         {
             if (auto const *const ptr{this->back_if()}) {
-                return Traits::eq(*ptr, c);
+                return TRAITS::eq(*ptr, c);
             }
 
             return false;
@@ -1132,7 +1173,7 @@ namespace bsl
         ///     returned.
         ///
         [[nodiscard]] constexpr auto
-        find(CharT const ch, size_type const &pos = {}) const noexcept -> size_type
+        find(CHAR_T const ch, size_type const &pos = {}) const noexcept -> size_type
         {
             if (!pos) {
                 return npos;
@@ -1186,8 +1227,8 @@ namespace bsl
     ///   @related bsl::basic_string_view
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam CharT the type of characters in the string
-    ///   @tparam Traits the traits class used to work with the string
+    ///   @tparam CHAR_T the type of characters in the string
+    ///   @tparam TRAITS the traits class used to work with the string
     ///   @param lhs the left hand side of the operation
     ///   @param rhs the right hand side of the operation
     ///   @return Returns true if two strings have the same length (which is
@@ -1195,11 +1236,11 @@ namespace bsl
     ///     two provided strings), and contain the same characters. Returns
     ///     false otherwise.
     ///
-    template<typename CharT, typename Traits>
+    template<typename CHAR_T, typename TRAITS>
     [[nodiscard]] constexpr auto
     operator==(
-        bsl::basic_string_view<CharT, Traits> const &lhs,
-        bsl::basic_string_view<CharT, Traits> const &rhs) noexcept -> bool
+        bsl::basic_string_view<CHAR_T, TRAITS> const &lhs,
+        bsl::basic_string_view<CHAR_T, TRAITS> const &rhs) noexcept -> bool
     {
         if (lhs.size() != rhs.size()) {
             return false;
@@ -1217,8 +1258,8 @@ namespace bsl
     ///   @related bsl::basic_string_view
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam CharT the type of characters in the string
-    ///   @tparam Traits the traits class used to work with the string
+    ///   @tparam CHAR_T the type of characters in the string
+    ///   @tparam TRAITS the traits class used to work with the string
     ///   @param lhs the left hand side of the operation
     ///   @param rhs the right hand side of the operation
     ///   @return Returns true if two strings have the same length (which is
@@ -1226,12 +1267,12 @@ namespace bsl
     ///     two provided strings), and contain the same characters. Returns
     ///     false otherwise.
     ///
-    template<typename CharT, typename Traits>
+    template<typename CHAR_T, typename TRAITS>
     [[nodiscard]] constexpr auto
-    operator==(bsl::basic_string_view<CharT, Traits> const &lhs, CharT const *const rhs) noexcept
+    operator==(bsl::basic_string_view<CHAR_T, TRAITS> const &lhs, CHAR_T const *const rhs) noexcept
         -> bool
     {
-        return lhs == bsl::basic_string_view<CharT, Traits>{rhs};
+        return lhs == bsl::basic_string_view<CHAR_T, TRAITS>{rhs};
     }
 
     /// <!-- description -->
@@ -1243,8 +1284,8 @@ namespace bsl
     ///   @related bsl::basic_string_view
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam CharT the type of characters in the string
-    ///   @tparam Traits the traits class used to work with the string
+    ///   @tparam CHAR_T the type of characters in the string
+    ///   @tparam TRAITS the traits class used to work with the string
     ///   @param lhs the left hand side of the operation
     ///   @param rhs the right hand side of the operation
     ///   @return Returns true if two strings have the same length (which is
@@ -1252,12 +1293,12 @@ namespace bsl
     ///     two provided strings), and contain the same characters. Returns
     ///     false otherwise.
     ///
-    template<typename CharT, typename Traits>
+    template<typename CHAR_T, typename TRAITS>
     [[nodiscard]] constexpr auto
-    operator==(CharT const *const lhs, bsl::basic_string_view<CharT, Traits> const &rhs) noexcept
+    operator==(CHAR_T const *const lhs, bsl::basic_string_view<CHAR_T, TRAITS> const &rhs) noexcept
         -> bool
     {
-        return bsl::basic_string_view<CharT, Traits>{lhs} == rhs;
+        return bsl::basic_string_view<CHAR_T, TRAITS>{lhs} == rhs;
     }
 
     /// <!-- description -->
@@ -1269,8 +1310,8 @@ namespace bsl
     ///   @related bsl::basic_string_view
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam CharT the type of characters in the string
-    ///   @tparam Traits the traits class used to work with the string
+    ///   @tparam CHAR_T the type of characters in the string
+    ///   @tparam TRAITS the traits class used to work with the string
     ///   @param lhs the left hand side of the operation
     ///   @param rhs the right hand side of the operation
     ///   @return Returns true if two strings are not the same length (which is
@@ -1278,11 +1319,11 @@ namespace bsl
     ///     two provided strings), or contain different characters. Returns
     ///     false otherwise.
     ///
-    template<typename CharT, typename Traits>
+    template<typename CHAR_T, typename TRAITS>
     [[nodiscard]] constexpr auto
     operator!=(
-        bsl::basic_string_view<CharT, Traits> const &lhs,
-        bsl::basic_string_view<CharT, Traits> const &rhs) noexcept -> bool
+        bsl::basic_string_view<CHAR_T, TRAITS> const &lhs,
+        bsl::basic_string_view<CHAR_T, TRAITS> const &rhs) noexcept -> bool
     {
         return !(lhs == rhs);
     }
@@ -1296,8 +1337,8 @@ namespace bsl
     ///   @related bsl::basic_string_view
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam CharT the type of characters in the string
-    ///   @tparam Traits the traits class used to work with the string
+    ///   @tparam CHAR_T the type of characters in the string
+    ///   @tparam TRAITS the traits class used to work with the string
     ///   @param lhs the left hand side of the operation
     ///   @param rhs the right hand side of the operation
     ///   @return Returns true if two strings are not the same length (which is
@@ -1305,9 +1346,9 @@ namespace bsl
     ///     two provided strings), or contain different characters. Returns
     ///     false otherwise.
     ///
-    template<typename CharT, typename Traits>
+    template<typename CHAR_T, typename TRAITS>
     [[nodiscard]] constexpr auto
-    operator!=(bsl::basic_string_view<CharT, Traits> const &lhs, CharT const *const rhs) noexcept
+    operator!=(bsl::basic_string_view<CHAR_T, TRAITS> const &lhs, CHAR_T const *const rhs) noexcept
         -> bool
     {
         return !(lhs == rhs);
@@ -1322,8 +1363,8 @@ namespace bsl
     ///   @related bsl::basic_string_view
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam CharT the type of characters in the string
-    ///   @tparam Traits the traits class used to work with the string
+    ///   @tparam CHAR_T the type of characters in the string
+    ///   @tparam TRAITS the traits class used to work with the string
     ///   @param lhs the left hand side of the operation
     ///   @param rhs the right hand side of the operation
     ///   @return Returns true if two strings are not the same length (which is
@@ -1331,9 +1372,9 @@ namespace bsl
     ///     two provided strings), or contain different characters. Returns
     ///     false otherwise.
     ///
-    template<typename CharT, typename Traits>
+    template<typename CHAR_T, typename TRAITS>
     [[nodiscard]] constexpr auto
-    operator!=(CharT const *const lhs, bsl::basic_string_view<CharT, Traits> const &rhs) noexcept
+    operator!=(CHAR_T const *const lhs, bsl::basic_string_view<CHAR_T, TRAITS> const &rhs) noexcept
         -> bool
     {
         return !(lhs == rhs);
@@ -1347,14 +1388,15 @@ namespace bsl
     ///   @related bsl::basic_string_view
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam OUT the type of out (i.e., debug, alert, etc)
+    ///   @tparam OUT_T the type of out (i.e., debug, alert, etc)
+    ///   @tparam CHAR_T the type of characters in the string
     ///   @param o the instance of out<T> to output to
     ///   @param ops ops the fmt options used to format the output
     ///   @param str the string_view being outputted
     ///
-    template<typename OUT, typename CharT>
+    template<typename OUT_T, typename CHAR_T>
     constexpr void
-    fmt_impl(OUT &&o, fmt_options const &ops, basic_string_view<CharT> const &str) noexcept
+    fmt_impl(OUT_T &&o, fmt_options const &ops, basic_string_view<CHAR_T> const &str) noexcept
     {
         details::fmt_impl_align_pre(o, ops, str.length(), true);
         o.write(str.data());
@@ -1369,13 +1411,14 @@ namespace bsl
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type of outputter provided
+    ///   @tparam CHAR_T the type of characters in the string
     ///   @param o the instance of the outputter used to output the value.
     ///   @param str the basic_string_view to output
     ///   @return return o
     ///
-    template<typename T, typename CharT>
+    template<typename T, typename CHAR_T>
     [[maybe_unused]] constexpr auto
-    operator<<(out<T> const o, basic_string_view<CharT> const &str) noexcept -> out<T>
+    operator<<(out<T> const o, basic_string_view<CHAR_T> const &str) noexcept -> out<T>
     {
         if constexpr (!o) {
             return o;

@@ -36,56 +36,20 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
+    static_assert(bsl::integer_sequence<bsl::int32>::size() == static_cast<bsl::uintmax>(0));
+    static_assert(
+        bsl::integer_sequence<bsl::int32, 4, 8, 15, 16, 23, 42>::size() ==
+        static_cast<bsl::uintmax>(6));
 
-    // -------------------------------------------------------------------------
+    static_assert(bsl::integer_sequence<bsl::int32, 4>::min() == 4);
+    static_assert(bsl::integer_sequence<bsl::int32, 4, 8>::min() == 4);
+    static_assert(bsl::integer_sequence<bsl::int32, 4, 8, 15, 16, 23, 42>::min() == 4);
+    static_assert(bsl::integer_sequence<bsl::int32, 15, 8, 4, 42, 23, 16>::min() == 4);
 
-    static_assert(integer_sequence<bsl::int32>::size() == 0);
-    static_assert(integer_sequence<bsl::int32, 4, 8, 15, 16, 23, 42>::size() == 6);
-
-    static_assert(integer_sequence<bsl::int32, 4>::min() == 4);
-    static_assert(integer_sequence<bsl::int32, 4, 8>::min() == 4);
-    static_assert(integer_sequence<bsl::int32, 4, 8, 15, 16, 23, 42>::min() == 4);
-    static_assert(integer_sequence<bsl::int32, 15, 8, 4, 42, 23, 16>::min() == 4);
-
-    static_assert(integer_sequence<bsl::int32, 42>::max() == 42);
-    static_assert(integer_sequence<bsl::int32, 23, 42>::max() == 42);
-    static_assert(integer_sequence<bsl::int32, 4, 8, 15, 16, 23, 42>::max() == 42);
-    static_assert(integer_sequence<bsl::int32, 15, 8, 4, 42, 23, 16>::max() == 42);
-
-    // -------------------------------------------------------------------------
-
-    static_assert(index_sequence<>::size() == 0);
-    static_assert(index_sequence<4, 8, 15, 16, 23, 42>::size() == 6);
-
-    static_assert(index_sequence<4>::min() == 4);
-    static_assert(index_sequence<4, 8>::min() == 4);
-    static_assert(index_sequence<4, 8, 15, 16, 23, 42>::min() == 4);
-    static_assert(index_sequence<15, 8, 4, 42, 23, 16>::min() == 4);
-
-    static_assert(index_sequence<42>::max() == 42);
-    static_assert(index_sequence<23, 42>::max() == 42);
-    static_assert(index_sequence<4, 8, 15, 16, 23, 42>::max() == 42);
-    static_assert(index_sequence<15, 8, 4, 42, 23, 16>::max() == 42);
-
-    // -------------------------------------------------------------------------
-
-    static_assert(make_integer_sequence<bsl::int32, 0>::size() == 0);
-    static_assert(make_integer_sequence<bsl::int32, 6>::size() == 6);
-    static_assert(make_integer_sequence<bsl::int32, 6>::min() == 0);
-    static_assert(make_integer_sequence<bsl::int32, 6>::max() == 5);
-
-    // -------------------------------------------------------------------------
-
-    static_assert(make_index_sequence<6>::size() == 6);
-    static_assert(make_index_sequence<6>::min() == 0);
-    static_assert(make_index_sequence<6>::max() == 5);
-
-    // -------------------------------------------------------------------------
-
-    static_assert(index_sequence_for<void, bool, bsl::int32>::size() == 3);
-    static_assert(index_sequence_for<void, bool, bsl::int32>::min() == 0);
-    static_assert(index_sequence_for<void, bool, bsl::int32>::max() == 2);
+    static_assert(bsl::integer_sequence<bsl::int32, 42>::max() == 42);
+    static_assert(bsl::integer_sequence<bsl::int32, 23, 42>::max() == 42);
+    static_assert(bsl::integer_sequence<bsl::int32, 4, 8, 15, 16, 23, 42>::max() == 42);
+    static_assert(bsl::integer_sequence<bsl::int32, 15, 8, 4, 42, 23, 16>::max() == 42);
 
     return bsl::ut_success();
 }

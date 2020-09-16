@@ -27,8 +27,8 @@
 #include <bsl/ut.hpp>
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
@@ -37,7 +37,6 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
     using traits = bsl::char_traits<bsl::char_type>;
 
     bsl::ut_scenario{"verify noexcept"} = []() {
@@ -45,12 +44,12 @@ main() noexcept -> bsl::exit_code
         static_assert(noexcept(traits::lt('H', 'H')));
         static_assert(noexcept(traits::compare(nullptr, nullptr, bsl::to_umax(0))));
         static_assert(noexcept(traits::length(nullptr)));
-        static_assert(noexcept(traits::find(nullptr, bsl::to_umax(0), 0)));
-        static_assert(noexcept(traits::to_char_type(0)));
-        static_assert(noexcept(traits::to_int_type(0)));
-        static_assert(noexcept(traits::eq_int_type(0, 0)));
+        static_assert(noexcept(traits::find(nullptr, bsl::to_umax(0), ' ')));
+        static_assert(noexcept(traits::to_char_type(bsl::to_imax(0).get())));
+        static_assert(noexcept(traits::to_int_type(' ')));
+        static_assert(noexcept(traits::eq_int_type(bsl::to_imax(0).get(), bsl::to_imax(0).get())));
         static_assert(noexcept(traits::eof()));
-        static_assert(noexcept(traits::not_eof(0)));
+        static_assert(noexcept(traits::not_eof(bsl::to_imax(0).get())));
     };
 
     return bsl::ut_success();

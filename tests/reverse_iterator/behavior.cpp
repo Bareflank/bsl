@@ -29,7 +29,7 @@
 
 namespace
 {
-    constexpr bsl::array<bsl::safe_int32, 6> arr{
+    constexpr bsl::array arr{
         bsl::to_i32(4),
         bsl::to_i32(8),
         bsl::to_i32(5),
@@ -49,8 +49,6 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        using namespace bsl;
-
         bsl::ut_scenario{"constructor"} = []() {
             bsl::ut_given{} = []() {
                 bsl::reverse_iterator ri{arr.begin()};
@@ -105,14 +103,14 @@ namespace
             bsl::ut_given{} = []() {
                 bsl::reverse_iterator ri{arr.end()};
                 bsl::ut_then{} = [&ri]() {
-                    bsl::ut_check(ri.index() == to_umax(5));
+                    bsl::ut_check(ri.index() == bsl::to_umax(5));
                 };
             };
 
             bsl::ut_given{} = []() {
                 bsl::reverse_iterator ri{arr.begin()};
                 bsl::ut_then{} = [&ri]() {
-                    bsl::ut_check(ri.index() == to_umax(6));
+                    bsl::ut_check(ri.index() == bsl::to_umax(6));
                 };
             };
         };
@@ -160,7 +158,7 @@ namespace
 
         bsl::ut_scenario{"get_if"} = []() {
             bsl::ut_given{} = []() {
-                bsl::contiguous_iterator<bool> const ci{nullptr, to_umax(0), to_umax(0)};
+                bsl::contiguous_iterator<bool> const ci{nullptr, bsl::to_umax(0), bsl::to_umax(0)};
                 bsl::reverse_iterator ri{ci};
                 bsl::ut_then{} = [&ri]() {
                     bsl::ut_check(ri.get_if() == nullptr);
@@ -168,7 +166,7 @@ namespace
             };
 
             bsl::ut_given{} = []() {
-                bsl::contiguous_iterator<bool> const ci{nullptr, to_umax(0), to_umax(0)};
+                bsl::contiguous_iterator<bool> const ci{nullptr, bsl::to_umax(0), bsl::to_umax(0)};
                 bsl::reverse_iterator const ri{ci};
                 bsl::ut_then{} = [&ri]() {
                     bsl::ut_check(ri.get_if() == nullptr);
@@ -217,7 +215,7 @@ namespace
             };
 
             bsl::ut_given{} = []() {
-                bsl::reverse_iterator ri{arr.iter(to_umax(1))};
+                bsl::reverse_iterator ri{arr.iter(bsl::to_umax(1))};
                 bsl::ut_when{} = [&ri]() {
                     ++ri;
                     bsl::ut_then{} = [&ri]() {
@@ -228,12 +226,12 @@ namespace
             };
 
             bsl::ut_given{} = []() {
-                bsl::reverse_iterator ri{arr.iter(to_umax(2))};
+                bsl::reverse_iterator ri{arr.iter(bsl::to_umax(2))};
                 bsl::ut_when{} = [&ri]() {
                     ++ri;
                     bsl::ut_then{} = [&ri]() {
                         bsl::ut_check(ri.get_if() == arr.front_if());
-                        bsl::ut_check(ri.index() == to_umax(0));
+                        bsl::ut_check(ri.index() == bsl::to_umax(0));
                     };
                 };
             };
@@ -243,8 +241,8 @@ namespace
                 bsl::ut_when{} = [&ri]() {
                     ++ri;
                     bsl::ut_then{} = [&ri]() {
-                        bsl::ut_check(ri.get_if() == arr.at_if(to_umax(4)));
-                        bsl::ut_check(ri.index() == to_umax(4));
+                        bsl::ut_check(ri.get_if() == arr.at_if(bsl::to_umax(4)));
+                        bsl::ut_check(ri.index() == bsl::to_umax(4));
                     };
                 };
             };
@@ -257,29 +255,29 @@ namespace
                     --ri;
                     bsl::ut_then{} = [&ri]() {
                         bsl::ut_check(ri.get_if() == arr.front_if());
-                        bsl::ut_check(ri.index() == to_umax(0));
+                        bsl::ut_check(ri.index() == bsl::to_umax(0));
                     };
                 };
             };
 
             bsl::ut_given{} = []() {
-                bsl::reverse_iterator ri{arr.iter(to_umax(1))};
+                bsl::reverse_iterator ri{arr.iter(bsl::to_umax(1))};
                 bsl::ut_when{} = [&ri]() {
                     --ri;
                     bsl::ut_then{} = [&ri]() {
-                        bsl::ut_check(ri.get_if() == arr.at_if(to_umax(1)));
-                        bsl::ut_check(ri.index() == to_umax(1));
+                        bsl::ut_check(ri.get_if() == arr.at_if(bsl::to_umax(1)));
+                        bsl::ut_check(ri.index() == bsl::to_umax(1));
                     };
                 };
             };
 
             bsl::ut_given{} = []() {
-                bsl::reverse_iterator ri{arr.iter(to_umax(to_umax(5)))};
+                bsl::reverse_iterator ri{arr.iter(bsl::to_umax(bsl::to_umax(5)))};
                 bsl::ut_when{} = [&ri]() {
                     --ri;
                     bsl::ut_then{} = [&ri]() {
                         bsl::ut_check(ri.get_if() == arr.back_if());
-                        bsl::ut_check(ri.index() == to_umax(to_umax(5)));
+                        bsl::ut_check(ri.index() == bsl::to_umax(bsl::to_umax(5)));
                     };
                 };
             };
@@ -290,7 +288,7 @@ namespace
                     --ri;
                     bsl::ut_then{} = [&ri]() {
                         bsl::ut_check(ri.get_if() == arr.back_if());
-                        bsl::ut_check(ri.index() == to_umax(to_umax(5)));
+                        bsl::ut_check(ri.index() == bsl::to_umax(bsl::to_umax(5)));
                     };
                 };
             };
@@ -351,8 +349,8 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->

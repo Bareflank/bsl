@@ -29,14 +29,14 @@
 #define BSL_RESULT_HPP
 
 #include "details/out.hpp"
+#include "details/result_type.hpp"
 
 #include "conjunction.hpp"
 #include "construct_at.hpp"
-#include "cstdint.hpp"
 #include "destroy_at.hpp"
 #include "debug.hpp"
 #include "errc_type.hpp"
-#include "in_place.hpp"
+#include "in_place_t.hpp"
 #include "is_nothrow_constructible.hpp"
 #include "is_nothrow_copy_constructible.hpp"
 #include "is_nothrow_copy_assignable.hpp"
@@ -51,21 +51,6 @@
 
 namespace bsl
 {
-    namespace details
-    {
-        /// @enum bsl::details::result_type
-        ///
-        /// <!-- description -->
-        ///   @brief Defines what a bsl::result is currently storing. This is
-        ///     defined as a bsl::uint8 to ensure it is as small as possible.
-        ///
-        enum class result_type : bsl::uint8
-        {
-            contains_t,
-            contains_e
-        };
-    }
-
     /// @class bsl::result
     ///
     /// <!-- description -->
@@ -102,20 +87,20 @@ namespace bsl
                     bsl::swap(lhs.m_t, rhs.m_t);
                 }
                 else {
-                    E tmp_e{bsl::move(rhs.m_e)};
+                    E tmp_e_rwl{bsl::move(rhs.m_e)};
                     destroy_at(&rhs.m_e);
                     construct_at<T>(&rhs.m_t, bsl::move(lhs.m_t));
                     destroy_at(&lhs.m_t);
-                    construct_at<E>(&lhs.m_e, bsl::move(tmp_e));
+                    construct_at<E>(&lhs.m_e, bsl::move(tmp_e_rwl));
                 }
             }
             else {
                 if (details::result_type::contains_t == rhs.m_which) {
-                    E tmp_e{bsl::move(lhs.m_e)};
+                    E tmp_e_lwr{bsl::move(lhs.m_e)};
                     destroy_at(&lhs.m_e);
                     construct_at<T>(&lhs.m_t, bsl::move(rhs.m_t));
                     destroy_at(&rhs.m_t);
-                    construct_at<E>(&rhs.m_e, bsl::move(tmp_e));
+                    construct_at<E>(&rhs.m_e, bsl::move(tmp_e_lwr));
                 }
                 else {
                     bsl::swap(lhs.m_e, rhs.m_e);
@@ -150,7 +135,7 @@ namespace bsl
         ///   @include result/example_result_t_copy_constructor.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @param t the value being copied
+        ///   @param val the value being copied
         ///
         /// <!-- exceptions -->
         ///   @throw throws if T's copy constructor throws
@@ -161,8 +146,8 @@ namespace bsl
         // Finally, the bsl-class-member-init has issues with union types,
         // which is not worth fixing as they are not supported in general.
         // NOLINTNEXTLINE(hicpp-explicit-conversions, modernize-pass-by-value, bsl-class-member-init)
-        constexpr result(T const &t) noexcept(is_nothrow_copy_constructible<T>::value)
-            : m_which{details::result_type::contains_t}, m_t{t}
+        constexpr result(T const &val) noexcept(is_nothrow_copy_constructible<T>::value)
+            : m_which{details::result_type::contains_t}, m_t{val}
         {}
 
         /// <!-- description -->
@@ -171,7 +156,7 @@ namespace bsl
         ///   @include result/example_result_t_move_constructor.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @param t the value being moved
+        ///   @param val the value being moved
         ///
         /// <!-- exceptions -->
         ///   @throw throws if T's move constructor throws
@@ -182,8 +167,8 @@ namespace bsl
         // Finally, the bsl-class-member-init has issues with union types,
         // which is not worth fixing as they are not supported in general.
         // NOLINTNEXTLINE(hicpp-explicit-conversions, modernize-pass-by-value, bsl-class-member-init)
-        constexpr result(T &&t) noexcept(is_nothrow_move_constructible<T>::value)
-            : m_which{details::result_type::contains_t}, m_t{bsl::move(t)}
+        constexpr result(T &&val) noexcept(is_nothrow_move_constructible<T>::value)
+            : m_which{details::result_type::contains_t}, m_t{bsl::move(val)}
         {}
 
         /// <!-- description -->
@@ -192,8 +177,10 @@ namespace bsl
         ///   @include result/example_result_t_in_place_constructor.hpp
         ///
         /// <!-- inputs/outputs -->
+        ///   @tparam ARGS the type of arguments to pass to the constructor
+        ///     of T
         ///   @param ip provide bsl::in_place to construct in place
-        ///   @param args the arguments to create T with
+        ///   @param a the arguments to create T with
         ///
         /// <!-- exceptions -->
         ///   @throw throws if T's constructor throws
@@ -204,9 +191,9 @@ namespace bsl
         // has issues with union types, which is not worth fixing as they are
         // not supported in general.
         // NOLINTNEXTLINE(hicpp-explicit-conversions, bsl-class-member-init)
-        constexpr result(bsl::in_place_t const &ip, ARGS &&... args) noexcept(
+        constexpr result(bsl::in_place_t const &ip, ARGS &&... a) noexcept(
             is_nothrow_constructible<T, ARGS...>::value)
-            : m_which{details::result_type::contains_t}, m_t{bsl::forward<ARGS>(args)...}
+            : m_which{details::result_type::contains_t}, m_t{bsl::forward<ARGS>(a)...}
         {
             bsl::discard(ip);
         }
@@ -217,17 +204,15 @@ namespace bsl
         ///   @include result/example_result_errc_copy_constructor.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @param e the error code being copied
+        ///   @param val the error code being copied
         ///
         // We use a deleted single argument template constructor to prevent
         // implicit conversions, so this rule is OBE. The bsl-class-member-init
         // has issues with union types, which is not worth fixing as they are
         // not supported in general.
         // NOLINTNEXTLINE(hicpp-explicit-conversions, bsl-class-member-init)
-        constexpr result(E const &e) noexcept
-            :    // --
-            m_which{details::result_type::contains_e}
-            , m_e{e}
+        constexpr result(E const &val) noexcept    // --
+            : m_which{details::result_type::contains_e}, m_e{val}
         {}
 
         /// <!-- description -->
@@ -236,15 +221,15 @@ namespace bsl
         ///   @include result/example_result_errc_move_constructor.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @param e the error code being moved
+        ///   @param val the error code being moved
         ///
         // We use a deleted single argument template constructor to prevent
         // implicit conversions, so this rule is OBE. The bsl-class-member-init
         // has issues with union types, which is not worth fixing as they are
         // not supported in general.
         // NOLINTNEXTLINE(hicpp-explicit-conversions, bsl-class-member-init)
-        constexpr result(E &&e) noexcept
-            : m_which{details::result_type::contains_e}, m_e{bsl::move(e)}
+        constexpr result(E &&val) noexcept
+            : m_which{details::result_type::contains_e}, m_e{bsl::move(val)}
         {}
 
         /// <!-- description -->
@@ -281,9 +266,13 @@ namespace bsl
             : m_which{o.m_which}
         {
             if (details::result_type::contains_t == m_which) {
+                // A BitCast conversion is needed when working with unions
+                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 construct_at<T>(&m_t, o.m_t);
             }
             else {
+                // A BitCast conversion is needed when working with unions
+                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 construct_at<E>(&m_e, o.m_e);
             }
         }
@@ -303,9 +292,13 @@ namespace bsl
             : m_which{o.m_which}
         {
             if (details::result_type::contains_t == m_which) {
+                // A BitCast conversion is needed when working with unions
+                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 construct_at<T>(&m_t, bsl::move(o.m_t));
             }
             else {
+                // A BitCast conversion is needed when working with unions
+                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 construct_at<E>(&m_e, bsl::move(o.m_e));
             }
         }
@@ -497,6 +490,8 @@ namespace bsl
     ///   @related bsl::result
     ///
     /// <!-- inputs/outputs -->
+    ///   @tparam T the nullable type
+    ///   @tparam E the error type to use
     ///   @param lhs the left hand side of the operator
     ///   @param rhs the right hand side of the operator
     ///   @return Returns true if the lhs is equal to the rhs, false otherwise
@@ -522,6 +517,8 @@ namespace bsl
     ///   @related bsl::result
     ///
     /// <!-- inputs/outputs -->
+    ///   @tparam T the nullable type
+    ///   @tparam E the error type to use
     ///   @param lhs the left hand side of the operator
     ///   @param rhs the right hand side of the operator
     ///   @return Returns false if the lhs is equal to the rhs, true otherwise
@@ -542,6 +539,7 @@ namespace bsl
     /// <!-- inputs/outputs -->
     ///   @tparam T1 the type of outputter provided
     ///   @tparam T2 the type of element being encapsulated.
+    ///   @tparam E the error type to use
     ///   @param o the instance of the outputter used to output the value.
     ///   @param val the result to output
     ///   @return return o

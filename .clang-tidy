@@ -23,14 +23,6 @@ Checks:
   '
     -*,
     bsl-*,
-      -bsl-unused-return-value,
-      -bsl-op-bitwise-operands,
-      -bsl-op-forbidden-overload,
-      -bsl-identifier-typographically-unambiguous,
-      -bsl-destructor-access-specifier,
-      -bsl-lambda-param-list,
-      -bsl-non-pod-classdef,
-      -bsl-non-pod-static,
     bugprone-*,
       -bugprone-branch-clone,
     cert-*,
@@ -166,9 +158,9 @@ CheckOptions:
   - key:             cert-oop57-cpp.MemSetNames
     value:           ''
   - key:             cppcoreguidelines-avoid-magic-numbers.IgnoredFloatingPointValues
-    value:           ''
+    value:           '0;1'
   - key:             cppcoreguidelines-avoid-magic-numbers.IgnoredIntegerValues
-    value:           ''
+    value:           '0;1'
   - key:             cppcoreguidelines-explicit-virtual-functions.AllowOverrideAndFinal
     value:           '0'
   - key:             cppcoreguidelines-explicit-virtual-functions.FinalSpelling
@@ -428,9 +420,9 @@ CheckOptions:
   - key:             readability-inconsistent-declaration-parameter-name.Strict
     value:           '0'
   - key:             readability-magic-numbers.IgnoredFloatingPointValues
-    value:           ''
+    value:           '0;1'
   - key:             readability-magic-numbers.IgnoredIntegerValues
-    value:           ''
+    value:           '0;1'
   - key:             readability-qualified-auto.AddConstToQualified
     value:           '1'
   - key:             readability-redundant-member-init.IgnoreBaseInCopyConstructors

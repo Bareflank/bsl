@@ -34,6 +34,7 @@
 #include "debug.hpp"
 #include "discard.hpp"
 #include "move.hpp"
+#include "safe_integral.hpp"
 #include "string_view.hpp"
 
 namespace bsl
@@ -54,6 +55,10 @@ namespace bsl
     ///     requirements (i.e., NTSTATUS).
     ///   @include example_basic_errc_type_overview.hpp
     ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to use to store the error code. Defaults to
+    ///     a bsl::int32.
+    ///
     template<typename T = bsl::int32>
     class basic_errc_type final
     {
@@ -69,9 +74,8 @@ namespace bsl
         ///   @brief Default constructor.
         ///   @include basic_errc_type/example_basic_errc_type_default_constructor.hpp
         ///
-        constexpr basic_errc_type() noexcept
-            :    // --
-            m_errc{}
+        constexpr basic_errc_type() noexcept    // --
+            : m_errc{}
         {}
 
         /// <!-- description -->
@@ -79,11 +83,63 @@ namespace bsl
         ///   @include basic_errc_type/example_basic_errc_type_constructor_t.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @param errc the error code to store
+        ///   @param val the error code to store
         ///
-        explicit constexpr basic_errc_type(value_type const &errc) noexcept    // --
-            : m_errc{errc}
+        explicit constexpr basic_errc_type(value_type const &val) noexcept    // --
+            : m_errc{val}
         {}
+
+        /// <!-- description -->
+        ///   @brief Value initialization constructor
+        ///   @include basic_errc_type/example_basic_errc_type_constructor_t_safe_int.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param val the error code to store
+        ///
+        explicit constexpr basic_errc_type(safe_integral<value_type> const &val) noexcept    // --
+            : basic_errc_type{val.get()}
+        {}
+
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::basic_errc_type
+        ///
+        constexpr ~basic_errc_type() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr basic_errc_type(basic_errc_type const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr basic_errc_type(basic_errc_type &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(basic_errc_type const &o) &noexcept
+            -> basic_errc_type & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(basic_errc_type &&o) &noexcept
+            -> basic_errc_type & = default;
 
         /// <!-- description -->
         ///   @brief Returns the integer value that represents the error code.
@@ -205,6 +261,7 @@ namespace bsl
     ///   @related bsl::basic_errc_type
     ///
     /// <!-- inputs/outputs -->
+    ///   @tparam T the type to use to store the error code.
     ///   @param lhs the left hand side of the operator
     ///   @param rhs the right hand side of the operator
     ///   @return Returns true if the lhs is equal to the rhs, false otherwise
@@ -222,6 +279,7 @@ namespace bsl
     ///   @related bsl::basic_errc_type
     ///
     /// <!-- inputs/outputs -->
+    ///   @tparam T the type to use to store the error code.
     ///   @param lhs the left hand side of the operator
     ///   @param rhs the right hand side of the operator
     ///   @return Returns false if the lhs is equal to the rhs, true otherwise
@@ -241,30 +299,54 @@ namespace bsl
 namespace bsl
 {
     /// @brief Defines the "no error" case
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_success{0};
     /// @brief Defines the general unchecked error case
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_failure{1};
     /// @brief Defines the general precondition error case
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_precondition{2};
     /// @brief Defines the general postcondition error case
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_postcondition{3};
     /// @brief Defines the general assertion error case
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_assetion{4};
 
     /// @brief Defines an invalid argument error code
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_invalid_argument{10};
     /// @brief Defines an out of bounds error code
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_index_out_of_bounds{11};
 
     /// @brief Defines an unsigned wrap error
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_unsigned_wrap{30};
     /// @brief Defines a narrow overflow error
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_narrow_overflow{31};
     /// @brief Defines a signed overflow error
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_signed_overflow{32};
     /// @brief Defines a divide by zero error
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_divide_by_zero{33};
     /// @brief Defines an out of bounds error code
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_nullptr_dereference{34};
 }
 

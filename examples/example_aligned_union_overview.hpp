@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_aligned_union_overview() noexcept
     {
-        using union_type = bsl::aligned_union_t<0, bool, bsl::int64>;
+        using union_type = bsl::aligned_union_t<static_cast<bsl::uintmax>(0), bool, bsl::int64>;
 
         if constexpr (sizeof(union_type) < sizeof(bsl::int64)) {
             bsl::error() << "failure\n";

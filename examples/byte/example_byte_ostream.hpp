@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_byte_ostream() noexcept
     {
-        constexpr bsl::uint8 val{42U};
+        constexpr bsl::safe_uint8 val{bsl::to_u8(42)};
         constexpr bsl::byte b{val};
 
         bsl::print() << b << bsl::endl;

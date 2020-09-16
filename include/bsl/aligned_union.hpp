@@ -31,7 +31,7 @@
 #include "array.hpp"
 #include "byte.hpp"
 #include "cstdint.hpp"
-#include "integer_sequence.hpp"
+#include "index_sequence.hpp"
 
 namespace bsl
 {
@@ -52,7 +52,9 @@ namespace bsl
     template<typename GUARD, bsl::uintmax LEN, typename... TYPES>
     struct aligned_union final
     {
-        static_assert(sizeof...(TYPES) > 0, "empty aligned_union is not supported");
+        static_assert(
+            sizeof...(TYPES) > static_cast<bsl::uintmax>(0),
+            "empty aligned_union is not supported");
 
         /// @brief the alignment of the union.
         static constexpr bsl::uintmax alignment_value{index_sequence<alignof(TYPES)...>::max()};
@@ -62,7 +64,10 @@ namespace bsl
         /// <!-- description -->
         ///   @brief Implements the std::aligned_union type interface.
         ///
-        struct type
+        // The C++ spec requires that this is a struct within a class
+        // which is not supported by AUTOSAR using many rules.
+        // NOLINTNEXTLINE(bsl-identifier-typographically-unambiguous)
+        struct type final
         {
             /// @brief defines the storage component of the bsl::aligned_union
             alignas(
@@ -71,6 +76,11 @@ namespace bsl
     };
 
     /// @brief a helper that reduces the verbosity of bsl::aligned_union
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam LEN the size of the storage buffer in bytes
+    ///   @tparam TYPES the types that make up the union
+    ///
     template<bsl::uintmax LEN, typename... TYPES>
     using aligned_union_t = typename aligned_union<void, LEN, TYPES...>::type;
 }

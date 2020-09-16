@@ -41,10 +41,17 @@ namespace bsl
     ///     see std::common_type
     ///   @include example_common_type_overview.hpp
     ///
-    template<typename...>
+    /// <!-- template parameters -->
+    ///   @tparam T the types to get the common type from
+    ///
+    template<typename... T>
     struct common_type;
 
     /// @brief a helper that reduces the verbosity of bsl::common_type
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the types to get the common type from
+    ///
     template<typename... T>
     using common_type_t = typename common_type<T...>::type;
 
@@ -66,8 +73,9 @@ namespace bsl
         // case it makes sense to allow. Also, it is not actually being
         // executed, so not testing is needed here. It is only used as a
         // means to impelement this type trait as a side effect of how
-        // this operator is view by the compiler.
-        // NOLINTNEXTLINE(bsl-ternary-operator-forbidden)
+        // this operator is view by the compiler. This also triggers on the
+        // implicit conversion which we need for this to work as well.
+        // NOLINTNEXTLINE(bsl-ternary-operator-forbidden, bsl-implicit-conversions-forbidden, cppcoreguidelines-pro-bounds-array-to-pointer-decay, hicpp-no-array-decay)
         using type = decay_t<decltype(true ? declval<T1>() : declval<T2>())>;
     };
 

@@ -48,9 +48,9 @@ namespace bsl
     namespace details
     {
         /// @brief defines what an error looks like from a POSIX call.
-        constexpr bsl::int32 ifmap_posix_error{-1};
+        constexpr bsl::safe_int32 IFMAP_POSIX_ERROR{-1};
         /// @brief defines what an invalid file is.
-        constexpr bsl::int32 ifmap_invalid_file{-1};
+        constexpr bsl::safe_int32 IFMAP_INVALID_FILE{-1};
     }
 
     /// @class bsl::ifmap
@@ -63,7 +63,7 @@ namespace bsl
     class ifmap final
     {
         /// @brief stores a handle to the mapped file.
-        bsl::int32 m_file{details::ifmap_invalid_file};
+        bsl::int32 m_file{details::IFMAP_INVALID_FILE.get()};
         /// @brief stores a view of the file that is mapped.
         span<byte> m_data{};
 
@@ -114,23 +114,23 @@ namespace bsl
             // We don't have a choice here
             // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg, hicpp-vararg)
             m_file = open(filename.data(), O_RDONLY);
-            if (details::ifmap_posix_error == m_file) {
+            if (details::IFMAP_POSIX_ERROR.get() == m_file) {
                 bsl::alert() << "failed to open read-only file: "    // --
                              << filename                             // --
                              << bsl::endl;
 
-                m_file = details::ifmap_invalid_file;
+                m_file = details::IFMAP_INVALID_FILE.get();
                 return;
             }
 
             stat_t s{};
-            if (details::ifmap_posix_error == fstat(m_file, &s)) {
+            if (details::IFMAP_POSIX_ERROR.get() == fstat(m_file, &s)) {
                 bsl::alert() << "failed to get the size of the read-only file: "    // --
                              << filename                                            // --
                              << bsl::endl;
 
-                close(m_file);
-                m_file = details::ifmap_invalid_file;
+                bsl::discard(close(m_file));
+                m_file = details::IFMAP_INVALID_FILE.get();
                 return;
             }
 
@@ -142,7 +142,7 @@ namespace bsl
                 // NOLINTNEXTLINE(hicpp-signed-bitwise)
                 MAP_SHARED | MAP_POPULATE,
                 m_file,
-                0)};
+                static_cast<bsl::intmax>(0))};
 
             // We don't have a choice here
             // NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast)
@@ -151,8 +151,8 @@ namespace bsl
                              << filename                            // --
                              << bsl::endl;
 
-                close(m_file);
-                m_file = details::ifmap_invalid_file;
+                bsl::discard(close(m_file));
+                m_file = details::IFMAP_INVALID_FILE.get();
                 return;
             }
 
@@ -164,10 +164,10 @@ namespace bsl
         ///
         ~ifmap() noexcept
         {
-            if (details::ifmap_invalid_file != m_file) {
-                munmap(m_data.data(), m_data.size().get());
-                close(m_file);
-                m_file = details::ifmap_invalid_file;
+            if (details::IFMAP_INVALID_FILE.get() != m_file) {
+                bsl::discard(munmap(m_data.data(), m_data.size().get()));
+                bsl::discard(close(m_file));
+                m_file = details::IFMAP_INVALID_FILE.get();
             }
             else {
                 bsl::touch();
@@ -191,7 +191,7 @@ namespace bsl
         constexpr ifmap(ifmap &&o) noexcept
             : m_file{bsl::move(o.m_file)}, m_data{bsl::move(o.m_data)}
         {
-            o.m_file = details::ifmap_invalid_file;
+            o.m_file = details::IFMAP_INVALID_FILE.get();
             o.m_data = {};
         }
 

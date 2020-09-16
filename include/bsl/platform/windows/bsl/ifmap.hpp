@@ -126,8 +126,8 @@ namespace bsl
                              << filename                                            // --
                              << bsl::endl;
 
-                CloseHandle(m_view);
-                CloseHandle(m_file);
+                bsl::discard(CloseHandle(m_view));
+                bsl::discard(CloseHandle(m_file));
                 m_file = nullptr;
                 m_view = nullptr;
                 return;
@@ -139,8 +139,8 @@ namespace bsl
                              << filename                            // --
                              << bsl::endl;
 
-                CloseHandle(m_view);
-                CloseHandle(m_file);
+                bsl::discard(CloseHandle(m_view));
+                bsl::discard(CloseHandle(m_file));
                 m_file = nullptr;
                 m_view = nullptr;
                 return;
@@ -155,9 +155,9 @@ namespace bsl
         ~ifmap() noexcept
         {
             if (nullptr != m_file) {
-                UnmapViewOfFile(m_data.data());
-                CloseHandle(m_view);
-                CloseHandle(m_file);
+                bsl::discard(UnmapViewOfFile(m_data.data()));
+                bsl::discard(CloseHandle(m_view));
+                bsl::discard(CloseHandle(m_file));
                 m_file = nullptr;
                 m_view = nullptr;
             }

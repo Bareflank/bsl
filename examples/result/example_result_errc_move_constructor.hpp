@@ -33,15 +33,14 @@ namespace bsl
     inline void
     example_result_errc_move_constructor() noexcept
     {
-        constexpr bsl::int32 val{42};
+        bsl::errc_type my_errc{bsl::errc_success};
+        bsl::result<bool> const res{bsl::move(my_errc)};
 
-        bsl::errc_type my_errc1{val};
-        constexpr bsl::errc_type my_errc2{val};
-
-        bsl::result<bool> const res{bsl::move(my_errc1)};
-
-        if (res.errc() == my_errc2) {
+        if (res.errc() == bsl::errc_success) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

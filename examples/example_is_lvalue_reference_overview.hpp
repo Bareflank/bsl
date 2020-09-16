@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_is_lvalue_reference_overview() noexcept
     {
-        if (bsl::is_lvalue_reference<bool &>::value) {
+        if constexpr (bsl::is_lvalue_reference<bool &>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

@@ -33,9 +33,7 @@ namespace bsl
     inline void
     example_array_max_size() noexcept
     {
-        constexpr bsl::safe_uintmax size{bsl::to_umax(2)};
-        constexpr bsl::array<bool, size.get()> arr{true, false};
-
+        constexpr bsl::array arr{true, false};
         bsl::print() << "max size: " << arr.max_size() << bsl::endl;
     }
 }

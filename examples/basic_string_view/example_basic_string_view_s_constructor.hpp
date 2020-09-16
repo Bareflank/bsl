@@ -33,11 +33,14 @@ namespace bsl
     inline void
     example_basic_string_view_s_constructor() noexcept
     {
-        bsl::basic_string_view<bsl::char_type> const str1{"Hello"};
-        bsl::basic_string_view<bsl::char_type> const str2{"Hello"};
+        constexpr bsl::basic_string_view<bsl::char_type> str1{"Hello"};
+        constexpr bsl::basic_string_view<bsl::char_type> str2{"Hello"};
 
-        if (str1 == str2) {
+        if constexpr (str1 == str2) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

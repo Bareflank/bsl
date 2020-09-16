@@ -33,13 +33,18 @@ namespace bsl
     inline void
     example_safe_integral_assign_div() noexcept
     {
-        bsl::safe_int32 val1{23};
+        constexpr bsl::safe_int32 val1{23};
         constexpr bsl::safe_int32 val2{42};
-        constexpr bsl::safe_int32 expected{23 / 42};
 
-        val1 /= val2;
-        if (val1 == expected) {
+        bsl::safe_int32 val{val1};
+        constexpr bsl::safe_int32 expected{val1.get() / val2.get()};
+
+        val /= val2;
+        if (expected == val) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

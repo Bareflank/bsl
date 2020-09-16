@@ -33,11 +33,15 @@ namespace bsl
     inline void
     example_result_copy_constructor() noexcept
     {
-        bsl::result<bool> const res1{bsl::in_place, true};
-        bsl::result<bool> const res2{res1};    // NOLINT
+        constexpr bsl::result<bool> res1{bsl::in_place, true};
+        // NOLINTNEXTLINE(performance-unnecessary-copy-initialization)
+        constexpr bsl::result<bool> res2{res1};
 
-        if (auto const *const ptr = res2.get_if()) {
-            bsl::print() << "success: " << *ptr << bsl::endl;
+        if constexpr (nullptr != res2.get_if()) {
+            bsl::print() << "success: " << *res2.get_if() << bsl::endl;
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

@@ -30,31 +30,27 @@
 namespace
 {
     template<bsl::uintmax align, bsl::uintmax size, bsl::uintmax LEN, typename... TYPES>
-    constexpr void
-    test_aligned_union() noexcept
+    constexpr auto
+    test_aligned_union() noexcept -> void
     {
-        using namespace bsl;
-
-        static_assert(alignment_of<aligned_union_t<LEN, TYPES...>>::value == align);
-        static_assert(sizeof(aligned_union_t<LEN, TYPES...>) == size);
+        static_assert(bsl::alignment_of<bsl::aligned_union_t<LEN, TYPES...>>::value == align);
+        static_assert(sizeof(bsl::aligned_union_t<LEN, TYPES...>) == size);
     }
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
     test_aligned_union<4, 4, 0, bool, bsl::int32>();
     test_aligned_union<4, 64, 64, bool, bsl::int32>();
 
-    return ut_success();
+    return bsl::ut_success();
 }

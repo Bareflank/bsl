@@ -22,45 +22,26 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/declval.hpp>
 #include <bsl/is_detected.hpp>
-
 #include <bsl/ut.hpp>
 
-namespace
-{
-    class myclass final
-    {
-    public:
-        [[nodiscard]] constexpr bool
-        get() const noexcept    // NOLINT
-        {
-            return true;
-        }
-    };
-
-    template<typename T>
-    using get_type = decltype(bsl::declval<T &>().get());
-
-    template<typename T>
-    using set_type = decltype(bsl::declval<T &>().set());
-}
+#include "../class_base.hpp"
+#include "../alias_get_op.hpp"
+#include "../alias_set_op.hpp"
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
-    static_assert(is_detected<get_type, myclass>::value);
-    static_assert(!is_detected<set_type, myclass>::value);
+    static_assert(bsl::is_detected<test::alias_get_op, test::class_base>::value);
+    static_assert(!bsl::is_detected<test::alias_set_op, test::class_base>::value);
 
     return bsl::ut_success();
 }

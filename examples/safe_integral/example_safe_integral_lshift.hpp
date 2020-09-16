@@ -34,10 +34,14 @@ namespace bsl
     example_safe_integral_lshift() noexcept
     {
         constexpr bsl::safe_uint32 val{42U};
-        constexpr bsl::safe_uint32 expected{42U << 2U};
+        constexpr bsl::safe_uint32 shift{2U};
+        constexpr bsl::safe_uint32 expected{val.get() << shift.get()};
 
-        if ((val << 2U) == expected) {
+        if constexpr ((val << shift) == expected) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

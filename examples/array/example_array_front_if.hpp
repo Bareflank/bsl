@@ -34,11 +34,13 @@ namespace bsl
     inline void
     example_array_front_if() noexcept
     {
-        constexpr bsl::safe_uintmax size{bsl::to_umax(2)};
-        constexpr bsl::array<bool, size.get()> arr{true, false};
+        constexpr bsl::array arr{true, false};
 
-        if (auto const *const ptr = arr.front_if()) {
+        if (auto const *const ptr{arr.front_if()}) {
             bsl::print() << "success: " << *ptr << bsl::endl;
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

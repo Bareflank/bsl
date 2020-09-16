@@ -35,8 +35,11 @@ namespace bsl
     inline void
     example_has_virtual_destructor_overview() noexcept
     {
-        if (!bsl::has_virtual_destructor<example_class_subclass>::value) {
+        if constexpr (!bsl::has_virtual_destructor<example_class_subclass>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_is_nothrow_convertible_overview() noexcept
     {
-        if (bsl::is_nothrow_convertible<bsl::int32, bsl::int64>::value) {
+        if constexpr (bsl::is_nothrow_convertible<bsl::int32, bsl::int64>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

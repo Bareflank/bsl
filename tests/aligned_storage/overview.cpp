@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/array.hpp>
 #include <bsl/aligned_storage.hpp>
 #include <bsl/alignment_of.hpp>
 
@@ -30,29 +31,25 @@
 namespace
 {
     template<typename T, bsl::uintmax align>
-    constexpr void
-    test_aligned_storage() noexcept
+    constexpr auto
+    test_aligned_storage() noexcept -> void
     {
-        using namespace bsl;
-
-        static_assert(alignment_of<aligned_storage_t<sizeof(T), align>>::value == align);
-        static_assert(sizeof(aligned_storage_t<sizeof(T), align>) >= sizeof(T));
+        static_assert(bsl::alignment_of<bsl::aligned_storage_t<sizeof(T), align>>::value == align);
+        static_assert(sizeof(bsl::aligned_storage_t<sizeof(T), align>) >= sizeof(T));
     }
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
     test_aligned_storage<bsl::int8, 64>();
     test_aligned_storage<bsl::int16, 64>();
     test_aligned_storage<bsl::int32, 64>();
@@ -63,7 +60,7 @@ main() noexcept
     test_aligned_storage<bsl::uint32, 64>();
     test_aligned_storage<bsl::uint64, 64>();
 
-    test_aligned_storage<bsl::uint8[BSL_PAGE_SIZE], BSL_PAGE_SIZE>();    // NOLINT
+    test_aligned_storage<bsl::array<bsl::uint8, BSL_PAGE_SIZE>, BSL_PAGE_SIZE>();
 
-    return ut_success();
+    return bsl::ut_success();
 }

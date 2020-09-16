@@ -28,13 +28,15 @@
 
 namespace
 {
+    // Needed for requirements testing
+    // NOLINTNEXTLINE(bsl-user-defined-type-names-match-header-name)
     class fixture_t final
     {
         bsl::result<bool> res{bsl::in_place, true};
 
     public:
-        [[nodiscard]] constexpr bool
-        test_member_const() const
+        [[nodiscard]] constexpr auto
+        test_member_const() const noexcept -> bool
         {
             bsl::discard(res.get_if());
             bsl::discard(res.errc());
@@ -45,8 +47,8 @@ namespace
             return true;
         }
 
-        [[nodiscard]] constexpr bool
-        test_member_nonconst()
+        [[nodiscard]] constexpr auto
+        test_member_nonconst() noexcept -> bool
         {
             bsl::discard(res.get_if());
             bsl::discard(res.errc());
@@ -62,29 +64,28 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
     bsl::ut_scenario{"verify noexcept"} = []() {
         bsl::ut_given{} = []() {
             bool val{};
             bsl::result<bool> res1{true};
             bsl::result<bool> res2{false};
+            bsl::errc_type myerror{};
             bsl::ut_then{} = []() {
                 static_assert(noexcept(bsl::result<bool>{val}));
                 static_assert(noexcept(bsl::result<bool>{bsl::move(val)}));
                 static_assert(noexcept(bsl::result<bool>{bsl::in_place, true}));
                 static_assert(noexcept(bsl::result<bool>{bsl::errc_failure}));
-                static_assert(noexcept(bsl::result<bool>{bsl::move(bsl::errc_failure)}));
+                static_assert(noexcept(bsl::result<bool>{bsl::move(myerror)}));
                 static_assert(noexcept(bsl::result<bool>{res1}));
                 static_assert(noexcept(bsl::result<bool>{bsl::move(res1)}));
                 static_assert(noexcept(res1 = res2));
@@ -103,7 +104,7 @@ main() noexcept
             fixture_t fixture2{};
             bsl::ut_then{} = [&fixture2]() {
                 static_assert(fixture1.test_member_const());
-                ut_check(fixture2.test_member_nonconst());
+                bsl::ut_check(fixture2.test_member_nonconst());
             };
         };
     };

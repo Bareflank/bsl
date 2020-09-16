@@ -27,13 +27,15 @@
 
 #include "../remove_reference.hpp"
 
-namespace bsl
+namespace bsl::details
 {
-    namespace details
-    {
-        template<typename T>
-        using value_type_for = typename remove_reference_t<T>::value_type;
-    }
+    /// @brief provides the value type for T with references removed
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to get value_type from
+    ///
+    template<typename T>
+    using value_type_for = typename remove_reference_t<T>::value_type;
 }
 
 #endif

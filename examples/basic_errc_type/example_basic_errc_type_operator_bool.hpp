@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_basic_errc_type_operator_bool() noexcept
     {
-        if (!!bsl::errc_success) {
+        if constexpr (!!bsl::errc_success) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

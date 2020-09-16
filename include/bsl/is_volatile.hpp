@@ -28,6 +28,7 @@
 #ifndef BSL_IS_VOLATILE_HPP
 #define BSL_IS_VOLATILE_HPP
 
+#include "always_false.hpp"
 #include "true_type.hpp"
 #include "false_type.hpp"
 
@@ -58,7 +59,7 @@ namespace bsl
     template<typename T>
     class is_volatile<T volatile> final : public true_type
     {
-        static_assert(sizeof(T) != sizeof(T), "volatile not supported");    // NOLINT
+        static_assert(always_false<T>(), "volatile not supported");
     };
 
     /// @endcond doxygen on

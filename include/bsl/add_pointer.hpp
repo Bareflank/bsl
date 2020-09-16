@@ -45,7 +45,8 @@ namespace bsl
         ///   @return only used for decltype
         ///
         template<typename T>
-        auto try_add_pointer(bsl::int32 ignored) noexcept -> type_identity<remove_reference_t<T> *>;
+        [[maybe_unused]] auto try_add_pointer(bsl::int32 ignored) noexcept
+            -> type_identity<remove_reference_t<T> *>;
 
         /// <!-- description -->
         ///   @brief Returns T if * cannot be added
@@ -56,7 +57,7 @@ namespace bsl
         ///   @return only used for decltype
         ///
         template<typename T>
-        auto try_add_pointer(bool ignored) noexcept -> type_identity<T>;
+        [[maybe_unused]] auto try_add_pointer(bool ignored) noexcept -> type_identity<T>;
     }
 
     /// @class bsl::add_pointer
@@ -73,10 +74,16 @@ namespace bsl
     struct add_pointer final
     {
         /// @brief provides the member typedef "type"
+        // We need the implicit conversion for this to work
+        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
         using type = typename decltype(details::try_add_pointer<T>(0))::type;
     };
 
     /// @brief a helper that reduces the verbosity of bsl::add_pointer
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to add an pointer to
+    ///
     template<typename T>
     using add_pointer_t = typename add_pointer<T>::type;
 }

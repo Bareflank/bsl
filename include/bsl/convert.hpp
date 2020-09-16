@@ -22,7 +22,9 @@
 #ifndef BSL_CONVERT_HPP
 #define BSL_CONVERT_HPP
 
+#include "conditional.hpp"
 #include "enable_if.hpp"
+#include "forward.hpp"
 #include "is_constant_evaluated.hpp"
 #include "is_pointer.hpp"
 #include "is_same.hpp"
@@ -57,78 +59,108 @@ namespace bsl
     /// <!-- inputs/outputs -->
     ///   @tparam F the integral type to convert from
     ///   @tparam T the integral type to convert to
-    ///   @param f the integral to convert from F to T
+    ///   @param val the integral to convert from F to T
     ///   @return Returns f converted from F to T
     ///
     template<typename T, typename F>
-    [[nodiscard]] constexpr safe_integral<T>
-    convert(F const &f) noexcept
+    [[nodiscard]] constexpr auto
+    convert(F const &val) noexcept -> safe_integral<T>
     {
         using t_limits = numeric_limits<T>;
         using f_limits = numeric_limits<F>;
 
         if constexpr (is_same<F, T>::value) {
-            return safe_integral<T>{static_cast<T>(f)};
+            return safe_integral<T>{static_cast<T>(val)};
         }
 
         if constexpr (is_signed<F>::value) {
             if constexpr (is_signed<T>::value) {
-                if constexpr (f_limits::max() <= t_limits::max()) {
-                    return safe_integral<T>{static_cast<T>(f)};
+                constexpr bsl::intmax t_max{static_cast<bsl::intmax>(t_limits::max())};
+                constexpr bsl::intmax t_min{static_cast<bsl::intmax>(t_limits::min())};
+                constexpr bsl::intmax f_max{static_cast<bsl::intmax>(f_limits::max())};
+
+                if constexpr (f_max < t_max) {
+                    return safe_integral<T>{static_cast<T>(val)};
+                }
+                else if constexpr (f_max == t_max) {
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
                 else {
-                    if ((f > t_limits::max()) || (f < t_limits::min())) {
+                    if (static_cast<bsl::intmax>(val) > t_max) {
                         conversion_failure_narrowing_results_in_loss_of_data();
                         return safe_integral<T>::zero(true);
                     }
 
-                    return safe_integral<T>{static_cast<T>(f)};
+                    if (static_cast<bsl::intmax>(val) < t_min) {
+                        conversion_failure_narrowing_results_in_loss_of_data();
+                        return safe_integral<T>::zero(true);
+                    }
+
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
             }
             else {
-                if (f < static_cast<F>(0)) {
+                constexpr bsl::uintmax t_max{static_cast<bsl::uintmax>(t_limits::max())};
+                constexpr bsl::uintmax f_max{static_cast<bsl::uintmax>(f_limits::max())};
+
+                if (static_cast<bsl::intmax>(val) < static_cast<bsl::intmax>(0)) {
                     conversion_failure_narrowing_results_in_loss_of_data();
                     return safe_integral<T>::zero(true);
                 }
 
-                if constexpr (static_cast<bsl::uintmax>(f_limits::max()) <= t_limits::max()) {
-                    return safe_integral<T>{static_cast<T>(f)};
+                if constexpr (f_max < t_max) {
+                    return safe_integral<T>{static_cast<T>(val)};
+                }
+                else if constexpr (f_max == t_max) {
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
                 else {
-                    if (static_cast<bsl::uintmax>(f) > t_limits::max()) {
+                    if (static_cast<bsl::uintmax>(val) > t_max) {
                         conversion_failure_narrowing_results_in_loss_of_data();
                         return safe_integral<T>::zero(true);
                     }
 
-                    return safe_integral<T>{static_cast<T>(f)};
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
             }
         }
         else {
             if constexpr (is_signed<T>::value) {
-                if constexpr (f_limits::max() <= static_cast<bsl::uintmax>(t_limits::max())) {
-                    return safe_integral<T>{static_cast<T>(f)};
+                constexpr bsl::uintmax t_max{static_cast<bsl::uintmax>(t_limits::max())};
+                constexpr bsl::uintmax f_max{static_cast<bsl::uintmax>(f_limits::max())};
+
+                if constexpr (f_max < t_max) {
+                    return safe_integral<T>{static_cast<T>(val)};
+                }
+                else if constexpr (f_max == t_max) {
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
                 else {
-                    if (f > static_cast<bsl::uintmax>(t_limits::max())) {
+                    if (static_cast<bsl::uintmax>(val) > t_max) {
                         conversion_failure_narrowing_results_in_loss_of_data();
                         return safe_integral<T>::zero(true);
                     }
 
-                    return safe_integral<T>{static_cast<T>(f)};
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
             }
             else {
-                if constexpr (f_limits::max() <= t_limits::max()) {
-                    return safe_integral<T>{static_cast<T>(f)};
+                constexpr bsl::uintmax t_max{static_cast<bsl::uintmax>(t_limits::max())};
+                constexpr bsl::uintmax f_max{static_cast<bsl::uintmax>(f_limits::max())};
+
+                if constexpr (f_max < t_max) {
+                    return safe_integral<T>{static_cast<T>(val)};
+                }
+                else if constexpr (f_max == t_max) {
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
                 else {
-                    if ((f > t_limits::max())) {
+                    if (static_cast<bsl::uintmax>(val) > t_max) {
                         conversion_failure_narrowing_results_in_loss_of_data();
                         return safe_integral<T>::zero(true);
                     }
 
-                    return safe_integral<T>{static_cast<T>(f)};
+                    return safe_integral<T>{static_cast<T>(val)};
                 }
             }
         }
@@ -150,18 +182,18 @@ namespace bsl
     /// <!-- inputs/outputs -->
     ///   @tparam F the integral type to convert from
     ///   @tparam T the integral type to convert to
-    ///   @param f the integral to convert from F to T
+    ///   @param val the integral to convert from F to T
     ///   @return Returns f converted from F to T
     ///
     template<typename T, typename F>
-    [[nodiscard]] constexpr safe_integral<T>
-    convert(safe_integral<F> const &f) noexcept
+    [[nodiscard]] constexpr auto
+    convert(safe_integral<F> const &val) noexcept -> safe_integral<T>
     {
-        if (f.failure()) {
+        if (val.failure()) {
             return safe_integral<T>::zero(true);
         }
 
-        return convert<T>(f.get());
+        return convert<T>(val.get());
     }
 
     /// <!-- description -->
@@ -175,8 +207,8 @@ namespace bsl
     ///   @return Returns convert<bsl::int8>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_int8
-    to_i8(safe_integral<T> const &val) noexcept
+    [[nodiscard]] constexpr auto
+    to_i8(safe_integral<T> const &val) noexcept -> bsl::safe_int8
     {
         return convert<bsl::int8>(val);
     }
@@ -192,8 +224,8 @@ namespace bsl
     ///   @return Returns convert<bsl::int8>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_int8
-    to_i8(T const val) noexcept
+    [[nodiscard]] constexpr auto
+    to_i8(T const val) noexcept -> bsl::safe_int8
     {
         return convert<bsl::int8>(val);
     }
@@ -209,8 +241,8 @@ namespace bsl
     ///   @return Returns convert<bsl::int16>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_int16
-    to_i16(safe_integral<T> const &val) noexcept
+    [[nodiscard]] constexpr auto
+    to_i16(safe_integral<T> const &val) noexcept -> bsl::safe_int16
     {
         return convert<bsl::int16>(val);
     }
@@ -226,8 +258,8 @@ namespace bsl
     ///   @return Returns convert<bsl::int16>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_int16
-    to_i16(T const val) noexcept
+    [[nodiscard]] constexpr auto
+    to_i16(T const val) noexcept -> bsl::safe_int16
     {
         return convert<bsl::int16>(val);
     }
@@ -243,8 +275,8 @@ namespace bsl
     ///   @return Returns convert<bsl::int32>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_int32
-    to_i32(safe_integral<T> const &val) noexcept
+    [[nodiscard]] constexpr auto
+    to_i32(safe_integral<T> const &val) noexcept -> bsl::safe_int32
     {
         return convert<bsl::int32>(val);
     }
@@ -260,8 +292,8 @@ namespace bsl
     ///   @return Returns convert<bsl::int32>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_int32
-    to_i32(T const val) noexcept
+    [[nodiscard]] constexpr auto
+    to_i32(T const val) noexcept -> bsl::safe_int32
     {
         return convert<bsl::int32>(val);
     }
@@ -277,8 +309,8 @@ namespace bsl
     ///   @return Returns convert<bsl::int64>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_int64
-    to_i64(safe_integral<T> const &val) noexcept
+    [[nodiscard]] constexpr auto
+    to_i64(safe_integral<T> const &val) noexcept -> bsl::safe_int64
     {
         return convert<bsl::int64>(val);
     }
@@ -294,8 +326,8 @@ namespace bsl
     ///   @return Returns convert<bsl::int64>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_int64
-    to_i64(T const val) noexcept
+    [[nodiscard]] constexpr auto
+    to_i64(T const val) noexcept -> bsl::safe_int64
     {
         return convert<bsl::int64>(val);
     }
@@ -311,8 +343,8 @@ namespace bsl
     ///   @return Returns convert<bsl::intmax>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_intmax
-    to_imax(safe_integral<T> const &val) noexcept
+    [[nodiscard]] constexpr auto
+    to_imax(safe_integral<T> const &val) noexcept -> bsl::safe_intmax
     {
         return convert<bsl::intmax>(val);
     }
@@ -328,8 +360,8 @@ namespace bsl
     ///   @return Returns convert<bsl::intmax>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_intmax
-    to_imax(T const val) noexcept
+    [[nodiscard]] constexpr auto
+    to_imax(T const val) noexcept -> bsl::safe_intmax
     {
         return convert<bsl::intmax>(val);
     }
@@ -345,8 +377,8 @@ namespace bsl
     ///   @return Returns convert<bsl::uint8>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_uint8
-    to_u8(safe_integral<T> const &val) noexcept
+    [[nodiscard]] constexpr auto
+    to_u8(safe_integral<T> const &val) noexcept -> bsl::safe_uint8
     {
         return convert<bsl::uint8>(val);
     }
@@ -362,8 +394,8 @@ namespace bsl
     ///   @return Returns convert<bsl::uint8>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_uint8
-    to_u8(T const val) noexcept
+    [[nodiscard]] constexpr auto
+    to_u8(T const val) noexcept -> bsl::safe_uint8
     {
         return convert<bsl::uint8>(val);
     }
@@ -379,8 +411,8 @@ namespace bsl
     ///   @return Returns convert<bsl::uint16>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_uint16
-    to_u16(safe_integral<T> const &val) noexcept
+    [[nodiscard]] constexpr auto
+    to_u16(safe_integral<T> const &val) noexcept -> bsl::safe_uint16
     {
         return convert<bsl::uint16>(val);
     }
@@ -396,8 +428,8 @@ namespace bsl
     ///   @return Returns convert<bsl::uint16>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_uint16
-    to_u16(T const val) noexcept
+    [[nodiscard]] constexpr auto
+    to_u16(T const val) noexcept -> bsl::safe_uint16
     {
         return convert<bsl::uint16>(val);
     }
@@ -413,8 +445,8 @@ namespace bsl
     ///   @return Returns convert<bsl::uint32>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_uint32
-    to_u32(safe_integral<T> const &val) noexcept
+    [[nodiscard]] constexpr auto
+    to_u32(safe_integral<T> const &val) noexcept -> bsl::safe_uint32
     {
         return convert<bsl::uint32>(val);
     }
@@ -430,8 +462,8 @@ namespace bsl
     ///   @return Returns convert<bsl::uint32>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_uint32
-    to_u32(T const val) noexcept
+    [[nodiscard]] constexpr auto
+    to_u32(T const val) noexcept -> bsl::safe_uint32
     {
         return convert<bsl::uint32>(val);
     }
@@ -447,8 +479,8 @@ namespace bsl
     ///   @return Returns convert<bsl::uint64>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_uint64
-    to_u64(safe_integral<T> const &val) noexcept
+    [[nodiscard]] constexpr auto
+    to_u64(safe_integral<T> const &val) noexcept -> bsl::safe_uint64
     {
         return convert<bsl::uint64>(val);
     }
@@ -464,8 +496,8 @@ namespace bsl
     ///   @return Returns convert<bsl::uint64>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_uint64
-    to_u64(T const val) noexcept
+    [[nodiscard]] constexpr auto
+    to_u64(T const val) noexcept -> bsl::safe_uint64
     {
         return convert<bsl::uint64>(val);
     }
@@ -481,8 +513,8 @@ namespace bsl
     ///   @return Returns convert<bsl::uintmax>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_uintmax
-    to_umax(safe_integral<T> const &val) noexcept
+    [[nodiscard]] constexpr auto
+    to_umax(safe_integral<T> const &val) noexcept -> bsl::safe_uintmax
     {
         return convert<bsl::uintmax>(val);
     }
@@ -498,61 +530,25 @@ namespace bsl
     ///   @return Returns convert<bsl::uintmax>(val)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_uintmax
-    to_umax(T const val) noexcept
+    [[nodiscard]] constexpr auto
+    to_umax(T const val) noexcept -> bsl::safe_uintmax
     {
         return convert<bsl::uintmax>(val);
     }
 
     /// <!-- description -->
-    ///   @brief Returns convert<bsl::uintptr>(val)
+    ///   @brief Returns to_umax(sizeof(T))
     ///   @related bsl::safe_integral
     ///
     /// <!-- inputs/outputs -->
-    ///   @param val the integral to convert
-    ///   @return Returns convert<bsl::uintptr>(val)
-    ///
-    [[nodiscard]] constexpr bsl::safe_uintptr
-    to_uptr(void const *const val) noexcept
-    {
-        if (is_constant_evaluated()) {
-            return bsl::safe_uintptr{};
-        }
-
-        return convert<bsl::uintptr>(
-            reinterpret_cast<bsl::uintptr>(val));    // NOLINT // PRQA S 1-10000
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns convert<bsl::uintptr>(val)
-    ///   @related bsl::safe_integral
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the type of integral to convert
-    ///   @param val the integral to convert
-    ///   @return Returns convert<bsl::uintptr>(val)
+    ///   @tparam T the type of integral to get the sizeof
+    ///   @return Returns to_umax(sizeof(T))
     ///
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_uintptr
-    to_uptr(safe_integral<T> const &val) noexcept
+    [[nodiscard]] constexpr auto
+    size_of() noexcept -> bsl::safe_uintmax
     {
-        return convert<bsl::uintptr>(val);
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns convert<bsl::uintptr>(val)
-    ///   @related bsl::safe_integral
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the type of integral to convert
-    ///   @param val the integral to convert
-    ///   @return Returns convert<bsl::uintptr>(val)
-    ///
-    template<typename T, enable_if_t<!is_pointer<T>::value, bool> = true>
-    [[nodiscard]] constexpr bsl::safe_uintptr
-    to_uptr(T const val) noexcept
-    {
-        return convert<bsl::uintptr>(val);
+        return to_umax(sizeof(T));
     }
 }
 

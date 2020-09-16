@@ -29,7 +29,7 @@
 #define BSL_IS_BASE_OF_HPP
 
 #include "bool_constant.hpp"
-#include "remove_cv.hpp"    // Needed for PRQA
+#include "remove_cv.hpp"
 
 namespace bsl
 {
@@ -41,18 +41,13 @@ namespace bsl
     ///     is false.
     ///   @include example_is_base_of_overview.hpp
     ///
-    ///   SUPPRESSION: PRQA 3702 - false positive
-    ///   - We suppress this because M5-0-2 is concerned about ! and &&, which
-    ///     is an issue with Perforce's implementation of __is_base_of(),
-    ///     which is only used during analysis.
-    ///
     /// <!-- template parameters -->
     ///   @tparam T the type to query
     ///   @tparam U the type to query
     ///
     template<typename T, typename U>
     class is_base_of final :    // --
-        public bool_constant<__is_base_of(T, U)>    // PRQA S 3702
+        public bool_constant<__is_base_of(T, U)>
     {};
 }
 

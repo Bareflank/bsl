@@ -37,28 +37,32 @@ namespace bsl
         constexpr bsl::safe_int32 val2{42};
         constexpr bsl::safe_int32 val3{23};
 
-        if (val1 == val2) {
+        if constexpr (val1 == val2) {
             bsl::print() << "success\n";
         }
-
-        if (val1 != val3) {
-            bsl::print() << "success\n";
+        else {
+            bsl::error() << "failure\n";
         }
 
-        if (val3 < val1) {
+        if constexpr (val1 != val3) {
             bsl::print() << "success\n";
         }
-
-        if (val3 <= val1) {
-            bsl::print() << "success\n";
+        else {
+            bsl::error() << "failure\n";
         }
 
-        if (val1 > val3) {
+        if constexpr (val3 < val1) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
 
-        if (val1 >= val3) {
+        if constexpr (val1 > val3) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

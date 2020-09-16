@@ -33,11 +33,14 @@ namespace bsl
     inline void
     example_char_traits_eq_int_type() noexcept
     {
-        bsl::intmax const val1{42};
-        bsl::intmax const val2{42};
+        constexpr bsl::safe_intmax val1{to_imax(42)};
+        constexpr bsl::safe_intmax val2{to_imax(42)};
 
-        if (bsl::char_traits<bsl::char_type>::eq_int_type(val1, val2)) {
+        if constexpr (bsl::char_traits<bsl::char_type>::eq_int_type(val1.get(), val2.get())) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

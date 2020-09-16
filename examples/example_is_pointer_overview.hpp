@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_is_pointer_overview() noexcept
     {
-        if (bsl::is_pointer<void *>::value) {
+        if constexpr (bsl::is_pointer<void *>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

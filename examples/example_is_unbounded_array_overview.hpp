@@ -32,8 +32,13 @@ namespace bsl
     inline void
     example_is_unbounded_array_overview() noexcept
     {
-        if (bsl::is_unbounded_array<bool[]>::value) {    // NOLINT
+        // This is needed to demonstrate how to use this type trait
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+        if constexpr (bsl::is_unbounded_array<bool[]>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

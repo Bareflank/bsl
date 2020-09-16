@@ -34,8 +34,11 @@ namespace bsl
     inline void
     example_negation_overview() noexcept
     {
-        if (bsl::negation<is_bool<void>>::value) {
+        if constexpr (bsl::negation<is_bool<void>>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

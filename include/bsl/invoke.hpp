@@ -31,44 +31,35 @@
 #include "details/invoke_impl.hpp"
 #include "forward.hpp"
 
-// TODO
-//
-// For some reason, the use of invoke in bsl::delegate for mfp types
-// is not working. We should track this down to figure out what is
-// wrong with the code as the unit tests suggest everything works
-// as expected, but we are getting a substituion issue on the the
-// delegate side of things.
-//
-
 namespace bsl
 {
     /// <!-- description -->
-    ///   @brief Invokes the callable object "f" with arguments "tn".
+    ///   @brief Invokes the callable object "f" with arguments "val".
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam FUNC the type that defines the function being called
     ///   @tparam TN the types that define the arguments passed to the
     ///     provided function when called.
     ///   @param f a pointer to the function being called.
-    ///   @param tn the arguments passed to the function f when called.
-    ///   @return Returns the result of calling "f" with "tn"
+    ///   @param valn the arguments passed to the function f when called.
+    ///   @return Returns the result of calling "f" with "valn"
     ///
     /// <!-- inputs/outputs -->
     ///   @throw throws if the provided function throws
     ///
     template<typename FUNC, typename... TN>
-    constexpr auto
-    invoke(FUNC &&f, TN &&... tn) noexcept(                     // --
+    [[maybe_unused]] constexpr auto
+    invoke(FUNC &&f, TN &&... valn) noexcept(                   // --
         noexcept(details::invoke_impl<FUNC, TN...>::call(       // --
             bsl::forward<FUNC>(f),                              // --
-            bsl::forward<TN>(tn)...)))                          // --
+            bsl::forward<TN>(valn)...)))                        // --
         -> decltype(details::invoke_impl<FUNC, TN...>::call(    // --
             bsl::forward<FUNC>(f),                              // --
-            bsl::forward<TN>(tn)...))                           // --
+            bsl::forward<TN>(valn)...))                         // --
     {                                                           // --
         return details::invoke_impl<FUNC, TN...>::call(         // --
             bsl::forward<FUNC>(f),                              // --
-            bsl::forward<TN>(tn)...);                           // --
+            bsl::forward<TN>(valn)...);                         // --
     }
 }
 

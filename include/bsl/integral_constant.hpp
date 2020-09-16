@@ -40,24 +40,27 @@ namespace bsl
     ///
     /// <!-- template parameters -->
     ///   @tparam T the type of integral being stored
+    ///   @tparam VAL the value being stored
     ///
-    template<typename T, T v>
+    template<typename T, T VAL>
     class integral_constant
     {
     public:
         /// @brief provides the member typedef "type"
-        using type = integral_constant<T, v>;
+        using type = integral_constant<T, VAL>;
         /// @brief provides the member typedef "value_type"
         using value_type = T;
 
         /// @brief the type T that stores the integral constant
-        static constexpr value_type value{v};
+        // This is part of the C++ specification and cannot be avoided
+        // NOLINTNEXTLINE(bsl-non-pod-classdef)
+        static constexpr value_type value{VAL};
 
     protected:
         /// <!-- description -->
         ///   @brief Destroyes a previously created bsl::integral_constant
         ///
-        ~integral_constant() noexcept = default;
+        constexpr ~integral_constant() noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy constructor
@@ -82,7 +85,8 @@ namespace bsl
         ///   @param o the object being copied
         ///   @return a reference to *this
         ///
-        constexpr integral_constant &operator=(integral_constant const &o) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(integral_constant const &o) &noexcept
+            -> integral_constant & = default;
 
         /// <!-- description -->
         ///   @brief move assignment
@@ -91,7 +95,8 @@ namespace bsl
         ///   @param o the object being moved
         ///   @return a reference to *this
         ///
-        constexpr integral_constant &operator=(integral_constant &&o) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(integral_constant &&o) &noexcept
+            -> integral_constant & = default;
     };
 }
 

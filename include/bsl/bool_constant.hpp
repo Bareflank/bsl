@@ -33,6 +33,10 @@
 namespace bsl
 {
     /// @brief provides the boolean version of an integral constant
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam B the value of the boolean constant
+    ///
     template<bool B>
     using bool_constant = integral_constant<bool, B>;
 }

@@ -52,11 +52,15 @@ namespace bsl
     /// @cond doxygen off
 
     template<typename T>
-    class is_array<T[]> final : public true_type    // NOLINT
+    // This is needed to implement the type traits.
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    class is_array<T[]> final : public true_type
     {};
 
     template<typename T, bsl::uintmax N>
-    class is_array<T[N]> final : public true_type    // NOLINT
+    // This is needed to implement the type traits.
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    class is_array<T[N]> final : public true_type
     {};
 
     /// @endcond doxygen on

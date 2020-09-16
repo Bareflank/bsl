@@ -32,20 +32,11 @@
 
 namespace bsl
 {
-    template<typename V>
-    class fmt;
-
     /// <!-- description -->
     ///   @brief Used to indicate that an object "val" may be "moved from",
     ///     i.e. allowing the efficient transfer of resources from "val" to
     ///     another object.
     ///   @include example_move_overview.hpp
-    ///
-    ///   SUPPRESSION: PRQA 4624 - false positive
-    ///   - We suppress this because A7-5-1 states that a function shall not
-    ///     return a pointer or reference to a parameter that is a const
-    ///     reference, and this is a false positive because this is the
-    ///     required definition for std::move
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type that defines the value being moved
@@ -53,22 +44,11 @@ namespace bsl
     ///   @return returns an xvalue expression that identifies "val"
     ///
     template<typename T>
-    constexpr bsl::remove_reference_t<T> &&
-    move(T &&val) noexcept
+    [[nodiscard]] constexpr auto
+    move(T &&val) noexcept -> bsl::remove_reference_t<T> &&
     {
-        return static_cast<bsl::remove_reference_t<T> &&>(val);    // PRQA S 4624
+        return static_cast<bsl::remove_reference_t<T> &&>(val);
     }
-
-    /// <!-- description -->
-    ///   @brief Used to prevent a move of bsl::fmt as it must always be a
-    ///     temporary r-value.
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam V the type of value being formatted for output
-    ///   @param val the value being moved
-    ///
-    template<typename V>
-    constexpr void move(fmt<V> &&val) noexcept = delete;
 }
 
 #endif

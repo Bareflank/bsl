@@ -25,8 +25,6 @@
 #include <bsl/is_function.hpp>
 #include <bsl/debug.hpp>
 
-#include "example_function.hpp"
-
 namespace bsl
 {
     /// <!-- description -->
@@ -35,8 +33,11 @@ namespace bsl
     inline void
     example_is_function_overview() noexcept
     {
-        if (bsl::is_function<decltype(example_function)>::value) {
+        if constexpr (bsl::is_function<bool(bool)>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

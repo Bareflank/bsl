@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_integral_constant_overview() noexcept
     {
-        if (bsl::integral_constant<bool, true>::value) {
+        if constexpr (bsl::integral_constant<bool, true>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

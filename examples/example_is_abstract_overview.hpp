@@ -35,8 +35,11 @@ namespace bsl
     inline void
     example_is_abstract_overview() noexcept
     {
-        if (!bsl::is_abstract<example_class_subclass>::value) {
+        if constexpr (!bsl::is_abstract<example_class_subclass>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

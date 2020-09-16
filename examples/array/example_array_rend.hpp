@@ -23,7 +23,6 @@
 /// SOFTWARE.
 
 #include <bsl/array.hpp>
-#include <bsl/for_each.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -34,11 +33,10 @@ namespace bsl
     inline void
     example_array_rend() noexcept
     {
-        constexpr bsl::safe_uintmax size{bsl::to_umax(2)};
-        constexpr bsl::array<bool, size.get()> arr{true, false};
+        constexpr bsl::array arr{true, false};
 
-        bsl::for_each(arr.rbegin(), arr.rend(), [](auto &e, auto const &i) noexcept {
-            bsl::print() << "element [" << i << "] == " << e << bsl::endl;
-        });
+        for (auto iter{arr.rbegin()}; iter != arr.rend(); ++iter) {
+            bsl::print() << "element [" << iter.index() << "] == " << iter << bsl::endl;
+        }
     }
 }

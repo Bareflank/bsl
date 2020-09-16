@@ -46,7 +46,7 @@ namespace bsl
         /// <!-- description -->
         ///   @brief Used to define bsl::nonesuch as useless
         ///
-        ~nonesuch() noexcept = delete;
+        constexpr ~nonesuch() noexcept = delete;
 
         /// <!-- description -->
         ///   @brief Used to define bsl::nonesuch as useless
@@ -71,7 +71,8 @@ namespace bsl
         ///   @param o the object being copied
         ///   @return a reference to *this
         ///
-        constexpr nonesuch &operator=(nonesuch const &o) &noexcept = delete;
+        [[maybe_unused]] constexpr auto operator=(nonesuch const &o) &noexcept
+            -> nonesuch & = delete;
 
         /// <!-- description -->
         ///   @brief Used to define bsl::nonesuch as useless
@@ -80,7 +81,7 @@ namespace bsl
         ///   @param o the object being moved
         ///   @return a reference to *this
         ///
-        constexpr nonesuch &operator=(nonesuch &&o) &noexcept = delete;
+        [[maybe_unused]] constexpr auto operator=(nonesuch &&o) &noexcept -> nonesuch & = delete;
     };
 }
 

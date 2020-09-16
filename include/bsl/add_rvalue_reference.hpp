@@ -36,26 +36,27 @@ namespace bsl
     namespace details
     {
         /// <!-- description -->
-        ///   @brief Returns T with an added && if possible
+        ///   @brief Returns T with an added r-value if possible
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam T the type to return with an added &&
+        ///   @tparam T the type to return with an added r-value
         ///   @param ignored ignored
         ///   @return only used for decltype
         ///
         template<typename T>
-        auto try_add_rvalue_reference(bsl::int32 ignored) noexcept -> type_identity<T &&>;
+        [[maybe_unused]] auto try_add_rvalue_reference(bsl::int32 ignored) noexcept
+            -> type_identity<T &&>;
 
         /// <!-- description -->
-        ///   @brief Returns T if && cannot be added
+        ///   @brief Returns T if r-value cannot be added
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam T the type to return without an addd &&
+        ///   @tparam T the type to return without an addd r-value
         ///   @param ignored ignored
         ///   @return only used for decltype
         ///
         template<typename T>
-        auto try_add_rvalue_reference(bool ignored) noexcept -> type_identity<T>;
+        [[maybe_unused]] auto try_add_rvalue_reference(bool ignored) noexcept -> type_identity<T>;
     }
 
     /// @class bsl::add_rvalue_reference
@@ -72,10 +73,16 @@ namespace bsl
     struct add_rvalue_reference final
     {
         /// @brief provides the member typedef "type"
+        // We need the implicit conversion for this to work
+        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
         using type = typename decltype(details::try_add_rvalue_reference<T>(0))::type;
     };
 
     /// @brief a helper that reduces the verbosity of bsl::add_rvalue_reference
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to add an rvalue reference to
+    ///
     template<typename T>
     using add_rvalue_reference_t = typename add_rvalue_reference<T>::type;
 }

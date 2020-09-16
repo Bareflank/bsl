@@ -27,89 +27,93 @@
 
 #include "../forward.hpp"
 
-namespace bsl
+namespace bsl::details
 {
-    namespace details
+    /// @class bsl::details::invoke_impl_fp
+    ///
+    /// <!-- description -->
+    ///   @brief The "invoke" function is implemented by executing the
+    ///     "call" function from invoke_impl. The invoke_impl class uses
+    ///     SFINAE to figure out which invoke_impl_xxx function to inherit
+    ///     from. If the compiler can find a valid invoke_impl_xxx, like
+    ///     possibly this class, it will inherit from it, otherwise, it
+    ///     will pick the default invoke_impl implementation which is an
+    ///     empty class (i.e., it does not provide a call function). This
+    ///     will either result in a compiler error, or an SFINAE
+    ///     substitution error, which is used to implement is_invocable,
+    ///     which is why invoke is implemented using class logic instead
+    ///     of a constexpr-if statement as documented by cppreference.
+    ///
+    class invoke_impl_fp
     {
-        /// @class bsl::details::invoke_impl_fp
-        ///
+    public:
         /// <!-- description -->
-        ///   @brief The "invoke" function is implemented by executing the
-        ///     "call" function from invoke_impl. The invoke_impl class uses
-        ///     SFINAE to figure out which invoke_impl_xxx function to inherit
-        ///     from. If the compiler can find a valid invoke_impl_xxx, like
-        ///     possibly this class, it will inherit from it, otherwise, it
-        ///     will pick the default invoke_impl implementation which is an
-        ///     empty class (i.e., it does not provide a call function). This
-        ///     will either result in a compiler error, or an SFINAE
-        ///     substitution error, which is used to implement is_invocable,
-        ///     which is why invoke is implemented using class logic instead
-        ///     of a constexpr-if statement as documented by cppreference.
+        ///   @brief Default constructor
         ///
-        class invoke_impl_fp
+        constexpr invoke_impl_fp() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief Invokes a function pointer
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam FUNC the type that defines the function being called
+        ///   @tparam TN the types that define the arguments passed to the
+        ///     provided function when called.
+        ///   @param f a pointer to the function being called.
+        ///   @param valn the arguments passed to the function f when called.
+        ///   @return Returns the result of calling "f" with "valn"
+        ///
+        template<typename FUNC, typename... TN>
+        [[maybe_unused]] static constexpr auto
+        call(FUNC &&f, TN &&... valn) noexcept(
+            noexcept(bsl::forward<FUNC>(f)(bsl::forward<TN>(valn)...)))
+            -> decltype(bsl::forward<FUNC>(f)(bsl::forward<TN>(valn)...))
         {
-        public:
-            /// <!-- description -->
-            ///   @brief Invokes a function pointer
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @tparam FUNC the type that defines the function being called
-            ///   @tparam TN the types that define the arguments passed to the
-            ///     provided function when called.
-            ///   @param f a pointer to the function being called.
-            ///   @param tn the arguments passed to the function f when called.
-            ///   @return Returns the result of calling "f" with "tn"
-            ///
-            template<typename FUNC, typename... TN>
-            static constexpr auto
-            call(FUNC &&f, TN &&... tn) noexcept(
-                noexcept(bsl::forward<FUNC>(f)(bsl::forward<TN>(tn)...)))
-                -> decltype(bsl::forward<FUNC>(f)(bsl::forward<TN>(tn)...))
-            {
-                return bsl::forward<FUNC>(f)(bsl::forward<TN>(tn)...);
-            }
+            return bsl::forward<FUNC>(f)(bsl::forward<TN>(valn)...);
+        }
 
-        protected:
-            /// <!-- description -->
-            ///   @brief Destroyes a previously created bsl::invoke_impl_fp
-            ///
-            ~invoke_impl_fp() noexcept = default;
+    protected:
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::invoke_impl_fp
+        ///
+        constexpr ~invoke_impl_fp() noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief copy constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///
-            invoke_impl_fp(invoke_impl_fp const &o) noexcept = default;
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr invoke_impl_fp(invoke_impl_fp const &o) noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief move constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///
-            invoke_impl_fp(invoke_impl_fp &&o) noexcept = default;
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr invoke_impl_fp(invoke_impl_fp &&o) noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief copy assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///   @return a reference to *this
-            ///
-            invoke_impl_fp &operator=(invoke_impl_fp const &o) &noexcept = default;
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(invoke_impl_fp const &o) &noexcept
+            -> invoke_impl_fp & = default;
 
-            /// <!-- description -->
-            ///   @brief move assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///   @return a reference to *this
-            ///
-            invoke_impl_fp &operator=(invoke_impl_fp &&o) &noexcept = default;
-        };
-    }
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(invoke_impl_fp &&o) &noexcept
+            -> invoke_impl_fp & = default;
+    };
 }
 
 #endif

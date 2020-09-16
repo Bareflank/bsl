@@ -48,6 +48,10 @@ namespace bsl
     };
 
     /// @brief a helper that reduces the verbosity of bsl::remove_pointer
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to remove the pointer from
+    ///
     template<typename T>
     using remove_pointer_t = typename remove_pointer<T>::type;
 

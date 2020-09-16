@@ -33,11 +33,13 @@ namespace bsl
     inline void
     example_array_operator_bool() noexcept
     {
-        constexpr bsl::safe_uintmax size{bsl::to_umax(2)};
-        constexpr bsl::array<bool, size.get()> arr{true, false};
+        constexpr bsl::array arr{true, false};
 
-        if (!!arr) {
+        if constexpr (!!arr) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

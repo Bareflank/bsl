@@ -26,20 +26,21 @@
 #include <bsl/debug.hpp>
 
 #include "example_class_base.hpp"
+#include "example_detected_alias.hpp"
 
 namespace bsl
 {
-    template<typename T>
-    using example_is_detect_t = decltype(bsl::declval<T &>().get());
-
     /// <!-- description -->
     ///   @brief Provides the example's main function
     ///
     inline void
     example_is_detected_overview() noexcept
     {
-        if (bsl::is_detected<example_is_detect_t, example_class_base>::value) {
+        if constexpr (!bsl::is_detected<example_detected_alias, example_class_base>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

@@ -36,9 +36,13 @@ namespace bsl
     using exit_code = bsl::int32;
 
     /// @brief represents a successful exit
+    // We do not want to collide with C here.
+    // NOLINTNEXTLINE(bsl-name-case)
     constexpr exit_code exit_success{0};
 
     /// @brief represents a failed exit
+    // We do not want to collide with C here.
+    // NOLINTNEXTLINE(bsl-name-case)
     constexpr exit_code exit_failure{1};
 }
 

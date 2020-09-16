@@ -33,10 +33,13 @@ namespace bsl
     inline void
     example_basic_string_view_default_constructor() noexcept
     {
-        bsl::basic_string_view<bsl::char_type> const str{};
+        constexpr bsl::basic_string_view<bsl::char_type> str{};
 
-        if (str.empty()) {
+        if constexpr (str.empty()) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

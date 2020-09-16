@@ -41,7 +41,8 @@ namespace bsl
     ///   @include example_is_assignable_overview.hpp
     ///
     /// <!-- template parameters -->
-    ///   @tparam T the type to query
+    ///   @tparam T the type U should be assignable with
+    ///   @tparam U the type T should be assignable with
     ///
     template<typename T, typename U>
     class is_assignable final :    // --

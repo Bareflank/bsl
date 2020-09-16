@@ -35,8 +35,11 @@ namespace bsl
     inline void
     example_is_compound_overview() noexcept
     {
-        if (bsl::is_compound<example_class_pod>::value) {
+        if constexpr (bsl::is_compound<example_class_pod>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

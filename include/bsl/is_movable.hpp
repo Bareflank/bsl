@@ -28,6 +28,7 @@
 #ifndef BSL_IS_MOVABLE_HPP
 #define BSL_IS_MOVABLE_HPP
 
+#include "conjunction.hpp"
 #include "bool_constant.hpp"
 #include "is_move_assignable.hpp"
 #include "is_move_constructible.hpp"
@@ -47,7 +48,7 @@ namespace bsl
     ///
     template<typename T>
     class is_movable final :
-        public bool_constant<is_move_assignable<T>::value && is_move_constructible<T>::value>
+        public bool_constant<conjunction<is_move_assignable<T>, is_move_constructible<T>>::value>
     {};
 }
 

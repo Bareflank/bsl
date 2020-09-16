@@ -26,154 +26,68 @@
 #include <bsl/discard.hpp>
 #include <bsl/ut.hpp>
 
+#include "../class_empty.hpp"
+#include "../class_except.hpp"
+#include "../class_nocopy.hpp"
+
 namespace
 {
-    class myclass final
+    /// <!-- description -->
+    ///   @brief Used to execute the actual checks. We put the checks in this
+    ///     function so that we can validate the tests both at compile-time
+    ///     and at run-time. If a bsl::ut_check fails, the tests will either
+    ///     fail fast at run-time, or will produce a compile-time error.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @return Always returns bsl::exit_success.
+    ///
+    [[nodiscard]] constexpr auto
+    tests() noexcept -> bsl::exit_code
     {
-        bool *m_moved{};
+        bsl::ut_scenario{"move_if_noexcept empty"} = []() {
+            bsl::ut_given{} = []() {
+                test::class_empty c1{};
+                bsl::ut_when{} = [&c1]() {
+                    test::class_empty c2{bsl::move_if_noexcept(c1)};
+                    bsl::discard(c2);
+                };
+            };
+        };
 
-    public:
-        explicit constexpr myclass(bool *moved) noexcept    // --
-            : m_moved{moved}
-        {}
+        bsl::ut_scenario{"move_if_noexcept except"} = []() {
+            bsl::ut_given{} = []() {
+                test::class_except c1{};
+                bsl::ut_when{} = [&c1]() {
+                    test::class_except c2{bsl::move_if_noexcept(c1)};
+                    bsl::discard(c2);
+                };
+            };
+        };
 
-        ~myclass() noexcept = default;
-        constexpr myclass(myclass const &) noexcept = default;
-        constexpr myclass &operator=(myclass const &) &noexcept = default;
+        bsl::ut_scenario{"move_if_noexcept nocopy"} = []() {
+            bsl::ut_given{} = []() {
+                test::class_nocopy c1{};
+                bsl::ut_when{} = [&c1]() {
+                    test::class_nocopy c2{bsl::move_if_noexcept(c1)};
+                    bsl::discard(c2);
+                };
+            };
+        };
 
-        constexpr myclass(myclass &&o) noexcept
-        {
-            *o.m_moved = true;
-        }
-
-        constexpr myclass &
-        operator=(myclass &&o) &noexcept
-        {
-            *o.m_moved = true;
-            return *this;
-        }
-    };
-
-    class myclass_except final
-    {
-        bool *m_moved{};
-
-    public:
-        explicit constexpr myclass_except(bool *moved) noexcept    // --
-            : m_moved{moved}
-        {}
-
-        ~myclass_except() noexcept = default;
-        constexpr myclass_except(myclass_except const &) noexcept = default;
-        constexpr myclass_except &operator=(myclass_except const &) &noexcept = default;
-
-        constexpr myclass_except(myclass_except &&o) noexcept(false)
-        {
-            *o.m_moved = true;
-        }
-
-        constexpr myclass_except &
-        operator=(myclass_except &&o) &noexcept(false)
-        {
-            *o.m_moved = true;
-            return *this;
-        }
-    };
-
-    class myclass_nocopy final
-    {
-        bool *m_moved{};
-
-    public:
-        explicit constexpr myclass_nocopy(bool *moved) noexcept    // --
-            : m_moved{moved}
-        {}
-
-        ~myclass_nocopy() noexcept = default;
-        constexpr myclass_nocopy(myclass_nocopy const &) noexcept = delete;
-        constexpr myclass_nocopy &operator=(myclass_nocopy const &) &noexcept = delete;
-
-        constexpr myclass_nocopy(myclass_nocopy &&o) noexcept(false)
-        {
-            *o.m_moved = true;
-        }
-
-        constexpr myclass_nocopy &
-        operator=(myclass_nocopy &&o) &noexcept(false)
-        {
-            *o.m_moved = true;
-            return *this;
-        }
-    };
+        return bsl::ut_success();
+    }
 }
 
 /// <!-- description -->
-///   @brief Used to execute the actual checks. We put the checks in this
-///     function so that we can validate the tests both at compile-time
-///     and at run-time. If a bsl::ut_check fails, the tests will either
-///     fail fast at run-time, or will produce a compile-time error.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-constexpr bsl::exit_code
-tests() noexcept
-{
-    bsl::ut_scenario{"moves"} = []() {
-        bsl::ut_given{} = []() {
-            bool moved{};
-            myclass c1{&moved};
-            bsl::ut_when{} = [&c1, &moved]() {
-                myclass c2{bsl::move_if_noexcept(c1)};
-                bsl::discard(c2);
-                bsl::ut_then{} = [&moved]() {
-                    bsl::ut_check(moved);
-                };
-            };
-        };
-    };
-
-    bsl::ut_scenario{"copies due to noexcept move constructor"} = []() {
-        bsl::ut_given{} = []() {
-            bool moved{};
-            myclass_except c1{&moved};
-            bsl::ut_when{} = [&c1, &moved]() {
-                myclass_except c2{bsl::move_if_noexcept(c1)};
-                bsl::discard(c2);
-                bsl::ut_then{} = [&moved]() {
-                    bsl::ut_check(!moved);
-                };
-            };
-        };
-    };
-
-    bsl::ut_scenario{"moves due to missing copy constructor"} = []() {
-        bsl::ut_given{} = []() {
-            bool moved{};
-            myclass_nocopy c1{&moved};
-            bsl::ut_when{} = [&c1, &moved]() {
-                myclass_nocopy c2{bsl::move_if_noexcept(c1)};
-                bsl::discard(c2);
-                bsl::ut_then{} = [&moved]() {
-                    bsl::ut_check(moved);
-                };
-            };
-        };
-    };
-
-    return bsl::ut_success();
-}
-
-/// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     static_assert(tests() == bsl::ut_success());
     return tests();

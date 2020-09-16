@@ -32,20 +32,18 @@
 namespace
 {
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_int32
-    detector(T &&t) noexcept
+    [[nodiscard]] constexpr auto
+    detector(T &&val) noexcept -> bsl::safe_int32
     {
-        using namespace bsl;
-
-        if constexpr (is_const<remove_reference_t<T>>::value) {
+        if constexpr (bsl::is_const<bsl::remove_reference_t<T>>::value) {
             return bsl::to_i32(1);
         }
 
-        if constexpr (is_lvalue_reference<decltype(t)>::value) {
+        if constexpr (bsl::is_lvalue_reference<decltype(val)>::value) {
             return bsl::to_i32(2);
         }
 
-        if constexpr (is_rvalue_reference<decltype(t)>::value) {
+        if constexpr (bsl::is_rvalue_reference<decltype(val)>::value) {
             return bsl::to_i32(3);
         }
 
@@ -53,60 +51,60 @@ namespace
     }
 
     template<typename T>
-    [[nodiscard]] constexpr bsl::safe_int32
-    forwarder(T &&t) noexcept
+    [[nodiscard]] constexpr auto
+    forwarder(T &&val) noexcept -> bsl::safe_int32
     {
-        return detector(bsl::forward<T>(t));
+        return detector(bsl::forward<T>(val));
+    }
+
+    /// <!-- description -->
+    ///   @brief Used to execute the actual checks. We put the checks in this
+    ///     function so that we can validate the tests both at compile-time
+    ///     and at run-time. If a bsl::ut_check fails, the tests will either
+    ///     fail fast at run-time, or will produce a compile-time error.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @return Always returns bsl::exit_success.
+    ///
+    [[nodiscard]] constexpr auto
+    tests() noexcept -> bsl::exit_code
+    {
+        bsl::ut_scenario{"exchange"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 const val{42};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(forwarder(val) == 1);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(forwarder(val) == 2);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::ut_then{} = []() {
+                    bsl::ut_check(forwarder(bsl::to_i32(42)) == 3);
+                };
+            };
+        };
+
+        return bsl::ut_success();
     }
 }
 
 /// <!-- description -->
-///   @brief Used to execute the actual checks. We put the checks in this
-///     function so that we can validate the tests both at compile-time
-///     and at run-time. If a bsl::ut_check fails, the tests will either
-///     fail fast at run-time, or will produce a compile-time error.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-constexpr bsl::exit_code
-tests() noexcept
-{
-    bsl::ut_scenario{"exchange"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 const val{42};
-            bsl::ut_then{} = [&val]() {
-                bsl::ut_check(forwarder(val) == 1);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val{42};
-            bsl::ut_then{} = [&val]() {
-                bsl::ut_check(forwarder(val) == 2);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::ut_then{} = []() {
-                bsl::ut_check(forwarder(42) == 3);
-            };
-        };
-    };
-
-    return bsl::ut_success();
-}
-
-/// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     static_assert(tests() == bsl::ut_success());
     return tests();

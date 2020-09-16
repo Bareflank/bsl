@@ -34,8 +34,11 @@ namespace bsl
     inline void
     example_decay_overview() noexcept
     {
-        if (bsl::is_same<bsl::decay_t<bool const>, bool>::value) {
+        if constexpr (bsl::is_same<bsl::decay_t<bool const>, bool>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

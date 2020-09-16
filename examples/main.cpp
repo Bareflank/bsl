@@ -24,7 +24,6 @@
 
 #include <bsl/cstr_type.hpp>
 #include <bsl/exit_code.hpp>
-#include <bsl/main.hpp>
 #include <bsl/debug.hpp>
 
 #include "example_add_const_overview.hpp"
@@ -33,10 +32,9 @@
 #include "example_add_rvalue_reference_overview.hpp"
 #include "example_addressof_overview.hpp"
 #include "example_aligned_storage_overview.hpp"
-// #include "example_aligned_union_overview.hpp"
+#include "example_aligned_union_overview.hpp"
 #include "example_alignment_of_overview.hpp"
 #include "arguments/example_arguments_at.hpp"
-#include "arguments/example_arguments_back.hpp"
 #include "arguments/example_arguments_empty.hpp"
 #include "arguments/example_arguments_front.hpp"
 #include "arguments/example_arguments_increment.hpp"
@@ -68,6 +66,7 @@
 #include "array/example_array_size.hpp"
 #include "example_as_const_overview.hpp"
 #include "example_basic_errc_type_overview.hpp"
+#include "basic_errc_type/example_basic_errc_type_constructor_t_safe_int.hpp"
 #include "basic_errc_type/example_basic_errc_type_constructor_t.hpp"
 #include "basic_errc_type/example_basic_errc_type_default_constructor.hpp"
 #include "basic_errc_type/example_basic_errc_type_equals.hpp"
@@ -115,17 +114,22 @@
 #include "example_byte_overview.hpp"
 #include "byte/example_byte_and_assign.hpp"
 #include "byte/example_byte_and.hpp"
+#include "byte/example_byte_by_safe_int_constructor.hpp"
 #include "byte/example_byte_by_value_constructor.hpp"
 #include "byte/example_byte_complement.hpp"
 #include "byte/example_byte_default_constructor.hpp"
 #include "byte/example_byte_equal.hpp"
+#include "byte/example_byte_lshift_assign_safe_int.hpp"
 #include "byte/example_byte_lshift_assign.hpp"
+#include "byte/example_byte_lshift_safe_int.hpp"
 #include "byte/example_byte_lshift.hpp"
 #include "byte/example_byte_not_equal.hpp"
 #include "byte/example_byte_or_assign.hpp"
 #include "byte/example_byte_or.hpp"
 #include "byte/example_byte_ostream.hpp"
+#include "byte/example_byte_rshift_assign_safe_int.hpp"
 #include "byte/example_byte_rshift_assign.hpp"
+#include "byte/example_byte_rshift_safe_int.hpp"
 #include "byte/example_byte_rshift.hpp"
 #include "byte/example_byte_to_integer.hpp"
 #include "byte/example_byte_xor_assign.hpp"
@@ -151,15 +155,14 @@
 #include "contiguous_iterator/example_contiguous_iterator_empty.hpp"
 #include "contiguous_iterator/example_contiguous_iterator_equals.hpp"
 #include "contiguous_iterator/example_contiguous_iterator_get_if.hpp"
-#include "contiguous_iterator/example_contiguous_iterator_gt_equals.hpp"
 #include "contiguous_iterator/example_contiguous_iterator_gt.hpp"
 #include "contiguous_iterator/example_contiguous_iterator_increment.hpp"
 #include "contiguous_iterator/example_contiguous_iterator_index.hpp"
 #include "contiguous_iterator/example_contiguous_iterator_is_end.hpp"
-#include "contiguous_iterator/example_contiguous_iterator_lt_equals.hpp"
 #include "contiguous_iterator/example_contiguous_iterator_lt.hpp"
 #include "contiguous_iterator/example_contiguous_iterator_not_equals.hpp"
 #include "contiguous_iterator/example_contiguous_iterator_operator_bool.hpp"
+#include "contiguous_iterator/example_contiguous_iterator_operator_star.hpp"
 #include "contiguous_iterator/example_contiguous_iterator_ostream.hpp"
 #include "contiguous_iterator/example_contiguous_iterator_size.hpp"
 #include "example_convert_overview.hpp"
@@ -181,14 +184,13 @@
 #include "example_declval_overview.hpp"
 #include "example_destroy_at_overview.hpp"
 #include "example_detected_or_overview.hpp"
-#include "example_detected_overview.hpp"
+#include "example_detected_t_overview.hpp"
 #include "example_discard_overview.hpp"
 #include "example_disjunction_overview.hpp"
 #include "example_enable_if_overview.hpp"
 #include "example_exchange_overview.hpp"
 #include "example_extent_overview.hpp"
 #include "example_false_type_overview.hpp"
-#include "example_fill_overview.hpp"
 #include "fmt/example_fmt_align.hpp"
 #include "fmt/example_fmt_alt_form.hpp"
 #include "fmt/example_fmt_bool.hpp"
@@ -200,30 +202,30 @@
 #include "fmt/example_fmt_sign_aware.hpp"
 #include "fmt/example_fmt_sign.hpp"
 #include "fmt/example_fmt_width.hpp"
-#include "example_for_each_overview.hpp"
 #include "example_forward_overview.hpp"
 #include "example_from_chars_overview.hpp"
-// #include "example_has_unique_object_representations_overview.hpp"
+#include "example_has_unique_object_representations_overview.hpp"
 #include "example_has_virtual_destructor_overview.hpp"
-// #include "example_ifmap_overview.hpp"
-// #include "ifmap/example_ifmap_constructor.hpp"
-// #include "ifmap/example_ifmap_data.hpp"
-// #include "ifmap/example_ifmap_default_constructor.hpp"
-// #include "ifmap/example_ifmap_empty.hpp"
-// #include "ifmap/example_ifmap_max_size.hpp"
-// #include "ifmap/example_ifmap_operator_bool.hpp"
-// #include "ifmap/example_ifmap_size_bytes.hpp"
-// #include "ifmap/example_ifmap_size.hpp"
+#include "example_ifmap_overview.hpp"
+#include "ifmap/example_ifmap_constructor.hpp"
+#include "ifmap/example_ifmap_data.hpp"
+#include "ifmap/example_ifmap_default_constructor.hpp"
+#include "ifmap/example_ifmap_empty.hpp"
+#include "ifmap/example_ifmap_max_size.hpp"
+#include "ifmap/example_ifmap_operator_bool.hpp"
+#include "ifmap/example_ifmap_size_bytes.hpp"
+#include "ifmap/example_ifmap_size.hpp"
 #include "example_in_place_overview.hpp"
-// #include "example_integer_sequence_overview.hpp"
-// #include "integer_sequence/example_integer_sequence_max.hpp"
-// #include "integer_sequence/example_integer_sequence_min.hpp"
-// #include "integer_sequence/example_integer_sequence_size.hpp"
+#include "example_make_index_sequence_overview.hpp"
+#include "integer_sequence/example_integer_sequence_max.hpp"
+#include "integer_sequence/example_integer_sequence_min.hpp"
+#include "integer_sequence/example_integer_sequence_size.hpp"
+#include "example_integer_sequence_overview.hpp"
 #include "example_integral_constant_overview.hpp"
 #include "example_invoke_result_overview.hpp"
 #include "example_invoke_overview.hpp"
 #include "example_is_abstract_overview.hpp"
-// #include "example_is_aggregate_overview.hpp"
+#include "example_is_aggregate_overview.hpp"
 #include "example_is_arithmetic_overview.hpp"
 #include "example_is_array_overview.hpp"
 #include "example_is_assignable_overview.hpp"
@@ -233,7 +235,7 @@
 #include "example_is_class_overview.hpp"
 #include "example_is_compound_overview.hpp"
 #include "example_is_const_overview.hpp"
-// #include "example_is_constant_evaluated_overview.hpp"
+#include "example_is_constant_evaluated_overview.hpp"
 #include "example_is_constructible_overview.hpp"
 #include "example_is_convertible_overview.hpp"
 #include "example_is_copy_assignable_overview.hpp"
@@ -328,6 +330,7 @@
 #include "example_result_overview.hpp"
 #include "result/example_result_copy_assignment.hpp"
 #include "result/example_result_copy_constructor.hpp"
+#include "result/example_result_default_constructor.hpp"
 #include "result/example_result_equals.hpp"
 #include "result/example_result_errc_copy_constructor.hpp"
 #include "result/example_result_errc_move_constructor.hpp"
@@ -349,12 +352,10 @@
 #include "reverse_iterator/example_reverse_iterator_empty.hpp"
 #include "reverse_iterator/example_reverse_iterator_equals.hpp"
 #include "reverse_iterator/example_reverse_iterator_get_if.hpp"
-#include "reverse_iterator/example_reverse_iterator_gt_equals.hpp"
 #include "reverse_iterator/example_reverse_iterator_gt.hpp"
 #include "reverse_iterator/example_reverse_iterator_increment.hpp"
 #include "reverse_iterator/example_reverse_iterator_index.hpp"
 #include "reverse_iterator/example_reverse_iterator_is_end.hpp"
-#include "reverse_iterator/example_reverse_iterator_lt_equals.hpp"
 #include "reverse_iterator/example_reverse_iterator_lt.hpp"
 #include "reverse_iterator/example_reverse_iterator_not_equals.hpp"
 #include "reverse_iterator/example_reverse_iterator_operator_bool.hpp"
@@ -382,7 +383,6 @@
 #include "safe_integral/example_safe_integral_equals.hpp"
 #include "safe_integral/example_safe_integral_failure.hpp"
 #include "safe_integral/example_safe_integral_get.hpp"
-#include "safe_integral/example_safe_integral_gt_equals.hpp"
 #include "safe_integral/example_safe_integral_gt.hpp"
 #include "safe_integral/example_safe_integral_inc.hpp"
 #include "safe_integral/example_safe_integral_is_max.hpp"
@@ -393,7 +393,6 @@
 #include "safe_integral/example_safe_integral_is_unsigned_type.hpp"
 #include "safe_integral/example_safe_integral_is_zero.hpp"
 #include "safe_integral/example_safe_integral_lshift.hpp"
-#include "safe_integral/example_safe_integral_lt_equals.hpp"
 #include "safe_integral/example_safe_integral_lt.hpp"
 #include "safe_integral/example_safe_integral_max.hpp"
 #include "safe_integral/example_safe_integral_min.hpp"
@@ -458,17 +457,18 @@ namespace
     ///   @brief Executes an example with some possible pre/post logic
     ///
     /// <!-- inputs/outputs -->
-    ///   @param func the example function to call
+    ///   @tparam FUNC the type of example function to call
+    ///   @param f the example function to call
     ///   @param name the name of the example
     ///
     template<typename FUNC>
     void
-    example(FUNC &&func, bsl::cstr_type const name) noexcept
+    example(FUNC &&f, bsl::cstr_type const name) noexcept
     {
         bsl::print() << bsl::fmt{"=<80", '='} << bsl::endl;
         bsl::print() << "example: " << name << bsl::endl;
         bsl::print() << bsl::fmt{"-<80", '-'} << bsl::endl;
-        func();
+        f();
         bsl::print() << bsl::endl;
     }
 }
@@ -479,8 +479,8 @@ namespace
 /// <!-- inputs/outputs -->
 ///   @return 0 on success, non-0 on failure
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     // clang-format off
 
@@ -490,10 +490,9 @@ main() noexcept
     example(&bsl::example_add_rvalue_reference_overview, "example_add_rvalue_reference_overview");
     example(&bsl::example_addressof_overview, "example_addressof_overview");
     example(&bsl::example_aligned_storage_overview, "example_aligned_storage_overview");
-    // example(&bsl::example_aligned_union_overview, "example_aligned_union_overview");
+    example(&bsl::example_aligned_union_overview, "example_aligned_union_overview");
     example(&bsl::example_alignment_of_overview, "example_alignment_of_overview");
     example(&bsl::example_arguments_at, "example_arguments_at");
-    example(&bsl::example_arguments_back, "example_arguments_back");
     example(&bsl::example_arguments_empty, "example_arguments_empty");
     example(&bsl::example_arguments_front, "example_arguments_front");
     example(&bsl::example_arguments_increment, "example_arguments_increment");
@@ -525,6 +524,7 @@ main() noexcept
     example(&bsl::example_array_size, "example_array_size");
     example(&bsl::example_as_const_overview, "example_as_const_overview");
     example(&bsl::example_basic_errc_type_overview, "example_basic_errc_type_overview");
+    example(&bsl::example_basic_errc_type_constructor_t_safe_int, "example_basic_errc_type_constructor_t_safe_int");
     example(&bsl::example_basic_errc_type_constructor_t, "example_basic_errc_type_constructor_t");
     example(&bsl::example_basic_errc_type_default_constructor, "example_basic_errc_type_default_constructor");
     example(&bsl::example_basic_errc_type_equals, "example_basic_errc_type_equals");
@@ -572,17 +572,22 @@ main() noexcept
     example(&bsl::example_byte_overview, "example_byte_overview");
     example(&bsl::example_byte_and_assign, "example_byte_and_assign");
     example(&bsl::example_byte_and, "example_byte_and");
+    example(&bsl::example_byte_by_safe_int_constructor, "example_byte_by_safe_int_constructor");
     example(&bsl::example_byte_by_value_constructor, "example_byte_by_value_constructor");
     example(&bsl::example_byte_complement, "example_byte_complement");
     example(&bsl::example_byte_default_constructor, "example_byte_default_constructor");
     example(&bsl::example_byte_equal, "example_byte_equal");
+    example(&bsl::example_byte_lshift_assign_safe_int, "example_byte_lshift_assign_safe_int");
     example(&bsl::example_byte_lshift_assign, "example_byte_lshift_assign");
+    example(&bsl::example_byte_lshift_safe_int, "example_byte_lshift_safe_int");
     example(&bsl::example_byte_lshift, "example_byte_lshift");
     example(&bsl::example_byte_not_equal, "example_byte_not_equal");
     example(&bsl::example_byte_or_assign, "example_byte_or_assign");
     example(&bsl::example_byte_or, "example_byte_or");
     example(&bsl::example_byte_ostream, "example_byte_ostream");
+    example(&bsl::example_byte_rshift_assign_safe_int, "example_byte_rshift_assign_safe_int");
     example(&bsl::example_byte_rshift_assign, "example_byte_rshift_assign");
+    example(&bsl::example_byte_rshift_safe_int, "example_byte_rshift_safe_int");
     example(&bsl::example_byte_rshift, "example_byte_rshift");
     example(&bsl::example_byte_to_integer, "example_byte_to_integer");
     example(&bsl::example_byte_xor_assign, "example_byte_xor_assign");
@@ -608,15 +613,14 @@ main() noexcept
     example(&bsl::example_contiguous_iterator_empty, "example_contiguous_iterator_empty");
     example(&bsl::example_contiguous_iterator_equals, "example_contiguous_iterator_equals");
     example(&bsl::example_contiguous_iterator_get_if, "example_contiguous_iterator_get_if");
-    example(&bsl::example_contiguous_iterator_gt_equals, "example_contiguous_iterator_gt_equals");
     example(&bsl::example_contiguous_iterator_gt, "example_contiguous_iterator_gt");
     example(&bsl::example_contiguous_iterator_increment, "example_contiguous_iterator_increment");
     example(&bsl::example_contiguous_iterator_index, "example_contiguous_iterator_index");
     example(&bsl::example_contiguous_iterator_is_end, "example_contiguous_iterator_is_end");
-    example(&bsl::example_contiguous_iterator_lt_equals, "example_contiguous_iterator_lt_equals");
     example(&bsl::example_contiguous_iterator_lt, "example_contiguous_iterator_lt");
     example(&bsl::example_contiguous_iterator_not_equals, "example_contiguous_iterator_not_equals");
     example(&bsl::example_contiguous_iterator_operator_bool, "example_contiguous_iterator_operator_bool");
+    example(&bsl::example_contiguous_iterator_operator_star, "example_contiguous_iterator_operator_star");
     example(&bsl::example_contiguous_iterator_ostream, "example_contiguous_iterator_ostream");
     example(&bsl::example_contiguous_iterator_size, "example_contiguous_iterator_size");
     example(&bsl::example_convert_overview, "example_convert_overview");
@@ -638,14 +642,13 @@ main() noexcept
     example(&bsl::example_declval_overview, "example_declval_overview");
     example(&bsl::example_destroy_at_overview, "example_destroy_at_overview");
     example(&bsl::example_detected_or_overview, "example_detected_or_overview");
-    example(&bsl::example_detected_overview, "example_detected_overview");
+    example(&bsl::example_detected_t_overview, "example_detected_t_overview");
     example(&bsl::example_discard_overview, "example_discard_overview");
     example(&bsl::example_disjunction_overview, "example_disjunction_overview");
     example(&bsl::example_enable_if_overview, "example_enable_if_overview");
     example(&bsl::example_exchange_overview, "example_exchange_overview");
     example(&bsl::example_extent_overview, "example_extent_overview");
     example(&bsl::example_false_type_overview, "example_false_type_overview");
-    example(&bsl::example_fill_overview, "example_fill_overview");
     example(&bsl::example_fmt_align, "example_fmt_align");
     example(&bsl::example_fmt_alt_form, "example_fmt_alt_form");
     example(&bsl::example_fmt_bool, "example_fmt_bool");
@@ -657,30 +660,30 @@ main() noexcept
     example(&bsl::example_fmt_sign_aware, "example_fmt_sign_aware");
     example(&bsl::example_fmt_sign, "example_fmt_sign");
     example(&bsl::example_fmt_width, "example_fmt_width");
-    example(&bsl::example_for_each_overview, "example_for_each_overview");
     example(&bsl::example_forward_overview, "example_forward_overview");
     example(&bsl::example_from_chars_overview, "example_from_chars_overview");
-    // example(&bsl::example_has_unique_object_representations_overview, "example_has_unique_object_representations_overview");
+    example(&bsl::example_has_unique_object_representations_overview, "example_has_unique_object_representations_overview");
     example(&bsl::example_has_virtual_destructor_overview, "example_has_virtual_destructor_overview");
-    // example(&bsl::example_ifmap_overview, "example_ifmap_overview");
-    // example(&bsl::example_ifmap_constructor, "example_ifmap_constructor");
-    // example(&bsl::example_ifmap_data, "example_ifmap_data");
-    // example(&bsl::example_ifmap_default_constructor, "example_ifmap_default_constructor");
-    // example(&bsl::example_ifmap_empty, "example_ifmap_empty");
-    // example(&bsl::example_ifmap_max_size, "example_ifmap_max_size");
-    // example(&bsl::example_ifmap_operator_bool, "example_ifmap_operator_bool");
-    // example(&bsl::example_ifmap_size_bytes, "example_ifmap_size_bytes");
-    // example(&bsl::example_ifmap_size, "example_ifmap_size");
+    example(&bsl::example_ifmap_overview, "example_ifmap_overview");
+    example(&bsl::example_ifmap_constructor, "example_ifmap_constructor");
+    example(&bsl::example_ifmap_data, "example_ifmap_data");
+    example(&bsl::example_ifmap_default_constructor, "example_ifmap_default_constructor");
+    example(&bsl::example_ifmap_empty, "example_ifmap_empty");
+    example(&bsl::example_ifmap_max_size, "example_ifmap_max_size");
+    example(&bsl::example_ifmap_operator_bool, "example_ifmap_operator_bool");
+    example(&bsl::example_ifmap_size_bytes, "example_ifmap_size_bytes");
+    example(&bsl::example_ifmap_size, "example_ifmap_size");
     example(&bsl::example_in_place_overview, "example_in_place_overview");
-    // // example(&bsl::example_integer_sequence_overview, "example_integer_sequence_overview");
-    // // example(&bsl::example_integer_sequence_max, "example_integer_sequence_max");
-    // // example(&bsl::example_integer_sequence_min, "example_integer_sequence_min");
-    // // example(&bsl::example_integer_sequence_size, "example_integer_sequence_size");
+    example(&bsl::example_make_index_sequence_overview, "example_make_index_sequence_overview");
+    example(&bsl::example_integer_sequence_max, "example_integer_sequence_max");
+    example(&bsl::example_integer_sequence_min, "example_integer_sequence_min");
+    example(&bsl::example_integer_sequence_size, "example_integer_sequence_size");
+    example(&bsl::example_integer_sequence, "example_integer_sequence");
     example(&bsl::example_integral_constant_overview, "example_integral_constant_overview");
     example(&bsl::example_invoke_result_overview, "example_invoke_result_overview");
     example(&bsl::example_invoke_overview, "example_invoke_overview");
     example(&bsl::example_is_abstract_overview, "example_is_abstract_overview");
-    // example(&bsl::example_is_aggregate_overview, "example_is_aggregate_overview");
+    example(&bsl::example_is_aggregate_overview, "example_is_aggregate_overview");
     example(&bsl::example_is_arithmetic_overview, "example_is_arithmetic_overview");
     example(&bsl::example_is_array_overview, "example_is_array_overview");
     example(&bsl::example_is_assignable_overview, "example_is_assignable_overview");
@@ -690,7 +693,7 @@ main() noexcept
     example(&bsl::example_is_class_overview, "example_is_class_overview");
     example(&bsl::example_is_compound_overview, "example_is_compound_overview");
     example(&bsl::example_is_const_overview, "example_is_const_overview");
-    // example(&bsl::example_is_constant_evaluated_overview, "example_is_constant_evaluated_overview");
+    example(&bsl::example_is_constant_evaluated_overview, "example_is_constant_evaluated_overview");
     example(&bsl::example_is_constructible_overview, "example_is_constructible_overview");
     example(&bsl::example_is_convertible_overview, "example_is_convertible_overview");
     example(&bsl::example_is_copy_assignable_overview, "example_is_copy_assignable_overview");
@@ -785,6 +788,7 @@ main() noexcept
     example(&bsl::example_result_overview, "example_result_overview");
     example(&bsl::example_result_copy_assignment, "example_result_copy_assignment");
     example(&bsl::example_result_copy_constructor, "example_result_copy_constructor");
+    example(&bsl::example_result_default_constructor, "example_result_default_constructor");
     example(&bsl::example_result_equals, "example_result_equals");
     example(&bsl::example_result_errc_copy_constructor, "example_result_errc_copy_constructor");
     example(&bsl::example_result_errc_move_constructor, "example_result_errc_move_constructor");
@@ -806,12 +810,10 @@ main() noexcept
     example(&bsl::example_reverse_iterator_empty, "example_reverse_iterator_empty");
     example(&bsl::example_reverse_iterator_equals, "example_reverse_iterator_equals");
     example(&bsl::example_reverse_iterator_get_if, "example_reverse_iterator_get_if");
-    example(&bsl::example_reverse_iterator_gt_equals, "example_reverse_iterator_gt_equals");
     example(&bsl::example_reverse_iterator_gt, "example_reverse_iterator_gt");
     example(&bsl::example_reverse_iterator_increment, "example_reverse_iterator_increment");
     example(&bsl::example_reverse_iterator_index, "example_reverse_iterator_index");
     example(&bsl::example_reverse_iterator_is_end, "example_reverse_iterator_is_end");
-    example(&bsl::example_reverse_iterator_lt_equals, "example_reverse_iterator_lt_equals");
     example(&bsl::example_reverse_iterator_lt, "example_reverse_iterator_lt");
     example(&bsl::example_reverse_iterator_not_equals, "example_reverse_iterator_not_equals");
     example(&bsl::example_reverse_iterator_operator_bool, "example_reverse_iterator_operator_bool");
@@ -839,7 +841,6 @@ main() noexcept
     example(&bsl::example_safe_integral_equals, "example_safe_integral_equals");
     example(&bsl::example_safe_integral_failure, "example_safe_integral_failure");
     example(&bsl::example_safe_integral_get, "example_safe_integral_get");
-    example(&bsl::example_safe_integral_gt_equals, "example_safe_integral_gt_equals");
     example(&bsl::example_safe_integral_gt, "example_safe_integral_gt");
     example(&bsl::example_safe_integral_inc, "example_safe_integral_inc");
     example(&bsl::example_safe_integral_is_max, "example_safe_integral_is_max");
@@ -850,7 +851,6 @@ main() noexcept
     example(&bsl::example_safe_integral_is_unsigned_type, "example_safe_integral_is_unsigned_type");
     example(&bsl::example_safe_integral_is_zero, "example_safe_integral_is_zero");
     example(&bsl::example_safe_integral_lshift, "example_safe_integral_lshift");
-    example(&bsl::example_safe_integral_lt_equals, "example_safe_integral_lt_equals");
     example(&bsl::example_safe_integral_lt, "example_safe_integral_lt");
     example(&bsl::example_safe_integral_max, "example_safe_integral_max");
     example(&bsl::example_safe_integral_min, "example_safe_integral_min");

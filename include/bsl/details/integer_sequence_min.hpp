@@ -25,64 +25,88 @@
 #ifndef BSL_INTEGER_SEQUENCE_MIN_HPP
 #define BSL_INTEGER_SEQUENCE_MIN_HPP
 
-namespace bsl
+namespace bsl::details
 {
     namespace details
     {
-        /// @class bsl::details::integer_sequence_min
-        ///
         /// <!-- description -->
-        ///   @brief Returns the min value given an integer sequence. This is
-        ///     used to implement integer_sequence::min().
+        ///   @brief Returns the min of T1 and T2
         ///
-        /// <!-- template parameters -->
-        ///   @tparam T the type that defines the sequence of integers
-        ///   @tparam T1 the first integer in the sequence
-        ///   @tparam R the remaining integers in the sequence
+        /// <!-- inputs/outputs -->
+        ///   @tparam T the type of values being compared
+        ///   @param t1 the first integer to compare
+        ///   @param t2 the second integer to compare
+        ///   @return Returns the min of T1 and T2
         ///
-        template<typename T, T T1, T... R>
-        struct integer_sequence_min final
+        template<typename T>
+        [[nodiscard]] constexpr auto
+        integer_sequence_min_impl(T const t1, T const t2) noexcept -> T
         {
-            static constexpr T T2{integer_sequence_min<T, R...>::value};
-            static constexpr T value{T1 < T2 ? T1 : T2};
-        };
+            if (t1 < t2) {
+                return t1;
+            }
 
-        /// @class bsl::details::integer_sequence_min
-        ///
-        /// <!-- description -->
-        ///   @brief Returns the min value given an integer sequence. This is
-        ///     used to implement integer_sequence::min(). Note that this
-        ///     provides the case where there are only two integers in the
-        ///     sequence.
-        ///
-        /// <!-- template parameters -->
-        ///   @tparam T the type that defines the sequence of integers
-        ///   @tparam T1 the first integer in the sequence
-        ///   @tparam T2 the second integer in the sequence
-        ///
-        template<typename T, T T1, T T2>
-        struct integer_sequence_min<T, T1, T2> final
-        {
-            static constexpr T value{T1 < T2 ? T1 : T2};
-        };
+            return t2;
+        }
+    }
 
-        /// @class bsl::details::integer_sequence_min
-        ///
-        /// <!-- description -->
-        ///   @brief Returns the min value given an integer sequence. This is
-        ///     used to implement integer_sequence::min(). Note that this
-        ///     provides the case where there is only one integer in the
-        ///     sequence.
-        ///
-        /// <!-- template parameters -->
-        ///   @tparam T the type that defines the sequence of integers
-        ///   @tparam T1 the first integer in the sequence
-        ///
-        template<typename T, T T1>
-        struct integer_sequence_min<T, T1> final
-        {
-            static constexpr T value{T1};
-        };
+    /// @class bsl::details::integer_sequence_min
+    ///
+    /// <!-- description -->
+    ///   @brief Returns the min value given an integer sequence. This is
+    ///     used to implement integer_sequence::min().
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type that defines the sequence of integers
+    ///   @tparam T1 the first integer in the sequence
+    ///   @tparam R the remaining integers in the sequence
+    ///
+    template<typename T, T T1, T... R>
+    struct integer_sequence_min final
+    {
+        /// @brief the max value between T2 to TR
+        static constexpr T t2{integer_sequence_min<T, R...>::value};
+        /// @brief the max value between T2 to T1
+        static constexpr T value{details::integer_sequence_min_impl(T1, t2)};
+    };
+
+    /// @class bsl::details::integer_sequence_min
+    ///
+    /// <!-- description -->
+    ///   @brief Returns the min value given an integer sequence. This is
+    ///     used to implement integer_sequence::min(). Note that this
+    ///     provides the case where there are only two integers in the
+    ///     sequence.
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type that defines the sequence of integers
+    ///   @tparam T1 the first integer in the sequence
+    ///   @tparam T2 the second integer in the sequence
+    ///
+    template<typename T, T T1, T T2>
+    struct integer_sequence_min<T, T1, T2> final
+    {
+        /// @brief the max value between T2 to T1
+        static constexpr T value{details::integer_sequence_min_impl(T1, T2)};
+    };
+
+    /// @class bsl::details::integer_sequence_min
+    ///
+    /// <!-- description -->
+    ///   @brief Returns the min value given an integer sequence. This is
+    ///     used to implement integer_sequence::min(). Note that this
+    ///     provides the case where there is only one integer in the
+    ///     sequence.
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type that defines the sequence of integers
+    ///   @tparam T1 the first integer in the sequence
+    ///
+    template<typename T, T T1>
+    struct integer_sequence_min<T, T1> final
+    {
+        /// @brief the value of T1
+        static constexpr T value{T1};
     };
 }
 

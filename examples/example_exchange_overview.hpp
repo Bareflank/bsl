@@ -43,9 +43,15 @@ namespace bsl
         if (val2 == var1) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
 
         if (val1 == var2) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

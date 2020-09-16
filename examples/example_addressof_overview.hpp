@@ -37,5 +37,8 @@ namespace bsl
         if (bsl::addressof(mydata) == &mydata) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
     }
 }

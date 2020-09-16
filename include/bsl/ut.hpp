@@ -29,17 +29,16 @@
 #define BSL_UT_HPP
 
 #include "color.hpp"
-#include "convert.hpp"
-#include "cstr_type.hpp"
+#include "cstdlib.hpp"
 #include "debug.hpp"
-#include "discard.hpp"
 #include "exit_code.hpp"
-#include "is_constant_evaluated.hpp"
-#include "main.hpp"
 #include "source_location.hpp"
-#include "safe_integral.hpp"
-
-#include <stdlib.h>    // NOLINT
+#include "touch.hpp"
+#include "ut_scenario.hpp"
+#include "ut_given.hpp"
+#include "ut_given_at_runtime.hpp"
+#include "ut_when.hpp"
+#include "ut_then.hpp"
 
 #pragma clang diagnostic ignored "-Wunused-member-function"
 #pragma clang diagnostic ignored "-Wunneeded-member-function"
@@ -50,180 +49,14 @@
 
 namespace bsl
 {
-    namespace details
-    {
-        /// <!-- description -->
-        ///   @brief Prints the current source location to the console.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param sloc the current source location to print
-        ///
-        inline void
-        ut_print_here(sloc_type const &sloc) noexcept
-        {
-            bsl::print() << sloc;
-        }
-    }
-
-    /// @class bsl::ut_scenario
-    ///
-    /// <!-- description -->
-    ///   @brief Defines a unit test scenario. A scenario defines a user
-    ///     story, describing the "scenario" being tested. A scenario
-    ///     should be paired with ut_given, ut_when and ut_then to define
-    ///     the scenario in english.
-    ///
-    class ut_scenario final
-    {
-    public:
-        /// <!-- description -->
-        ///   @brief Constructs a scenario
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param name the name of the scenario (i.e., test case)
-        ///
-        explicit constexpr ut_scenario(cstr_type const name) noexcept
-        {
-            bsl::discard(name);
-        }
-
-        /// <!-- description -->
-        ///   @brief Executes a lambda function as the body of the
-        ///     scenario.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @tparam FUNC the type of lambda being executed
-        ///   @param func the lambda being executed
-        ///   @return Returns a reference to the scenario.
-        ///
-        template<typename FUNC>
-        [[maybe_unused]] constexpr ut_scenario &
-        operator=(FUNC &&func) noexcept
-        {
-            func();
-            return *this;
-        }
-    };
-
-    /// @class bsl::ut_given
-    ///
-    /// <!-- description -->
-    ///   @brief Defines the initial state of a unit test scenario including
-    ///     the creation of any objects that might participate in the
-    ///     unit test.
-    ///
-    class ut_given final
-    {
-    public:
-        /// <!-- description -->
-        ///   @brief Executes a lambda function as the body of the
-        ///     "given" portion of the scenario.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @tparam FUNC the type of lambda being executed
-        ///   @param func the lambda being executed
-        ///   @return Returns a reference to the ut_given.
-        ///
-        template<typename FUNC>
-        [[maybe_unused]] constexpr ut_given &
-        operator=(FUNC &&func) noexcept
-        {
-            func();
-            return *this;
-        }
-    };
-
-    /// @class bsl::ut_given_at_runtime
-    ///
-    /// <!-- description -->
-    ///   @brief Defines the initial state of a unit test scenario including
-    ///     the creation of any objects that might participate in the
-    ///     unit test. Note that this version will only execute at run-time.
-    ///
-    class ut_given_at_runtime final
-    {
-    public:
-        /// <!-- description -->
-        ///   @brief Executes a lambda function as the body of the
-        ///     "given" portion of the scenario.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @tparam FUNC the type of lambda being executed
-        ///   @param func the lambda being executed
-        ///   @return Returns a reference to the ut_given_at_runtime.
-        ///
-        template<typename FUNC>
-        [[maybe_unused]] constexpr ut_given_at_runtime &
-        operator=(FUNC &&func) noexcept
-        {
-            if (!is_constant_evaluated()) {
-                func();
-            }
-
-            return *this;
-        }
-    };
-
-    /// @class bsl::ut_when
-    ///
-    /// <!-- description -->
-    ///   @brief Defines the "action" of a unit test scenario
-    ///
-    class ut_when final
-    {
-    public:
-        /// <!-- description -->
-        ///   @brief Executes a lambda function as the body of the
-        ///     "when" portion of the scenario.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @tparam FUNC the type of lambda being executed
-        ///   @param func the lambda being executed
-        ///   @return Returns a reference to the ut_when.
-        ///
-        template<typename FUNC>
-        [[maybe_unused]] constexpr ut_when &
-        operator=(FUNC &&func) noexcept
-        {
-            func();
-            return *this;
-        }
-    };
-
-    /// @class bsl::ut_then
-    ///
-    /// <!-- description -->
-    ///   @brief Defines the expected "result" of a unit test scenario.
-    ///
-    class ut_then final
-    {
-    public:
-        /// <!-- description -->
-        ///   @brief Executes a lambda function as the body of the
-        ///     "then" portion of the scenario.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @tparam FUNC the type of lambda being executed
-        ///   @param func the lambda being executed
-        ///   @return Returns a reference to the ut_then.
-        ///
-        template<typename FUNC>
-        [[maybe_unused]] constexpr ut_then &
-        operator=(FUNC &&func) noexcept
-        {
-            func();
-            return *this;
-        }
-    };
-
     /// <!-- description -->
     ///   @brief Outputs a message and returns bsl::exit_success
     ///
     /// <!-- inputs/outputs -->
     ///   @return returns bsl::exit_success
     ///
-    constexpr bsl::exit_code
-    ut_success() noexcept
+    [[nodiscard]] constexpr auto
+    ut_success() noexcept -> bsl::exit_code
     {
         bsl::print() << bsl::green << "All tests passed" << bsl::reset_color << bsl::endl;
         return bsl::exit_success;
@@ -250,8 +83,8 @@ namespace bsl
     ///     check failed.
     ///   @return returns test
     ///
-    [[maybe_unused]] constexpr bool
-    ut_check(bool const test, sloc_type const &sloc = here()) noexcept
+    [[maybe_unused]] constexpr auto
+    ut_check(bool const test, source_location const &sloc = here()) noexcept -> bool
     {
         if (!test) {
             bsl::error() << bsl::magenta << "[CHECK FAILED]" << bsl::reset_color << bsl::endl;
@@ -259,6 +92,9 @@ namespace bsl
 
             ut_check_failed();
             exit(1);
+        }
+        else {
+            bsl::touch();
         }
 
         return test;

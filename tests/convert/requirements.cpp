@@ -22,27 +22,46 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/discard.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/ut.hpp>
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
     bsl::ut_scenario{"verify noexcept"} = []() {
         bsl::ut_given{} = []() {
-            bool mydata{};
             bsl::ut_then{} = []() {
-                static_assert(noexcept(discard(mydata)));
+                static_assert(noexcept(bsl::convert<bsl::int32>(0)));
+                static_assert(noexcept(bsl::convert<bsl::int32>(bsl::safe_int32{})));
+                static_assert(noexcept(bsl::to_i8(0)));
+                static_assert(noexcept(bsl::to_i8(bsl::safe_int32{})));
+                static_assert(noexcept(bsl::to_i16(0)));
+                static_assert(noexcept(bsl::to_i16(bsl::safe_int32{})));
+                static_assert(noexcept(bsl::to_i32(0)));
+                static_assert(noexcept(bsl::to_i32(bsl::safe_int32{})));
+                static_assert(noexcept(bsl::to_i64(0)));
+                static_assert(noexcept(bsl::to_i64(bsl::safe_int32{})));
+                static_assert(noexcept(bsl::to_imax(0)));
+                static_assert(noexcept(bsl::to_imax(bsl::safe_int32{})));
+                static_assert(noexcept(bsl::to_u8(0)));
+                static_assert(noexcept(bsl::to_u8(bsl::safe_int32{})));
+                static_assert(noexcept(bsl::to_u16(0)));
+                static_assert(noexcept(bsl::to_u16(bsl::safe_int32{})));
+                static_assert(noexcept(bsl::to_u32(0)));
+                static_assert(noexcept(bsl::to_u32(bsl::safe_int32{})));
+                static_assert(noexcept(bsl::to_u64(0)));
+                static_assert(noexcept(bsl::to_u64(bsl::safe_int32{})));
+                static_assert(noexcept(bsl::to_umax(0)));
+                static_assert(noexcept(bsl::to_umax(bsl::safe_int32{})));
+                static_assert(noexcept(bsl::size_of<bsl::int32>()));
             };
         };
     };

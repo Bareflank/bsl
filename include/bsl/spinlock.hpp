@@ -52,11 +52,10 @@ namespace bsl
 
     public:
         /// <!-- description -->
-        ///   @brief Default constructor. This ensures the spinlock type is a
-        ///     POD type, allowing it to be constructed as a global resource.
+        ///   @brief Default constructor.
         ///   @include spinlock/example_spinlock_default_constructor.hpp
         ///
-        BSL_CONSTEXPR spinlock() noexcept = default;
+        constexpr spinlock() noexcept = default;
 
         /// <!-- description -->
         ///   @brief Creates a bsl::spinlock, and sets the initial lock
@@ -67,8 +66,9 @@ namespace bsl
         ///   @param val the initial state of the lock. Set to true for locked
         ///     and false for unlocked.
         ///
-        explicit BSL_CONSTEXPR
-        spinlock(bool const val) noexcept
+        // BUG: Until we have bsl::atomic, this is not possible
+        // NOLINTNEXTLINE(bsl-class-member-init)
+        explicit constexpr spinlock(bool const val) noexcept
         {
             if (is_constant_evaluated()) {
                 return;
@@ -80,7 +80,7 @@ namespace bsl
         /// <!-- description -->
         ///   @brief Destructor
         ///
-        BSL_CONSTEXPR ~spinlock() noexcept = default;
+        constexpr ~spinlock() noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy constructor
@@ -105,7 +105,7 @@ namespace bsl
         ///   @param o the object being copied
         ///   @return a reference to *this
         ///
-        spinlock &operator=(spinlock const &o) &noexcept = delete;
+        [[maybe_unused]] auto operator=(spinlock const &o) &noexcept -> spinlock & = delete;
 
         /// <!-- description -->
         ///   @brief move assignment
@@ -114,7 +114,7 @@ namespace bsl
         ///   @param o the object being moved
         ///   @return a reference to *this
         ///
-        spinlock &operator=(spinlock &&o) &noexcept = default;
+        [[maybe_unused]] auto operator=(spinlock &&o) &noexcept -> spinlock & = default;
 
         /// <!-- description -->
         ///   @brief Locks the spinlock. This will not return until the
@@ -129,11 +129,11 @@ namespace bsl
             }
 
             while (true) {
-                if (!__c11_atomic_exchange(&m_flag, true, __ATOMIC_ACQUIRE)) {    // PRQA S 1-10000
+                if (!__c11_atomic_exchange(&m_flag, true, __ATOMIC_ACQUIRE)) {
                     return;
                 }
 
-                while (__c11_atomic_load(&m_flag, __ATOMIC_RELAXED)) {    // PRQA S 1-10000
+                while (__c11_atomic_load(&m_flag, __ATOMIC_RELAXED)) {
                     __builtin_ia32_pause();
                 }
             }
@@ -149,15 +149,18 @@ namespace bsl
         ///   @return Returns true if the lock was successfully acquired,
         ///     false otherwise.
         ///
-        [[nodiscard]] constexpr bool
-        try_lock() noexcept
+        [[nodiscard]] constexpr auto
+        try_lock() noexcept -> bool
         {
             if (is_constant_evaluated()) {
                 return true;
             }
 
-            return (!__c11_atomic_load(&m_flag, __ATOMIC_RELAXED)) &&            // PRQA S 1-10000
-                   (!__c11_atomic_exchange(&m_flag, true, __ATOMIC_ACQUIRE));    // PRQA S 1-10000
+            if (!__c11_atomic_load(&m_flag, __ATOMIC_RELAXED)) {
+                return !__c11_atomic_exchange(&m_flag, true, __ATOMIC_ACQUIRE);
+            }
+
+            return false;
         }
 
         /// <!-- description -->

@@ -40,17 +40,12 @@ namespace bsl
     ///     constant value is false.
     ///   @include example_is_nothrow_default_constructible_overview.hpp
     ///
-    ///   SUPPRESSION: PRQA 0605 - false positive
-    ///   - We suppress this because A1-1-1 is compliance with C++, which
-    ///     is an issue with Perforce's implementation of
-    ///     __is_nothrow_constructible() which is only used during analysis.
-    ///
     /// <!-- template parameters -->
     ///   @tparam T the type to query
     ///
     template<typename T>
     class is_nothrow_default_constructible final :    // --
-        public bool_constant<__is_nothrow_constructible(T)>    // PRQA S 0605
+        public bool_constant<__is_nothrow_constructible(T)>
     {};
 }
 

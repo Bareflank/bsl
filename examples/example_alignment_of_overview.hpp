@@ -34,8 +34,11 @@ namespace bsl
     inline void
     example_alignment_of_overview() noexcept
     {
-        if (bsl::alignment_of<bsl::int32>::value == alignof(bsl::int32)) {
+        if constexpr (bsl::alignment_of<bsl::int32>::value == alignof(bsl::int32)) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

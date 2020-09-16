@@ -50,6 +50,12 @@ namespace bsl
     {};
 
     /// @brief a helper that reduces the verbosity of bsl::invoke_result
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam FUNC the type that defines the function being called
+    ///   @tparam TN the types that define the arguments passed to the
+    ///     provided function when called.
+    ///
     template<typename FUNC, typename... TN>
     using invoke_result_t = typename invoke_result<FUNC, TN...>::type;
 }

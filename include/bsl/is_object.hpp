@@ -29,6 +29,7 @@
 #define BSL_IS_OBJECT_HPP
 
 #include "bool_constant.hpp"
+#include "disjunction.hpp"
 #include "is_array.hpp"
 #include "is_class.hpp"
 #include "is_scalar.hpp"
@@ -49,11 +50,8 @@ namespace bsl
     ///
     template<typename T>
     class is_object final :
-        public bool_constant<         // --
-            is_scalar<T>::value ||    // --
-            is_array<T>::value ||     // --
-            is_union<T>::value ||     // --
-            is_class<T>::value>
+        public bool_constant<
+            disjunction<is_scalar<T>, is_array<T>, is_union<T>, is_class<T>>::value>
     {};
 }
 

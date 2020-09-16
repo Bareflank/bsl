@@ -25,6 +25,7 @@
 #ifndef BSL_DETAILS_ARGUMENTS_IMPL_HPP
 #define BSL_DETAILS_ARGUMENTS_IMPL_HPP
 
+#include "../always_false.hpp"
 #include "../convert.hpp"
 #include "../cstdint.hpp"
 #include "../cstr_type.hpp"
@@ -33,268 +34,279 @@
 #include "../safe_integral.hpp"
 #include "../span.hpp"
 #include "../string_view.hpp"
+#include "../touch.hpp"
 
-namespace bsl
+namespace bsl::details
 {
-    namespace details
+    /** @brief defines the default base for getting an argument */
+    constexpr bsl::safe_int32 ARGUMENTS_DEFAULT_BASE{10};
+
+    /// @class bsl::details::arguments_impl
+    ///
+    /// <!-- description -->
+    ///   @brief Provides the base implementation for the bsl::arguments
+    ///     get() function. This specific version handles the case when
+    ///     the provided type is not supported.
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to get from the provided command line
+    ///     arguments.
+    ///   @tparam B the base of the number to get. This defaults to 10
+    ///     and is ignored for all types except bsl::safe_integral types.
+    ///
+    template<typename T, bsl::int32 B = ARGUMENTS_DEFAULT_BASE.get()>
+    class arguments_impl final
     {
-        /// @class bsl::details::arguments_impl
-        ///
+        static_assert(always_false<T>(), "unsupported type provided to bsl::arguments");
+    };
+
+    /// @class bsl::details::arguments_impl
+    ///
+    /// <!-- description -->
+    ///   @brief Provides the base implementation for the bsl::arguments
+    ///     get() function. This specific version handles the
+    ///     bsl::string_view case.
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam B the base of the number to get. This defaults to 10
+    ///     and is ignored for all types except bsl::safe_integral types.
+    ///
+    template<bsl::int32 B>
+    class arguments_impl<string_view, B> final
+    {
+    public:
         /// <!-- description -->
-        ///   @brief Provides the base implementation for the bsl::arguments
-        ///     get() function. This specific version handles the case when
-        ///     the provided type is not supported.
+        ///   @brief Returns the requested positional argument as a
+        ///     bsl::string_view. If the provided "pos" is invalid,
+        ///     this function will return an empty bsl::string_view.
         ///
-        /// <!-- template parameters -->
-        ///   @tparam T the type to get from the provided command line
-        ///     arguments.
-        ///   @tparam B the base of the number to get. This defaults to 10
-        ///     and is ignored for all types except bsl::safe_integral types.
+        /// <!-- inputs/outputs -->
+        ///   @param args the list of arguments to get the argument from
+        ///   @param pos the position of the positional argument to get.
+        ///   @return Returns the requested positional argument as a
+        ///     bsl::string_view. If the provided "pos" is invalid,
+        ///     this function will return an empty bsl::string_view.
         ///
-        template<typename T, bsl::int32 B = 10>
-        class arguments_impl final
+        [[nodiscard]] static constexpr auto
+        get(span<cstr_type const> const &args, safe_uintmax const &pos) noexcept -> string_view
         {
-            static_assert(
-                sizeof(T) != sizeof(T),    // NOLINT
-                "unsupported type provided to bsl::arguments");
-        };
-
-        /// @class bsl::details::arguments_impl
-        ///
-        /// <!-- description -->
-        ///   @brief Provides the base implementation for the bsl::arguments
-        ///     get() function. This specific version handles the
-        ///     bsl::string_view case.
-        ///
-        /// <!-- template parameters -->
-        ///   @tparam B the base of the number to get. This defaults to 10
-        ///     and is ignored for all types except bsl::safe_integral types.
-        ///
-        template<bsl::int32 B>
-        class arguments_impl<string_view, B> final
-        {
-        public:
-            /// <!-- description -->
-            ///   @brief Returns the requested positional argument as a
-            ///     bsl::string_view. If the provided "pos" is invalid,
-            ///     this function will return an empty bsl::string_view.
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param pos the position of the positional argument to get.
-            ///   @return Returns the requested positional argument as a
-            ///     bsl::string_view. If the provided "pos" is invalid,
-            ///     this function will return an empty bsl::string_view.
-            ///
-            [[nodiscard]] static constexpr string_view
-            get(span<cstr_type const> const &args, safe_uintmax const &pos) noexcept
-            {
-                if (!pos) {
-                    bsl::error() << "invalid positional argument index: " << pos << bsl::endl;
-                    return {};
-                }
-
-                safe_uintmax idx{};
-                for (safe_uintmax i{}; i < args.size(); ++i) {
-                    string_view const arg{*args.at_if(i)};
-
-                    if (arg.starts_with('-')) {
-                        continue;
-                    }
-
-                    if (idx < pos) {
-                        ++idx;
-                        continue;
-                    }
-
-                    return arg;
-                }
-
+            if (!pos) {
+                bsl::error() << "invalid positional argument index: " << pos << bsl::endl;
                 return {};
             }
 
-            /// <!-- description -->
-            ///   @brief Returns the requested optional argument as a
-            ///     bsl::string_view. If the provided "opt" is invalid,
-            ///     this function will return an empty bsl::string_view.
-            ///     Note that arguments are processed in reverse order,
-            ///     providing the ability to override arguments on the
-            ///     command line.
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param opt the optional argument to get.
-            ///   @return Returns the requested optional argument as a
-            ///     bsl::string_view. If the provided "opt" is invalid,
-            ///     this function will return an empty bsl::string_view
-            ///
-            [[nodiscard]] static constexpr string_view
-            get(span<cstr_type const> const &args, string_view const &opt) noexcept
-            {
-                if (opt.empty()) {
-                    bsl::error() << "cannot request an empty optional argument\n";
-                    return {};
+            safe_uintmax idx{};
+            for (safe_uintmax i{}; i < args.size(); ++i) {
+                string_view const arg{*args.at_if(i)};
+
+                if (arg.starts_with('-')) {
+                    continue;
                 }
 
-                for (safe_uintmax i{args.size()}; i.is_pos(); --i) {
-                    string_view arg{*args.at_if(i - safe_uintmax::one())};
-
-                    if (!arg.starts_with(opt)) {
-                        continue;
-                    }
-
-                    arg.remove_prefix(opt.length());
-
-                    if (!arg.starts_with('=')) {
-                        continue;
-                    }
-
-                    arg.remove_prefix(safe_uintmax::one());
-                    return arg;
+                if (idx < pos) {
+                    ++idx;
+                    continue;
                 }
 
+                return arg;
+            }
+
+            return {};
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns the requested optional argument as a
+        ///     bsl::string_view. If the provided "opt" is invalid,
+        ///     this function will return an empty bsl::string_view.
+        ///     Note that arguments are processed in reverse order,
+        ///     providing the ability to override arguments on the
+        ///     command line.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param args the list of arguments to get the argument from
+        ///   @param opt the optional argument to get.
+        ///   @return Returns the requested optional argument as a
+        ///     bsl::string_view. If the provided "opt" is invalid,
+        ///     this function will return an empty bsl::string_view
+        ///
+        [[nodiscard]] static constexpr auto
+        get(span<cstr_type const> const &args, string_view const &opt) noexcept -> string_view
+        {
+            if (opt.empty()) {
+                bsl::error() << "cannot request an empty optional argument\n";
                 return {};
             }
-        };
 
-        /// @class bsl::details::arguments_impl
-        ///
+            for (safe_uintmax i{args.size()}; i.is_pos(); --i) {
+                string_view arg{*args.at_if(i - safe_uintmax::one())};
+
+                if (!arg.starts_with(opt)) {
+                    continue;
+                }
+
+                arg.remove_prefix(opt.length());
+
+                if (!arg.starts_with('=')) {
+                    continue;
+                }
+
+                arg.remove_prefix(safe_uintmax::one());
+                return arg;
+            }
+
+            return {};
+        }
+    };
+
+    /// @class bsl::details::arguments_impl
+    ///
+    /// <!-- description -->
+    ///   @brief Provides the base implementation for the bsl::arguments
+    ///     get() function. This specific version handles the bool case.
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam B the base of the number to get. This defaults to 10
+    ///     and is ignored for all types except bsl::safe_integral types.
+    ///
+    template<bsl::int32 B>
+    class arguments_impl<bool, B> final
+    {
+    public:
         /// <!-- description -->
-        ///   @brief Provides the base implementation for the bsl::arguments
-        ///     get() function. This specific version handles the bool case.
+        ///   @brief Returns the requested positional argument as a
+        ///     bsl::safe_int8. If the provided "pos" is invalid,
+        ///     this function will return an invalid bsl::safe_int8.
         ///
-        /// <!-- template parameters -->
-        ///   @tparam B the base of the number to get. This defaults to 10
-        ///     and is ignored for all types except bsl::safe_integral types.
+        /// <!-- inputs/outputs -->
+        ///   @param args the list of arguments to get the argument from
+        ///   @param pos the position of the positional argument to get.
+        ///   @return Returns the requested positional argument as a
+        ///     bsl::safe_int8. If the provided "pos" is invalid,
+        ///     this function will return an invalid bsl::safe_int8.
         ///
-        template<bsl::int32 B>
-        class arguments_impl<bool, B> final
+        [[nodiscard]] static constexpr auto
+        get(span<cstr_type const> const &args, safe_uintmax const &pos) noexcept -> bool
         {
-        public:
-            /// <!-- description -->
-            ///   @brief Returns the requested positional argument as a
-            ///     bsl::safe_int8. If the provided "pos" is invalid,
-            ///     this function will return an invalid bsl::safe_int8.
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param pos the position of the positional argument to get.
-            ///   @return Returns the requested positional argument as a
-            ///     bsl::safe_int8. If the provided "pos" is invalid,
-            ///     this function will return an invalid bsl::safe_int8.
-            ///
-            [[nodiscard]] static constexpr bool
-            get(span<cstr_type const> const &args, safe_uintmax const &pos) noexcept
-            {
-                string_view const arg{arguments_impl<string_view, B>::get(args, pos)};
+            string_view const arg{arguments_impl<string_view, B>::get(args, pos)};
 
-                if (arg == "true") {
+            if (arg == "true") {
+                return true;
+            }
+
+            safe_int32 val{};
+            if (from_chars(arg, val) != arg.length()) {
+                return false;
+            }
+
+            if (!val) {
+                return false;
+            }
+
+            return !val.is_zero();
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns true if the requested optional argument
+        ///     is present. Returns false otherwise.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param args the list of arguments to get the argument from
+        ///   @param opt the optional argument to get.
+        ///   @return Returns true if the requested optional argument
+        ///     is present. Returns false otherwise.
+        ///
+        [[nodiscard]] static constexpr auto
+        get(span<cstr_type const> const &args, string_view const &opt) noexcept -> bool
+        {
+            if (opt.empty()) {
+                bsl::error() << "cannot request an empty optional argument\n";
+                return false;
+            }
+
+            for (safe_uintmax i{}; i < args.size(); ++i) {
+                string_view const arg{*args.at_if(i)};
+
+                if (arg == opt) {
                     return true;
                 }
 
-                safe_int32 val{};
-                if (from_chars(arg, val) != arg.length()) {
-                    return false;
-                }
-
-                return (!!val) && (!val.is_zero());
+                bsl::touch();
             }
 
-            /// <!-- description -->
-            ///   @brief Returns true if the requested optional argument
-            ///     is present. Returns false otherwise.
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param opt the optional argument to get.
-            ///   @return Returns true if the requested optional argument
-            ///     is present. Returns false otherwise.
-            ///
-            [[nodiscard]] static constexpr bool
-            get(span<cstr_type const> const &args, string_view const &opt) noexcept
-            {
-                if (opt.empty()) {
-                    bsl::error() << "cannot request an empty optional argument\n";
-                    return false;
-                }
+            return false;
+        }
+    };
 
-                for (safe_uintmax i{}; i < args.size(); ++i) {
-                    string_view const arg{*args.at_if(i)};
-
-                    if (arg == opt) {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        };
-
-        /// @class bsl::details::arguments_impl
-        ///
+    /// @class bsl::details::arguments_impl
+    ///
+    /// <!-- description -->
+    ///   @brief Provides the base implementation for the bsl::arguments
+    ///     get() function. This specific version handles the
+    ///     bsl::safe_integral case.
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type of bsl::safe_integral to get from the
+    ///     provided command line arguments.
+    ///   @tparam B the base of the number to get. This defaults to 10
+    ///     and is ignored for all types except bsl::safe_integral types.
+    ///
+    template<typename T, bsl::int32 B>
+    class arguments_impl<safe_integral<T>, B> final
+    {
+    public:
         /// <!-- description -->
-        ///   @brief Provides the base implementation for the bsl::arguments
-        ///     get() function. This specific version handles the
-        ///     bsl::safe_integral case.
+        ///   @brief Returns the requested positional argument as a
+        ///     bsl::safe_int8. If the provided "pos" is invalid,
+        ///     this function will return an invalid bsl::safe_int8.
         ///
-        /// <!-- template parameters -->
-        ///   @tparam T the type of bsl::safe_integral to get from the
-        ///     provided command line arguments.
-        ///   @tparam B the base of the number to get. This defaults to 10
-        ///     and is ignored for all types except bsl::safe_integral types.
+        /// <!-- inputs/outputs -->
+        ///   @param args the list of arguments to get the argument from
+        ///   @param pos the position of the positional argument to get.
+        ///   @return Returns the requested positional argument as a
+        ///     bsl::safe_int8. If the provided "pos" is invalid,
+        ///     this function will return an invalid bsl::safe_int8.
         ///
-        template<typename T, bsl::int32 B>
-        class arguments_impl<safe_integral<T>, B> final
+        [[nodiscard]] static constexpr auto
+        get(span<cstr_type const> const &args, safe_uintmax const &pos) noexcept -> safe_integral<T>
         {
-        public:
-            /// <!-- description -->
-            ///   @brief Returns the requested positional argument as a
-            ///     bsl::safe_int8. If the provided "pos" is invalid,
-            ///     this function will return an invalid bsl::safe_int8.
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param pos the position of the positional argument to get.
-            ///   @return Returns the requested positional argument as a
-            ///     bsl::safe_int8. If the provided "pos" is invalid,
-            ///     this function will return an invalid bsl::safe_int8.
-            ///
-            [[nodiscard]] static constexpr safe_integral<T>
-            get(span<cstr_type const> const &args, safe_uintmax const &pos) noexcept
-            {
-                safe_integral<T> val{};
-                string_view const arg{arguments_impl<string_view, B>::get(args, pos)};
+            safe_integral<T> val{};
+            string_view const arg{arguments_impl<string_view, B>::get(args, pos)};
 
-                if (from_chars(arg, val, to_i32(B)) != arg.length()) {
-                    return safe_integral<T>::zero(true);
-                }
-
-                return val;
+            if (from_chars(arg, val, to_i32(B)) != arg.length()) {
+                return safe_integral<T>::zero(true);
             }
 
-            /// <!-- description -->
-            ///   @brief Returns the requested optional argument as a
-            ///     bsl::safe_int64. If the provided "opt" is invalid,
-            ///     this function will return an invalid bsl::safe_int64.
-            ///     Note that arguments are processed in reverse order,
-            ///     providing the ability to override arguments on the
-            ///     command line..
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param opt the optional argument to get.
-            ///   @return Returns the requested optional argument as a
-            ///     bsl::safe_int64. If the provided "opt" is invalid,
-            ///     this function will return an invalid bsl::safe_int64
-            ///
-            [[nodiscard]] static constexpr safe_integral<T>
-            get(span<cstr_type const> const &args, string_view const &opt) noexcept
-            {
-                safe_integral<T> val{};
-                string_view const arg{arguments_impl<string_view, B>::get(args, opt)};
+            return val;
+        }
 
-                if (from_chars(arg, val, to_i32(B)) != arg.length()) {
-                    return safe_integral<T>::zero(true);
-                }
+        /// <!-- description -->
+        ///   @brief Returns the requested optional argument as a
+        ///     bsl::safe_int64. If the provided "opt" is invalid,
+        ///     this function will return an invalid bsl::safe_int64.
+        ///     Note that arguments are processed in reverse order,
+        ///     providing the ability to override arguments on the
+        ///     command line..
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param args the list of arguments to get the argument from
+        ///   @param opt the optional argument to get.
+        ///   @return Returns the requested optional argument as a
+        ///     bsl::safe_int64. If the provided "opt" is invalid,
+        ///     this function will return an invalid bsl::safe_int64
+        ///
+        [[nodiscard]] static constexpr auto
+        get(span<cstr_type const> const &args, string_view const &opt) noexcept -> safe_integral<T>
+        {
+            safe_integral<T> val{};
+            string_view const arg{arguments_impl<string_view, B>::get(args, opt)};
 
-                return val;
+            if (from_chars(arg, val, to_i32(B)) != arg.length()) {
+                return safe_integral<T>::zero(true);
             }
-        };
-    }
+
+            return val;
+        }
+    };
 }
 
 #endif

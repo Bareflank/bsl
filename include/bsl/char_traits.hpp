@@ -32,6 +32,7 @@
 #include "convert.hpp"
 #include "cstring.hpp"
 #include "safe_integral.hpp"
+#include "touch.hpp"
 
 namespace bsl
 {
@@ -45,9 +46,9 @@ namespace bsl
     ///     error if you attempt to use it.
     ///
     /// <!-- template parameters -->
-    ///   @tparam CharT the character type that is not supported
+    ///   @tparam CHAR_T the character type that is not supported
     ///
-    template<typename CharT>
+    template<typename CHAR_T>
     class char_traits final
     {};
 
@@ -80,8 +81,8 @@ namespace bsl
         ///   @param b the right hand side of the query
         ///   @return Returns true if "a" == "b"
         ///
-        [[nodiscard]] static constexpr bool
-        eq(char_type const a, char_type const b) noexcept
+        [[nodiscard]] static constexpr auto
+        eq(char_type const a, char_type const b) noexcept -> bool
         {
             return a == b;
         }
@@ -95,8 +96,8 @@ namespace bsl
         ///   @param b the right hand side of the query
         ///   @return Returns true if "a" < "b"
         ///
-        [[nodiscard]] static constexpr bool
-        lt(char_type const a, char_type const b) noexcept
+        [[nodiscard]] static constexpr auto
+        lt(char_type const a, char_type const b) noexcept -> bool
         {
             return a < b;
         }
@@ -122,11 +123,11 @@ namespace bsl
         ///     if s1 or s2 are nullptr, or if count is zero. Positive value
         ///     if s1 appears after s2 in lexicographical order.
         ///
-        [[nodiscard]] static constexpr safe_int32
+        [[nodiscard]] static constexpr auto
         compare(                          // --
             char_type const *const s1,    // --
             char_type const *const s2,    // --
-            safe_uintmax const &count) noexcept
+            safe_uintmax const &count) noexcept -> safe_int32
         {
             return to_i32(bsl::builtin_strncmp(s1, s2, count));
         }
@@ -143,8 +144,8 @@ namespace bsl
         ///   @param s the string to get the length of
         ///   @return Returns the length of the provided string.
         ///
-        [[nodiscard]] static constexpr safe_uintmax
-        length(char_type const *const s) noexcept
+        [[nodiscard]] static constexpr auto
+        length(char_type const *const s) noexcept -> safe_uintmax
         {
             return bsl::builtin_strlen(s);
         }
@@ -164,8 +165,9 @@ namespace bsl
         ///   @param ch the character to search for.
         ///   @return Returns a pointer to the first occurrence of "ch" in "p".
         ///
-        [[nodiscard]] static constexpr char_type const *
+        [[nodiscard]] static constexpr auto
         find(char_type const *const p, safe_uintmax const &count, char_type const &ch) noexcept
+            -> char_type const *
         {
             return bsl::builtin_strnchr(p, ch, count);
         }
@@ -180,8 +182,8 @@ namespace bsl
         ///   @param c the character to convert
         ///   @return c
         ///
-        [[nodiscard]] static constexpr char_type
-        to_char_type(bsl::intmax const c) noexcept
+        [[nodiscard]] static constexpr auto
+        to_char_type(bsl::intmax const c) noexcept -> char_type
         {
             return static_cast<char_type>(c);
         }
@@ -194,8 +196,8 @@ namespace bsl
         ///   @param c the character to convert
         ///   @return c
         ///
-        [[nodiscard]] static constexpr bsl::intmax
-        to_int_type(char_type const c) noexcept
+        [[nodiscard]] static constexpr auto
+        to_int_type(char_type const c) noexcept -> bsl::intmax
         {
             return static_cast<bsl::intmax>(c);
         }
@@ -211,11 +213,18 @@ namespace bsl
         ///     Returns true if c1 and c2 are both EOF. Returns false
         ///     otherwise.
         ///
-        [[nodiscard]] static constexpr bool
-        eq_int_type(bsl::intmax const c1, bsl::intmax const c2) noexcept
+        [[nodiscard]] static constexpr auto
+        eq_int_type(bsl::intmax const c1, bsl::intmax const c2) noexcept -> bool
         {
-            if ((eof() == c1) && (eof() == c2)) {
-                return true;
+            if (eof() == c1) {
+                if (eof() == c2) {
+                    return true;
+                }
+
+                bsl::touch();
+            }
+            else {
+                bsl::touch();
             }
 
             return eq(to_char_type(c1), to_char_type(c2));
@@ -228,10 +237,10 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the value of EOF
         ///
-        [[nodiscard]] static constexpr bsl::intmax
-        eof() noexcept
+        [[nodiscard]] static constexpr auto
+        eof() noexcept -> bsl::intmax
         {
-            constexpr bsl::intmax value_of_eof{-1};
+            constexpr bsl::intmax value_of_eof{static_cast<bsl::intmax>(-1)};
             return value_of_eof;
         }
 
@@ -243,14 +252,14 @@ namespace bsl
         ///   @param e the character to query
         ///   @return Returns e if e is not EOF, otherwise returns 0.
         ///
-        [[nodiscard]] static constexpr bsl::intmax
-        not_eof(bsl::intmax const e) noexcept
+        [[nodiscard]] static constexpr auto
+        not_eof(bsl::intmax const e) noexcept -> bsl::intmax
         {
             if (!eq_int_type(e, eof())) {
                 return e;
             }
 
-            return 0;
+            return static_cast<bsl::intmax>(0);
         }
     };
 }

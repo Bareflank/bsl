@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_discard_overview() noexcept
     {
-        bool val{};
+        constexpr bool val{};
         bsl::discard(val);
 
         bsl::print() << "success\n";

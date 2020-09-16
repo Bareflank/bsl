@@ -23,7 +23,9 @@
 /// SOFTWARE.
 
 #include <bsl/integer_sequence.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
+#include <bsl/safe_integral.hpp>
 
 namespace bsl
 {
@@ -31,22 +33,25 @@ namespace bsl
     ///   @brief Provides the example's main function
     ///
     inline void
-    example_integer_sequence_overview() noexcept
+    example_integer_sequence() noexcept
     {
-        constexpr bsl::uintmax size{6};
-        constexpr bsl::uintmax max{5};
-        constexpr bsl::uintmax min{0};
+        // clang-format off
 
-        if (bsl::make_index_sequence<6>::size() == size) {
+        constexpr bsl::safe_int32 val1{4};
+        constexpr bsl::safe_int32 val2{8};
+
+        if constexpr (bsl::integer_sequence<bsl::int32, val1.get(), val2.get()>::min() == val1.get()) {
             bsl::print() << "success\n";
         }
-
-        if (bsl::make_index_sequence<6>::max() == max) {
-            bsl::print() << "success\n";
+        else {
+            bsl::error() << "failure\n";
         }
 
-        if (bsl::make_index_sequence<6>::min() == min) {
+        if constexpr (bsl::integer_sequence<bsl::int32, val1.get(), val2.get()>::max() == val2.get()) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

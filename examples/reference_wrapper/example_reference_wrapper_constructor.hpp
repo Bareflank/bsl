@@ -42,5 +42,8 @@ namespace bsl
         if (expected == data) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
     }
 }

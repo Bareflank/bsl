@@ -28,6 +28,8 @@
 #ifndef BSL_REMOVE_CV_HPP
 #define BSL_REMOVE_CV_HPP
 
+#include "always_false.hpp"
+
 namespace bsl
 {
     /// @class bsl::remove_cv
@@ -36,14 +38,6 @@ namespace bsl
     ///   @brief Provides the member typedef type which is the same as T,
     ///     except that its topmost const and volatile qualifiers are removed.
     ///   @include example_remove_cv_overview.hpp
-    ///
-    ///   SUPPRESSION: PRQA 5219 - false positive
-    ///   - We suppress this because A2-11-1 states that the volatile keyword
-    ///     cannot be used. The volatile keyword is required to implement the
-    ///     remove_cv type trait, and more importantly, if you use this
-    ///     keyword the code will not actually compile, meaning PRQA is
-    ///     detecting the use of the volatile keyword without first detecting
-    ///     if it is actually being used, only that it is present in the file.
     ///
     /// <!-- notes -->
     ///   @note "volatile" is not supported by the BSL as it is not compliant
@@ -62,6 +56,10 @@ namespace bsl
     };
 
     /// @brief a helper that reduces the verbosity of bsl::remove_cv
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to remove the const and volatile qualifiers from
+    ///
     template<typename T>
     using remove_cv_t = typename remove_cv<T>::type;
 
@@ -75,18 +73,18 @@ namespace bsl
     };
 
     template<typename T>
-    struct remove_cv<T volatile> final    // PRQA S 5219
+    struct remove_cv<T volatile> final
     {
-        static_assert(sizeof(T) != sizeof(T), "volatile not supported");    // NOLINT
+        static_assert(always_false<T>(), "volatile not supported");
 
         /// @brief provides the member typedef "type"
         using type = T;
     };
 
     template<typename T>
-    struct remove_cv<T const volatile> final    // PRQA S 5219
+    struct remove_cv<T const volatile> final
     {
-        static_assert(sizeof(T) != sizeof(T), "volatile not supported");    // NOLINT
+        static_assert(always_false<T>(), "volatile not supported");
 
         /// @brief provides the member typedef "type"
         using type = T;

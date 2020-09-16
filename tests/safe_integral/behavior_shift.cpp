@@ -25,107 +25,110 @@
 #include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
 
-/// <!-- description -->
-///   @brief Used to execute the actual checks. We put the checks in this
-///     function so that we can validate the tests both at compile-time
-///     and at run-time. If a bsl::ut_check fails, the tests will either
-///     fail fast at run-time, or will produce a compile-time error.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-constexpr bsl::exit_code
-tests() noexcept
+namespace
 {
-    bsl::ut_scenario{"left shift assign"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_uint32 val{42U};
-            bsl::ut_when{} = [&val]() {
-                val <<= 1U;
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(val == 42U * 2U);
+    /// <!-- description -->
+    ///   @brief Used to execute the actual checks. We put the checks in this
+    ///     function so that we can validate the tests both at compile-time
+    ///     and at run-time. If a bsl::ut_check fails, the tests will either
+    ///     fail fast at run-time, or will produce a compile-time error.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @return Always returns bsl::exit_success.
+    ///
+    [[nodiscard]] constexpr auto
+    tests() noexcept -> bsl::exit_code
+    {
+        bsl::ut_scenario{"left shift assign"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val{42U};
+                bsl::ut_when{} = [&val]() {
+                    val <<= 1U;
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check(val == 42U * 2U);
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val{42U, true};
+                bsl::ut_when{} = [&val]() {
+                    val <<= 1U;
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check(val.failure());
+                    };
                 };
             };
         };
 
-        bsl::ut_given{} = []() {
-            bsl::safe_uint32 val{42U, true};
-            bsl::ut_when{} = [&val]() {
-                val <<= 1U;
+        bsl::ut_scenario{"left shift"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val{42U};
                 bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(val.failure());
+                    bsl::ut_check((val << 1U) == 42U * 2U);
                 };
             };
-        };
-    };
 
-    bsl::ut_scenario{"left shift"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_uint32 val{42U};
-            bsl::ut_then{} = [&val]() {
-                bsl::ut_check((val << 1U) == 42U * 2U);
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            bsl::safe_uint32 val{42U, true};
-            bsl::ut_then{} = [&val]() {
-                bsl::ut_check((val << 1U).failure());
-            };
-        };
-    };
-
-    bsl::ut_scenario{"right shift assign"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_uint32 val{42U};
-            bsl::ut_when{} = [&val]() {
-                val >>= 1U;
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val{42U, true};
                 bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(val == 42U / 2U);
+                    bsl::ut_check((val << 1U).failure());
                 };
             };
         };
 
-        bsl::ut_given{} = []() {
-            bsl::safe_uint32 val{42U, true};
-            bsl::ut_when{} = [&val]() {
-                val >>= 1U;
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(val.failure());
+        bsl::ut_scenario{"right shift assign"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val{42U};
+                bsl::ut_when{} = [&val]() {
+                    val >>= 1U;
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check(val == 42U / 2U);
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val{42U, true};
+                bsl::ut_when{} = [&val]() {
+                    val >>= 1U;
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check(val.failure());
+                    };
                 };
             };
         };
-    };
 
-    bsl::ut_scenario{"right shift"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_uint32 val{42U};
-            bsl::ut_then{} = [&val]() {
-                bsl::ut_check((val >> 1U) == 42U / 2U);
+        bsl::ut_scenario{"right shift"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val{42U};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check((val >> 1U) == 42U / 2U);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val{42U, true};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check((val >> 1U).failure());
+                };
             };
         };
 
-        bsl::ut_given{} = []() {
-            bsl::safe_uint32 val{42U, true};
-            bsl::ut_then{} = [&val]() {
-                bsl::ut_check((val >> 1U).failure());
-            };
-        };
-    };
-
-    return bsl::ut_success();
+        return bsl::ut_success();
+    }
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     static_assert(tests() == bsl::ut_success());
     return tests();

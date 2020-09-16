@@ -42,14 +42,17 @@
 ///   @param ptr the ptr to return
 ///   @return returns ptr
 ///
-constexpr void *
-operator new(bsl::uintmax count, void *ptr) noexcept    // PRQA S 1-10000
+[[maybe_unused]] constexpr auto
+operator new(bsl::uintmax count, void *ptr) noexcept -> void *
 {
     bsl::discard(count);
     return ptr;
 }
 
-namespace std    // NOLINT
+// Currently, the new operator is only allowed in a constexpr if the constexpr
+// originates from the std namespace, which is why this is needed.
+// NOLINTNEXTLINE(cert-dcl58-cpp)
+namespace std
 {
     /// <!-- description -->
     ///   @brief Implements a constexpr version of placement new. that can
@@ -69,21 +72,21 @@ namespace std    // NOLINT
     ///   @tparam T the type of object to initialize
     ///   @tparam ARGS the types of args to initialize T with
     ///   @param ptr a pointer to the object to initialize
-    ///   @param args the args to initialize T with
+    ///   @param a the args to initialize T with
     ///
     /// <!-- exceptions -->
     ///   @throw throws if T throws during construction
     ///
     template<typename T, typename... ARGS>
     constexpr void
-    construct_at_impl(void *const ptr, ARGS &&... args)    // --
+    construct_at_impl(void *const ptr, ARGS &&... a)    // --
         noexcept(noexcept(new (ptr) T{bsl::declval<ARGS>()...}))
     {
         if (nullptr == ptr) {
             return;
         }
 
-        bsl::discard(new (ptr) T{bsl::forward<ARGS>(args)...});    // NOLINT // PRQA S 1-10000
+        bsl::discard(new (ptr) T{bsl::forward<ARGS>(a)...});
     }
 }
 
@@ -97,23 +100,17 @@ namespace bsl
     ///   @tparam T the type of object to initialize
     ///   @tparam ARGS the types of args to initialize T with
     ///   @param ptr a pointer to the object to initialize
-    ///   @param args the args to initialize T with
+    ///   @param a the args to initialize T with
     ///
     /// <!-- exceptions -->
     ///   @throw throws if T throws during construction
     ///
     template<typename T, typename... ARGS>
     constexpr void
-    construct_at(void *const ptr, ARGS &&... args)    // --
+    construct_at(void *const ptr, ARGS &&... a)    // --
         noexcept(noexcept(std::construct_at_impl<T, ARGS...>(ptr, bsl::declval<ARGS>()...)))
     {
-        if constexpr (BSL_PERFORCE) {
-            bsl::discard(ptr);
-            bsl::discard(bsl::forward<ARGS>(args)...);
-        }
-        else {
-            std::construct_at_impl<T, ARGS...>(ptr, bsl::forward<ARGS>(args)...);
-        }
+        std::construct_at_impl<T, ARGS...>(ptr, bsl::forward<ARGS>(a)...);
     }
 }
 

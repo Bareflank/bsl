@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_is_same_signedness_overview() noexcept
     {
-        if (bsl::is_same_signedness<bsl::int32, bsl::int64>::value) {
+        if constexpr (bsl::is_same_signedness<bsl::int32, bsl::int64>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

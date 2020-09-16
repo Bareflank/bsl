@@ -35,8 +35,11 @@ namespace bsl
     inline void
     example_is_member_pointer_overview() noexcept
     {
-        if (bsl::is_member_pointer<bool (example_class_subclass::*)()>::value) {
+        if constexpr (bsl::is_member_pointer<bool (example_class_subclass::*)()>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

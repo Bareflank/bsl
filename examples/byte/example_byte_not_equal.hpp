@@ -33,14 +33,17 @@ namespace bsl
     inline void
     example_byte_not_equal() noexcept
     {
-        constexpr bsl::uint8 val1{0x10U};
-        constexpr bsl::uint8 val2{0x11U};
+        constexpr bsl::safe_uint8 val1{bsl::to_u8(0x10)};
+        constexpr bsl::safe_uint8 val2{bsl::to_u8(0x11)};
 
-        bsl::byte const b1{val1};
-        bsl::byte const b2{val2};
+        constexpr bsl::byte b1{val1};
+        constexpr bsl::byte b2{val2};
 
-        if (b1 != b2) {
+        if constexpr (b1 != b2) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

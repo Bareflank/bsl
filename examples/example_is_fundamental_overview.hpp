@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_is_fundamental_overview() noexcept
     {
-        if (bsl::is_fundamental<bool>::value) {
+        if constexpr (bsl::is_fundamental<bool>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

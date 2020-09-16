@@ -28,9 +28,13 @@
 #ifndef BSL_CONTIGUOUS_ITERATOR_HPP
 #define BSL_CONTIGUOUS_ITERATOR_HPP
 
+#include "details/out.hpp"
+
+#include "contiguous_iterator_element.hpp"
 #include "convert.hpp"
 #include "debug.hpp"
 #include "safe_integral.hpp"
+#include "touch.hpp"
 
 namespace bsl
 {
@@ -111,16 +115,35 @@ namespace bsl
             size_type const &i) noexcept
             : m_ptr{ptr}, m_count{count}, m_i{i}
         {
-            if ((nullptr == m_ptr) || m_count.is_zero()) {
+            if (nullptr == m_ptr) {
                 bsl::alert() << "contiguous_iterator: invalid constructor args\n";
                 bsl::alert() << "  - ptr: " << static_cast<void const *>(ptr) << bsl::endl;
                 bsl::alert() << "  - count: " << count << bsl::endl;
                 bsl::alert() << "  - i: " << i << bsl::endl;
 
                 *this = contiguous_iterator{};
+                return;
             }
 
-            if ((!i) || (i > count)) {
+            if (count.is_zero()) {
+                bsl::alert() << "contiguous_iterator: invalid constructor args\n";
+                bsl::alert() << "  - ptr: " << static_cast<void const *>(ptr) << bsl::endl;
+                bsl::alert() << "  - count: " << count << bsl::endl;
+                bsl::alert() << "  - i: " << i << bsl::endl;
+
+                *this = contiguous_iterator{};
+                return;
+            }
+
+            if (!i) {
+                bsl::alert() << "contiguous_iterator: invalid constructor args\n";
+                bsl::alert() << "  - ptr: " << static_cast<void const *>(ptr) << bsl::endl;
+                bsl::alert() << "  - count: " << count << bsl::endl;
+                bsl::alert() << "  - i: " << i << bsl::endl;
+
+                m_i = count;
+            }
+            else if (i > count) {
                 bsl::alert() << "contiguous_iterator: invalid constructor args\n";
                 bsl::alert() << "  - ptr: " << static_cast<void const *>(ptr) << bsl::endl;
                 bsl::alert() << "  - count: " << count << bsl::endl;
@@ -131,14 +154,55 @@ namespace bsl
         }
 
         /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::contiguous_iterator
+        ///
+        constexpr ~contiguous_iterator() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr contiguous_iterator(contiguous_iterator const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr contiguous_iterator(contiguous_iterator &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(contiguous_iterator const &o) &noexcept
+            -> contiguous_iterator & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(contiguous_iterator &&o) &noexcept
+            -> contiguous_iterator & = default;
+
+        /// <!-- description -->
         ///   @brief Returns a pointer to the array being iterated
         ///   @include contiguous_iterator/example_contiguous_iterator_data.hpp
         ///
         /// <!-- inputs/outputs -->
         ///   @return Returns a pointer to the array being iterated
         ///
-        [[nodiscard]] constexpr pointer_type
-        data() noexcept
+        [[nodiscard]] constexpr auto
+        data() noexcept -> pointer_type
         {
             return m_ptr;
         }
@@ -150,8 +214,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns a pointer to the array being iterated
         ///
-        [[nodiscard]] constexpr const_pointer_type
-        data() const noexcept
+        [[nodiscard]] constexpr auto
+        data() const noexcept -> const_pointer_type
         {
             return m_ptr;
         }
@@ -163,8 +227,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the number of elements in the array being iterated
         ///
-        [[nodiscard]] constexpr size_type const &
-        size() const noexcept
+        [[nodiscard]] constexpr auto
+        size() const noexcept -> size_type const &
         {
             return m_count;
         }
@@ -177,8 +241,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the iterator's current index
         ///
-        [[nodiscard]] constexpr size_type const &
-        index() const noexcept
+        [[nodiscard]] constexpr auto
+        index() const noexcept -> size_type const &
         {
             return m_i;
         }
@@ -190,8 +254,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns nullptr == data()
         ///
-        [[nodiscard]] constexpr bool
-        empty() const noexcept
+        [[nodiscard]] constexpr auto
+        empty() const noexcept -> bool
         {
             return nullptr == this->data();
         }
@@ -215,8 +279,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns index() == size()
         ///
-        [[nodiscard]] constexpr bool
-        is_end() const noexcept
+        [[nodiscard]] constexpr auto
+        is_end() const noexcept -> bool
         {
             return this->index() == this->size();
         }
@@ -227,19 +291,13 @@ namespace bsl
         ///     or the iterator is invalid, this function returns a nullptr.
         ///   @include contiguous_iterator/example_contiguous_iterator_get_if.hpp
         ///
-        ///   SUPPRESSION: PRQA 4024 - false positive
-        ///   - We suppress this because A9-3-1 states that pointer we should
-        ///     not provide a non-const reference or pointer to private
-        ///     member function, unless the class mimics a smart pointer or
-        ///     a containter. This class mimics a container.
-        ///
         /// <!-- inputs/outputs -->
         ///   @return Returns a pointer to the instance of T stored at the
         ///     iterator's current index. If the index is out of bounds,
         ///     or the iterator is invalid, this function returns a nullptr.
         ///
-        [[nodiscard]] constexpr pointer_type
-        get_if() noexcept
+        [[nodiscard]] constexpr auto
+        get_if() noexcept -> pointer_type
         {
             if (nullptr == m_ptr) {
                 bsl::error() << "contiguous_iterator: null iterator\n";
@@ -251,7 +309,7 @@ namespace bsl
                 return nullptr;
             }
 
-            return &m_ptr[m_i.get()];    // PRQA S 4024 // NOLINT
+            return &m_ptr[m_i.get()];
         }
 
         /// <!-- description -->
@@ -260,19 +318,13 @@ namespace bsl
         ///     or the iterator is invalid, this function returns a nullptr.
         ///   @include contiguous_iterator/example_contiguous_iterator_get_if.hpp
         ///
-        ///   SUPPRESSION: PRQA 4024 - false positive
-        ///   - We suppress this because A9-3-1 states that pointer we should
-        ///     not provide a non-const reference or pointer to private
-        ///     member function, unless the class mimics a smart pointer or
-        ///     a containter. This class mimics a container.
-        ///
         /// <!-- inputs/outputs -->
         ///   @return Returns a pointer to the instance of T stored at the
         ///     iterator's current index. If the index is out of bounds,
         ///     or the iterator is invalid, this function returns a nullptr.
         ///
-        [[nodiscard]] constexpr const_pointer_type
-        get_if() const noexcept
+        [[nodiscard]] constexpr auto
+        get_if() const noexcept -> const_pointer_type
         {
             if (nullptr == m_ptr) {
                 bsl::error() << "contiguous_iterator: null iterator\n";
@@ -284,7 +336,33 @@ namespace bsl
                 return nullptr;
             }
 
-            return &m_ptr[m_i.get()];    // PRQA S 4024 // NOLINT
+            return &m_ptr[m_i.get()];
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns contiguous_iterator_element<value_type>{data(), index()};
+        ///   @include contiguous_iterator/example_contiguous_iterator_operator_star.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns contiguous_iterator_element<value_type>{data(), index()};
+        ///
+        [[nodiscard]] constexpr auto
+        operator*() noexcept -> contiguous_iterator_element<value_type>
+        {
+            return {this->data(), this->index()};
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns contiguous_iterator_element<value_type>{data(), index()};
+        ///   @include contiguous_iterator/example_contiguous_iterator_operator_star.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns contiguous_iterator_element<value_type>{data(), index()};
+        ///
+        [[nodiscard]] constexpr auto
+        operator*() const noexcept -> contiguous_iterator_element<value_type const>
+        {
+            return {this->data(), this->index()};
         }
 
         /// <!-- description -->
@@ -294,8 +372,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return returns *this
         ///
-        [[maybe_unused]] constexpr contiguous_iterator &
-        operator++() noexcept
+        [[maybe_unused]] constexpr auto
+        operator++() noexcept -> contiguous_iterator &
         {
             if (nullptr == m_ptr) {
                 bsl::error() << "contiguous_iterator: attempt to inc null iterator\n";
@@ -318,8 +396,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return returns *this
         ///
-        [[maybe_unused]] constexpr contiguous_iterator &
-        operator--() noexcept
+        [[maybe_unused]] constexpr auto
+        operator--() noexcept -> contiguous_iterator &
         {
             if (nullptr == m_ptr) {
                 bsl::error() << "contiguous_iterator: attempt to dec null iterator\n";
@@ -358,10 +436,22 @@ namespace bsl
     ///     the same array and the same index.
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
+    [[nodiscard]] constexpr auto
     operator==(contiguous_iterator<T> const &lhs, contiguous_iterator<T> const &rhs) noexcept
+        -> bool
     {
-        return (lhs.data() == rhs.data()) && (lhs.index() == rhs.index());
+        if (lhs.data() == rhs.data()) {
+            if (lhs.index() == rhs.index()) {
+                return true;
+            }
+
+            bsl::touch();
+        }
+        else {
+            bsl::touch();
+        }
+
+        return false;
     }
 
     /// <!-- description -->
@@ -378,8 +468,9 @@ namespace bsl
     ///     to the same array or the same index.
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
+    [[nodiscard]] constexpr auto
     operator!=(contiguous_iterator<T> const &lhs, contiguous_iterator<T> const &rhs) noexcept
+        -> bool
     {
         return !(lhs == rhs);
     }
@@ -396,28 +487,10 @@ namespace bsl
     ///   @return Returns lhs.index() < rhs.index()
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    operator<(contiguous_iterator<T> const &lhs, contiguous_iterator<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator<(contiguous_iterator<T> const &lhs, contiguous_iterator<T> const &rhs) noexcept -> bool
     {
         return lhs.index() < rhs.index();
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns lhs.index() <= rhs.index()
-    ///   @include contiguous_iterator/example_contiguous_iterator_lt_equals.hpp
-    ///   @related bsl::contiguous_iterator
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the type of element being iterated.
-    ///   @param lhs the left hand side of the operation
-    ///   @param rhs the rhs hand side of the operation
-    ///   @return Returns lhs.index() <= rhs.index()
-    ///
-    template<typename T>
-    [[nodiscard]] constexpr bool
-    operator<=(contiguous_iterator<T> const &lhs, contiguous_iterator<T> const &rhs) noexcept
-    {
-        return lhs.index() <= rhs.index();
     }
 
     /// <!-- description -->
@@ -432,28 +505,10 @@ namespace bsl
     ///   @return Returns lhs.index() > rhs.index()
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    operator>(contiguous_iterator<T> const &lhs, contiguous_iterator<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator>(contiguous_iterator<T> const &lhs, contiguous_iterator<T> const &rhs) noexcept -> bool
     {
         return lhs.index() > rhs.index();
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns lhs.index() >= rhs.index()
-    ///   @include contiguous_iterator/example_contiguous_iterator_gt_equals.hpp
-    ///   @related bsl::contiguous_iterator
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the type of element being iterated.
-    ///   @param lhs the left hand side of the operation
-    ///   @param rhs the rhs hand side of the operation
-    ///   @return Returns lhs.index() >= rhs.index()
-    ///
-    template<typename T>
-    [[nodiscard]] constexpr bool
-    operator>=(contiguous_iterator<T> const &lhs, contiguous_iterator<T> const &rhs) noexcept
-    {
-        return lhs.index() >= rhs.index();
     }
 
     /// <!-- description -->
@@ -470,18 +525,18 @@ namespace bsl
     ///   @return return o
     ///
     template<typename T1, typename T2>
-    [[maybe_unused]] constexpr out<T1>
-    operator<<(out<T1> const o, contiguous_iterator<T2> const &val) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T1> const o, contiguous_iterator<T2> const &val) noexcept -> out<T1>
     {
         if constexpr (!o) {
             return o;
         }
 
-        if (val.is_end()) {
-            return o << "[null]";
+        if (auto const *const ptr{val.get_if()}) {
+            return o << *ptr;
         }
 
-        return o << *val.get_if();
+        return o << "[error]";
     }
 }
 

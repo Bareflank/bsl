@@ -33,8 +33,14 @@ namespace bsl
     inline void
     example_rank_overview() noexcept
     {
-        if (bsl::rank<bool[]>::value == 1) {    // NOLINT
+        constexpr bsl::safe_uintmax expected_rank{to_umax(1)};
+        // This is needed to demonstrate how to use this type trait
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+        if constexpr (bsl::rank<bool[]>::value == expected_rank.get()) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

@@ -33,11 +33,14 @@ namespace bsl
     inline void
     example_safe_integral_set_failure() noexcept
     {
-        bsl::safe_int32 val{42};
+        bsl::safe_int32 val{};
         val.set_failure();
 
         if (val.failure()) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

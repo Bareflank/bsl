@@ -28,6 +28,7 @@
 #ifndef BSL_SAFE_INTEGRAL_HPP
 #define BSL_SAFE_INTEGRAL_HPP
 
+#include "always_false.hpp"
 #include "cstdint.hpp"
 #include "enable_if.hpp"
 #include "is_constant_evaluated.hpp"
@@ -36,6 +37,7 @@
 #include "is_signed.hpp"
 #include "is_unsigned.hpp"
 #include "numeric_limits.hpp"
+#include "touch.hpp"
 
 namespace bsl
 {
@@ -44,14 +46,9 @@ namespace bsl
     ///     error has occurred during an add, sub or mul operation
     ///     from a bsl::safe_integral.
     ///
-    /// <!-- inputs/outputs -->
-    ///   @return Always returns true
-    ///
-    [[maybe_unused]] inline bool
+    [[maybe_unused]] inline void
     integral_overflow_underflow_wrap_error() noexcept
-    {
-        return true;
-    }
+    {}
 
     /// <!-- description -->
     ///   @brief Returns __builtin_add_overflow(x, y, res)
@@ -64,25 +61,18 @@ namespace bsl
     ///   @return Returns __builtin_add_overflow(x, y, res)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    builtin_add_overflow(T const lhs, T const rhs, T *const res) noexcept
+    [[nodiscard]] constexpr auto
+    builtin_add_overflow(T const lhs, T const rhs, T *const res) noexcept -> bool
     {
-        if constexpr (BSL_PERFORCE) {
-            *res = lhs + rhs;
+        // This is how Clang presents the builtins, which we are required
+        // top use.
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg, hicpp-vararg,-warnings-as-errors)
+        if (__builtin_add_overflow(lhs, rhs, res)) {
+            integral_overflow_underflow_wrap_error();
             return true;
         }
-        else {
-            if (is_constant_evaluated()) {
-                if (__builtin_add_overflow(lhs, rhs, res)) {    // NOLINT
-                    integral_overflow_underflow_wrap_error();
-                    return true;
-                }
 
-                return false;
-            }
-
-            return __builtin_add_overflow(lhs, rhs, res);    // NOLINT
-        }
+        return false;
     }
 
     /// <!-- description -->
@@ -96,25 +86,18 @@ namespace bsl
     ///   @return Returns __builtin_sub_overflow(x, y, res)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    builtin_sub_overflow(T const lhs, T const rhs, T *const res) noexcept
+    [[nodiscard]] constexpr auto
+    builtin_sub_overflow(T const lhs, T const rhs, T *const res) noexcept -> bool
     {
-        if constexpr (BSL_PERFORCE) {
-            *res = lhs - rhs;
+        // This is how Clang presents the builtins, which we are required
+        // top use.
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg, hicpp-vararg,-warnings-as-errors)
+        if (__builtin_sub_overflow(lhs, rhs, res)) {
+            integral_overflow_underflow_wrap_error();
             return true;
         }
-        else {
-            if (is_constant_evaluated()) {
-                if (__builtin_sub_overflow(lhs, rhs, res)) {    // NOLINT
-                    integral_overflow_underflow_wrap_error();
-                    return true;
-                }
 
-                return false;
-            }
-
-            return __builtin_sub_overflow(lhs, rhs, res);    // NOLINT
-        }
+        return false;
     }
 
     /// <!-- description -->
@@ -128,25 +111,114 @@ namespace bsl
     ///   @return Returns __builtin_mul_overflow(x, y, res)
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    builtin_mul_overflow(T const lhs, T const rhs, T *const res) noexcept
+    [[nodiscard]] constexpr auto
+    builtin_mul_overflow(T const lhs, T const rhs, T *const res) noexcept -> bool
     {
-        if constexpr (BSL_PERFORCE) {
-            *res = lhs * rhs;
+        // This is how Clang presents the builtins, which we are required
+        // top use.
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg, hicpp-vararg,-warnings-as-errors)
+        if (__builtin_mul_overflow(lhs, rhs, res)) {
+            integral_overflow_underflow_wrap_error();
             return true;
         }
-        else {
-            if (is_constant_evaluated()) {
-                if (__builtin_mul_overflow(lhs, rhs, res)) {    // NOLINT
+
+        return false;
+    }
+
+    /// <!-- description -->
+    ///   @brief If no overflow, underflow, wrap occurs, sets *res to
+    ///     lhs / rhs and returns false. Otherwise returns true.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of values to divide
+    ///   @param lhs the left hand side of the operation
+    ///   @param rhs the right hand side of the operation
+    ///   @param res the result of the operation
+    ///   @return If no overflow, underflow, wrap occurs, sets *res to
+    ///     lhs / rhs and returns false. Otherwise returns true
+    ///
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    builtin_div_overflow(T const lhs, T const rhs, T *const res) noexcept -> bool
+    {
+        constexpr bsl::intmax neg_one{static_cast<bsl::intmax>(-1)};
+
+        if (static_cast<bsl::uintmax>(T{}) == static_cast<bsl::uintmax>(rhs)) {
+            integral_overflow_underflow_wrap_error();
+            return true;
+        }
+
+        if constexpr (is_signed<T>::value) {
+            if (static_cast<bsl::intmax>(numeric_limits<T>::min()) ==
+                static_cast<bsl::intmax>(lhs)) {
+                if (neg_one == static_cast<bsl::intmax>(rhs)) {
                     integral_overflow_underflow_wrap_error();
                     return true;
                 }
 
-                return false;
+                bsl::touch();
             }
-
-            return __builtin_mul_overflow(lhs, rhs, res);    // NOLINT
+            else {
+                bsl::touch();
+            }
         }
+
+        if constexpr (is_signed<T>::value) {
+            *res = static_cast<T>(static_cast<bsl::intmax>(lhs) / static_cast<bsl::intmax>(rhs));
+        }
+        else {
+            *res = static_cast<T>(static_cast<bsl::uintmax>(lhs) / static_cast<bsl::uintmax>(rhs));
+        }
+
+        return false;
+    }
+
+    /// <!-- description -->
+    ///   @brief If no overflow, underflow, wrap occurs, sets *res to
+    ///     lhs % rhs and returns false. Otherwise returns true.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of values to mod
+    ///   @param lhs the left hand side of the operation
+    ///   @param rhs the right hand side of the operation
+    ///   @param res the result of the operation
+    ///   @return If no overflow, underflow, wrap occurs, sets *res to
+    ///     lhs % rhs and returns false. Otherwise returns true
+    ///
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    builtin_mod_overflow(T const lhs, T const rhs, T *const res) noexcept -> bool
+    {
+        constexpr bsl::intmax neg_one{static_cast<bsl::intmax>(-1)};
+
+        if (static_cast<bsl::uintmax>(T{}) == static_cast<bsl::uintmax>(rhs)) {
+            integral_overflow_underflow_wrap_error();
+            return true;
+        }
+
+        if constexpr (is_signed<T>::value) {
+            if (static_cast<bsl::intmax>(numeric_limits<T>::min()) ==
+                static_cast<bsl::intmax>(lhs)) {
+                if (neg_one == static_cast<bsl::intmax>(rhs)) {
+                    integral_overflow_underflow_wrap_error();
+                    return true;
+                }
+
+                bsl::touch();
+            }
+            else {
+                bsl::touch();
+            }
+        }
+
+        if constexpr (is_signed<T>::value) {
+            *res = static_cast<T>(static_cast<bsl::intmax>(lhs) % static_cast<bsl::intmax>(rhs));
+        }
+        else {
+            *res = static_cast<T>(static_cast<bsl::uintmax>(lhs) % static_cast<bsl::uintmax>(rhs));
+        }
+
+        return false;
     }
 
     /// @class bsl::safe_integral
@@ -161,7 +233,7 @@ namespace bsl
     ///   @tparam T the integral type to encapsulate.
     ///
     template<typename T>
-    class safe_integral final    // NOLINT
+    class safe_integral final
     {
         static_assert(bsl::is_integral<T>::value, "only integral types are supported");
 
@@ -180,21 +252,12 @@ namespace bsl
 
         /// <!-- description -->
         ///   @brief Default constructor that creates a safe_integral with
-        ///     get() == 0. Note that like other view types
-        ///     in the BSL, the bsl::safe_integral is a POD type. This
-        ///     means that when declaring a global, default constructed
-        ///     bsl::safe_integral, DO NOT include the {} for
-        ///     initialization. Instead, remove the {} and the global
-        ///     bsl::safe_integral will be included in the BSS section of
-        ///     the executable, and initialized to 0 for you. All other
-        ///     instantiations of a bsl::safe_integral (or any POD
-        ///     type), should be initialized using {} to ensure the POD is
-        ///     properly initialized. Using the above method for global
-        ///     initialization ensures that global constructors are not
-        ///     executed at runtime, which is required by AUTOSAR.
+        ///     get() == 0.
         ///   @include safe_integral/example_safe_integral_default_constructor.hpp
         ///
-        constexpr safe_integral() noexcept = default;
+        constexpr safe_integral() noexcept    // --
+            : m_val{}, m_error{}
+        {}
 
         /// <!-- description -->
         ///   @brief Creates a bsl::safe_integral given a BSL fixed width
@@ -202,6 +265,9 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_constructor_t.hpp
         ///
         /// <!-- inputs/outputs -->
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param val the value to set the bsl::safe_integral to
         ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
@@ -215,6 +281,9 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_constructor_t_error.hpp
         ///
         /// <!-- inputs/outputs -->
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param val the value to set the bsl::safe_integral to
         ///   @param err used to create a safe_integer that has already
         ///     resulted in an error.
@@ -225,24 +294,71 @@ namespace bsl
         {}
 
         /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::safe_integral
+        ///
+        constexpr ~safe_integral() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr safe_integral(safe_integral const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr safe_integral(safe_integral &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(safe_integral const &o) &noexcept
+            -> safe_integral & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(safe_integral &&o) &noexcept
+            -> safe_integral & = default;
+
+        /// <!-- description -->
         ///   @brief Creates a bsl::safe_integral given a BSL fixed width
         ///     type. Note that this will clear the integral's error flag,
         ///     starting with a fresh value.
         ///   @include safe_integral/example_safe_integral_assignment_t.hpp
         ///
         /// <!-- inputs/outputs -->
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param val the value to set the bsl::safe_integral to
         ///   @return Returns *this
         ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
-        [[maybe_unused]] constexpr safe_integral<value_type> &
-        operator=(U const val) &noexcept
+        [[maybe_unused]] constexpr auto
+        operator=(U const val) &noexcept -> safe_integral<value_type> &
         {
-            m_val = val;
-            m_error = false;
-
+            *this = safe_integral<value_type>{val};
             return *this;
         }
+
+        /// @brief the r-value version of this function is not supported
+        template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
+        [[maybe_unused]] constexpr auto operator=(U const val) const &&noexcept
+            -> safe_integral<value_type> & = delete;
 
         /// <!-- description -->
         ///   @brief Returns the value stored by the bsl::safe_integral. If an
@@ -253,8 +369,8 @@ namespace bsl
         ///   @return Returns the value stored by the bsl::safe_integral. If an
         ///     error has occurred, this function will always return 0.
         ///
-        [[nodiscard]] constexpr value_type
-        get() const noexcept
+        [[nodiscard]] constexpr auto
+        get() const noexcept -> value_type
         {
             if (m_error) {
                 return static_cast<value_type>(0);
@@ -286,8 +402,8 @@ namespace bsl
         ///   @return Returns true if the safe_integral has experienced
         ///     a wrap, overflow, underflow, divide by 0, etc.
         ///
-        [[nodiscard]] constexpr bool
-        failure() const noexcept
+        [[nodiscard]] constexpr auto
+        failure() const noexcept -> bool
         {
             return m_error;
         }
@@ -310,8 +426,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max value the bsl::safe_integral can store.
         ///
-        [[nodiscard]] static constexpr value_type
-        max() noexcept
+        [[nodiscard]] static constexpr auto
+        max() noexcept -> value_type
         {
             return numeric_limits<value_type>::max();
         }
@@ -328,14 +444,22 @@ namespace bsl
         ///     error has previously been encountered, this function returns
         ///     0 with an error.
         ///
-        [[nodiscard]] constexpr safe_integral<value_type>
-        max(safe_integral<value_type> const &other) const noexcept
+        [[nodiscard]] constexpr auto
+        max(safe_integral<value_type> const &other) const noexcept -> safe_integral<value_type>
         {
-            if (this->failure() || other.failure()) {
+            if (this->failure()) {
                 return zero(true);
             }
 
-            return safe_integral<value_type>{(m_val < other.m_val) ? other.m_val : m_val};
+            if (other.failure()) {
+                return zero(true);
+            }
+
+            if (m_val < other.m_val) {
+                return other;
+            }
+
+            return *this;
         }
 
         /// <!-- description -->
@@ -345,20 +469,27 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_max.hpp
         ///
         /// <!-- inputs/outputs -->
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param other the other value to compare with *this
         ///   @return Returns the max value between *this and other. If an
         ///     error has previously been encountered, this function returns
         ///     0 with an error.
         ///
         template<typename U, enable_if_t<is_same<value_type, U>::value, bool> = true>
-        [[nodiscard]] constexpr safe_integral<value_type>
-        max(U const other) const noexcept
+        [[nodiscard]] constexpr auto
+        max(U const other) const noexcept -> safe_integral<value_type>
         {
             if (this->failure()) {
                 return zero(true);
             }
 
-            return safe_integral<value_type>{(m_val < other) ? other : m_val};
+            if (m_val < other) {
+                return safe_integral<value_type>{other};
+            }
+
+            return *this;
         }
 
         /// <!-- description -->
@@ -368,8 +499,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the min value the bsl::safe_integral can store.
         ///
-        [[nodiscard]] static constexpr value_type
-        min() noexcept
+        [[nodiscard]] static constexpr auto
+        min() noexcept -> value_type
         {
             return numeric_limits<value_type>::min();
         }
@@ -386,14 +517,22 @@ namespace bsl
         ///     error has previously been encountered, this function returns
         ///     0 with an error.
         ///
-        [[nodiscard]] constexpr safe_integral<value_type>
-        min(safe_integral<value_type> const &other) const noexcept
+        [[nodiscard]] constexpr auto
+        min(safe_integral<value_type> const &other) const noexcept -> safe_integral<value_type>
         {
-            if (this->failure() || other.failure()) {
+            if (this->failure()) {
                 return zero(true);
             }
 
-            return safe_integral<value_type>{(m_val < other.m_val) ? m_val : other.m_val};
+            if (other.failure()) {
+                return zero(true);
+            }
+
+            if (m_val < other.m_val) {
+                return *this;
+            }
+
+            return other;
         }
 
         /// <!-- description -->
@@ -403,20 +542,27 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_min.hpp
         ///
         /// <!-- inputs/outputs -->
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param other the other value to compare with *this
         ///   @return Returns the min value between *this and other. If an
         ///     error has previously been encountered, this function returns
         ///     0 with an error.
         ///
         template<typename U, enable_if_t<is_same<value_type, U>::value, bool> = true>
-        [[nodiscard]] constexpr safe_integral<value_type>
-        min(U const other) const noexcept
+        [[nodiscard]] constexpr auto
+        min(U const other) const noexcept -> safe_integral<value_type>
         {
             if (this->failure()) {
                 return zero(true);
             }
 
-            return safe_integral<value_type>{(m_val < other) ? m_val : other};
+            if (m_val < other) {
+                return *this;
+            }
+
+            return safe_integral<value_type>{other};
         }
 
         /// <!-- description -->
@@ -427,10 +573,11 @@ namespace bsl
         ///   @param err used to indicate a failure()
         ///   @return Returns 0
         ///
-        [[nodiscard]] static constexpr safe_integral<value_type>
-        one(bool const err = false) noexcept
+        [[nodiscard]] static constexpr auto
+        one(bool const err = false) noexcept -> safe_integral<value_type>
         {
-            return safe_integral<value_type>{static_cast<value_type>(1), err};
+            constexpr value_type val{static_cast<value_type>(1)};
+            return safe_integral<value_type>{val, err};
         }
 
         /// <!-- description -->
@@ -441,10 +588,11 @@ namespace bsl
         ///   @param err used to indicate a failure()
         ///   @return Returns 0
         ///
-        [[nodiscard]] static constexpr safe_integral<value_type>
-        zero(bool const err = false) noexcept
+        [[nodiscard]] static constexpr auto
+        zero(bool const err = false) noexcept -> safe_integral<value_type>
         {
-            return safe_integral<value_type>{static_cast<value_type>(0), err};
+            constexpr value_type val{static_cast<value_type>(0)};
+            return safe_integral<value_type>{val, err};
         }
 
         /// <!-- description -->
@@ -454,8 +602,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns true if the safe_integral is signed
         ///
-        [[nodiscard]] static constexpr bool
-        is_signed_type() noexcept
+        [[nodiscard]] static constexpr auto
+        is_signed_type() noexcept -> bool
         {
             return is_signed<value_type>::value;
         }
@@ -467,8 +615,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns true if the safe_integral is unsigned
         ///
-        [[nodiscard]] static constexpr bool
-        is_unsigned_type() noexcept
+        [[nodiscard]] static constexpr auto
+        is_unsigned_type() noexcept -> bool
         {
             return is_unsigned<value_type>::value;
         }
@@ -481,8 +629,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns true if the safe_integral is positive
         ///
-        [[nodiscard]] constexpr bool
-        is_pos() const noexcept
+        [[nodiscard]] constexpr auto
+        is_pos() const noexcept -> bool
         {
             return zero() < *this;
         }
@@ -495,8 +643,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns true if the safe_integral is negative
         ///
-        [[nodiscard]] constexpr bool
-        is_neg() const noexcept
+        [[nodiscard]] constexpr auto
+        is_neg() const noexcept -> bool
         {
             if constexpr (is_unsigned_type()) {
                 return false;
@@ -513,14 +661,14 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns true if the safe_integral is 0
         ///
-        [[nodiscard]] constexpr bool
-        is_zero() const noexcept
+        [[nodiscard]] constexpr auto
+        is_zero() const noexcept -> bool
         {
             if (m_error) {
                 return true;
             }
 
-            return zero().get() == m_val;
+            return zero() == *this;
         }
 
         /// <!-- description -->
@@ -531,8 +679,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns true if the safe_integral equals the max value
         ///
-        [[nodiscard]] constexpr bool
-        is_max() const noexcept
+        [[nodiscard]] constexpr auto
+        is_max() const noexcept -> bool
         {
             return max() == *this;
         }
@@ -545,8 +693,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns true if the safe_integral equals the min value
         ///
-        [[nodiscard]] constexpr bool
-        is_min() const noexcept
+        [[nodiscard]] constexpr auto
+        is_min() const noexcept -> bool
         {
             return min() == *this;
         }
@@ -563,14 +711,34 @@ namespace bsl
         ///     an error (e.g., overflow, wrapping, etc.), the result of
         ///     this operation is undefined, and get() will always return 0.
         ///
-        [[maybe_unused]] constexpr safe_integral<value_type> &
-        operator+=(safe_integral<value_type> const &rhs) &noexcept
+        [[maybe_unused]] constexpr auto
+        operator+=(safe_integral<value_type> const &rhs) &noexcept -> safe_integral<value_type> &
         {
-            bool const err{builtin_add_overflow(m_val, rhs.m_val, &m_val)};
+            bool const e{builtin_add_overflow(m_val, rhs.m_val, &m_val)};
 
-            m_error = m_error || (err || rhs.failure());
+            if (this->failure()) {
+                m_error = true;
+                return *this;
+            }
+
+            if (rhs.failure()) {
+                m_error = true;
+                return *this;
+            }
+
+            if (e) {
+                m_error = true;
+                return *this;
+            }
+
+            m_error = false;
             return *this;
         }
+
+        /// @brief the r-value version of this function is not supported
+        [[maybe_unused]] constexpr auto
+        operator+=(safe_integral<value_type> const &rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
 
         /// <!-- description -->
         ///   @brief Returns *this += rhs. If this operation results in
@@ -579,21 +747,38 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_assign_add.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam U must be the same as T
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param rhs the value to add to *this
         ///   @return Returns *this += rhs. If this operation results in
         ///     an error (e.g., overflow, wrapping, etc.), the result of
         ///     this operation is undefined, and get() will always return 0.
         ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
-        [[maybe_unused]] constexpr safe_integral<value_type> &
-        operator+=(U const rhs) &noexcept
+        [[maybe_unused]] constexpr auto
+        operator+=(U const rhs) &noexcept -> safe_integral<value_type> &
         {
-            bool const err{builtin_add_overflow(m_val, rhs, &m_val)};
+            bool const e{builtin_add_overflow(m_val, rhs, &m_val)};
 
-            m_error = m_error || err;
+            if (this->failure()) {
+                m_error = true;
+                return *this;
+            }
+
+            if (e) {
+                m_error = true;
+                return *this;
+            }
+
+            m_error = false;
             return *this;
         }
+
+        /// @brief the r-value version of this function is not supported
+        template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
+        [[maybe_unused]] constexpr auto operator+=(U const rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
 
         /// <!-- description -->
         ///   @brief Returns *this -= rhs. If this operation results in
@@ -607,14 +792,34 @@ namespace bsl
         ///     an error (e.g., overflow, wrapping, etc.), the result of
         ///     this operation is undefined, and get() will always return 0.
         ///
-        [[maybe_unused]] constexpr safe_integral<value_type> &
-        operator-=(safe_integral<value_type> const &rhs) &noexcept
+        [[maybe_unused]] constexpr auto
+        operator-=(safe_integral<value_type> const &rhs) &noexcept -> safe_integral<value_type> &
         {
-            bool const err{builtin_sub_overflow(m_val, rhs.m_val, &m_val)};
+            bool const e{builtin_sub_overflow(m_val, rhs.m_val, &m_val)};
 
-            m_error = m_error || (err || rhs.failure());
+            if (this->failure()) {
+                m_error = true;
+                return *this;
+            }
+
+            if (rhs.failure()) {
+                m_error = true;
+                return *this;
+            }
+
+            if (e) {
+                m_error = true;
+                return *this;
+            }
+
+            m_error = false;
             return *this;
         }
+
+        /// @brief the r-value version of this function is not supported
+        [[maybe_unused]] constexpr auto
+        operator-=(safe_integral<value_type> const &rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
 
         /// <!-- description -->
         ///   @brief Returns *this -= rhs. If this operation results in
@@ -623,21 +828,38 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_assign_sub.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam U must be the same as T
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param rhs the value to sub from *this
         ///   @return Returns *this -= rhs. If this operation results in
         ///     an error (e.g., overflow, wrapping, etc.), the result of
         ///     this operation is undefined, and get() will always return 0.
         ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
-        [[maybe_unused]] constexpr safe_integral<value_type> &
-        operator-=(U const rhs) &noexcept
+        [[maybe_unused]] constexpr auto
+        operator-=(U const rhs) &noexcept -> safe_integral<value_type> &
         {
-            bool const err{builtin_sub_overflow(m_val, rhs, &m_val)};
+            bool const e{builtin_sub_overflow(m_val, rhs, &m_val)};
 
-            m_error = m_error || err;
+            if (this->failure()) {
+                m_error = true;
+                return *this;
+            }
+
+            if (e) {
+                m_error = true;
+                return *this;
+            }
+
+            m_error = false;
             return *this;
         }
+
+        /// @brief the r-value version of this function is not supported
+        template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
+        [[maybe_unused]] constexpr auto operator-=(U const rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
 
         /// <!-- description -->
         ///   @brief Returns *this *= rhs. If this operation results in
@@ -651,14 +873,34 @@ namespace bsl
         ///     an error (e.g., overflow, wrapping, etc.), the result of
         ///     this operation is undefined, and get() will always return 0.
         ///
-        [[maybe_unused]] constexpr safe_integral<value_type> &
-        operator*=(safe_integral<value_type> const &rhs) &noexcept
+        [[maybe_unused]] constexpr auto
+        operator*=(safe_integral<value_type> const &rhs) &noexcept -> safe_integral<value_type> &
         {
-            bool const err{builtin_mul_overflow(m_val, rhs.m_val, &m_val)};
+            bool const e{builtin_mul_overflow(m_val, rhs.m_val, &m_val)};
 
-            m_error = m_error || (err || rhs.failure());
+            if (this->failure()) {
+                m_error = true;
+                return *this;
+            }
+
+            if (rhs.failure()) {
+                m_error = true;
+                return *this;
+            }
+
+            if (e) {
+                m_error = true;
+                return *this;
+            }
+
+            m_error = false;
             return *this;
         }
+
+        /// @brief the r-value version of this function is not supported
+        [[maybe_unused]] constexpr auto
+        operator*=(safe_integral<value_type> const &rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
 
         /// <!-- description -->
         ///   @brief Returns *this *= rhs. If this operation results in
@@ -667,21 +909,38 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_assign_mul.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam U must be the same as T
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param rhs the value to multiply *this by
         ///   @return Returns *this *= rhs. If this operation results in
         ///     an error (e.g., overflow, wrapping, etc.), the result of
         ///     this operation is undefined, and get() will always return 0.
         ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
-        [[maybe_unused]] constexpr safe_integral<value_type> &
-        operator*=(U const rhs) &noexcept
+        [[maybe_unused]] constexpr auto
+        operator*=(U const rhs) &noexcept -> safe_integral<value_type> &
         {
-            bool const err{builtin_mul_overflow(m_val, rhs, &m_val)};
+            bool const e{builtin_mul_overflow(m_val, rhs, &m_val)};
 
-            m_error = m_error || err;
+            if (this->failure()) {
+                m_error = true;
+                return *this;
+            }
+
+            if (e) {
+                m_error = true;
+                return *this;
+            }
+
+            m_error = false;
             return *this;
         }
+
+        /// @brief the r-value version of this function is not supported
+        template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
+        [[maybe_unused]] constexpr auto operator*=(U const rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
 
         /// <!-- description -->
         ///   @brief Returns *this /= rhs. If this operation results in
@@ -695,29 +954,34 @@ namespace bsl
         ///     an error (e.g., overflow, wrapping, etc.), the result of
         ///     this operation is undefined, and get() will always return 0.
         ///
-        [[maybe_unused]] constexpr safe_integral<value_type> &
-        operator/=(safe_integral<value_type> const &rhs) &noexcept
+        [[maybe_unused]] constexpr auto
+        operator/=(safe_integral<value_type> const &rhs) &noexcept -> safe_integral<value_type> &
         {
-            if (this->failure() || rhs.failure()) {
+            bool const e{builtin_div_overflow(m_val, rhs.m_val, &m_val)};
+
+            if (this->failure()) {
                 m_error = true;
                 return *this;
             }
 
-            if (zero() == rhs) {
-                m_error = integral_overflow_underflow_wrap_error();
+            if (rhs.failure()) {
+                m_error = true;
                 return *this;
             }
 
-            if constexpr (is_signed_type()) {
-                if ((min() == m_val) && (-one() == rhs)) {
-                    m_error = integral_overflow_underflow_wrap_error();
-                    return *this;
-                }
+            if (e) {
+                m_error = true;
+                return *this;
             }
 
-            m_val /= rhs.m_val;
+            m_error = false;
             return *this;
         }
+
+        /// @brief the r-value version of this function is not supported
+        [[maybe_unused]] constexpr auto
+        operator/=(safe_integral<value_type> const &rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
 
         /// <!-- description -->
         ///   @brief Returns *this /= rhs. If this operation results in
@@ -726,18 +990,38 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_assign_div.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam U must be the same as T
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param rhs the value to divide *this by
         ///   @return Returns *this /= rhs. If this operation results in
         ///     an error (e.g., overflow, wrapping, etc.), the result of
         ///     this operation is undefined, and get() will always return 0.
         ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
-        [[maybe_unused]] constexpr safe_integral<value_type> &
-        operator/=(U const rhs) &noexcept
+        [[maybe_unused]] constexpr auto
+        operator/=(U const rhs) &noexcept -> safe_integral<value_type> &
         {
-            return *this /= safe_integral<value_type>{rhs};
+            bool const e{builtin_div_overflow(m_val, rhs, &m_val)};
+
+            if (this->failure()) {
+                m_error = true;
+                return *this;
+            }
+
+            if (e) {
+                m_error = true;
+                return *this;
+            }
+
+            m_error = false;
+            return *this;
         }
+
+        /// @brief the r-value version of this function is not supported
+        template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
+        [[maybe_unused]] constexpr auto operator/=(U const rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
 
         /// <!-- description -->
         ///   @brief Returns *this %= rhs. If this operation results in
@@ -751,29 +1035,34 @@ namespace bsl
         ///     an error (e.g., overflow, wrapping, etc.), the result of
         ///     this operation is undefined, and get() will always return 0.
         ///
-        [[maybe_unused]] constexpr safe_integral<value_type> &
-        operator%=(safe_integral<value_type> const &rhs) &noexcept
+        [[maybe_unused]] constexpr auto
+        operator%=(safe_integral<value_type> const &rhs) &noexcept -> safe_integral<value_type> &
         {
-            if (this->failure() || rhs.failure()) {
+            bool const e{builtin_mod_overflow(m_val, rhs.m_val, &m_val)};
+
+            if (this->failure()) {
                 m_error = true;
                 return *this;
             }
 
-            if (zero() == rhs) {
-                m_error = integral_overflow_underflow_wrap_error();
+            if (rhs.failure()) {
+                m_error = true;
                 return *this;
             }
 
-            if constexpr (is_signed_type()) {
-                if ((min() == m_val) && (-one() == rhs.m_val)) {
-                    m_error = integral_overflow_underflow_wrap_error();
-                    return *this;
-                }
+            if (e) {
+                m_error = true;
+                return *this;
             }
 
-            m_val %= rhs.m_val;
+            m_error = false;
             return *this;
         }
+
+        /// @brief the r-value version of this function is not supported
+        [[maybe_unused]] constexpr auto
+        operator%=(safe_integral<value_type> const &rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
 
         /// <!-- description -->
         ///   @brief Returns *this %= rhs. If this operation results in
@@ -782,18 +1071,403 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_assign_mod.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @tparam U must be the same as T
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
         ///   @param rhs the value to modulo *this by
         ///   @return Returns *this %= rhs. If this operation results in
         ///     an error (e.g., overflow, wrapping, etc.), the result of
         ///     this operation is undefined, and get() will always return 0.
         ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
-        [[maybe_unused]] constexpr safe_integral<value_type> &
-        operator%=(U const rhs) &noexcept
+        [[maybe_unused]] constexpr auto
+        operator%=(U const rhs) &noexcept -> safe_integral<value_type> &
         {
-            return *this %= safe_integral<value_type>{rhs};
+            bool const e{builtin_mod_overflow(m_val, rhs, &m_val)};
+
+            if (this->failure()) {
+                m_error = true;
+                return *this;
+            }
+
+            if (e) {
+                m_error = true;
+                return *this;
+            }
+
+            m_error = false;
+            return *this;
         }
+
+        /// @brief the r-value version of this function is not supported
+        template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
+        [[maybe_unused]] constexpr auto operator%=(U const rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
+
+        /// <!-- description -->
+        ///   @brief Returns *this <<= rhs.
+        ///   @include safe_integral/example_safe_integral_assign_lshift.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param rhs the value to shift *this by
+        ///   @return Returns *this <<= rhs.
+        ///
+        [[maybe_unused]] constexpr auto
+        operator<<=(safe_integral<value_type> const &rhs) &noexcept -> safe_integral<value_type> &
+        {
+            if constexpr (is_signed<value_type>::value) {
+                static_assert(always_false<value_type>(), "signed shift not supported");
+            }
+            else {
+                m_val <<= rhs.m_val;
+
+                if (this->failure()) {
+                    m_error = true;
+                    return *this;
+                }
+
+                if (rhs.failure()) {
+                    m_error = true;
+                    return *this;
+                }
+
+                m_error = false;
+                return *this;
+            }
+        }
+
+        /// @brief the r-value version of this function is not supported
+        [[maybe_unused]] constexpr auto
+        operator<<=(safe_integral<value_type> const &rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
+
+        /// <!-- description -->
+        ///   @brief Returns *this <<= rhs.
+        ///   @include safe_integral/example_safe_integral_assign_lshift.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
+        ///   @param rhs the value to shift *this by
+        ///   @return Returns *this <<= rhs.
+        ///
+        template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
+        [[maybe_unused]] constexpr auto
+        operator<<=(U const rhs) &noexcept -> safe_integral<value_type> &
+        {
+            if constexpr (is_signed<value_type>::value) {
+                static_assert(always_false<value_type>(), "signed shift not supported");
+            }
+            else {
+                m_val <<= rhs;
+
+                if (this->failure()) {
+                    m_error = true;
+                    return *this;
+                }
+
+                m_error = false;
+                return *this;
+            }
+        }
+
+        /// @brief the r-value version of this function is not supported
+        template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
+        [[maybe_unused]] constexpr auto operator<<=(U const rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
+
+        /// <!-- description -->
+        ///   @brief Returns *this >>= rhs.
+        ///   @include safe_integral/example_safe_integral_assign_rshift.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param rhs the value to shift *this by
+        ///   @return Returns *this >>= rhs.
+        ///
+        [[maybe_unused]] constexpr auto
+        operator>>=(safe_integral<value_type> const &rhs) &noexcept -> safe_integral<value_type> &
+        {
+            if constexpr (is_signed<value_type>::value) {
+                static_assert(always_false<value_type>(), "signed shift not supported");
+            }
+            else {
+                m_val >>= rhs.get();
+
+                if (this->failure()) {
+                    m_error = true;
+                    return *this;
+                }
+
+                if (rhs.failure()) {
+                    m_error = true;
+                    return *this;
+                }
+
+                m_error = false;
+                return *this;
+            }
+        }
+
+        /// @brief the r-value version of this function is not supported
+        [[maybe_unused]] constexpr auto
+        operator>>=(safe_integral<value_type> const &rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
+
+        /// <!-- description -->
+        ///   @brief Returns *this >>= rhs.
+        ///   @include safe_integral/example_safe_integral_assign_rshift.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
+        ///   @param rhs the value to shift *this by
+        ///   @return Returns *this >>= rhs.
+        ///
+        template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
+        [[maybe_unused]] constexpr auto
+        operator>>=(U const rhs) &noexcept -> safe_integral<value_type> &
+        {
+            if constexpr (is_signed<value_type>::value) {
+                static_assert(always_false<value_type>(), "signed shift not supported");
+            }
+            else {
+                m_val >>= rhs;
+
+                if (this->failure()) {
+                    m_error = true;
+                    return *this;
+                }
+
+                m_error = false;
+                return *this;
+            }
+        }
+
+        /// @brief the r-value version of this function is not supported
+        template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
+        [[maybe_unused]] constexpr auto operator>>=(U const rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
+
+        /// <!-- description -->
+        ///   @brief Returns *this &= rhs.
+        ///   @include safe_integral/example_safe_integral_assign_and.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param rhs the value to and *this by
+        ///   @return Returns *this &= rhs.
+        ///
+        [[maybe_unused]] constexpr auto
+        operator&=(safe_integral<value_type> const &rhs) &noexcept -> safe_integral<value_type> &
+        {
+            if constexpr (is_signed<value_type>::value) {
+                static_assert(always_false<value_type>(), "signed and not supported");
+            }
+            else {
+                m_val &= rhs.get();
+
+                if (this->failure()) {
+                    m_error = true;
+                    return *this;
+                }
+
+                if (rhs.failure()) {
+                    m_error = true;
+                    return *this;
+                }
+
+                m_error = false;
+                return *this;
+            }
+        }
+
+        /// @brief the r-value version of this function is not supported
+        [[maybe_unused]] constexpr auto
+        operator&=(safe_integral<value_type> const &rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
+
+        /// <!-- description -->
+        ///   @brief Returns *this &= rhs.
+        ///   @include safe_integral/example_safe_integral_assign_and.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
+        ///   @param rhs the value to and *this by
+        ///   @return Returns *this &= rhs.
+        ///
+        template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
+        [[maybe_unused]] constexpr auto
+        operator&=(U const rhs) &noexcept -> safe_integral<value_type> &
+        {
+            if constexpr (is_signed<value_type>::value) {
+                static_assert(always_false<value_type>(), "signed and not supported");
+            }
+            else {
+                m_val &= rhs;
+
+                if (this->failure()) {
+                    m_error = true;
+                    return *this;
+                }
+
+                m_error = false;
+                return *this;
+            }
+        }
+
+        /// @brief the r-value version of this function is not supported
+        template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
+        [[maybe_unused]] constexpr auto operator&=(U const rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
+
+        /// <!-- description -->
+        ///   @brief Returns *this |= rhs.
+        ///   @include safe_integral/example_safe_integral_assign_or.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param rhs the value to or *this by
+        ///   @return Returns *this |= rhs.
+        ///
+        [[maybe_unused]] constexpr auto
+        operator|=(safe_integral<value_type> const &rhs) &noexcept -> safe_integral<value_type> &
+        {
+            if constexpr (is_signed<value_type>::value) {
+                static_assert(always_false<value_type>(), "signed or not supported");
+            }
+            else {
+                m_val |= rhs.get();
+
+                if (this->failure()) {
+                    m_error = true;
+                    return *this;
+                }
+
+                if (rhs.failure()) {
+                    m_error = true;
+                    return *this;
+                }
+
+                m_error = false;
+                return *this;
+            }
+        }
+
+        /// @brief the r-value version of this function is not supported
+        [[maybe_unused]] constexpr auto
+        operator|=(safe_integral<value_type> const &rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
+
+        /// <!-- description -->
+        ///   @brief Returns *this |= rhs.
+        ///   @include safe_integral/example_safe_integral_assign_or.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
+        ///   @param rhs the value to or *this by
+        ///   @return Returns *this |= rhs.
+        ///
+        template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
+        [[maybe_unused]] constexpr auto
+        operator|=(U const rhs) &noexcept -> safe_integral<value_type> &
+        {
+            if constexpr (is_signed<value_type>::value) {
+                static_assert(always_false<value_type>(), "signed or not supported");
+            }
+            else {
+                m_val |= rhs;
+
+                if (this->failure()) {
+                    m_error = true;
+                    return *this;
+                }
+
+                m_error = false;
+                return *this;
+            }
+        }
+
+        /// @brief the r-value version of this function is not supported
+        template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
+        [[maybe_unused]] constexpr auto operator|=(U const rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
+
+        /// <!-- description -->
+        ///   @brief Returns *this ^= rhs.
+        ///   @include safe_integral/example_safe_integral_assign_xor.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param rhs the value to xor *this by
+        ///   @return Returns *this ^= rhs.
+        ///
+        [[maybe_unused]] constexpr auto
+        operator^=(safe_integral<value_type> const &rhs) &noexcept -> safe_integral<value_type> &
+        {
+            if constexpr (is_signed<value_type>::value) {
+                static_assert(always_false<value_type>(), "signed xor not supported");
+            }
+            else {
+                m_val ^= rhs.get();
+
+                if (this->failure()) {
+                    m_error = true;
+                    return *this;
+                }
+
+                if (rhs.failure()) {
+                    m_error = true;
+                    return *this;
+                }
+
+                m_error = false;
+                return *this;
+            }
+        }
+
+        /// @brief the r-value version of this function is not supported
+        [[maybe_unused]] constexpr auto
+        operator^=(safe_integral<value_type> const &rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
+
+        /// <!-- description -->
+        ///   @brief Returns *this ^= rhs.
+        ///   @include safe_integral/example_safe_integral_assign_xor.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam U Used to ensure the provided integer is the same as
+        ///     T, effectively preventing implicit conversions from being
+        ///     allowed.
+        ///   @param rhs the value to xor *this by
+        ///   @return Returns *this ^= rhs.
+        ///
+        template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
+        [[maybe_unused]] constexpr auto
+        operator^=(U const rhs) &noexcept -> safe_integral<value_type> &
+        {
+            if constexpr (is_signed<value_type>::value) {
+                static_assert(always_false<value_type>(), "signed xor not supported");
+            }
+            else {
+                m_val ^= rhs;
+
+                if (this->failure()) {
+                    m_error = true;
+                    return *this;
+                }
+
+                m_error = false;
+                return *this;
+            }
+        }
+
+        /// @brief the r-value version of this function is not supported
+        template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
+        [[maybe_unused]] constexpr auto operator^=(U const rhs) const &&noexcept
+            -> safe_integral<value_type> & = delete;
 
         /// <!-- description -->
         ///   @brief Returns ++(*this). If this operation results in
@@ -806,14 +1480,15 @@ namespace bsl
         ///     an error (e.g., overflow, wrapping, etc.), the result of
         ///     this operation is undefined, and get() will always return 0.
         ///
-        [[maybe_unused]] constexpr safe_integral<value_type> &
-        operator++() noexcept
+        [[maybe_unused]] constexpr auto
+        operator++() &noexcept -> safe_integral<value_type> &
         {
-            bool const err{builtin_add_overflow(m_val, one().get(), &m_val)};
-
-            m_error = m_error || err;
-            return *this;
+            return *this += one();
         }
+
+        /// @brief the r-value version of this function is not supported
+        [[maybe_unused]] constexpr auto operator++() const &&noexcept
+            -> safe_integral<value_type> & = delete;
 
         /// <!-- description -->
         ///   @brief Returns --(*this). If this operation results in
@@ -826,14 +1501,15 @@ namespace bsl
         ///     an error (e.g., overflow, wrapping, etc.), the result of
         ///     this operation is undefined, and get() will always return 0.
         ///
-        [[maybe_unused]] constexpr safe_integral<value_type> &
-        operator--() noexcept
+        [[maybe_unused]] constexpr auto
+        operator--() &noexcept -> safe_integral<value_type> &
         {
-            bool const err{builtin_sub_overflow(m_val, one().get(), &m_val)};
-
-            m_error = m_error || err;
-            return *this;
+            return *this -= one();
         }
+
+        /// @brief the r-value version of this function is not supported
+        [[maybe_unused]] constexpr auto operator--() const &&noexcept
+            -> safe_integral<value_type> & = delete;
     };
 
     // -------------------------------------------------------------------------
@@ -854,10 +1530,23 @@ namespace bsl
     ///   @return Returns lhs.get() == rhs.get()
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    operator==(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator==(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
-        return (lhs.get() == rhs.get()) && (!lhs.failure()) && (!rhs.failure());
+        if (lhs.failure()) {
+            return false;
+        }
+
+        if (rhs.failure()) {
+            return false;
+        }
+
+        if constexpr (is_signed<T>::value) {
+            return static_cast<bsl::intmax>(lhs.get()) == static_cast<bsl::intmax>(rhs.get());
+        }
+        else {
+            return static_cast<bsl::uintmax>(lhs.get()) == static_cast<bsl::uintmax>(rhs.get());
+        }
     }
 
     /// <!-- description -->
@@ -874,10 +1563,19 @@ namespace bsl
     ///   @return Returns lhs.get() == rhs
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    operator==(safe_integral<T> const &lhs, T const rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator==(safe_integral<T> const &lhs, T const rhs) noexcept -> bool
     {
-        return (lhs.get() == rhs) && (!lhs.failure());
+        if (lhs.failure()) {
+            return false;
+        }
+
+        if constexpr (is_signed<T>::value) {
+            return static_cast<bsl::intmax>(lhs.get()) == static_cast<bsl::intmax>(rhs);
+        }
+        else {
+            return static_cast<bsl::uintmax>(lhs.get()) == static_cast<bsl::uintmax>(rhs);
+        }
     }
 
     /// <!-- description -->
@@ -894,10 +1592,19 @@ namespace bsl
     ///   @return Returns lhs == rhs.get()
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    operator==(T const lhs, safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator==(T const lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
-        return (lhs == rhs.get()) && (!rhs.failure());
+        if (rhs.failure()) {
+            return false;
+        }
+
+        if constexpr (is_signed<T>::value) {
+            return static_cast<bsl::intmax>(lhs) == static_cast<bsl::intmax>(rhs.get());
+        }
+        else {
+            return static_cast<bsl::uintmax>(lhs) == static_cast<bsl::uintmax>(rhs.get());
+        }
     }
 
     /// <!-- description -->
@@ -914,8 +1621,8 @@ namespace bsl
     ///   @return Returns lhs.get() != rhs.get()
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    operator!=(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator!=(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
         return !(lhs == rhs);
     }
@@ -934,8 +1641,8 @@ namespace bsl
     ///   @return Returns lhs.get() != rhs
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    operator!=(safe_integral<T> const &lhs, T const rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator!=(safe_integral<T> const &lhs, T const rhs) noexcept -> bool
     {
         return !(lhs == rhs);
     }
@@ -954,8 +1661,8 @@ namespace bsl
     ///   @return Returns lhs != rhs.get()
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    operator!=(T const lhs, safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator!=(T const lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
         return !(lhs == rhs);
     }
@@ -974,10 +1681,23 @@ namespace bsl
     ///   @return Returns lhs.get() < rhs.get()
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    operator<(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator<(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
-        return (lhs.get() < rhs.get()) && (!lhs.failure()) && (!rhs.failure());
+        if (lhs.failure()) {
+            return false;
+        }
+
+        if (rhs.failure()) {
+            return false;
+        }
+
+        if constexpr (is_signed<T>::value) {
+            return static_cast<bsl::intmax>(lhs.get()) < static_cast<bsl::intmax>(rhs.get());
+        }
+        else {
+            return static_cast<bsl::uintmax>(lhs.get()) < static_cast<bsl::uintmax>(rhs.get());
+        }
     }
 
     /// <!-- description -->
@@ -994,10 +1714,19 @@ namespace bsl
     ///   @return Returns lhs.get() < rhs
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    operator<(safe_integral<T> const &lhs, T const rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator<(safe_integral<T> const &lhs, T const rhs) noexcept -> bool
     {
-        return (lhs.get() < rhs) && (!lhs.failure());
+        if (lhs.failure()) {
+            return false;
+        }
+
+        if constexpr (is_signed<T>::value) {
+            return static_cast<bsl::intmax>(lhs.get()) < static_cast<bsl::intmax>(rhs);
+        }
+        else {
+            return static_cast<bsl::uintmax>(lhs.get()) < static_cast<bsl::uintmax>(rhs);
+        }
     }
 
     /// <!-- description -->
@@ -1014,70 +1743,19 @@ namespace bsl
     ///   @return Returns lhs < rhs.get()
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    operator<(T const lhs, safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator<(T const lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
-        return (lhs < rhs.get()) && (!rhs.failure());
-    }
+        if (rhs.failure()) {
+            return false;
+        }
 
-    /// <!-- description -->
-    ///   @brief Returns lhs.get() <= rhs.get().Will always return false,
-    ///     even when comparing to 0 if the safe_integral parameters have
-    ///     encountered an error.
-    ///   @include safe_integral/example_safe_integral_lt_equals.hpp
-    ///   @related bsl::safe_integral
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the integral type to encapsulate.
-    ///   @param lhs the left hand side of the operator
-    ///   @param rhs the right hand side of the operator
-    ///   @return Returns lhs.get() <= rhs.get()
-    ///
-    template<typename T>
-    [[nodiscard]] constexpr bool
-    operator<=(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept
-    {
-        return (lhs.get() <= rhs.get()) && (!lhs.failure()) && (!rhs.failure());
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns lhs.get() <= rhs. Will always return false,
-    ///     even when comparing to 0 if the safe_integral parameters have
-    ///     encountered an error.
-    ///   @include safe_integral/example_safe_integral_lt_equals.hpp
-    ///   @related bsl::safe_integral
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the integral type to encapsulate.
-    ///   @param lhs the left hand side of the operator
-    ///   @param rhs the right hand side of the operator
-    ///   @return Returns lhs.get() <= rhs
-    ///
-    template<typename T>
-    [[nodiscard]] constexpr bool
-    operator<=(safe_integral<T> const &lhs, T const rhs) noexcept
-    {
-        return (lhs.get() <= rhs) && (!lhs.failure());
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns lhs <= rhs.get(). Will always return false,
-    ///     even when comparing to 0 if the safe_integral parameters have
-    ///     encountered an error.
-    ///   @include safe_integral/example_safe_integral_lt_equals.hpp
-    ///   @related bsl::safe_integral
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the integral type to encapsulate.
-    ///   @param lhs the left hand side of the operator
-    ///   @param rhs the right hand side of the operator
-    ///   @return Returns lhs <= rhs.get()
-    ///
-    template<typename T>
-    [[nodiscard]] constexpr bool
-    operator<=(T const lhs, safe_integral<T> const &rhs) noexcept
-    {
-        return (lhs <= rhs.get()) && (!rhs.failure());
+        if constexpr (is_signed<T>::value) {
+            return static_cast<bsl::intmax>(lhs) < static_cast<bsl::intmax>(rhs.get());
+        }
+        else {
+            return static_cast<bsl::uintmax>(lhs) < static_cast<bsl::uintmax>(rhs.get());
+        }
     }
 
     /// <!-- description -->
@@ -1094,10 +1772,23 @@ namespace bsl
     ///   @return Returns lhs.get() > rhs.get()
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    operator>(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator>(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
-        return (lhs.get() > rhs.get()) && (!lhs.failure()) && (!rhs.failure());
+        if (lhs.failure()) {
+            return false;
+        }
+
+        if (rhs.failure()) {
+            return false;
+        }
+
+        if constexpr (is_signed<T>::value) {
+            return static_cast<bsl::intmax>(lhs.get()) > static_cast<bsl::intmax>(rhs.get());
+        }
+        else {
+            return static_cast<bsl::uintmax>(lhs.get()) > static_cast<bsl::uintmax>(rhs.get());
+        }
     }
 
     /// <!-- description -->
@@ -1114,10 +1805,19 @@ namespace bsl
     ///   @return Returns lhs.get() > rhs
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    operator>(safe_integral<T> const &lhs, T const rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator>(safe_integral<T> const &lhs, T const rhs) noexcept -> bool
     {
-        return (lhs.get() > rhs) && (!lhs.failure());
+        if (lhs.failure()) {
+            return false;
+        }
+
+        if constexpr (is_signed<T>::value) {
+            return static_cast<bsl::intmax>(lhs.get()) > static_cast<bsl::intmax>(rhs);
+        }
+        else {
+            return static_cast<bsl::uintmax>(lhs.get()) > static_cast<bsl::uintmax>(rhs);
+        }
     }
 
     /// <!-- description -->
@@ -1134,70 +1834,19 @@ namespace bsl
     ///   @return Returns lhs > rhs.get()
     ///
     template<typename T>
-    [[nodiscard]] constexpr bool
-    operator>(T const lhs, safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator>(T const lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
-        return (lhs > rhs.get()) && (!rhs.failure());
-    }
+        if (rhs.failure()) {
+            return false;
+        }
 
-    /// <!-- description -->
-    ///   @brief Returns lhs.get() >= rhs.get(). Will always return false,
-    ///     even when comparing to 0 if the safe_integral parameters have
-    ///     encountered an error.
-    ///   @include safe_integral/example_safe_integral_gt_equals.hpp
-    ///   @related bsl::safe_integral
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the integral type to encapsulate.
-    ///   @param lhs the left hand side of the operator
-    ///   @param rhs the right hand side of the operator
-    ///   @return Returns lhs.get() >= rhs.get()
-    ///
-    template<typename T>
-    [[nodiscard]] constexpr bool
-    operator>=(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept
-    {
-        return (lhs.get() >= rhs.get()) && (!lhs.failure()) && (!rhs.failure());
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns lhs.get() >= rhs. Will always return false,
-    ///     even when comparing to 0 if the safe_integral parameters have
-    ///     encountered an error.
-    ///   @include safe_integral/example_safe_integral_gt_equals.hpp
-    ///   @related bsl::safe_integral
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the integral type to encapsulate.
-    ///   @param lhs the left hand side of the operator
-    ///   @param rhs the right hand side of the operator
-    ///   @return Returns lhs.get() >= rhs
-    ///
-    template<typename T>
-    [[nodiscard]] constexpr bool
-    operator>=(safe_integral<T> const &lhs, T const rhs) noexcept
-    {
-        return (lhs.get() >= rhs) && (!lhs.failure());
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns lhs >= rhs.get(). Will always return false,
-    ///     even when comparing to 0 if the safe_integral parameters have
-    ///     encountered an error.
-    ///   @include safe_integral/example_safe_integral_gt_equals.hpp
-    ///   @related bsl::safe_integral
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the integral type to encapsulate.
-    ///   @param lhs the left hand side of the operator
-    ///   @param rhs the right hand side of the operator
-    ///   @return Returns lhs >= rhs.get()
-    ///
-    template<typename T>
-    [[nodiscard]] constexpr bool
-    operator>=(T const lhs, safe_integral<T> const &rhs) noexcept
-    {
-        return (lhs >= rhs.get()) && (!rhs.failure());
+        if constexpr (is_signed<T>::value) {
+            return static_cast<bsl::intmax>(lhs) > static_cast<bsl::intmax>(rhs.get());
+        }
+        else {
+            return static_cast<bsl::uintmax>(lhs) > static_cast<bsl::uintmax>(rhs.get());
+        }
     }
 
     // -------------------------------------------------------------------------
@@ -1216,8 +1865,8 @@ namespace bsl
     ///   @return Returns safe_integral<T>{lhs} += rhs
     ///
     template<typename T>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator+(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator+(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept -> safe_integral<T>
     {
         safe_integral<T> tmp{lhs};
         return tmp += rhs;
@@ -1235,8 +1884,8 @@ namespace bsl
     ///   @return Returns lhs + safe_integral<T>{rhs}
     ///
     template<typename T>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator+(safe_integral<T> const &lhs, T const rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator+(safe_integral<T> const &lhs, T const rhs) noexcept -> safe_integral<T>
     {
         return lhs + safe_integral<T>{rhs};
     }
@@ -1253,8 +1902,8 @@ namespace bsl
     ///   @return Returns safe_integral<T>{lhs} + rhs
     ///
     template<typename T>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator+(T const lhs, safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator+(T const lhs, safe_integral<T> const &rhs) noexcept -> safe_integral<T>
     {
         return safe_integral<T>{lhs} + rhs;
     }
@@ -1271,8 +1920,8 @@ namespace bsl
     ///   @return Returns safe_integral<T>{lhs} -= rhs
     ///
     template<typename T>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator-(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator-(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept -> safe_integral<T>
     {
         safe_integral<T> tmp{lhs};
         return tmp -= rhs;
@@ -1290,8 +1939,8 @@ namespace bsl
     ///   @return Returns lhs - safe_integral<T>{rhs}
     ///
     template<typename T>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator-(safe_integral<T> const &lhs, T const rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator-(safe_integral<T> const &lhs, T const rhs) noexcept -> safe_integral<T>
     {
         return lhs - safe_integral<T>{rhs};
     }
@@ -1308,8 +1957,8 @@ namespace bsl
     ///   @return Returns safe_integral<T>{lhs} - rhs
     ///
     template<typename T>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator-(T const lhs, safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator-(T const lhs, safe_integral<T> const &rhs) noexcept -> safe_integral<T>
     {
         return safe_integral<T>{lhs} - rhs;
     }
@@ -1326,8 +1975,8 @@ namespace bsl
     ///   @return Returns safe_integral<T>{lhs} *= rhs
     ///
     template<typename T>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator*(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator*(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept -> safe_integral<T>
     {
         safe_integral<T> tmp{lhs};
         return tmp *= rhs;
@@ -1345,8 +1994,8 @@ namespace bsl
     ///   @return Returns lhs * safe_integral<T>{rhs}
     ///
     template<typename T>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator*(safe_integral<T> const &lhs, T const rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator*(safe_integral<T> const &lhs, T const rhs) noexcept -> safe_integral<T>
     {
         return lhs * safe_integral<T>{rhs};
     }
@@ -1363,8 +2012,8 @@ namespace bsl
     ///   @return Returns safe_integral<T>{lhs} * rhs
     ///
     template<typename T>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator*(T const lhs, safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator*(T const lhs, safe_integral<T> const &rhs) noexcept -> safe_integral<T>
     {
         return safe_integral<T>{lhs} * rhs;
     }
@@ -1381,8 +2030,8 @@ namespace bsl
     ///   @return Returns safe_integral<T>{lhs} /= rhs
     ///
     template<typename T>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator/(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator/(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept -> safe_integral<T>
     {
         safe_integral<T> tmp{lhs};
         return tmp /= rhs;
@@ -1400,8 +2049,8 @@ namespace bsl
     ///   @return Returns lhs / safe_integral<T>{rhs}
     ///
     template<typename T>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator/(safe_integral<T> const &lhs, T const rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator/(safe_integral<T> const &lhs, T const rhs) noexcept -> safe_integral<T>
     {
         return lhs / safe_integral<T>{rhs};
     }
@@ -1418,8 +2067,8 @@ namespace bsl
     ///   @return Returns safe_integral<T>{lhs} / rhs
     ///
     template<typename T>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator/(T const lhs, safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator/(T const lhs, safe_integral<T> const &rhs) noexcept -> safe_integral<T>
     {
         return safe_integral<T>{lhs} / rhs;
     }
@@ -1436,8 +2085,8 @@ namespace bsl
     ///   @return Returns safe_integral<T>{lhs} %= rhs
     ///
     template<typename T>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator%(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator%(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept -> safe_integral<T>
     {
         safe_integral<T> tmp{lhs};
         return tmp %= rhs;
@@ -1455,8 +2104,8 @@ namespace bsl
     ///   @return Returns lhs % safe_integral<T>{rhs}
     ///
     template<typename T>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator%(safe_integral<T> const &lhs, T const rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator%(safe_integral<T> const &lhs, T const rhs) noexcept -> safe_integral<T>
     {
         return lhs % safe_integral<T>{rhs};
     }
@@ -1473,120 +2122,126 @@ namespace bsl
     ///   @return Returns safe_integral<T>{lhs} % rhs
     ///
     template<typename T>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator%(T const lhs, safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator%(T const lhs, safe_integral<T> const &rhs) noexcept -> safe_integral<T>
     {
         return safe_integral<T>{lhs} % rhs;
     }
 
     // -------------------------------------------------------------------------
-    // shirt operators
+    // shift operators
     // -------------------------------------------------------------------------
 
     /// <!-- description -->
-    ///   @brief Returns lhs = (lhs.get() << bits)
-    ///     Only unsigned types are supported due to AUTOSAR.
-    ///   @include safe_integral/example_safe_integral_assign_lshift.hpp
-    ///   @related bsl::safe_integral
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the integral type to encapsulate.
-    ///   @param lhs the left hand side of the operator
-    ///   @param bits the number of bits to shift the integral by
-    ///   @return Returns lhs = (lhs.get() << bits)
-    ///
-    template<
-        typename T,
-        typename U,
-        enable_if_t<is_unsigned<T>::value, bool> = true,
-        enable_if_t<is_unsigned<U>::value, bool> = true>
-    [[maybe_unused]] constexpr safe_integral<T> &
-    operator<<=(safe_integral<T> &lhs, U const bits) noexcept
-    {
-        T tmp{lhs.get()};
-        tmp <<= bits;
-
-        lhs = safe_integral<T>{tmp, lhs.failure()};
-        return lhs;
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns safe_integral<T>{(lhs.get() << bits)}
-    ///     Only unsigned types are supported due to AUTOSAR.
+    ///   @brief Returns safe_integral<T>{lhs} <<= rhs
     ///   @include safe_integral/example_safe_integral_lshift.hpp
     ///   @related bsl::safe_integral
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the integral type to encapsulate.
     ///   @param lhs the left hand side of the operator
-    ///   @param bits the number of bits to shift the integral by
-    ///   @return Returns safe_integral<T>{(lhs.get() << bits)}
+    ///   @param rhs the right hand side of the operator
+    ///   @return Returns safe_integral<T>{lhs} <<= rhs
     ///
-    template<
-        typename T,
-        typename U,
-        enable_if_t<is_unsigned<T>::value, bool> = true,
-        enable_if_t<is_unsigned<U>::value, bool> = true>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator<<(safe_integral<T> const &lhs, U const bits) noexcept
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    operator<<(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept
+        -> safe_integral<T>
     {
-        T tmp{lhs.get()};
-        tmp <<= bits;
-
-        return safe_integral<T>{tmp, lhs.failure()};
+        safe_integral<T> tmp{lhs};
+        return tmp <<= rhs;
     }
 
     /// <!-- description -->
-    ///   @brief Returns lhs = (lhs.get() >> bits)
-    ///     Only unsigned types are supported due to AUTOSAR.
-    ///   @include safe_integral/example_safe_integral_assign_rshift.hpp
+    ///   @brief Returns lhs << safe_integral<T>{rhs}
+    ///   @include safe_integral/example_safe_integral_lshift.hpp
     ///   @related bsl::safe_integral
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the integral type to encapsulate.
     ///   @param lhs the left hand side of the operator
-    ///   @param bits the number of bits to shift the integral by
-    ///   @return Returns lhs = (lhs.get() >> bits)
+    ///   @param rhs the right hand side of the operator
+    ///   @return Returns lhs << safe_integral<T>{rhs}
     ///
-    template<
-        typename T,
-        typename U,
-        enable_if_t<is_unsigned<T>::value, bool> = true,
-        enable_if_t<is_unsigned<U>::value, bool> = true>
-    [[maybe_unused]] constexpr safe_integral<T> &
-    operator>>=(safe_integral<T> &lhs, U const bits) noexcept
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    operator<<(safe_integral<T> const &lhs, T const rhs) noexcept -> safe_integral<T>
     {
-        T tmp{lhs.get()};
-        tmp >>= bits;
-
-        lhs = safe_integral<T>{tmp, lhs.failure()};
-        return lhs;
+        return lhs << safe_integral<T>{rhs};
     }
 
     /// <!-- description -->
-    ///   @brief Returns safe_integral<T>{(lhs.get() >> bits)}
-    ///     Only unsigned types are supported due to AUTOSAR.
+    ///   @brief Returns safe_integral<T>{lhs} << rhs
+    ///   @include safe_integral/example_safe_integral_lshift.hpp
+    ///   @related bsl::safe_integral
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the integral type to encapsulate.
+    ///   @param lhs the left hand side of the operator
+    ///   @param rhs the right hand side of the operator
+    ///   @return Returns safe_integral<T>{lhs} << rhs
+    ///
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    operator<<(T const lhs, safe_integral<T> const &rhs) noexcept -> safe_integral<T>
+    {
+        return safe_integral<T>{lhs} << rhs;
+    }
+
+    /// <!-- description -->
+    ///   @brief Returns safe_integral<T>{lhs} >>= rhs
     ///   @include safe_integral/example_safe_integral_rshift.hpp
     ///   @related bsl::safe_integral
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the integral type to encapsulate.
     ///   @param lhs the left hand side of the operator
-    ///   @param bits the number of bits to shift the integral by
-    ///   @return Returns safe_integral<T>{(lhs.get() >> bits)}
+    ///   @param rhs the right hand side of the operator
+    ///   @return Returns safe_integral<T>{lhs} >>= rhs
     ///
-    template<
-        typename T,
-        typename U,
-        enable_if_t<is_unsigned<T>::value, bool> = true,
-        enable_if_t<is_unsigned<U>::value, bool> = true>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator>>(safe_integral<T> const &lhs, U const bits) noexcept
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    operator>>(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept
+        -> safe_integral<T>
     {
-        T tmp{lhs.get()};
-        tmp >>= bits;
+        safe_integral<T> tmp{lhs};
+        return tmp >>= rhs;
+    }
 
-        return safe_integral<T>{tmp, lhs.failure()};
+    /// <!-- description -->
+    ///   @brief Returns lhs >> safe_integral<T>{rhs}
+    ///   @include safe_integral/example_safe_integral_rshift.hpp
+    ///   @related bsl::safe_integral
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the integral type to encapsulate.
+    ///   @param lhs the left hand side of the operator
+    ///   @param rhs the right hand side of the operator
+    ///   @return Returns lhs >> safe_integral<T>{rhs}
+    ///
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    operator>>(safe_integral<T> const &lhs, T const rhs) noexcept -> safe_integral<T>
+    {
+        return lhs >> safe_integral<T>{rhs};
+    }
+
+    /// <!-- description -->
+    ///   @brief Returns safe_integral<T>{lhs} >> rhs
+    ///   @include safe_integral/example_safe_integral_rshift.hpp
+    ///   @related bsl::safe_integral
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the integral type to encapsulate.
+    ///   @param lhs the left hand side of the operator
+    ///   @param rhs the right hand side of the operator
+    ///   @return Returns safe_integral<T>{lhs} >> rhs
+    ///
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    operator>>(T const lhs, safe_integral<T> const &rhs) noexcept -> safe_integral<T>
+    {
+        return safe_integral<T>{lhs} >> rhs;
     }
 
     // -------------------------------------------------------------------------
@@ -1594,54 +2249,7 @@ namespace bsl
     // -------------------------------------------------------------------------
 
     /// <!-- description -->
-    ///   @brief Returns lhs = safe_integral<T>{lhs.get() & rhs.get()}
-    ///     Only unsigned types are supported due to AUTOSAR.
-    ///   @include safe_integral/example_safe_integral_assign_and.hpp
-    ///   @related bsl::safe_integral
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the integral type to encapsulate.
-    ///   @param lhs the left hand side of the operator
-    ///   @param rhs the right hand side of the operator
-    ///   @return Returns lhs = safe_integral<T>{lhs.get() & rhs.get()}
-    ///
-    template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
-    [[maybe_unused]] constexpr safe_integral<T> &
-    operator&=(safe_integral<T> &lhs, safe_integral<T> const &rhs) noexcept
-    {
-        T tmp{lhs.get()};
-        tmp &= rhs.get();
-
-        lhs = safe_integral<T>{tmp, lhs.failure() || rhs.failure()};
-        return lhs;
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns lhs = safe_integral<T>{lhs.get() & rhs.get()}
-    ///     Only unsigned types are supported due to AUTOSAR.
-    ///   @include safe_integral/example_safe_integral_assign_and.hpp
-    ///   @related bsl::safe_integral
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the integral type to encapsulate.
-    ///   @param lhs the left hand side of the operator
-    ///   @param rhs the right hand side of the operator
-    ///   @return Returns lhs = safe_integral<T>{lhs.get() & rhs.get()}
-    ///
-    template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
-    [[maybe_unused]] constexpr safe_integral<T> &
-    operator&=(safe_integral<T> &lhs, T const rhs) noexcept
-    {
-        T tmp{lhs.get()};
-        tmp &= rhs;
-
-        lhs = safe_integral<T>{tmp, lhs.failure()};
-        return lhs;
-    }
-
-    /// <!-- description -->
     ///   @brief Returns safe_integral<T>{lhs} &= rhs
-    ///     Only unsigned types are supported due to AUTOSAR.
     ///   @include safe_integral/example_safe_integral_and.hpp
     ///   @related bsl::safe_integral
     ///
@@ -1651,9 +2259,9 @@ namespace bsl
     ///   @param rhs the right hand side of the operator
     ///   @return Returns safe_integral<T>{lhs} &= rhs
     ///
-    template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator&(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    operator&(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept -> safe_integral<T>
     {
         safe_integral<T> tmp{lhs};
         return tmp &= rhs;
@@ -1661,7 +2269,6 @@ namespace bsl
 
     /// <!-- description -->
     ///   @brief Returns lhs & safe_integral<T>{rhs}
-    ///     Only unsigned types are supported due to AUTOSAR.
     ///   @include safe_integral/example_safe_integral_and.hpp
     ///   @related bsl::safe_integral
     ///
@@ -1671,16 +2278,15 @@ namespace bsl
     ///   @param rhs the right hand side of the operator
     ///   @return Returns lhs & safe_integral<T>{rhs}
     ///
-    template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator&(safe_integral<T> const &lhs, T const rhs) noexcept
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    operator&(safe_integral<T> const &lhs, T const rhs) noexcept -> safe_integral<T>
     {
         return lhs & safe_integral<T>{rhs};
     }
 
     /// <!-- description -->
     ///   @brief Returns safe_integral<T>{lhs} & rhs
-    ///     Only unsigned types are supported due to AUTOSAR.
     ///   @include safe_integral/example_safe_integral_and.hpp
     ///   @related bsl::safe_integral
     ///
@@ -1690,62 +2296,15 @@ namespace bsl
     ///   @param rhs the right hand side of the operator
     ///   @return Returns safe_integral<T>{lhs} & rhs
     ///
-    template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator&(T const lhs, safe_integral<T> const &rhs) noexcept
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    operator&(T const lhs, safe_integral<T> const &rhs) noexcept -> safe_integral<T>
     {
         return safe_integral<T>{lhs} & rhs;
     }
 
     /// <!-- description -->
-    ///   @brief Returns lhs = safe_integral<T>{lhs.get() | rhs.get()}
-    ///     Only unsigned types are supported due to AUTOSAR.
-    ///   @include safe_integral/example_safe_integral_assign_or.hpp
-    ///   @related bsl::safe_integral
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the integral type to encapsulate.
-    ///   @param lhs the left hand side of the operator
-    ///   @param rhs the right hand side of the operator
-    ///   @return Returns lhs = safe_integral<T>{lhs.get() | rhs.get()}
-    ///
-    template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
-    [[maybe_unused]] constexpr safe_integral<T> &
-    operator|=(safe_integral<T> &lhs, safe_integral<T> const &rhs) noexcept
-    {
-        T tmp{lhs.get()};
-        tmp |= rhs.get();
-
-        lhs = safe_integral<T>{tmp, lhs.failure() || rhs.failure()};
-        return lhs;
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns lhs = safe_integral<T>{lhs.get() | rhs.get()}
-    ///     Only unsigned types are supported due to AUTOSAR.
-    ///   @include safe_integral/example_safe_integral_assign_or.hpp
-    ///   @related bsl::safe_integral
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the integral type to encapsulate.
-    ///   @param lhs the left hand side of the operator
-    ///   @param rhs the right hand side of the operator
-    ///   @return Returns lhs = safe_integral<T>{lhs.get() | rhs.get()}
-    ///
-    template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
-    [[maybe_unused]] constexpr safe_integral<T> &
-    operator|=(safe_integral<T> &lhs, T const rhs) noexcept
-    {
-        T tmp{lhs.get()};
-        tmp |= rhs;
-
-        lhs = safe_integral<T>{tmp, lhs.failure()};
-        return lhs;
-    }
-
-    /// <!-- description -->
     ///   @brief Returns safe_integral<T>{lhs} |= rhs
-    ///     Only unsigned types are supported due to AUTOSAR.
     ///   @include safe_integral/example_safe_integral_or.hpp
     ///   @related bsl::safe_integral
     ///
@@ -1753,11 +2312,11 @@ namespace bsl
     ///   @tparam T the integral type to encapsulate.
     ///   @param lhs the left hand side of the operator
     ///   @param rhs the right hand side of the operator
-    ///   @return Returns lhs = safe_integral<T>{lhs} |= rhs
+    ///   @return Returns safe_integral<T>{lhs} |= rhs
     ///
-    template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator|(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    operator|(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept -> safe_integral<T>
     {
         safe_integral<T> tmp{lhs};
         return tmp |= rhs;
@@ -1765,7 +2324,6 @@ namespace bsl
 
     /// <!-- description -->
     ///   @brief Returns lhs | safe_integral<T>{rhs}
-    ///     Only unsigned types are supported due to AUTOSAR.
     ///   @include safe_integral/example_safe_integral_or.hpp
     ///   @related bsl::safe_integral
     ///
@@ -1773,18 +2331,17 @@ namespace bsl
     ///   @tparam T the integral type to encapsulate.
     ///   @param lhs the left hand side of the operator
     ///   @param rhs the right hand side of the operator
-    ///   @return Returns lhs = lhs | safe_integral<T>{rhs}
+    ///   @return Returns lhs | safe_integral<T>{rhs}
     ///
-    template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator|(safe_integral<T> const &lhs, T const rhs) noexcept
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    operator|(safe_integral<T> const &lhs, T const rhs) noexcept -> safe_integral<T>
     {
         return lhs | safe_integral<T>{rhs};
     }
 
     /// <!-- description -->
     ///   @brief Returns safe_integral<T>{lhs} | rhs
-    ///     Only unsigned types are supported due to AUTOSAR.
     ///   @include safe_integral/example_safe_integral_or.hpp
     ///   @related bsl::safe_integral
     ///
@@ -1792,64 +2349,17 @@ namespace bsl
     ///   @tparam T the integral type to encapsulate.
     ///   @param lhs the left hand side of the operator
     ///   @param rhs the right hand side of the operator
-    ///   @return Returns lhs = safe_integral<T>{lhs} | rhs
+    ///   @return Returns safe_integral<T>{lhs} | rhs
     ///
-    template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator|(T const lhs, safe_integral<T> const &rhs) noexcept
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    operator|(T const lhs, safe_integral<T> const &rhs) noexcept -> safe_integral<T>
     {
         return safe_integral<T>{lhs} | rhs;
     }
 
     /// <!-- description -->
-    ///   @brief Returns lhs = safe_integral<T>{lhs.get() ^ rhs.get()}
-    ///     Only unsigned types are supported due to AUTOSAR.
-    ///   @include safe_integral/example_safe_integral_assign_xor.hpp
-    ///   @related bsl::safe_integral
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the integral type to encapsulate.
-    ///   @param lhs the left hand side of the operator
-    ///   @param rhs the right hand side of the operator
-    ///   @return Returns lhs = safe_integral<T>{lhs.get() ^ rhs.get()}
-    ///
-    template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
-    [[maybe_unused]] constexpr safe_integral<T> &
-    operator^=(safe_integral<T> &lhs, safe_integral<T> const &rhs) noexcept
-    {
-        T tmp{lhs.get()};
-        tmp ^= rhs.get();
-
-        lhs = safe_integral<T>{tmp, lhs.failure() || rhs.failure()};
-        return lhs;
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns lhs = safe_integral<T>{lhs.get() ^ rhs.get()}
-    ///     Only unsigned types are supported due to AUTOSAR.
-    ///   @include safe_integral/example_safe_integral_assign_xor.hpp
-    ///   @related bsl::safe_integral
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the integral type to encapsulate.
-    ///   @param lhs the left hand side of the operator
-    ///   @param rhs the right hand side of the operator
-    ///   @return Returns lhs = safe_integral<T>{lhs.get() ^ rhs.get()}
-    ///
-    template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
-    [[maybe_unused]] constexpr safe_integral<T> &
-    operator^=(safe_integral<T> &lhs, T const rhs) noexcept
-    {
-        T tmp{lhs.get()};
-        tmp ^= rhs;
-
-        lhs = safe_integral<T>{tmp, lhs.failure()};
-        return lhs;
-    }
-
-    /// <!-- description -->
     ///   @brief Returns safe_integral<T>{lhs} ^= rhs
-    ///     Only unsigned types are supported due to AUTOSAR.
     ///   @include safe_integral/example_safe_integral_xor.hpp
     ///   @related bsl::safe_integral
     ///
@@ -1859,9 +2369,9 @@ namespace bsl
     ///   @param rhs the right hand side of the operator
     ///   @return Returns safe_integral<T>{lhs} ^= rhs
     ///
-    template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator^(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    operator^(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept -> safe_integral<T>
     {
         safe_integral<T> tmp{lhs};
         return tmp ^= rhs;
@@ -1869,7 +2379,6 @@ namespace bsl
 
     /// <!-- description -->
     ///   @brief Returns lhs ^ safe_integral<T>{rhs}
-    ///     Only unsigned types are supported due to AUTOSAR.
     ///   @include safe_integral/example_safe_integral_xor.hpp
     ///   @related bsl::safe_integral
     ///
@@ -1879,16 +2388,15 @@ namespace bsl
     ///   @param rhs the right hand side of the operator
     ///   @return Returns lhs ^ safe_integral<T>{rhs}
     ///
-    template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator^(safe_integral<T> const &lhs, T const rhs) noexcept
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    operator^(safe_integral<T> const &lhs, T const rhs) noexcept -> safe_integral<T>
     {
         return lhs ^ safe_integral<T>{rhs};
     }
 
     /// <!-- description -->
     ///   @brief Returns safe_integral<T>{lhs} ^ rhs
-    ///     Only unsigned types are supported due to AUTOSAR.
     ///   @include safe_integral/example_safe_integral_xor.hpp
     ///   @related bsl::safe_integral
     ///
@@ -1898,28 +2406,26 @@ namespace bsl
     ///   @param rhs the right hand side of the operator
     ///   @return Returns safe_integral<T>{lhs} ^ rhs
     ///
-    template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator^(T const lhs, safe_integral<T> const &rhs) noexcept
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    operator^(T const lhs, safe_integral<T> const &rhs) noexcept -> safe_integral<T>
     {
         return safe_integral<T>{lhs} ^ rhs;
     }
 
     /// <!-- description -->
-    ///   @brief Returns safe_integral<T>::max() ^ rhs. Only unsigned types
-    ///     are supported.
+    ///   @brief Returns ~rhs.
     ///   @include safe_integral/example_safe_integral_complement.hpp
     ///   @related bsl::safe_integral
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the integral type to encapsulate.
     ///   @param rhs the right hand side of the operator
-    ///   @return Returns safe_integral<T>::max() ^ rhs. Only unsigned types
-    ///     are supported.
+    ///   @return Returns ~rhs.
     ///
     template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator~(safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator~(safe_integral<T> const &rhs) noexcept -> safe_integral<T>
     {
         return safe_integral<T>::max() ^ rhs;
     }
@@ -1929,22 +2435,18 @@ namespace bsl
     // -------------------------------------------------------------------------
 
     /// <!-- description -->
-    ///   @brief Returns safe_integral<T>::zero() - rhs; Only Signed types
-    ///     are supported, and if the value equals the types minimum value
-    ///     this operation results in an error due to overflow.
+    ///   @brief Returns -rhs.
     ///   @include safe_integral/example_safe_integral_unary.hpp
     ///   @related bsl::safe_integral
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the integral type to encapsulate.
     ///   @param rhs the right hand side of the operator
-    ///   @return Returns safe_integral<T>::zero() - rhs; Only Signed types
-    ///     are supported, and if the value equals the types minimum value
-    ///     this operation results in an error due to overflow.
+    ///   @return Returns -rhs.
     ///
     template<typename T, enable_if_t<is_signed<T>::value, bool> = true>
-    [[nodiscard]] constexpr safe_integral<T>
-    operator-(safe_integral<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator-(safe_integral<T> const &rhs) noexcept -> safe_integral<T>
     {
         return safe_integral<T>::zero() - rhs;
     }

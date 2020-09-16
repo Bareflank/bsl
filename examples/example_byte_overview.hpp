@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_byte_overview() noexcept
     {
-        bsl::byte const mybyte{static_cast<bsl::uint8>(42)};
+        constexpr bsl::byte mybyte{static_cast<bsl::uint8>(42)};
         bsl::print() << "success: " << mybyte.to_integer();
     }
 }

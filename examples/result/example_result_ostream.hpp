@@ -33,9 +33,7 @@ namespace bsl
     inline void
     example_result_ostream() noexcept
     {
-        constexpr bool val{true};
-        bsl::result<bool> const res{val};
-
+        constexpr bsl::result<bool> res{true};
         bsl::print() << res << bsl::endl;
     }
 }

@@ -121,7 +121,6 @@ macro(bf_add_info NAME)
         COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=RELEASE      compile in release mode${BF_COLOR_RST}"
         COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=DEBUG        compile in debug mode${BF_COLOR_RST}"
         COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=CLANG_TIDY   compile with Clang Tidy checks${BF_COLOR_RST}"
-        COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=PERFORCE     compile with Perforce checks${BF_COLOR_RST}"
         COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=ASAN         compile with Google ASAN${BF_COLOR_RST}"
         COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=UBSAN        compile with Google UBSAN${BF_COLOR_RST}"
         COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=CODECOV      compile with LLVM coverage${BF_COLOR_RST}"

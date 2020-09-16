@@ -36,8 +36,11 @@ namespace bsl
         bool val{true};
         bsl::result<bool> const res{bsl::move(val)};
 
-        if (auto const *const ptr = res.get_if()) {
-            bsl::print() << "success: " << *ptr << bsl::endl;
+        if (nullptr != res.get_if()) {
+            bsl::print() << "success: " << *res.get_if() << bsl::endl;
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

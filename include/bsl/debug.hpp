@@ -30,31 +30,29 @@
 
 #include "details/out_type_alert.hpp"
 #include "details/out_type_debug.hpp"
-#include "details/out_type_empty.hpp"
 #include "details/out_type_error.hpp"
 #include "details/out_type_print.hpp"
+#include "details/out_type.hpp"
 #include "details/out.hpp"
 
 #include "char_type.hpp"
-#include "conditional.hpp"
 #include "cstdint.hpp"
 #include "fmt.hpp"
+#include "safe_integral.hpp"
 
 namespace bsl
 {
     /// @brief defines "-v" verbose mode
-    constexpr bsl::uintmax v{1U};
+    constexpr bsl::uintmax V{static_cast<bsl::uintmax>(1)};
     /// @brief defines "-vv" verbose mode
-    constexpr bsl::uintmax vv{2U};
+    constexpr bsl::uintmax VV{static_cast<bsl::uintmax>(2)};
     /// @brief defines "-vvv" verbose mode
-    constexpr bsl::uintmax vvv{3U};
+    constexpr bsl::uintmax VVV{static_cast<bsl::uintmax>(3)};
 
     /// @brief newline constant
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
     constexpr bsl::char_type endl{'\n'};
-
-    /// @brief used to disable debugging for debug() and alert()
-    template<bsl::uintmax DL, typename T>
-    using out_t = conditional_t<DL <= BSL_DEBUG_LEVEL, out<T>, out<details::out_type_empty>>;
 
     namespace details
     {
@@ -67,8 +65,8 @@ namespace bsl
         ///   @return Returns the current thread id
         ///
         template<typename T = void>
-        [[nodiscard]] constexpr safe_uintmax
-        thread_id() noexcept
+        [[nodiscard]] constexpr auto
+        thread_id() noexcept -> safe_uintmax
         {
             return safe_uintmax::zero();
         }
@@ -86,8 +84,8 @@ namespace bsl
     /// <!-- inputs/outputs -->
     ///   @return Returns and instance of bsl::out<T>
     ///
-    [[nodiscard]] constexpr out<details::out_type_print>
-    print() noexcept
+    [[nodiscard]] constexpr auto
+    print() noexcept -> out<details::out_type_print>
     {
         return {};
     }
@@ -102,13 +100,16 @@ namespace bsl
     ///   @include debug/example_debug_debug.hpp
     ///
     /// <!-- inputs/outputs -->
+    ///   @tparam DL the debug level for this out statement
     ///   @return Returns and instance of bsl::out<T>
     ///
-    template<bsl::uintmax DL = 0>
-    [[nodiscard]] constexpr out_t<DL, details::out_type_debug>
-    debug() noexcept
+    template<bsl::uintmax DL = static_cast<bsl::uintmax>(0)>
+    [[nodiscard]] constexpr auto
+    debug() noexcept -> details::out_type<DL, details::out_type_debug>
     {
-        out_t<DL, details::out_type_debug> o{};
+        // False positive
+        // NOLINTNEXTLINE(cppcoreguidelines-init-variables)
+        details::out_type<DL, details::out_type_debug> o{};
 
         if constexpr (!o) {
             return o;
@@ -128,13 +129,16 @@ namespace bsl
     ///   @include debug/example_debug_alert.hpp
     ///
     /// <!-- inputs/outputs -->
+    ///   @tparam DL the debug level for this out statement
     ///   @return Returns and instance of bsl::out<T>
     ///
-    template<bsl::uintmax DL = 0>
-    [[nodiscard]] constexpr out_t<DL, details::out_type_alert>
-    alert() noexcept
+    template<bsl::uintmax DL = static_cast<bsl::uintmax>(0)>
+    [[nodiscard]] constexpr auto
+    alert() noexcept -> details::out_type<DL, details::out_type_alert>
     {
-        out_t<DL, details::out_type_alert> o{};
+        // False positive
+        // NOLINTNEXTLINE(cppcoreguidelines-init-variables)
+        details::out_type<DL, details::out_type_alert> o{};
 
         if constexpr (!o) {
             return o;
@@ -156,12 +160,14 @@ namespace bsl
     /// <!-- inputs/outputs -->
     ///   @return Returns and instance of bsl::out<T>
     ///
-    [[nodiscard]] constexpr out<details::out_type_error>
-    error() noexcept
+    [[nodiscard]] constexpr auto
+    error() noexcept -> out<details::out_type_error>
     {
+        // False positive
+        // NOLINTNEXTLINE(cppcoreguidelines-init-variables)
         out<details::out_type_error> o{};
-        o << '[' << bsl::cyan << details::thread_id() << bsl::reset_color << "]: ";
 
+        o << '[' << bsl::cyan << details::thread_id() << bsl::reset_color << "]: ";
         return o;
     }
 }

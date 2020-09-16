@@ -27,48 +27,56 @@
 
 #include "invoke_impl_base.hpp"
 
-namespace bsl
+namespace bsl::details
 {
-    namespace details
-    {
-        /// @class bsl::details::invoke_impl
-        ///
-        /// <!-- description -->
-        ///   @brief The "invoke" function is implemented by executing the
-        ///     "call" function from invoke_impl. The invoke_impl class uses
-        ///     SFINAE to figure out which invoke_impl_xxx function to inherit
-        ///     from. If the compiler can find a valid invoke_impl_xxx, it will
-        ///     inherit from it, otherwise, it will pick the default invoke_impl
-        ///     implementation which is an empty class (i.e., it does not
-        ///     provide a call function). This will either result in a compiler
-        ///     error, or an SFINAE substitution error, which is used to
-        ///     implement is_invocable, which is why invoke is implemented
-        ///     using class logic instead of a constexpr-if statement as
-        ///     documented by cppreference.
-        ///
-        template<typename FUNC, typename... TN>
-        class invoke_impl final : public invoke_impl_base<FUNC, void>
-        {};
+    /// @class bsl::details::invoke_impl
+    ///
+    /// <!-- description -->
+    ///   @brief The "invoke" function is implemented by executing the
+    ///     "call" function from invoke_impl. The invoke_impl class uses
+    ///     SFINAE to figure out which invoke_impl_xxx function to inherit
+    ///     from. If the compiler can find a valid invoke_impl_xxx, it will
+    ///     inherit from it, otherwise, it will pick the default invoke_impl
+    ///     implementation which is an empty class (i.e., it does not
+    ///     provide a call function). This will either result in a compiler
+    ///     error, or an SFINAE substitution error, which is used to
+    ///     implement is_invocable, which is why invoke is implemented
+    ///     using class logic instead of a constexpr-if statement as
+    ///     documented by cppreference.
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam FUNC the type that defines the function being called
+    ///   @tparam TN the types that define the arguments passed to the
+    ///     provided function when called.
+    ///
+    template<typename FUNC, typename... TN>
+    class invoke_impl final : public invoke_impl_base<FUNC, void>
+    {};
 
-        /// @class bsl::details::invoke_impl
-        ///
-        /// <!-- description -->
-        ///   @brief The "invoke" function is implemented by executing the
-        ///     "call" function from invoke_impl. The invoke_impl class uses
-        ///     SFINAE to figure out which invoke_impl_xxx function to inherit
-        ///     from. If the compiler can find a valid invoke_impl_xxx, it will
-        ///     inherit from it, otherwise, it will pick the default invoke_impl
-        ///     implementation which is an empty class (i.e., it does not
-        ///     provide a call function). This will either result in a compiler
-        ///     error, or an SFINAE substitution error, which is used to
-        ///     implement is_invocable, which is why invoke is implemented
-        ///     using class logic instead of a constexpr-if statement as
-        ///     documented by cppreference.
-        ///
-        template<typename FUNC, typename T1, typename... TN>
-        class invoke_impl<FUNC, T1, TN...> final : public invoke_impl_base<FUNC, T1>
-        {};
-    }
+    /// @class bsl::details::invoke_impl
+    ///
+    /// <!-- description -->
+    ///   @brief The "invoke" function is implemented by executing the
+    ///     "call" function from invoke_impl. The invoke_impl class uses
+    ///     SFINAE to figure out which invoke_impl_xxx function to inherit
+    ///     from. If the compiler can find a valid invoke_impl_xxx, it will
+    ///     inherit from it, otherwise, it will pick the default invoke_impl
+    ///     implementation which is an empty class (i.e., it does not
+    ///     provide a call function). This will either result in a compiler
+    ///     error, or an SFINAE substitution error, which is used to
+    ///     implement is_invocable, which is why invoke is implemented
+    ///     using class logic instead of a constexpr-if statement as
+    ///     documented by cppreference.
+    ///
+    ///   @tparam FUNC the type that defines the function being called
+    ///   @tparam T1 the types that define the first argument passed to the
+    ///     provided function when called.
+    ///   @tparam TN the types that define the rest of the arguments passed to
+    ///     the provided function when called.
+    ///
+    template<typename FUNC, typename T1, typename... TN>
+    class invoke_impl<FUNC, T1, TN...> final : public invoke_impl_base<FUNC, T1>
+    {};
 }
 
 #endif

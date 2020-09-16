@@ -34,8 +34,11 @@ namespace bsl
     inline void
     example_remove_reference_overview() noexcept
     {
-        if (bsl::is_same<bsl::remove_reference_t<bool &>, bool>::value) {
+        if constexpr (bsl::is_same<bsl::remove_reference_t<bool &>, bool>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

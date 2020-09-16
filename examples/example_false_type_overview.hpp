@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_false_type_overview() noexcept
     {
-        if (!bsl::false_type::value) {
+        if constexpr (!bsl::false_type::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

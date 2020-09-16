@@ -40,12 +40,14 @@ namespace bsl
     ///     OP<ARGS...>;
     ///   - Otherwise, value_t is an alias for bsl::false_type and type is
     ///     an alias for DEFAULT.
-    template<class Default, template<class...> class Op, class... Args>
-    using detected_or = details::detector<Default, void, Op, Args...>;
-
-    /// @brief a helper that reduces the verbosity of bsl::detected_or
-    template<typename Default, template<class...> class Op, typename... Args>
-    using detected_or_t = typename details::detector<Default, void, Op, Args...>::type;
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam DEFAULT the type to return if detection fails.
+    ///   @tparam OP the operation to use for detection
+    ///   @tparam ARGS the arguments to provide OP
+    ///
+    template<typename DEFAULT, template<class...> class OP, typename... ARGS>
+    using detected_or = details::detector<DEFAULT, void, OP, ARGS...>;
 }
 
 #endif

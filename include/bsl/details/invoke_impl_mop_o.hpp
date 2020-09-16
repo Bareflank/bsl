@@ -27,93 +27,101 @@
 
 #include "../forward.hpp"
 
-namespace bsl
+namespace bsl::details
 {
-    namespace details
+    /// @class bsl::details::invoke_impl_mop_o
+    ///
+    /// <!-- description -->
+    ///   @brief The "invoke" function is implemented by executing the
+    ///     "call" function from invoke_impl. The invoke_impl class uses
+    ///     SFINAE to figure out which invoke_impl_xxx function to inherit
+    ///     from. If the compiler can find a valid invoke_impl_xxx, like
+    ///     possibly this class, it will inherit from it, otherwise, it
+    ///     will pick the default invoke_impl implementation which is an
+    ///     empty class (i.e., it does not provide a call function). This
+    ///     will either result in a compiler error, or an SFINAE
+    ///     substitution error, which is used to implement is_invocable,
+    ///     which is why invoke is implemented using class logic instead
+    ///     of a constexpr-if statement as documented by cppreference.
+    ///
+    class invoke_impl_mop_o
     {
-        /// @class bsl::details::invoke_impl_mop_o
-        ///
+    public:
         /// <!-- description -->
-        ///   @brief The "invoke" function is implemented by executing the
-        ///     "call" function from invoke_impl. The invoke_impl class uses
-        ///     SFINAE to figure out which invoke_impl_xxx function to inherit
-        ///     from. If the compiler can find a valid invoke_impl_xxx, like
-        ///     possibly this class, it will inherit from it, otherwise, it
-        ///     will pick the default invoke_impl implementation which is an
-        ///     empty class (i.e., it does not provide a call function). This
-        ///     will either result in a compiler error, or an SFINAE
-        ///     substitution error, which is used to implement is_invocable,
-        ///     which is why invoke is implemented using class logic instead
-        ///     of a constexpr-if statement as documented by cppreference.
+        ///   @brief Default constructor
         ///
-        class invoke_impl_mop_o
+        constexpr invoke_impl_mop_o() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief Invokes a member object pointer given a reference to
+        ///     an object.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam FUNC the type that defines the function being called
+        ///   @tparam U the type that defines the class that encapsulates
+        ///     the function being called.
+        ///   @tparam T1 the type that defines the provided object. Note
+        ///     that normally, U == T, but if inheritance is used, it might
+        ///     not which is why U is provided instead of just using T.
+        ///   @param f a pointer to the function being called.
+        ///   @param val1 a reference to the object for which the function is
+        ///     called from.
+        ///   @return Returns the result of calling "f" from "val1" with "tn"
+        ///
+        template<typename FUNC, typename U, typename T1>
+        [[maybe_unused]] static constexpr auto
+        call(FUNC U::*f, T1 &&val1) noexcept(noexcept(bsl::forward<T1>(val1).*f))
+            // Subclass to base conversions are needed here for invoke to work
+            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
+            -> decltype(bsl::forward<T1>(val1).*f)
         {
-        public:
-            /// <!-- description -->
-            ///   @brief Invokes a member object pointer given a reference to
-            ///     an object.
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @tparam FUNC the type that defines the function being called
-            ///   @tparam U the type that defines the class that encapsulates
-            ///     the function being called.
-            ///   @tparam T1 the type that defines the provided object. Note
-            ///     that normally, U == T, but if inheritance is used, it might
-            ///     not which is why U is provided instead of just using T.
-            ///   @param f a pointer to the function being called.
-            ///   @param t1 a reference to the object for which the function is
-            ///     called from.
-            ///   @return Returns the result of calling "f" from "t1" with "tn"
-            ///
-            template<typename FUNC, typename U, typename T1>
-            static constexpr auto
-            call(FUNC U::*f, T1 &&t1) noexcept(noexcept(bsl::forward<T1>(t1).*f))
-                -> decltype(bsl::forward<T1>(t1).*f)
-            {
-                return bsl::forward<T1>(t1).*f;
-            }
+            // Subclass to base conversions are needed here for invoke to work
+            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
+            return bsl::forward<T1>(val1).*f;
+        }
 
-        protected:
-            /// <!-- description -->
-            ///   @brief Destroyes a previously created bsl::invoke_impl_mop_o
-            ///
-            ~invoke_impl_mop_o() noexcept = default;
+    protected:
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::invoke_impl_mop_o
+        ///
+        constexpr ~invoke_impl_mop_o() noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief copy constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///
-            invoke_impl_mop_o(invoke_impl_mop_o const &o) noexcept = default;
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr invoke_impl_mop_o(invoke_impl_mop_o const &o) noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief move constructor
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///
-            invoke_impl_mop_o(invoke_impl_mop_o &&o) noexcept = default;
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr invoke_impl_mop_o(invoke_impl_mop_o &&o) noexcept = default;
 
-            /// <!-- description -->
-            ///   @brief copy assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///   @return a reference to *this
-            ///
-            invoke_impl_mop_o &operator=(invoke_impl_mop_o const &o) &noexcept = default;
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(invoke_impl_mop_o const &o) &noexcept
+            -> invoke_impl_mop_o & = default;
 
-            /// <!-- description -->
-            ///   @brief move assignment
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///   @return a reference to *this
-            ///
-            invoke_impl_mop_o &operator=(invoke_impl_mop_o &&o) &noexcept = default;
-        };
-    }
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(invoke_impl_mop_o &&o) &noexcept
+            -> invoke_impl_mop_o & = default;
+    };
 }
 
 #endif

@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_basic_string_view_max_size() noexcept
     {
-        bsl::basic_string_view<bsl::char_type> const str{"Hello"};
+        constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
         bsl::print() << "max size: " << str.max_size() << bsl::endl;
     }
 }

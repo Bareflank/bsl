@@ -37,8 +37,11 @@ namespace bsl
         constexpr bsl::safe_uint32 val2{42U};
         constexpr bsl::safe_uint32 expected{23U | 42U};
 
-        if ((val1 | val2) == expected) {
+        if constexpr ((val1 | val2) == expected) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

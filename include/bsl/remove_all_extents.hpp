@@ -50,20 +50,28 @@ namespace bsl
     };
 
     /// @brief a helper that reduces the verbosity of bsl::remove_all_extents
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to remove the extent from
+    ///
     template<typename T>
     using remove_all_extents_t = typename remove_all_extents<T>::type;
 
     /// @cond doxygen off
 
     template<typename T>
-    struct remove_all_extents<T[]> final    // NOLINT
+    // This is needed to implement the type traits.
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    struct remove_all_extents<T[]> final
     {
         /// @brief provides the member typedef "type"
         using type = typename remove_all_extents<T>::type;
     };
 
     template<typename T, bsl::uintmax N>
-    struct remove_all_extents<T[N]> final    // NOLINT
+    // This is needed to implement the type traits.
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    struct remove_all_extents<T[N]> final
     {
         /// @brief provides the member typedef "type"
         using type = typename remove_all_extents<T>::type;

@@ -44,11 +44,6 @@
 //   for conversions as well as ensure sizes are provided (where possible).
 //   This means that some of the APIs are our own to ensure there are not
 //   issues with name collisions.
-// - Instead of calling the builtin functions manually, we rely on the
-//   build system to provide the implementation of each of these functions.
-//   This allows you to replace these with your compiler's version, or
-//   with a static answer to analysis if needed (for example, PRQA does
-//   not support these builtins)
 // - Each of these functions has safety added to them to ensure crashing is
 //   not possible.
 // - All function arguments are sent to bsl::discard to ensure you can replace
@@ -67,19 +62,23 @@ namespace bsl
     ///   @param count the total number of bytes to compare
     ///   @return Returns the same result as std::strncmp.
     ///
-    [[nodiscard]] inline constexpr safe_int32
+    [[nodiscard]] inline constexpr auto
     builtin_strncmp(cstr_type const lhs, cstr_type const rhs, safe_uintmax const &count) noexcept
+        -> safe_int32
     {
-        if ((nullptr == lhs) || (nullptr == rhs) || count.is_zero()) {
+        if (nullptr == lhs) {
             return to_i32(0);
         }
 
-        if constexpr (BSL_PERFORCE) {
+        if (nullptr == rhs) {
             return to_i32(0);
         }
-        else {
-            return to_i32(__builtin_strncmp(lhs, rhs, count.get()));
+
+        if (count.is_zero()) {
+            return to_i32(0);
         }
+
+        return to_i32(__builtin_strncmp(lhs, rhs, count.get()));
     }
 
     /// <!-- description -->
@@ -90,19 +89,14 @@ namespace bsl
     ///   @param str a pointer to a string to get the length of
     ///   @return Returns the same result as std::strlen.
     ///
-    [[nodiscard]] inline constexpr safe_uintmax
-    builtin_strlen(cstr_type const str) noexcept
+    [[nodiscard]] inline constexpr auto
+    builtin_strlen(cstr_type const str) noexcept -> safe_uintmax
     {
         if (nullptr == str) {
             return to_umax(0);
         }
 
-        if constexpr (BSL_PERFORCE) {
-            return to_umax(0);
-        }
-        else {
-            return to_umax(__builtin_strlen(str));
-        }
+        return to_umax(__builtin_strlen(str));
     }
 
     /// <!-- description -->
@@ -115,20 +109,20 @@ namespace bsl
     ///   @param count the total number of character in str to search through
     ///   @return Returns the same result as std::strnchr.
     ///
-    [[nodiscard]] inline constexpr cstr_type
+    [[nodiscard]] inline constexpr auto
     builtin_strnchr(cstr_type const str, char_type const ch, safe_uintmax const &count) noexcept
+        -> cstr_type
     {
-        if ((nullptr == str) || count.is_zero()) {
+        if (nullptr == str) {
             return nullptr;
         }
 
-        if constexpr (BSL_PERFORCE) {
+        if (count.is_zero()) {
             return nullptr;
         }
-        else {
-            safe_uintmax len{to_umax(__builtin_strlen(str))};
-            return __builtin_char_memchr(str, ch, count.min(len + to_umax(1)).get());
-        }
+
+        safe_uintmax len{to_umax(__builtin_strlen(str))};
+        return __builtin_char_memchr(str, ch, count.min(len + safe_uintmax::one()).get());
     }
 }
 

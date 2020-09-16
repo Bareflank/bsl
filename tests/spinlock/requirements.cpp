@@ -23,38 +23,34 @@
 /// SOFTWARE.
 
 #include <bsl/spinlock.hpp>
-#include <bsl/is_pod.hpp>
 #include <bsl/ut.hpp>
 
 namespace
 {
-    bsl::spinlock const pod{};
+    constinit bsl::spinlock const verify_constinit{};
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
-    bsl::ut_scenario{"verify supports global POD"} = []() {
-        bsl::discard(pod);
-        static_assert(is_pod<decltype(pod)>::value);
+    bsl::ut_scenario{"verify supports constinit "} = []() {
+        bsl::discard(verify_constinit);
     };
 
     bsl::ut_scenario{"verify noexcept"} = []() {
         bsl::ut_given{} = []() {
-            spinlock lck{};
+            bsl::spinlock lck{};
             bsl::ut_then{} = []() {
-                static_assert(noexcept(spinlock{}));
-                static_assert(noexcept(spinlock{true}));
+                static_assert(noexcept(bsl::spinlock{}));
+                static_assert(noexcept(bsl::spinlock{true}));
                 static_assert(noexcept(lck.lock()));
                 static_assert(noexcept(lck.try_lock()));
                 static_assert(noexcept(lck.unlock()));

@@ -36,12 +36,18 @@ namespace bsl
         constexpr bsl::safe_int32 val1{42, false};
         constexpr bsl::safe_int32 val2{42, true};
 
-        if (!val1.failure()) {
-            bsl::print() << "success: " << val1 << '\n';
+        if constexpr (!val1.failure()) {
+            bsl::print() << "success: " << val1 << bsl::endl;
+        }
+        else {
+            bsl::error() << "failure\n";
         }
 
-        if (val2.failure()) {
+        if constexpr (val2.failure()) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

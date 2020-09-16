@@ -25,7 +25,6 @@ include(${CMAKE_CURRENT_LIST_DIR}/config/cmake.cmake)
 
 include(${CMAKE_CURRENT_LIST_DIR}/build_types.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/find_programs.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/perforce.cmake)
 
 include(${CMAKE_CURRENT_LIST_DIR}/target/codecov-info.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/target/codecov-upload-ci.cmake)

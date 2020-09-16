@@ -25,82 +25,87 @@
 #include <bsl/reference_wrapper.hpp>
 #include <bsl/ut.hpp>
 
+// TODO: Remove the  from this test so that we can provide a pointer
+//       to a function for the reference wrapper.
+
 namespace
 {
-    [[nodiscard]] constexpr bsl::safe_int32
-    func(bsl::safe_int32 const val) noexcept
+    [[nodiscard]] constexpr auto
+    func(bsl::safe_int32 const val) noexcept -> bsl::safe_int32
     {
         return val;
     }
-}
 
-/// <!-- description -->
-///   @brief Used to execute the actual checks. We put the checks in this
-///     function so that we can validate the tests both at compile-time
-///     and at run-time. If a bsl::ut_check fails, the tests will either
-///     fail fast at run-time, or will produce a compile-time error.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-constexpr bsl::exit_code
-tests() noexcept
-{
-    bsl::ut_scenario{"constructor / get"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 data{};
-            bsl::reference_wrapper rw{data};
-            bsl::ut_when{} = [&rw]() {
-                rw.get() = 42;
+    /// <!-- description -->
+    ///   @brief Used to execute the actual checks. We put the checks in this
+    ///     function so that we can validate the tests both at compile-time
+    ///     and at run-time. If a bsl::ut_check fails, the tests will either
+    ///     fail fast at run-time, or will produce a compile-time error.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @return Always returns bsl::exit_success.
+    ///
+    [[nodiscard]] constexpr auto
+    tests() noexcept -> bsl::exit_code
+    {
+        bsl::ut_scenario{"constructor / get"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 data{};
+                bsl::reference_wrapper rw{data};
+                bsl::ut_when{} = [&rw]() {
+                    rw.get() = 42;
+                    bsl::ut_then{} = [&rw]() {
+                        bsl::ut_check(rw.get() == 42);
+                    };
+                };
+            };
+        };
+
+        bsl::ut_scenario{"const constructor / get"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 const data{42};
+                bsl::reference_wrapper rw{data};
                 bsl::ut_then{} = [&rw]() {
                     bsl::ut_check(rw.get() == 42);
                 };
             };
         };
-    };
 
-    bsl::ut_scenario{"const constructor / get"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 const data{42};
-            bsl::reference_wrapper rw{data};
-            bsl::ut_then{} = [&rw]() {
-                bsl::ut_check(rw.get() == 42);
+        bsl::ut_scenario{"invoke"} = []() {
+            bsl::ut_given{} = []() {
+                // BUG: Need to figure out why we cannot use & here
+                // NOLINTNEXTLINE(bsl-function-name-use)
+                bsl::reference_wrapper rw{func};
+                bsl::ut_then{} = [&rw]() {
+                    bsl::ut_check(rw(bsl::to_i32(42)) == 42);
+                };
             };
         };
-    };
 
-    bsl::ut_scenario{"invoke"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::reference_wrapper rw{func};
-            bsl::ut_then{} = [&rw]() {
-                bsl::ut_check(rw(bsl::to_i32(42)) == 42);
+        bsl::ut_scenario{"output doesn't crash"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 const data{42};
+                bsl::reference_wrapper rw{data};
+                bsl::ut_then{} = [&rw]() {
+                    bsl::debug() << rw << '\n';
+                };
             };
         };
-    };
 
-    bsl::ut_scenario{"output doesn't crash"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 const data{42};
-            bsl::reference_wrapper rw{data};
-            bsl::ut_then{} = [&rw]() {
-                bsl::debug() << rw << '\n';
-            };
-        };
-    };
-
-    return bsl::ut_success();
+        return bsl::ut_success();
+    }
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     static_assert(tests() == bsl::ut_success());
     return tests();

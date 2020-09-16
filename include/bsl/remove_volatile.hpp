@@ -28,6 +28,8 @@
 #ifndef BSL_REMOVE_VOLATILE_HPP
 #define BSL_REMOVE_VOLATILE_HPP
 
+#include "always_false.hpp"
+
 namespace bsl
 {
     /// @class bsl::remove_volatile
@@ -53,6 +55,10 @@ namespace bsl
     };
 
     /// @brief a helper that reduces the verbosity of bsl::remove_volatile
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to remove the const qualifier from
+    ///
     template<typename T>
     using remove_volatile_t = typename remove_volatile<T>::type;
 
@@ -61,7 +67,7 @@ namespace bsl
     template<typename T>
     struct remove_volatile<T volatile> final
     {
-        static_assert(sizeof(T) != sizeof(T), "volatile not supported");    // NOLINT
+        static_assert(always_false<T>(), "volatile not supported");
 
         /// @brief provides the member typedef "type"
         using type = T;

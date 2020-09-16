@@ -26,36 +26,47 @@
 #include <bsl/ut.hpp>
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
+    // clang-format off
 
-    static_assert(extent<bool>::value == 0);
-    static_assert(extent<bool, 0>::value == 0);
-    static_assert(extent<bool, 1>::value == 0);
-    static_assert(extent<bool, 2>::value == 0);
+    static_assert(bsl::extent<bool>::value == static_cast<bsl::uintmax>(0));
+    static_assert(bsl::extent<bool, static_cast<bsl::uintmax>(0)>::value == static_cast<bsl::uintmax>(0));
+    static_assert(bsl::extent<bool, static_cast<bsl::uintmax>(1)>::value == static_cast<bsl::uintmax>(0));
+    static_assert(bsl::extent<bool, static_cast<bsl::uintmax>(2)>::value == static_cast<bsl::uintmax>(0));
 
-    static_assert(extent<bool[]>::value == 0);          // NOLINT
-    static_assert(extent<bool[], 0>::value == 0);       // NOLINT
-    static_assert(extent<bool[][4]>::value == 0);       // NOLINT
-    static_assert(extent<bool[][4], 0>::value == 0);    // NOLINT
-    static_assert(extent<bool[][4], 1>::value == 4);    // NOLINT
-    static_assert(extent<bool[][4], 2>::value == 0);    // NOLINT
-
-    static_assert(extent<bool[2]>::value == 2);          // NOLINT
-    static_assert(extent<bool[2], 0>::value == 2);       // NOLINT
-    static_assert(extent<bool[2][4]>::value == 2);       // NOLINT
-    static_assert(extent<bool[2][4], 0>::value == 2);    // NOLINT
-    static_assert(extent<bool[2][4], 1>::value == 4);    // NOLINT
-    static_assert(extent<bool[2][4], 2>::value == 0);    // NOLINT
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(bsl::extent<bool[]>::value == static_cast<bsl::uintmax>(0));
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(bsl::extent<bool[], static_cast<bsl::uintmax>(0)>::value == static_cast<bsl::uintmax>(0));
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(bsl::extent<bool[][4]>::value == static_cast<bsl::uintmax>(0));
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(bsl::extent<bool[][4], static_cast<bsl::uintmax>(0)>::value == static_cast<bsl::uintmax>(0));
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(bsl::extent<bool[][4], static_cast<bsl::uintmax>(1)>::value == static_cast<bsl::uintmax>(4));
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(bsl::extent<bool[][4], static_cast<bsl::uintmax>(2)>::value == static_cast<bsl::uintmax>(0));
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(bsl::extent<bool[2]>::value == static_cast<bsl::uintmax>(2));
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(bsl::extent<bool[2], static_cast<bsl::uintmax>(0)>::value == static_cast<bsl::uintmax>(2));
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(bsl::extent<bool[2][4]>::value == static_cast<bsl::uintmax>(2));
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(bsl::extent<bool[2][4], static_cast<bsl::uintmax>(0)>::value == static_cast<bsl::uintmax>(2));
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(bsl::extent<bool[2][4], static_cast<bsl::uintmax>(1)>::value == static_cast<bsl::uintmax>(4));
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(bsl::extent<bool[2][4], static_cast<bsl::uintmax>(2)>::value == static_cast<bsl::uintmax>(0));
 
     return bsl::ut_success();
 }

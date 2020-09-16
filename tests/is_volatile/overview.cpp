@@ -25,31 +25,68 @@
 #include <bsl/is_volatile.hpp>
 #include <bsl/ut.hpp>
 
+#include <bsl/cstddef.hpp>
+#include <bsl/cstdint.hpp>
+#include <bsl/reference_wrapper.hpp>
+
+#include "../class_abstract.hpp"
+#include "../class_base.hpp"
+#include "../class_deleted.hpp"
+#include "../class_empty.hpp"
+#include "../class_except.hpp"
+#include "../class_nodefault.hpp"
+#include "../class_pod.hpp"
+#include "../class_subclass.hpp"
+#include "../enum_empty.hpp"
+#include "../struct_empty.hpp"
+#include "../union_empty.hpp"
+
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
+    static_assert(!bsl::is_volatile<bsl::nullptr_t>::value);
+    static_assert(!bsl::is_volatile<void>::value);
+    static_assert(!bsl::is_volatile<bool>::value);
+    static_assert(!bsl::is_volatile<bool const>::value);
+    static_assert(!bsl::is_volatile<bsl::int32>::value);
+    static_assert(!bsl::is_volatile<bsl::uint32>::value);
+    static_assert(!bsl::is_volatile<bool &>::value);
+    static_assert(!bsl::is_volatile<bool const &>::value);
+    static_assert(!bsl::is_volatile<bool &&>::value);
+    static_assert(!bsl::is_volatile<bool *>::value);
+    static_assert(!bsl::is_volatile<bool *const>::value);
+    static_assert(!bsl::is_volatile<bool const *>::value);
+    static_assert(!bsl::is_volatile<bool const *const>::value);
+    static_assert(!bsl::is_volatile<bool(bool)>::value);
+    static_assert(!bsl::is_volatile<bool (*)(bool)>::value);
+    static_assert(!bsl::is_volatile<bool test::class_base::*>::value);
+    static_assert(!bsl::is_volatile<bool (test::class_base::*)()>::value);
+    static_assert(!bsl::is_volatile<bsl::reference_wrapper<bool>>::value);
 
-    // Note:
-    //
-    // The following test cases work if you take out the asserts. We only have
-    // these to ensure we are hitting all of the cases where volatile might
-    // be used. BSL does not support the use of volatile.
-    //
+    static_assert(!bsl::is_volatile<test::class_abstract>::value);
+    static_assert(!bsl::is_volatile<test::class_base>::value);
+    static_assert(!bsl::is_volatile<test::class_deleted>::value);
+    static_assert(!bsl::is_volatile<test::class_empty>::value);
+    static_assert(!bsl::is_volatile<test::class_except>::value);
+    static_assert(!bsl::is_volatile<test::class_nodefault>::value);
+    static_assert(!bsl::is_volatile<test::class_pod>::value);
+    static_assert(!bsl::is_volatile<test::class_subclass>::value);
+    static_assert(!bsl::is_volatile<test::enum_empty>::value);
+    static_assert(!bsl::is_volatile<test::struct_empty>::value);
+    static_assert(!bsl::is_volatile<test::union_empty>::value);
 
-    // static_assert(is_volatile<bool volatile>::value);
-    // static_assert(is_volatile<bool const volatile>::value);
-
-    static_assert(!is_volatile<bool>::value);
-    static_assert(!is_volatile<bool const>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(!bsl::is_volatile<bool[]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(!bsl::is_volatile<bool[1]>::value);
 
     return bsl::ut_success();
 }

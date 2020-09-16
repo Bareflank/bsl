@@ -33,10 +33,13 @@ namespace bsl
     inline void
     example_basic_string_view_find() noexcept
     {
-        bsl::basic_string_view<bsl::char_type> const str{"Hello World"};
+        constexpr bsl::basic_string_view<bsl::char_type> str{"Hello World"};
 
-        if (str.find("Hello").is_pos()) {
+        if constexpr (str.find("World").is_pos()) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

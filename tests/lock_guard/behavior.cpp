@@ -26,59 +26,62 @@
 #include <bsl/spinlock.hpp>
 #include <bsl/ut.hpp>
 
-/// <!-- description -->
-///   @brief Used to execute the actual checks. We put the checks in this
-///     function so that we can validate the tests both at compile-time
-///     and at run-time. If a bsl::ut_check fails, the tests will either
-///     fail fast at run-time, or will produce a compile-time error.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-constexpr bsl::exit_code
-tests() noexcept
+namespace
 {
-    bsl::ut_scenario{"general"} = []() {
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::spinlock sl{};
-            bsl::ut_when{} = [&sl]() {
-                bsl::lock_guard lock{sl};
-                bsl::ut_then{} = [&sl]() {
-                    bsl::ut_check(!sl.try_lock());
+    /// <!-- description -->
+    ///   @brief Used to execute the actual checks. We put the checks in this
+    ///     function so that we can validate the tests both at compile-time
+    ///     and at run-time. If a bsl::ut_check fails, the tests will either
+    ///     fail fast at run-time, or will produce a compile-time error.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @return Always returns bsl::exit_success.
+    ///
+    [[nodiscard]] constexpr auto
+    tests() noexcept -> bsl::exit_code
+    {
+        bsl::ut_scenario{"general"} = []() {
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::spinlock sl{};
+                bsl::ut_when{} = [&sl]() {
+                    bsl::lock_guard lock{sl};
+                    bsl::ut_then{} = [&sl]() {
+                        bsl::ut_check(!sl.try_lock());
+                    };
                 };
-            };
-            bsl::ut_then{} = [&sl]() {
-                bsl::ut_check(sl.try_lock());
-            };
-        };
-
-        bsl::ut_given_at_runtime{} = []() {
-            bsl::spinlock sl{};
-            bsl::ut_when{} = [&sl]() {
-                bsl::lock_guard lock{sl, bsl::adopt_lock};
                 bsl::ut_then{} = [&sl]() {
                     bsl::ut_check(sl.try_lock());
                 };
             };
-            bsl::ut_then{} = [&sl]() {
-                bsl::ut_check(sl.try_lock());
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::spinlock sl{};
+                bsl::ut_when{} = [&sl]() {
+                    bsl::lock_guard lock{sl, bsl::adopt_lock};
+                    bsl::ut_then{} = [&sl]() {
+                        bsl::ut_check(sl.try_lock());
+                    };
+                };
+                bsl::ut_then{} = [&sl]() {
+                    bsl::ut_check(sl.try_lock());
+                };
             };
         };
-    };
 
-    return bsl::ut_success();
+        return bsl::ut_success();
+    }
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     static_assert(tests() == bsl::ut_success());
     return tests();

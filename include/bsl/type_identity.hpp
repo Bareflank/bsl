@@ -47,6 +47,10 @@ namespace bsl
     };
 
     /// @brief a helper that reduces the verbosity of bsl::type_identity
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type that defines the member typedef "type"
+    ///
     template<typename T>
     using type_identity_t = typename type_identity<T>::type;
 }

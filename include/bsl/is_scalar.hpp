@@ -29,6 +29,7 @@
 #define BSL_IS_SCALAR_HPP
 
 #include "bool_constant.hpp"
+#include "disjunction.hpp"
 #include "is_arithmetic.hpp"
 #include "is_enum.hpp"
 #include "is_pointer.hpp"
@@ -50,12 +51,12 @@ namespace bsl
     ///
     template<typename T>
     class is_scalar final :
-        public bool_constant<                 // --
-            is_arithmetic<T>::value ||        // --
-            is_enum<T>::value ||              // --
-            is_pointer<T>::value ||           // --
-            is_member_pointer<T>::value ||    // --
-            is_null_pointer<T>::value>
+        public bool_constant<disjunction<
+            is_arithmetic<T>,
+            is_enum<T>,
+            is_pointer<T>,
+            is_member_pointer<T>,
+            is_null_pointer<T>>::value>
     {};
 }
 

@@ -25,97 +25,98 @@
 #include <bsl/basic_string_view.hpp>
 #include <bsl/ut.hpp>
 
-/// <!-- description -->
-///   @brief Used to execute the actual checks. We put the checks in this
-///     function so that we can validate the tests both at compile-time
-///     and at run-time. If a bsl::ut_check fails, the tests will either
-///     fail fast at run-time, or will produce a compile-time error.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-constexpr bsl::exit_code
-tests() noexcept
+namespace
 {
-    using namespace bsl;
+    /// <!-- description -->
+    ///   @brief Used to execute the actual checks. We put the checks in this
+    ///     function so that we can validate the tests both at compile-time
+    ///     and at run-time. If a bsl::ut_check fails, the tests will either
+    ///     fail fast at run-time, or will produce a compile-time error.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @return Always returns bsl::exit_success.
+    ///
+    [[nodiscard]] constexpr auto
+    tests() noexcept -> bsl::exit_code
+    {
+        bsl::ut_scenario{"starts_with"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::basic_string_view<bsl::char_type> const msg{};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.starts_with(bsl::basic_string_view<bsl::char_type>{}));
+                };
 
-    bsl::ut_scenario{"starts_with"} = []() {
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.starts_with(basic_string_view<char_type>{}));
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(!msg.starts_with(bsl::basic_string_view<bsl::char_type>{"Hell"}));
+                };
+
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(!msg.starts_with(bsl::basic_string_view<bsl::char_type>{"ello"}));
+                };
+
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(!msg.starts_with('H'));
+                };
+
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(!msg.starts_with('e'));
+                };
+
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(!msg.starts_with("Hell"));
+                };
+
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(!msg.starts_with("ello"));
+                };
             };
 
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(!msg.starts_with(basic_string_view<char_type>{"Hell"}));
-            };
+            bsl::ut_given{} = []() {
+                bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.starts_with(bsl::basic_string_view<bsl::char_type>{}));
+                };
 
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(!msg.starts_with(basic_string_view<char_type>{"ello"}));
-            };
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.starts_with(bsl::basic_string_view<bsl::char_type>{"Hell"}));
+                };
 
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(!msg.starts_with('H'));
-            };
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(!msg.starts_with(bsl::basic_string_view<bsl::char_type>{"ello"}));
+                };
 
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(!msg.starts_with('e'));
-            };
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.starts_with('H'));
+                };
 
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(!msg.starts_with("Hell"));
-            };
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(!msg.starts_with('e'));
+                };
 
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(!msg.starts_with("ello"));
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.starts_with("Hell"));
+                };
+
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(!msg.starts_with("ello"));
+                };
             };
         };
 
-        bsl::ut_given{} = []() {
-            basic_string_view<char_type> const msg{"Hello"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.starts_with(basic_string_view<char_type>{}));
-            };
-
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.starts_with(basic_string_view<char_type>{"Hell"}));
-            };
-
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(!msg.starts_with(basic_string_view<char_type>{"ello"}));
-            };
-
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.starts_with('H'));
-            };
-
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(!msg.starts_with('e'));
-            };
-
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(msg.starts_with("Hell"));
-            };
-
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(!msg.starts_with("ello"));
-            };
-        };
-    };
-
-    return bsl::ut_success();
+        return bsl::ut_success();
+    }
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     static_assert(tests() == bsl::ut_success());
     return tests();

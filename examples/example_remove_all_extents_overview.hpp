@@ -34,8 +34,13 @@ namespace bsl
     inline void
     example_remove_all_extents_overview() noexcept
     {
-        if (bsl::is_same<bsl::remove_all_extents_t<bool[]>, bool>::value) {    // NOLINT
+        // This is needed to demonstrate how to use this type trait
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+        if constexpr (bsl::is_same<bsl::remove_all_extents_t<bool[]>, bool>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

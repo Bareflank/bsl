@@ -33,16 +33,22 @@ namespace bsl
     inline void
     example_result_not_equals() noexcept
     {
-        bsl::result<bool> const res1{bsl::in_place, true};
-        bsl::result<bool> const res2{bsl::in_place, false};
-        bsl::result<bool> const res3{bsl::errc_failure};
+        constexpr bsl::result<bool> res1{bsl::in_place, true};
+        constexpr bsl::result<bool> res2{bsl::in_place, false};
+        constexpr bsl::result<bool> res3{bsl::errc_failure};
 
-        if (res1 != res2) {
+        if constexpr (res1 != res2) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
 
-        if (res1 != res3) {
+        if constexpr (res1 != res3) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

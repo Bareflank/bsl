@@ -42,10 +42,11 @@ namespace bsl
     ///
     /// <!-- template parameters -->
     ///   @tparam T the type to query
+    ///   @tparam ARGS the types of arguments to pass to the constructor
     ///
-    template<typename T, typename... Args>
+    template<typename T, typename... ARGS>
     class is_nothrow_constructible final :    // --
-        public bool_constant<__is_nothrow_constructible(T, Args...)>
+        public bool_constant<__is_nothrow_constructible(T, ARGS...)>
     {};
 }
 

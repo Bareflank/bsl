@@ -37,6 +37,7 @@
 #include "../is_signed.hpp"
 #include "../is_integral.hpp"
 #include "../safe_integral.hpp"
+#include "../touch.hpp"
 
 namespace bsl
 {
@@ -54,19 +55,21 @@ namespace bsl
     ///     fmt support for their own types.
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam OUT the type of out (i.e., debug, alert, etc)
+    ///   @tparam OUT_T the type of out (i.e., debug, alert, etc)
+    ///   @tparam T the type of integral to output
     ///   @param o the instance of out<T> to output to
     ///   @param ops ops the fmt options used to format the output
     ///   @param val the integral being outputted
     ///
-    template<typename OUT, typename T>
-    constexpr void
-    fmt_impl(OUT &&o, fmt_options const &ops, safe_integral<T> const &val) noexcept
+    template<typename OUT_T, typename T>
+    constexpr auto
+    fmt_impl(OUT_T &&o, fmt_options const &ops, safe_integral<T> const &val) noexcept -> void
     {
         if (!val) {
-            details::fmt_impl_align_pre(o, ops, to_umax(7), true);
+            constexpr safe_uintmax len_error{to_umax(7)};
+            details::fmt_impl_align_pre(o, ops, len_error, true);
             o.write("[error]");
-            details::fmt_impl_align_suf(o, ops, to_umax(7), true);
+            details::fmt_impl_align_suf(o, ops, len_error, true);
             return;
         }
 
@@ -75,15 +78,15 @@ namespace bsl
             case fmt_type::fmt_type_d:
             case fmt_type::fmt_type_x:
             case fmt_type::fmt_type_default: {
-                fmt_impl_integral(bsl::forward<OUT>(o), ops, val);
+                fmt_impl_integral(bsl::forward<OUT_T>(o), ops, val);
                 break;
             }
 
             case fmt_type::fmt_type_c:
             case fmt_type::fmt_type_s: {
-                details::fmt_impl_align_pre(o, ops, to_umax(1), true);
+                details::fmt_impl_align_pre(o, ops, safe_uintmax::one(), true);
                 o.write(static_cast<char_type>(val.get()));
-                details::fmt_impl_align_suf(o, ops, to_umax(1), true);
+                details::fmt_impl_align_suf(o, ops, safe_uintmax::one(), true);
                 break;
             }
         }
@@ -103,29 +106,30 @@ namespace bsl
     ///     fmt support for their own types.
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam OUT the type of out (i.e., debug, alert, etc)
+    ///   @tparam OUT_T the type of out (i.e., debug, alert, etc)
+    ///   @tparam T the type of integral to output
     ///   @param o the instance of out<T> to output to
     ///   @param ops ops the fmt options used to format the output
     ///   @param val the integral being outputted
     ///
-    template<typename OUT, typename T, enable_if_t<is_integral<T>::value, bool> = true>
-    constexpr void
-    fmt_impl(OUT &&o, fmt_options const &ops, T const val) noexcept
+    template<typename OUT_T, typename T, enable_if_t<is_integral<T>::value, bool> = true>
+    constexpr auto
+    fmt_impl(OUT_T &&o, fmt_options const &ops, T const val) noexcept -> void
     {
         switch (ops.type()) {
             case fmt_type::fmt_type_b:
             case fmt_type::fmt_type_d:
             case fmt_type::fmt_type_x:
             case fmt_type::fmt_type_default: {
-                fmt_impl_integral(bsl::forward<OUT>(o), ops, convert<T>(val));
+                fmt_impl_integral(bsl::forward<OUT_T>(o), ops, convert<T>(val));
                 break;
             }
 
             case fmt_type::fmt_type_c:
             case fmt_type::fmt_type_s: {
-                details::fmt_impl_align_pre(o, ops, to_umax(1), true);
+                details::fmt_impl_align_pre(o, ops, safe_uintmax::one(), true);
                 o.write(static_cast<char_type>(val));
-                details::fmt_impl_align_suf(o, ops, to_umax(1), true);
+                details::fmt_impl_align_suf(o, ops, safe_uintmax::one(), true);
                 break;
             }
         }
@@ -143,8 +147,8 @@ namespace bsl
     ///   @return return o
     ///
     template<typename T1, typename T2>
-    [[maybe_unused]] constexpr out<T1>
-    operator<<(out<T1> const o, safe_integral<T2> const &val) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T1> const o, safe_integral<T2> const &val) noexcept -> out<T1>
     {
         if constexpr (!o) {
             return o;
@@ -164,9 +168,12 @@ namespace bsl
             if (val.is_neg()) {
                 o.write('-');
             }
+            else {
+                bsl::touch();
+            }
 
-            for (safe_uintmax i{info.num}; i.is_pos(); --i) {
-                o.write(info.buf[(i - safe_uintmax::one()).get()]);    // NOLINT
+            for (safe_uintmax i{info.digits}; i.is_pos(); --i) {
+                o.write(*info.buf.at_if(i - safe_uintmax::one()));
             }
         }
 
@@ -185,8 +192,8 @@ namespace bsl
     ///   @return return o
     ///
     template<typename T1, typename T2, enable_if_t<is_integral<T2>::value, bool> = true>
-    [[maybe_unused]] constexpr out<T1>
-    operator<<(out<T1> const o, T2 const val) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T1> const o, T2 const val) noexcept -> out<T1>
     {
         if constexpr (!o) {
             return o;
@@ -195,7 +202,7 @@ namespace bsl
         details::fmt_impl_integral_info<T2> const info{
             details::get_integral_info(nullops, convert<T2>(val))};
 
-        if (val == static_cast<T2>(0)) {
+        if (static_cast<bsl::uintmax>(val) == static_cast<bsl::uintmax>(0)) {
             o.write('0');
         }
         else {
@@ -203,10 +210,13 @@ namespace bsl
                 if (val < static_cast<T2>(0)) {
                     o.write('-');
                 }
+                else {
+                    bsl::touch();
+                }
             }
 
-            for (safe_uintmax i{info.num}; i.is_pos(); --i) {
-                o.write(info.buf[(i - safe_uintmax::one()).get()]);    // NOLINT
+            for (safe_uintmax i{info.digits}; i.is_pos(); --i) {
+                o.write(*info.buf.at_if(i - safe_uintmax::one()));
             }
         }
 

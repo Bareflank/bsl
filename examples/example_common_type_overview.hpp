@@ -40,8 +40,11 @@ namespace bsl
         using example_common_type =    // --
             bsl::common_type_t<example_class_base, example_class_subclass>;
 
-        if (is_same<example_common_type, example_class_base>::value) {
+        if constexpr (is_same<example_common_type, example_class_base>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

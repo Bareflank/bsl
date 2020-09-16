@@ -37,8 +37,11 @@ namespace bsl
         bsl::result<bool> res2{bsl::errc_failure};
 
         res2 = bsl::move(res1);
-        if (auto const *const ptr = res2.get_if()) {
-            bsl::print() << "success: " << *ptr << bsl::endl;
+        if (nullptr != res2.get_if()) {
+            bsl::print() << "success: " << *res2.get_if() << bsl::endl;
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

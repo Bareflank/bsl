@@ -34,8 +34,11 @@ namespace bsl
     inline void
     example_remove_cvref_overview() noexcept
     {
-        if (bsl::is_same<bsl::remove_cvref_t<bool const &>, bool>::value) {
+        if constexpr (bsl::is_same<bsl::remove_cvref_t<bool const &>, bool>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

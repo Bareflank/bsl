@@ -48,6 +48,10 @@ namespace bsl
     };
 
     /// @brief a helper that reduces the verbosity of bsl::remove_reference
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to remove the reference from
+    ///
     template<typename T>
     using remove_reference_t = typename remove_reference<T>::type;
 

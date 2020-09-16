@@ -50,6 +50,12 @@ namespace bsl
     };
 
     /// @brief a helper that reduces the verbosity of bsl::conditional
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam B the conditional parameter
+    ///   @tparam T the type to return if B is true
+    ///   @tparam F the type to return if B is false
+    ///
     template<bool B, typename T, typename F>
     using conditional_t = typename conditional<B, T, F>::type;
 

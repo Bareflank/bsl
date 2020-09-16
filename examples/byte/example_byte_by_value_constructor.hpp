@@ -33,12 +33,15 @@ namespace bsl
     inline void
     example_byte_by_value_constructor() noexcept
     {
-        constexpr bsl::uint8 val{0x10U};
-        constexpr bsl::uint8 expected{0x10U};
+        constexpr bsl::safe_uint8 val{bsl::to_u8(0x10)};
+        constexpr bsl::safe_uint8 expected{bsl::to_u8(0x10)};
 
-        bsl::byte const b{val};
-        if (b.to_integer() == expected) {
+        constexpr bsl::byte b{val.get()};
+        if constexpr (b.to_integer() == expected) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

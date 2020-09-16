@@ -35,8 +35,11 @@ namespace bsl
     inline void
     example_invoke_overview() noexcept
     {
-        if (bsl::invoke(example_function, true)) {
+        if constexpr (bsl::invoke(&example_function, true)) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

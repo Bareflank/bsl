@@ -25,21 +25,22 @@
 #include <bsl/span.hpp>
 #include <bsl/array.hpp>
 #include <bsl/discard.hpp>
-#include <bsl/is_pod.hpp>
 #include <bsl/ut.hpp>
 
 namespace
 {
-    bsl::span<bool> const pod{};
+    constinit bsl::span<bool> const verify_constinit{};
 
+    // Needed for requirements testing
+    // NOLINTNEXTLINE(bsl-user-defined-type-names-match-header-name)
     class fixture_t final
     {
-        bsl::array<bool, 5> arr{};
+        bsl::array<bool, static_cast<bsl::uintmax>(5)> arr{};
         bsl::span<bool> spn{arr.data(), arr.size()};
 
     public:
-        [[nodiscard]] constexpr bool
-        test_member_const() const
+        [[nodiscard]] constexpr auto
+        test_member_const() const noexcept -> bool
         {
             bsl::discard(spn.at_if(bsl::to_umax(0)));
             bsl::discard(spn.front_if());
@@ -47,16 +48,16 @@ namespace
             bsl::discard(spn.data());
             bsl::discard(spn.begin());
             bsl::discard(spn.cbegin());
-            bsl::discard(spn.end());
-            bsl::discard(spn.cend());
             bsl::discard(spn.iter(bsl::to_umax(0)));
             bsl::discard(spn.citer(bsl::to_umax(0)));
+            bsl::discard(spn.end());
+            bsl::discard(spn.cend());
             bsl::discard(spn.rbegin());
             bsl::discard(spn.crbegin());
-            bsl::discard(spn.rend());
-            bsl::discard(spn.crend());
             bsl::discard(spn.riter(bsl::to_umax(0)));
             bsl::discard(spn.criter(bsl::to_umax(0)));
+            bsl::discard(spn.rend());
+            bsl::discard(spn.crend());
             bsl::discard(spn.empty());
             bsl::discard(!!spn);
             bsl::discard(spn.size());
@@ -69,8 +70,8 @@ namespace
             return true;
         }
 
-        [[nodiscard]] constexpr bool
-        test_member_nonconst()
+        [[nodiscard]] constexpr auto
+        test_member_nonconst() noexcept -> bool
         {
             bsl::discard(spn.at_if(bsl::to_umax(0)));
             bsl::discard(spn.front_if());
@@ -78,16 +79,16 @@ namespace
             bsl::discard(spn.data());
             bsl::discard(spn.begin());
             bsl::discard(spn.cbegin());
-            bsl::discard(spn.end());
-            bsl::discard(spn.cend());
             bsl::discard(spn.iter(bsl::to_umax(0)));
             bsl::discard(spn.citer(bsl::to_umax(0)));
+            bsl::discard(spn.end());
+            bsl::discard(spn.cend());
             bsl::discard(spn.rbegin());
             bsl::discard(spn.crbegin());
-            bsl::discard(spn.rend());
-            bsl::discard(spn.crend());
             bsl::discard(spn.riter(bsl::to_umax(0)));
             bsl::discard(spn.criter(bsl::to_umax(0)));
+            bsl::discard(spn.rend());
+            bsl::discard(spn.crend());
             bsl::discard(spn.empty());
             bsl::discard(!!spn);
             bsl::discard(spn.size());
@@ -105,21 +106,18 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
-    bsl::ut_scenario{"verify supports global POD"} = []() {
-        bsl::discard(pod);
-        static_assert(is_pod<decltype(pod)>::value);
+    bsl::ut_scenario{"verify supports constinit "} = []() {
+        bsl::discard(verify_constinit);
     };
 
     bsl::ut_scenario{"verify noexcept"} = []() {
@@ -133,16 +131,16 @@ main() noexcept
                 static_assert(noexcept(spn1.data()));
                 static_assert(noexcept(spn1.begin()));
                 static_assert(noexcept(spn1.cbegin()));
-                static_assert(noexcept(spn1.end()));
-                static_assert(noexcept(spn1.cend()));
                 static_assert(noexcept(spn1.iter(bsl::to_umax(0))));
                 static_assert(noexcept(spn1.citer(bsl::to_umax(0))));
+                static_assert(noexcept(spn1.end()));
+                static_assert(noexcept(spn1.cend()));
                 static_assert(noexcept(spn1.rbegin()));
                 static_assert(noexcept(spn1.crbegin()));
-                static_assert(noexcept(spn1.rend()));
-                static_assert(noexcept(spn1.crend()));
                 static_assert(noexcept(spn1.riter(bsl::to_umax(0))));
                 static_assert(noexcept(spn1.criter(bsl::to_umax(0))));
+                static_assert(noexcept(spn1.rend()));
+                static_assert(noexcept(spn1.crend()));
                 static_assert(noexcept(spn1.empty()));
                 static_assert(noexcept(!!spn1));
                 static_assert(noexcept(spn1.size()));
@@ -167,7 +165,7 @@ main() noexcept
             fixture_t fixture2{};
             bsl::ut_then{} = [&fixture2]() {
                 static_assert(fixture1.test_member_const());
-                ut_check(fixture2.test_member_nonconst());
+                bsl::ut_check(fixture2.test_member_nonconst());
             };
         };
     };

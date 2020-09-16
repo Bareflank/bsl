@@ -53,6 +53,11 @@ namespace bsl
     };
 
     /// @brief a helper that reduces the verbosity of bsl::remove_cvext
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to remove the const, volatile and extent
+    ///     qualifiers from
+    ///
     template<typename T>
     using remove_cvext_t = typename remove_cvext<T>::type;
 }

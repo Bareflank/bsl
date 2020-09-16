@@ -43,8 +43,11 @@ namespace bsl
         constexpr bsl::safe_int32 answer    // --
             {(((((val1 / val2) + val3) % val4) * val5) - val6)};
 
-        if (answer) {
-            bsl::print() << "success: " << answer.get() << '\n';
+        if constexpr (answer) {
+            bsl::print() << "success: " << answer.get() << bsl::endl;
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

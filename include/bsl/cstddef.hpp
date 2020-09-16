@@ -28,10 +28,6 @@
 #ifndef BSL_CSTDDEF_HPP
 #define BSL_CSTDDEF_HPP
 
-namespace bsl
-{
-    /// @brief defines a nullptr type
-    using nullptr_t = decltype(nullptr);
-}
+#include "nullptr_t.hpp"
 
 #endif

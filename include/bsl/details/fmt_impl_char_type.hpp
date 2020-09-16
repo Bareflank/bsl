@@ -49,29 +49,29 @@ namespace bsl
     ///     fmt support for their own types.
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam OUT the type of out (i.e., debug, alert, etc)
+    ///   @tparam OUT_T the type of out (i.e., debug, alert, etc)
     ///   @param o the instance of out<T> to output to
     ///   @param ops ops the fmt options used to format the output
     ///   @param c the character being outputted
     ///
-    template<typename OUT>
-    constexpr void
-    fmt_impl(OUT &&o, fmt_options const &ops, char_type const c) noexcept
+    template<typename OUT_T>
+    constexpr auto
+    fmt_impl(OUT_T &&o, fmt_options const &ops, char_type const c) noexcept -> void
     {
         switch (ops.type()) {
             case fmt_type::fmt_type_b:
             case fmt_type::fmt_type_d:
             case fmt_type::fmt_type_x: {
-                details::fmt_impl_integral(bsl::forward<OUT>(o), ops, to_u8(c));
+                details::fmt_impl_integral(bsl::forward<OUT_T>(o), ops, to_u8(c));
                 break;
             }
 
             case fmt_type::fmt_type_c:
             case fmt_type::fmt_type_s:
             case fmt_type::fmt_type_default: {
-                details::fmt_impl_align_pre(o, ops, to_umax(1), true);
+                details::fmt_impl_align_pre(o, ops, safe_uintmax::one(), true);
                 o.write(c);
-                details::fmt_impl_align_suf(o, ops, to_umax(1), true);
+                details::fmt_impl_align_suf(o, ops, safe_uintmax::one(), true);
                 break;
             }
         }
@@ -88,8 +88,8 @@ namespace bsl
     ///   @return return o
     ///
     template<typename T>
-    [[maybe_unused]] constexpr out<T>
-    operator<<(out<T> const o, char_type const c) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T> const o, char_type const c) noexcept -> out<T>
     {
         if constexpr (!o) {
             return o;

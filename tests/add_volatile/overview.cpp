@@ -28,24 +28,20 @@
 #include <bsl/ut.hpp>
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
     // Note:
-    //
     // The following test cases work if you take out the asserts. We only have
     // these to ensure we are hitting all of the cases where volatile might
     // be used. BSL does not support the use of volatile.
-    //
 
     // static_assert(is_same<add_volatile_t<bool>, bool volatile>::value);
     // static_assert(is_same<add_volatile_t<bool volatile>, bool volatile>::value);

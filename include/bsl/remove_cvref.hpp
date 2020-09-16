@@ -53,6 +53,11 @@ namespace bsl
     };
 
     /// @brief a helper that reduces the verbosity of bsl::remove_cvref
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam T the type to remove the const, volatile and reference
+    ///     qualifiers from
+    ///
     template<typename T>
     using remove_cvref_t = typename remove_cvref<T>::type;
 }

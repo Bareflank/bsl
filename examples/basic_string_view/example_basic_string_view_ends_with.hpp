@@ -33,10 +33,13 @@ namespace bsl
     inline void
     example_basic_string_view_ends_with() noexcept
     {
-        bsl::basic_string_view<bsl::char_type> const str{"Hello World"};
+        constexpr bsl::basic_string_view<bsl::char_type> str{"Hello World"};
 
-        if (str.ends_with("World")) {
+        if constexpr (str.ends_with("World")) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

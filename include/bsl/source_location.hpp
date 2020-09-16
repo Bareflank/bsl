@@ -28,6 +28,8 @@
 #ifndef BSL_SOURCE_LOCATION_HPP
 #define BSL_SOURCE_LOCATION_HPP
 
+#include "details/out.hpp"
+
 #include "color.hpp"
 #include "cstdint.hpp"
 #include "cstr_type.hpp"
@@ -35,6 +37,17 @@
 
 namespace bsl
 {
+    namespace details
+    {
+        /// @brief defines an invalid file.
+        constexpr bsl::cstr_type INVALID_FILE{"unknown"};
+        /// @brief defines an invalid function.
+        constexpr bsl::cstr_type INVALID_FUNC{"unknown"};
+        /// @brief defines an invalid line number.
+        constexpr decltype(__builtin_LINE()) INVALID_LINE{
+            static_cast<decltype(__builtin_LINE())>(-1)};
+    }
+
     /// <!-- description -->
     ///   @brief This class implements the source_location specification that
     ///     will eventually be included in C++20. We make some changes to the
@@ -46,13 +59,15 @@ namespace bsl
     ///
     class source_location final
     {
+    public:
         /// @brief defines the source location's file name type
         using file_type = bsl::cstr_type;
         /// @brief defines the source location's function name type
         using func_type = bsl::cstr_type;
         /// @brief defines the source location's line location type
-        using line_type = bsl::int32;
+        using line_type = decltype(__builtin_LINE());
 
+    private:
         /// <!-- description -->
         ///   @brief constructor
         ///
@@ -78,10 +93,51 @@ namespace bsl
         ///   @include source_location/example_source_location_default_constructor.hpp
         ///
         constexpr source_location() noexcept    // --
-            : m_file{"unknown"}                 // --
-            , m_func{"unknown"}                 // --
-            , m_line{-1}
+            : m_file{details::INVALID_FILE}     // --
+            , m_func{details::INVALID_FUNC}     // --
+            , m_line{details::INVALID_LINE}
         {}
+
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::source_location
+        ///
+        constexpr ~source_location() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr source_location(source_location const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr source_location(source_location &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(source_location const &o) &noexcept
+            -> source_location & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(source_location &&o) &noexcept
+            -> source_location & = default;
 
         /// <!-- description -->
         ///   @brief Constructs a new source_location object corresponding to
@@ -108,11 +164,11 @@ namespace bsl
         ///   @return returns a new source_location object corresponding to
         ///     the location of the call site of current().
         ///
-        static constexpr source_location
+        [[nodiscard]] static constexpr auto
         current(
             file_type const current_file = __builtin_FILE(),
             func_type const current_func = __builtin_FUNCTION(),
-            line_type const current_line = __builtin_LINE()) noexcept
+            line_type const current_line = __builtin_LINE()) noexcept -> source_location
         {
             return {current_file, current_func, current_line};
         }
@@ -125,8 +181,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return returns the file name associated with the
         ///
-        [[nodiscard]] constexpr file_type
-        file_name() const noexcept
+        [[nodiscard]] constexpr auto
+        file_name() const noexcept -> file_type
         {
             return m_file;
         }
@@ -139,8 +195,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return returns the function name associated with the
         ///
-        [[nodiscard]] constexpr func_type
-        function_name() const noexcept
+        [[nodiscard]] constexpr auto
+        function_name() const noexcept -> func_type
         {
             return m_func;
         }
@@ -153,8 +209,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return returns the line location associated with the
         ///
-        [[nodiscard]] constexpr line_type
-        line() const noexcept
+        [[nodiscard]] constexpr auto
+        line() const noexcept -> line_type
         {
             return m_line;
         }
@@ -181,8 +237,8 @@ namespace bsl
     ///   @return the source_location object corresponding to
     ///     the location of the call site.
     ///
-    constexpr source_location
-    here(source_location const &sloc = source_location::current()) noexcept
+    [[nodiscard]] constexpr auto
+    here(source_location const &sloc = source_location::current()) noexcept -> source_location
     {
         return sloc;
     }
@@ -200,8 +256,8 @@ namespace bsl
     ///   @return return o
     ///
     template<typename T>
-    [[maybe_unused]] constexpr out<T>
-    operator<<(out<T> const o, source_location const &sloc) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T> const o, source_location const &sloc) noexcept -> out<T>
     {
         if constexpr (!o) {
             return o;
@@ -215,9 +271,6 @@ namespace bsl
 
         return o;
     }
-
-    /// @brief defines the type used to describe a bsl::source_location
-    using sloc_type = source_location;
 }
 
 #endif

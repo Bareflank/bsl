@@ -28,8 +28,8 @@
 #ifndef BSL_DISCARD_HPP
 #define BSL_DISCARD_HPP
 
-#pragma clang diagnostic push                            // PRQA S 1-10000 // NOLINT
-#pragma clang diagnostic ignored "-Wunused-parameter"    // PRQA S 1-10000 // NOLINT
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-parameter"
 
 namespace bsl
 {
@@ -42,23 +42,16 @@ namespace bsl
     ///     as a template parameter, which cannot be done with a static cast.
     ///   @include example_discard_overview.hpp
     ///
-    ///   SUPPRESSION: PRQA 4050 - exception required
-    ///   - We suppress this because M0-1-8 states that all functions marked
-    ///     as returning void must have external side effects, which this
-    ///     function does not. AUTOSAR allows the use of static_cast<void>
-    ///     to mark a parameter or return as unused which is all that this
-    ///     is doing in a less verbose, more self-documenting way.
-    ///
     /// <!-- inputs/outputs -->
     ///   @tparam ARGS the types that define the provided arguments to ignore
-    ///   @param args the arguments to ignore
+    ///   @param a the arguments to ignore
     ///
     template<typename... ARGS>
     constexpr void
-    discard(ARGS &&... args) noexcept    // PRQA S 1-10000 // NOLINT
+    discard(ARGS &&... a) noexcept
     {}
 }
 
-#pragma clang diagnostic pop    // PRQA S 1-10000 // NOLINT
+#pragma clang diagnostic pop
 
 #endif

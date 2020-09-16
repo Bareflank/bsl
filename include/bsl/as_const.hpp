@@ -38,14 +38,14 @@ namespace bsl
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type to form the lvalue reference to const of
-    ///   @param t the object of type T to form the const lvalue reference of
+    ///   @param val the val of type T to form the const lvalue reference of
     ///   @return Forms lvalue reference to const type of t
     ///
     template<typename T>
-    constexpr add_const_t<T> &
-    as_const(T &t) noexcept
+    [[nodiscard]] constexpr auto
+    as_const(T &val) noexcept -> add_const_t<T> &
     {
-        return t;
+        return val;
     }
 
     /// <!-- description -->
@@ -55,10 +55,10 @@ namespace bsl
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type to form the lvalue reference to const of
-    ///   @param t the object of type T to form the const lvalue reference of
+    ///   @param val the object of type T to form the const lvalue reference of
     ///
     template<typename T>
-    constexpr void as_const(T const &&t) noexcept = delete;
+    constexpr auto as_const(T const &&val) noexcept -> void = delete;
 }
 
 #endif

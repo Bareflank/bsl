@@ -42,15 +42,10 @@ namespace bsl
     ///     call occurs within the evaluation of an expression or conversion
     ///     that is manifestly constant-evaluated; otherwise returns false.
     ///
-    [[nodiscard]] constexpr bool
-    is_constant_evaluated() noexcept
+    [[nodiscard]] constexpr auto
+    is_constant_evaluated() noexcept -> bool
     {
-        if constexpr (BSL_PERFORCE) {
-            return false;
-        }
-        else {
-            return __builtin_is_constant_evaluated();
-        }
+        return __builtin_is_constant_evaluated();
     }
 }
 

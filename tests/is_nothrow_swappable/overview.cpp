@@ -25,41 +25,27 @@
 #include <bsl/is_nothrow_swappable.hpp>
 #include <bsl/ut.hpp>
 
-namespace
+namespace bsl
 {
-    struct mystruct1 final
-    {};
-
-    struct mystruct2 final
-    {};
-
-    struct mystruct3 final
-    {};
-
-    void swap(mystruct1, mystruct1) noexcept;
-    void swap(mystruct2, mystruct2) noexcept = delete;
-    void swap(mystruct3, mystruct3);
+    void swap(bsl::safe_uint16, bsl::safe_uint16) noexcept;
+    void swap(bsl::safe_uint32, bsl::safe_uint32) noexcept = delete;
+    void swap(bsl::safe_uint64, bsl::safe_uint64);
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
-    static_assert(is_nothrow_swappable<bool>::value);
-    static_assert(is_nothrow_swappable<mystruct1>::value);
-
-    static_assert(!is_nothrow_swappable<bool const>::value);
-    static_assert(!is_nothrow_swappable<mystruct2>::value);
-    static_assert(!is_nothrow_swappable<mystruct3>::value);
+    static_assert(bsl::is_nothrow_swappable<bsl::safe_uint16>::value);
+    static_assert(!bsl::is_nothrow_swappable<bsl::safe_uint32>::value);
+    static_assert(!bsl::is_nothrow_swappable<bsl::safe_uint64>::value);
 
     return bsl::ut_success();
 }

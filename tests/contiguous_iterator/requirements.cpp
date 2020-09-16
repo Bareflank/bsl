@@ -28,7 +28,7 @@
 
 namespace
 {
-    constexpr bsl::array<bsl::safe_int32, 6> arr{
+    constexpr bsl::array arr{
         bsl::to_i32(4),
         bsl::to_i32(8),
         bsl::to_i32(15),
@@ -38,24 +38,23 @@ namespace
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
     bsl::ut_scenario{"verify noexcept"} = []() {
         bsl::ut_given{} = []() {
-            contiguous_iterator ci1{arr.data(), arr.size(), to_umax(0)};
-            contiguous_iterator const ci2{arr.data(), arr.size(), to_umax(0)};
+            bsl::contiguous_iterator ci1{arr.data(), arr.size(), bsl::to_umax(0)};
+            bsl::contiguous_iterator const ci2{arr.data(), arr.size(), bsl::to_umax(0)};
             bsl::ut_then{} = []() {
-                static_assert(noexcept(contiguous_iterator{arr.data(), arr.size(), to_umax(0)}));
+                static_assert(
+                    noexcept(bsl::contiguous_iterator{arr.data(), arr.size(), bsl::to_umax(0)}));
                 static_assert(noexcept(ci1.data()));
                 static_assert(noexcept(ci2.data()));
                 static_assert(noexcept(ci1.size()));
@@ -64,14 +63,14 @@ main() noexcept
                 static_assert(noexcept(!!ci1));
                 static_assert(noexcept(ci1.is_end()));
                 static_assert(noexcept(ci1.get_if()));
+                static_assert(noexcept(ci2.get_if()));
+                static_assert(noexcept(*ci1));
                 static_assert(noexcept(++ci1));
                 static_assert(noexcept(--ci1));
                 static_assert(noexcept(ci1 == ci2));
                 static_assert(noexcept(ci1 != ci2));
                 static_assert(noexcept(ci1 < ci2));
-                static_assert(noexcept(ci1 <= ci2));
                 static_assert(noexcept(ci1 > ci2));
-                static_assert(noexcept(ci1 >= ci2));
             };
         };
     };

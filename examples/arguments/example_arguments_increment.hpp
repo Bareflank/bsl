@@ -41,5 +41,8 @@ namespace bsl
         if (args.front<bsl::string_view>() == "8") {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
     }
 }

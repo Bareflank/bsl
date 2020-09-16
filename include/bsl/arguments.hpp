@@ -29,6 +29,7 @@
 #define BSL_ARGUMENTS_HPP
 
 #include "details/arguments_impl.hpp"
+#include "details/out.hpp"
 
 #include "convert.hpp"
 #include "cstdint.hpp"
@@ -159,20 +160,7 @@ namespace bsl
         ///   @param argv the arguments passed to the application
         ///
         constexpr arguments(size_type const &argc, value_type *const argv) noexcept
-            : m_args{argv, argc}
-        {}
-
-        /// <!-- description -->
-        ///   @brief Creates a bsl::arguments object given a provided argc
-        ///     and argv.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param argc the total number of arguments passed to the
-        ///     application
-        ///   @param argv the arguments passed to the application
-        ///
-        constexpr arguments(bsl::int32 const argc, value_type *const argv) noexcept
-            : arguments{to_umax(argc), argv}
+            : m_args{argv, argc}, m_index{}
         {}
 
         /// <!-- description -->
@@ -183,10 +171,22 @@ namespace bsl
         ///   @return Returns the provided argc, argv parameters as a span
         ///     that can be parsed manually.
         ///
-        [[nodiscard]] constexpr span<cstr_type const> const &
-        args() const noexcept
+        [[nodiscard]] constexpr auto
+        args() const &noexcept -> span<cstr_type const> const &
         {
             return m_args;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns the current index
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns the current index
+        ///
+        [[nodiscard]] constexpr auto
+        index() const &noexcept -> bsl::safe_uintmax const &
+        {
+            return m_index;
         }
 
         /// <!-- description -->
@@ -198,6 +198,7 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
+        ///   @tparam B the base to convert the argument to
         ///   @param pos the position of the positional argument to get.
         ///   @return Returns the positional argument at position "pos"
         ///     converted to "T". If the positional argument "pos" does not
@@ -205,9 +206,9 @@ namespace bsl
         ///     the result is bsl::safe_integral<T>{0, true}, meaning the
         ///     integral has it's error flag set. All other types return T{}.
         ///
-        template<typename T, bsl::int32 B = 10>
-        [[nodiscard]] constexpr T
-        get(size_type const &pos) const noexcept
+        template<typename T, bsl::int32 B = details::ARGUMENTS_DEFAULT_BASE.get()>
+        [[nodiscard]] constexpr auto
+        get(size_type const &pos) const noexcept -> T
         {
             return details::arguments_impl<T, B>::get(m_args, pos);
         }
@@ -221,6 +222,7 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
+        ///   @tparam B the base to convert the argument to
         ///   @param opt the optional argument to get.
         ///   @return Returns the requested optional argument. If the optional
         ///     argument "pos" does not exist, the result depends on "T".
@@ -228,126 +230,114 @@ namespace bsl
         ///     bsl::safe_integral<T>{0, true}, meaning the integral has it's
         ///     error flag set. All other types return T{}.
         ///
-        template<typename T, bsl::int32 B = 10>
-        [[nodiscard]] constexpr T
-        get(string_view const &opt) const noexcept
+        template<typename T, bsl::int32 B = details::ARGUMENTS_DEFAULT_BASE.get()>
+        [[nodiscard]] constexpr auto
+        get(string_view const &opt) const noexcept -> T
         {
             return details::arguments_impl<T, B>::get(m_args, opt);
         }
 
         /// <!-- description -->
-        ///   @brief Same as get<T, B>(pos)
+        ///   @brief Returns this->get<T, B>(pos + current_index), where the
+        ///     current_index starts at 0 when the arguments are constructed,
+        ///     and can be incremented using the ++ operator.
         ///   @include arguments/example_arguments_at.hpp
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
+        ///   @tparam B the base to convert the argument to
         ///   @param pos the position of the positional argument to get.
-        ///   @return Returns the positional argument at position "pos"
-        ///     converted to "T". If the positional argument "pos" does not
-        ///     exist, the result depends on "T". For a bsl::safe_integral,
-        ///     the result is bsl::safe_integral<T>{0, true}, meaning the
-        ///     integral has it's error flag set. All other types return T{}.
+        ///   @return Returns this->get<T, B>(pos + current_index), where the
+        ///     current_index starts at 0 when the arguments are constructed,
+        ///     and can be incremented using the ++ operator.
         ///
-        template<typename T, bsl::int32 B = 10>
-        [[nodiscard]] constexpr T
-        at(size_type const &pos) const noexcept
+        template<typename T, bsl::int32 B = details::ARGUMENTS_DEFAULT_BASE.get()>
+        [[nodiscard]] constexpr auto
+        at(size_type const &pos) const noexcept -> T
         {
-            return this->get<T, B>(pos);
+            return this->get<T, B>(pos + m_index);
         }
 
         /// <!-- description -->
-        ///   @brief Same as get<T, B>(to_umax(0))
+        ///   @brief Returns this->at<T, B>(size_type::zero()).
         ///   @include arguments/example_arguments_front.hpp
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
-        ///   @return Returns the positional argument at position "0"
-        ///     converted to "T". If the positional argument "0" does not
-        ///     exist, the result depends on "T". For a bsl::safe_integral,
-        ///     the result is bsl::safe_integral<T>{0, true}, meaning the
-        ///     integral has it's error flag set. All other types return T{}.
+        ///   @tparam B the base to convert the argument to
+        ///   @return Returns this->at<T, B>(size_type::zero()).
         ///
-        template<typename T, bsl::int32 B = 10>
-        [[nodiscard]] constexpr T
-        front() const noexcept
+        template<typename T, bsl::int32 B = details::ARGUMENTS_DEFAULT_BASE.get()>
+        [[nodiscard]] constexpr auto
+        front() const noexcept -> T
         {
-            return this->get<T, B>(to_umax(0));
+            return this->at<T, B>(size_type::zero());
         }
 
         /// <!-- description -->
-        ///   @brief Same as get<T, B>(size().is_pos() ? (size() - to_umax(1)) : to_umax(0))
-        ///   @include arguments/example_arguments_back.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
-        ///   @return Returns the positional argument at position "size() - 1"
-        ///     converted to "T". If the positional argument "size() - 1" does
-        ///     not exist, the result depends on "T". For a bsl::safe_integral,
-        ///     the result is bsl::safe_integral<T>{0, true}, meaning the
-        ///     integral has it's error flag set. All other types return T{}.
-        ///
-        template<typename T, bsl::int32 B = 10>
-        [[nodiscard]] constexpr T
-        back() const noexcept
-        {
-            size_type s{this->size()};
-            return this->get<T, B>(s.is_pos() ? (s - to_umax(1)) : to_umax(0));
-        }
-
-        /// <!-- description -->
-        ///   @brief Returns size().is_zero()
+        ///   @brief Returns remaining().is_zero()
         ///   @include arguments/example_arguments_empty.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Returns size().is_zero()
+        ///   @return Returns remaining().is_zero()
         ///
-        [[nodiscard]] constexpr bool
-        empty() const noexcept
+        [[nodiscard]] constexpr auto
+        empty() const noexcept -> bool
         {
-            return this->size().is_zero();
+            return this->remaining().is_zero();
         }
 
         /// <!-- description -->
-        ///   @brief Returns true if the arguments contains a valid span
-        ///     of arguments.
+        ///   @brief Returns !this->empty()
         ///   @include arguments/example_arguments_operator_bool.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Returns true if the arguments contains a valid span
-        ///     of arguments.
+        ///   @return Returns !this->empty()
         ///
         [[nodiscard]] constexpr explicit operator bool() const noexcept
         {
-            return !!m_args;
+            return !this->empty();
         }
 
         /// <!-- description -->
-        ///   @brief Returns the number of positional arguments being viewed.
+        ///   @brief Returns the number of positional arguments.
         ///     Optional arguments are ignored and are not included in the
         ///     resulting size. Note that this function is slow.
         ///   @include arguments/example_arguments_size.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Returns the number of positional arguments being viewed.
+        ///   @return Returns the number of positional arguments.
         ///     Optional arguments are ignored and are not included in the
         ///     resulting size.
         ///
-        [[nodiscard]] constexpr size_type
-        size() const noexcept
+        [[nodiscard]] constexpr auto
+        size() const noexcept -> size_type
         {
             size_type ret{};
 
             for (safe_uintmax i{}; i < m_args.size(); ++i) {
-                string_view const arg{*m_args.at_if(i)};
-
-                if (arg.starts_with('-')) {
-                    continue;
+                if (!bsl::string_view{*m_args.at_if(i)}.starts_with('-')) {
+                    ++ret;
                 }
-
-                ++ret;
+                else {
+                    bsl::touch();
+                }
             }
 
             return ret;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns this->size() - this->index()
+        ///   @include arguments/example_arguments_size.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns this->size() - this->index()
+        ///
+        [[nodiscard]] constexpr auto
+        remaining() const noexcept -> size_type
+        {
+            return this->size() - this->index();
         }
 
         /// <!-- description -->
@@ -360,27 +350,24 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return returns *this
         ///
-        [[maybe_unused]] constexpr arguments &
-        operator++() noexcept
+        [[maybe_unused]] constexpr auto
+        operator++() noexcept -> arguments &
         {
-            for (safe_uintmax i{to_umax(1)}; i < m_args.size(); ++i) {
-                string_view const arg{*m_args.at_if(i)};
-
-                if (arg.starts_with('-')) {
-                    continue;
-                }
-
-                *this = arguments{m_args.size() - i, m_args.at_if(i)};
-                return *this;
+            if (m_index < this->size()) {
+                ++m_index;
+            }
+            else {
+                bsl::touch();
             }
 
-            *this = arguments{0, nullptr};
             return *this;
         }
 
     private:
         /// @brief stores the argc/argv arguments.
         span<value_type> m_args;
+        /// @brief stores the current index into the arguments.
+        bsl::safe_uintmax m_index;
     };
 
     /// <!-- description -->
@@ -396,14 +383,14 @@ namespace bsl
     ///   @return return o
     ///
     template<typename T>
-    [[maybe_unused]] constexpr out<T>
-    operator<<(out<T> const o, arguments const &a) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T> const o, arguments const &a) noexcept -> out<T>
     {
         if constexpr (!o) {
             return o;
         }
 
-        return o << a.args();
+        return o << a.args() << ", " << a.index();
     }
 }
 

@@ -25,63 +25,62 @@
 #ifndef BSL_DETAILS_OUT_TYPE_ERROR_HPP
 #define BSL_DETAILS_OUT_TYPE_ERROR_HPP
 
-namespace bsl
+namespace bsl::details
 {
-    namespace details
+    /// @class bsl::out_type_error
+    ///
+    /// <!-- description -->
+    ///   @brief Used by out to define different versions of out
+    ///
+    class out_type_error final
     {
-        /// @class bsl::out_type_error
-        ///
+    public:
         /// <!-- description -->
-        ///   @brief Used by out to define different versions of out
+        ///   @brief Used to define bsl::out_type_error as useless
         ///
-        class out_type_error final
-        {
-        public:
-            /// <!-- description -->
-            ///   @brief Used to define bsl::out_type_error as useless
-            ///
-            constexpr out_type_error() noexcept = delete;
+        constexpr out_type_error() noexcept = delete;
 
-            /// <!-- description -->
-            ///   @brief Used to define bsl::out_type_error as useless
-            ///
-            ~out_type_error() noexcept = delete;
+        /// <!-- description -->
+        ///   @brief Used to define bsl::out_type_error as useless
+        ///
+        constexpr ~out_type_error() noexcept = delete;
 
-            /// <!-- description -->
-            ///   @brief Used to define bsl::out_type_error as useless
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///
-            constexpr out_type_error(out_type_error const &o) noexcept = delete;
+        /// <!-- description -->
+        ///   @brief Used to define bsl::out_type_error as useless
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr out_type_error(out_type_error const &o) noexcept = delete;
 
-            /// <!-- description -->
-            ///   @brief Used to define bsl::out_type_error as useless
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///
-            constexpr out_type_error(out_type_error &&o) noexcept = delete;
+        /// <!-- description -->
+        ///   @brief Used to define bsl::out_type_error as useless
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr out_type_error(out_type_error &&o) noexcept = delete;
 
-            /// <!-- description -->
-            ///   @brief Used to define bsl::out_type_error as useless
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///   @return a reference to *this
-            ///
-            constexpr out_type_error &operator=(out_type_error const &o) &noexcept = delete;
+        /// <!-- description -->
+        ///   @brief Used to define bsl::out_type_error as useless
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[nodiscard]] constexpr auto operator=(out_type_error const &o) &noexcept
+            -> out_type_error & = delete;
 
-            /// <!-- description -->
-            ///   @brief Used to define bsl::out_type_error as useless
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///   @return a reference to *this
-            ///
-            constexpr out_type_error &operator=(out_type_error &&o) &noexcept = delete;
-        };
-    }
+        /// <!-- description -->
+        ///   @brief Used to define bsl::out_type_error as useless
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[nodiscard]] constexpr auto operator=(out_type_error &&o) &noexcept
+            -> out_type_error & = delete;
+    };
 }
 
 #endif

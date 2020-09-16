@@ -35,6 +35,6 @@ namespace bsl
     example_convert_to_u64() noexcept
     {
         constexpr bsl::safe_uint64 val{bsl::to_u64(42)};
-        bsl::print() << "success: " << val << '\n';
+        bsl::print() << "success: " << val << bsl::endl;
     }
 }

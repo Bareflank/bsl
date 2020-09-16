@@ -57,9 +57,9 @@ namespace bsl
     ///     member variables, or non-static member functions (i.e., everything
     ///     is a constexpr). Note that you should not use this class
     ///     directly but instead should use one of the functions from debug.hpp
-    //.     which ensures debug levels are handled properly. The only time
-    //      your code might use this class is when defining your own fmt_impl
-    //      function for overloading fmt.
+    ///     which ensures debug levels are handled properly. The only time
+    ///     your code might use this class is when defining your own fmt_impl
+    ///     function for overloading fmt.
     ///
     /// <!-- notes -->
     ///   @note This class exists in the details folder because it is
@@ -101,6 +101,45 @@ namespace bsl
         }
 
         /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::out
+        ///
+        constexpr ~out() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr out(out const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr out(out &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(out const &o) &noexcept -> out & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(out &&o) &noexcept -> out & = default;
+
+        /// <!-- description -->
         ///   @brief Returns true if this bsl::out represents an empty out
         ///     operation which will ignore all commands given to it. This
         ///     occurs when the debug statement's debug level is greater
@@ -112,8 +151,8 @@ namespace bsl
         ///     occurs when the debug statement's debug level is greater
         ///     than the current global debug level.
         ///
-        [[nodiscard]] static constexpr bool
-        empty() noexcept
+        [[nodiscard]] static constexpr auto
+        empty() noexcept -> bool
         {
             return is_same<T, details::out_type_empty>::value;
         }
@@ -137,8 +176,8 @@ namespace bsl
         ///   @return Returns true if this bsl::out functions as a print()
         ///     which outputs to stdout and does not contain a label.
         ///
-        [[nodiscard]] static constexpr bool
-        is_print() noexcept
+        [[nodiscard]] static constexpr auto
+        is_print() noexcept -> bool
         {
             return is_same<T, details::out_type_print>::value;
         }
@@ -151,8 +190,8 @@ namespace bsl
         ///   @return Returns true if this bsl::out functions as a debug()
         ///     which outputs to stdout and contains the "DEBUG" label.
         ///
-        [[nodiscard]] static constexpr bool
-        is_debug() noexcept
+        [[nodiscard]] static constexpr auto
+        is_debug() noexcept -> bool
         {
             return is_same<T, details::out_type_debug>::value;
         }
@@ -165,8 +204,8 @@ namespace bsl
         ///   @return Returns true if this bsl::out functions as an alert()
         ///     which outputs to stderr and contains the "ALERT" label.
         ///
-        [[nodiscard]] static constexpr bool
-        is_alert() noexcept
+        [[nodiscard]] static constexpr auto
+        is_alert() noexcept -> bool
         {
             return is_same<T, details::out_type_alert>::value;
         }
@@ -179,8 +218,8 @@ namespace bsl
         ///   @return Returns true if this bsl::out functions as an error()
         ///     which outputs to stderr and contains the "ERROR" label.
         ///
-        [[nodiscard]] static constexpr bool
-        is_error() noexcept
+        [[nodiscard]] static constexpr auto
+        is_error() noexcept -> bool
         {
             return is_same<T, details::out_type_error>::value;
         }
@@ -192,14 +231,12 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param c the character to output
         ///
-        static constexpr void
-        write(char_type const c) noexcept
+        static constexpr auto
+        // This conflicts with write() from unistd.h when it is included.
+        // NOLINTNEXTLINE(bsl-using-ident-unique-namespace)
+        write(char_type const c) noexcept -> void
         {
             if (is_constant_evaluated()) {
-                return;
-            }
-
-            if constexpr (BSL_PERFORCE) {
                 return;
             }
 
@@ -228,14 +265,12 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param str the string to output
         ///
-        static constexpr void
-        write(cstr_type const str) noexcept
+        static constexpr auto
+        // This conflicts with write() from unistd.h when it is included.
+        // NOLINTNEXTLINE(bsl-using-ident-unique-namespace)
+        write(cstr_type const str) noexcept -> void
         {
             if (is_constant_evaluated()) {
-                return;
-            }
-
-            if constexpr (BSL_PERFORCE) {
                 return;
             }
 

@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_is_movable_overview() noexcept
     {
-        if (bsl::is_movable<bool>::value) {
+        if constexpr (bsl::is_movable<bool>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

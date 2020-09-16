@@ -40,7 +40,7 @@ namespace bsl
         /// <!-- description -->
         ///   @brief Creates a default bsl::example_class_base
         ///
-        example_class_base() noexcept = default;
+        constexpr example_class_base() noexcept = default;
 
         /// <!-- description -->
         ///   @brief Simple example of a getter
@@ -48,8 +48,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return returns the value of m_data1;
         ///
-        [[nodiscard]] constexpr bool
-        get() const noexcept
+        [[nodiscard]] constexpr auto
+        get() const noexcept -> bool
         {
             return m_data1;
         }
@@ -70,7 +70,7 @@ namespace bsl
         /// <!-- description -->
         ///   @brief Destroyes a previously created bsl::example_class_base
         ///
-        ~example_class_base() noexcept
+        constexpr ~example_class_base() noexcept
         {
             m_data1 = false;
         }
@@ -81,7 +81,7 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param o the object being copied
         ///
-        example_class_base(example_class_base const &o) noexcept = default;
+        constexpr example_class_base(example_class_base const &o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief move constructor
@@ -89,7 +89,7 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param o the object being moved
         ///
-        example_class_base(example_class_base &&o) noexcept = default;
+        constexpr example_class_base(example_class_base &&o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -98,8 +98,8 @@ namespace bsl
         ///   @param o the object being copied
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] example_class_base &
-        operator=(example_class_base const &o) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(example_class_base const &o) &noexcept
+            -> example_class_base & = default;
 
         /// <!-- description -->
         ///   @brief copy constructor
@@ -108,7 +108,8 @@ namespace bsl
         ///   @param o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] example_class_base &operator=(example_class_base &&o) &noexcept = default;
+        [[maybe_unused]] constexpr auto operator=(example_class_base &&o) &noexcept
+            -> example_class_base & = default;
 
     private:
         /// @brief dummy data #1

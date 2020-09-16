@@ -62,8 +62,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Equivalent to sizeof...(INTS)
         ///
-        [[nodiscard]] static constexpr bsl::uintmax
-        size() noexcept
+        [[nodiscard]] static constexpr auto
+        size() noexcept -> bsl::uintmax
         {
             return sizeof...(INTS);
         }
@@ -75,8 +75,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max integer in the sequence
         ///
-        [[nodiscard]] static constexpr T
-        max() noexcept
+        [[nodiscard]] static constexpr auto
+        max() noexcept -> T
         {
             return details::integer_sequence_max<T, INTS...>::value;
         }
@@ -88,28 +88,12 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the min integer in the sequence
         ///
-        [[nodiscard]] static constexpr T
-        min() noexcept
+        [[nodiscard]] static constexpr auto
+        min() noexcept -> T
         {
             return details::integer_sequence_min<T, INTS...>::value;
         }
     };
-
-    /// @brief helper alias template for the common case of bsl::uintmax
-    template<bsl::uintmax... INTS>
-    using index_sequence = integer_sequence<bsl::uintmax, INTS...>;
-
-    /// @brief helper alias that makes integer sequences
-    template<typename T, T N>
-    using make_integer_sequence = __make_integer_seq<integer_sequence, T, N>;
-
-    /// @brief helper alias that makes integer sequences for bsl::uintmax
-    template<bsl::uintmax N>
-    using make_index_sequence = make_integer_sequence<bsl::uintmax, N>;
-
-    /// @brief helper alias that makes an index sequence given a list of types
-    template<typename... T>
-    using index_sequence_for = make_index_sequence<sizeof...(T)>;
 }
 
 #endif

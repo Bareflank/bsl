@@ -50,8 +50,8 @@ namespace bsl
     ///     assignment throws
     ///
     template<typename T, typename U = T>
-    constexpr T
-    exchange(T &obj, U &&new_value) noexcept(false)
+    [[nodiscard]] constexpr auto
+    exchange(T &obj, U &&new_value) noexcept(false) -> T
     {
         T const old_value{bsl::move(obj)};
         obj = bsl::forward<U>(new_value);

@@ -37,5 +37,8 @@ namespace bsl
         if (!map) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
     }
 }

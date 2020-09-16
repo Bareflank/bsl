@@ -39,9 +39,15 @@ namespace bsl
         if constexpr (val1.is_signed_type()) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
 
         if constexpr (val2.is_unsigned_type()) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

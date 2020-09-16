@@ -34,11 +34,15 @@ namespace bsl
     inline void
     example_arguments_at() noexcept
     {
+        constexpr bsl::safe_uintmax arg3{bsl::to_umax(3)};
         constexpr bsl::array argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
         bsl::arguments const args{argv.size(), argv.data()};
 
-        if (args.at<bsl::string_view>(bsl::to_umax(3)) == "16") {
+        if (args.at<bsl::string_view>(arg3) == "16") {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

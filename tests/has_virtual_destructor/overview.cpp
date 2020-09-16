@@ -25,46 +25,24 @@
 #include <bsl/has_virtual_destructor.hpp>
 #include <bsl/ut.hpp>
 
-namespace
-{
-    class myclass final
-    {};
-
-    class myclass_virtual    // NOLINT
-    {
-        virtual ~myclass_virtual() = default;
-    };
-
-    class myclass_subclass final : public myclass_virtual
-    {};
-}
+#include "../class_base.hpp"
+#include "../class_subclass.hpp"
+#include "../class_empty.hpp"
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
-    static_assert(has_virtual_destructor<myclass_virtual>::value);
-    static_assert(has_virtual_destructor<myclass_subclass>::value);
-
-    static_assert(!has_virtual_destructor<void>::value);
-    static_assert(!has_virtual_destructor<bool>::value);
-    static_assert(!has_virtual_destructor<bool &>::value);
-    static_assert(!has_virtual_destructor<bool &&>::value);
-    static_assert(!has_virtual_destructor<bool const>::value);
-    static_assert(!has_virtual_destructor<bool const &>::value);
-    static_assert(!has_virtual_destructor<bool const &&>::value);
-    static_assert(!has_virtual_destructor<bool(bool)>::value);
-    static_assert(!has_virtual_destructor<bool (*)(bool)>::value);
-    static_assert(!has_virtual_destructor<myclass>::value);
+    static_assert(bsl::has_virtual_destructor<test::class_base>::value);
+    static_assert(bsl::has_virtual_destructor<test::class_subclass>::value);
+    static_assert(!bsl::has_virtual_destructor<test::class_empty>::value);
 
     return bsl::ut_success();
 }

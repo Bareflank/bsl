@@ -43,8 +43,8 @@ namespace bsl
     ///   @return Returns the address of val
     ///
     template<typename T>
-    [[nodiscard]] constexpr T *
-    addressof(T &val) noexcept
+    [[nodiscard]] constexpr auto
+    addressof(T &val) noexcept -> T *
     {
         return __builtin_addressof(val);
     }
@@ -61,7 +61,7 @@ namespace bsl
     ///   @return Returns the address of val
     ///
     template<typename T>
-    T const *addressof(T const &&val) = delete;
+    [[nodiscard]] constexpr auto addressof(T const &&val) -> T const * = delete;
 }
 
 #endif

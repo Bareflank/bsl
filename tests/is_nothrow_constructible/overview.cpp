@@ -25,157 +25,68 @@
 #include <bsl/is_nothrow_constructible.hpp>
 #include <bsl/ut.hpp>
 
-namespace
-{
-    class myclass final
-    {};
+#include <bsl/cstddef.hpp>
+#include <bsl/cstdint.hpp>
+#include <bsl/reference_wrapper.hpp>
 
-    struct mystruct final
-    {};
-
-    union myunion final
-    {};
-
-    enum class myenum : bsl::int32
-    {
-    };
-
-    class myclass_abstract    // NOLINT
-    {
-    public:
-        virtual ~myclass_abstract() noexcept = default;
-        virtual void foo() noexcept = 0;
-    };
-
-    class myclass_base
-    {};
-
-    class myclass_subclass : public myclass_base
-    {};
-
-    class myclass_no_constructor final
-    {
-    public:
-        myclass_no_constructor() = delete;
-    };
-
-    class myclass_except final
-    {
-    public:
-        myclass_except() noexcept(false) = default;
-    };
-}
+#include "../class_abstract.hpp"
+#include "../class_base.hpp"
+#include "../class_deleted.hpp"
+#include "../class_empty.hpp"
+#include "../class_except.hpp"
+#include "../class_nodefault.hpp"
+#include "../class_pod.hpp"
+#include "../class_subclass.hpp"
+#include "../enum_empty.hpp"
+#include "../struct_empty.hpp"
+#include "../union_empty.hpp"
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
+    static_assert(bsl::is_nothrow_constructible<bsl::nullptr_t>::value);
+    static_assert(!bsl::is_nothrow_constructible<void>::value);
+    static_assert(bsl::is_nothrow_constructible<bool>::value);
+    static_assert(bsl::is_nothrow_constructible<bool const>::value);
+    static_assert(bsl::is_nothrow_constructible<bsl::int32>::value);
+    static_assert(bsl::is_nothrow_constructible<bsl::uint32>::value);
+    static_assert(!bsl::is_nothrow_constructible<bool &>::value);
+    static_assert(!bsl::is_nothrow_constructible<bool const &>::value);
+    static_assert(!bsl::is_nothrow_constructible<bool &&>::value);
+    static_assert(bsl::is_nothrow_constructible<bool *>::value);
+    static_assert(bsl::is_nothrow_constructible<bool *const>::value);
+    static_assert(bsl::is_nothrow_constructible<bool const *>::value);
+    static_assert(bsl::is_nothrow_constructible<bool const *const>::value);
+    static_assert(!bsl::is_nothrow_constructible<bool(bool)>::value);
+    static_assert(bsl::is_nothrow_constructible<bool (*)(bool)>::value);
+    static_assert(bsl::is_nothrow_constructible<bool test::class_base::*>::value);
+    static_assert(bsl::is_nothrow_constructible<bool (test::class_base::*)()>::value);
+    static_assert(!bsl::is_nothrow_constructible<bsl::reference_wrapper<bool>>::value);
 
-    static_assert(is_nothrow_constructible<bool>::value);
-    static_assert(is_nothrow_constructible<bool const>::value);
-    static_assert(is_nothrow_constructible<bsl::int8>::value);
-    static_assert(is_nothrow_constructible<bsl::int8 const>::value);
-    static_assert(is_nothrow_constructible<bsl::int16>::value);
-    static_assert(is_nothrow_constructible<bsl::int16 const>::value);
-    static_assert(is_nothrow_constructible<bsl::int32>::value);
-    static_assert(is_nothrow_constructible<bsl::int32 const>::value);
-    static_assert(is_nothrow_constructible<bsl::int64>::value);
-    static_assert(is_nothrow_constructible<bsl::int64 const>::value);
-    static_assert(is_nothrow_constructible<bsl::int_least8>::value);
-    static_assert(is_nothrow_constructible<bsl::int_least8 const>::value);
-    static_assert(is_nothrow_constructible<bsl::int_least16>::value);
-    static_assert(is_nothrow_constructible<bsl::int_least16 const>::value);
-    static_assert(is_nothrow_constructible<bsl::int_least32>::value);
-    static_assert(is_nothrow_constructible<bsl::int_least32 const>::value);
-    static_assert(is_nothrow_constructible<bsl::int_least64>::value);
-    static_assert(is_nothrow_constructible<bsl::int_least64 const>::value);
-    static_assert(is_nothrow_constructible<bsl::int_fast8>::value);
-    static_assert(is_nothrow_constructible<bsl::int_fast8 const>::value);
-    static_assert(is_nothrow_constructible<bsl::int_fast16>::value);
-    static_assert(is_nothrow_constructible<bsl::int_fast16 const>::value);
-    static_assert(is_nothrow_constructible<bsl::int_fast32>::value);
-    static_assert(is_nothrow_constructible<bsl::int_fast32 const>::value);
-    static_assert(is_nothrow_constructible<bsl::int_fast64>::value);
-    static_assert(is_nothrow_constructible<bsl::int_fast64 const>::value);
-    static_assert(is_nothrow_constructible<bsl::intptr>::value);
-    static_assert(is_nothrow_constructible<bsl::intptr const>::value);
-    static_assert(is_nothrow_constructible<bsl::intmax>::value);
-    static_assert(is_nothrow_constructible<bsl::intmax const>::value);
-    static_assert(is_nothrow_constructible<bsl::uint8>::value);
-    static_assert(is_nothrow_constructible<bsl::uint8 const>::value);
-    static_assert(is_nothrow_constructible<bsl::uint16>::value);
-    static_assert(is_nothrow_constructible<bsl::uint16 const>::value);
-    static_assert(is_nothrow_constructible<bsl::uint32>::value);
-    static_assert(is_nothrow_constructible<bsl::uint32 const>::value);
-    static_assert(is_nothrow_constructible<bsl::uint64>::value);
-    static_assert(is_nothrow_constructible<bsl::uint64 const>::value);
-    static_assert(is_nothrow_constructible<bsl::uint_least8>::value);
-    static_assert(is_nothrow_constructible<bsl::uint_least8 const>::value);
-    static_assert(is_nothrow_constructible<bsl::uint_least16>::value);
-    static_assert(is_nothrow_constructible<bsl::uint_least16 const>::value);
-    static_assert(is_nothrow_constructible<bsl::uint_least32>::value);
-    static_assert(is_nothrow_constructible<bsl::uint_least32 const>::value);
-    static_assert(is_nothrow_constructible<bsl::uint_least64>::value);
-    static_assert(is_nothrow_constructible<bsl::uint_least64 const>::value);
-    static_assert(is_nothrow_constructible<bsl::uint_fast8>::value);
-    static_assert(is_nothrow_constructible<bsl::uint_fast8 const>::value);
-    static_assert(is_nothrow_constructible<bsl::uint_fast16>::value);
-    static_assert(is_nothrow_constructible<bsl::uint_fast16 const>::value);
-    static_assert(is_nothrow_constructible<bsl::uint_fast32>::value);
-    static_assert(is_nothrow_constructible<bsl::uint_fast32 const>::value);
-    static_assert(is_nothrow_constructible<bsl::uint_fast64>::value);
-    static_assert(is_nothrow_constructible<bsl::uint_fast64 const>::value);
-    static_assert(is_nothrow_constructible<bsl::uintptr>::value);
-    static_assert(is_nothrow_constructible<bsl::uintptr const>::value);
-    static_assert(is_nothrow_constructible<bsl::uintmax>::value);
-    static_assert(is_nothrow_constructible<bsl::uintmax const>::value);
-    static_assert(is_nothrow_constructible<myclass>::value);
-    static_assert(is_nothrow_constructible<myclass const>::value);
-    static_assert(is_nothrow_constructible<mystruct>::value);
-    static_assert(is_nothrow_constructible<mystruct const>::value);
-    static_assert(is_nothrow_constructible<myunion>::value);
-    static_assert(is_nothrow_constructible<myunion const>::value);
-    static_assert(is_nothrow_constructible<myenum>::value);
-    static_assert(is_nothrow_constructible<myenum const>::value);
-    static_assert(is_nothrow_constructible<myclass_base>::value);
-    static_assert(is_nothrow_constructible<myclass_base const>::value);
-    static_assert(is_nothrow_constructible<myclass_subclass>::value);
-    static_assert(is_nothrow_constructible<myclass_subclass const>::value);
-    static_assert(is_nothrow_constructible<bool[1]>::value);             // NOLINT
-    static_assert(is_nothrow_constructible<bool[1][1]>::value);          // NOLINT
-    static_assert(is_nothrow_constructible<bool const[1]>::value);       // NOLINT
-    static_assert(is_nothrow_constructible<bool const[1][1]>::value);    // NOLINT
-    static_assert(is_nothrow_constructible<void *>::value);
-    static_assert(is_nothrow_constructible<void const *>::value);
-    static_assert(is_nothrow_constructible<void *const>::value);
-    static_assert(is_nothrow_constructible<void const *const>::value);
-    static_assert(is_nothrow_constructible<bool (*)(bool)>::value);
+    static_assert(!bsl::is_nothrow_constructible<test::class_abstract>::value);
+    static_assert(bsl::is_nothrow_constructible<test::class_base>::value);
+    static_assert(!bsl::is_nothrow_constructible<test::class_deleted>::value);
+    static_assert(bsl::is_nothrow_constructible<test::class_empty>::value);
+    static_assert(!bsl::is_nothrow_constructible<test::class_except>::value);
+    static_assert(bsl::is_nothrow_constructible<test::class_nodefault>::value);
+    static_assert(bsl::is_nothrow_constructible<test::class_pod>::value);
+    static_assert(bsl::is_nothrow_constructible<test::class_subclass>::value);
+    static_assert(bsl::is_nothrow_constructible<test::enum_empty>::value);
+    static_assert(bsl::is_nothrow_constructible<test::struct_empty>::value);
+    static_assert(bsl::is_nothrow_constructible<test::union_empty>::value);
 
-    static_assert(!is_nothrow_constructible<myclass_abstract>::value);
-    static_assert(!is_nothrow_constructible<myclass_abstract const>::value);
-    static_assert(!is_nothrow_constructible<bool[]>::value);             // NOLINT
-    static_assert(!is_nothrow_constructible<bool[][1]>::value);          // NOLINT
-    static_assert(!is_nothrow_constructible<bool const[]>::value);       // NOLINT
-    static_assert(!is_nothrow_constructible<bool const[][1]>::value);    // NOLINT
-    static_assert(!is_nothrow_constructible<void>::value);
-    static_assert(!is_nothrow_constructible<void const>::value);
-    static_assert(!is_nothrow_constructible<bool &>::value);
-    static_assert(!is_nothrow_constructible<bool &&>::value);
-    static_assert(!is_nothrow_constructible<bool const &>::value);
-    static_assert(!is_nothrow_constructible<bool const &&>::value);
-    static_assert(!is_nothrow_constructible<bool(bool)>::value);
-    static_assert(!is_nothrow_constructible<myclass_no_constructor>::value);
-    static_assert(!is_nothrow_constructible<myclass_no_constructor const>::value);
-    static_assert(!is_nothrow_constructible<myclass_except>::value);
-    static_assert(!is_nothrow_constructible<myclass_except const>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(!bsl::is_nothrow_constructible<bool[]>::value);
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+    static_assert(bsl::is_nothrow_constructible<bool[1]>::value);
 
     return bsl::ut_success();
 }

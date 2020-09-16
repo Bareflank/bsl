@@ -39,5 +39,8 @@ namespace bsl
         if (str.remove_prefix(num) == "World") {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
     }
 }

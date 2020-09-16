@@ -25,36 +25,22 @@
 #include <bsl/has_unique_object_representations.hpp>
 #include <bsl/ut.hpp>
 
-namespace
-{
-    struct test1 final
-    {
-        bsl::int32 a;
-        bsl::int32 b;
-    };
-
-    struct test2 final
-    {
-        bsl::int32 a;
-        double b;
-    };
-}
+#include "../class_pod.hpp"
+#include "../class_empty.hpp"
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
-
-    static_assert(has_unique_object_representations<test1>::value);
-    static_assert(!has_unique_object_representations<test2>::value);
+    static_assert(bsl::has_unique_object_representations<test::class_pod>::value);
+    static_assert(!bsl::has_unique_object_representations<test::class_empty>::value);
 
     return bsl::ut_success();
 }

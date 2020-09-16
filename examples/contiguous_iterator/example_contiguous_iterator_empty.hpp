@@ -33,11 +33,14 @@ namespace bsl
     inline void
     example_contiguous_iterator_empty() noexcept
     {
-        bsl::string_view const str{"Hello"};
-        bsl::string_view::iterator_type const iter{str.begin()};
+        constexpr bsl::string_view str{"Hello"};
+        constexpr bsl::string_view::iterator_type iter{str.begin()};
 
-        if (!iter.empty()) {
+        if constexpr (!iter.empty()) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

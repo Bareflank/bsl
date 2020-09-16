@@ -33,14 +33,18 @@ namespace bsl
     inline void
     example_byte_lshift_assign() noexcept
     {
-        constexpr bsl::uint8 val{0x01U};
-        constexpr bsl::uint8 expected{0x02U};
+        constexpr bsl::safe_uint8 val{bsl::to_u8(0x01)};
+        constexpr bsl::safe_uint8 expected{bsl::to_u8(0x02)};
+        constexpr bsl::safe_uint8 shift{bsl::to_u8(1)};
 
-        bsl::byte b{val};
+        bsl::byte b{val.get()};
 
-        b <<= 1U;
+        b <<= shift;
         if (b.to_integer() == expected) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

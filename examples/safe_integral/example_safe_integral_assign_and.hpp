@@ -33,13 +33,18 @@ namespace bsl
     inline void
     example_safe_integral_assign_and() noexcept
     {
-        bsl::safe_uint32 val1{23U};
+        constexpr bsl::safe_uint32 val1{23U};
         constexpr bsl::safe_uint32 val2{42U};
-        constexpr bsl::safe_uint32 expected{23U & 42U};
 
-        val1 &= val2;
-        if (val1 == expected) {
+        bsl::safe_uint32 val{val1};
+        constexpr bsl::safe_uint32 expected{val1.get() & val2.get()};
+
+        val &= val2;
+        if (expected == val) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

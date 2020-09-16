@@ -33,10 +33,13 @@ namespace bsl
     inline void
     example_integer_sequence_size() noexcept
     {
-        constexpr bsl::uintmax size{6};
+        constexpr auto num{to_umax(6)};
 
-        if (bsl::make_index_sequence<6>::size() == size) {
+        if constexpr (bsl::make_index_sequence<num.get()>::size() == num.get()) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

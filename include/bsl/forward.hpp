@@ -40,22 +40,16 @@ namespace bsl
     ///     function.
     ///   @include example_forward_overview.hpp
     ///
-    ///   SUPPRESSION: PRQA 4624 - false positive
-    ///   - We suppress this because A7-5-1 states that a function shall not
-    ///     return a pointer or reference to a parameter that is a const
-    ///     reference, and this is a false positive because this is the
-    ///     required definition for std::forward
-    ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type that defines the value being forwarded
     ///   @param val the value being forwarded
     ///   @return static_cast<T &&>(val)
     ///
     template<typename T>
-    constexpr T &&
-    forward(bsl::remove_reference_t<T> &val) noexcept
+    [[nodiscard]] constexpr auto
+    forward(bsl::remove_reference_t<T> &val) noexcept -> T &&
     {
-        return static_cast<T &&>(val);    // PRQA S 4624, 3100
+        return static_cast<T &&>(val);
     }
 
     /// <!-- description -->
@@ -66,22 +60,16 @@ namespace bsl
     ///     function.
     ///   @include example_forward_overview.hpp
     ///
-    ///   SUPPRESSION: PRQA 4624 - false positive
-    ///   - We suppress this because A7-5-1 states that a function shall not
-    ///     return a pointer or reference to a parameter that is a const
-    ///     reference, and this is a false positive because this is the
-    ///     required definition for std::forward
-    ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type that defines the value being forwarded
     ///   @param val the value being forwarded
     ///   @return static_cast<T &&>(val)
     ///
     template<typename T>
-    constexpr T &&
-    forward(bsl::remove_reference_t<T> &&val) noexcept
+    [[nodiscard]] constexpr auto
+    forward(bsl::remove_reference_t<T> &&val) noexcept -> T &&
     {
-        return static_cast<T &&>(val);    // PRQA S 4624
+        return static_cast<T &&>(val);
     }
 }
 

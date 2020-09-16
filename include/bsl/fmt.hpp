@@ -321,15 +321,15 @@ namespace bsl
     /// @endcode
     ///
     /// <!-- template parameters -->
-    ///   @tparam V the type of value being formatted for output
+    ///   @tparam VAL_T the type of value being formatted for output
     ///
-    template<typename V>
+    template<typename VAL_T>
     class fmt final
     {
         /// @brief stores the fmt options for this bsl::fmt
         fmt_options m_ops;
         /// @brief stores a reference to the provided val.
-        V const &m_val;
+        VAL_T const &m_val;
 
     public:
         /// <!-- description -->
@@ -342,7 +342,10 @@ namespace bsl
         ///   @param ops the format options used to format the output of val
         ///   @param val the value to output given the provided format string
         ///
-        constexpr fmt(fmt_options const &ops, V const &val) noexcept    // --
+        // If we attempt to output an integer literal, this check with trigger
+        // which is a ok, since this functionality is needed.
+        // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
+        constexpr fmt(fmt_options const &ops, VAL_T const &val) noexcept    // --
             : m_ops{ops}, m_val{val}
         {}
 
@@ -360,15 +363,21 @@ namespace bsl
         ///   @param width a dynamic width which overrides the width field
         ///     in the format string (used to set the width field at runtime).
         ///
-        constexpr fmt(fmt_options const &ops, V const &val, safe_uintmax const &width) noexcept
+        // If we attempt to output an integer literal, this check with trigger
+        // which is a ok, since this functionality is needed.
+        // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
+        constexpr fmt(fmt_options const &ops, VAL_T const &val, safe_uintmax const &width) noexcept
             : m_ops{ops}, m_val{val}
         {
             constexpr safe_uintmax max_width{to_umax(999)};
-            if ((!width) || (width > max_width)) {
+            if (!width) {
                 m_ops.set_width(max_width);
             }
-            else {
+            else if (width < max_width) {
                 m_ops.set_width(width);
+            }
+            else {
+                m_ops.set_width(max_width);
             }
         }
 
@@ -382,7 +391,10 @@ namespace bsl
         ///   @param str the format options used to format the output of val
         ///   @param val the value to output given the provided format string
         ///
-        constexpr fmt(cstr_type const str, V const &val) noexcept    // --
+        // If we attempt to output an integer literal, this check with trigger
+        // which is a ok, since this functionality is needed.
+        // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
+        constexpr fmt(cstr_type const str, VAL_T const &val) noexcept    // --
             : fmt{fmt_options{str}, val}
         {}
 
@@ -400,9 +412,51 @@ namespace bsl
         ///   @param width a dynamic width which overrides the width field
         ///     in the format string (used to set the width field at runtime).
         ///
-        constexpr fmt(cstr_type const str, V const &val, safe_uintmax const &width) noexcept
+        // If we attempt to output an integer literal, this check with trigger
+        // which is a ok, since this functionality is needed.
+        // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
+        constexpr fmt(cstr_type const str, VAL_T const &val, safe_uintmax const &width) noexcept
             : fmt{fmt_options{str}, val, width}
         {}
+
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::fmt
+        ///
+        constexpr ~fmt() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr fmt(fmt const &o) noexcept = delete;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr fmt(fmt &&o) noexcept = delete;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(fmt const &o) &noexcept -> fmt & = delete;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(fmt &&o) &noexcept -> fmt & = delete;
 
         /// <!-- description -->
         ///   @brief Outputs the provided formatted argument to the provided
@@ -424,8 +478,14 @@ namespace bsl
         ///   @return return o
         ///
         template<typename T, typename U>
-        friend constexpr out<T>
-        operator<<(out<T> const o, fmt<U> &&arg) noexcept;    // PRQA S 2107 // NOLINT
+        // We don't want users of fmt being able to accidentally create a
+        // dangling reference. To prevent this, we prevent bsl::move from
+        // being usable, we delete the l-value version of the << operator,
+        // and we friend the << operator, so that only this operator can
+        // see the pointer being stored. You would have to really go out
+        // of your way to make a mistake.
+        // NOLINTNEXTLINE(bsl-decl-forbidden)
+        friend constexpr auto operator<<(out<T> const o, fmt<U> &&arg) noexcept -> out<T>;
     };
 
     /// <!-- description -->
@@ -444,16 +504,25 @@ namespace bsl
     ///   @return return o
     ///
     template<typename T, typename U>
-    [[maybe_unused]] constexpr out<T>
-    operator<<(out<T> const o, fmt<U> &&arg) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T> const o, fmt<U> &&arg) noexcept -> out<T>
     {
         if constexpr (!o) {
             return o;
         }
 
-        fmt_impl(o, arg.m_ops, arg.m_val);    // NOLINT
+        // These trigger for c-style strings. Not really sure if this is a
+        // false positive for this test, but either way, this is something
+        // we wish to support.
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay, hicpp-no-array-decay, bsl-implicit-conversions-forbidden)
+        fmt_impl(o, arg.m_ops, arg.m_val);
         return o;
     }
+
+    /// @brief the l-value version of this function is not supported
+    template<typename T, typename U>
+    [[maybe_unused]] constexpr auto operator<<(out<T> const o, fmt<U> const &arg) noexcept
+        -> out<T> = delete;
 
     /// <!-- description -->
     ///   @brief Outputs the provided argument to the provided
@@ -477,14 +546,14 @@ namespace bsl
         enable_if_t<!is_pointer<U>::value, bool> = true,
         enable_if_t<!is_integral<U>::value, bool> = true,
         enable_if_t<!is_null_pointer<U>::value, bool> = true>
-    [[maybe_unused]] constexpr out<T>
-    operator<<(out<T> const o, U const &arg) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T> const o, U const &arg) noexcept -> out<T>
     {
         if constexpr (!o) {
             return o;
         }
 
-        fmt_impl(o, nullops, arg);    // NOLINT
+        fmt_impl(o, nullops, arg);
         return o;
     }
 }

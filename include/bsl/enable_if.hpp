@@ -48,6 +48,12 @@ namespace bsl
     {};
 
     /// @brief a helper that reduces the verbosity of bsl::enable_if
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam B if B is true, bsl::enable_if has a public member
+    ///     typedef of type T, otherwise, there is no public member typedef.
+    ///   @tparam T the type of typedef that is defined if B is true
+    ///
     template<bool B, typename T = void>
     using enable_if_t = typename enable_if<B, T>::type;
 

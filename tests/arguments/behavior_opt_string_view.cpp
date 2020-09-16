@@ -27,109 +27,111 @@
 #include <bsl/cstr_type.hpp>
 #include <bsl/ut.hpp>
 
-/// <!-- description -->
-///   @brief Used to execute the actual checks. We put the checks in this
-///     function so that we can validate the tests both at compile-time
-///     and at run-time. If a bsl::ut_check fails, the tests will either
-///     fail fast at run-time, or will produce a compile-time error.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-constexpr bsl::exit_code
-tests() noexcept
+namespace
 {
-    using namespace bsl;
+    /// <!-- description -->
+    ///   @brief Used to execute the actual checks. We put the checks in this
+    ///     function so that we can validate the tests both at compile-time
+    ///     and at run-time. If a bsl::ut_check fails, the tests will either
+    ///     fail fast at run-time, or will produce a compile-time error.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @return Always returns bsl::exit_success.
+    ///
+    [[nodiscard]] constexpr auto
+    tests() noexcept -> bsl::exit_code
+    {
+        bsl::ut_scenario{"get optional string_view"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::arguments args{bsl::to_umax(0), nullptr};
+                bsl::ut_then{} = [&args]() {
+                    bsl::ut_check(args.get<bsl::string_view>("-app").empty());
+                };
+            };
 
-    bsl::ut_scenario{"get optional string_view"} = []() {
-        bsl::ut_given{} = []() {
-            arguments args{0, nullptr};
-            bsl::ut_then{} = [&args]() {
-                bsl::ut_check(args.get<string_view>("-app").empty());
+            bsl::ut_given{} = []() {
+                bsl::array argv{"-app"};
+                bsl::arguments args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&args]() {
+                    bsl::ut_check(args.get<bsl::string_view>("").empty());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::array argv{"app"};
+                bsl::arguments args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&args]() {
+                    bsl::ut_check(args.get<bsl::string_view>("-app").empty());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::array argv{"-app"};
+                bsl::arguments args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&args]() {
+                    bsl::ut_check(args.get<bsl::string_view>("-app_blah").empty());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::array argv{"-app"};
+                bsl::arguments args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&args]() {
+                    bsl::ut_check(args.get<bsl::string_view>("-ap").empty());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::array argv{"-app"};
+                bsl::arguments args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&args]() {
+                    bsl::ut_check(args.get<bsl::string_view>("-app").empty());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::array argv{"-app="};
+                bsl::arguments args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&args]() {
+                    bsl::ut_check(args.get<bsl::string_view>("-app").empty());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::array argv{"-app=42"};
+                bsl::arguments args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&args]() {
+                    bsl::ut_check(args.get<bsl::string_view>("-app=").empty());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::array argv{
+                    "-app=ignored", "pos1", "-4=16", "-8=23", "pos2", "-15=42", "-app=42"};
+                bsl::arguments args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&args]() {
+                    bsl::ut_check(args.get<bsl::string_view>("-app") == "42");
+                    bsl::ut_check(args.get<bsl::string_view>("-4") == "16");
+                    bsl::ut_check(args.get<bsl::string_view>("-8") == "23");
+                    bsl::ut_check(args.get<bsl::string_view>("-15") == "42");
+                };
             };
         };
 
-        bsl::ut_given{} = []() {
-            array argv{"-app"};
-            arguments args{argv.size(), argv.data()};
-            bsl::ut_then{} = [&args]() {
-                bsl::ut_check(args.get<string_view>("").empty());
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            array argv{"app"};
-            arguments args{argv.size(), argv.data()};
-            bsl::ut_then{} = [&args]() {
-                bsl::ut_check(args.get<string_view>("-app").empty());
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            array argv{"-app"};
-            arguments args{argv.size(), argv.data()};
-            bsl::ut_then{} = [&args]() {
-                bsl::ut_check(args.get<string_view>("-app_blah").empty());
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            array argv{"-app"};
-            arguments args{argv.size(), argv.data()};
-            bsl::ut_then{} = [&args]() {
-                bsl::ut_check(args.get<string_view>("-ap").empty());
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            array argv{"-app"};
-            arguments args{argv.size(), argv.data()};
-            bsl::ut_then{} = [&args]() {
-                bsl::ut_check(args.get<string_view>("-app").empty());
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            array argv{"-app="};
-            arguments args{argv.size(), argv.data()};
-            bsl::ut_then{} = [&args]() {
-                bsl::ut_check(args.get<string_view>("-app").empty());
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            array argv{"-app=42"};
-            arguments args{argv.size(), argv.data()};
-            bsl::ut_then{} = [&args]() {
-                bsl::ut_check(args.get<string_view>("-app=").empty());
-            };
-        };
-
-        bsl::ut_given{} = []() {
-            array argv{"-app=ignored", "pos1", "-4=16", "-8=23", "pos2", "-15=42", "-app=42"};
-            arguments args{argv.size(), argv.data()};
-            bsl::ut_then{} = [&args]() {
-                bsl::ut_check(args.get<string_view>("-app") == "42");
-                bsl::ut_check(args.get<string_view>("-4") == "16");
-                bsl::ut_check(args.get<string_view>("-8") == "23");
-                bsl::ut_check(args.get<string_view>("-15") == "42");
-            };
-        };
-    };
-
-    return bsl::ut_success();
+        return bsl::ut_success();
+    }
 }
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
     static_assert(tests() == bsl::ut_success());
     return tests();

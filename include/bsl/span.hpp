@@ -28,6 +28,8 @@
 #ifndef BSL_SPAN_HPP
 #define BSL_SPAN_HPP
 
+#include "details/out.hpp"
+
 #include "byte.hpp"
 #include "char_type.hpp"
 #include "contiguous_iterator.hpp"
@@ -37,6 +39,7 @@
 #include "npos.hpp"
 #include "reverse_iterator.hpp"
 #include "safe_integral.hpp"
+#include "touch.hpp"
 
 namespace bsl
 {
@@ -87,7 +90,7 @@ namespace bsl
     ///   @tparam T the type of element being viewed.
     ///
     template<typename T>
-    class span final    // NOLINT
+    class span final
     {
         static_assert(!is_same<T, char_type>::value, "use bsl::string_view instead");
 
@@ -116,23 +119,12 @@ namespace bsl
         using const_reverse_iterator_type = reverse_iterator<const_iterator_type>;
 
         /// <!-- description -->
-        ///   @brief Default constructor that creates a span with
-        ///     data() == nullptr and size() == 0. All accessors
-        ///     will return a nullptr if used. Note that like other view types
-        ///     in the BSL, the bsl::span is a POD type. This
-        ///     means that when declaring a global, default constructed
-        ///     bsl::span, DO NOT include the {} for
-        ///     initialization. Instead, remove the {} and the global
-        ///     bsl::span will be included in the BSS section of
-        ///     the executable, and initialized to 0 for you. All other
-        ///     instantiations of a bsl::span (or any POD
-        ///     type), should be initialized using {} to ensure the POD is
-        ///     properly initialized. Using the above method for global
-        ///     initialization ensures that global constructors are not
-        ///     executed at runtime, which is required by AUTOSAR.
+        ///   @brief Default constructor.
         ///   @include span/example_span_default_constructor.hpp
         ///
-        constexpr span() noexcept = default;
+        constexpr span() noexcept    // --
+            : m_ptr{}, m_count{}
+        {}
 
         /// <!-- description -->
         ///   @brief Creates a span given a pointer to an array, and the
@@ -148,13 +140,87 @@ namespace bsl
         constexpr span(pointer_type const ptr, size_type const &count) noexcept    // --
             : m_ptr{ptr}, m_count{count}
         {
-            if ((nullptr == m_ptr) || m_count.is_zero()) {
-                bsl::alert() << "basic_string_view: invalid constructor args\n";
-                bsl::alert() << "  - ptr: " << static_cast<void const *>(ptr) << bsl::endl;
-                bsl::alert() << "  - count: " << m_count << bsl::endl;
-
+            if (nullptr == m_ptr) {
                 *this = span{};
+                return;
             }
+
+            if (m_count.is_zero()) {
+                *this = span{};
+                return;
+            }
+
+            bsl::touch();
+        }
+
+        /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::span
+        ///
+        constexpr ~span() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr span(span const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr span(span &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(span const &o) &noexcept -> span & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(span &&o) &noexcept -> span & = default;
+
+        /// <!-- description -->
+        ///   @brief Returns a pointer to the instance of T stored at index
+        ///     "index". If the index is out of bounds, or the view is invalid,
+        ///     this function returns a nullptr.
+        ///   @include span/example_span_at_if.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param index the index of the instance to return
+        ///   @return Returns a pointer to the instance of T stored at index
+        ///     "index". If the index is out of bounds, or the view is invalid,
+        ///     this function returns a nullptr.
+        ///
+        [[nodiscard]] constexpr auto
+        at_if(size_type const &index) noexcept -> pointer_type
+        {
+            if (!index) {
+                bsl::error() << "span: index invalid\n";
+                return nullptr;
+            }
+
+            if (index < m_count) {
+                // We are implementing std::array here, which is what this test
+                // wants you to use instead.
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                return &m_ptr[index.get()];
+            }
+
+            bsl::error() << "span: index out of range: " << index << '\n';
+            return nullptr;
         }
 
         /// <!-- description -->
@@ -163,50 +229,29 @@ namespace bsl
         ///     this function returns a nullptr.
         ///   @include span/example_span_at_if.hpp
         ///
-        ///   SUPPRESSION: PRQA 4024 - false positive
-        ///   - We suppress this because A9-3-1 states that we should
-        ///     not provide a non-const reference or pointer to private
-        ///     member function, unless the class mimics a smart pointer or
-        ///     a containter. This class mimics a container.
-        ///
         /// <!-- inputs/outputs -->
         ///   @param index the index of the instance to return
         ///   @return Returns a pointer to the instance of T stored at index
         ///     "index". If the index is out of bounds, or the view is invalid,
         ///     this function returns a nullptr.
         ///
-        [[nodiscard]] constexpr pointer_type
-        at_if(size_type const &index) noexcept
+        [[nodiscard]] constexpr auto
+        at_if(size_type const &index) const noexcept -> const_pointer_type
         {
-            if ((!index) || (index >= m_count)) {
-                bsl::error() << "span: index out of range: " << index << '\n';
+            if (!index) {
+                bsl::error() << "span: index invalid\n";
                 return nullptr;
             }
 
-            return &m_ptr[index.get()];    // PRQA S 4024 // NOLINT
-        }
-
-        /// <!-- description -->
-        ///   @brief Returns a pointer to the instance of T stored at index
-        ///     "index". If the index is out of bounds, or the view is invalid,
-        ///     this function returns a nullptr.
-        ///   @include span/example_span_at_if.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param index the index of the instance to return
-        ///   @return Returns a pointer to the instance of T stored at index
-        ///     "index". If the index is out of bounds, or the view is invalid,
-        ///     this function returns a nullptr.
-        ///
-        [[nodiscard]] constexpr const_pointer_type
-        at_if(size_type const &index) const noexcept
-        {
-            if ((!index) || (index >= m_count)) {
-                bsl::error() << "span: index out of range: " << index << '\n';
-                return nullptr;
+            if (index < m_count) {
+                // We are implementing std::array here, which is what this test
+                // wants you to use instead.
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                return &m_ptr[index.get()];
             }
 
-            return &m_ptr[index.get()];    // NOLINT
+            bsl::error() << "span: index out of range: " << index << '\n';
+            return nullptr;
         }
 
         /// <!-- description -->
@@ -220,10 +265,10 @@ namespace bsl
         ///     "0". If the index is out of bounds, or the view is invalid,
         ///     this function returns a nullptr.
         ///
-        [[nodiscard]] constexpr pointer_type
-        front_if() noexcept
+        [[nodiscard]] constexpr auto
+        front_if() noexcept -> pointer_type
         {
-            return this->at_if(to_umax(0));
+            return this->at_if(size_type::zero());
         }
 
         /// <!-- description -->
@@ -237,10 +282,10 @@ namespace bsl
         ///     "0". If the index is out of bounds, or the view is invalid,
         ///     this function returns a nullptr.
         ///
-        [[nodiscard]] constexpr const_pointer_type
-        front_if() const noexcept
+        [[nodiscard]] constexpr auto
+        front_if() const noexcept -> const_pointer_type
         {
-            return this->at_if(to_umax(0));
+            return this->at_if(size_type::zero());
         }
 
         /// <!-- description -->
@@ -254,10 +299,14 @@ namespace bsl
         ///     "size() - 1". If the index is out of bounds, or the view is
         ///     invalid, this function returns a nullptr.
         ///
-        [[nodiscard]] constexpr pointer_type
-        back_if() noexcept
+        [[nodiscard]] constexpr auto
+        back_if() noexcept -> pointer_type
         {
-            return this->at_if(m_count.is_pos() ? (m_count - to_umax(1)) : to_umax(0));
+            if (m_count.is_zero()) {
+                return this->at_if(size_type::zero());
+            }
+
+            return this->at_if(m_count - size_type::one());
         }
 
         /// <!-- description -->
@@ -271,33 +320,14 @@ namespace bsl
         ///     "size() - 1". If the index is out of bounds, or the view is
         ///     invalid, this function returns a nullptr.
         ///
-        [[nodiscard]] constexpr const_pointer_type
-        back_if() const noexcept
+        [[nodiscard]] constexpr auto
+        back_if() const noexcept -> const_pointer_type
         {
-            return this->at_if(m_count.is_pos() ? (m_count - to_umax(1)) : to_umax(0));
-        }
+            if (m_count.is_zero()) {
+                return this->at_if(size_type::zero());
+            }
 
-        /// <!-- description -->
-        ///   @brief Returns a pointer to the array being viewed. If this is
-        ///     a default constructed view, or the view was constructed in
-        ///     error, this will return a nullptr.
-        ///   @include span/example_span_data.hpp
-        ///
-        ///   SUPPRESSION: PRQA 4625 - false positive
-        ///   - We suppress this because A9-3-1 states that we should
-        ///     not provide a non-const reference or pointer to private
-        ///     member function, unless the class mimics a smart pointer or
-        ///     a containter. This class mimics a container.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return Returns a pointer to the array being viewed. If this is
-        ///     a default constructed view, or the view was constructed in
-        ///     error, this will return a nullptr.
-        ///
-        [[nodiscard]] constexpr pointer_type
-        data() noexcept
-        {
-            return m_ptr;    // PRQA S 4625
+            return this->at_if(m_count - size_type::one());
         }
 
         /// <!-- description -->
@@ -311,8 +341,25 @@ namespace bsl
         ///     a default constructed view, or the view was constructed in
         ///     error, this will return a nullptr.
         ///
-        [[nodiscard]] constexpr const_pointer_type
-        data() const noexcept
+        [[nodiscard]] constexpr auto
+        data() noexcept -> pointer_type
+        {
+            return m_ptr;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns a pointer to the array being viewed. If this is
+        ///     a default constructed view, or the view was constructed in
+        ///     error, this will return a nullptr.
+        ///   @include span/example_span_data.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns a pointer to the array being viewed. If this is
+        ///     a default constructed view, or the view was constructed in
+        ///     error, this will return a nullptr.
+        ///
+        [[nodiscard]] constexpr auto
+        data() const noexcept -> const_pointer_type
         {
             return m_ptr;
         }
@@ -324,10 +371,10 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns an iterator to the first element of the view.
         ///
-        [[nodiscard]] constexpr iterator_type
-        begin() noexcept
+        [[nodiscard]] constexpr auto
+        begin() noexcept -> iterator_type
         {
-            return iterator_type{m_ptr, m_count, to_umax(0)};
+            return iterator_type{m_ptr, m_count, size_type::zero()};
         }
 
         /// <!-- description -->
@@ -337,10 +384,10 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns an iterator to the first element of the view.
         ///
-        [[nodiscard]] constexpr const_iterator_type
-        begin() const noexcept
+        [[nodiscard]] constexpr auto
+        begin() const noexcept -> const_iterator_type
         {
-            return const_iterator_type{m_ptr, m_count, to_umax(0)};
+            return const_iterator_type{m_ptr, m_count, size_type::zero()};
         }
 
         /// <!-- description -->
@@ -350,10 +397,10 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns an iterator to the first element of the view.
         ///
-        [[nodiscard]] constexpr const_iterator_type
-        cbegin() const noexcept
+        [[nodiscard]] constexpr auto
+        cbegin() const noexcept -> const_iterator_type
         {
-            return const_iterator_type{m_ptr, m_count, to_umax(0)};
+            return const_iterator_type{m_ptr, m_count, size_type::zero()};
         }
 
         /// <!-- description -->
@@ -364,8 +411,8 @@ namespace bsl
         ///   @param i the element in the array to return an iterator for.
         ///   @return Returns an iterator to the element "i" in the view.
         ///
-        [[nodiscard]] constexpr iterator_type
-        iter(size_type const &i) noexcept
+        [[nodiscard]] constexpr auto
+        iter(size_type const &i) noexcept -> iterator_type
         {
             return iterator_type{m_ptr, m_count, i};
         }
@@ -378,8 +425,8 @@ namespace bsl
         ///   @param i the element in the array to return an iterator for.
         ///   @return Returns an iterator to the element "i" in the view.
         ///
-        [[nodiscard]] constexpr const_iterator_type
-        iter(size_type const &i) const noexcept
+        [[nodiscard]] constexpr auto
+        iter(size_type const &i) const noexcept -> const_iterator_type
         {
             return const_iterator_type{m_ptr, m_count, i};
         }
@@ -392,8 +439,8 @@ namespace bsl
         ///   @param i the element in the array to return an iterator for.
         ///   @return Returns an iterator to the element "i" in the view.
         ///
-        [[nodiscard]] constexpr const_iterator_type
-        citer(size_type const &i) const noexcept
+        [[nodiscard]] constexpr auto
+        citer(size_type const &i) const noexcept -> const_iterator_type
         {
             return const_iterator_type{m_ptr, m_count, i};
         }
@@ -409,8 +456,8 @@ namespace bsl
         ///     view. If you attempt to access this iterator, a nullptr will
         ///     always be returned.
         ///
-        [[nodiscard]] constexpr iterator_type
-        end() noexcept
+        [[nodiscard]] constexpr auto
+        end() noexcept -> iterator_type
         {
             return iterator_type{m_ptr, m_count, m_count};
         }
@@ -426,8 +473,8 @@ namespace bsl
         ///     view. If you attempt to access this iterator, a nullptr will
         ///     always be returned.
         ///
-        [[nodiscard]] constexpr const_iterator_type
-        end() const noexcept
+        [[nodiscard]] constexpr auto
+        end() const noexcept -> const_iterator_type
         {
             return const_iterator_type{m_ptr, m_count, m_count};
         }
@@ -443,8 +490,8 @@ namespace bsl
         ///     view. If you attempt to access this iterator, a nullptr will
         ///     always be returned.
         ///
-        [[nodiscard]] constexpr const_iterator_type
-        cend() const noexcept
+        [[nodiscard]] constexpr auto
+        cend() const noexcept -> const_iterator_type
         {
             return const_iterator_type{m_ptr, m_count, m_count};
         }
@@ -462,8 +509,8 @@ namespace bsl
         ///   @return Returns a reverse iterator to the last element of the
         ///     view.
         ///
-        [[nodiscard]] constexpr reverse_iterator_type
-        rbegin() noexcept
+        [[nodiscard]] constexpr auto
+        rbegin() noexcept -> reverse_iterator_type
         {
             return reverse_iterator_type{this->end()};
         }
@@ -481,8 +528,8 @@ namespace bsl
         ///   @return Returns a reverse iterator to the last element of the
         ///     view.
         ///
-        [[nodiscard]] constexpr const_reverse_iterator_type
-        rbegin() const noexcept
+        [[nodiscard]] constexpr auto
+        rbegin() const noexcept -> const_reverse_iterator_type
         {
             return const_reverse_iterator_type{this->end()};
         }
@@ -500,8 +547,8 @@ namespace bsl
         ///   @return Returns a reverse iterator to the last element of the
         ///     view.
         ///
-        [[nodiscard]] constexpr const_reverse_iterator_type
-        crbegin() const noexcept
+        [[nodiscard]] constexpr auto
+        crbegin() const noexcept -> const_reverse_iterator_type
         {
             return const_reverse_iterator_type{this->cend()};
         }
@@ -520,14 +567,18 @@ namespace bsl
         ///   @return Returns a reverse iterator element "i" in the
         ///     view.
         ///
-        [[nodiscard]] constexpr reverse_iterator_type
-        riter(size_type const &i) noexcept
+        [[nodiscard]] constexpr auto
+        riter(size_type const &i) noexcept -> reverse_iterator_type
         {
-            if ((!!i) && (i >= m_count)) {
-                return reverse_iterator_type{this->iter(m_count)};
+            if (!i) {
+                return reverse_iterator_type{this->iter(size_type::zero())};
             }
 
-            return reverse_iterator_type{this->iter(i + to_umax(1))};
+            if (i < m_count) {
+                return reverse_iterator_type{this->iter(i + size_type::one())};
+            }
+
+            return reverse_iterator_type{this->iter(size_type::zero())};
         }
 
         /// <!-- description -->
@@ -544,14 +595,18 @@ namespace bsl
         ///   @return Returns a reverse iterator element "i" in the
         ///     view.
         ///
-        [[nodiscard]] constexpr const_reverse_iterator_type
-        riter(size_type const &i) const noexcept
+        [[nodiscard]] constexpr auto
+        riter(size_type const &i) const noexcept -> const_reverse_iterator_type
         {
-            if ((!!i) && (i >= m_count)) {
-                return const_reverse_iterator_type{this->iter(m_count)};
+            if (!i) {
+                return const_reverse_iterator_type{this->iter(size_type::zero())};
             }
 
-            return const_reverse_iterator_type{this->iter(i + to_umax(1))};
+            if (i < m_count) {
+                return const_reverse_iterator_type{this->iter(i + size_type::one())};
+            }
+
+            return const_reverse_iterator_type{this->iter(size_type::zero())};
         }
 
         /// <!-- description -->
@@ -568,14 +623,18 @@ namespace bsl
         ///   @return Returns a reverse iterator element "i" in the
         ///     view.
         ///
-        [[nodiscard]] constexpr const_reverse_iterator_type
-        criter(size_type const &i) const noexcept
+        [[nodiscard]] constexpr auto
+        criter(size_type const &i) const noexcept -> const_reverse_iterator_type
         {
-            if ((!!i) && (i >= m_count)) {
-                return const_reverse_iterator_type{this->citer(m_count)};
+            if (!i) {
+                return const_reverse_iterator_type{this->iter(size_type::zero())};
             }
 
-            return const_reverse_iterator_type{this->citer(i + to_umax(1))};
+            if (i < m_count) {
+                return const_reverse_iterator_type{this->iter(i + size_type::one())};
+            }
+
+            return const_reverse_iterator_type{this->iter(size_type::zero())};
         }
 
         /// <!-- description -->
@@ -591,8 +650,8 @@ namespace bsl
         ///   @return Returns a reverse iterator first element of the
         ///     view.
         ///
-        [[nodiscard]] constexpr reverse_iterator_type
-        rend() noexcept
+        [[nodiscard]] constexpr auto
+        rend() noexcept -> reverse_iterator_type
         {
             return reverse_iterator_type{this->begin()};
         }
@@ -610,8 +669,8 @@ namespace bsl
         ///   @return Returns a reverse iterator first element of the
         ///     view.
         ///
-        [[nodiscard]] constexpr const_reverse_iterator_type
-        rend() const noexcept
+        [[nodiscard]] constexpr auto
+        rend() const noexcept -> const_reverse_iterator_type
         {
             return const_reverse_iterator_type{this->begin()};
         }
@@ -629,8 +688,8 @@ namespace bsl
         ///   @return Returns a reverse iterator first element of the
         ///     view.
         ///
-        [[nodiscard]] constexpr const_reverse_iterator_type
-        crend() const noexcept
+        [[nodiscard]] constexpr auto
+        crend() const noexcept -> const_reverse_iterator_type
         {
             return const_reverse_iterator_type{this->cbegin()};
         }
@@ -642,8 +701,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns size() == 0
         ///
-        [[nodiscard]] constexpr bool
-        empty() const noexcept
+        [[nodiscard]] constexpr auto
+        empty() const noexcept -> bool
         {
             return m_count.is_zero();
         }
@@ -671,8 +730,8 @@ namespace bsl
         ///     viewed. If this is a default constructed view, or the view
         ///     was constructed in error, this will return 0.
         ///
-        [[nodiscard]] constexpr size_type const &
-        size() const noexcept
+        [[nodiscard]] constexpr auto
+        size() const noexcept -> size_type const &
         {
             return m_count;
         }
@@ -684,8 +743,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns the max number of elements the BSL supports.
         ///
-        [[nodiscard]] static constexpr size_type
-        max_size() noexcept
+        [[nodiscard]] static constexpr auto
+        max_size() noexcept -> size_type
         {
             return size_type::max() / to_umax(sizeof(T));
         }
@@ -697,8 +756,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns size() * sizeof(T)
         ///
-        [[nodiscard]] constexpr size_type
-        size_bytes() const noexcept
+        [[nodiscard]] constexpr auto
+        size_bytes() const noexcept -> size_type
         {
             return m_count * to_umax(sizeof(T));
         }
@@ -713,10 +772,10 @@ namespace bsl
         ///   @return Returns subspan(0, count). If count is 0, an invalid
         ///     span is returned.
         ///
-        [[nodiscard]] constexpr span<T>
-        first(size_type const &count = npos) const noexcept
+        [[nodiscard]] constexpr auto
+        first(size_type const &count = npos) const noexcept -> span<T>
         {
-            return this->subspan(to_umax(0), count);
+            return this->subspan(size_type::zero(), count);
         }
 
         /// <!-- description -->
@@ -733,14 +792,14 @@ namespace bsl
         ///     current span is returned. If the count is 0, an invalid span
         ///     is returned.
         ///
-        [[nodiscard]] constexpr span<T>
-        last(size_type const &count = npos) const noexcept
+        [[nodiscard]] constexpr auto
+        last(size_type const &count = npos) const noexcept -> span<T>
         {
-            if (count > this->size()) {
-                return this->subspan(to_umax(0), count);
+            if (count < this->size()) {
+                return this->subspan(this->size() - count, count);
             }
 
-            return this->subspan(this->size() - count, count);
+            return this->subspan(size_type::zero(), count);
         }
 
         /// <!-- description -->
@@ -756,14 +815,22 @@ namespace bsl
         ///     the provided "pos" is greater than or equal to the size of
         ///     the current span, an invalid span is returned.
         ///
-        [[nodiscard]] constexpr span<T>
-        subspan(size_type const &pos, size_type const &count = npos) const noexcept
+        [[nodiscard]] constexpr auto
+        subspan(size_type const &pos, size_type const &count = npos) const noexcept -> span<T>
         {
-            if ((!pos) || (!count) || (pos >= m_count)) {
+            if (!pos) {
                 return {};
             }
 
-            return span<T>{&m_ptr[pos.get()], count.min(m_count - pos)};    // NOLINT
+            if (!count) {
+                return {};
+            }
+
+            if (pos < m_count) {
+                return span<T>{&m_ptr[pos.get()], count.min(m_count - pos)};
+            }
+
+            return {};
         }
 
     private:
@@ -785,8 +852,8 @@ namespace bsl
     ///   @return Returns a span<byte const> given a pointer to an array
     ///     type and the total number of bytes
     ///
-    [[nodiscard]] constexpr span<byte const>
-    as_bytes(void const *const ptr, safe_uintmax const &bytes) noexcept
+    [[nodiscard]] constexpr auto
+    as_bytes(void const *const ptr, safe_uintmax const &bytes) noexcept -> span<byte const>
     {
         return {static_cast<byte const *>(ptr), bytes};
     }
@@ -797,12 +864,13 @@ namespace bsl
     ///   @related bsl::span
     ///
     /// <!-- inputs/outputs -->
+    ///   @tparam T the type of element being viewed.
     ///   @param spn the span<T> to convert into a span<byte const>
     ///   @return Returns a span<byte const> given an existing span<T>
     ///
     template<typename T>
-    [[nodiscard]] constexpr span<byte const>
-    as_bytes(span<T> const spn) noexcept
+    [[nodiscard]] constexpr auto
+    as_bytes(span<T> const spn) noexcept -> span<byte const>
     {
         return as_bytes(spn.data(), spn.size_bytes());
     }
@@ -819,8 +887,8 @@ namespace bsl
     ///   @return Returns a span<byte> given a pointer to an array
     ///     type and the total number of bytes
     ///
-    [[nodiscard]] constexpr span<byte>
-    as_writable_bytes(void *const ptr, safe_uintmax const &bytes) noexcept
+    [[nodiscard]] constexpr auto
+    as_writable_bytes(void *const ptr, safe_uintmax const &bytes) noexcept -> span<byte>
     {
         return {static_cast<byte *>(ptr), bytes};
     }
@@ -831,12 +899,13 @@ namespace bsl
     ///   @related bsl::span
     ///
     /// <!-- inputs/outputs -->
+    ///   @tparam T the type of element being viewed.
     ///   @param spn the span<T> to convert into a span<byte>
     ///   @return Returns a span<byte> given an existing span<T>
     ///
     template<typename T>
-    [[nodiscard]] constexpr span<byte>
-    as_writable_bytes(span<T> spn) noexcept
+    [[nodiscard]] constexpr auto
+    as_writable_bytes(span<T> spn) noexcept -> span<byte>
     {
         return as_writable_bytes(spn.data(), spn.size_bytes());
     }
@@ -855,8 +924,8 @@ namespace bsl
     ///     the same contents. Returns false otherwise.
     ///
     template<typename T>
-    constexpr bool
-    operator==(span<T> const &lhs, span<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator==(span<T> const &lhs, span<T> const &rhs) noexcept -> bool
     {
         if (lhs.size() != rhs.size()) {
             return false;
@@ -866,6 +935,8 @@ namespace bsl
             if (*lhs.at_if(i) != *rhs.at_if(i)) {
                 return false;
             }
+
+            bsl::touch();
         }
 
         return true;
@@ -885,8 +956,8 @@ namespace bsl
     ///     the same contents. Returns false otherwise.
     ///
     template<typename T>
-    constexpr bool
-    operator!=(span<T> const &lhs, span<T> const &rhs) noexcept
+    [[nodiscard]] constexpr auto
+    operator!=(span<T> const &lhs, span<T> const &rhs) noexcept -> bool
     {
         return !(lhs == rhs);
     }
@@ -905,8 +976,8 @@ namespace bsl
     ///   @return return o
     ///
     template<typename T1, typename T2>
-    [[maybe_unused]] constexpr out<T1>
-    operator<<(out<T1> const o, bsl::span<T2> const &val) noexcept
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T1> const o, bsl::span<T2> const &val) noexcept -> out<T1>
     {
         if constexpr (!o) {
             return o;
@@ -917,7 +988,12 @@ namespace bsl
         }
 
         for (safe_uintmax i{}; i < val.size(); ++i) {
-            o << (i.is_zero() ? "[" : ", ") << *val.at_if(i);
+            if (i.is_zero()) {
+                o << "[" << *val.at_if(i);
+            }
+            else {
+                o << ", " << *val.at_if(i);
+            }
         }
 
         return o << ']';

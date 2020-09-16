@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_is_null_pointer_overview() noexcept
     {
-        if (bsl::is_null_pointer<decltype(nullptr)>::value) {
+        if constexpr (bsl::is_null_pointer<decltype(nullptr)>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

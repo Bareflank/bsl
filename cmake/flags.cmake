@@ -29,6 +29,7 @@ list(APPEND BSL_WARNINGS
     -Wno-weak-vtables
     -Wno-ctad-maybe-unsupported
     -Wno-enum-compare-conditional
+    -Wno-return-std-move-in-c++11
     -fcomment-block-commands=include
     -fcomment-block-commands=cond
     -fcomment-block-commands=endcond
@@ -59,13 +60,6 @@ list(APPEND BSL_FLAGS_CLANG_TIDY
     -O0
     -g
     -ftime-trace
-    -Werror
-    ${BSL_WARNINGS}
-    ${BSL_ENABLE_CONSOLE_COLORS}
-)
-
-list(APPEND BSL_FLAGS_PERFORCE
-    -O0
     -Werror
     ${BSL_WARNINGS}
     ${BSL_ENABLE_CONSOLE_COLORS}

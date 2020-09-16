@@ -36,8 +36,11 @@ namespace bsl
         constexpr bsl::safe_uintmax n{bsl::to_umax(2)};
         constexpr bsl::char_type ch{'2'};
 
-        if (bsl::char_traits<bsl::char_type>::find("42", n, ch) != nullptr) {
+        if constexpr (bsl::char_traits<bsl::char_type>::find("42", n, ch) != nullptr) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

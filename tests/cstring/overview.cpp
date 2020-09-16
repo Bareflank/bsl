@@ -27,56 +27,47 @@
 #include <bsl/ut.hpp>
 
 /// <!-- description -->
-///   @brief Main function for this unit test. If a call to ut_check() fails
-///     the application will fast fail. If all calls to ut_check() pass, this
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
 ///     function will successfully return with bsl::exit_success.
 ///
 /// <!-- inputs/outputs -->
 ///   @return Always returns bsl::exit_success.
 ///
-bsl::exit_code
-main() noexcept
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
-    using namespace bsl;
+    // clang-format off
 
-    bsl::ut_scenario{"builtin_strncmp"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::cstr_type msg1{"Hello World"};
+    bsl::ut_scenario{"builtin_strncmp"} = []() {        bsl::ut_given{} = []() {            bsl::cstr_type msg1{"Hello World"};
             bsl::cstr_type msg2{"Hello World"};
             bsl::cstr_type msg3{"Something Else"};
-            bsl::ut_then{} = [&msg1, &msg2, &msg3]() {
-                bsl::ut_check(builtin_strncmp(nullptr, msg2, builtin_strlen(msg1)) == 0);
-                bsl::ut_check(builtin_strncmp(msg1, nullptr, builtin_strlen(msg1)) == 0);
-                bsl::ut_check(builtin_strncmp(msg1, msg2, safe_uintmax::zero(true)) == 0);
-                bsl::ut_check(builtin_strncmp(msg1, msg2, builtin_strlen(msg1)) == 0);
-                bsl::ut_check(builtin_strncmp(msg1, msg3, builtin_strlen(msg1)) != 0);
+            bsl::ut_then{} = [&msg1, &msg2, &msg3]() {                bsl::ut_check(bsl::builtin_strncmp(nullptr, msg2, bsl::builtin_strlen(msg1)) == 0);
+                bsl::ut_check(bsl::builtin_strncmp(msg1, nullptr, bsl::builtin_strlen(msg1)) == 0);
+                bsl::ut_check(bsl::builtin_strncmp(msg1, msg2, bsl::safe_uintmax::zero(true)) == 0);
+                bsl::ut_check(bsl::builtin_strncmp(msg1, msg2, bsl::builtin_strlen(msg1)) == 0);
+                bsl::ut_check(bsl::builtin_strncmp(msg1, msg3, bsl::builtin_strlen(msg1)) != 0);
             };
         };
     };
 
-    bsl::ut_scenario{"builtin_strlen"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::cstr_type msg1{};
+    bsl::ut_scenario{"builtin_strlen"} = []() {        bsl::ut_given{} = []() {            bsl::cstr_type msg1{};
             bsl::cstr_type msg2{""};
             bsl::cstr_type msg3{"Hello"};
-            bsl::ut_then{} = [&msg1, &msg2, &msg3]() {
-                bsl::ut_check(builtin_strlen(nullptr) == to_umax(0));
-                bsl::ut_check(builtin_strlen(msg1) == to_umax(0));
-                bsl::ut_check(builtin_strlen(msg2) == to_umax(0));
-                bsl::ut_check(builtin_strlen(msg3) == to_umax(5));
+            bsl::ut_then{} = [&msg1, &msg2, &msg3]() {                bsl::ut_check(bsl::builtin_strlen(nullptr) == bsl::to_umax(0));
+                bsl::ut_check(bsl::builtin_strlen(msg1) == bsl::to_umax(0));
+                bsl::ut_check(bsl::builtin_strlen(msg2) == bsl::to_umax(0));
+                bsl::ut_check(bsl::builtin_strlen(msg3) == bsl::to_umax(5));
             };
         };
     };
 
-    bsl::ut_scenario{"builtin_strnchr"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::cstr_type msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {
-                bsl::ut_check(builtin_strnchr(nullptr, 'o', builtin_strlen(msg)) == nullptr);
-                bsl::ut_check(builtin_strnchr(msg, 'o', to_umax(0)) == nullptr);
-                bsl::ut_check(builtin_strnchr(msg, 'o', safe_uintmax::zero(true)) == nullptr);
-                bsl::ut_check(builtin_strnchr(msg, 'o', builtin_strlen(msg)) == &msg[4]);
-                bsl::ut_check(builtin_strnchr(msg, 'z', builtin_strlen(msg)) == nullptr);
+    bsl::ut_scenario{"builtin_strnchr"} = []() {        bsl::ut_given{} = []() {            bsl::cstr_type msg{"Hello World"};
+            bsl::ut_then{} = [&msg]() {                bsl::ut_check(bsl::builtin_strnchr(nullptr, 'o', bsl::builtin_strlen(msg)) == nullptr);
+                bsl::ut_check(bsl::builtin_strnchr(msg, 'o', bsl::to_umax(0)) == nullptr);
+                bsl::ut_check(bsl::builtin_strnchr(msg, 'o', bsl::safe_uintmax::zero(true)) == nullptr);
+                bsl::ut_check(bsl::builtin_strnchr(msg, 'o', bsl::builtin_strlen(msg)) == &msg[4]);
+                bsl::ut_check(bsl::builtin_strnchr(msg, 'z', bsl::builtin_strlen(msg)) == nullptr);
             };
         };
     };

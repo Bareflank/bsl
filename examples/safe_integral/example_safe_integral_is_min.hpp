@@ -36,12 +36,18 @@ namespace bsl
         constexpr bsl::safe_int32 val1{bsl::safe_int32::min()};
         constexpr bsl::safe_int32 val2{bsl::safe_int32::max()};
 
-        if (val1.is_min()) {
+        if constexpr (val1.is_min()) {
             bsl::print() << "success\n";
         }
+        else {
+            bsl::error() << "failure\n";
+        }
 
-        if (!val2.is_min()) {
+        if constexpr (!val2.is_min()) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

@@ -33,8 +33,11 @@ namespace bsl
     inline void
     example_bool_constant_overview() noexcept
     {
-        if (bsl::bool_constant<true>::value) {
+        if constexpr (bsl::bool_constant<true>::value) {
             bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
         }
     }
 }

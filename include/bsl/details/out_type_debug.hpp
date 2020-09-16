@@ -25,63 +25,62 @@
 #ifndef BSL_DETAILS_OUT_TYPE_DEBUG_HPP
 #define BSL_DETAILS_OUT_TYPE_DEBUG_HPP
 
-namespace bsl
+namespace bsl::details
 {
-    namespace details
+    /// @class bsl::out_type_debug
+    ///
+    /// <!-- description -->
+    ///   @brief Used by out to define different versions of out
+    ///
+    class out_type_debug final
     {
-        /// @class bsl::out_type_debug
-        ///
+    public:
         /// <!-- description -->
-        ///   @brief Used by out to define different versions of out
+        ///   @brief Used to define bsl::out_type_debug as useless
         ///
-        class out_type_debug final
-        {
-        public:
-            /// <!-- description -->
-            ///   @brief Used to define bsl::out_type_debug as useless
-            ///
-            constexpr out_type_debug() noexcept = delete;
+        constexpr out_type_debug() noexcept = delete;
 
-            /// <!-- description -->
-            ///   @brief Used to define bsl::out_type_debug as useless
-            ///
-            ~out_type_debug() noexcept = delete;
+        /// <!-- description -->
+        ///   @brief Used to define bsl::out_type_debug as useless
+        ///
+        constexpr ~out_type_debug() noexcept = delete;
 
-            /// <!-- description -->
-            ///   @brief Used to define bsl::out_type_debug as useless
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///
-            constexpr out_type_debug(out_type_debug const &o) noexcept = delete;
+        /// <!-- description -->
+        ///   @brief Used to define bsl::out_type_debug as useless
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr out_type_debug(out_type_debug const &o) noexcept = delete;
 
-            /// <!-- description -->
-            ///   @brief Used to define bsl::out_type_debug as useless
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///
-            constexpr out_type_debug(out_type_debug &&o) noexcept = delete;
+        /// <!-- description -->
+        ///   @brief Used to define bsl::out_type_debug as useless
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr out_type_debug(out_type_debug &&o) noexcept = delete;
 
-            /// <!-- description -->
-            ///   @brief Used to define bsl::out_type_debug as useless
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///   @return a reference to *this
-            ///
-            constexpr out_type_debug &operator=(out_type_debug const &o) &noexcept = delete;
+        /// <!-- description -->
+        ///   @brief Used to define bsl::out_type_debug as useless
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[nodiscard]] constexpr auto operator=(out_type_debug const &o) &noexcept
+            -> out_type_debug & = delete;
 
-            /// <!-- description -->
-            ///   @brief Used to define bsl::out_type_debug as useless
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///   @return a reference to *this
-            ///
-            constexpr out_type_debug &operator=(out_type_debug &&o) &noexcept = delete;
-        };
-    }
+        /// <!-- description -->
+        ///   @brief Used to define bsl::out_type_debug as useless
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[nodiscard]] constexpr auto operator=(out_type_debug &&o) &noexcept
+            -> out_type_debug & = delete;
+    };
 }
 
 #endif

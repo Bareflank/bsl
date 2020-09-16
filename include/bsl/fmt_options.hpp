@@ -28,13 +28,19 @@
 #ifndef BSL_FMT_OPTIONS_HPP
 #define BSL_FMT_OPTIONS_HPP
 
+#include "details/fmt_fsm.hpp"
+
 #include "char_type.hpp"
 #include "convert.hpp"
 #include "cstr_type.hpp"
 #include "cstdint.hpp"
 #include "cstring.hpp"
+#include "fmt_align.hpp"
+#include "fmt_sign.hpp"
+#include "fmt_type.hpp"
 #include "npos.hpp"
 #include "safe_integral.hpp"
+#include "touch.hpp"
 
 // TODO
 // - Once Clang/LLVM supports C++20's consteval, we should determine if
@@ -47,77 +53,6 @@
 
 namespace bsl
 {
-    namespace details
-    {
-        /// @enum bsl::details::fmt_fsm
-        ///
-        /// <!-- description -->
-        ///   @brief Used to define a finite state machine that is used to
-        ///     parse the {fmt} style syntax for formatting. Although there
-        ///     are many ways to implement a parser, the FSM proved to be
-        ///     a really simple approach, even though the FSM in this case
-        ///     is overly simplified. What makes this approach so simple is
-        ///     each field is accounted for in the FSM, yet each parser is
-        ///     optional based on what the user provides, so everything is
-        ///     accounted for.
-        ///
-        enum class fmt_fsm : bsl::uint32
-        {
-            fmt_fsm_align = 0U,
-            fmt_fsm_sign = 1U,
-            fmt_fsm_alternate_form = 2U,
-            fmt_fsm_sign_aware = 3U,
-            fmt_fsm_width = 4U,
-            fmt_fsm_type = 5U,
-        };
-    }
-
-    /// @enum bsl::fmt_align
-    ///
-    /// <!-- description -->
-    ///   @brief Used to determine what the alignment of the output
-    ///     should be. If the width is not defined, this field does
-    ///     nothing.
-    ///
-    enum class fmt_align : bsl::uint32
-    {
-        fmt_align_default = 0U,
-        fmt_align_left = 1U,
-        fmt_align_right = 2U,
-        fmt_align_center = 3U
-    };
-
-    /// @enum bsl::fmt_sign
-    ///
-    /// <!-- description -->
-    ///   @brief Used to determine how an integral's sign field is
-    ///     handled. This only has an effect on signed types.
-    ///
-    enum class fmt_sign : bsl::uint32
-    {
-        fmt_sign_neg_only = 0U,
-        fmt_sign_pos_neg = 1U,
-        fmt_sign_space_for_pos = 3U,
-    };
-
-    /// @enum bsl::fmt_type
-    ///
-    /// <!-- description -->
-    ///   @brief Used to determine how to output an unsigned integer
-    ///     type (either as hex or dec). All ofther {fmt} types are
-    ///     currently not supported and this has no effect on signed
-    ///     integer types.
-    ///
-    enum class fmt_type : bsl::uint32
-    {
-        fmt_type_default = 0U,
-        fmt_type_b = 1U,
-        fmt_type_c = 2U,
-        fmt_type_d = 3U,
-        fmt_type_s = 4U,
-        fmt_type_x = 5U,
-    };
-
     /// @class bsl::fmt_options
     ///
     /// <!-- description -->
@@ -169,7 +104,10 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param f the user provided format string.
         ///
-        constexpr fmt_options(cstr_type const f) noexcept    // NOLINT
+        // We use a deleted single argument template constructor to prevent
+        // implicit conversions, so this rule is OBE.
+        // NOLINTNEXTLINE(hicpp-explicit-conversions)
+        constexpr fmt_options(cstr_type const f) noexcept
         {
             details::fmt_fsm fsm{};
 
@@ -217,6 +155,59 @@ namespace bsl
         }
 
         /// <!-- description -->
+        ///   @brief Destroyes a previously created bsl::fmt_options
+        ///
+        constexpr ~fmt_options() noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr fmt_options(fmt_options const &o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief move constructor
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr fmt_options(fmt_options &&o) noexcept = default;
+
+        /// <!-- description -->
+        ///   @brief copy assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(fmt_options const &o) &noexcept
+            -> fmt_options & = default;
+
+        /// <!-- description -->
+        ///   @brief move assignment
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[maybe_unused]] constexpr auto operator=(fmt_options &&o) &noexcept
+            -> fmt_options & = default;
+
+        /// <!-- description -->
+        ///   @brief This constructor allows for single argument constructors
+        ///     without the need to mark them as explicit as it will absorb
+        ///     any incoming potential implicit conversion and prevent it.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam O the type that could be implicitly converted
+        ///   @param val the value that could be implicitly converted
+        ///
+        template<typename O>
+        constexpr fmt_options(O val) noexcept = delete;
+
+        /// <!-- description -->
         ///   @brief Returns the "fill" field in the {fmt} syntax based on
         ///     the previously provided format string.
         ///
@@ -224,8 +215,8 @@ namespace bsl
         ///   @return Returns the "fill" field in the {fmt} syntax based on
         ///     the previously provided format string.
         ///
-        [[nodiscard]] constexpr char_type
-        fill() const noexcept
+        [[nodiscard]] constexpr auto
+        fill() const noexcept -> char_type
         {
             return m_fill;
         }
@@ -251,8 +242,8 @@ namespace bsl
         ///   @return Returns the "align" field in the {fmt} syntax based on
         ///     the previously provided format string.
         ///
-        [[nodiscard]] constexpr fmt_align
-        align() const noexcept
+        [[nodiscard]] constexpr auto
+        align() const noexcept -> fmt_align
         {
             return m_align;
         }
@@ -278,8 +269,8 @@ namespace bsl
         ///   @return Returns the "sign" field in the {fmt} syntax based on
         ///     the previously provided format string.
         ///
-        [[nodiscard]] constexpr fmt_sign
-        sign() const noexcept
+        [[nodiscard]] constexpr auto
+        sign() const noexcept -> fmt_sign
         {
             return m_sign;
         }
@@ -305,8 +296,8 @@ namespace bsl
         ///   @return Returns the "alt form" field in the {fmt} syntax based on
         ///     the previously provided format string.
         ///
-        [[nodiscard]] constexpr bool
-        alternate_form() const noexcept
+        [[nodiscard]] constexpr auto
+        alternate_form() const noexcept -> bool
         {
             return m_alternate_form;
         }
@@ -332,8 +323,8 @@ namespace bsl
         ///   @return Returns the "sign aware" field in the {fmt} syntax based
         ///     on the previously provided format string.
         ///
-        [[nodiscard]] constexpr bool
-        sign_aware() const noexcept
+        [[nodiscard]] constexpr auto
+        sign_aware() const noexcept -> bool
         {
             return m_sign_aware;
         }
@@ -359,8 +350,8 @@ namespace bsl
         ///   @return Returns the "width" field in the {fmt} syntax based on
         ///     the previously provided format string.
         ///
-        [[nodiscard]] constexpr bsl::safe_uintmax
-        width() const noexcept
+        [[nodiscard]] constexpr auto
+        width() const noexcept -> bsl::safe_uintmax
         {
             return m_width;
         }
@@ -376,11 +367,14 @@ namespace bsl
         set_width(bsl::safe_uintmax const &val) noexcept
         {
             constexpr safe_uintmax max_width{to_umax(999)};
-            if ((!val) || (val > max_width)) {
+            if (!val) {
                 m_width = max_width;
             }
-            else {
+            else if (val < max_width) {
                 m_width = val;
+            }
+            else {
+                m_width = max_width;
             }
         }
 
@@ -392,8 +386,8 @@ namespace bsl
         ///   @return Returns the "type" field in the {fmt} syntax based on
         ///     the previously provided format string.
         ///
-        [[nodiscard]] constexpr fmt_type
-        type() const noexcept
+        [[nodiscard]] constexpr auto
+        type() const noexcept -> fmt_type
         {
             return m_type;
         }
@@ -428,19 +422,26 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @param f the provided format string to parse
+        ///   @param idx the index in the fmt options string to start from
+        ///   @param len the total number of characters in the fmt options
+        ///     string being parsed.
         ///
-        constexpr void
+        constexpr auto
         fmt_options_impl_align(
             cstr_type const f, bsl::safe_uintmax &idx, bsl::safe_uintmax const &len) noexcept
+            -> void
         {
+            constexpr bsl::safe_uintmax one_char{bsl::to_umax(1)};
+            constexpr bsl::safe_uintmax two_chars{bsl::to_umax(2)};
+
             char_type f_fill{' '};
             char_type f_align{};
-            bsl::safe_uintmax idx_inc{bsl::to_umax(1)};
+            bsl::safe_uintmax idx_inc{one_char};
 
-            if ((idx + bsl::to_umax(1)) < len) {
+            if ((idx + one_char) < len) {
                 f_fill = f[idx.get()];
-                f_align = f[(idx + bsl::to_umax(1)).get()];
-                idx_inc = bsl::to_umax(2);
+                f_align = f[(idx + one_char).get()];
+                idx_inc = two_chars;
             }
             else {
                 f_align = f[idx.get()];
@@ -498,6 +499,9 @@ namespace bsl
                     }
                 }
             }
+            else {
+                bsl::touch();
+            }
         }
 
         /// <!-- description -->
@@ -508,9 +512,10 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @param f the provided format string to parse
+        ///   @param idx the index in the fmt options string to start from
         ///
-        constexpr void
-        fmt_options_impl_sign(cstr_type const f, bsl::safe_uintmax &idx) noexcept
+        constexpr auto
+        fmt_options_impl_sign(cstr_type const f, bsl::safe_uintmax &idx) noexcept -> void
         {
             switch (f[idx.get()]) {
                 case '+': {
@@ -545,13 +550,17 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @param f the provided format string to parse
+        ///   @param idx the index in the fmt options string to start from
         ///
-        constexpr void
-        fmt_options_impl_alternate_form(cstr_type const f, bsl::safe_uintmax &idx) noexcept
+        constexpr auto
+        fmt_options_impl_alternate_form(cstr_type const f, bsl::safe_uintmax &idx) noexcept -> void
         {
             if ('#' == f[idx.get()]) {
                 m_alternate_form = true;
                 ++idx;
+            }
+            else {
+                bsl::touch();
             }
         }
 
@@ -563,13 +572,17 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @param f the provided format string to parse
+        ///   @param idx the index in the fmt options string to start from
         ///
-        constexpr void
-        fmt_options_impl_sign_aware(cstr_type const f, bsl::safe_uintmax &idx) noexcept
+        constexpr auto
+        fmt_options_impl_sign_aware(cstr_type const f, bsl::safe_uintmax &idx) noexcept -> void
         {
             if ('0' == f[idx.get()]) {
                 m_sign_aware = true;
                 ++idx;
+            }
+            else {
+                bsl::touch();
             }
         }
 
@@ -581,21 +594,37 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @param f the provided format string to parse
+        ///   @param idx the index in the fmt options string to start from
+        ///   @param len the total number of characters in the fmt options
+        ///     string being parsed.
         ///
-        constexpr void
+        constexpr auto
         fmt_options_impl_width(
             cstr_type const f, bsl::safe_uintmax &idx, bsl::safe_uintmax const &len) noexcept
+            -> void
         {
             constexpr bsl::safe_uintmax max_num_width_digits{bsl::to_umax(3)};
+            constexpr bsl::safe_uintmax base10{bsl::to_umax(10)};
 
-            for (bsl::safe_uintmax i{}; (i < max_num_width_digits) && (idx < len); ++i) {
+            for (bsl::safe_uintmax i{}; idx < len; ++i) {
+                if (i == max_num_width_digits) {
+                    break;
+                }
+
                 char_type const digit{f[idx.get()]};
-
-                if ((digit >= '0') && (digit <= '9')) {
-                    m_width *= bsl::to_umax(10);
-                    m_width += bsl::to_umax(digit);
-                    m_width -= bsl::to_umax('0');
-                    ++idx;
+                if (digit > '/') {
+                    if (digit < ':') {
+                        m_width *= base10;
+                        m_width += bsl::to_umax(digit);
+                        m_width -= bsl::to_umax('0');
+                        ++idx;
+                    }
+                    else {
+                        bsl::touch();
+                    }
+                }
+                else {
+                    bsl::touch();
                 }
             }
         }
@@ -611,9 +640,10 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @param f the provided format string to parse
+        ///   @param idx the index in the fmt options string to start from
         ///
-        constexpr void
-        fmt_options_impl_type(cstr_type const f, bsl::safe_uintmax &idx) noexcept
+        constexpr auto
+        fmt_options_impl_type(cstr_type const f, bsl::safe_uintmax &idx) noexcept -> void
         {
             switch (f[idx.get()]) {
                 case 'b':
@@ -652,10 +682,35 @@ namespace bsl
         }
     };
 
+    namespace details
+    {
+        /// <!-- description -->
+        ///   @brief Returns the fmt options for a pointer depending on the
+        ///     the size of a pointer.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns the fmt options for a pointer depending on the
+        ///     the size of a pointer.
+        ///
+        [[nodiscard]] constexpr auto
+        get_ptrops() noexcept -> fmt_options
+        {
+            if (sizeof(bsl::uintptr) == sizeof(bsl::uint32)) {
+                return {"#010x"};
+            }
+
+            return {"#018x"};
+        }
+    }
+
     /// @brief defines no formatting.
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
     constexpr fmt_options nullops{""};
     /// @brief defines how to format a ptr like type.
-    constexpr fmt_options ptrops{(sizeof(bsl::uintptr) == 4) ? "#010x" : "#018x"};    // NOLINT
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
+    constexpr fmt_options ptrops{details::get_ptrops()};
 }
 
 #endif

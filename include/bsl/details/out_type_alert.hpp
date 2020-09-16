@@ -25,63 +25,62 @@
 #ifndef BSL_DETAILS_OUT_TYPE_ALERT_HPP
 #define BSL_DETAILS_OUT_TYPE_ALERT_HPP
 
-namespace bsl
+namespace bsl::details
 {
-    namespace details
+    /// @class bsl::out_type_alert
+    ///
+    /// <!-- description -->
+    ///   @brief Used by out to define different versions of out
+    ///
+    class out_type_alert final
     {
-        /// @class bsl::out_type_alert
-        ///
+    public:
         /// <!-- description -->
-        ///   @brief Used by out to define different versions of out
+        ///   @brief Used to define bsl::out_type_alert as useless
         ///
-        class out_type_alert final
-        {
-        public:
-            /// <!-- description -->
-            ///   @brief Used to define bsl::out_type_alert as useless
-            ///
-            constexpr out_type_alert() noexcept = delete;
+        constexpr out_type_alert() noexcept = delete;
 
-            /// <!-- description -->
-            ///   @brief Used to define bsl::out_type_alert as useless
-            ///
-            ~out_type_alert() noexcept = delete;
+        /// <!-- description -->
+        ///   @brief Used to define bsl::out_type_alert as useless
+        ///
+        constexpr ~out_type_alert() noexcept = delete;
 
-            /// <!-- description -->
-            ///   @brief Used to define bsl::out_type_alert as useless
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///
-            constexpr out_type_alert(out_type_alert const &o) noexcept = delete;
+        /// <!-- description -->
+        ///   @brief Used to define bsl::out_type_alert as useless
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///
+        constexpr out_type_alert(out_type_alert const &o) noexcept = delete;
 
-            /// <!-- description -->
-            ///   @brief Used to define bsl::out_type_alert as useless
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///
-            constexpr out_type_alert(out_type_alert &&o) noexcept = delete;
+        /// <!-- description -->
+        ///   @brief Used to define bsl::out_type_alert as useless
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///
+        constexpr out_type_alert(out_type_alert &&o) noexcept = delete;
 
-            /// <!-- description -->
-            ///   @brief Used to define bsl::out_type_alert as useless
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being copied
-            ///   @return a reference to *this
-            ///
-            constexpr out_type_alert &operator=(out_type_alert const &o) &noexcept = delete;
+        /// <!-- description -->
+        ///   @brief Used to define bsl::out_type_alert as useless
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being copied
+        ///   @return a reference to *this
+        ///
+        [[nodiscard]] constexpr auto operator=(out_type_alert const &o) &noexcept
+            -> out_type_alert & = delete;
 
-            /// <!-- description -->
-            ///   @brief Used to define bsl::out_type_alert as useless
-            ///
-            /// <!-- inputs/outputs -->
-            ///   @param o the object being moved
-            ///   @return a reference to *this
-            ///
-            constexpr out_type_alert &operator=(out_type_alert &&o) &noexcept = delete;
-        };
-    }
+        /// <!-- description -->
+        ///   @brief Used to define bsl::out_type_alert as useless
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param o the object being moved
+        ///   @return a reference to *this
+        ///
+        [[nodiscard]] constexpr auto operator=(out_type_alert &&o) &noexcept
+            -> out_type_alert & = delete;
+    };
 }
 
 #endif

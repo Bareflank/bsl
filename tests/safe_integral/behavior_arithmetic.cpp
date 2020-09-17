@@ -549,6 +549,15 @@ namespace
             };
 
             bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::min()};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check(!(val / (42)).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val{-1};
                 bsl::ut_when{} = [&val]() {
                     bsl::ut_then{} = [&val]() {
@@ -678,6 +687,15 @@ namespace
                 bsl::ut_when{} = [&val]() {
                     bsl::ut_then{} = [&val]() {
                         bsl::ut_check((val % (-1)).failure());
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{bsl::numeric_limits<bsl::int32>::min()};
+                bsl::ut_when{} = [&val]() {
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check(!(val % (42)).failure());
                     };
                 };
             };

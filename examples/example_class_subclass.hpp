@@ -34,7 +34,7 @@ namespace bsl
     /// @class bsl::example_class_subclass
     ///
     /// <!-- description -->
-    ///   @brief A example of a subclass that is compliant with AUTOSAR.
+    ///   @brief An example of a subclass that is compliant with AUTOSAR.
     ///
     /// <!-- notes -->
     ///   @note This class is not trivial because it has a non-default

@@ -369,7 +369,7 @@ namespace
             bsl::ut_given{} = []() {
                 bsl::span<bool> const spn{};
                 bsl::ut_then{} = [&spn]() {
-                    bsl::ut_check(spn.iter(bsl::to_umax(0)).get_if() == nullptr);
+                    bsl::ut_check(spn.citer(bsl::to_umax(0)).get_if() == nullptr);
                     bsl::ut_check(spn.citer(bsl::to_umax(0)).index() == spn.size());
                 };
             };
@@ -582,7 +582,7 @@ namespace
             bsl::ut_given{} = []() {
                 bsl::span<bool> const spn{};
                 bsl::ut_then{} = [&spn]() {
-                    bsl::ut_check(spn.riter(bsl::to_umax(0)).get_if() == nullptr);
+                    bsl::ut_check(spn.criter(bsl::to_umax(0)).get_if() == nullptr);
                     bsl::ut_check(spn.criter(bsl::to_umax(0)).index() == spn.size());
                 };
             };
@@ -636,8 +636,8 @@ namespace
                 bsl::array const arr{test_arr};
                 bsl::span const spn{arr.data(), arr.size()};
                 bsl::ut_then{} = [&spn]() {
-                    bsl::ut_check(spn.riter(bsl::npos).get_if() == nullptr);
-                    bsl::ut_check(spn.riter(bsl::npos).index() == spn.size());
+                    bsl::ut_check(spn.criter(bsl::npos).get_if() == nullptr);
+                    bsl::ut_check(spn.criter(bsl::npos).index() == spn.size());
                 };
             };
 
@@ -663,8 +663,8 @@ namespace
                 bsl::array const arr{test_arr};
                 bsl::span const spn{arr.data(), arr.size()};
                 bsl::ut_then{} = [&spn]() {
-                    bsl::ut_check(spn.riter(bsl::safe_uintmax::zero(true)).get_if() == nullptr);
-                    bsl::ut_check(spn.riter(bsl::safe_uintmax::zero(true)).index() == spn.size());
+                    bsl::ut_check(spn.criter(bsl::safe_uintmax::zero(true)).get_if() == nullptr);
+                    bsl::ut_check(spn.criter(bsl::safe_uintmax::zero(true)).index() == spn.size());
                 };
             };
         };

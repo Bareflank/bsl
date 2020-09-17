@@ -33,13 +33,12 @@ namespace bsl
     ///   @brief Provides the example's main function
     ///
     inline void
-    example_integer_sequence() noexcept
+    example_integer_sequence_overview() noexcept
     {
-        // clang-format off
-
         constexpr bsl::safe_int32 val1{4};
         constexpr bsl::safe_int32 val2{8};
 
+        // clang-format off
         if constexpr (bsl::integer_sequence<bsl::int32, val1.get(), val2.get()>::min() == val1.get()) {
             bsl::print() << "success\n";
         }

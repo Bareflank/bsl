@@ -30,11 +30,12 @@ namespace bsl
     /// @class bsl::example_class_pod
     ///
     /// <!-- description -->
-    ///   @brief A example of a POD type, which is also trivial and has a
+    ///   @brief An example of a POD type, which is also trivial and has a
     ///     standard layout. For more examples, please see cppreference.
     ///
     struct example_class_pod final
-    {    /// @brief dummy data #1
+    {
+        /// @brief dummy data #1
         bool m_data1;
         /// @brief dummy data #2
         bool m_data2;

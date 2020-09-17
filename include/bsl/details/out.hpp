@@ -33,10 +33,11 @@
 #include "out_type_empty.hpp"
 #include "out_type_error.hpp"
 #include "out_type_print.hpp"
-#include "putc_stdout.hpp"
-#include "putc_stderr.hpp"
-#include "puts_stdout.hpp"
-#include "puts_stderr.hpp"
+
+#include <bsl/details/putc_stdout.hpp>
+#include <bsl/details/putc_stderr.hpp>
+#include <bsl/details/puts_stdout.hpp>
+#include <bsl/details/puts_stderr.hpp>
 
 #include "../color.hpp"
 #include "../char_type.hpp"

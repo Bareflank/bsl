@@ -23,12 +23,21 @@
 /// SOFTWARE.
 
 #include <bsl/array.hpp>
+#include <bsl/details/carray.hpp>
 #include <bsl/npos.hpp>
 #include <bsl/ut.hpp>
 
 namespace
 {
     constexpr bsl::array test_arr{
+        bsl::to_i32(4),
+        bsl::to_i32(8),
+        bsl::to_i32(15),
+        bsl::to_i32(16),
+        bsl::to_i32(23),
+        bsl::to_i32(42)};
+
+    constexpr bsl::details::carray test_carr{
         bsl::to_i32(4),
         bsl::to_i32(8),
         bsl::to_i32(15),
@@ -66,6 +75,38 @@ namespace
 
             bsl::ut_given{} = []() {
                 bsl::array const arr{test_arr};
+                bsl::ut_then{} = [&arr]() {
+                    bsl::ut_check(*arr.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
+                    bsl::ut_check(*arr.at_if(bsl::to_umax(1)) == bsl::to_i32(8));
+                    bsl::ut_check(*arr.at_if(bsl::to_umax(2)) == bsl::to_i32(15));
+                    bsl::ut_check(*arr.at_if(bsl::to_umax(3)) == bsl::to_i32(16));
+                    bsl::ut_check(*arr.at_if(bsl::to_umax(4)) == bsl::to_i32(23));
+                    bsl::ut_check(*arr.at_if(bsl::to_umax(5)) == bsl::to_i32(42));
+                    bsl::ut_check(arr.at_if(bsl::to_umax(6)) == nullptr);
+                    bsl::ut_check(arr.at_if(bsl::npos) == nullptr);
+                    bsl::ut_check(arr.at_if(bsl::safe_uintmax::zero(true)) == nullptr);
+                };
+            };
+        };
+
+        bsl::ut_scenario{"at_if (for carray)"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::details::carray arr{test_carr};
+                bsl::ut_then{} = [&arr]() {
+                    bsl::ut_check(*arr.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
+                    bsl::ut_check(*arr.at_if(bsl::to_umax(1)) == bsl::to_i32(8));
+                    bsl::ut_check(*arr.at_if(bsl::to_umax(2)) == bsl::to_i32(15));
+                    bsl::ut_check(*arr.at_if(bsl::to_umax(3)) == bsl::to_i32(16));
+                    bsl::ut_check(*arr.at_if(bsl::to_umax(4)) == bsl::to_i32(23));
+                    bsl::ut_check(*arr.at_if(bsl::to_umax(5)) == bsl::to_i32(42));
+                    bsl::ut_check(arr.at_if(bsl::to_umax(6)) == nullptr);
+                    bsl::ut_check(arr.at_if(bsl::npos) == nullptr);
+                    bsl::ut_check(arr.at_if(bsl::safe_uintmax::zero(true)) == nullptr);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::details::carray const arr{test_carr};
                 bsl::ut_then{} = [&arr]() {
                     bsl::ut_check(*arr.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
                     bsl::ut_check(*arr.at_if(bsl::to_umax(1)) == bsl::to_i32(8));
@@ -154,6 +195,22 @@ namespace
 
             bsl::ut_given{} = []() {
                 bsl::array const arr{test_arr};
+                bsl::ut_then{} = [&arr]() {
+                    bsl::ut_check(arr.data() != nullptr);
+                };
+            };
+        };
+
+        bsl::ut_scenario{"data (for carray)"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::details::carray arr{test_carr};
+                bsl::ut_then{} = [&arr]() {
+                    bsl::ut_check(arr.data() != nullptr);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::details::carray const arr{test_carr};
                 bsl::ut_then{} = [&arr]() {
                     bsl::ut_check(arr.data() != nullptr);
                 };
@@ -454,6 +511,22 @@ namespace
 
             bsl::ut_given{} = []() {
                 bsl::array const arr{test_arr};
+                bsl::ut_then{} = [&arr]() {
+                    bsl::ut_check(arr.size() == bsl::to_umax(6));
+                };
+            };
+        };
+
+        bsl::ut_scenario{"size (for carray)"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::details::carray arr{test_carr};
+                bsl::ut_then{} = [&arr]() {
+                    bsl::ut_check(arr.size() == bsl::to_umax(6));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::details::carray const arr{test_carr};
                 bsl::ut_then{} = [&arr]() {
                     bsl::ut_check(arr.size() == bsl::to_umax(6));
                 };

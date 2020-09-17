@@ -30,7 +30,7 @@ namespace bsl
     /// @class bsl::example_class_empty
     ///
     /// <!-- description -->
-    ///   @brief A example of an empty class.
+    ///   @brief An example of an empty class.
     ///
     struct example_class_empty final
     {};

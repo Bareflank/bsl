@@ -62,7 +62,14 @@ namespace bsl
             return *this;
         }
 
-        /// @brief the l-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The l-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam FUNC_T ignored
+        ///   @param func ignored
+        ///   @return this
+        ///
         template<typename FUNC_T>
         [[maybe_unused]] constexpr auto operator=(FUNC_T &&func) const &noexcept
             -> ut_given & = delete;

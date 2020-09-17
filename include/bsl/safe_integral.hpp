@@ -355,7 +355,14 @@ namespace bsl
             return *this;
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam U n/a
+        ///   @param val n/a
+        ///   @return n/a
+        ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
         [[maybe_unused]] constexpr auto operator=(U const val) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -735,7 +742,13 @@ namespace bsl
             return *this;
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         [[maybe_unused]] constexpr auto
         operator+=(safe_integral<value_type> const &rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -775,7 +788,14 @@ namespace bsl
             return *this;
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam U n/a
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
         [[maybe_unused]] constexpr auto operator+=(U const rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -816,7 +836,13 @@ namespace bsl
             return *this;
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         [[maybe_unused]] constexpr auto
         operator-=(safe_integral<value_type> const &rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -856,7 +882,14 @@ namespace bsl
             return *this;
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam U n/a
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
         [[maybe_unused]] constexpr auto operator-=(U const rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -897,7 +930,13 @@ namespace bsl
             return *this;
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         [[maybe_unused]] constexpr auto
         operator*=(safe_integral<value_type> const &rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -937,7 +976,14 @@ namespace bsl
             return *this;
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam U n/a
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
         [[maybe_unused]] constexpr auto operator*=(U const rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -978,7 +1024,13 @@ namespace bsl
             return *this;
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         [[maybe_unused]] constexpr auto
         operator/=(safe_integral<value_type> const &rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -1018,7 +1070,14 @@ namespace bsl
             return *this;
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam U n/a
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
         [[maybe_unused]] constexpr auto operator/=(U const rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -1059,7 +1118,13 @@ namespace bsl
             return *this;
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         [[maybe_unused]] constexpr auto
         operator%=(safe_integral<value_type> const &rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -1099,7 +1164,14 @@ namespace bsl
             return *this;
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam U n/a
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
         [[maybe_unused]] constexpr auto operator%=(U const rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -1136,7 +1208,13 @@ namespace bsl
             }
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         [[maybe_unused]] constexpr auto
         operator<<=(safe_integral<value_type> const &rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -1172,7 +1250,14 @@ namespace bsl
             }
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam U n/a
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
         [[maybe_unused]] constexpr auto operator<<=(U const rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -1209,7 +1294,13 @@ namespace bsl
             }
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         [[maybe_unused]] constexpr auto
         operator>>=(safe_integral<value_type> const &rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -1245,7 +1336,14 @@ namespace bsl
             }
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam U n/a
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
         [[maybe_unused]] constexpr auto operator>>=(U const rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -1282,7 +1380,13 @@ namespace bsl
             }
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         [[maybe_unused]] constexpr auto
         operator&=(safe_integral<value_type> const &rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -1318,7 +1422,14 @@ namespace bsl
             }
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam U n/a
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
         [[maybe_unused]] constexpr auto operator&=(U const rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -1355,7 +1466,13 @@ namespace bsl
             }
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         [[maybe_unused]] constexpr auto
         operator|=(safe_integral<value_type> const &rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -1391,7 +1508,14 @@ namespace bsl
             }
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam U n/a
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
         [[maybe_unused]] constexpr auto operator|=(U const rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -1428,7 +1552,13 @@ namespace bsl
             }
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         [[maybe_unused]] constexpr auto
         operator^=(safe_integral<value_type> const &rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -1464,7 +1594,14 @@ namespace bsl
             }
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam U n/a
+        ///   @param rhs n/a
+        ///   @return n/a
+        ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
         [[maybe_unused]] constexpr auto operator^=(U const rhs) const &&noexcept
             -> safe_integral<value_type> & = delete;
@@ -1486,7 +1623,12 @@ namespace bsl
             return *this += one();
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return n/a
+        ///
         [[maybe_unused]] constexpr auto operator++() const &&noexcept
             -> safe_integral<value_type> & = delete;
 
@@ -1507,7 +1649,12 @@ namespace bsl
             return *this -= one();
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return n/a
+        ///
         [[maybe_unused]] constexpr auto operator--() const &&noexcept
             -> safe_integral<value_type> & = delete;
     };

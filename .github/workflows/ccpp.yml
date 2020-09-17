@@ -8,17 +8,21 @@ on:
 
 jobs:
   Doxygen:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - name: Setup
       run: |
-        sudo apt-get update
-        sudo apt-get install -y doxygen
+        wget http://doxygen.nl/files/doxygen-1.8.20.src.tar.gz
+        tar xf doxygen-1.8.20.src.tar.gz
+        mkdir doxygen-1.8.20/build; cd doxygen-1.8.20/build
+        cmake ..
+        make -j3
+
       shell: bash
     - name: Validate Documentation
       run: |
-        doxygen .doxygen
+        doxygen-1.8.20/build/bin/doxygen .doxygen
       shell: bash
 
   Clang_Format:
@@ -29,10 +33,6 @@ jobs:
         path: bsl
     - name: Setup
       run: |
-        CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
-        mkdir custom_cmake
-        wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C custom_cmake
-        export PATH=$(pwd)/custom_cmake/bin:${PATH}
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
         sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
@@ -64,10 +64,6 @@ jobs:
         path: bsl
     - name: Setup
       run: |
-        CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
-        mkdir custom_cmake
-        wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C custom_cmake
-        export PATH=$(pwd)/custom_cmake/bin:${PATH}
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
         sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
@@ -91,10 +87,6 @@ jobs:
         path: bsl
     - name: Setup
       run: |
-        CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
-        mkdir custom_cmake
-        wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C custom_cmake
-        export PATH=$(pwd)/custom_cmake/bin:${PATH}
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
         sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
@@ -118,10 +110,6 @@ jobs:
         path: bsl
     - name: Setup
       run: |
-        CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
-        mkdir custom_cmake
-        wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C custom_cmake
-        export PATH=$(pwd)/custom_cmake/bin:${PATH}
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
         sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
@@ -145,10 +133,6 @@ jobs:
         path: bsl
     - name: Setup
       run: |
-        CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
-        mkdir custom_cmake
-        wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C custom_cmake
-        export PATH=$(pwd)/custom_cmake/bin:${PATH}
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
         sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
@@ -171,10 +155,6 @@ jobs:
         path: bsl
     - name: Setup
       run: |
-        CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
-        mkdir custom_cmake
-        wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C custom_cmake
-        export PATH=$(pwd)/custom_cmake/bin:${PATH}
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
         sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
@@ -198,10 +178,6 @@ jobs:
         path: bsl
     - name: Setup
       run: |
-        CMAKE_URL="http://www.cmake.org/files/v3.13/cmake-3.13.4-Linux-x86_64.tar.gz"
-        mkdir custom_cmake
-        wget --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C custom_cmake
-        export PATH=$(pwd)/custom_cmake/bin:${PATH}
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
         sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update

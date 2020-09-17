@@ -133,7 +133,13 @@ namespace bsl::details
             return nullptr;
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param index n/a
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto at_if(size_type const &index) const &&noexcept
             -> const_pointer_type = delete;
 
@@ -150,7 +156,12 @@ namespace bsl::details
             return static_cast<const_pointer_type>(m_data);
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto data() const &&noexcept -> const_pointer_type = delete;
 
         /// <!-- description -->
@@ -167,6 +178,10 @@ namespace bsl::details
             return to_umax(N);
         }
     };
+
+    /// @brief deduction guideline for bsl::array
+    template<typename T, typename... U>
+    carray(T, U...) -> carray<T, safe_uintmax::one().get() + sizeof...(U)>;
 }
 
 #endif

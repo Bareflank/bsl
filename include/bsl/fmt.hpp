@@ -370,6 +370,7 @@ namespace bsl
             : m_ops{ops}, m_val{val}
         {
             constexpr safe_uintmax max_width{to_umax(999)};
+
             if (!width) {
                 m_ops.set_width(max_width);
             }
@@ -519,7 +520,16 @@ namespace bsl
         return o;
     }
 
-    /// @brief the l-value version of this function is not supported
+    /// <!-- description -->
+    ///   @brief The l-value version of this function is not supported
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T ignored
+    ///   @tparam U ignored
+    ///   @param o ignored
+    ///   @param arg ignored
+    ///   @return return o
+    ///
     template<typename T, typename U>
     [[maybe_unused]] constexpr auto operator<<(out<T> const o, fmt<U> const &arg) noexcept
         -> out<T> = delete;

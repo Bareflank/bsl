@@ -51,6 +51,14 @@ namespace
             };
 
             bsl::ut_given{} = []() {
+                bsl::cstr_type null_msg{};
+                bsl::basic_string_view<bsl::char_type> msg{null_msg};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.empty());
+                };
+            };
+
+            bsl::ut_given{} = []() {
                 bsl::basic_string_view<bsl::char_type> msg{""};
                 bsl::ut_then{} = [&msg]() {
                     bsl::ut_check(msg.empty());
@@ -61,6 +69,21 @@ namespace
                 bsl::basic_string_view<bsl::char_type> msg{"Hello"};
                 bsl::ut_then{} = [&msg]() {
                     bsl::ut_check(msg == "Hello");
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::cstr_type null_msg{};
+                bsl::basic_string_view<bsl::char_type> msg{null_msg, bsl::to_umax(0)};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.empty());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::basic_string_view<bsl::char_type> msg{"", bsl::to_umax(0)};
+                bsl::ut_then{} = [&msg]() {
+                    bsl::ut_check(msg.empty());
                 };
             };
 
@@ -889,6 +912,16 @@ namespace
                     };
                 };
             };
+
+            bsl::ut_given{} = []() {
+                bsl::basic_string_view<bsl::char_type> msg{"Hello World"};
+                bsl::ut_when{} = [&msg]() {
+                    msg.remove_prefix(bsl::safe_uintmax::zero(true));
+                    bsl::ut_then{} = [&msg]() {
+                        bsl::ut_check(msg.empty());
+                    };
+                };
+            };
         };
 
         bsl::ut_scenario{"remove_suffix"} = []() {
@@ -936,6 +969,16 @@ namespace
                 bsl::basic_string_view<bsl::char_type> msg{"Hello World"};
                 bsl::ut_when{} = [&msg]() {
                     msg.remove_suffix(bsl::npos);
+                    bsl::ut_then{} = [&msg]() {
+                        bsl::ut_check(msg.empty());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::basic_string_view<bsl::char_type> msg{"Hello World"};
+                bsl::ut_when{} = [&msg]() {
+                    msg.remove_suffix(bsl::safe_uintmax::zero(true));
                     bsl::ut_then{} = [&msg]() {
                         bsl::ut_check(msg.empty());
                     };

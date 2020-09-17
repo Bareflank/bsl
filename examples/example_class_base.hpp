@@ -30,7 +30,7 @@ namespace bsl
     /// @class bsl::example_class_base
     ///
     /// <!-- description -->
-    ///   @brief A example of a base class that is compliant with AUTOSAR.
+    ///   @brief An example of a base class that is compliant with AUTOSAR.
     ///     Note that we must define the rule of 5 (the destructor and copy/move
     ///     constructors/assignment operators must be protected).
     ///

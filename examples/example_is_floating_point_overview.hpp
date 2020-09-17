@@ -22,26 +22,22 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef BSL_DETAILS_PUTS_STDERR_HPP
-#define BSL_DETAILS_PUTS_STDERR_HPP
+#include <bsl/is_floating_point.hpp>
+#include <bsl/debug.hpp>
 
-#include "../cstdio.hpp"
-#include "../cstr_type.hpp"
-#include "../discard.hpp"
-
-namespace bsl::details
+namespace bsl
 {
     /// <!-- description -->
-    ///   @brief Outputs a string to stderr.
+    ///   @brief Provides the example's main function
     ///
-    /// <!-- inputs/outputs -->
-    ///   @param str the string to output to stderr
-    ///
-    inline auto
-    puts_stderr(cstr_type const str) noexcept -> void
+    inline void
+    example_is_floating_point_overview() noexcept
     {
-        bsl::discard(fputs(str, stderr));
+        if constexpr (!bsl::is_floating_point<bool>::value) {
+            bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
+        }
     }
 }
-
-#endif

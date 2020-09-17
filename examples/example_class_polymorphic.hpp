@@ -30,7 +30,7 @@ namespace bsl
     /// @class bsl::example_class_polymorphic
     ///
     /// <!-- description -->
-    ///   @brief A example of a polymorphic class that is compliant with
+    ///   @brief An example of a polymorphic class that is compliant with
     ///     AUTOSAR. Note that we must define the rule of 5 (the destructor
     ///     and copy/move constructors/assignment operators must be protected).
     ///

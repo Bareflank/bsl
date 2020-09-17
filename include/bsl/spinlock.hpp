@@ -29,6 +29,7 @@
 #define BSL_SPIN_LOCK_HPP
 
 #include "is_constant_evaluated.hpp"
+#include <bsl/details/intrinsic_pause.hpp>
 
 namespace bsl
 {
@@ -134,7 +135,7 @@ namespace bsl
                 }
 
                 while (__c11_atomic_load(&m_flag, __ATOMIC_RELAXED)) {
-                    __builtin_ia32_pause();
+                    details::intrinsic_pause();
                 }
             }
         }

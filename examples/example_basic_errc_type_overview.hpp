@@ -22,7 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/errc_type.hpp>
+#include <bsl/basic_errc_type.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -33,21 +33,7 @@ namespace bsl
     inline void
     example_basic_errc_type_overview() noexcept
     {
-        if constexpr (errc_success.success()) {
-            bsl::print() << "success\n";
-        }
-        else {
-            bsl::error() << "failure\n";
-        }
-
-        if constexpr (errc_failure.failure()) {
-            bsl::print() << "success\n";
-        }
-        else {
-            bsl::error() << "failure\n";
-        }
-
-        constexpr errc_type my_errc{42};
+        constexpr basic_errc_type<> my_errc{42};
 
         if constexpr (my_errc.failure()) {
             bsl::print() << "success\n";

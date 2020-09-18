@@ -22,26 +22,16 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef BSL_DETAILS_PUTC_STDERR_HPP
-#define BSL_DETAILS_PUTC_STDERR_HPP
+#include <bsl/debug.hpp>
 
-#include "../cstdio.hpp"
-#include "../char_type.hpp"
-#include "../discard.hpp"
-
-namespace bsl::details
+namespace bsl
 {
     /// <!-- description -->
-    ///   @brief Outputs a character to stderr.
+    ///   @brief Provides the example's main function
     ///
-    /// <!-- inputs/outputs -->
-    ///   @param c the character to output to stderr
-    ///
-    inline auto
-    putc_stderr(char_type const c) noexcept -> void
+    inline void
+    example_fmt_overview() noexcept
     {
-        bsl::discard(fputc(c, stderr));
+        bsl::print() << bsl::fmt{".<42", '.'} << bsl::endl;
     }
 }
-
-#endif

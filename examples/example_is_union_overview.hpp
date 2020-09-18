@@ -22,23 +22,22 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/float_denorm_style.hpp>
-#include <bsl/ut.hpp>
+#include <bsl/is_union.hpp>
+#include <bsl/debug.hpp>
 
-/// <!-- description -->
-///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
-///     the application will fast fail. If all calls to bsl::ut_check() pass, this
-///     function will successfully return with bsl::exit_success.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-[[nodiscard]] auto
-main() noexcept -> bsl::exit_code
+namespace bsl
 {
-    static_assert(static_cast<bsl::int32>(bsl::float_denorm_style::denorm_indeterminate) == -1);
-    static_assert(static_cast<bsl::int32>(bsl::float_denorm_style::denorm_absent) == 0);
-    static_assert(static_cast<bsl::int32>(bsl::float_denorm_style::denorm_present) == 1);
-
-    return bsl::ut_success();
+    /// <!-- description -->
+    ///   @brief Provides the example's main function
+    ///
+    inline void
+    example_is_union_overview() noexcept
+    {
+        if constexpr (!bsl::is_union<bool>::value) {
+            bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
+        }
+    }
 }

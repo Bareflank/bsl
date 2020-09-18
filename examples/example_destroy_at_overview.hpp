@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/construct_at.hpp>
 #include <bsl/destroy_at.hpp>
 #include <bsl/debug.hpp>
 
@@ -36,6 +37,8 @@ namespace bsl
     example_destroy_at_overview() noexcept
     {
         example_class_subclass myclass{};
+
+        bsl::construct_at<example_class_subclass>(&myclass);
         if (myclass.get()) {
             bsl::print() << "success\n";
         }

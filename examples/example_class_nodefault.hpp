@@ -30,7 +30,7 @@ namespace bsl
     /// @class bsl::example_class_nodefault
     ///
     /// <!-- description -->
-    ///   @brief A example of a class with no default constructor which can
+    ///   @brief An example of a class with no default constructor which can
     ///     be used to demonstrate how declval can get the type of a member
     ///     function even if it doesn't have a default constructor.
     ///

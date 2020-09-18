@@ -22,26 +22,45 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef BSL_DETAILS_PUTS_STDOUT_HPP
-#define BSL_DETAILS_PUTS_STDOUT_HPP
+#include <bsl/errc_type.hpp>
+#include <bsl/debug.hpp>
 
-#include "../cstdio.hpp"
-#include "../cstr_type.hpp"
-#include "../discard.hpp"
-
-namespace bsl::details
+namespace bsl
 {
     /// <!-- description -->
-    ///   @brief Outputs a string to stdout.
+    ///   @brief Provides the example's main function
     ///
-    /// <!-- inputs/outputs -->
-    ///   @param str the string to output to stdout
-    ///
-    inline auto
-    puts_stdout(cstr_type const str) noexcept -> void
+    inline void
+    example_errc_type_overview() noexcept
     {
-        bsl::discard(fputs(str, stdout));
+        if constexpr (errc_success.success()) {
+            bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
+        }
+
+        if constexpr (errc_failure.failure()) {
+            bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
+        }
+
+        constexpr errc_type my_errc{42};
+
+        if constexpr (my_errc.failure()) {
+            bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
+        }
+
+        if constexpr (my_errc.is_unchecked()) {
+            bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
+        }
     }
 }
-
-#endif

@@ -397,7 +397,12 @@ namespace bsl
             return nullptr;
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto get_if() const &&noexcept -> T const * = delete;
 
         /// <!-- description -->

@@ -35,7 +35,8 @@ namespace bsl
     ///   @brief Defines an example enum
     ///
     enum class example_enum : bsl::int32
-    {    /// @brief a dummy value
+    {
+        /// @brief a dummy value
         dummy1 = 1,
         /// @brief a dummy value
         dummy2 = 2

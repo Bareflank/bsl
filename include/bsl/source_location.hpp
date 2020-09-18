@@ -238,7 +238,7 @@ namespace bsl
     ///     the location of the call site.
     ///
     [[nodiscard]] constexpr auto
-    here(source_location const &sloc = source_location::current()) noexcept -> source_location
+    here(source_location const sloc = source_location::current()) noexcept -> source_location
     {
         return sloc;
     }

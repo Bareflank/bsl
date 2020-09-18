@@ -300,6 +300,13 @@ namespace
             };
 
             bsl::ut_given{} = []() {
+                bsl::fmt_options ops{"/:"};
+                bsl::ut_then{} = [&ops]() {
+                    bsl::ut_check(ops.width() == bsl::to_umax(0));
+                };
+            };
+
+            bsl::ut_given{} = []() {
                 bsl::fmt_options ops{""};
                 bsl::ut_when{} = [&ops]() {
                     ops.set_width(bsl::to_umax(9));

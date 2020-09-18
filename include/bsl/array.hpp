@@ -163,7 +163,13 @@ namespace bsl
             return nullptr;
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param index n/a
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto at_if(size_type const &index) const &&noexcept
             -> const_pointer_type = delete;
 
@@ -193,7 +199,12 @@ namespace bsl
             return *this->at_if(size_type::zero());
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto front() const &&noexcept -> const_reference_type = delete;
 
         /// <!-- description -->
@@ -222,7 +233,12 @@ namespace bsl
             return this->at_if(size_type::zero());
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto front_if() const &&noexcept -> const_pointer_type = delete;
 
         /// <!-- description -->
@@ -251,7 +267,12 @@ namespace bsl
             return *this->at_if(to_umax(N) - size_type::one());
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto back() const &&noexcept -> const_reference_type = delete;
 
         /// <!-- description -->
@@ -280,7 +301,12 @@ namespace bsl
             return this->at_if(to_umax(N) - size_type::one());
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto back_if() const &&noexcept -> const_pointer_type = delete;
 
         /// <!-- description -->
@@ -309,7 +335,12 @@ namespace bsl
             return static_cast<const_pointer_type>(m_data);
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto data() const &&noexcept -> const_pointer_type = delete;
 
         /// <!-- description -->
@@ -338,7 +369,12 @@ namespace bsl
             return const_iterator_type{this->front_if(), to_umax(N), size_type::zero()};
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto begin() const &&noexcept -> const_iterator_type = delete;
 
         /// <!-- description -->
@@ -354,7 +390,12 @@ namespace bsl
             return const_iterator_type{this->front_if(), to_umax(N), size_type::zero()};
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto cbegin() const &&noexcept -> const_iterator_type = delete;
 
         /// <!-- description -->
@@ -385,7 +426,13 @@ namespace bsl
             return const_iterator_type{this->front_if(), to_umax(N), i};
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param i n/a
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto iter(size_type const &i) const &&noexcept
             -> const_iterator_type = delete;
 
@@ -403,7 +450,13 @@ namespace bsl
             return const_iterator_type{this->front_if(), to_umax(N), i};
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param i n/a
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto citer(size_type const &i) const &&noexcept
             -> const_iterator_type = delete;
 
@@ -441,7 +494,12 @@ namespace bsl
             return const_iterator_type{this->front_if(), to_umax(N), to_umax(N)};
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto end() const &&noexcept -> const_iterator_type = delete;
 
         /// <!-- description -->
@@ -461,7 +519,12 @@ namespace bsl
             return const_iterator_type{this->front_if(), to_umax(N), to_umax(N)};
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto cend() const &&noexcept -> const_iterator_type = delete;
 
         /// <!-- description -->
@@ -502,7 +565,12 @@ namespace bsl
             return const_reverse_iterator_type{this->end()};
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto rbegin() const &&noexcept
             -> const_reverse_iterator_type = delete;
 
@@ -525,7 +593,12 @@ namespace bsl
             return const_reverse_iterator_type{this->cend()};
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto crbegin() const &&noexcept
             -> const_reverse_iterator_type = delete;
 
@@ -585,7 +658,13 @@ namespace bsl
             return const_reverse_iterator_type{this->iter(size_type::zero())};
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param i n/a
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto riter(size_type const &i) const &&noexcept
             -> const_reverse_iterator_type = delete;
 
@@ -617,7 +696,13 @@ namespace bsl
             return const_reverse_iterator_type{this->iter(size_type::zero())};
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param i n/a
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto criter(size_type const &i) const &&noexcept
             -> const_reverse_iterator_type = delete;
 
@@ -659,7 +744,12 @@ namespace bsl
             return const_reverse_iterator_type{this->begin()};
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto rend() const &&noexcept
             -> const_reverse_iterator_type = delete;
 
@@ -682,7 +772,12 @@ namespace bsl
             return const_reverse_iterator_type{this->cbegin()};
         }
 
-        /// @brief the r-value version of this function is not supported
+        /// <!-- description -->
+        ///   @brief The r-value version of this function is not supported
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return n/a
+        ///
         [[nodiscard]] constexpr auto crend() const &&noexcept
             -> const_reverse_iterator_type = delete;
 

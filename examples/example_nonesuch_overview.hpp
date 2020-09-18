@@ -22,25 +22,28 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/float_round_style.hpp>
-#include <bsl/ut.hpp>
+#include <bsl/detected_t.hpp>
+#include <bsl/is_same.hpp>
+#include <bsl/debug.hpp>
 
-/// <!-- description -->
-///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
-///     the application will fast fail. If all calls to bsl::ut_check() pass, this
-///     function will successfully return with bsl::exit_success.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-[[nodiscard]] auto
-main() noexcept -> bsl::exit_code
+#include "example_class_base.hpp"
+#include "example_detected_alias.hpp"
+
+namespace bsl
 {
-    static_assert(static_cast<bsl::int32>(bsl::float_round_style::round_indeterminate) == -1);
-    static_assert(static_cast<bsl::int32>(bsl::float_round_style::round_toward_zero) == 0);
-    static_assert(static_cast<bsl::int32>(bsl::float_round_style::round_to_nearest) == 1);
-    static_assert(static_cast<bsl::int32>(bsl::float_round_style::round_toward_infinity) == 2);
-    static_assert(static_cast<bsl::int32>(bsl::float_round_style::round_toward_neg_infinity) == 3);
+    /// <!-- description -->
+    ///   @brief Provides the example's main function
+    ///
+    inline void
+    example_nonesuch_overview() noexcept
+    {
+        using example_detected_type = bsl::detected_t<example_detected_alias, example_class_base>;
 
-    return bsl::ut_success();
+        if constexpr (is_same<example_detected_type, bsl::nonesuch>::value) {
+            bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
+        }
+    }
 }

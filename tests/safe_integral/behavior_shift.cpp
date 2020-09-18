@@ -41,21 +41,65 @@ namespace
     {
         bsl::ut_scenario{"left shift assign"} = []() {
             bsl::ut_given{} = []() {
-                bsl::safe_uint32 val{42U};
-                bsl::ut_when{} = [&val]() {
-                    val <<= 1U;
-                    bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val == 42U * 2U);
+                bsl::safe_uint32 val1{42U};
+                bsl::safe_uint32 val2{1U};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    val1 <<= val2;
+                    bsl::ut_then{} = [&val1]() {
+                        bsl::ut_check(val1 == 42U * 2U);
                     };
                 };
             };
 
             bsl::ut_given{} = []() {
-                bsl::safe_uint32 val{42U, true};
-                bsl::ut_when{} = [&val]() {
-                    val <<= 1U;
-                    bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                bsl::safe_uint32 val1{42U};
+                bsl::ut_when{} = [&val1]() {
+                    val1 <<= 1U;
+                    bsl::ut_then{} = [&val1]() {
+                        bsl::ut_check(val1 == 42U * 2U);
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val1{42U, true};
+                bsl::safe_uint32 val2{1U};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    val1 <<= val2;
+                    bsl::ut_then{} = [&val1]() {
+                        bsl::ut_check(val1.failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val1{42U, true};
+                bsl::ut_when{} = [&val1]() {
+                    val1 <<= 1U;
+                    bsl::ut_then{} = [&val1]() {
+                        bsl::ut_check(val1.failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val1{42U};
+                bsl::safe_uint32 val2{1U, true};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    val1 <<= val2;
+                    bsl::ut_then{} = [&val1]() {
+                        bsl::ut_check(val1.failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val1{42U, true};
+                bsl::safe_uint32 val2{1U, true};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    val1 <<= val2;
+                    bsl::ut_then{} = [&val1]() {
+                        bsl::ut_check(val1.failure());
                     };
                 };
             };
@@ -63,37 +107,113 @@ namespace
 
         bsl::ut_scenario{"left shift"} = []() {
             bsl::ut_given{} = []() {
-                bsl::safe_uint32 val{42U};
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((val << 1U) == 42U * 2U);
+                bsl::safe_uint32 val1{42U};
+                bsl::safe_uint32 val2{1U};
+                bsl::ut_then{} = [&val1, &val2]() {
+                    bsl::ut_check((val1 << val2) == 42U * 2U);
                 };
             };
 
             bsl::ut_given{} = []() {
-                bsl::safe_uint32 val{42U, true};
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((val << 1U).failure());
+                bsl::safe_uint32 val1{42U};
+                bsl::ut_then{} = [&val1]() {
+                    bsl::ut_check((val1 << 1U) == 42U * 2U);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val1{42U, true};
+                bsl::safe_uint32 val2{1U};
+                bsl::ut_then{} = [&val1, &val2]() {
+                    bsl::ut_check((val1 << val2).failure());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val1{42U, true};
+                bsl::ut_then{} = [&val1]() {
+                    bsl::ut_check((val1 << 1U).failure());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val1{42U};
+                bsl::safe_uint32 val2{1U, true};
+                bsl::ut_then{} = [&val1, &val2]() {
+                    bsl::ut_check((val1 << val2).failure());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val1{42U, true};
+                bsl::safe_uint32 val2{1U, true};
+                bsl::ut_then{} = [&val1, &val2]() {
+                    bsl::ut_check((val1 << val2).failure());
                 };
             };
         };
 
         bsl::ut_scenario{"right shift assign"} = []() {
             bsl::ut_given{} = []() {
-                bsl::safe_uint32 val{42U};
-                bsl::ut_when{} = [&val]() {
-                    val >>= 1U;
-                    bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val == 42U / 2U);
+                bsl::safe_uint32 val1{42U};
+                bsl::safe_uint32 val2{1U};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    val1 >>= val2;
+                    bsl::ut_then{} = [&val1]() {
+                        bsl::ut_check(val1 == 42U / 2U);
                     };
                 };
             };
 
             bsl::ut_given{} = []() {
-                bsl::safe_uint32 val{42U, true};
-                bsl::ut_when{} = [&val]() {
-                    val >>= 1U;
-                    bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                bsl::safe_uint32 val1{42U};
+                bsl::ut_when{} = [&val1]() {
+                    val1 >>= 1U;
+                    bsl::ut_then{} = [&val1]() {
+                        bsl::ut_check(val1 == 42U / 2U);
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val1{42U, true};
+                bsl::safe_uint32 val2{1U};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    val1 >>= val2;
+                    bsl::ut_then{} = [&val1]() {
+                        bsl::ut_check(val1.failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val1{42U, true};
+                bsl::ut_when{} = [&val1]() {
+                    val1 >>= 1U;
+                    bsl::ut_then{} = [&val1]() {
+                        bsl::ut_check(val1.failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val1{42U};
+                bsl::safe_uint32 val2{1U, true};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    val1 >>= val2;
+                    bsl::ut_then{} = [&val1]() {
+                        bsl::ut_check(val1.failure());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val1{42U, true};
+                bsl::safe_uint32 val2{1U, true};
+                bsl::ut_when{} = [&val1, &val2]() {
+                    val1 >>= val2;
+                    bsl::ut_then{} = [&val1]() {
+                        bsl::ut_check(val1.failure());
                     };
                 };
             };
@@ -101,16 +221,48 @@ namespace
 
         bsl::ut_scenario{"right shift"} = []() {
             bsl::ut_given{} = []() {
-                bsl::safe_uint32 val{42U};
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((val >> 1U) == 42U / 2U);
+                bsl::safe_uint32 val1{42U};
+                bsl::safe_uint32 val2{1U};
+                bsl::ut_then{} = [&val1, &val2]() {
+                    bsl::ut_check((val1 >> val2) == 42U / 2U);
                 };
             };
 
             bsl::ut_given{} = []() {
-                bsl::safe_uint32 val{42U, true};
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check((val >> 1U).failure());
+                bsl::safe_uint32 val1{42U};
+                bsl::ut_then{} = [&val1]() {
+                    bsl::ut_check((val1 >> 1U) == 42U / 2U);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val1{42U, true};
+                bsl::safe_uint32 val2{1U};
+                bsl::ut_then{} = [&val1, &val2]() {
+                    bsl::ut_check((val1 >> val2).failure());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val1{42U, true};
+                bsl::ut_then{} = [&val1]() {
+                    bsl::ut_check((val1 >> 1U).failure());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val1{42U};
+                bsl::safe_uint32 val2{1U, true};
+                bsl::ut_then{} = [&val1, &val2]() {
+                    bsl::ut_check((val1 >> val2).failure());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_uint32 val1{42U, true};
+                bsl::safe_uint32 val2{1U, true};
+                bsl::ut_then{} = [&val1, &val2]() {
+                    bsl::ut_check((val1 >> val2).failure());
                 };
             };
         };

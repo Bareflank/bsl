@@ -22,7 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/detected_or_t.hpp>
+#include <bsl/detected_or.hpp>
 #include <bsl/is_same.hpp>
 #include <bsl/ut.hpp>
 
@@ -43,8 +43,8 @@ main() noexcept -> bsl::exit_code
 {
     // clang-format off
 
-    static_assert(bsl::is_same<bsl::detected_or_t<void, test::alias_get_op, test::class_base>, test::alias_get_op<test::class_base>>::value);
-    static_assert(bsl::is_same<bsl::detected_or_t<void, test::alias_set_op, test::class_base>, void>::value);
+    static_assert(bsl::is_same<bsl::detected_or<void, test::alias_get_op, test::class_base>::type, test::alias_get_op<test::class_base>>::value);
+    static_assert(bsl::is_same<bsl::detected_or<void, test::alias_set_op, test::class_base>::type, void>::value);
 
     return bsl::ut_success();
 }

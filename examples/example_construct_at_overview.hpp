@@ -22,26 +22,36 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef BSL_DETAILS_PUTC_STDOUT_HPP
-#define BSL_DETAILS_PUTC_STDOUT_HPP
+#include <bsl/construct_at.hpp>
+#include <bsl/destroy_at.hpp>
+#include <bsl/debug.hpp>
 
-#include "../cstdio.hpp"
-#include "../char_type.hpp"
-#include "../discard.hpp"
+#include "example_class_subclass.hpp"
 
-namespace bsl::details
+namespace bsl
 {
     /// <!-- description -->
-    ///   @brief Outputs a character to stdout.
+    ///   @brief Provides the example's main function
     ///
-    /// <!-- inputs/outputs -->
-    ///   @param c the character to output to stdout
-    ///
-    inline auto
-    putc_stdout(char_type const c) noexcept -> void
+    inline void
+    example_construct_at_overview() noexcept
     {
-        bsl::discard(fputc(c, stdout));
+        example_class_subclass myclass{};
+
+        bsl::construct_at<example_class_subclass>(&myclass);
+        if (myclass.get()) {
+            bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
+        }
+
+        bsl::destroy_at(&myclass);
+        if (!myclass.get()) {
+            bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
+        }
     }
 }
-
-#endif

@@ -19,6 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+bf_add_test(behavior)
 bf_add_test(behavior_bool)
 bf_add_test(behavior_char_type)
 bf_add_test(behavior_cstr_type)

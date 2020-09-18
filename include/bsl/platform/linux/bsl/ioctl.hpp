@@ -185,7 +185,7 @@ namespace bsl
         ///
         template<typename REQUEST>
         [[nodiscard]] constexpr auto
-        send(REQUEST req) const noexcept -> bool
+        send(bsl::safe_integral<REQUEST> const &req) const noexcept -> bool
         {
             if (details::IOCTL_INVALID_HNDL.get() == m_hndl) {
                 bsl::error() << "failed to send, ioctl not properly initialized\n";
@@ -194,7 +194,7 @@ namespace bsl
 
             // We don't have a choice here
             // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg, hicpp-vararg)
-            if (::ioctl(m_hndl, req) < 0) {
+            if (::ioctl(m_hndl, req.get()) < 0) {
                 bsl::error() << "ioctl failed\n";
                 return false;
             }
@@ -216,7 +216,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         // This conflicts with read() from unistd.h when it is included.
         // NOLINTNEXTLINE(bsl-using-ident-unique-namespace)
-        read(REQUEST req, void *const data, safe_uintmax const &size) const noexcept -> bool
+        read(bsl::safe_integral<REQUEST> const &req, void *const data, safe_uintmax const &size)
+            const noexcept -> bool
         {
             bsl::discard(size);
 
@@ -227,7 +228,7 @@ namespace bsl
 
             // We don't have a choice here
             // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg, hicpp-vararg)
-            if (::ioctl(m_hndl, req, data) < 0) {
+            if (::ioctl(m_hndl, req.get(), data) < 0) {
                 bsl::error() << "ioctl failed\n";
                 return false;
             }
@@ -247,7 +248,10 @@ namespace bsl
         ///
         template<typename REQUEST>
         [[nodiscard]] constexpr auto
-        write(REQUEST req, void const *const data, safe_uintmax const &size) const noexcept -> bool
+        write(
+            bsl::safe_integral<REQUEST> const &req,
+            void const *const data,
+            safe_uintmax const &size) const noexcept -> bool
         {
             bsl::discard(size);
 
@@ -258,7 +262,7 @@ namespace bsl
 
             // We don't have a choice here
             // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg, hicpp-vararg)
-            if (::ioctl(m_hndl, req, data) < 0) {
+            if (::ioctl(m_hndl, req.get(), data) < 0) {
                 bsl::error() << "ioctl failed\n";
                 return false;
             }
@@ -278,7 +282,10 @@ namespace bsl
         ///
         template<typename REQUEST>
         [[nodiscard]] constexpr auto
-        read_write(REQUEST req, void *const data, safe_uintmax const &size) const noexcept -> bool
+        read_write(
+            bsl::safe_integral<REQUEST> const &req,
+            void *const data,
+            safe_uintmax const &size) const noexcept -> bool
         {
             bsl::discard(size);
 
@@ -289,7 +296,7 @@ namespace bsl
 
             // We don't have a choice here
             // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg, hicpp-vararg)
-            if (::ioctl(m_hndl, req, data) < 0) {
+            if (::ioctl(m_hndl, req.get(), data) < 0) {
                 bsl::error() << "ioctl failed\n";
                 return false;
             }

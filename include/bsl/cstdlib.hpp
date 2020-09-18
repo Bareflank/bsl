@@ -30,6 +30,6 @@
 
 // We are implementing cstdlib
 // NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
-#include <stdlib.h>
+#include <stdlib.h>    // IWYU pragma: export
 
 #endif

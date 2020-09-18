@@ -30,6 +30,6 @@
 
 // We are implementing climits
 // NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
-#include <limits.h>
+#include <limits.h>    // IWYU pragma: export
 
 #endif

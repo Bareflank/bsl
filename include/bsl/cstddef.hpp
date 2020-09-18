@@ -28,6 +28,6 @@
 #ifndef BSL_CSTDDEF_HPP
 #define BSL_CSTDDEF_HPP
 
-#include "nullptr_t.hpp"
+#include "nullptr_t.hpp"    // IWYU pragma: export
 
 #endif

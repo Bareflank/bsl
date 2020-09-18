@@ -30,7 +30,7 @@
 
 // We are implementing cstdint
 // NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
-#include <stdint.h>
+#include <stdint.h>    // IWYU pragma: export
 
 namespace bsl
 {

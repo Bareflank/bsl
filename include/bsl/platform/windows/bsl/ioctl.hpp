@@ -208,7 +208,7 @@ namespace bsl
         ///
         template<typename REQUEST>
         [[nodiscard]] constexpr auto
-        send(REQUEST req) const noexcept -> bool
+        send(bsl::safe_integral<REQUEST> const &req) const noexcept -> bool
         {
             if (nullptr == m_hndl) {
                 bsl::error() << "failed to send, ioctl not properly initialized\n";
@@ -216,7 +216,7 @@ namespace bsl
             }
 
             DWORD bytes{};
-            if (!DeviceIoControl(m_hndl, req, nullptr, 0, nullptr, 0, &bytes, nullptr)) {
+            if (!DeviceIoControl(m_hndl, req.get(), nullptr, 0, nullptr, 0, &bytes, nullptr)) {
                 bsl::error() << "DeviceIoControl failed\n";
                 return false;
             }
@@ -236,7 +236,8 @@ namespace bsl
         ///
         template<typename REQUEST>
         [[nodiscard]] constexpr auto
-        read(REQUEST req, void *const data, safe_uintmax const &size) const noexcept -> bool
+        read(bsl::safe_integral<REQUEST> const &req, void *const data, safe_uintmax const &size)
+            const noexcept -> bool
         {
             if (nullptr == m_hndl) {
                 bsl::error() << "failed to read, ioctl not properly initialized\n";
@@ -244,7 +245,7 @@ namespace bsl
             }
 
             DWORD bytes{};
-            if (!DeviceIoControl(m_hndl, req, nullptr, 0, data, size, &bytes, nullptr)) {
+            if (!DeviceIoControl(m_hndl, req.get(), nullptr, 0, data, size, &bytes, nullptr)) {
                 bsl::error() << "DeviceIoControl failed\n";
                 return false;
             }
@@ -264,7 +265,10 @@ namespace bsl
         ///
         template<typename REQUEST>
         [[nodiscard]] constexpr auto
-        write(REQUEST req, void const *const data, safe_uintmax const &size) const noexcept -> bool
+        write(
+            bsl::safe_integral<REQUEST> const &req,
+            void const *const data,
+            safe_uintmax const &size) const noexcept -> bool
         {
             void *const ptr{const_cast<void *>(data)};
             ;
@@ -275,7 +279,7 @@ namespace bsl
             }
 
             DWORD bytes{};
-            if (!DeviceIoControl(m_hndl, req, ptr, size, nullptr, 0, &bytes, nullptr)) {
+            if (!DeviceIoControl(m_hndl, req.get(), ptr, size, nullptr, 0, &bytes, nullptr)) {
                 bsl::error() << "DeviceIoControl failed\n";
                 return false;
             }
@@ -295,7 +299,10 @@ namespace bsl
         ///
         template<typename REQUEST>
         [[nodiscard]] constexpr auto
-        read_write(REQUEST req, void *const data, safe_uintmax const &size) const noexcept -> bool
+        read_write(
+            bsl::safe_integral<REQUEST> const &req,
+            void *const data,
+            safe_uintmax const &size) const noexcept -> bool
         {
             if (nullptr == m_hndl) {
                 bsl::error() << "failed to read/write, ioctl not properly initialized\n";
@@ -303,7 +310,7 @@ namespace bsl
             }
 
             DWORD bytes{};
-            if (!DeviceIoControl(m_hndl, req, data, size, data, size, &bytes, nullptr)) {
+            if (!DeviceIoControl(m_hndl, req.get(), data, size, data, size, &bytes, nullptr)) {
                 bsl::error() << "DeviceIoControl failed\n";
                 return false;
             }

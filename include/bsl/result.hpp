@@ -84,25 +84,49 @@ namespace bsl
         {
             if (details::result_type::contains_t == lhs.m_which) {
                 if (details::result_type::contains_t == rhs.m_which) {
+                    // This is needed to implement the this class
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                     bsl::swap(lhs.m_t, rhs.m_t);
                 }
                 else {
+                    // This is needed to implement the this class
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                     E tmp_e_rwl{bsl::move(rhs.m_e)};
+                    // This is needed to implement the this class
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                     destroy_at(&rhs.m_e);
+                    // This is needed to implement the this class
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                     construct_at<T>(&rhs.m_t, bsl::move(lhs.m_t));
+                    // This is needed to implement the this class
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                     destroy_at(&lhs.m_t);
+                    // This is needed to implement the this class
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                     construct_at<E>(&lhs.m_e, bsl::move(tmp_e_rwl));
                 }
             }
             else {
                 if (details::result_type::contains_t == rhs.m_which) {
+                    // This is needed to implement the this class
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                     E tmp_e_lwr{bsl::move(lhs.m_e)};
+                    // This is needed to implement the this class
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                     destroy_at(&lhs.m_e);
+                    // This is needed to implement the this class
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                     construct_at<T>(&lhs.m_t, bsl::move(rhs.m_t));
+                    // This is needed to implement the this class
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                     destroy_at(&rhs.m_t);
+                    // This is needed to implement the this class
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                     construct_at<E>(&rhs.m_e, bsl::move(tmp_e_lwr));
                 }
                 else {
+                    // This is needed to implement the this class
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                     bsl::swap(lhs.m_e, rhs.m_e);
                 }
             }
@@ -244,9 +268,13 @@ namespace bsl
         constexpr ~result() noexcept(is_nothrow_destructible<T>::value)
         {
             if (details::result_type::contains_t == m_which) {
+                // This is needed to implement the this class
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                 destroy_at(&m_t);
             }
             else {
+                // This is needed to implement the this class
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                 destroy_at(&m_e);
             }
         }
@@ -267,12 +295,12 @@ namespace bsl
         {
             if (details::result_type::contains_t == m_which) {
                 // A BitCast conversion is needed when working with unions
-                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access, bsl-implicit-conversions-forbidden)
                 construct_at<T>(&m_t, o.m_t);
             }
             else {
                 // A BitCast conversion is needed when working with unions
-                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access, bsl-implicit-conversions-forbidden)
                 construct_at<E>(&m_e, o.m_e);
             }
         }
@@ -293,12 +321,12 @@ namespace bsl
         {
             if (details::result_type::contains_t == m_which) {
                 // A BitCast conversion is needed when working with unions
-                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access, bsl-implicit-conversions-forbidden)
                 construct_at<T>(&m_t, bsl::move(o.m_t));
             }
             else {
                 // A BitCast conversion is needed when working with unions
-                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access, bsl-implicit-conversions-forbidden)
                 construct_at<E>(&m_e, bsl::move(o.m_e));
             }
         }
@@ -372,6 +400,8 @@ namespace bsl
         get_if() &noexcept -> T *
         {
             if (details::result_type::contains_t == m_which) {
+                // This is needed to implement the this class
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                 return &m_t;
             }
 
@@ -391,6 +421,8 @@ namespace bsl
         get_if() const &noexcept -> T const *
         {
             if (details::result_type::contains_t == m_which) {
+                // This is needed to implement the this class
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                 return &m_t;
             }
 
@@ -419,6 +451,8 @@ namespace bsl
         errc(E const &fallback = E{}) const noexcept -> E
         {
             if (details::result_type::contains_e == m_which) {
+                // This is needed to implement the this class
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                 return m_e;
             }
 

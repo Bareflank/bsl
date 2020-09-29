@@ -35,7 +35,6 @@ Checks:
       -cert-oop54-cpp,
     clang-analyzer-*,
     cppcoreguidelines-*,
-      -cppcoreguidelines-pro-type-union-access,
       -cppcoreguidelines-avoid-magic-numbers,
       -cppcoreguidelines-avoid-non-const-global-variables,
     hicpp-*,

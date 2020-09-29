@@ -30,7 +30,6 @@ Checks:
       -cert-oop54-cpp,
     clang-analyzer-*,
     cppcoreguidelines-*,
-      -cppcoreguidelines-pro-type-union-access,
     hicpp-*,
     misc-*,
       -misc-misplaced-const,

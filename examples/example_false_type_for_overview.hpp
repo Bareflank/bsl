@@ -22,8 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/false_type_for.hpp>
 #include <bsl/debug.hpp>
+#include <bsl/false_type_for.hpp>
 
 namespace bsl
 {

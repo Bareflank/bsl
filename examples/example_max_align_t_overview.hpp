@@ -22,8 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/max_align_t.hpp>
 #include <bsl/debug.hpp>
+#include <bsl/max_align_t.hpp>
 
 namespace bsl
 {

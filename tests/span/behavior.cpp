@@ -22,9 +22,9 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/span.hpp>
 #include <bsl/array.hpp>
 #include <bsl/npos.hpp>
+#include <bsl/span.hpp>
 #include <bsl/ut.hpp>
 
 namespace
@@ -1327,7 +1327,7 @@ namespace
             bsl::ut_given_at_runtime{} = []() {
                 bsl::array arr{test_arr};
                 bsl::ut_then{} = [&arr]() {
-                    bsl::ut_check(!as_bytes(nullptr, arr.size_bytes()));
+                    bsl::ut_check(!as_bytes<bsl::uint8>(nullptr, arr.size_bytes()));
                     bsl::ut_check(!as_bytes(arr.data(), bsl::to_umax(0)));
                     bsl::ut_check(!as_bytes(bsl::span{arr.data(), bsl::to_umax(0)}));
                 };
@@ -1348,22 +1348,69 @@ namespace
         bsl::ut_scenario{"as_writable_bytes"} = []() {
             bsl::ut_given_at_runtime{} = []() {
                 bsl::array arr{test_arr};
-                bsl::ut_then{} = [&arr]() {
-                    bsl::ut_check(!as_writable_bytes(nullptr, arr.size_bytes()));
+                bsl::span view{arr.data(), bsl::to_umax(0)};
+                bsl::ut_then{} = [&arr, &view]() {
+                    bsl::ut_check(!as_writable_bytes<bsl::uint8>(nullptr, arr.size_bytes()));
                     bsl::ut_check(!as_writable_bytes(arr.data(), bsl::to_umax(0)));
-                    bsl::ut_check(!as_writable_bytes(bsl::span{arr.data(), bsl::to_umax(0)}));
+                    bsl::ut_check(!as_writable_bytes(view));
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::array arr{test_arr};
+                bsl::span view{arr.data(), arr.size()};
+                bsl::ut_then{} = [&arr, &view]() {
+                    bsl::ut_check(!!as_writable_bytes(arr.data(), arr.size_bytes()));
+                    bsl::ut_check(
+                        as_writable_bytes(arr.data(), arr.size_bytes()).size() == arr.size_bytes());
+                    bsl::ut_check(as_writable_bytes(view).size() == arr.size_bytes());
+                };
+            };
+        };
+
+        bsl::ut_scenario{"as_t<bsl::byte>"} = []() {
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::array arr{test_arr};
+                bsl::ut_then{} = [&arr]() {
+                    bsl::ut_check(!as_t<bsl::byte, bsl::uint8>(nullptr, arr.size_bytes()));
+                    bsl::ut_check(!as_t<bsl::byte>(arr.data(), bsl::to_umax(0)));
+                    bsl::ut_check(!as_t<bsl::byte>(bsl::span{arr.data(), bsl::to_umax(0)}));
                 };
             };
 
             bsl::ut_given_at_runtime{} = []() {
                 bsl::array arr{test_arr};
                 bsl::ut_then{} = [&arr]() {
-                    bsl::ut_check(!!as_writable_bytes(arr.data(), arr.size_bytes()));
+                    bsl::ut_check(!!as_t<bsl::byte>(arr.data(), arr.size_bytes()));
                     bsl::ut_check(
-                        as_writable_bytes(arr.data(), arr.size_bytes()).size() == arr.size_bytes());
+                        as_t<bsl::byte>(arr.data(), arr.size_bytes()).size() == arr.size_bytes());
                     bsl::ut_check(
-                        as_writable_bytes(bsl::span{arr.data(), arr.size()}).size() ==
+                        as_t<bsl::byte>(bsl::span{arr.data(), arr.size()}).size() ==
                         arr.size_bytes());
+                };
+            };
+        };
+
+        bsl::ut_scenario{"as_writable_t"} = []() {
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::array arr{test_arr};
+                bsl::span view{arr.data(), bsl::to_umax(0)};
+                bsl::ut_then{} = [&arr, &view]() {
+                    bsl::ut_check(!as_writable_t<bsl::byte, bsl::uint8>(nullptr, arr.size_bytes()));
+                    bsl::ut_check(!as_writable_t<bsl::byte>(arr.data(), bsl::to_umax(0)));
+                    bsl::ut_check(!as_writable_t<bsl::byte>(view));
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::array arr{test_arr};
+                bsl::span view{arr.data(), arr.size()};
+                bsl::ut_then{} = [&arr, &view]() {
+                    bsl::ut_check(!!as_writable_t<bsl::byte>(arr.data(), arr.size_bytes()));
+                    bsl::ut_check(
+                        as_writable_t<bsl::byte>(arr.data(), arr.size_bytes()).size() ==
+                        arr.size_bytes());
+                    bsl::ut_check(as_writable_t<bsl::byte>(view).size() == arr.size_bytes());
                 };
             };
         };

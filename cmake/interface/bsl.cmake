@@ -30,8 +30,17 @@ target_compile_options(bsl INTERFACE
 target_compile_definitions(bsl INTERFACE
     BSL_DEBUG_LEVEL=${BSL_DEBUG_LEVEL}
     BSL_PAGE_SIZE=${BSL_PAGE_SIZE}
-    BSL_CONSTEXPR=${BSL_CONSTEXPR}
 )
+
+if(ENABLE_COLOR)
+    target_compile_definitions(bsl INTERFACE
+        ENABLE_COLOR=true
+    )
+else()
+    target_compile_definitions(bsl INTERFACE
+        ENABLE_COLOR=false
+    )
+endif()
 
 target_include_directories(bsl INTERFACE
     ${CMAKE_CURRENT_LIST_DIR}/../../include

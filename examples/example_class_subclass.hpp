@@ -26,6 +26,7 @@
 #define BSL_EXAMPLE_CLASS_SUBCLASS_HPP
 
 #include "example_class_base.hpp"
+
 #include <bsl/move.hpp>
 #include <bsl/swap.hpp>
 

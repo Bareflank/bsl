@@ -22,8 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/reverse_iterator.hpp>
 #include <bsl/array.hpp>
+#include <bsl/reverse_iterator.hpp>
 #include <bsl/ut.hpp>
 
 namespace

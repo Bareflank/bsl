@@ -24,7 +24,6 @@
 
 #include <bsl/char_type.hpp>
 #include <bsl/is_same.hpp>
-
 #include <bsl/ut.hpp>
 
 /// <!-- description -->

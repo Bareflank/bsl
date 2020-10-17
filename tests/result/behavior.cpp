@@ -39,6 +39,16 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
+        bsl::ut_scenario{"default"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::result<bool> const test{};
+                bsl::ut_then{} = [&test]() {
+                    bsl::ut_check(test.success());
+                    bsl::ut_check(test.errc() == bsl::errc_success);
+                };
+            };
+        };
+
         bsl::ut_scenario{"make copy t"} = []() {
             bsl::ut_given{} = []() {
                 bool const val{true};

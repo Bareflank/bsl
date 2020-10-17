@@ -32,8 +32,6 @@
 
 namespace bsl
 {
-    /// @enum bsl::fmt_sign
-    ///
     /// <!-- description -->
     ///   @brief Used to determine how an integral's sign field is
     ///     handled. This only has an effect on signed types.

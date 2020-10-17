@@ -32,8 +32,6 @@
 
 namespace bsl
 {
-    /// @enum bsl::float_round_style
-    ///
     /// <!-- description -->
     ///   @brief Enumerates round styles for floating points.
     ///

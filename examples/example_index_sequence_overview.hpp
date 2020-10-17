@@ -22,9 +22,9 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/index_sequence.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
+#include <bsl/index_sequence.hpp>
 #include <bsl/safe_integral.hpp>
 
 namespace bsl

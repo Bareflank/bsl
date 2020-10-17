@@ -22,13 +22,13 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/move_if_noexcept.hpp>
-#include <bsl/discard.hpp>
-#include <bsl/ut.hpp>
-
 #include "../class_empty.hpp"
 #include "../class_except.hpp"
 #include "../class_nocopy.hpp"
+
+#include <bsl/discard.hpp>
+#include <bsl/move_if_noexcept.hpp>
+#include <bsl/ut.hpp>
 
 namespace
 {

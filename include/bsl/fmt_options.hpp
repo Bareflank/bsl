@@ -28,13 +28,12 @@
 #ifndef BSL_FMT_OPTIONS_HPP
 #define BSL_FMT_OPTIONS_HPP
 
-#include "details/fmt_fsm.hpp"
-
 #include "char_type.hpp"
 #include "convert.hpp"
-#include "cstr_type.hpp"
 #include "cstdint.hpp"
+#include "cstr_type.hpp"
 #include "cstring.hpp"
+#include "details/fmt_fsm.hpp"
 #include "fmt_align.hpp"
 #include "fmt_sign.hpp"
 #include "fmt_type.hpp"

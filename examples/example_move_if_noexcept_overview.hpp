@@ -22,8 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/move_if_noexcept.hpp>
 #include <bsl/debug.hpp>
+#include <bsl/move_if_noexcept.hpp>
 
 namespace bsl
 {

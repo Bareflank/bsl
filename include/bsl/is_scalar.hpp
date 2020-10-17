@@ -32,9 +32,9 @@
 #include "disjunction.hpp"
 #include "is_arithmetic.hpp"
 #include "is_enum.hpp"
-#include "is_pointer.hpp"
 #include "is_member_pointer.hpp"
 #include "is_null_pointer.hpp"
+#include "is_pointer.hpp"
 
 namespace bsl
 {

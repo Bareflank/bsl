@@ -32,8 +32,6 @@
 
 namespace bsl
 {
-    /// @enum bsl::float_denorm_style
-    ///
     /// <!-- description -->
     ///   @brief Enumerates subnormal values for floating points.
     ///

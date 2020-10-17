@@ -25,13 +25,12 @@
 #ifndef BSL_DETAILS_SWAPPABLE_TRAITS_HPP
 #define BSL_DETAILS_SWAPPABLE_TRAITS_HPP
 
-#include "swappable_type.hpp"
-
 #include "../bool_constant.hpp"
 #include "../conjunction.hpp"
 #include "../declval.hpp"
 #include "../swap.hpp"
 #include "../void_t.hpp"
+#include "swappable_type.hpp"
 
 namespace bsl::details
 {

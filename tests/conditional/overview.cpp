@@ -24,7 +24,6 @@
 
 #include <bsl/conditional.hpp>
 #include <bsl/is_same.hpp>
-
 #include <bsl/ut.hpp>
 
 /// <!-- description -->

@@ -28,8 +28,8 @@
 #ifndef BSL_IS_BOOL_HPP
 #define BSL_IS_BOOL_HPP
 
-#include "true_type.hpp"
 #include "false_type.hpp"
+#include "true_type.hpp"
 
 namespace bsl
 {

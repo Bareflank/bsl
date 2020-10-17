@@ -29,8 +29,8 @@
 #define BSL_IS_MEMBER_FUNCTION_POINTER_HPP
 
 #include "bool_constant.hpp"
-#include "is_function.hpp"
 #include "false_type.hpp"
+#include "is_function.hpp"
 
 namespace bsl
 {

@@ -28,8 +28,8 @@
 #ifndef BSL_IS_REFERENCE_WRAPPER_HPP
 #define BSL_IS_REFERENCE_WRAPPER_HPP
 
-#include "true_type.hpp"
 #include "false_type.hpp"
+#include "true_type.hpp"
 
 namespace bsl
 {

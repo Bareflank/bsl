@@ -25,15 +25,14 @@
 #ifndef BSL_DETAILS_FMT_IMPL_INTEGRAL_HELPERS_HPP
 #define BSL_DETAILS_FMT_IMPL_INTEGRAL_HELPERS_HPP
 
-#include "fmt_impl_align.hpp"
-#include "fmt_impl_integral_info.hpp"
-#include "out.hpp"
-
-#include "../convert.hpp"
 #include "../char_type.hpp"
+#include "../convert.hpp"
 #include "../fmt_options.hpp"
 #include "../safe_integral.hpp"
 #include "../touch.hpp"
+#include "fmt_impl_align.hpp"
+#include "fmt_impl_integral_info.hpp"
+#include "out.hpp"
 
 namespace bsl::details
 {

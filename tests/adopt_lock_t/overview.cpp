@@ -24,7 +24,6 @@
 
 #include <bsl/adopt_lock_t.hpp>
 #include <bsl/is_empty.hpp>
-
 #include <bsl/ut.hpp>
 
 /// <!-- description -->

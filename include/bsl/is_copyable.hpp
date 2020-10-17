@@ -28,8 +28,8 @@
 #ifndef BSL_IS_COPY_HPP
 #define BSL_IS_COPY_HPP
 
-#include "conjunction.hpp"
 #include "bool_constant.hpp"
+#include "conjunction.hpp"
 #include "is_copy_assignable.hpp"
 #include "is_copy_constructible.hpp"
 

@@ -25,12 +25,11 @@
 #ifndef BSL_DETAILS_FMT_IMPL_VOID_POINTER_HPP
 #define BSL_DETAILS_FMT_IMPL_VOID_POINTER_HPP
 
-#include "fmt_impl_integral_helpers.hpp"
-#include "out.hpp"
-
 #include "../convert.hpp"
 #include "../fmt_options.hpp"
 #include "../is_constant_evaluated.hpp"
+#include "fmt_impl_integral_helpers.hpp"
+#include "out.hpp"
 
 namespace bsl
 {

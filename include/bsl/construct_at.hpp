@@ -29,8 +29,8 @@
 #define BSL_CONSTRUCT_AT_HPP
 
 #include "cstdint.hpp"
-#include "discard.hpp"
 #include "declval.hpp"
+#include "discard.hpp"
 #include "forward.hpp"
 
 /// <!-- description -->

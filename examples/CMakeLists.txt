@@ -20,6 +20,7 @@
 # SOFTWARE.
 
 add_executable(examples main.cpp)
+
 target_link_libraries(examples PRIVATE bsl)
 if(WIN32)
     target_link_libraries(examples PRIVATE libcmt.lib)

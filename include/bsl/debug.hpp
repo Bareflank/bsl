@@ -28,20 +28,28 @@
 #ifndef BSL_DEBUG_HPP
 #define BSL_DEBUG_HPP
 
+#include "bool_constant.hpp"
+#include "char_type.hpp"
+#include "color.hpp"
+#include "conditional.hpp"
+#include "cstdint.hpp"
+#include "details/out.hpp"
 #include "details/out_type_alert.hpp"
 #include "details/out_type_debug.hpp"
+#include "details/out_type_empty.hpp"
 #include "details/out_type_error.hpp"
 #include "details/out_type_print.hpp"
-#include "details/out_type.hpp"
-#include "details/out.hpp"
-
-#include "char_type.hpp"
-#include "cstdint.hpp"
+#include "disjunction.hpp"
 #include "fmt.hpp"
 #include "safe_integral.hpp"
+#include "source_location.hpp"
+
+#include <bsl/details/get_thread_id.hpp>
 
 namespace bsl
 {
+    /// @brief defines the default verbose mode
+    constexpr bsl::uintmax CRITICAL_ONLY{static_cast<bsl::uintmax>(0)};
     /// @brief defines "-v" verbose mode
     constexpr bsl::uintmax V{static_cast<bsl::uintmax>(1)};
     /// @brief defines "-vv" verbose mode
@@ -56,20 +64,20 @@ namespace bsl
 
     namespace details
     {
-        /// <!-- description -->
-        ///   @brief Returns the current thread id
+        /// @brief used to disable debugging for debug() and alert()
         ///
-        /// <!-- inputs/outputs -->
-        ///   @tparam T defaults to void. Provides the ability to specialize
-        ///     this function to provide your own custom implementation.
-        ///   @return Returns the current thread id
+        /// <!-- template parameters -->
+        ///   @tparam DL the debug level this out statement uses
+        ///   @tparam T the type of out statement being used
         ///
-        template<typename T = void>
-        [[nodiscard]] constexpr auto
-        thread_id() noexcept -> safe_uintmax
-        {
-            return safe_uintmax::zero();
-        }
+        template<bsl::uintmax DL, typename T>
+        using out_type =    // --
+            conditional_t < disjunction<
+                                bool_constant<
+                                    DL<static_cast<bsl::uintmax>(BSL_DEBUG_LEVEL)>,
+                                    bool_constant<DL == BSL_DEBUG_LEVEL>>::value,
+                                out<T>,
+                                out<out_type_empty>>;
     }
 
     /// <!-- description -->
@@ -82,12 +90,16 @@ namespace bsl
     ///   @include debug/example_debug_print.hpp
     ///
     /// <!-- inputs/outputs -->
+    ///   @tparam DL the debug level for this out statement
     ///   @return Returns and instance of bsl::out<T>
     ///
+    template<bsl::uintmax DL = CRITICAL_ONLY>
     [[nodiscard]] constexpr auto
-    print() noexcept -> out<details::out_type_print>
+    print() noexcept -> details::out_type<DL, details::out_type_print>
     {
-        return {};
+        // False positive
+        // NOLINTNEXTLINE(cppcoreguidelines-init-variables)
+        return details::out_type<DL, details::out_type_print>{};
     }
 
     /// <!-- description -->
@@ -103,7 +115,7 @@ namespace bsl
     ///   @tparam DL the debug level for this out statement
     ///   @return Returns and instance of bsl::out<T>
     ///
-    template<bsl::uintmax DL = static_cast<bsl::uintmax>(0)>
+    template<bsl::uintmax DL = CRITICAL_ONLY>
     [[nodiscard]] constexpr auto
     debug() noexcept -> details::out_type<DL, details::out_type_debug>
     {
@@ -115,7 +127,10 @@ namespace bsl
             return o;
         }
 
-        o << '[' << bsl::cyan << details::thread_id() << bsl::reset_color << "]: ";
+        o << bsl::bold_green << "DEBUG" << bsl::reset_color;
+        details::get_thread_id(o);
+        o << ": ";
+
         return o;
     }
 
@@ -132,7 +147,7 @@ namespace bsl
     ///   @tparam DL the debug level for this out statement
     ///   @return Returns and instance of bsl::out<T>
     ///
-    template<bsl::uintmax DL = static_cast<bsl::uintmax>(0)>
+    template<bsl::uintmax DL = CRITICAL_ONLY>
     [[nodiscard]] constexpr auto
     alert() noexcept -> details::out_type<DL, details::out_type_alert>
     {
@@ -144,7 +159,10 @@ namespace bsl
             return o;
         }
 
-        o << '[' << bsl::cyan << details::thread_id() << bsl::reset_color << "]: ";
+        o << bsl::bold_yellow << "ALERT" << bsl::reset_color;
+        details::get_thread_id(o);
+        o << ": ";
+
         return o;
     }
 
@@ -167,8 +185,111 @@ namespace bsl
         // NOLINTNEXTLINE(cppcoreguidelines-init-variables)
         out<details::out_type_error> o{};
 
-        o << '[' << bsl::cyan << details::thread_id() << bsl::reset_color << "]: ";
+        o << bsl::bold_red << "ERROR" << bsl::reset_color;
+        details::get_thread_id(o);
+        o << ": ";
+
         return o;
+    }
+
+    /// <!-- description -->
+    ///   @brief Outputs the provided bsl::source_location to the provided
+    ///     output type.
+    ///   @related bsl::source_location
+    ///   @include source_location/example_source_location_ostream.hpp
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of outputter provided
+    ///   @param o the instance of the outputter used to output the value.
+    ///   @param sloc the bsl::source_location to output
+    ///   @return return o
+    ///
+    template<typename T>
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T> const o, source_location const &sloc) noexcept -> out<T>
+    {
+        if constexpr (!o) {
+            return o;
+        }
+
+        o << "  --> "                                                       // --
+          << bsl::yellow << sloc.file_name() << bsl::reset_color            // --
+          << bsl::cyan << " [" << sloc.line() << ']' << bsl::reset_color    // --
+          << ": "                                                           // --
+          << sloc.function_name()                                           // --
+          << bsl::endl;                                                     // --
+
+        return o;
+    }
+
+    /// <!-- description -->
+    ///   @brief This provides a less verbose version of
+    ///     bsl::source_location::current() to help reduce how large this
+    ///     code must be. They are equivalent, and should not produce any
+    ///     additional overhead in release mode.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param sloc the source_location object corresponding to
+    ///     the location of the call site.
+    ///   @return the source_location object corresponding to
+    ///     the location of the call site.
+    ///
+    [[nodiscard]] constexpr auto
+    here(source_location const sloc = source_location::current()) noexcept -> source_location
+    {
+        return sloc;
+    }
+
+    /// <!-- description -->
+    ///   @brief Returns bsl::fmt("#04x", t)
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param val the value to input into bsl::fmt
+    ///   @return Returns bsl::fmt("#04x", t)
+    ///
+    [[nodiscard]] constexpr auto
+    hex(bsl::safe_uint8 const &val) noexcept -> bsl::fmt<bsl::safe_uint8>
+    {
+        return bsl::fmt("#04x", val);
+    }
+
+    /// <!-- description -->
+    ///   @brief Returns bsl::fmt("#06x", t)
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param val the value to input into bsl::fmt
+    ///   @return Returns bsl::fmt("#06x", t)
+    ///
+    [[nodiscard]] constexpr auto
+    hex(bsl::safe_uint16 const &val) noexcept -> bsl::fmt<bsl::safe_uint16>
+    {
+        return bsl::fmt("#06x", val);
+    }
+
+    /// <!-- description -->
+    ///   @brief Returns bsl::fmt("#010x", t)
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param val the value to input into bsl::fmt
+    ///   @return Returns bsl::fmt("#010x", t)
+    ///
+    [[nodiscard]] constexpr auto
+    hex(bsl::safe_uint32 const &val) noexcept -> bsl::fmt<bsl::safe_uint32>
+    {
+        return bsl::fmt("#010x", val);
+    }
+
+    /// <!-- description -->
+    ///   @brief Returns bsl::fmt("#018x", t)
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param val the value to input into bsl::fmt
+    ///   @return Returns bsl::fmt("#018x", t)
+    ///
+    [[nodiscard]] constexpr auto
+    hex(bsl::safe_uint64 const &val) noexcept -> bsl::fmt<bsl::safe_uint64>
+    {
+        return bsl::fmt("#018x", val);
     }
 }
 

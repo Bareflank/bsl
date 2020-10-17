@@ -25,12 +25,11 @@
 #ifndef BSL_DETAILS_FMT_IMPL_CSTR_TYPE_HPP
 #define BSL_DETAILS_FMT_IMPL_CSTR_TYPE_HPP
 
-#include "out.hpp"
-
 #include "../cstr_type.hpp"
 #include "../cstring.hpp"
 #include "../fmt_options.hpp"
 #include "../safe_integral.hpp"
+#include "out.hpp"
 
 namespace bsl
 {

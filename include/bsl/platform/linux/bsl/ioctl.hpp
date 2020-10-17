@@ -34,8 +34,8 @@
 #include "../../../touch.hpp"
 
 #include <fcntl.h>
-#include <unistd.h>
 #include <sys/ioctl.h>
+#include <unistd.h>
 
 namespace bsl
 {

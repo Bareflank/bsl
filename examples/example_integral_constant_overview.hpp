@@ -22,8 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/integral_constant.hpp>
 #include <bsl/debug.hpp>
+#include <bsl/integral_constant.hpp>
 
 namespace bsl
 {

@@ -22,11 +22,11 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/underlying_type.hpp>
-#include <bsl/is_same.hpp>
-#include <bsl/debug.hpp>
-
 #include "example_enum.hpp"
+
+#include <bsl/debug.hpp>
+#include <bsl/is_same.hpp>
+#include <bsl/underlying_type.hpp>
 
 namespace bsl
 {

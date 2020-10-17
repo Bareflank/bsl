@@ -22,6 +22,7 @@
 bf_add_test(requirements)
 bf_add_test(behavior_arithmetic)
 bf_add_test(behavior_binary)
+bf_add_test(behavior_constants)
 bf_add_test(behavior_members)
 bf_add_test(behavior_rational)
 bf_add_test(behavior_shift)

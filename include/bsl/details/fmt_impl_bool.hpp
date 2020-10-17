@@ -25,14 +25,13 @@
 #ifndef BSL_DETAILS_FMT_IMPL_BOOL_HPP
 #define BSL_DETAILS_FMT_IMPL_BOOL_HPP
 
+#include "../convert.hpp"
+#include "../fmt_options.hpp"
+#include "../forward.hpp"
+#include "../safe_integral.hpp"
 #include "fmt_impl_align.hpp"
 #include "fmt_impl_integral_helpers.hpp"
 #include "out.hpp"
-
-#include "../convert.hpp"
-#include "../forward.hpp"
-#include "../fmt_options.hpp"
-#include "../safe_integral.hpp"
 
 namespace bsl
 {

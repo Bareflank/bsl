@@ -22,10 +22,10 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include "../class_destructor_throws.hpp"
+
 #include <bsl/destroy_at.hpp>
 #include <bsl/ut.hpp>
-
-#include "../class_destructor_throws.hpp"
 
 /// <!-- description -->
 ///   @brief Main function for this unit test. If a call to bsl::ut_check() fails

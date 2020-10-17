@@ -22,8 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/discard.hpp>
 #include <bsl/debug.hpp>
+#include <bsl/discard.hpp>
 
 namespace bsl
 {

@@ -28,9 +28,8 @@
 #ifndef BSL_IS_DESTRUCTIBLE_HPP
 #define BSL_IS_DESTRUCTIBLE_HPP
 
-#include "details/is_destructible_type.hpp"
-
 #include "bool_constant.hpp"
+#include "details/is_destructible_type.hpp"
 #include "is_detected.hpp"
 #include "is_function.hpp"
 #include "is_reference.hpp"

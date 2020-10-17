@@ -22,15 +22,15 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include "../class_base.hpp"
+#include "../class_pod.hpp"
+#include "../class_subclass.hpp"
+#include "../func.hpp"
+#include "../func_might_throw.hpp"
+
 #include <bsl/invoke.hpp>
 #include <bsl/reference_wrapper.hpp>
 #include <bsl/ut.hpp>
-
-#include "../class_base.hpp"
-#include "../class_subclass.hpp"
-#include "../class_pod.hpp"
-#include "../func.hpp"
-#include "../func_might_throw.hpp"
 
 namespace
 {

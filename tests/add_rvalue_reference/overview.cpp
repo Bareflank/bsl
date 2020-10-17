@@ -24,7 +24,6 @@
 
 #include <bsl/add_rvalue_reference.hpp>
 #include <bsl/is_same.hpp>
-
 #include <bsl/ut.hpp>
 
 /// <!-- description -->

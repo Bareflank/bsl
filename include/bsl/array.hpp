@@ -28,12 +28,11 @@
 #ifndef BSL_ARRAY_HPP
 #define BSL_ARRAY_HPP
 
-#include "details/out.hpp"
-
 #include "contiguous_iterator.hpp"
 #include "convert.hpp"
 #include "cstdint.hpp"
 #include "debug.hpp"
+#include "details/out.hpp"
 #include "reverse_iterator.hpp"
 #include "safe_integral.hpp"
 #include "touch.hpp"
@@ -117,7 +116,6 @@ namespace bsl
         at_if(size_type const &index) &noexcept -> pointer_type
         {
             if (!index) {
-                bsl::error() << "array: index invalid\n";
                 return nullptr;
             }
 
@@ -128,7 +126,6 @@ namespace bsl
                 return &m_data[index.get()];
             }
 
-            bsl::error() << "array: index out of range: " << index << '\n';
             return nullptr;
         }
 
@@ -148,7 +145,6 @@ namespace bsl
         at_if(size_type const &index) const &noexcept -> const_pointer_type
         {
             if (!index) {
-                bsl::error() << "array: index invalid\n";
                 return nullptr;
             }
 
@@ -159,7 +155,6 @@ namespace bsl
                 return &m_data[index.get()];
             }
 
-            bsl::error() << "array: index out of range: " << index << '\n';
             return nullptr;
         }
 

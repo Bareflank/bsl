@@ -23,9 +23,9 @@
 /// SOFTWARE.
 
 #include <bsl/conjunction.hpp>
+#include <bsl/debug.hpp>
 #include <bsl/is_bool.hpp>
 #include <bsl/is_void.hpp>
-#include <bsl/debug.hpp>
 
 namespace bsl
 {

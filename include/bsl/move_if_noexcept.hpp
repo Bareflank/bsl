@@ -28,8 +28,8 @@
 #ifndef BSL_MOVE_IF_NOEXCEPT_HPP
 #define BSL_MOVE_IF_NOEXCEPT_HPP
 
-#include "conjunction.hpp"
 #include "conditional.hpp"
+#include "conjunction.hpp"
 #include "is_copy_constructible.hpp"
 #include "is_nothrow_move_constructible.hpp"
 #include "move.hpp"

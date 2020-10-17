@@ -22,10 +22,10 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/reference_wrapper.hpp>
-#include <bsl/debug.hpp>
-
 #include "../example_function.hpp"
+
+#include <bsl/debug.hpp>
+#include <bsl/reference_wrapper.hpp>
 
 namespace bsl
 {

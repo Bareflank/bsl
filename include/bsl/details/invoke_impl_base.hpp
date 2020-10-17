@@ -25,6 +25,14 @@
 #ifndef BSL_DETAILS_INVOKE_IMPL_BASE_HPP
 #define BSL_DETAILS_INVOKE_IMPL_BASE_HPP
 
+#include "../conditional.hpp"
+#include "../decay.hpp"
+#include "../forward.hpp"
+#include "../is_base_of.hpp"
+#include "../is_member_function_pointer.hpp"
+#include "../is_member_object_pointer.hpp"
+#include "../is_reference_wrapper.hpp"
+#include "../remove_cvref.hpp"
 #include "invoke_impl_fp.hpp"
 #include "invoke_impl_mfp_o.hpp"
 #include "invoke_impl_mfp_p.hpp"
@@ -32,15 +40,6 @@
 #include "invoke_impl_mop_o.hpp"
 #include "invoke_impl_mop_p.hpp"
 #include "invoke_impl_mop_r.hpp"
-
-#include "../decay.hpp"
-#include "../conditional.hpp"
-#include "../forward.hpp"
-#include "../is_base_of.hpp"
-#include "../is_member_function_pointer.hpp"
-#include "../is_member_object_pointer.hpp"
-#include "../is_reference_wrapper.hpp"
-#include "../remove_cvref.hpp"
 
 namespace bsl::details
 {

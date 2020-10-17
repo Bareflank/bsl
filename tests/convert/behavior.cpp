@@ -648,6 +648,54 @@ namespace
                     bsl::ut_check(bsl::to_umax(42U) == static_cast<bsl::uintmax>(42U));
                 };
             };
+
+            bsl::ut_given_at_runtime{} = []() {
+                constexpr bsl::safe_uintmax val{bsl::to_umax(0xFFFFFFFFFFFFFFFFU)};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(bsl::to_u8_unsafe(val) == bsl::to_u8(0xFFU));
+                    bsl::ut_check(bsl::to_u16_unsafe(val) == bsl::to_u16(0xFFFFU));
+                    bsl::ut_check(bsl::to_u32_unsafe(val) == bsl::to_u32(0xFFFFFFFFU));
+                    bsl::ut_check(bsl::to_u64_unsafe(val) == bsl::to_u64(0xFFFFFFFFFFFFFFFFU));
+                    bsl::ut_check(bsl::to_umax_unsafe(val) == bsl::to_umax(0xFFFFFFFFFFFFFFFFU));
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                constexpr bsl::safe_uintmax val{0xFFFFFFFFFFFFFFFFU};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(bsl::to_u8_unsafe(val.get()) == bsl::to_u8(0xFFU));
+                    bsl::ut_check(bsl::to_u16_unsafe(val.get()) == bsl::to_u16(0xFFFFU));
+                    bsl::ut_check(bsl::to_u32_unsafe(val.get()) == bsl::to_u32(0xFFFFFFFFU));
+                    bsl::ut_check(
+                        bsl::to_u64_unsafe(val.get()) == bsl::to_u64(0xFFFFFFFFFFFFFFFFU));
+                    bsl::ut_check(
+                        bsl::to_umax_unsafe(val.get()) == bsl::to_umax(0xFFFFFFFFFFFFFFFFU));
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_uintmax val{bsl::to_umax(42U)};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(
+                        bsl::to_umax(bsl::to_ptr<void *>(val)) == static_cast<bsl::uintmax>(42U));
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_uintmax val{bsl::safe_uintmax::zero(true)};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(
+                        bsl::to_ptr<void *>(val) == nullptr);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bool *const val{};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(
+                        bsl::to_umax(val) == bsl::safe_uintmax::zero(true));
+                };
+            };
         };
 
         return bsl::ut_success();

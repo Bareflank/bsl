@@ -22,10 +22,10 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/has_unique_object_representations.hpp>
-#include <bsl/debug.hpp>
-
 #include "example_class_pod.hpp"
+
+#include <bsl/debug.hpp>
+#include <bsl/has_unique_object_representations.hpp>
 
 namespace bsl
 {

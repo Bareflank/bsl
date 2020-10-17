@@ -30,6 +30,9 @@ list(APPEND BSL_WARNINGS
     -Wno-ctad-maybe-unsupported
     -Wno-enum-compare-conditional
     -Wno-return-std-move-in-c++11
+    -Wno-missing-prototypes
+    -Wno-missing-variable-declarations
+    -Wno-covered-switch-default
     -fcomment-block-commands=include
     -fcomment-block-commands=cond
     -fcomment-block-commands=endcond
@@ -43,7 +46,9 @@ list(APPEND BSL_ENABLE_CONSOLE_COLORS
 list(APPEND BSL_FLAGS_RELEASE
     -O3
     -DNDEBUG
+    -Wframe-larger-than=1024
     -Werror
+    -mretpoline
     ${BSL_WARNINGS}
     ${BSL_ENABLE_CONSOLE_COLORS}
 )
@@ -51,6 +56,7 @@ list(APPEND BSL_FLAGS_RELEASE
 list(APPEND BSL_FLAGS_DEBUG
     -Og
     -g
+    -Wframe-larger-than=1024
     -ftime-trace
     ${BSL_WARNINGS}
     ${BSL_ENABLE_CONSOLE_COLORS}
@@ -59,7 +65,6 @@ list(APPEND BSL_FLAGS_DEBUG
 list(APPEND BSL_FLAGS_CLANG_TIDY
     -O0
     -g
-    -ftime-trace
     -Werror
     ${BSL_WARNINGS}
     ${BSL_ENABLE_CONSOLE_COLORS}

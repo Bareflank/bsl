@@ -28,14 +28,15 @@
 #ifndef BSL_SPAN_HPP
 #define BSL_SPAN_HPP
 
-#include "details/out.hpp"
-
 #include "byte.hpp"
 #include "char_type.hpp"
 #include "contiguous_iterator.hpp"
 #include "convert.hpp"
 #include "debug.hpp"
+#include "details/out.hpp"
 #include "is_same.hpp"
+#include "is_standard_layout.hpp"
+#include "is_void.hpp"
 #include "npos.hpp"
 #include "reverse_iterator.hpp"
 #include "safe_integral.hpp"
@@ -43,6 +44,12 @@
 
 namespace bsl
 {
+    namespace details
+    {
+        /// @brief defined the expected size of the pt_t struct
+        constexpr bsl::safe_uintmax EXPECTED_SPAN_SIZE{bsl::to_umax(16)};
+    }
+
     /// @class bsl::span
     ///
     /// <!-- description -->
@@ -78,12 +85,15 @@ namespace bsl
     ///     - A bsl::span is always a dynamic_extent type. The reason the
     ///       dynamic_extent type exists in a std::span is to optimize away
     ///       the need to store the size of the array the span is viewing.
-    ///       This is only useful for C-style arrays which are not supported
-    ///       as they are not compliant with AUTOSAR. If you need a C-style
+    ///       This is only useful for C style arrays which are not supported
+    ///       as they are not compliant with AUTOSAR. If you need a C style
     ///       array, use a bsl::array, in which case you have no need for a
     ///       bsl::span. Instead, a bsl::span is useful when you have an
     ///       array in memory that is not in your control (for example, a
     ///       device's memory).
+    ///     - In addition to the above, a bsl::span is a standard layout and
+    ///       can be used to interface with C structs.
+    ///
     ///   @include example_span_overview.hpp
     ///
     /// <!-- template parameters -->
@@ -124,7 +134,10 @@ namespace bsl
         ///
         constexpr span() noexcept    // --
             : m_ptr{}, m_count{}
-        {}
+        {
+            static_assert(sizeof(span<T>) == details::EXPECTED_SPAN_SIZE);
+            static_assert(is_standard_layout<span<T>>::value, "standard layout test failed");
+        }
 
         /// <!-- description -->
         ///   @brief Creates a span given a pointer to an array, and the
@@ -138,14 +151,17 @@ namespace bsl
         ///   @param count the number of elements in the array being spaned.
         ///
         constexpr span(pointer_type const ptr, size_type const &count) noexcept    // --
-            : m_ptr{ptr}, m_count{count}
+            : m_ptr{ptr}, m_count{count.get()}
         {
+            static_assert(sizeof(span<T>) == details::EXPECTED_SPAN_SIZE);
+            static_assert(is_standard_layout<span<T>>::value, "standard layout test failed");
+
             if (nullptr == m_ptr) {
                 *this = span{};
                 return;
             }
 
-            if (m_count.is_zero()) {
+            if (count.is_zero()) {
                 *this = span{};
                 return;
             }
@@ -208,7 +224,6 @@ namespace bsl
         at_if(size_type const &index) noexcept -> pointer_type
         {
             if (!index) {
-                bsl::error() << "span: index invalid\n";
                 return nullptr;
             }
 
@@ -219,7 +234,6 @@ namespace bsl
                 return &m_ptr[index.get()];
             }
 
-            bsl::error() << "span: index out of range: " << index << '\n';
             return nullptr;
         }
 
@@ -239,7 +253,6 @@ namespace bsl
         at_if(size_type const &index) const noexcept -> const_pointer_type
         {
             if (!index) {
-                bsl::error() << "span: index invalid\n";
                 return nullptr;
             }
 
@@ -250,7 +263,6 @@ namespace bsl
                 return &m_ptr[index.get()];
             }
 
-            bsl::error() << "span: index out of range: " << index << '\n';
             return nullptr;
         }
 
@@ -302,8 +314,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back_if() noexcept -> pointer_type
         {
-            if (m_count.is_zero()) {
-                return this->at_if(size_type::zero());
+            if (this->empty()) {
+                return nullptr;
             }
 
             return this->at_if(m_count - size_type::one());
@@ -323,8 +335,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back_if() const noexcept -> const_pointer_type
         {
-            if (m_count.is_zero()) {
-                return this->at_if(size_type::zero());
+            if (this->empty()) {
+                return nullptr;
             }
 
             return this->at_if(m_count - size_type::one());
@@ -704,7 +716,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         empty() const noexcept -> bool
         {
-            return m_count.is_zero();
+            return (nullptr == m_ptr);
         }
 
         /// <!-- description -->
@@ -731,9 +743,9 @@ namespace bsl
         ///     was constructed in error, this will return 0.
         ///
         [[nodiscard]] constexpr auto
-        size() const noexcept -> size_type const &
+        size() const noexcept -> size_type
         {
-            return m_count;
+            return {m_count};
         }
 
         /// <!-- description -->
@@ -837,7 +849,7 @@ namespace bsl
         /// @brief stores a pointer to the array being viewed
         pointer_type m_ptr;
         /// @brief stores the number of elements in the array being viewed
-        size_type m_count;
+        bsl::uint64 m_count;
     };
 
     /// <!-- description -->
@@ -847,15 +859,18 @@ namespace bsl
     ///   @related bsl::span
     ///
     /// <!-- inputs/outputs -->
+    ///   @tparam U the src memory type.
     ///   @param ptr a pointer to the array to create the span for
     ///   @param bytes the total number of bytes in the array
     ///   @return Returns a span<byte const> given a pointer to an array
     ///     type and the total number of bytes
     ///
+    template<typename U>
     [[nodiscard]] constexpr auto
-    as_bytes(void const *const ptr, safe_uintmax const &bytes) noexcept -> span<byte const>
+    as_bytes(U const *const ptr, safe_uintmax const &bytes) noexcept -> span<byte const>
     {
-        return {static_cast<byte const *>(ptr), bytes};
+        static_assert(is_standard_layout<U>::value, "U must be a standard layout");
+        return {static_cast<byte const *>(static_cast<void const *>(ptr)), bytes};
     }
 
     /// <!-- description -->
@@ -870,8 +885,9 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    as_bytes(span<T> const spn) noexcept -> span<byte const>
+    as_bytes(span<T> const &spn) noexcept -> span<byte const>
     {
+        static_assert(is_standard_layout<T>::value, "T must be a standard layout");
         return as_bytes(spn.data(), spn.size_bytes());
     }
 
@@ -882,15 +898,18 @@ namespace bsl
     ///   @related bsl::span
     ///
     /// <!-- inputs/outputs -->
+    ///   @tparam U the src memory type.
     ///   @param ptr a pointer to the array to create the span for
     ///   @param bytes the total number of bytes in the array
     ///   @return Returns a span<byte> given a pointer to an array
     ///     type and the total number of bytes
     ///
+    template<typename U>
     [[nodiscard]] constexpr auto
-    as_writable_bytes(void *const ptr, safe_uintmax const &bytes) noexcept -> span<byte>
+    as_writable_bytes(U *const ptr, safe_uintmax const &bytes) noexcept -> span<byte>
     {
-        return {static_cast<byte *>(ptr), bytes};
+        static_assert(is_standard_layout<U>::value, "U must be a standard layout");
+        return {static_cast<byte *>(static_cast<void *>(ptr)), bytes};
     }
 
     /// <!-- description -->
@@ -905,9 +924,120 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    as_writable_bytes(span<T> spn) noexcept -> span<byte>
+    as_writable_bytes(span<T> &spn) noexcept -> span<byte>
     {
+        static_assert(is_standard_layout<T>::value, "T must be a standard layout");
         return as_writable_bytes(spn.data(), spn.size_bytes());
+    }
+
+    /// <!-- description -->
+    ///   @brief Returns a span<T const> given a pointer and the total number
+    ///     of bytes. Note that both T and U must have a standard layout to
+    ///     use this function (i.e., the type must be memcpy-able, otherwise
+    ///     this conversion would produce UB).
+    ///   @include span/example_span_as_t.hpp
+    ///   @related bsl::span
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the dst span type
+    ///   @tparam U the src memory type.
+    ///   @param ptr a pointer to the memory to create the span from
+    ///   @param bytes the total number of bytes
+    ///   @return Returns a span<T const> given a pointer and the total number
+    ///     of bytes.
+    ///
+    template<typename T, typename U, enable_if_t<!is_void<U>::value, bool> = true>
+    [[nodiscard]] constexpr auto
+    as_t(U const *const ptr, safe_uintmax const &bytes) noexcept -> span<T const>
+    {
+        if constexpr (is_void<U>::value) {
+            static_assert(is_standard_layout<T>::value, "T must be a standard layout");
+            return {static_cast<T const *>(ptr), bytes / sizeof(T)};
+        }
+        else {
+            static_assert(is_standard_layout<T>::value, "T must be a standard layout");
+            static_assert(is_standard_layout<U>::value, "U must be a standard layout");
+            return {static_cast<T const *>(static_cast<void const *>(ptr)), bytes / sizeof(T)};
+        }
+    }
+
+    /// <!-- description -->
+    ///   @brief Returns a span<T const> given a span\<U\>. Note that both T
+    ///     and U must have a standard layout to use this function (i.e.,
+    ///     the type must be memcpy-able, otherwise this conversion would
+    ///     produce UB).
+    ///   @include span/example_span_as_t.hpp
+    ///   @related bsl::span
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the dst span type
+    ///   @tparam U the src span type.
+    ///   @param spn a span to create the new span from
+    ///   @return Returns a span<T const> given a pointer and the total number
+    ///     of bytes.
+    ///
+    template<typename T, typename U>
+    [[nodiscard]] constexpr auto
+    as_t(span<U> const &spn) noexcept -> span<T const>
+    {
+        static_assert(is_standard_layout<T>::value, "T must be a standard layout");
+        static_assert(is_standard_layout<U>::value, "U must be a standard layout");
+        return as_t<T, U>(spn.data(), spn.size_bytes());
+    }
+
+    /// <!-- description -->
+    ///   @brief Returns a span<T> given a pointer and the total number
+    ///     of bytes. Note that both T and U must have a standard layout to
+    ///     use this function (i.e., the type must be memcpy-able, otherwise
+    ///     this conversion would produce UB).
+    ///   @include span/example_span_as_writable_t.hpp
+    ///   @related bsl::span
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the dst span type
+    ///   @tparam U the src span type.
+    ///   @param ptr a pointer to the memory to create the span from
+    ///   @param bytes the total number of bytes
+    ///   @return Returns a span<T> given a pointer and the total number
+    ///     of bytes.
+    ///
+    template<typename T, typename U>
+    [[nodiscard]] constexpr auto
+    as_writable_t(U *const ptr, safe_uintmax const &bytes) noexcept -> span<T>
+    {
+        if constexpr (is_void<U>::value) {
+            static_assert(is_standard_layout<T>::value, "T must be a standard layout");
+            return {static_cast<T *>(ptr), bytes / sizeof(T)};
+        }
+        else {
+            static_assert(is_standard_layout<T>::value, "T must be a standard layout");
+            static_assert(is_standard_layout<U>::value, "U must be a standard layout");
+            return {static_cast<T *>(static_cast<void *>(ptr)), bytes / sizeof(T)};
+        }
+    }
+
+    /// <!-- description -->
+    ///   @brief Returns a span<T> given a span\<U\>. Note that both T
+    ///     and U must have a standard layout to use this function (i.e.,
+    ///     the type must be memcpy-able, otherwise this conversion would
+    ///     produce UB).
+    ///   @include span/example_span_as_writable_t.hpp
+    ///   @related bsl::span
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the dst span type
+    ///   @tparam U the src span type.
+    ///   @param spn a span to create the new span from
+    ///   @return Returns a span<T> given a pointer and the total number
+    ///     of bytes.
+    ///
+    template<typename T, typename U>
+    [[nodiscard]] constexpr auto
+    as_writable_t(span<U> &spn) noexcept -> span<T>
+    {
+        static_assert(is_standard_layout<T>::value, "T must be a standard layout");
+        static_assert(is_standard_layout<U>::value, "U must be a standard layout");
+        return as_writable_t<T, U>(spn.data(), spn.size_bytes());
     }
 
     /// <!-- description -->

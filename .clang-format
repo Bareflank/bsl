@@ -74,7 +74,17 @@ DerivePointerAlignment: false
 # ExperimentalAutoDetectBinPacking
 FixNamespaceComments: false
 # ForEachMacros
-# IncludeBlocks
+IncludeBlocks: Regroup
+IncludeCategories:
+  # Headers in <> from specific external libraries.
+  - Regex:           '<(bsl)\/'
+    Priority:        3
+  # Headers in <> with extension.
+  - Regex:           '<([A-Za-z0-9.\Q/-_\E])+>'
+    Priority:        2
+  # Headers in "" with extension.
+  - Regex:           '"([A-Za-z0-9.\Q/-_\E])+"'
+    Priority:        1
 # IncludeCategories
 # IncludeIsMainRegex
 IndentCaseLabels: true
@@ -105,7 +115,7 @@ NamespaceIndentation: All
 PointerAlignment: Right
 # RawStringFormats
 ReflowComments: false
-SortIncludes: false
+SortIncludes: true
 SortUsingDeclarations: false
 SpaceAfterCStyleCast: false
 SpaceAfterLogicalNot: false

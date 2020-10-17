@@ -29,8 +29,8 @@
 #define BSL_ALIGNED_STORAGE_HPP
 
 #include "array.hpp"
-#include "cstdint.hpp"
 #include "byte.hpp"
+#include "cstdint.hpp"
 
 namespace bsl
 {

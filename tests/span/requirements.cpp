@@ -22,9 +22,9 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/span.hpp>
 #include <bsl/array.hpp>
 #include <bsl/discard.hpp>
+#include <bsl/span.hpp>
 #include <bsl/ut.hpp>
 
 namespace
@@ -152,10 +152,13 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(spn1.first()));
                 static_assert(noexcept(spn1.last()));
                 static_assert(noexcept(spn1.subspan(bsl::to_umax(0))));
-                static_assert(noexcept(bsl::as_bytes(nullptr, bsl::to_umax(0))));
+                static_assert(noexcept(bsl::as_bytes<bsl::uint8>(nullptr, bsl::to_umax(0))));
                 static_assert(noexcept(bsl::as_bytes(bsl::span<bool>{})));
-                static_assert(noexcept(bsl::as_writable_bytes(nullptr, bsl::to_umax(0))));
-                static_assert(noexcept(bsl::as_writable_bytes(bsl::span<bool>{})));
+                static_assert(
+                    noexcept(bsl::as_writable_bytes<bsl::uint8>(nullptr, bsl::to_umax(0))));
+
+                bsl::span<bool> view{};
+                static_assert(noexcept(bsl::as_writable_bytes(view)));
             };
         };
     };

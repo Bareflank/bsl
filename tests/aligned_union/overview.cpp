@@ -24,7 +24,6 @@
 
 #include <bsl/aligned_union.hpp>
 #include <bsl/alignment_of.hpp>
-
 #include <bsl/ut.hpp>
 
 namespace

@@ -26,7 +26,6 @@
 #define BSL_CONTIGUOUS_ITERATOR_ELEMENT_HPP
 
 #include "details/out.hpp"
-
 #include "safe_integral.hpp"
 
 namespace bsl

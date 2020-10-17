@@ -25,14 +25,13 @@
 #ifndef BSL_DETAILS_FMT_IMPL_CHAR_TYPE_HPP
 #define BSL_DETAILS_FMT_IMPL_CHAR_TYPE_HPP
 
+#include "../char_type.hpp"
+#include "../convert.hpp"
+#include "../fmt_options.hpp"
+#include "../forward.hpp"
 #include "fmt_impl_align.hpp"
 #include "fmt_impl_integral_helpers.hpp"
 #include "out.hpp"
-
-#include "../convert.hpp"
-#include "../char_type.hpp"
-#include "../forward.hpp"
-#include "../fmt_options.hpp"
 
 namespace bsl
 {

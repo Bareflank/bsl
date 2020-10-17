@@ -28,23 +28,21 @@
 #ifndef BSL_FMT_HPP
 #define BSL_FMT_HPP
 
+#include "convert.hpp"
+#include "details/fmt_impl_bool.hpp"
 #include "details/fmt_impl_char_type.hpp"
 #include "details/fmt_impl_cstr_type.hpp"
-#include "details/fmt_impl_bool.hpp"
 #include "details/fmt_impl_integral.hpp"
 #include "details/fmt_impl_null_pointer.hpp"
 #include "details/fmt_impl_void_pointer.hpp"
-
 #include "details/out.hpp"
-
-#include "convert.hpp"
 #include "enable_if.hpp"
 #include "fmt_options.hpp"
 #include "is_bool.hpp"
 #include "is_integral.hpp"
 #include "is_null_pointer.hpp"
-#include "is_same.hpp"
 #include "is_pointer.hpp"
+#include "is_same.hpp"
 #include "safe_integral.hpp"
 
 namespace bsl

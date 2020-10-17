@@ -22,13 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/is_trivially_movable.hpp>
-#include <bsl/ut.hpp>
-
-#include <bsl/cstddef.hpp>
-#include <bsl/cstdint.hpp>
-#include <bsl/reference_wrapper.hpp>
-
 #include "../class_abstract.hpp"
 #include "../class_base.hpp"
 #include "../class_deleted.hpp"
@@ -40,6 +33,12 @@
 #include "../enum_empty.hpp"
 #include "../struct_empty.hpp"
 #include "../union_empty.hpp"
+
+#include <bsl/cstddef.hpp>
+#include <bsl/cstdint.hpp>
+#include <bsl/is_trivially_movable.hpp>
+#include <bsl/reference_wrapper.hpp>
+#include <bsl/ut.hpp>
 
 /// <!-- description -->
 ///   @brief Main function for this unit test. If a call to bsl::ut_check() fails

@@ -23,8 +23,8 @@
 /// SOFTWARE.
 
 #include <bsl/convert.hpp>
-#include <bsl/discard.hpp>
 #include <bsl/debug.hpp>
+#include <bsl/discard.hpp>
 #include <bsl/string_view.hpp>
 
 namespace bsl

@@ -22,8 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/is_nothrow_swappable.hpp>
 #include <bsl/debug.hpp>
+#include <bsl/is_nothrow_swappable.hpp>
 
 namespace bsl
 {

@@ -32,8 +32,6 @@
 
 namespace bsl
 {
-    /// @enum bsl::fmt_align
-    ///
     /// <!-- description -->
     ///   @brief Used to determine what the alignment of the output
     ///     should be. If the width is not defined, this field does

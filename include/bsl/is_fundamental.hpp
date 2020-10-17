@@ -30,8 +30,8 @@
 
 #include "bool_constant.hpp"
 #include "is_arithmetic.hpp"
-#include "is_void.hpp"
 #include "is_null_pointer.hpp"
+#include "is_void.hpp"
 
 namespace bsl
 {

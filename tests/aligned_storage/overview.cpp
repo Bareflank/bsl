@@ -22,10 +22,9 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/array.hpp>
 #include <bsl/aligned_storage.hpp>
 #include <bsl/alignment_of.hpp>
-
+#include <bsl/array.hpp>
 #include <bsl/ut.hpp>
 
 namespace
@@ -60,7 +59,9 @@ main() noexcept -> bsl::exit_code
     test_aligned_storage<bsl::uint32, 64>();
     test_aligned_storage<bsl::uint64, 64>();
 
-    test_aligned_storage<bsl::array<bsl::uint8, BSL_PAGE_SIZE>, BSL_PAGE_SIZE>();
+    test_aligned_storage<
+        bsl::array<bsl::uint8, bsl::to_umax(BSL_PAGE_SIZE).get()>,
+        bsl::to_umax(BSL_PAGE_SIZE).get()>();
 
     return bsl::ut_success();
 }

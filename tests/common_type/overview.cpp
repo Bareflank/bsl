@@ -22,15 +22,14 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include "../class_empty.hpp"
-#include "../class_convertible_to_void_ptr.hpp"
-#include "../class_convertible_to_const_void_ptr.hpp"
 #include "../class_base.hpp"
+#include "../class_convertible_to_const_void_ptr.hpp"
+#include "../class_convertible_to_void_ptr.hpp"
+#include "../class_empty.hpp"
 #include "../class_subclass.hpp"
 
 #include <bsl/common_type.hpp>
 #include <bsl/is_same.hpp>
-
 #include <bsl/ut.hpp>
 
 /// <!-- description -->

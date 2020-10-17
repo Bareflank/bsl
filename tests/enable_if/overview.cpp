@@ -22,10 +22,9 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/enable_if.hpp>
 #include <bsl/discard.hpp>
+#include <bsl/enable_if.hpp>
 #include <bsl/is_same.hpp>
-
 #include <bsl/ut.hpp>
 
 namespace

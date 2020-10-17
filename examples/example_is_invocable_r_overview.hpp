@@ -22,8 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/is_invocable_r.hpp>
 #include <bsl/debug.hpp>
+#include <bsl/is_invocable_r.hpp>
 
 namespace bsl
 {

@@ -28,10 +28,9 @@
 #ifndef BSL_BASIC_ERRC_TYPE_HPP
 #define BSL_BASIC_ERRC_TYPE_HPP
 
-#include "details/out.hpp"
-
 #include "cstdint.hpp"
 #include "debug.hpp"
+#include "details/out.hpp"
 #include "discard.hpp"
 #include "move.hpp"
 #include "safe_integral.hpp"

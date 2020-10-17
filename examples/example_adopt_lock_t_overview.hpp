@@ -22,9 +22,9 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/debug.hpp>
 #include <bsl/lock_guard.hpp>
 #include <bsl/spinlock.hpp>
-#include <bsl/debug.hpp>
 
 namespace bsl
 {

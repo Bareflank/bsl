@@ -28,22 +28,21 @@
 #ifndef BSL_OUT_HPP
 #define BSL_OUT_HPP
 
+#include "../char_type.hpp"
+#include "../color.hpp"
+#include "../cstr_type.hpp"
+#include "../is_constant_evaluated.hpp"
+#include "../is_same.hpp"
 #include "out_type_alert.hpp"
 #include "out_type_debug.hpp"
 #include "out_type_empty.hpp"
 #include "out_type_error.hpp"
 #include "out_type_print.hpp"
 
-#include <bsl/details/putc_stdout.hpp>
 #include <bsl/details/putc_stderr.hpp>
-#include <bsl/details/puts_stdout.hpp>
+#include <bsl/details/putc_stdout.hpp>
 #include <bsl/details/puts_stderr.hpp>
-
-#include "../color.hpp"
-#include "../char_type.hpp"
-#include "../cstr_type.hpp"
-#include "../is_constant_evaluated.hpp"
-#include "../is_same.hpp"
+#include <bsl/details/puts_stdout.hpp>
 
 namespace bsl
 {
@@ -80,26 +79,7 @@ namespace bsl
         ///     synchronization of other bsl::out operations as well as
         ///     adds a label if needed.
         ///
-        constexpr out() noexcept
-        {
-            if constexpr (is_debug()) {
-                write(bsl::bold_green);
-                write("DEBUG ");
-                write(bsl::reset_color);
-            }
-
-            if constexpr (is_alert()) {
-                write(bsl::bold_yellow);
-                write("ALERT ");
-                write(bsl::reset_color);
-            }
-
-            if constexpr (is_error()) {
-                write(bsl::bold_red);
-                write("ERROR ");
-                write(bsl::reset_color);
-            }
-        }
+        constexpr out() noexcept = default;
 
         /// <!-- description -->
         ///   @brief Destroyes a previously created bsl::out

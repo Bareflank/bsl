@@ -32,8 +32,6 @@
 
 namespace bsl
 {
-    /// @enum bsl::fmt_type
-    ///
     /// <!-- description -->
     ///   @brief Used to determine how to output an unsigned integer
     ///     type (either as hex or dec). All ofther {fmt} types are

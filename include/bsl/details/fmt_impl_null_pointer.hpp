@@ -25,10 +25,10 @@
 #ifndef BSL_DETAILS_FMT_IMPL_NULL_POINTER_HPP
 #define BSL_DETAILS_FMT_IMPL_NULL_POINTER_HPP
 
-#include "out.hpp"
-
 #include "../cstddef.hpp"
+#include "../discard.hpp"
 #include "../fmt_options.hpp"
+#include "out.hpp"
 
 namespace bsl
 {

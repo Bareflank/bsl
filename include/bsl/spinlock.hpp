@@ -29,6 +29,7 @@
 #define BSL_SPIN_LOCK_HPP
 
 #include "is_constant_evaluated.hpp"
+
 #include <bsl/details/intrinsic_pause.hpp>
 
 namespace bsl

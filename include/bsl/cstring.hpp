@@ -92,11 +92,17 @@ namespace bsl
     [[nodiscard]] inline constexpr auto
     builtin_strlen(cstr_type const str) noexcept -> safe_uintmax
     {
+        bsl::safe_uintmax len{};
+
         if (nullptr == str) {
-            return to_umax(0);
+            return len;
         }
 
-        return to_umax(__builtin_strlen(str));
+        while ('\0' != str[len.get()]) {
+            ++len;
+        }
+
+        return len;
     }
 
     /// <!-- description -->
@@ -123,6 +129,78 @@ namespace bsl
 
         safe_uintmax len{to_umax(__builtin_strlen(str))};
         return __builtin_char_memchr(str, ch, count.min(len + safe_uintmax::one()).get());
+    }
+
+    /// <!-- description -->
+    ///   @brief Same as std::memset with parameter checks. If dst or count
+    ///     is 0, this function returns nullptr.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param dst a pointer to the memory to set
+    ///   @param ch the value to set the memory to
+    ///   @param count the total number of bytes to set
+    ///   @return Returns the same result as std::memset.
+    ///
+    [[maybe_unused]] inline constexpr auto
+    builtin_memset(void *const dst, char_type const ch, safe_uintmax const &count) noexcept
+        -> void *
+    {
+        if (nullptr == dst) {
+            return nullptr;
+        }
+
+        if (count.is_zero()) {
+            return nullptr;
+        }
+
+        for (safe_uintmax i{}; i < count; ++i) {
+            // Array access is needed here as the only other way to handle
+            // this could be through the use of span, but the cstring library
+            // is designed to have fewer dependencies, allowing it to be used
+            // by span in it's implementation if needed.
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic, cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+            static_cast<char_type *>(dst)[i.get()] = ch;
+        }
+
+        return dst;
+    }
+
+    /// <!-- description -->
+    ///   @brief Same as std::memcpy with parameter checks. If dst, src are a
+    ///     nullptr, or count is 0, this function returns nullptr.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param dst a pointer to the memory to copy to
+    ///   @param src a pointer to the memory to copy from
+    ///   @param count the total number of bytes to copy
+    ///   @return Returns the same result as std::memcpy.
+    ///
+    [[maybe_unused]] inline constexpr auto
+    builtin_memcpy(void *const dst, void const *const src, safe_uintmax const &count) noexcept
+        -> void *
+    {
+        if (nullptr == dst) {
+            return nullptr;
+        }
+
+        if (nullptr == src) {
+            return nullptr;
+        }
+
+        if (count.is_zero()) {
+            return nullptr;
+        }
+
+        for (safe_uintmax i{}; i < count; ++i) {
+            // Array access is needed here as the only other way to handle
+            // this could be through the use of span, but the cstring library
+            // is designed to have fewer dependencies, allowing it to be used
+            // by span in it's implementation if needed.
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic, cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+            static_cast<char_type *>(dst)[i.get()] = static_cast<char_type const *>(src)[i.get()];
+        }
+
+        return dst;
     }
 }
 

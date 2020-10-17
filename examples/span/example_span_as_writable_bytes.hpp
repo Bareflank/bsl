@@ -22,9 +22,9 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/span.hpp>
 #include <bsl/array.hpp>
 #include <bsl/debug.hpp>
+#include <bsl/span.hpp>
 
 namespace bsl
 {
@@ -35,7 +35,7 @@ namespace bsl
     example_span_as_writable_bytes() noexcept
     {
         bsl::array arr{true, false};
-        bsl::span const spn{arr.data(), arr.size()};
+        bsl::span spn{arr.data(), arr.size()};
 
         bsl::print() << bsl::as_writable_bytes(spn) << bsl::endl;
     }

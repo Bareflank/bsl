@@ -121,13 +121,13 @@ main(bsl::int32 const argc, bsl::cstr_type const argv[]) noexcept -> bsl::exit_c
 </p>
 
 ## **Build Requirements**
-Currently, the BSL only supports the Clang/LLVM 10+ compiler. This, however, ensures the BSL can be natively compiled on Windows including support for cross-compiling. Support for other C++20 compilers can be added if needed, just let us know if that is something you need.
+Currently, the BSL only supports the Clang/LLVM 11+ compiler. This, however, ensures the BSL can be natively compiled on Windows including support for cross-compiling. Support for other C++20 compilers can be added if needed, just let us know if that is something you need.
 
 ### **Windows**
 To compile the BSL on Windows, you must first install the following:
 - [Visual Studio](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&rel=16) (Enable "Desktop development with C++")
-- [LLVM 10+](https://github.com/llvm/llvm-project/releases)
-- [CMake 3.13+](https://cmake.org/download/)
+- [LLVM 11+](https://github.com/llvm/llvm-project/releases)
+- [CMake 3.16+](https://cmake.org/download/)
 - [Ninja](https://github.com/ninja-build/ninja/releases)
 
 Visual Studio is needed as it contains Windows specific libraries that are needed during compilation. Instead of using the Clang/LLVM project that natively ships with Visual Studio, we use the standard Clang/LLVM binaries provided by the LLVM project which ensures we get all of the tools including LLD, Clang Tidy and Clang Format. Also note that you must put Ninja somewhere
@@ -149,13 +149,13 @@ To compile the BSL on Ubuntu, you must install the following:
 
 Once you have the above setup, you can install all dependencies using the following command
 ```bash
-sudo apt-get install -y clang-10 build-essential git
+sudo apt-get install -y clang-11 build-essential git
 ```
 
 You might also have to update your build environment to point to the new version of LLVM as follows:
 ```
 sudo update-alternatives --remove-all clang++
-sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
+sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-11 100
 ```
 
 To compile the BSL, use the following:
@@ -199,44 +199,3 @@ The Bareflank Support Library leverages the following tools to ensure the highes
 -   **Coding Standards**: [AUTOSAR C++14](https://www.autosar.org/fileadmin/user_upload/standards/adaptive/17-03/AUTOSAR_RS_CPP14Guidelines.pdf) and [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md)
 -   **Style**: Clang Format
 -   **Documentation**: Doxygen
-
-## **The Future**
-The initial version of the BSL is designed to support the needs of the
-Bareflank project. This includes:
-- All of the "type_traits" APIs
-- All of the "limits" APIs
-- Some utilities like bsl::move, bsl::forward, bsl::swap, etc...
-- bsl::arguments
-- bsl::array
-- bsl::byte
-- bsl::debug
-- bsl::fmt
-- bsl::for_each
-- bsl::from_chars
-- bsl::ifmap
-- bsl::ioctl
-- bsl::invoke
-- bsl::reference_wrapper
-- bsl::result
-- bsl::safe_integral
-- bsl::source_location
-- bsl::string_view
-
-The next version of this library will include (near the end of 2020):
-- All of the atomic APIs
-- Some of the thread APIs (minus futures)
-- Some sort of Date/Time APIs
-- Support for bsl::deque
-
-In the future, we would like to add the following APIs, but we don't have a
-specific time frame for when these would be added:
-- All of the concept APIs
-- All of the algorithms APIs
-- Most of the remaining utility APIs
-- Support for more data structures
-
-Most of the C++ APIs that include floating point numbers, dynamic memory
-and exceptions are purposely being avoided at the moment. If a need for
-these features is expressed, we can certainly add these as needed, we just
-need to ensure the BSL can continue to function without these where
-needed.

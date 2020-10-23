@@ -107,6 +107,19 @@ main(bsl::int32 const argc, bsl::cstr_type const argv[]) noexcept -> bsl::exit_c
 }
 ```
 
+## Interested In Working For AIS?
+  Check out our [Can You Hack It?®](https://www.canyouhackit.com) challenge 
+  and test your skills! Submit your score to show us what you’ve got. We have 
+  offices across the country and offer  competitive pay and outstanding 
+  benefits. Join a team that is not only committed to the future of cyberspace, 
+  but to our employee’s success as well.
+
+<p align="center">
+  <a href="https://www.ainfosec.com/">
+    <img src="https://github.com/Bareflank/MicroV/raw/master/docs/ais.png" alt="cross-platform" height="100" />
+  </a>
+</p>
+
 ## **Build Requirements**
 Currently, the BSL only supports the Clang/LLVM 10+ compiler. This, however, ensures the BSL can be natively compiled on Windows including support for cross-compiling. Support for other C++20 compilers can be added if needed, just let us know if that is something you need.
 

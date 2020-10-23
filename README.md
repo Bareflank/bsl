@@ -149,7 +149,7 @@ To compile the BSL on Ubuntu, you must install the following:
 
 Once you have the above setup, you can install all dependencies using the following command
 ```bash
-sudo apt-get install -y clang-11 build-essential git
+sudo apt-get install -y clang-11 build-essential git ninja-build
 ```
 
 You might also have to update your build environment to point to the new version of LLVM as follows:
@@ -162,9 +162,9 @@ To compile the BSL, use the following:
 ``` bash
 git clone https://github.com/bareflank/bsl
 mkdir bsl/build && cd bsl/build
-cmake -DCMAKE_CXX_COMPILER="clang++" -DBUILD_EXAMPLES=ON -DBUILD_TESTS=ON ..
-make info
-make -j<number of cores>
+cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DBUILD_EXAMPLES=ON -DBUILD_TESTS=ON ..
+ninja info
+ninja
 ```
 
 ## **Resources**

@@ -113,23 +113,19 @@ ninja info
 ninja
 ```
 
-### **Ubuntu Linux (20.04+)**
-To compile the BSL on Ubuntu, you must install the following:
-- [LLVM 10+](https://apt.llvm.org/)
-- [CMake 3.13+](https://cmake.org/download/)
-
-Once you have the above setup, you can install all dependencies using the following command
+### **Ubuntu Linux**
+To compile the BSL on Ubuntu (20.04 or higher) you must first install the following dependencies:
 ```bash
-sudo apt-get install -y clang cmake lld
+sudo apt-get install -y clang cmake
 ```
 
 To compile the BSL, use the following:
 ``` bash
 git clone https://github.com/bareflank/bsl
 mkdir bsl/build && cd bsl/build
-cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DBUILD_EXAMPLES=ON -DBUILD_TESTS=ON ..
-ninja info
-ninja
+cmake -DCMAKE_CXX_COMPILER="clang++" -DBUILD_EXAMPLES=ON -DBUILD_TESTS=ON ..
+make info
+make
 ```
 
 ## **Resources**

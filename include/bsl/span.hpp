@@ -41,6 +41,7 @@
 #include "reverse_iterator.hpp"
 #include "safe_integral.hpp"
 #include "touch.hpp"
+#include "unlikely.hpp"
 
 namespace bsl
 {
@@ -156,12 +157,12 @@ namespace bsl
             static_assert(sizeof(span<T>) == details::EXPECTED_SPAN_SIZE);
             static_assert(is_standard_layout<span<T>>::value, "standard layout test failed");
 
-            if (nullptr == m_ptr) {
+            if (unlikely(nullptr == m_ptr)) {
                 *this = span{};
                 return;
             }
 
-            if (count.is_zero()) {
+            if (unlikely(count.is_zero())) {
                 *this = span{};
                 return;
             }
@@ -223,11 +224,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         at_if(size_type const &index) noexcept -> pointer_type
         {
-            if (!index) {
+            if (unlikely(!index)) {
                 return nullptr;
             }
 
-            if (index < m_count) {
+            if (likely(index < m_count)) {
                 // We are implementing std::array here, which is what this test
                 // wants you to use instead.
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
@@ -252,11 +253,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         at_if(size_type const &index) const noexcept -> const_pointer_type
         {
-            if (!index) {
+            if (unlikely(!index)) {
                 return nullptr;
             }
 
-            if (index < m_count) {
+            if (likely(index < m_count)) {
                 // We are implementing std::array here, which is what this test
                 // wants you to use instead.
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
@@ -314,7 +315,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back_if() noexcept -> pointer_type
         {
-            if (this->empty()) {
+            if (unlikely(this->empty())) {
                 return nullptr;
             }
 
@@ -335,7 +336,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back_if() const noexcept -> const_pointer_type
         {
-            if (this->empty()) {
+            if (unlikely(this->empty())) {
                 return nullptr;
             }
 
@@ -582,11 +583,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         riter(size_type const &i) noexcept -> reverse_iterator_type
         {
-            if (!i) {
+            if (unlikely(!i)) {
                 return reverse_iterator_type{this->iter(size_type::zero())};
             }
 
-            if (i < m_count) {
+            if (likely(i < m_count)) {
                 return reverse_iterator_type{this->iter(i + size_type::one())};
             }
 
@@ -610,11 +611,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         riter(size_type const &i) const noexcept -> const_reverse_iterator_type
         {
-            if (!i) {
+            if (unlikely(!i)) {
                 return const_reverse_iterator_type{this->iter(size_type::zero())};
             }
 
-            if (i < m_count) {
+            if (likely(i < m_count)) {
                 return const_reverse_iterator_type{this->iter(i + size_type::one())};
             }
 
@@ -638,11 +639,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         criter(size_type const &i) const noexcept -> const_reverse_iterator_type
         {
-            if (!i) {
+            if (unlikely(!i)) {
                 return const_reverse_iterator_type{this->iter(size_type::zero())};
             }
 
-            if (i < m_count) {
+            if (likely(i < m_count)) {
                 return const_reverse_iterator_type{this->iter(i + size_type::one())};
             }
 
@@ -807,7 +808,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         last(size_type const &count = npos) const noexcept -> span<T>
         {
-            if (count < this->size()) {
+            if (likely(count < this->size())) {
                 return this->subspan(this->size() - count, count);
             }
 
@@ -830,15 +831,15 @@ namespace bsl
         [[nodiscard]] constexpr auto
         subspan(size_type const &pos, size_type const &count = npos) const noexcept -> span<T>
         {
-            if (!pos) {
+            if (unlikely(!pos)) {
                 return {};
             }
 
-            if (!count) {
+            if (unlikely(!count)) {
                 return {};
             }
 
-            if (pos < m_count) {
+            if (likely(pos < m_count)) {
                 return span<T>{&m_ptr[pos.get()], count.min(m_count - pos)};
             }
 

@@ -32,6 +32,7 @@
 #include "convert.hpp"
 #include "cstr_type.hpp"
 #include "safe_integral.hpp"
+#include "unlikely.hpp"
 
 // Notes: --
 // - In general, you should not use these functions as they are not
@@ -66,15 +67,15 @@ namespace bsl
     builtin_strncmp(cstr_type const lhs, cstr_type const rhs, safe_uintmax const &count) noexcept
         -> safe_int32
     {
-        if (nullptr == lhs) {
+        if (unlikely(nullptr == lhs)) {
             return to_i32(0);
         }
 
-        if (nullptr == rhs) {
+        if (unlikely(nullptr == rhs)) {
             return to_i32(0);
         }
 
-        if (count.is_zero()) {
+        if (unlikely(count.is_zero())) {
             return to_i32(0);
         }
 
@@ -94,7 +95,7 @@ namespace bsl
     {
         bsl::safe_uintmax len{};
 
-        if (nullptr == str) {
+        if (unlikely(nullptr == str)) {
             return len;
         }
 
@@ -119,11 +120,11 @@ namespace bsl
     builtin_strnchr(cstr_type const str, char_type const ch, safe_uintmax const &count) noexcept
         -> cstr_type
     {
-        if (nullptr == str) {
+        if (unlikely(nullptr == str)) {
             return nullptr;
         }
 
-        if (count.is_zero()) {
+        if (unlikely(count.is_zero())) {
             return nullptr;
         }
 
@@ -145,11 +146,11 @@ namespace bsl
     builtin_memset(void *const dst, char_type const ch, safe_uintmax const &count) noexcept
         -> void *
     {
-        if (nullptr == dst) {
+        if (unlikely(nullptr == dst)) {
             return nullptr;
         }
 
-        if (count.is_zero()) {
+        if (unlikely(count.is_zero())) {
             return nullptr;
         }
 
@@ -179,15 +180,15 @@ namespace bsl
     builtin_memcpy(void *const dst, void const *const src, safe_uintmax const &count) noexcept
         -> void *
     {
-        if (nullptr == dst) {
+        if (unlikely(nullptr == dst)) {
             return nullptr;
         }
 
-        if (nullptr == src) {
+        if (unlikely(nullptr == src)) {
             return nullptr;
         }
 
-        if (count.is_zero()) {
+        if (unlikely(count.is_zero())) {
             return nullptr;
         }
 

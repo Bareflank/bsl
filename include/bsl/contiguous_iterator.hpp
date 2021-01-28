@@ -34,6 +34,7 @@
 #include "details/out.hpp"
 #include "safe_integral.hpp"
 #include "touch.hpp"
+#include "unlikely.hpp"
 
 namespace bsl
 {
@@ -114,7 +115,7 @@ namespace bsl
             size_type const &i) noexcept
             : m_ptr{ptr}, m_count{count}, m_i{i}
         {
-            if (nullptr == m_ptr) {
+            if (unlikely(nullptr == m_ptr)) {
                 bsl::alert() << "contiguous_iterator: invalid constructor args\n";
                 bsl::alert() << "  - ptr: " << static_cast<void const *>(ptr) << bsl::endl;
                 bsl::alert() << "  - count: " << count << bsl::endl;
@@ -124,7 +125,7 @@ namespace bsl
                 return;
             }
 
-            if (count.is_zero()) {
+            if (unlikely(count.is_zero())) {
                 bsl::alert() << "contiguous_iterator: invalid constructor args\n";
                 bsl::alert() << "  - ptr: " << static_cast<void const *>(ptr) << bsl::endl;
                 bsl::alert() << "  - count: " << count << bsl::endl;
@@ -134,7 +135,7 @@ namespace bsl
                 return;
             }
 
-            if (!i) {
+            if (unlikely(!i)) {
                 bsl::alert() << "contiguous_iterator: invalid constructor args\n";
                 bsl::alert() << "  - ptr: " << static_cast<void const *>(ptr) << bsl::endl;
                 bsl::alert() << "  - count: " << count << bsl::endl;
@@ -142,7 +143,7 @@ namespace bsl
 
                 m_i = count;
             }
-            else if (i > count) {
+            else if (unlikely(i > count)) {
                 bsl::alert() << "contiguous_iterator: invalid constructor args\n";
                 bsl::alert() << "  - ptr: " << static_cast<void const *>(ptr) << bsl::endl;
                 bsl::alert() << "  - count: " << count << bsl::endl;
@@ -298,12 +299,12 @@ namespace bsl
         [[nodiscard]] constexpr auto
         get_if() noexcept -> pointer_type
         {
-            if (nullptr == m_ptr) {
+            if (unlikely(nullptr == m_ptr)) {
                 bsl::error() << "contiguous_iterator: null iterator\n";
                 return nullptr;
             }
 
-            if (m_i == m_count) {
+            if (unlikely(m_i == m_count)) {
                 bsl::error() << "contiguous_iterator: attempt to get value from end() iterator\n";
                 return nullptr;
             }
@@ -325,12 +326,12 @@ namespace bsl
         [[nodiscard]] constexpr auto
         get_if() const noexcept -> const_pointer_type
         {
-            if (nullptr == m_ptr) {
+            if (unlikely(nullptr == m_ptr)) {
                 bsl::error() << "contiguous_iterator: null iterator\n";
                 return nullptr;
             }
 
-            if (m_i == m_count) {
+            if (unlikely(m_i == m_count)) {
                 bsl::error() << "contiguous_iterator: attempt to get value from end() iterator\n";
                 return nullptr;
             }
@@ -374,12 +375,12 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         operator++() noexcept -> contiguous_iterator &
         {
-            if (nullptr == m_ptr) {
+            if (unlikely(nullptr == m_ptr)) {
                 bsl::error() << "contiguous_iterator: attempt to inc null iterator\n";
                 return *this;
             }
 
-            if (m_count == m_i) {
+            if (unlikely(m_count == m_i)) {
                 bsl::error() << "contiguous_iterator: attempt to inc end() iterator\n";
                 return *this;
             }
@@ -398,12 +399,12 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         operator--() noexcept -> contiguous_iterator &
         {
-            if (nullptr == m_ptr) {
+            if (unlikely(nullptr == m_ptr)) {
                 bsl::error() << "contiguous_iterator: attempt to dec null iterator\n";
                 return *this;
             }
 
-            if (m_i.is_zero()) {
+            if (unlikely(m_i.is_zero())) {
                 bsl::error() << "contiguous_iterator: attempt to inc begin() iterator\n";
                 return *this;
             }

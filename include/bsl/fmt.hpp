@@ -43,7 +43,9 @@
 #include "is_null_pointer.hpp"
 #include "is_pointer.hpp"
 #include "is_same.hpp"
+#include "likely.hpp"
 #include "safe_integral.hpp"
+#include "unlikely.hpp"
 
 namespace bsl
 {
@@ -369,10 +371,10 @@ namespace bsl
         {
             constexpr safe_uintmax max_width{to_umax(999)};
 
-            if (!width) {
+            if (unlikely(!width)) {
                 m_ops.set_width(max_width);
             }
-            else if (width < max_width) {
+            else if (likely(width < max_width)) {
                 m_ops.set_width(width);
             }
             else {

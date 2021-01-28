@@ -33,6 +33,7 @@
 #include "is_standard_layout.hpp"
 #include "numeric_limits.hpp"
 #include "safe_integral.hpp"
+#include "unlikely.hpp"
 
 namespace bsl
 {
@@ -87,12 +88,12 @@ namespace bsl
                     return safe_integral<T>{static_cast<T>(val)};
                 }
                 else {
-                    if (static_cast<bsl::intmax>(val) > t_max) {
+                    if (unlikely(static_cast<bsl::intmax>(val) > t_max)) {
                         conversion_failure_narrowing_results_in_loss_of_data();
                         return safe_integral<T>::zero(true);
                     }
 
-                    if (static_cast<bsl::intmax>(val) < t_min) {
+                    if (unlikely(static_cast<bsl::intmax>(val) < t_min)) {
                         conversion_failure_narrowing_results_in_loss_of_data();
                         return safe_integral<T>::zero(true);
                     }
@@ -104,7 +105,7 @@ namespace bsl
                 constexpr bsl::uintmax t_max{static_cast<bsl::uintmax>(t_limits::max())};
                 constexpr bsl::uintmax f_max{static_cast<bsl::uintmax>(f_limits::max())};
 
-                if (static_cast<bsl::intmax>(val) < static_cast<bsl::intmax>(0)) {
+                if (unlikely(static_cast<bsl::intmax>(val) < static_cast<bsl::intmax>(0))) {
                     conversion_failure_narrowing_results_in_loss_of_data();
                     return safe_integral<T>::zero(true);
                 }
@@ -116,7 +117,7 @@ namespace bsl
                     return safe_integral<T>{static_cast<T>(val)};
                 }
                 else {
-                    if (static_cast<bsl::uintmax>(val) > t_max) {
+                    if (unlikely(static_cast<bsl::uintmax>(val) > t_max)) {
                         conversion_failure_narrowing_results_in_loss_of_data();
                         return safe_integral<T>::zero(true);
                     }
@@ -137,7 +138,7 @@ namespace bsl
                     return safe_integral<T>{static_cast<T>(val)};
                 }
                 else {
-                    if (static_cast<bsl::uintmax>(val) > t_max) {
+                    if (unlikely(static_cast<bsl::uintmax>(val) > t_max)) {
                         conversion_failure_narrowing_results_in_loss_of_data();
                         return safe_integral<T>::zero(true);
                     }
@@ -156,7 +157,7 @@ namespace bsl
                     return safe_integral<T>{static_cast<T>(val)};
                 }
                 else {
-                    if (static_cast<bsl::uintmax>(val) > t_max) {
+                    if (unlikely(static_cast<bsl::uintmax>(val) > t_max)) {
                         conversion_failure_narrowing_results_in_loss_of_data();
                         return safe_integral<T>::zero(true);
                     }
@@ -190,7 +191,7 @@ namespace bsl
     [[nodiscard]] constexpr auto
     convert(safe_integral<F> const &val) noexcept -> safe_integral<T>
     {
-        if (val.failure()) {
+        if (unlikely(val.failure())) {
             return safe_integral<T>::zero(true);
         }
 
@@ -673,7 +674,7 @@ namespace bsl
         if constexpr (bsl::is_pointer<T>::value) {
             static_assert(is_standard_layout<T>::value);
 
-            if (nullptr == val) {
+            if (unlikely(nullptr == val)) {
                 return bsl::safe_uintmax::zero(true);
             }
 
@@ -739,7 +740,7 @@ namespace bsl
         static_assert(is_pointer<T>::value);
         static_assert(is_standard_layout<T>::value);
 
-        if (!val) {
+        if (unlikely(!val)) {
             return nullptr;
         }
 

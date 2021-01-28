@@ -37,9 +37,11 @@
 #include "fmt_align.hpp"
 #include "fmt_sign.hpp"
 #include "fmt_type.hpp"
+#include "likely.hpp"
 #include "npos.hpp"
 #include "safe_integral.hpp"
 #include "touch.hpp"
+#include "unlikely.hpp"
 
 // TODO
 // - Once Clang/LLVM supports C++20's consteval, we should determine if
@@ -366,10 +368,11 @@ namespace bsl
         set_width(bsl::safe_uintmax const &val) noexcept
         {
             constexpr safe_uintmax max_width{to_umax(999)};
-            if (!val) {
+
+            if (unlikely(!val)) {
                 m_width = max_width;
             }
-            else if (val < max_width) {
+            else if (likely(val < max_width)) {
                 m_width = val;
             }
             else {
@@ -606,7 +609,7 @@ namespace bsl
             constexpr bsl::safe_uintmax base10{bsl::to_umax(10)};
 
             for (bsl::safe_uintmax i{}; idx < len; ++i) {
-                if (i == max_num_width_digits) {
+                if (unlikely(i == max_num_width_digits)) {
                     break;
                 }
 

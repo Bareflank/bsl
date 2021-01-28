@@ -45,6 +45,7 @@
 #include "is_nothrow_move_constructible.hpp"
 #include "is_nothrow_swappable.hpp"
 #include "is_same.hpp"
+#include "likely.hpp"
 #include "move.hpp"
 #include "swap.hpp"
 
@@ -398,7 +399,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         get_if() &noexcept -> T *
         {
-            if (details::result_type::contains_t == m_which) {
+            if (likely(details::result_type::contains_t == m_which)) {
                 // This is needed to implement the this class
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                 return &m_t;
@@ -419,7 +420,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         get_if() const &noexcept -> T const *
         {
-            if (details::result_type::contains_t == m_which) {
+            if (likely(details::result_type::contains_t == m_which)) {
                 // This is needed to implement the this class
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                 return &m_t;
@@ -449,7 +450,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         errc(E const &fallback = E{}) const noexcept -> E
         {
-            if (details::result_type::contains_e == m_which) {
+            if (likely(details::result_type::contains_e == m_which)) {
                 // This is needed to implement the this class
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                 return m_e;

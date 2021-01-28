@@ -33,9 +33,11 @@
 #include "cstdint.hpp"
 #include "debug.hpp"
 #include "details/out.hpp"
+#include "likely.hpp"
 #include "reverse_iterator.hpp"
 #include "safe_integral.hpp"
 #include "touch.hpp"
+#include "unlikely.hpp"
 
 namespace bsl
 {
@@ -115,11 +117,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         at_if(size_type const &index) &noexcept -> pointer_type
         {
-            if (!index) {
+            if (unlikely(!index)) {
                 return nullptr;
             }
 
-            if (index < to_umax(N)) {
+            if (likely(index < to_umax(N))) {
                 // We are implementing std::array here, which is what this test
                 // wants you to use instead.
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index, bsl-implicit-conversions-forbidden)
@@ -144,11 +146,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         at_if(size_type const &index) const &noexcept -> const_pointer_type
         {
-            if (!index) {
+            if (unlikely(!index)) {
                 return nullptr;
             }
 
-            if (index < to_umax(N)) {
+            if (likely(index < to_umax(N))) {
                 // We are implementing std::array here, which is what this test
                 // wants you to use instead.
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index, bsl-implicit-conversions-forbidden)
@@ -614,11 +616,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         riter(size_type const &i) &noexcept -> reverse_iterator_type
         {
-            if (!i) {
+            if (unlikely(!i)) {
                 return reverse_iterator_type{this->iter(size_type::zero())};
             }
 
-            if (i < to_umax(N)) {
+            if (likely(i < to_umax(N))) {
                 return reverse_iterator_type{this->iter(i + size_type::one())};
             }
 
@@ -642,11 +644,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         riter(size_type const &i) const &noexcept -> const_reverse_iterator_type
         {
-            if (!i) {
+            if (unlikely(!i)) {
                 return const_reverse_iterator_type{this->iter(size_type::zero())};
             }
 
-            if (i < to_umax(N)) {
+            if (likely(i < to_umax(N))) {
                 return const_reverse_iterator_type{this->iter(i + size_type::one())};
             }
 
@@ -680,11 +682,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         criter(size_type const &i) const &noexcept -> const_reverse_iterator_type
         {
-            if (!i) {
+            if (unlikely(!i)) {
                 return const_reverse_iterator_type{this->iter(size_type::zero())};
             }
 
-            if (i < to_umax(N)) {
+            if (likely(i < to_umax(N))) {
                 return const_reverse_iterator_type{this->iter(i + size_type::one())};
             }
 

@@ -32,6 +32,7 @@
 #include "convert.hpp"
 #include "safe_integral.hpp"
 #include "string_view.hpp"
+#include "unlikely.hpp"
 
 namespace bsl
 {
@@ -290,12 +291,12 @@ namespace bsl
         constexpr safe_int32 base10{10};
         constexpr safe_int32 base16{16};
 
-        if (!val) {
+        if (unlikely(!val)) {
             val = safe_integral<T>::zero(true);
             return safe_uintmax::zero();
         }
 
-        if (str.empty()) {
+        if (unlikely(str.empty())) {
             val = safe_integral<T>::zero(true);
             return safe_uintmax::zero();
         }
@@ -304,7 +305,7 @@ namespace bsl
             case base10.get(): {
                 safe_uintmax idx_for_10{details::from_chars_ignore_whitespace(str)};
                 val = details::from_chars_parse_dec<T>(str, idx_for_10);
-                if (!val) {
+                if (unlikely(!val)) {
                     return safe_uintmax::zero();
                 }
                 return idx_for_10;
@@ -313,7 +314,7 @@ namespace bsl
             case base16.get(): {
                 safe_uintmax idx_for_16{details::from_chars_ignore_whitespace(str)};
                 val = details::from_chars_parse_hex<T>(str, idx_for_16);
-                if (!val) {
+                if (unlikely(!val)) {
                     return safe_uintmax::zero();
                 }
                 return idx_for_16;

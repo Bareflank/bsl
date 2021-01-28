@@ -28,6 +28,7 @@
 #ifndef BSL_DESTROY_AT_HPP
 #define BSL_DESTROY_AT_HPP
 
+#include "likely.hpp"
 #include "touch.hpp"
 
 namespace bsl
@@ -47,7 +48,7 @@ namespace bsl
     constexpr void
     destroy_at(T *const ptr) noexcept(noexcept(ptr->T::~T()))
     {
-        if (nullptr != ptr) {
+        if (likely(nullptr != ptr)) {
             ptr->T::~T();
         }
         else {

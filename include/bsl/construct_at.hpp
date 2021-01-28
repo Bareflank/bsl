@@ -32,6 +32,7 @@
 #include "declval.hpp"
 #include "discard.hpp"
 #include "forward.hpp"
+#include "unlikely.hpp"
 
 /// <!-- description -->
 ///   @brief This function implements the placement new operator. Note that
@@ -82,7 +83,7 @@ namespace std
     construct_at_impl(void *const ptr, ARGS &&... a)    // --
         noexcept(noexcept(new (ptr) T{bsl::declval<ARGS>()...}))
     {
-        if (nullptr == ptr) {
+        if (bsl::unlikely(nullptr == ptr)) {
             return;
         }
 

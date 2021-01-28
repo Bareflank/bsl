@@ -32,6 +32,7 @@
 #include "debug.hpp"
 #include "details/out.hpp"
 #include "safe_integral.hpp"
+#include "unlikely.hpp"
 
 namespace bsl
 {
@@ -165,7 +166,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         index() const noexcept -> size_type
         {
-            if (m_i.index().is_zero()) {
+            if (unlikely(m_i.index().is_zero())) {
                 return m_i.size();
             }
 
@@ -224,12 +225,12 @@ namespace bsl
         [[nodiscard]] constexpr auto
         get_if() noexcept -> pointer_type
         {
-            if (nullptr == m_i.data()) {
+            if (unlikely(nullptr == m_i.data())) {
                 bsl::error() << "reverse_iterator: null iterator\n";
                 return nullptr;
             }
 
-            if (m_i.index().is_zero()) {
+            if (unlikely(m_i.index().is_zero())) {
                 bsl::error() << "reverse_iterator: attempt to get value from end() iterator\n";
                 return nullptr;
             }
@@ -251,12 +252,12 @@ namespace bsl
         [[nodiscard]] constexpr auto
         get_if() const noexcept -> const_pointer_type
         {
-            if (nullptr == m_i.data()) {
+            if (unlikely(nullptr == m_i.data())) {
                 bsl::error() << "reverse_iterator: null iterator\n";
                 return nullptr;
             }
 
-            if (m_i.index().is_zero()) {
+            if (unlikely(m_i.index().is_zero())) {
                 bsl::error() << "reverse_iterator: attempt to get value from end() iterator\n";
                 return nullptr;
             }

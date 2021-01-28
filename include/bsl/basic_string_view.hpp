@@ -33,10 +33,12 @@
 #include "convert.hpp"
 #include "debug.hpp"
 #include "details/out.hpp"
+#include "likely.hpp"
 #include "npos.hpp"
 #include "reverse_iterator.hpp"
 #include "safe_integral.hpp"
 #include "touch.hpp"
+#include "unlikely.hpp"
 
 // TODO:
 // - Need to finish implementing the find functions.
@@ -106,12 +108,12 @@ namespace bsl
         constexpr basic_string_view(pointer_type const s) noexcept
             : m_ptr{s}, m_count{TRAITS::length(s)}
         {
-            if (nullptr == m_ptr) {
+            if (unlikely(nullptr == m_ptr)) {
                 *this = basic_string_view{};
                 return;
             }
 
-            if (m_count.is_zero()) {
+            if (unlikely(m_count.is_zero())) {
                 *this = basic_string_view{};
                 return;
             }
@@ -132,12 +134,12 @@ namespace bsl
         constexpr basic_string_view(pointer_type const s, size_type const count) noexcept
             : m_ptr{s}, m_count{count}
         {
-            if (nullptr == m_ptr) {
+            if (unlikely(nullptr == m_ptr)) {
                 *this = basic_string_view{};
                 return;
             }
 
-            if (m_count.is_zero()) {
+            if (unlikely(m_count.is_zero())) {
                 *this = basic_string_view{};
                 return;
             }
@@ -231,11 +233,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         at_if(size_type const &index) noexcept -> pointer_type
         {
-            if (!index) {
+            if (unlikely(!index)) {
                 return nullptr;
             }
 
-            if (index < m_count) {
+            if (likely(index < m_count)) {
                 // We are implementing std::array here, which is what this test
                 // wants you to use instead.
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
@@ -260,11 +262,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         at_if(size_type const &index) const noexcept -> const_pointer_type
         {
-            if (!index) {
+            if (unlikely(!index)) {
                 return nullptr;
             }
 
-            if (index < m_count) {
+            if (likely(index < m_count)) {
                 // We are implementing std::array here, which is what this test
                 // wants you to use instead.
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
@@ -322,7 +324,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back_if() noexcept -> pointer_type
         {
-            if (m_count.is_zero()) {
+            if (unlikely(m_count.is_zero())) {
                 return this->at_if(size_type::zero());
             }
 
@@ -343,7 +345,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back_if() const noexcept -> const_pointer_type
         {
-            if (m_count.is_zero()) {
+            if (unlikely(m_count.is_zero())) {
                 return this->at_if(size_type::zero());
             }
 
@@ -590,11 +592,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         riter(size_type const &i) noexcept -> reverse_iterator_type
         {
-            if (!i) {
+            if (unlikely(!i)) {
                 return reverse_iterator_type{this->iter(size_type::zero())};
             }
 
-            if (i < m_count) {
+            if (likely(i < m_count)) {
                 return reverse_iterator_type{this->iter(i + size_type::one())};
             }
 
@@ -618,11 +620,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         riter(size_type const &i) const noexcept -> const_reverse_iterator_type
         {
-            if (!i) {
+            if (unlikely(!i)) {
                 return const_reverse_iterator_type{this->iter(size_type::zero())};
             }
 
-            if (i < m_count) {
+            if (likely(i < m_count)) {
                 return const_reverse_iterator_type{this->iter(i + size_type::one())};
             }
 
@@ -646,11 +648,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         criter(size_type const &i) const noexcept -> const_reverse_iterator_type
         {
-            if (!i) {
+            if (unlikely(!i)) {
                 return const_reverse_iterator_type{this->iter(size_type::zero())};
             }
 
-            if (i < m_count) {
+            if (likely(i < m_count)) {
                 return const_reverse_iterator_type{this->iter(i + size_type::one())};
             }
 
@@ -813,12 +815,12 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         remove_prefix(size_type const &n) noexcept -> basic_string_view &
         {
-            if (!n) {
+            if (unlikely(!n)) {
                 *this = basic_string_view{};
                 return *this;
             }
 
-            if (n < this->size()) {
+            if (likely(n < this->size())) {
                 *this = basic_string_view{this->at_if(n), this->size() - n};
                 return *this;
             }
@@ -841,12 +843,12 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         remove_suffix(size_type const &n) noexcept -> basic_string_view &
         {
-            if (!n) {
+            if (unlikely(!n)) {
                 *this = basic_string_view{};
                 return *this;
             }
 
-            if (n < this->size()) {
+            if (likely(n < this->size())) {
                 *this = basic_string_view{this->front_if(), this->size() - n};
                 return *this;
             }
@@ -878,15 +880,15 @@ namespace bsl
         substr(size_type const &pos = {}, size_type const &count = npos) const noexcept
             -> basic_string_view
         {
-            if (!pos) {
+            if (unlikely(!pos)) {
                 return basic_string_view{};
             }
 
-            if (!count) {
+            if (unlikely(!count)) {
                 return basic_string_view{};
             }
 
-            if (pos < this->size()) {
+            if (likely(pos < this->size())) {
                 return basic_string_view{this->at_if(pos), count.min(this->size() - pos)};
             }
 
@@ -1127,19 +1129,19 @@ namespace bsl
         [[nodiscard]] constexpr auto
         find(basic_string_view const &str, size_type const &pos = {}) const noexcept -> size_type
         {
-            if (str.empty()) {
+            if (unlikely(str.empty())) {
                 return npos;
             }
 
-            if (str.length() > m_count) {
+            if (unlikely(str.length() > m_count)) {
                 return npos;
             }
 
-            if (!pos) {
+            if (unlikely(!pos)) {
                 return npos;
             }
 
-            if (pos < m_count) {
+            if (likely(pos < m_count)) {
                 for (size_type i{pos}; i < m_count - (str.length() - size_type::one()); ++i) {
                     if (this->compare(i, npos, str) == 0) {
                         return i;
@@ -1170,11 +1172,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         find(CHAR_T const ch, size_type const &pos = {}) const noexcept -> size_type
         {
-            if (!pos) {
+            if (unlikely(!pos)) {
                 return npos;
             }
 
-            if (pos < m_count) {
+            if (likely(pos < m_count)) {
                 for (size_type i{pos}; i < m_count; ++i) {
                     if (*this->at_if(i) == ch) {
                         return i;

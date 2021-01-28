@@ -38,6 +38,7 @@
 #include "is_unsigned.hpp"
 #include "numeric_limits.hpp"
 #include "touch.hpp"
+#include "unlikely.hpp"
 
 namespace bsl
 {
@@ -67,7 +68,7 @@ namespace bsl
         // This is how Clang presents the builtins, which we are required
         // top use.
         // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg, hicpp-vararg,-warnings-as-errors)
-        if (__builtin_add_overflow(lhs, rhs, res)) {
+        if (unlikely(__builtin_add_overflow(lhs, rhs, res))) {
             integral_overflow_underflow_wrap_error();
             return true;
         }
@@ -92,7 +93,7 @@ namespace bsl
         // This is how Clang presents the builtins, which we are required
         // top use.
         // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg, hicpp-vararg,-warnings-as-errors)
-        if (__builtin_sub_overflow(lhs, rhs, res)) {
+        if (unlikely(__builtin_sub_overflow(lhs, rhs, res))) {
             integral_overflow_underflow_wrap_error();
             return true;
         }
@@ -117,7 +118,7 @@ namespace bsl
         // This is how Clang presents the builtins, which we are required
         // top use.
         // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg, hicpp-vararg,-warnings-as-errors)
-        if (__builtin_mul_overflow(lhs, rhs, res)) {
+        if (unlikely(__builtin_mul_overflow(lhs, rhs, res))) {
             integral_overflow_underflow_wrap_error();
             return true;
         }
@@ -143,7 +144,7 @@ namespace bsl
     {
         constexpr bsl::intmax neg_one{static_cast<bsl::intmax>(-1)};
 
-        if (static_cast<bsl::uintmax>(T{}) == static_cast<bsl::uintmax>(rhs)) {
+        if (unlikely(static_cast<bsl::uintmax>(T{}) == static_cast<bsl::uintmax>(rhs))) {
             integral_overflow_underflow_wrap_error();
             return true;
         }
@@ -151,7 +152,7 @@ namespace bsl
         if constexpr (is_signed<T>::value) {
             if (static_cast<bsl::intmax>(numeric_limits<T>::min()) ==
                 static_cast<bsl::intmax>(lhs)) {
-                if (neg_one == static_cast<bsl::intmax>(rhs)) {
+                if (unlikely(neg_one == static_cast<bsl::intmax>(rhs))) {
                     integral_overflow_underflow_wrap_error();
                     return true;
                 }
@@ -191,7 +192,7 @@ namespace bsl
     {
         constexpr bsl::intmax neg_one{static_cast<bsl::intmax>(-1)};
 
-        if (static_cast<bsl::uintmax>(T{}) == static_cast<bsl::uintmax>(rhs)) {
+        if (unlikely(static_cast<bsl::uintmax>(T{}) == static_cast<bsl::uintmax>(rhs))) {
             integral_overflow_underflow_wrap_error();
             return true;
         }
@@ -199,7 +200,7 @@ namespace bsl
         if constexpr (is_signed<T>::value) {
             if (static_cast<bsl::intmax>(numeric_limits<T>::min()) ==
                 static_cast<bsl::intmax>(lhs)) {
-                if (neg_one == static_cast<bsl::intmax>(rhs)) {
+                if (unlikely(neg_one == static_cast<bsl::intmax>(rhs))) {
                     integral_overflow_underflow_wrap_error();
                     return true;
                 }
@@ -385,7 +386,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         get() const noexcept -> value_type
         {
-            if (m_error) {
+            if (unlikely(m_error)) {
                 return static_cast<value_type>(0);
             }
 
@@ -494,11 +495,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         max(safe_integral<value_type> const &other) const noexcept -> safe_integral<value_type>
         {
-            if (this->failure()) {
+            if (unlikely(this->failure())) {
                 return zero(true);
             }
 
-            if (other.failure()) {
+            if (unlikely(other.failure())) {
                 return zero(true);
             }
 
@@ -528,7 +529,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         max(U const other) const noexcept -> safe_integral<value_type>
         {
-            if (this->failure()) {
+            if (unlikely(this->failure())) {
                 return zero(true);
             }
 
@@ -567,11 +568,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         min(safe_integral<value_type> const &other) const noexcept -> safe_integral<value_type>
         {
-            if (this->failure()) {
+            if (unlikely(this->failure())) {
                 return zero(true);
             }
 
-            if (other.failure()) {
+            if (unlikely(other.failure())) {
                 return zero(true);
             }
 
@@ -601,7 +602,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         min(U const other) const noexcept -> safe_integral<value_type>
         {
-            if (this->failure()) {
+            if (unlikely(this->failure())) {
                 return zero(true);
             }
 
@@ -711,7 +712,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         is_zero() const noexcept -> bool
         {
-            if (m_error) {
+            if (unlikely(m_error)) {
                 return true;
             }
 
@@ -763,12 +764,12 @@ namespace bsl
         {
             bool const e{builtin_add_overflow(m_val, rhs.m_val, &m_val)};
 
-            if (this->failure()) {
+            if (unlikely(this->failure())) {
                 m_error = true;
                 return *this;
             }
 
-            if (rhs.failure()) {
+            if (unlikely(rhs.failure())) {
                 m_error = true;
                 return *this;
             }
@@ -814,7 +815,7 @@ namespace bsl
         {
             bool const e{builtin_add_overflow(m_val, rhs, &m_val)};
 
-            if (this->failure()) {
+            if (unlikely(this->failure())) {
                 m_error = true;
                 return *this;
             }
@@ -857,12 +858,12 @@ namespace bsl
         {
             bool const e{builtin_sub_overflow(m_val, rhs.m_val, &m_val)};
 
-            if (this->failure()) {
+            if (unlikely(this->failure())) {
                 m_error = true;
                 return *this;
             }
 
-            if (rhs.failure()) {
+            if (unlikely(rhs.failure())) {
                 m_error = true;
                 return *this;
             }
@@ -908,7 +909,7 @@ namespace bsl
         {
             bool const e{builtin_sub_overflow(m_val, rhs, &m_val)};
 
-            if (this->failure()) {
+            if (unlikely(this->failure())) {
                 m_error = true;
                 return *this;
             }
@@ -951,12 +952,12 @@ namespace bsl
         {
             bool const e{builtin_mul_overflow(m_val, rhs.m_val, &m_val)};
 
-            if (this->failure()) {
+            if (unlikely(this->failure())) {
                 m_error = true;
                 return *this;
             }
 
-            if (rhs.failure()) {
+            if (unlikely(rhs.failure())) {
                 m_error = true;
                 return *this;
             }
@@ -1002,7 +1003,7 @@ namespace bsl
         {
             bool const e{builtin_mul_overflow(m_val, rhs, &m_val)};
 
-            if (this->failure()) {
+            if (unlikely(this->failure())) {
                 m_error = true;
                 return *this;
             }
@@ -1045,12 +1046,12 @@ namespace bsl
         {
             bool const e{builtin_div_overflow(m_val, rhs.m_val, &m_val)};
 
-            if (this->failure()) {
+            if (unlikely(this->failure())) {
                 m_error = true;
                 return *this;
             }
 
-            if (rhs.failure()) {
+            if (unlikely(rhs.failure())) {
                 m_error = true;
                 return *this;
             }
@@ -1096,7 +1097,7 @@ namespace bsl
         {
             bool const e{builtin_div_overflow(m_val, rhs, &m_val)};
 
-            if (this->failure()) {
+            if (unlikely(this->failure())) {
                 m_error = true;
                 return *this;
             }
@@ -1139,12 +1140,12 @@ namespace bsl
         {
             bool const e{builtin_mod_overflow(m_val, rhs.m_val, &m_val)};
 
-            if (this->failure()) {
+            if (unlikely(this->failure())) {
                 m_error = true;
                 return *this;
             }
 
-            if (rhs.failure()) {
+            if (unlikely(rhs.failure())) {
                 m_error = true;
                 return *this;
             }
@@ -1190,7 +1191,7 @@ namespace bsl
         {
             bool const e{builtin_mod_overflow(m_val, rhs, &m_val)};
 
-            if (this->failure()) {
+            if (unlikely(this->failure())) {
                 m_error = true;
                 return *this;
             }
@@ -1238,12 +1239,12 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val <<= rhs.m_val;
 
-                if (this->failure()) {
+                if (unlikely(this->failure())) {
                     m_error = true;
                     return *this;
                 }
 
-                if (rhs.failure()) {
+                if (unlikely(rhs.failure())) {
                     m_error = true;
                     return *this;
                 }
@@ -1290,7 +1291,7 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val <<= rhs;
 
-                if (this->failure()) {
+                if (unlikely(this->failure())) {
                     m_error = true;
                     return *this;
                 }
@@ -1334,12 +1335,12 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val >>= rhs.get();
 
-                if (this->failure()) {
+                if (unlikely(this->failure())) {
                     m_error = true;
                     return *this;
                 }
 
-                if (rhs.failure()) {
+                if (unlikely(rhs.failure())) {
                     m_error = true;
                     return *this;
                 }
@@ -1386,7 +1387,7 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val >>= rhs;
 
-                if (this->failure()) {
+                if (unlikely(this->failure())) {
                     m_error = true;
                     return *this;
                 }
@@ -1430,12 +1431,12 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val &= rhs.get();
 
-                if (this->failure()) {
+                if (unlikely(this->failure())) {
                     m_error = true;
                     return *this;
                 }
 
-                if (rhs.failure()) {
+                if (unlikely(rhs.failure())) {
                     m_error = true;
                     return *this;
                 }
@@ -1482,7 +1483,7 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val &= rhs;
 
-                if (this->failure()) {
+                if (unlikely(this->failure())) {
                     m_error = true;
                     return *this;
                 }
@@ -1526,12 +1527,12 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val |= rhs.get();
 
-                if (this->failure()) {
+                if (unlikely(this->failure())) {
                     m_error = true;
                     return *this;
                 }
 
-                if (rhs.failure()) {
+                if (unlikely(rhs.failure())) {
                     m_error = true;
                     return *this;
                 }
@@ -1578,7 +1579,7 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val |= rhs;
 
-                if (this->failure()) {
+                if (unlikely(this->failure())) {
                     m_error = true;
                     return *this;
                 }
@@ -1622,12 +1623,12 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val ^= rhs.get();
 
-                if (this->failure()) {
+                if (unlikely(this->failure())) {
                     m_error = true;
                     return *this;
                 }
 
-                if (rhs.failure()) {
+                if (unlikely(rhs.failure())) {
                     m_error = true;
                     return *this;
                 }
@@ -1674,7 +1675,7 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val ^= rhs;
 
-                if (this->failure()) {
+                if (unlikely(this->failure())) {
                     m_error = true;
                     return *this;
                 }
@@ -1770,11 +1771,11 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator==(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
-        if (lhs.failure()) {
+        if (unlikely(lhs.failure())) {
             return false;
         }
 
-        if (rhs.failure()) {
+        if (unlikely(rhs.failure())) {
             return false;
         }
 
@@ -1803,7 +1804,7 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator==(safe_integral<T> const &lhs, T const rhs) noexcept -> bool
     {
-        if (lhs.failure()) {
+        if (unlikely(lhs.failure())) {
             return false;
         }
 
@@ -1832,7 +1833,7 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator==(T const lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
-        if (rhs.failure()) {
+        if (unlikely(rhs.failure())) {
             return false;
         }
 
@@ -1921,11 +1922,11 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator<(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
-        if (lhs.failure()) {
+        if (unlikely(lhs.failure())) {
             return false;
         }
 
-        if (rhs.failure()) {
+        if (unlikely(rhs.failure())) {
             return false;
         }
 
@@ -1954,7 +1955,7 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator<(safe_integral<T> const &lhs, T const rhs) noexcept -> bool
     {
-        if (lhs.failure()) {
+        if (unlikely(lhs.failure())) {
             return false;
         }
 
@@ -1983,7 +1984,7 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator<(T const lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
-        if (rhs.failure()) {
+        if (unlikely(rhs.failure())) {
             return false;
         }
 
@@ -2012,11 +2013,11 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator>(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
-        if (lhs.failure()) {
+        if (unlikely(lhs.failure())) {
             return false;
         }
 
-        if (rhs.failure()) {
+        if (unlikely(rhs.failure())) {
             return false;
         }
 
@@ -2045,7 +2046,7 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator>(safe_integral<T> const &lhs, T const rhs) noexcept -> bool
     {
-        if (lhs.failure()) {
+        if (unlikely(lhs.failure())) {
             return false;
         }
 
@@ -2074,7 +2075,7 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator>(T const lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
-        if (rhs.failure()) {
+        if (unlikely(rhs.failure())) {
             return false;
         }
 

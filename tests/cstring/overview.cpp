@@ -22,8 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/cstring.hpp>
 #include <bsl/cstr_type.hpp>
+#include <bsl/cstring.hpp>
 #include <bsl/ut.hpp>
 
 /// <!-- description -->
@@ -39,10 +39,13 @@ main() noexcept -> bsl::exit_code
 {
     // clang-format off
 
-    bsl::ut_scenario{"builtin_strncmp"} = []() {        bsl::ut_given{} = []() {            bsl::cstr_type msg1{"Hello World"};
+    bsl::ut_scenario{"builtin_strncmp"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::cstr_type msg1{"Hello World"};
             bsl::cstr_type msg2{"Hello World"};
             bsl::cstr_type msg3{"Something Else"};
-            bsl::ut_then{} = [&msg1, &msg2, &msg3]() {                bsl::ut_check(bsl::builtin_strncmp(nullptr, msg2, bsl::builtin_strlen(msg1)) == 0);
+            bsl::ut_then{} = [&msg1, &msg2, &msg3]() {
+                bsl::ut_check(bsl::builtin_strncmp(nullptr, msg2, bsl::builtin_strlen(msg1)) == 0);
                 bsl::ut_check(bsl::builtin_strncmp(msg1, nullptr, bsl::builtin_strlen(msg1)) == 0);
                 bsl::ut_check(bsl::builtin_strncmp(msg1, msg2, bsl::safe_uintmax::zero(true)) == 0);
                 bsl::ut_check(bsl::builtin_strncmp(msg1, msg2, bsl::builtin_strlen(msg1)) == 0);
@@ -51,10 +54,13 @@ main() noexcept -> bsl::exit_code
         };
     };
 
-    bsl::ut_scenario{"builtin_strlen"} = []() {        bsl::ut_given{} = []() {            bsl::cstr_type msg1{};
+    bsl::ut_scenario{"builtin_strlen"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::cstr_type msg1{};
             bsl::cstr_type msg2{""};
             bsl::cstr_type msg3{"Hello"};
-            bsl::ut_then{} = [&msg1, &msg2, &msg3]() {                bsl::ut_check(bsl::builtin_strlen(nullptr) == bsl::to_umax(0));
+            bsl::ut_then{} = [&msg1, &msg2, &msg3]() {
+                bsl::ut_check(bsl::builtin_strlen(nullptr) == bsl::to_umax(0));
                 bsl::ut_check(bsl::builtin_strlen(msg1) == bsl::to_umax(0));
                 bsl::ut_check(bsl::builtin_strlen(msg2) == bsl::to_umax(0));
                 bsl::ut_check(bsl::builtin_strlen(msg3) == bsl::to_umax(5));
@@ -62,12 +68,42 @@ main() noexcept -> bsl::exit_code
         };
     };
 
-    bsl::ut_scenario{"builtin_strnchr"} = []() {        bsl::ut_given{} = []() {            bsl::cstr_type msg{"Hello World"};
-            bsl::ut_then{} = [&msg]() {                bsl::ut_check(bsl::builtin_strnchr(nullptr, 'o', bsl::builtin_strlen(msg)) == nullptr);
+    bsl::ut_scenario{"builtin_strnchr"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::cstr_type msg{"Hello World"};
+            bsl::ut_then{} = [&msg]() {
+                bsl::ut_check(bsl::builtin_strnchr(nullptr, '\0', bsl::builtin_strlen(msg)) == nullptr);
                 bsl::ut_check(bsl::builtin_strnchr(msg, 'o', bsl::to_umax(0)) == nullptr);
                 bsl::ut_check(bsl::builtin_strnchr(msg, 'o', bsl::safe_uintmax::zero(true)) == nullptr);
                 bsl::ut_check(bsl::builtin_strnchr(msg, 'o', bsl::builtin_strlen(msg)) == &msg[4]);
                 bsl::ut_check(bsl::builtin_strnchr(msg, 'z', bsl::builtin_strlen(msg)) == nullptr);
+            };
+        };
+    };
+
+    bsl::ut_scenario{"builtin_memset"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::safe_uintmax data{};
+            bsl::ut_then{} = [&data]() {
+                bsl::ut_check(bsl::builtin_memset(nullptr, '\0', sizeof(bsl::safe_uintmax)) == nullptr);
+                bsl::ut_check(bsl::builtin_memset(&data, '\0', bsl::to_umax(0)) == nullptr);
+                bsl::ut_check(bsl::builtin_memset(&data, '\0', bsl::safe_uintmax::zero(true)) == nullptr);
+                bsl::ut_check(bsl::builtin_memset(&data, '\0', sizeof(bsl::safe_uintmax)) == &data);
+            };
+        };
+    };
+
+    bsl::ut_scenario{"builtin_memcpy"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::safe_uintmax data1{};
+            bsl::safe_uintmax data2{bsl::to_umax(0x42U)};
+            bsl::ut_then{} = [&data1, &data2]() {
+                bsl::ut_check(bsl::builtin_memcpy(nullptr, &data2, sizeof(bsl::safe_uintmax)) == nullptr);
+                bsl::ut_check(bsl::builtin_memcpy(&data1, nullptr, sizeof(bsl::safe_uintmax)) == nullptr);
+                bsl::ut_check(bsl::builtin_memcpy(&data1, &data2, bsl::to_umax(0)) == nullptr);
+                bsl::ut_check(bsl::builtin_memcpy(&data1, &data2, bsl::safe_uintmax::zero(true)) == nullptr);
+                bsl::ut_check(bsl::builtin_memcpy(&data1, &data2, sizeof(bsl::safe_uintmax)) == &data1);
+                bsl::ut_check(data1 == data2);
             };
         };
     };

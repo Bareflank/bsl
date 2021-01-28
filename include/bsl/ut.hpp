@@ -34,11 +34,11 @@
 #include "exit_code.hpp"
 #include "source_location.hpp"
 #include "touch.hpp"
-#include "ut_scenario.hpp"
 #include "ut_given.hpp"
 #include "ut_given_at_runtime.hpp"
-#include "ut_when.hpp"
+#include "ut_scenario.hpp"
 #include "ut_then.hpp"
+#include "ut_when.hpp"
 
 #pragma clang diagnostic ignored "-Wunused-member-function"
 #pragma clang diagnostic ignored "-Wunneeded-member-function"

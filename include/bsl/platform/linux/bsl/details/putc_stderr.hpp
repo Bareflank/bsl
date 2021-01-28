@@ -25,8 +25,8 @@
 #ifndef BSL_DETAILS_PUTC_STDERR_HPP
 #define BSL_DETAILS_PUTC_STDERR_HPP
 
-#include "../../../../cstdio.hpp"
 #include "../../../../char_type.hpp"
+#include "../../../../cstdio.hpp"
 #include "../../../../discard.hpp"
 
 namespace bsl::details

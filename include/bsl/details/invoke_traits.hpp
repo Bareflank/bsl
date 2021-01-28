@@ -25,17 +25,16 @@
 #ifndef BSL_DETAILS_INVOKE_TRAITS_HPP
 #define BSL_DETAILS_INVOKE_TRAITS_HPP
 
-#include "invoke_type.hpp"
-
 #include "../bool_constant.hpp"
 #include "../conjunction.hpp"
 #include "../declval.hpp"
 #include "../disjunction.hpp"
+#include "../invoke.hpp"
 #include "../is_convertible.hpp"
 #include "../is_nothrow_convertible.hpp"
 #include "../is_void.hpp"
-#include "../invoke.hpp"
 #include "../void_t.hpp"
+#include "invoke_type.hpp"
 
 namespace bsl::details
 {

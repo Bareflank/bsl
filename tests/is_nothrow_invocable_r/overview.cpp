@@ -22,13 +22,13 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include "../class_base.hpp"
+#include "../class_pod.hpp"
+#include "../class_subclass.hpp"
+
 #include <bsl/is_nothrow_invocable_r.hpp>
 #include <bsl/reference_wrapper.hpp>
 #include <bsl/ut.hpp>
-
-#include "../class_base.hpp"
-#include "../class_subclass.hpp"
-#include "../class_pod.hpp"
 
 /// <!-- description -->
 ///   @brief Main function for this unit test. If a call to bsl::ut_check() fails

@@ -28,10 +28,9 @@
 #ifndef BSL_REVERSE_ITERATOR_HPP
 #define BSL_REVERSE_ITERATOR_HPP
 
-#include "details/out.hpp"
-
 #include "convert.hpp"
 #include "debug.hpp"
+#include "details/out.hpp"
 #include "safe_integral.hpp"
 
 namespace bsl

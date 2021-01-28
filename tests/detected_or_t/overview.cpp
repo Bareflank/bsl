@@ -22,13 +22,13 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include "../alias_get_op.hpp"
+#include "../alias_set_op.hpp"
+#include "../class_base.hpp"
+
 #include <bsl/detected_or_t.hpp>
 #include <bsl/is_same.hpp>
 #include <bsl/ut.hpp>
-
-#include "../class_base.hpp"
-#include "../alias_get_op.hpp"
-#include "../alias_set_op.hpp"
 
 /// <!-- description -->
 ///   @brief Main function for this unit test. If a call to bsl::ut_check() fails

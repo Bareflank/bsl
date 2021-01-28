@@ -28,14 +28,13 @@
 #ifndef BSL_BYTE_HPP
 #define BSL_BYTE_HPP
 
-#include "details/out.hpp"
-
 #include "cstdint.hpp"
 #include "debug.hpp"
-#include "safe_integral.hpp"
-
+#include "details/out.hpp"
 #include "enable_if.hpp"
 #include "is_integral.hpp"
+#include "is_standard_layout.hpp"
+#include "safe_integral.hpp"
 
 namespace bsl
 {
@@ -473,6 +472,19 @@ namespace bsl
         }
 
         return o << val.to_integer();
+    }
+
+    namespace details
+    {
+        /// @brief defines the expected size of a bsl::byte
+        constexpr bsl::safe_uintmax EXPECTED_SIZEOF_BYTE{bsl::to_umax(1)};
+
+        /// Check to make sure a byte is the right size
+        static_assert(sizeof(byte) == EXPECTED_SIZEOF_BYTE);
+
+        /// Check to make sure a byte is a standard layout so that it can
+        /// be used by C programs and is memcpy-able.
+        static_assert(is_standard_layout<byte>::value);
     }
 }
 

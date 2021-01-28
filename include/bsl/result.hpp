@@ -28,22 +28,21 @@
 #ifndef BSL_RESULT_HPP
 #define BSL_RESULT_HPP
 
-#include "details/out.hpp"
-#include "details/result_type.hpp"
-
 #include "conjunction.hpp"
 #include "construct_at.hpp"
-#include "destroy_at.hpp"
 #include "debug.hpp"
+#include "destroy_at.hpp"
+#include "details/out.hpp"
+#include "details/result_type.hpp"
 #include "errc_type.hpp"
 #include "in_place_t.hpp"
 #include "is_nothrow_constructible.hpp"
-#include "is_nothrow_copy_constructible.hpp"
 #include "is_nothrow_copy_assignable.hpp"
+#include "is_nothrow_copy_constructible.hpp"
 #include "is_nothrow_default_constructible.hpp"
 #include "is_nothrow_destructible.hpp"
-#include "is_nothrow_move_constructible.hpp"
 #include "is_nothrow_move_assignable.hpp"
+#include "is_nothrow_move_constructible.hpp"
 #include "is_nothrow_swappable.hpp"
 #include "is_same.hpp"
 #include "move.hpp"

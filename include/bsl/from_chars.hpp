@@ -30,8 +30,8 @@
 
 #include "char_type.hpp"
 #include "convert.hpp"
-#include "string_view.hpp"
 #include "safe_integral.hpp"
+#include "string_view.hpp"
 
 namespace bsl
 {

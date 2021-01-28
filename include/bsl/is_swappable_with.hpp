@@ -28,8 +28,8 @@
 #ifndef BSL_IS_SWAPPABLE_WITH_HPP
 #define BSL_IS_SWAPPABLE_WITH_HPP
 
-#include "details/swappable_traits.hpp"
 #include "bool_constant.hpp"
+#include "details/swappable_traits.hpp"
 
 namespace bsl
 {

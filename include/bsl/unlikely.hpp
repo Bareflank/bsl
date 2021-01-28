@@ -21,35 +21,30 @@
 /// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
+///
+/// @file unlikely.hpp
+///
 
-#ifndef BSL_OUT_TYPE_HPP
-#define BSL_OUT_TYPE_HPP
+#ifndef BSL_UNLIKELY_HPP
+#define BSL_UNLIKELY_HPP
 
-#include "out_type_empty.hpp"
-#include "out.hpp"
-
-#include "../bool_constant.hpp"
-#include "../conditional.hpp"
-#include "../cstdint.hpp"
-#include "../disjunction.hpp"
-
-namespace bsl::details
+namespace bsl
 {
-    // clang-format off
-
-    /// @brief used to disable debugging for debug() and alert()
+    /// <!-- description -->
+    ///   @brief Implements a wrapper around __builtin_expect
+    ///   @include example_unlikely_overview.hpp
     ///
-    /// <!-- template parameters -->
-    ///   @tparam DL the debug level this out statement uses
-    ///   @tparam T the type of out statement being used
+    /// <!-- inputs/outputs -->
+    ///   @tparam ARG the type that define the provided argument
+    ///   @param a the arguments check
+    ///   @return Returns the boolean output of __builtin_expect
     ///
-    template<bsl::uintmax DL, typename T>
-    using out_type =
-        conditional_t <
-        disjunction<
-            bool_constant<DL < BSL_DEBUG_LEVEL>, bool_constant<DL == BSL_DEBUG_LEVEL>>::value,
-            out<T>,
-            out<out_type_empty>>;
+    template<typename ARG>
+    [[nodiscard]] constexpr auto
+    unlikely(ARG &&a) noexcept -> bool
+    {
+        return __builtin_expect(!!(a), 0L) != 0L;
+    }
 }
 
 #endif

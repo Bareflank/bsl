@@ -25,19 +25,20 @@ option(BUILD_EXAMPLES "Turns on/off building the examples" OFF)
 option(BUILD_TESTS "Turns on/off building the tests" OFF)
 option(ENABLE_CLANG_FORMAT "Turns on/off support for clang format" OFF)
 option(ENABLE_DOXYGEN "Turns on/off support for doxygen" OFF)
+option(ENABLE_COLOR "Turns on/off support for color" ON)
 
 bf_add_config(
     CONFIG_NAME BSL_DEBUG_LEVEL
     CONFIG_TYPE STRING
-    DEFAULT_VAL "static_cast<bsl::uintmax>(0)"
+    DEFAULT_VAL "bsl::CRITICAL_ONLY"
     DESCRIPTION "Defines the debug level"
-    OPTIONS "static_cast<bsl::uintmax>(0)" "bsl::V" "bsl::VV" "bsl::VVV"
+    OPTIONS "bsl::CRITICAL_ONLY" "bsl::V" "bsl::VV" "bsl::VVV"
 )
 
 bf_add_config(
     CONFIG_NAME BSL_PAGE_SIZE
     CONFIG_TYPE STRING
-    DEFAULT_VAL "static_cast<bsl::uintmax>(4096)"
+    DEFAULT_VAL "0x1000"
     DESCRIPTION "Defines the size of a page"
     SKIP_VALIDATION
 )

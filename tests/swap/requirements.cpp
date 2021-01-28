@@ -22,11 +22,11 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/swap.hpp>
-#include <bsl/ut.hpp>
-
 #include "../class_empty.hpp"
 #include "../class_except.hpp"
+
+#include <bsl/swap.hpp>
+#include <bsl/ut.hpp>
 
 /// <!-- description -->
 ///   @brief Main function for this unit test. If a call to bsl::ut_check() fails

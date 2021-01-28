@@ -22,9 +22,10 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include "example_class_nodefault.hpp"
+
 #include <bsl/declval.hpp>
 #include <bsl/is_same.hpp>
-#include "example_class_nodefault.hpp"
 
 namespace bsl
 {

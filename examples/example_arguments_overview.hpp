@@ -34,7 +34,7 @@ namespace bsl
     inline void
     example_arguments_overview() noexcept
     {
-        constexpr bsl::safe_uintmax hex{bsl::to_umax(16)};
+        constexpr bsl::safe_uintmax hex_test{bsl::to_umax(16)};
         constexpr bsl::safe_uintmax arg0{bsl::to_umax(0)};
         constexpr bsl::safe_uintmax arg1{bsl::to_umax(1)};
         constexpr bsl::safe_uintmax arg2{bsl::to_umax(2)};
@@ -55,14 +55,14 @@ namespace bsl
         constexpr bsl::array argv2{"42", " -42", "2A", "not a number"};
         bsl::arguments const args2{argv2.size(), argv2.data()};
 
-        bsl::print() << "integral test: "                                        // --
-                     << args2.get<safe_int32>(arg0) << bsl::endl;                // --
-        bsl::print() << "integral test: "                                        // --
-                     << args2.get<safe_int32>(arg1) << bsl::endl;                // --
-        bsl::print() << "integral test: "                                        // --
-                     << args2.get<safe_uint32, hex.get()>(arg2) << bsl::endl;    // --
-        bsl::print() << "integral test: "                                        // --
-                     << args2.get<safe_uint32>(arg3) << bsl::endl;               // --
+        bsl::print() << "integral test: "                                             // --
+                     << args2.get<safe_int32>(arg0) << bsl::endl;                     // --
+        bsl::print() << "integral test: "                                             // --
+                     << args2.get<safe_int32>(arg1) << bsl::endl;                     // --
+        bsl::print() << "integral test: "                                             // --
+                     << args2.get<safe_uint32, hex_test.get()>(arg2) << bsl::endl;    // --
+        bsl::print() << "integral test: "                                             // --
+                     << args2.get<safe_uint32>(arg3) << bsl::endl;                    // --
 
         constexpr bsl::array argv3{"hello", "world"};
         bsl::arguments const args3{argv3.size(), argv3.data()};

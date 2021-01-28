@@ -28,18 +28,17 @@
 #ifndef BSL_IS_NOTHROW_DESTRUCTIBLE_HPP
 #define BSL_IS_NOTHROW_DESTRUCTIBLE_HPP
 
-#include "details/is_nothrow_destructible_type.hpp"
-
-#include "conjunction.hpp"
 #include "bool_constant.hpp"
+#include "conjunction.hpp"
 #include "declval.hpp"
+#include "details/is_nothrow_destructible_type.hpp"
+#include "false_type.hpp"
 #include "is_detected.hpp"
 #include "is_function.hpp"
 #include "is_reference.hpp"
 #include "is_unbounded_array.hpp"
 #include "is_void.hpp"
 #include "remove_all_extents.hpp"
-#include "false_type.hpp"
 
 namespace bsl
 {

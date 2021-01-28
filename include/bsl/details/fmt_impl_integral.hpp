@@ -25,19 +25,18 @@
 #ifndef BSL_DETAILS_FMT_IMPL_INTEGRAL_HPP
 #define BSL_DETAILS_FMT_IMPL_INTEGRAL_HPP
 
-#include "fmt_impl_align.hpp"
-#include "fmt_impl_integral_helpers.hpp"
-#include "out.hpp"
-
 #include "../char_type.hpp"
 #include "../convert.hpp"
 #include "../enable_if.hpp"
 #include "../fmt_options.hpp"
 #include "../forward.hpp"
-#include "../is_signed.hpp"
 #include "../is_integral.hpp"
+#include "../is_signed.hpp"
 #include "../safe_integral.hpp"
 #include "../touch.hpp"
+#include "fmt_impl_align.hpp"
+#include "fmt_impl_integral_helpers.hpp"
+#include "out.hpp"
 
 namespace bsl
 {

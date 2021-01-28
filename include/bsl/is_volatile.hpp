@@ -29,8 +29,8 @@
 #define BSL_IS_VOLATILE_HPP
 
 #include "always_false.hpp"
-#include "true_type.hpp"
 #include "false_type.hpp"
+#include "true_type.hpp"
 
 namespace bsl
 {

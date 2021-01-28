@@ -29,8 +29,8 @@
 #define BSL_IS_ARITHMETIC_HPP
 
 #include "disjunction.hpp"
-#include "is_integral.hpp"
 #include "is_floating_point.hpp"
+#include "is_integral.hpp"
 #include "is_same.hpp"
 
 namespace bsl

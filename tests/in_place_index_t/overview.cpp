@@ -24,7 +24,6 @@
 
 #include <bsl/in_place_index_t.hpp>
 #include <bsl/is_empty.hpp>
-
 #include <bsl/ut.hpp>
 
 /// <!-- description -->

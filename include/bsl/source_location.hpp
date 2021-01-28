@@ -28,12 +28,8 @@
 #ifndef BSL_SOURCE_LOCATION_HPP
 #define BSL_SOURCE_LOCATION_HPP
 
-#include "details/out.hpp"
-
-#include "color.hpp"
 #include "cstdint.hpp"
 #include "cstr_type.hpp"
-#include "debug.hpp"
 
 namespace bsl
 {
@@ -223,54 +219,6 @@ namespace bsl
         /// @brief stores the line location of the bsl::source_location
         line_type m_line;
     };
-
-    /// <!-- description -->
-    ///   @brief This provides a less verbose version of
-    ///     bsl::source_location::current() to help reduce how large this
-    ///     code must be. They are equivalent, and should not produce any
-    ///     additional overhead in release mode.
-    ///   @include source_location/example_source_location_here.hpp
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @param sloc the source_location object corresponding to
-    ///     the location of the call site.
-    ///   @return the source_location object corresponding to
-    ///     the location of the call site.
-    ///
-    [[nodiscard]] constexpr auto
-    here(source_location const sloc = source_location::current()) noexcept -> source_location
-    {
-        return sloc;
-    }
-
-    /// <!-- description -->
-    ///   @brief Outputs the provided bsl::source_location to the provided
-    ///     output type.
-    ///   @related bsl::source_location
-    ///   @include source_location/example_source_location_ostream.hpp
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the type of outputter provided
-    ///   @param o the instance of the outputter used to output the value.
-    ///   @param sloc the bsl::source_location to output
-    ///   @return return o
-    ///
-    template<typename T>
-    [[maybe_unused]] constexpr auto
-    operator<<(out<T> const o, source_location const &sloc) noexcept -> out<T>
-    {
-        if constexpr (!o) {
-            return o;
-        }
-
-        o << "  --> "                                               // --
-          << bsl::yellow << sloc.file_name() << bsl::reset_color    // --
-          << ": "                                                   // --
-          << bsl::cyan << sloc.line() << bsl::reset_color           // --
-          << bsl::endl;                                             // --
-
-        return o;
-    }
 }
 
 #endif

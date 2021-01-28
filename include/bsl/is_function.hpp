@@ -28,8 +28,8 @@
 #ifndef BSL_IS_FUNCTION_HPP
 #define BSL_IS_FUNCTION_HPP
 
-#include "conjunction.hpp"
 #include "bool_constant.hpp"
+#include "conjunction.hpp"
 #include "is_const.hpp"
 #include "is_reference.hpp"
 #include "negation.hpp"

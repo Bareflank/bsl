@@ -13,37 +13,28 @@ jobs:
     - uses: actions/checkout@v2
     - name: Setup
       run: |
-        wget http://doxygen.nl/files/doxygen-1.8.20.src.tar.gz
-        tar xf doxygen-1.8.20.src.tar.gz
-        mkdir doxygen-1.8.20/build; cd doxygen-1.8.20/build
-        cmake ..
-        make -j3
-
+        chmod +x utils/doxygen
       shell: bash
     - name: Validate Documentation
       run: |
-        doxygen-1.8.20/build/bin/doxygen .doxygen
+        utils/doxygen .doxygen
       shell: bash
 
   Clang_Format:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
       with:
         path: bsl
     - name: Setup
       run: |
-        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-        sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
-        sudo apt-get install -y clang-10 clang-format-10 ninja-build
-        sudo update-alternatives --remove-all clang++
-        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
-        sudo update-alternatives --remove-all clang-format
-        sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-10 100
+        sudo apt-get install -y clang lld cmake ninja-build build-essential
       shell: bash
     - name: Validate Source Formatting
       run: |
+        chmod +x bsl/utils/clang-format
+        export PATH="$PWD/bsl/utils:$PATH"
         mkdir build && cd build
         cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=DEBUG -DENABLE_CLANG_FORMAT=ON ../bsl
         ninja format
@@ -57,42 +48,40 @@ jobs:
       shell: bash
 
   Clang_Tidy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
       with:
         path: bsl
     - name: Setup
       run: |
-        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-        sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
-        sudo apt-get install -y clang-10 clang-tidy-10 ninja-build
-        sudo update-alternatives --remove-all clang++
-        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
-        sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-10 100
+        sudo apt-get install -y clang lld cmake ninja-build build-essential
       shell: bash
     - name: Validate Compliance
       run: |
+        chmod +x bsl/utils/clang-tidy
+        export PATH="$PWD/bsl/utils:$PATH"
+
+        sudo cp /usr/lib/llvm-10/lib/clang/10.0.0/include/limits.h /usr/local/include/
+        sudo cp /usr/lib/llvm-10/lib/clang/10.0.0/include/stddef.h /usr/local/include/
+        sudo cp /usr/lib/llvm-10/lib/clang/10.0.0/include/stdarg.h /usr/local/include/
+
         mkdir build && cd build
         cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=CLANG_TIDY -DBUILD_EXAMPLES=ON -DBUILD_TESTS=ON ../bsl
         ninja
       shell: bash
 
   ASAN:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
       with:
         path: bsl
     - name: Setup
       run: |
-        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-        sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
-        sudo apt-get install -y clang-10 ninja-build
-        sudo update-alternatives --remove-all clang++
-        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
+        sudo apt-get install -y clang lld cmake ninja-build build-essential
       shell: bash
     - name: Validate ASAN
       run: |
@@ -103,19 +92,15 @@ jobs:
       shell: bash
 
   UBSAN:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
       with:
         path: bsl
     - name: Setup
       run: |
-        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-        sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
-        sudo apt-get install -y clang-10 ninja-build
-        sudo update-alternatives --remove-all clang++
-        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
+        sudo apt-get install -y clang lld cmake ninja-build build-essential
       shell: bash
     - name: Validate UBSAN
       run: |
@@ -126,19 +111,15 @@ jobs:
       shell: bash
 
   Release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
       with:
         path: bsl
     - name: Setup
       run: |
-        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-        sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
-        sudo apt-get install -y clang-10 ninja-build
-        sudo update-alternatives --remove-all clang++
-        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
+        sudo apt-get install -y clang lld cmake ninja-build build-essential
       shell: bash
     - name: Validate Release Build
       run: |
@@ -148,19 +129,15 @@ jobs:
       shell: bash
 
   Debug:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
       with:
         path: bsl
     - name: Setup
       run: |
-        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-        sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
-        sudo apt-get install -y clang-10 ninja-build
-        sudo update-alternatives --remove-all clang++
-        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
+        sudo apt-get install -y clang lld cmake ninja-build build-essential
       shell: bash
     - name: Validate Debug Build
       run: |
@@ -171,19 +148,15 @@ jobs:
       shell: bash
 
   Codecov:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
       with:
         path: bsl
     - name: Setup
       run: |
-        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-        sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
         sudo apt-get update
-        sudo apt-get install -y clang-10 ninja-build
-        sudo update-alternatives --remove-all clang++
-        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-10 100
+        sudo apt-get install -y clang lld cmake ninja-build build-essential
         wget https://github.com/mozilla/grcov/releases/download/v0.5.9/grcov-linux-x86_64.tar.bz2
         tar xvf grcov-linux-x86_64.tar.bz2
         sudo mv grcov /usr/bin/

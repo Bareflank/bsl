@@ -22,9 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/type_identity.hpp>
 #include <bsl/is_same.hpp>
-
+#include <bsl/type_identity.hpp>
 #include <bsl/ut.hpp>
 
 /// <!-- description -->

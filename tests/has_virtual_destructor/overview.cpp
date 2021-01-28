@@ -22,12 +22,12 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include "../class_base.hpp"
+#include "../class_empty.hpp"
+#include "../class_subclass.hpp"
+
 #include <bsl/has_virtual_destructor.hpp>
 #include <bsl/ut.hpp>
-
-#include "../class_base.hpp"
-#include "../class_subclass.hpp"
-#include "../class_empty.hpp"
 
 /// <!-- description -->
 ///   @brief Main function for this unit test. If a call to bsl::ut_check() fails

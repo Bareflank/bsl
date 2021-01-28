@@ -28,12 +28,11 @@
 #ifndef BSL_BASIC_STRING_VIEW_HPP
 #define BSL_BASIC_STRING_VIEW_HPP
 
-#include "details/out.hpp"
-
 #include "char_traits.hpp"
 #include "contiguous_iterator.hpp"
 #include "convert.hpp"
 #include "debug.hpp"
+#include "details/out.hpp"
 #include "npos.hpp"
 #include "reverse_iterator.hpp"
 #include "safe_integral.hpp"
@@ -233,7 +232,6 @@ namespace bsl
         at_if(size_type const &index) noexcept -> pointer_type
         {
             if (!index) {
-                bsl::error() << "basic_string_view: index invalid\n";
                 return nullptr;
             }
 
@@ -244,7 +242,6 @@ namespace bsl
                 return &m_ptr[index.get()];
             }
 
-            bsl::error() << "basic_string_view: index out of range: " << index << '\n';
             return nullptr;
         }
 
@@ -264,7 +261,6 @@ namespace bsl
         at_if(size_type const &index) const noexcept -> const_pointer_type
         {
             if (!index) {
-                bsl::error() << "basic_string_view: index invalid\n";
                 return nullptr;
             }
 
@@ -275,7 +271,6 @@ namespace bsl
                 return &m_ptr[index.get()];
             }
 
-            bsl::error() << "basic_string_view: index out of range: " << index << '\n';
             return nullptr;
         }
 

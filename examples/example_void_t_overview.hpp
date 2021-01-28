@@ -22,9 +22,9 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/void_t.hpp>
-#include <bsl/is_same.hpp>
 #include <bsl/debug.hpp>
+#include <bsl/is_same.hpp>
+#include <bsl/void_t.hpp>
 
 namespace bsl
 {

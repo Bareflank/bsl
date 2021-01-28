@@ -28,11 +28,10 @@
 #ifndef BSL_CONTIGUOUS_ITERATOR_HPP
 #define BSL_CONTIGUOUS_ITERATOR_HPP
 
-#include "details/out.hpp"
-
 #include "contiguous_iterator_element.hpp"
 #include "convert.hpp"
 #include "debug.hpp"
+#include "details/out.hpp"
 #include "safe_integral.hpp"
 #include "touch.hpp"
 
@@ -349,7 +348,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         operator*() noexcept -> contiguous_iterator_element<value_type>
         {
-            return {this->data(), this->index()};
+            return {this->get_if(), this->index()};
         }
 
         /// <!-- description -->
@@ -362,7 +361,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         operator*() const noexcept -> contiguous_iterator_element<value_type const>
         {
-            return {this->data(), this->index()};
+            return {this->get_if(), this->index()};
         }
 
         /// <!-- description -->

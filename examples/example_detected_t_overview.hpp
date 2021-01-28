@@ -22,12 +22,12 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/detected_t.hpp>
-#include <bsl/is_same.hpp>
-#include <bsl/debug.hpp>
-
 #include "example_class_base.hpp"
 #include "example_detected_alias.hpp"
+
+#include <bsl/debug.hpp>
+#include <bsl/detected_t.hpp>
+#include <bsl/is_same.hpp>
 
 namespace bsl
 {

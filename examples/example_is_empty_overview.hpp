@@ -22,10 +22,10 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/is_empty.hpp>
-#include <bsl/debug.hpp>
-
 #include "example_class_empty.hpp"
+
+#include <bsl/debug.hpp>
+#include <bsl/is_empty.hpp>
 
 namespace bsl
 {

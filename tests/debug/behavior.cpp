@@ -128,6 +128,17 @@ namespace
             };
         };
 
+        bsl::ut_scenario{"fmt from constexpr (using hex)"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::ut_then{} = []() {
+                    bsl::print() << bsl::hex(42U) << '\n';
+                    bsl::alert() << bsl::hex(42U) << '\n';
+                    bsl::alert() << bsl::hex(42U) << '\n';
+                    bsl::error() << bsl::hex(42U) << '\n';
+                };
+            };
+        };
+
         bsl::ut_scenario{"disable from constexpr"} = []() {
             bsl::ut_given{} = []() {
                 bsl::ut_then{} = []() {

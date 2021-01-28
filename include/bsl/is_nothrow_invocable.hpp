@@ -28,8 +28,8 @@
 #ifndef BSL_IS_NOTHROW_INVOCABLE_HPP
 #define BSL_IS_NOTHROW_INVOCABLE_HPP
 
-#include "details/invoke_traits.hpp"
 #include "bool_constant.hpp"
+#include "details/invoke_traits.hpp"
 
 namespace bsl
 {

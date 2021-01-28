@@ -30,8 +30,8 @@
 #include "../../../safe_integral.hpp"
 #include "../../../swap.hpp"
 
-#include <Windows.h>
 #include <SetupAPI.h>
+#include <Windows.h>
 #undef max
 #undef min
 

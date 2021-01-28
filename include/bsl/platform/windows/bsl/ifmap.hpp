@@ -33,8 +33,8 @@
 #include "../../../move.hpp"
 #include "../../../safe_integral.hpp"
 #include "../../../span.hpp"
-#include "../../../swap.hpp"
 #include "../../../string_view.hpp"
+#include "../../../swap.hpp"
 #include "../../../touch.hpp"
 
 #include <Windows.h>
@@ -57,7 +57,7 @@ namespace bsl
         /// @brief stores a handle to the mapped file.
         HANDLE m_view{};
         /// @brief stores a view of the file that is mapped.
-        span<byte> m_data{};
+        span<byte const> m_data{};
 
         /// <!-- description -->
         ///   @brief Swaps *this with other
@@ -146,25 +146,27 @@ namespace bsl
                 return;
             }
 
-            m_data = as_writable_bytes(ptr, (to_umax(high) << 32U) | to_umax(size));
+            m_data = {
+                static_cast<bsl::byte const *>(ptr),
+                (to_umax(high) << to_umax(32)) | to_umax(size)};
         }
 
         /// <!-- description -->
         ///   @brief Destructor unmaps a previously mapped file.
         ///
-        ~ifmap() noexcept
-        {
-            if (nullptr != m_file) {
-                bsl::discard(UnmapViewOfFile(m_data.data()));
-                bsl::discard(CloseHandle(m_view));
-                bsl::discard(CloseHandle(m_file));
-                m_file = nullptr;
-                m_view = nullptr;
-            }
-            else {
-                bsl::touch();
-            }
-        }
+        ~ifmap() noexcept = default;
+        // {
+        //     if (nullptr != m_file) {
+        //         bsl::discard(UnmapViewOfFile(m_data.data()));
+        //         bsl::discard(CloseHandle(m_view));
+        //         bsl::discard(CloseHandle(m_file));
+        //         m_file = nullptr;
+        //         m_view = nullptr;
+        //     }
+        //     else {
+        //         bsl::touch();
+        //     }
+        // }
 
         /// <!-- description -->
         ///   @brief copy constructor
@@ -210,6 +212,18 @@ namespace bsl
             ifmap tmp{bsl::move(o)};
             this->private_swap(*this, tmp);
             return *this;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns a span to the read-only mapped file.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns a span to the read-only mapped file.
+        ///
+        [[nodiscard]] constexpr auto
+        view() const noexcept -> bsl::span<byte const>
+        {
+            return m_data;
         }
 
         /// <!-- description -->
@@ -262,7 +276,7 @@ namespace bsl
         ///     mapped.
         ///
         [[nodiscard]] constexpr auto
-        size() const noexcept -> size_type const &
+        size() const noexcept -> size_type
         {
             return m_data.size();
         }
@@ -290,7 +304,7 @@ namespace bsl
         ///     mapped.
         ///
         [[nodiscard]] constexpr auto
-        size_bytes() const noexcept -> size_type const &
+        size_bytes() const noexcept -> size_type
         {
             return m_data.size();
         }

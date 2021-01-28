@@ -28,8 +28,8 @@
 #ifndef BSL_IS_NOTHROW_MOVABLE_HPP
 #define BSL_IS_NOTHROW_MOVABLE_HPP
 
-#include "conjunction.hpp"
 #include "bool_constant.hpp"
+#include "conjunction.hpp"
 #include "is_nothrow_move_assignable.hpp"
 #include "is_nothrow_move_constructible.hpp"
 

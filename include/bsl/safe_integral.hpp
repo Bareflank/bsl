@@ -246,9 +246,13 @@ namespace bsl
         /// @brief alias for: T
         using value_type = T;
         /// @brief alias for: T &
+        using pointer_type = T *;
+        /// @brief alias for: T const
+        using const_pointer_type = T const *;
+        /// @brief alias for: T &
         using reference_type = T &;
         /// @brief alias for: T const
-        using const_reference_type = T const;
+        using const_reference_type = T const &;
 
         /// <!-- description -->
         ///   @brief Default constructor that creates a safe_integral with
@@ -271,7 +275,9 @@ namespace bsl
         ///   @param val the value to set the bsl::safe_integral to
         ///
         template<typename U, enable_if_t<is_same<T, U>::value, bool> = true>
-        explicit constexpr safe_integral(U const val) noexcept    // --
+        // This is non-issue due to the use of is_same above
+        // NOLINTNEXTLINE(bsl-explicit-constructor,-warnings-as-errors, hicpp-explicit-conversions,-warnings-as-errors)
+        constexpr safe_integral(U const val) noexcept    // --
             : m_val{val}, m_error{}
         {}
 
@@ -384,6 +390,40 @@ namespace bsl
             }
 
             return m_val;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns a pointer to the internal integral being managed
+        ///     by this class, providing a means to directly read/write the
+        ///     integral's value.
+        ///   @include safe_integral/example_safe_integral_get.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns a pointer to the internal integral being managed
+        ///     by this class, providing a means to directly read/write the
+        ///     integral's value.
+        ///
+        [[nodiscard]] constexpr auto
+        data() noexcept -> pointer_type
+        {
+            return &m_val;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns a pointer to the internal integral being managed
+        ///     by this class, providing a means to directly read/write the
+        ///     integral's value.
+        ///   @include safe_integral/example_safe_integral_get.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns a pointer to the internal integral being managed
+        ///     by this class, providing a means to directly read/write the
+        ///     integral's value.
+        ///
+        [[nodiscard]] constexpr auto
+        data() const noexcept -> const_pointer_type
+        {
+            return &m_val;
         }
 
         /// <!-- description -->
@@ -1191,6 +1231,11 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed shift not supported");
             }
             else {
+                // This is needed to silence when the compiler might produce
+                // a conversion because it wants to. The code is written such
+                // that a conversion cannot take place, but it is possible
+                // that the compiler will perform a conversion anyways.
+                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val <<= rhs.m_val;
 
                 if (this->failure()) {
@@ -1238,6 +1283,11 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed shift not supported");
             }
             else {
+                // This is needed to silence when the compiler might produce
+                // a conversion because it wants to. The code is written such
+                // that a conversion cannot take place, but it is possible
+                // that the compiler will perform a conversion anyways.
+                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val <<= rhs;
 
                 if (this->failure()) {
@@ -1277,6 +1327,11 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed shift not supported");
             }
             else {
+                // This is needed to silence when the compiler might produce
+                // a conversion because it wants to. The code is written such
+                // that a conversion cannot take place, but it is possible
+                // that the compiler will perform a conversion anyways.
+                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val >>= rhs.get();
 
                 if (this->failure()) {
@@ -1324,6 +1379,11 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed shift not supported");
             }
             else {
+                // This is needed to silence when the compiler might produce
+                // a conversion because it wants to. The code is written such
+                // that a conversion cannot take place, but it is possible
+                // that the compiler will perform a conversion anyways.
+                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val >>= rhs;
 
                 if (this->failure()) {
@@ -1363,6 +1423,11 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed and not supported");
             }
             else {
+                // This is needed to silence when the compiler might produce
+                // a conversion because it wants to. The code is written such
+                // that a conversion cannot take place, but it is possible
+                // that the compiler will perform a conversion anyways.
+                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val &= rhs.get();
 
                 if (this->failure()) {
@@ -1410,6 +1475,11 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed and not supported");
             }
             else {
+                // This is needed to silence when the compiler might produce
+                // a conversion because it wants to. The code is written such
+                // that a conversion cannot take place, but it is possible
+                // that the compiler will perform a conversion anyways.
+                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val &= rhs;
 
                 if (this->failure()) {
@@ -1449,6 +1519,11 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed or not supported");
             }
             else {
+                // This is needed to silence when the compiler might produce
+                // a conversion because it wants to. The code is written such
+                // that a conversion cannot take place, but it is possible
+                // that the compiler will perform a conversion anyways.
+                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val |= rhs.get();
 
                 if (this->failure()) {
@@ -1496,6 +1571,11 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed or not supported");
             }
             else {
+                // This is needed to silence when the compiler might produce
+                // a conversion because it wants to. The code is written such
+                // that a conversion cannot take place, but it is possible
+                // that the compiler will perform a conversion anyways.
+                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val |= rhs;
 
                 if (this->failure()) {
@@ -1535,6 +1615,11 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed xor not supported");
             }
             else {
+                // This is needed to silence when the compiler might produce
+                // a conversion because it wants to. The code is written such
+                // that a conversion cannot take place, but it is possible
+                // that the compiler will perform a conversion anyways.
+                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val ^= rhs.get();
 
                 if (this->failure()) {
@@ -1582,6 +1667,11 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed xor not supported");
             }
             else {
+                // This is needed to silence when the compiler might produce
+                // a conversion because it wants to. The code is written such
+                // that a conversion cannot take place, but it is possible
+                // that the compiler will perform a conversion anyways.
+                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val ^= rhs;
 
                 if (this->failure()) {
@@ -2659,6 +2749,54 @@ namespace bsl
     using safe_uintmax = safe_integral<bsl::uintmax>;
     /// @brief provides the bsl::safe_integral version of bsl::uintptr
     using safe_uintptr = safe_integral<bsl::uintptr>;
+
+    // -------------------------------------------------------------------------
+    // predefined constants
+    // -------------------------------------------------------------------------
+
+    /// @brief defines a predefined constant for 0
+    constexpr bsl::safe_uint8 ZERO_U8{static_cast<bsl::uint8>(0)};
+    /// @brief defines a predefined constant for 0
+    constexpr bsl::safe_uint16 ZERO_U16{static_cast<bsl::uint16>(0)};
+    /// @brief defines a predefined constant for 0
+    constexpr bsl::safe_uint32 ZERO_U32{static_cast<bsl::uint32>(0)};
+    /// @brief defines a predefined constant for 0
+    constexpr bsl::safe_uint64 ZERO_U64{static_cast<bsl::uint64>(0)};
+    /// @brief defines a predefined constant for 0
+    constexpr bsl::safe_uintmax ZERO_UMAX{static_cast<bsl::uintmax>(0)};
+
+    /// @brief defines a predefined constant for 0
+    constexpr bsl::safe_int8 ZERO_I8{static_cast<bsl::int8>(0)};
+    /// @brief defines a predefined constant for 0
+    constexpr bsl::safe_int16 ZERO_I16{static_cast<bsl::int16>(0)};
+    /// @brief defines a predefined constant for 0
+    constexpr bsl::safe_int32 ZERO_I32{static_cast<bsl::int32>(0)};
+    /// @brief defines a predefined constant for 0
+    constexpr bsl::safe_int64 ZERO_I64{static_cast<bsl::int64>(0)};
+    /// @brief defines a predefined constant for 0
+    constexpr bsl::safe_intmax ZERO_IMAX{static_cast<bsl::intmax>(0)};
+
+    /// @brief defines a predefined constant for 1
+    constexpr bsl::safe_uint8 ONE_U8{static_cast<bsl::uint8>(1)};
+    /// @brief defines a predefined constant for 1
+    constexpr bsl::safe_uint16 ONE_U16{static_cast<bsl::uint16>(1)};
+    /// @brief defines a predefined constant for 1
+    constexpr bsl::safe_uint32 ONE_U32{static_cast<bsl::uint32>(1)};
+    /// @brief defines a predefined constant for 1
+    constexpr bsl::safe_uint64 ONE_U64{static_cast<bsl::uint64>(1)};
+    /// @brief defines a predefined constant for 1
+    constexpr bsl::safe_uintmax ONE_UMAX{static_cast<bsl::uintmax>(1)};
+
+    /// @brief defines a predefined constant for 1
+    constexpr bsl::safe_int8 ONE_I8{static_cast<bsl::int8>(1)};
+    /// @brief defines a predefined constant for 1
+    constexpr bsl::safe_int16 ONE_I16{static_cast<bsl::int16>(1)};
+    /// @brief defines a predefined constant for 1
+    constexpr bsl::safe_int32 ONE_I32{static_cast<bsl::int32>(1)};
+    /// @brief defines a predefined constant for 1
+    constexpr bsl::safe_int64 ONE_I64{static_cast<bsl::int64>(1)};
+    /// @brief defines a predefined constant for 1
+    constexpr bsl::safe_intmax ONE_IMAX{static_cast<bsl::intmax>(1)};
 }
 
 #endif

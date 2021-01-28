@@ -29,8 +29,8 @@
 #define BSL_IS_ARRAY_HPP
 
 #include "cstdint.hpp"
-#include "true_type.hpp"
 #include "false_type.hpp"
+#include "true_type.hpp"
 
 namespace bsl
 {

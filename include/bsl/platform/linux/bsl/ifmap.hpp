@@ -33,14 +33,14 @@
 #include "../../../move.hpp"
 #include "../../../safe_integral.hpp"
 #include "../../../span.hpp"
-#include "../../../swap.hpp"
 #include "../../../string_view.hpp"
+#include "../../../swap.hpp"
 #include "../../../touch.hpp"
 
 #include <fcntl.h>
 #include <sys/mman.h>
-#include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 namespace bsl
@@ -65,7 +65,7 @@ namespace bsl
         /// @brief stores a handle to the mapped file.
         bsl::int32 m_file{details::IFMAP_INVALID_FILE.get()};
         /// @brief stores a view of the file that is mapped.
-        span<byte> m_data{};
+        span<byte const> m_data{};
 
         /// <!-- description -->
         ///   @brief Swaps *this with other
@@ -156,23 +156,25 @@ namespace bsl
                 return;
             }
 
-            m_data = as_writable_bytes(ptr, to_umax(s.st_size));
+            m_data = {static_cast<bsl::byte const *>(ptr), to_umax(s.st_size)};
         }
 
         /// <!-- description -->
         ///   @brief Destructor unmaps a previously mapped file.
         ///
-        ~ifmap() noexcept
-        {
-            if (details::IFMAP_INVALID_FILE.get() != m_file) {
-                bsl::discard(munmap(m_data.data(), m_data.size().get()));
-                bsl::discard(close(m_file));
-                m_file = details::IFMAP_INVALID_FILE.get();
-            }
-            else {
-                bsl::touch();
-            }
-        }
+        ~ifmap() noexcept = default;
+        // {
+        //     // if (details::IFMAP_INVALID_FILE.get() != m_file) {
+        //     //     // Not given a choice here due to the APIs provided by Linux
+        //     //     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast,-warnings-as-errors)
+        //     //     bsl::discard(munmap(const_cast<byte *>(m_data.data()), m_data.size().get()));
+        //     //     bsl::discard(close(m_file));
+        //     //     m_file = details::IFMAP_INVALID_FILE.get();
+        //     // }
+        //     // else {
+        //     //     bsl::touch();
+        //     // }
+        // }
 
         /// <!-- description -->
         ///   @brief copy constructor
@@ -217,6 +219,18 @@ namespace bsl
             ifmap tmp{bsl::move(o)};
             this->private_swap(*this, tmp);
             return *this;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns a span to the read-only mapped file.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns a span to the read-only mapped file.
+        ///
+        [[nodiscard]] constexpr auto
+        view() const noexcept -> bsl::span<byte const>
+        {
+            return m_data;
         }
 
         /// <!-- description -->
@@ -269,7 +283,7 @@ namespace bsl
         ///     mapped.
         ///
         [[nodiscard]] constexpr auto
-        size() const noexcept -> size_type const &
+        size() const noexcept -> size_type
         {
             return m_data.size();
         }
@@ -297,7 +311,7 @@ namespace bsl
         ///     mapped.
         ///
         [[nodiscard]] constexpr auto
-        size_bytes() const noexcept -> size_type const &
+        size_bytes() const noexcept -> size_type
         {
             return m_data.size();
         }

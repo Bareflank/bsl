@@ -38,7 +38,7 @@ macro(bf_add_info NAME)
         COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_MAG} |___/_/ \\_\\_|_\\___|_| |____/_/ \\_\\_|\\_|_|\\_\\${BF_COLOR_RST}"
         COMMAND ${CMAKE_COMMAND} -E echo " "
         COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_GRN} Please give us a star on: ${BF_COLOR_WHT}https://github.com/bareflank/${NAME}  ${BF_COLOR_RST}"
-        COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_BLU} -------------------------------------------------------------------------------${BF_COLOR_RST}"
+        COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_BLU} -----------------------------------------------------------------${BF_COLOR_RST}"
         COMMAND ${CMAKE_COMMAND} -E echo " "
         COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_GRN} Current Build Configuration:${BF_COLOR_RST}"
         VERBATIM
@@ -88,6 +88,18 @@ macro(bf_add_info NAME)
     else()
         add_custom_command(TARGET info
             COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ENABLE_DOXYGEN                 ${BF_COLOR_RED}disabled${BF_COLOR_RST}"
+            VERBATIM
+        )
+    endif()
+
+    if(ENABLE_COLOR)
+        add_custom_command(TARGET info
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ENABLE_COLOR                   ${BF_COLOR_GRN}enabled${BF_COLOR_RST}"
+            VERBATIM
+        )
+    else()
+        add_custom_command(TARGET info
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ENABLE_COLOR                   ${BF_COLOR_RED}disabled${BF_COLOR_RST}"
             VERBATIM
         )
     endif()

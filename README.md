@@ -97,8 +97,8 @@ Currently, the BSL only supports the Clang/LLVM 11+ compiler. This, however, ens
 ### **Windows**
 To compile the BSL on Windows, you must first install the following:
 - [Visual Studio](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&rel=16) (Enable "Desktop development with C++")
-- [LLVM 11+](https://github.com/llvm/llvm-project/releases)
-- [CMake 3.16+](https://cmake.org/download/)
+- [LLVM 10+](https://github.com/llvm/llvm-project/releases)
+- [CMake 3.13+](https://cmake.org/download/)
 - [Ninja](https://github.com/ninja-build/ninja/releases)
 
 Visual Studio is needed as it contains Windows specific libraries that are needed during compilation. Instead of using the Clang/LLVM project that natively ships with Visual Studio, we use the standard Clang/LLVM binaries provided by the LLVM project which ensures we get all of the tools including LLD, Clang Tidy and Clang Format. Also note that you must put Ninja somewhere
@@ -113,20 +113,14 @@ ninja info
 ninja
 ```
 
-### **Ubuntu Linux**
+### **Ubuntu Linux (20.04+)**
 To compile the BSL on Ubuntu, you must install the following:
 - [LLVM 10+](https://apt.llvm.org/)
 - [CMake 3.13+](https://cmake.org/download/)
 
 Once you have the above setup, you can install all dependencies using the following command
 ```bash
-sudo apt-get install -y clang-11 build-essential git ninja-build
-```
-
-You might also have to update your build environment to point to the new version of LLVM as follows:
-```
-sudo update-alternatives --remove-all clang++
-sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-11 100
+sudo apt-get install -y clang cmake lld
 ```
 
 To compile the BSL, use the following:

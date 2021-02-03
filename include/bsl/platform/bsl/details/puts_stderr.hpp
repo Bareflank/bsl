@@ -22,24 +22,26 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/debug.hpp>
-#include <bsl/ifmap.hpp>
+#ifndef BSL_DETAILS_PUTS_STDERR_HPP
+#define BSL_DETAILS_PUTS_STDERR_HPP
 
-namespace bsl
+#include "../../../cstdio.hpp"
+#include "../../../cstr_type.hpp"
+#include "../../../discard.hpp"
+
+namespace bsl::details
 {
     /// <!-- description -->
-    ///   @brief Provides the example's main function
+    ///   @brief Outputs a string to stderr.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param str the string to output to stderr
     ///
     inline void
-    example_ifmap_overview() noexcept
+    puts_stderr(cstr_type const str) noexcept
     {
-        bsl::ifmap const map{"test.txt"};
-        if (map) {
-            bsl::string_view const str{static_cast<cstr_type>(map.data()), map.size()};
-            bsl::print() << "success: " << str << bsl::endl;
-        }
-        else {
-            bsl::error() << "failure\n";
-        }
+        bsl::discard(fputs(str, stderr));
     }
 }
+
+#endif

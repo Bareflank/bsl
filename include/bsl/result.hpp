@@ -215,7 +215,7 @@ namespace bsl
         // has issues with union types, which is not worth fixing as they are
         // not supported in general.
         // NOLINTNEXTLINE(hicpp-explicit-conversions, bsl-class-member-init)
-        constexpr result(bsl::in_place_t const &ip, ARGS &&... a) noexcept(
+        constexpr result(bsl::in_place_t const &ip, ARGS &&...a) noexcept(
             is_nothrow_constructible<T, ARGS...>::value)
             : m_which{details::result_type::contains_t}, m_t{bsl::forward<ARGS>(a)...}
         {

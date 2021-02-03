@@ -62,11 +62,7 @@ jobs:
       run: |
         chmod +x bsl/utils/clang-tidy
         export PATH="$PWD/bsl/utils:$PATH"
-
-        sudo cp /usr/lib/llvm-10/lib/clang/10.0.0/include/limits.h /usr/local/include/
-        sudo cp /usr/lib/llvm-10/lib/clang/10.0.0/include/stddef.h /usr/local/include/
-        sudo cp /usr/lib/llvm-10/lib/clang/10.0.0/include/stdarg.h /usr/local/include/
-
+        sudo cp -Rf /usr/lib/llvm-10 /usr/lib/llvm-11
         mkdir build && cd build
         cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=CLANG_TIDY -DBUILD_EXAMPLES=ON -DBUILD_TESTS=ON ../bsl
         ninja

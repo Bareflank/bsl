@@ -22,24 +22,26 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/debug.hpp>
-#include <bsl/ifmap.hpp>
+#ifndef BSL_DETAILS_PUTC_STDOUT_HPP
+#define BSL_DETAILS_PUTC_STDOUT_HPP
 
-namespace bsl
+#include "../../../char_type.hpp"
+#include "../../../cstdio.hpp"
+#include "../../../discard.hpp"
+
+namespace bsl::details
 {
     /// <!-- description -->
-    ///   @brief Provides the example's main function
+    ///   @brief Outputs a character to stdout.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param c the character to output to stdout
     ///
     inline void
-    example_ifmap_size() noexcept
+    putc_stdout(char_type const c) noexcept
     {
-        bsl::ifmap const map{"test.txt"};
-        if (map) {
-            bsl::string_view const str{static_cast<cstr_type>(map.data()), map.size()};
-            bsl::print() << "success: " << str << bsl::endl;
-        }
-        else {
-            bsl::error() << "failure\n";
-        }
+        bsl::discard(fputc(c, stdout));
     }
 }
+
+#endif

@@ -22,24 +22,27 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/debug.hpp>
-#include <bsl/ifmap.hpp>
+#ifndef BSL_DETAILS_PRINT_THREAD_ID_HPP
+#define BSL_DETAILS_PRINT_THREAD_ID_HPP
 
-namespace bsl
+#include "../../../discard.hpp"
+#include "../../../safe_integral.hpp"
+
+namespace bsl::details
 {
     /// <!-- description -->
-    ///   @brief Provides the example's main function
+    ///   @brief Outputs the current thread ID info
     ///
-    inline void
-    example_ifmap_constructor() noexcept
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of outputter provided
+    ///   @param o the outputter
+    ///
+    template<typename T>
+    constexpr void
+    print_thread_id(out<T> const o) noexcept
     {
-        bsl::ifmap const map{"test.txt"};
-        if (map) {
-            bsl::string_view const str{static_cast<cstr_type>(map.data()), map.size()};
-            bsl::print() << "success: " << str << bsl::endl;
-        }
-        else {
-            bsl::error() << "failure\n";
-        }
+        bsl::discard(o);
     }
 }
+
+#endif

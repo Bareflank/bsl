@@ -65,7 +65,7 @@ namespace bsl::details
         ///
         template<typename FUNC, typename... TN>
         [[maybe_unused]] static constexpr auto
-        call(FUNC &&f, TN &&... valn) noexcept(
+        call(FUNC &&f, TN &&...valn) noexcept(
             noexcept(bsl::forward<FUNC>(f)(bsl::forward<TN>(valn)...)))
             -> decltype(bsl::forward<FUNC>(f)(bsl::forward<TN>(valn)...))
         {

@@ -80,7 +80,7 @@ namespace std
     ///
     template<typename T, typename... ARGS>
     constexpr void
-    construct_at_impl(void *const ptr, ARGS &&... a)    // --
+    construct_at_impl(void *const ptr, ARGS &&...a)    // --
         noexcept(noexcept(new (ptr) T{bsl::declval<ARGS>()...}))
     {
         if (bsl::unlikely(nullptr == ptr)) {
@@ -108,7 +108,7 @@ namespace bsl
     ///
     template<typename T, typename... ARGS>
     constexpr void
-    construct_at(void *const ptr, ARGS &&... a)    // --
+    construct_at(void *const ptr, ARGS &&...a)    // --
         noexcept(noexcept(std::construct_at_impl<T, ARGS...>(ptr, bsl::declval<ARGS>()...)))
     {
         std::construct_at_impl<T, ARGS...>(ptr, bsl::forward<ARGS>(a)...);

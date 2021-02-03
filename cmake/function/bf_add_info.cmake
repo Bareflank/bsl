@@ -127,24 +127,44 @@ macro(bf_add_info NAME)
         )
     endif()
 
-    add_custom_command(TARGET info
-        COMMAND ${CMAKE_COMMAND} -E echo " "
-        COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_GRN} Supported CMake Build Types:${BF_COLOR_RST}"
-        COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=RELEASE      compile in release mode${BF_COLOR_RST}"
-        COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=DEBUG        compile in debug mode${BF_COLOR_RST}"
-        COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=CLANG_TIDY   compile with Clang Tidy checks${BF_COLOR_RST}"
-        COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=ASAN         compile with Google ASAN${BF_COLOR_RST}"
-        COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=UBSAN        compile with Google UBSAN${BF_COLOR_RST}"
-        COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=CODECOV      compile with LLVM coverage${BF_COLOR_RST}"
-        COMMAND ${CMAKE_COMMAND} -E echo " "
-        COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_GRN} Basic Commands:${BF_COLOR_RST}"
-        COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ${BF_BUILD_COMMAND} info                     shows this help info${BF_COLOR_RST}"
-        COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ${BF_BUILD_COMMAND}                          builds the project${BF_COLOR_RST}"
-        COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ${BF_BUILD_COMMAND} clean                    cleans the project${BF_COLOR_RST}"
-        COMMAND ${CMAKE_COMMAND} -E echo " "
-        COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_GRN} Supported Build Targets:${BF_COLOR_RST}"
-        VERBATIM
-    )
+    if(NOT WIN32)
+        add_custom_command(TARGET info
+            COMMAND ${CMAKE_COMMAND} -E echo " "
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_GRN} Supported CMake Build Types:${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=RELEASE      compile in release mode${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=DEBUG        compile in debug mode${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=CLANG_TIDY   compile with Clang Tidy checks${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=ASAN         compile with Google ASAN${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=UBSAN        compile with Google UBSAN${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=CODECOV      compile with LLVM coverage${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo " "
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_GRN} Basic Commands:${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ${BF_BUILD_COMMAND} info                     shows this help info${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ${BF_BUILD_COMMAND}                          builds the project${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ${BF_BUILD_COMMAND} clean                    cleans the project${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo " "
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_GRN} Supported Build Targets:${BF_COLOR_RST}"
+            VERBATIM
+        )
+    else()
+        add_custom_command(TARGET info
+            COMMAND ${CMAKE_COMMAND} -E echo " "
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_GRN} Supported CMake Build Types:${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=RELEASE      compile in release mode${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=DEBUG        compile in debug mode${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=CLANG_TIDY   compile with Clang Tidy checks${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=ASAN         compile with Google ASAN${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}  -DCMAKE_BUILD_TYPE=UBSAN        compile with Google UBSAN${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo " "
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_GRN} Basic Commands:${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ${BF_BUILD_COMMAND} info                     shows this help info${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ${BF_BUILD_COMMAND}                          builds the project${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ${BF_BUILD_COMMAND} clean                    cleans the project${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo " "
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_GRN} Supported Build Targets:${BF_COLOR_RST}"
+            VERBATIM
+        )
+    endif()
 
     if(BUILD_TESTS)
         add_custom_command(TARGET info
@@ -169,8 +189,8 @@ macro(bf_add_info NAME)
 
     if(CMAKE_BUILD_TYPE STREQUAL CODECOV)
         add_custom_command(TARGET info
-            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ${BF_BUILD_COMMAND} codecov-info            gathers info about unit test coverage${BF_COLOR_RST}"
-            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ${BF_BUILD_COMMAND} codecov-upload          uploads results of unit test coverage${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ${BF_BUILD_COMMAND} codecov-info             gathers info about unit test coverage${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ${BF_BUILD_COMMAND} codecov-upload           uploads results of unit test coverage${BF_COLOR_RST}"
             VERBATIM
         )
     endif()

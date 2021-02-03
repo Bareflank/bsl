@@ -48,7 +48,7 @@ namespace bsl
     ///
     template<typename... ARGS>
     constexpr void
-    discard(ARGS &&... a) noexcept
+    discard(ARGS &&...a) noexcept
     {}
 }
 

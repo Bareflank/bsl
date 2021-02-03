@@ -73,7 +73,7 @@ namespace bsl::details
         ///
         template<typename FUNC, typename U, typename T1, typename... TN>
         [[maybe_unused]] static constexpr auto
-        call(FUNC U::*f, T1 &&val1, TN &&... valn) noexcept(
+        call(FUNC U::*f, T1 &&val1, TN &&...valn) noexcept(
             noexcept((bsl::forward<T1>(val1).*f)(bsl::forward<TN>(valn)...)))
             // Subclass to base conversions are needed here for invoke to work
             // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)

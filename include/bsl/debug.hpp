@@ -44,7 +44,7 @@
 #include "safe_integral.hpp"
 #include "source_location.hpp"
 
-#include <bsl/details/get_thread_id.hpp>
+#include <bsl/details/print_thread_id.hpp>
 
 namespace bsl
 {
@@ -128,7 +128,7 @@ namespace bsl
         }
 
         o << bsl::bold_green << "DEBUG" << bsl::reset_color;
-        details::get_thread_id(o);
+        details::print_thread_id(o);
         o << ": ";
 
         return o;
@@ -160,7 +160,7 @@ namespace bsl
         }
 
         o << bsl::bold_yellow << "ALERT" << bsl::reset_color;
-        details::get_thread_id(o);
+        details::print_thread_id(o);
         o << ": ";
 
         return o;
@@ -186,7 +186,7 @@ namespace bsl
         out<details::out_type_error> o{};
 
         o << bsl::bold_red << "ERROR" << bsl::reset_color;
-        details::get_thread_id(o);
+        details::print_thread_id(o);
         o << ": ";
 
         return o;

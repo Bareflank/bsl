@@ -49,7 +49,7 @@ namespace bsl
     ///
     template<typename FUNC, typename... TN>
     [[maybe_unused]] constexpr auto
-    invoke(FUNC &&f, TN &&... valn) noexcept(                   // --
+    invoke(FUNC &&f, TN &&...valn) noexcept(                    // --
         noexcept(details::invoke_impl<FUNC, TN...>::call(       // --
             bsl::forward<FUNC>(f),                              // --
             bsl::forward<TN>(valn)...)))                        // --

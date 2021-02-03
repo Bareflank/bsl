@@ -210,7 +210,6 @@
 #include "example_from_chars_overview.hpp"
 #include "example_has_unique_object_representations_overview.hpp"
 #include "example_has_virtual_destructor_overview.hpp"
-#include "example_ifmap_overview.hpp"
 #include "example_in_place_overview.hpp"
 #include "example_index_sequence_for_overview.hpp"
 #include "example_index_sequence_overview.hpp"
@@ -353,14 +352,6 @@
 #include "fmt/example_fmt_sign.hpp"
 #include "fmt/example_fmt_sign_aware.hpp"
 #include "fmt/example_fmt_width.hpp"
-#include "ifmap/example_ifmap_constructor.hpp"
-#include "ifmap/example_ifmap_data.hpp"
-#include "ifmap/example_ifmap_default_constructor.hpp"
-#include "ifmap/example_ifmap_empty.hpp"
-#include "ifmap/example_ifmap_max_size.hpp"
-#include "ifmap/example_ifmap_operator_bool.hpp"
-#include "ifmap/example_ifmap_size.hpp"
-#include "ifmap/example_ifmap_size_bytes.hpp"
 #include "integer_sequence/example_integer_sequence_max.hpp"
 #include "integer_sequence/example_integer_sequence_min.hpp"
 #include "integer_sequence/example_integer_sequence_size.hpp"
@@ -722,15 +713,6 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_from_chars_overview, "example_from_chars_overview");
     example(&bsl::example_has_unique_object_representations_overview, "example_has_unique_object_representations_overview");
     example(&bsl::example_has_virtual_destructor_overview, "example_has_virtual_destructor_overview");
-    example(&bsl::example_ifmap_overview, "example_ifmap_overview");
-    example(&bsl::example_ifmap_constructor, "example_ifmap_constructor");
-    example(&bsl::example_ifmap_data, "example_ifmap_data");
-    example(&bsl::example_ifmap_default_constructor, "example_ifmap_default_constructor");
-    example(&bsl::example_ifmap_empty, "example_ifmap_empty");
-    example(&bsl::example_ifmap_max_size, "example_ifmap_max_size");
-    example(&bsl::example_ifmap_operator_bool, "example_ifmap_operator_bool");
-    example(&bsl::example_ifmap_size_bytes, "example_ifmap_size_bytes");
-    example(&bsl::example_ifmap_size, "example_ifmap_size");
     example(&bsl::example_in_place_overview, "example_in_place_overview");
     example(&bsl::example_index_sequence_for_overview, "example_index_sequence_for_overview");
     example(&bsl::example_index_sequence_overview, "example_index_sequence_overview");

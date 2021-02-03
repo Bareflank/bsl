@@ -104,7 +104,7 @@ namespace bsl
         ///
         template<typename... ARGS>
         [[nodiscard]] constexpr auto
-        operator()(ARGS &&... a) const -> invoke_result_t<T &, ARGS...>
+        operator()(ARGS &&...a) const -> invoke_result_t<T &, ARGS...>
         {
             return invoke(this->get(), bsl::forward<ARGS>(a)...);
         }

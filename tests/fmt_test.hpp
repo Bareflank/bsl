@@ -106,6 +106,8 @@ namespace bsl::details
             *ptr = c;
         }
         else {
+            // This is required by stdio
+            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             bsl::discard(fputs("res.data too small\n", stderr));
             exit(1);
         }

@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/debug.hpp>
+#include <bsl/is_constant_evaluated.hpp>
 #include <bsl/touch.hpp>
 
 namespace bsl
@@ -33,7 +34,7 @@ namespace bsl
     inline void
     example_touch_overview() noexcept
     {
-        if (true) {
+        if (!bsl::is_constant_evaluated()) {
             bsl::print() << "success\n";
         }
         else {

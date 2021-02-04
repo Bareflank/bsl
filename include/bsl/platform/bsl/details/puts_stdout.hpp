@@ -40,6 +40,8 @@ namespace bsl::details
     inline void
     puts_stdout(cstr_type const str) noexcept
     {
+        // This is required by stdio
+        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
         bsl::discard(fputs(str, stdout));
     }
 }

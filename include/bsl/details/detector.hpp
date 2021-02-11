@@ -50,11 +50,11 @@ namespace bsl::details
     /// <!-- template parameters -->
     ///   @tparam DEFAULT the default type to return when OP<ARGS...> is
     ///     invalid
-    ///   @tparam ALWAYS_VOID Always void (performs that actual detection)
+    ///   @tparam ALWAYS_V Always void (performs that actual detection)
     ///   @tparam OP the operation to detect
     ///   @tparam ARGS the arguments to the operation to detect
     ///
-    template<typename DEFAULT, typename ALWAYS_VOID, template<class...> class OP, typename... ARGS>
+    template<typename DEFAULT, typename ALWAYS_V, template<class...> class OP, typename... ARGS>
     struct detector final
     {
         /// @brief provides the member typedef "type"

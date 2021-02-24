@@ -53,6 +53,7 @@
 *.app
 
 # Others
+.vscode/
 build/
 site/
 doxygen_output/

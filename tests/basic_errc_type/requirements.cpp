@@ -46,7 +46,6 @@ namespace
             bsl::discard(errc.failure());
             bsl::discard(errc.is_checked());
             bsl::discard(errc.is_unchecked());
-            bsl::discard(errc.message());
 
             return true;
         }
@@ -60,7 +59,6 @@ namespace
             bsl::discard(errc.failure());
             bsl::discard(errc.is_checked());
             bsl::discard(errc.is_unchecked());
-            bsl::discard(errc.message());
 
             return true;
         }
@@ -98,7 +96,6 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(errc1.failure()));
                 static_assert(noexcept(errc1.is_checked()));
                 static_assert(noexcept(errc1.is_unchecked()));
-                static_assert(noexcept(errc1.message()));
                 static_assert(noexcept(errc1 == errc2));
                 static_assert(noexcept(errc1 != errc2));
             };

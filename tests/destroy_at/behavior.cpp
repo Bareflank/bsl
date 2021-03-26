@@ -53,8 +53,8 @@ namespace
             bsl::ut_given{} = []() {
                 bool b{};
                 bsl::ut_when{} = [&b]() {
-                    bsl::construct_at<bool>(&b);
                     bsl::destroy_at(&b);
+                    bsl::construct_at<bool>(&b);
                 };
             };
         };

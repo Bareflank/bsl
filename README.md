@@ -68,7 +68,7 @@ main(bsl::int32 const argc, bsl::cstr_type const argv[]) noexcept -> bsl::exit_c
     for (auto const elem : bsl::as_const(arr)) {
         bsl::print() << elem.index
                      << " = "
-                     << bsl::fmt("#010x", *elem.data)
+                     << bsl::fmt{"#010x", *elem.data}
                      << bsl::endl;
     }
 

@@ -61,8 +61,8 @@ namespace bsl
     ///   @param val the integral being outputted
     ///
     template<typename OUT_T, typename T>
-    constexpr auto
-    fmt_impl(OUT_T &&o, fmt_options const &ops, safe_integral<T> const &val) noexcept -> void
+    constexpr void
+    fmt_impl(OUT_T &&o, fmt_options const &ops, safe_integral<T> const &val) noexcept
     {
         if (!val) {
             constexpr safe_uintmax len_error{to_umax(7)};
@@ -112,8 +112,8 @@ namespace bsl
     ///   @param val the integral being outputted
     ///
     template<typename OUT_T, typename T, enable_if_t<is_integral<T>::value, bool> = true>
-    constexpr auto
-    fmt_impl(OUT_T &&o, fmt_options const &ops, T const val) noexcept -> void
+    constexpr void
+    fmt_impl(OUT_T &&o, fmt_options const &ops, T const val) noexcept
     {
         switch (ops.type()) {
             case fmt_type::fmt_type_b:

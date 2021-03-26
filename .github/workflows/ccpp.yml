@@ -63,7 +63,7 @@ jobs:
         sudo tar -xzvf bsl/utils/linux/llvm-bareflank.tar.gz -C /usr/lib/
         export PATH="/usr/lib/llvm-bareflank/bin:$PATH"
         mkdir build && cd build
-        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=CLANG_TIDY -DBUILD_EXAMPLES=ON -DBUILD_TESTS=ON ../bsl
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=CLANG_TIDY -DBUILD_EXAMPLES=ON -DBUILD_TESTS=ON -DBSL_DEBUG_LEVEL=bsl::VVV ../bsl
         ninja
       shell: bash
 
@@ -120,6 +120,24 @@ jobs:
       run: |
         mkdir build && cd build
         cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=RELEASE -DBUILD_EXAMPLES=ON ../bsl
+        ninja
+      shell: bash
+
+  MinSizeRel:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        path: bsl
+    - name: Setup
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y clang cmake ninja-build
+      shell: bash
+    - name: Validate Release Build
+      run: |
+        mkdir build && cd build
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=MINSIZEREL -DBUILD_EXAMPLES=ON ../bsl
         ninja
       shell: bash
 

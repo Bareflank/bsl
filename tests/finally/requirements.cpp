@@ -22,7 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/discard.hpp>
+#include <bsl/finally.hpp>
 #include <bsl/ut.hpp>
 
 /// <!-- description -->
@@ -38,9 +38,10 @@ main() noexcept -> bsl::exit_code
 {
     bsl::ut_scenario{"verify noexcept"} = []() {
         bsl::ut_given{} = []() {
-            bool mydata{};
+            bsl::finally test{[]() noexcept {}};
             bsl::ut_then{} = []() {
-                static_assert(noexcept(bsl::discard(mydata)));
+                static_assert(noexcept(test.ignore()));
+                static_assert(noexcept(test.activate()));
             };
         };
     };

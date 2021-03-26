@@ -45,13 +45,29 @@ list(APPEND BSL_ENABLE_CONSOLE_COLORS
 
 list(APPEND BSL_FLAGS_RELEASE
     -O3
-    -DNDEBUG
     -Wframe-larger-than=1024
     -Werror
-    -mretpoline
     ${BSL_WARNINGS}
     ${BSL_ENABLE_CONSOLE_COLORS}
 )
+
+list(APPEND BSL_FLAGS_MINSIZEREL
+    -Oz
+    -Wframe-larger-than=1024
+    -Werror
+    ${BSL_WARNINGS}
+    ${BSL_ENABLE_CONSOLE_COLORS}
+)
+
+if(HYPERVISOR_TARGET_ARCH STREQUAL "AuthenticAMD" OR HYPERVISOR_TARGET_ARCH STREQUAL "GenuineIntel")
+    list(APPEND BSL_FLAGS_RELEASE
+        -mretpoline
+    )
+
+    list(APPEND BSL_FLAGS_MINSIZEREL
+        -mretpoline
+    )
+endif()
 
 list(APPEND BSL_FLAGS_DEBUG
     -Og

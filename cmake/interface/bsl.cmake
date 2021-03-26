@@ -32,6 +32,16 @@ target_compile_definitions(bsl INTERFACE
     BSL_PAGE_SIZE=${BSL_PAGE_SIZE}
 )
 
+if(CMAKE_BUILD_TYPE STREQUAL RELEASE OR CMAKE_BUILD_TYPE STREQUAL MINSIZEREL)
+    target_compile_definitions(bsl INTERFACE
+        BSL_RELEASE_MODE=true
+    )
+else()
+    target_compile_definitions(bsl INTERFACE
+        BSL_RELEASE_MODE=false
+    )
+endif()
+
 if(ENABLE_COLOR)
     target_compile_definitions(bsl INTERFACE
         ENABLE_COLOR=true
@@ -44,7 +54,8 @@ endif()
 
 target_include_directories(bsl INTERFACE
     ${CMAKE_CURRENT_LIST_DIR}/../../include
-    ${CMAKE_CURRENT_LIST_DIR}/../../include/bsl/arch/x86
     $<$<PLATFORM_ID:Linux>:${CMAKE_CURRENT_LIST_DIR}/../../include/bsl/platform>
+    $<$<PLATFORM_ID:Linux>:${CMAKE_CURRENT_LIST_DIR}/../../include/bsl/platform/linux>
     $<$<PLATFORM_ID:Windows>:${CMAKE_CURRENT_LIST_DIR}/../../include/bsl/platform>
+    $<$<PLATFORM_ID:Windows>:${CMAKE_CURRENT_LIST_DIR}/../../include/bsl/platform/windows>
 )

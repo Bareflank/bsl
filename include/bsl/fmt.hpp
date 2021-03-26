@@ -32,6 +32,7 @@
 #include "details/fmt_impl_bool.hpp"
 #include "details/fmt_impl_char_type.hpp"
 #include "details/fmt_impl_cstr_type.hpp"
+#include "details/fmt_impl_errc_type.hpp"
 #include "details/fmt_impl_integral.hpp"
 #include "details/fmt_impl_null_pointer.hpp"
 #include "details/fmt_impl_void_pointer.hpp"

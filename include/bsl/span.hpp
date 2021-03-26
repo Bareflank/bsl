@@ -34,6 +34,7 @@
 #include "convert.hpp"
 #include "debug.hpp"
 #include "details/out.hpp"
+#include "disjunction.hpp"
 #include "is_same.hpp"
 #include "is_standard_layout.hpp"
 #include "is_void.hpp"
@@ -870,7 +871,7 @@ namespace bsl
     [[nodiscard]] constexpr auto
     as_bytes(U const *const ptr, safe_uintmax const &bytes) noexcept -> span<byte const>
     {
-        static_assert(is_standard_layout<U>::value, "U must be a standard layout");
+        static_assert(bsl::disjunction<bsl::is_void<U>, bsl::is_standard_layout<U>>::value);
         return {static_cast<byte const *>(static_cast<void const *>(ptr)), bytes};
     }
 
@@ -888,7 +889,7 @@ namespace bsl
     [[nodiscard]] constexpr auto
     as_bytes(span<T> const &spn) noexcept -> span<byte const>
     {
-        static_assert(is_standard_layout<T>::value, "T must be a standard layout");
+        static_assert(bsl::disjunction<bsl::is_void<T>, bsl::is_standard_layout<T>>::value);
         return as_bytes(spn.data(), spn.size_bytes());
     }
 
@@ -909,7 +910,7 @@ namespace bsl
     [[nodiscard]] constexpr auto
     as_writable_bytes(U *const ptr, safe_uintmax const &bytes) noexcept -> span<byte>
     {
-        static_assert(is_standard_layout<U>::value, "U must be a standard layout");
+        static_assert(bsl::disjunction<bsl::is_void<U>, bsl::is_standard_layout<U>>::value);
         return {static_cast<byte *>(static_cast<void *>(ptr)), bytes};
     }
 
@@ -927,7 +928,7 @@ namespace bsl
     [[nodiscard]] constexpr auto
     as_writable_bytes(span<T> &spn) noexcept -> span<byte>
     {
-        static_assert(is_standard_layout<T>::value, "T must be a standard layout");
+        static_assert(bsl::disjunction<bsl::is_void<T>, bsl::is_standard_layout<T>>::value);
         return as_writable_bytes(spn.data(), spn.size_bytes());
     }
 

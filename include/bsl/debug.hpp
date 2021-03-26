@@ -212,12 +212,14 @@ namespace bsl
             return o;
         }
 
-        o << "  --> "                                                       // --
-          << bsl::yellow << sloc.file_name() << bsl::reset_color            // --
-          << bsl::cyan << " [" << sloc.line() << ']' << bsl::reset_color    // --
-          << ": "                                                           // --
-          << sloc.function_name()                                           // --
-          << bsl::endl;                                                     // --
+        if constexpr (BSL_DEBUG_LEVEL != bsl::CRITICAL_ONLY) {
+            o << "  --> "                                                       // --
+              << bsl::yellow << sloc.file_name() << bsl::reset_color            // --
+              << bsl::cyan << " [" << sloc.line() << ']' << bsl::reset_color    // --
+              << ": "                                                           // --
+              << sloc.function_name()                                           // --
+              << bsl::endl;                                                     // --
+        }
 
         return o;
     }
@@ -241,55 +243,55 @@ namespace bsl
     }
 
     /// <!-- description -->
-    ///   @brief Returns bsl::fmt("#04x", t)
+    ///   @brief Returns bsl::fmt{"#04x", t}
     ///
     /// <!-- inputs/outputs -->
     ///   @param val the value to input into bsl::fmt
-    ///   @return Returns bsl::fmt("#04x", t)
+    ///   @return Returns bsl::fmt{"#04x", t}
     ///
     [[nodiscard]] constexpr auto
     hex(bsl::safe_uint8 const &val) noexcept -> bsl::fmt<bsl::safe_uint8>
     {
-        return bsl::fmt("#04x", val);
+        return bsl::fmt{"#04x", val};
     }
 
     /// <!-- description -->
-    ///   @brief Returns bsl::fmt("#06x", t)
+    ///   @brief Returns bsl::fmt{"#06x", t}
     ///
     /// <!-- inputs/outputs -->
     ///   @param val the value to input into bsl::fmt
-    ///   @return Returns bsl::fmt("#06x", t)
+    ///   @return Returns bsl::fmt{"#06x", t}
     ///
     [[nodiscard]] constexpr auto
     hex(bsl::safe_uint16 const &val) noexcept -> bsl::fmt<bsl::safe_uint16>
     {
-        return bsl::fmt("#06x", val);
+        return bsl::fmt{"#06x", val};
     }
 
     /// <!-- description -->
-    ///   @brief Returns bsl::fmt("#010x", t)
+    ///   @brief Returns bsl::fmt{"#010x", t}
     ///
     /// <!-- inputs/outputs -->
     ///   @param val the value to input into bsl::fmt
-    ///   @return Returns bsl::fmt("#010x", t)
+    ///   @return Returns bsl::fmt{"#010x", t}
     ///
     [[nodiscard]] constexpr auto
     hex(bsl::safe_uint32 const &val) noexcept -> bsl::fmt<bsl::safe_uint32>
     {
-        return bsl::fmt("#010x", val);
+        return bsl::fmt{"#010x", val};
     }
 
     /// <!-- description -->
-    ///   @brief Returns bsl::fmt("#018x", t)
+    ///   @brief Returns bsl::fmt{"#018x", t}
     ///
     /// <!-- inputs/outputs -->
     ///   @param val the value to input into bsl::fmt
-    ///   @return Returns bsl::fmt("#018x", t)
+    ///   @return Returns bsl::fmt{"#018x", t}
     ///
     [[nodiscard]] constexpr auto
     hex(bsl::safe_uint64 const &val) noexcept -> bsl::fmt<bsl::safe_uint64>
     {
-        return bsl::fmt("#018x", val);
+        return bsl::fmt{"#018x", val};
     }
 }
 

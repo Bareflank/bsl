@@ -44,7 +44,7 @@ namespace bsl
     ///
     template<typename T>
     [[maybe_unused]] constexpr auto
-    operator<<(out<T> const o, bsl::nullptr_t ptr) noexcept -> out<T>
+    operator<<(out<T> const o, bsl::nullptr_t const ptr) noexcept -> out<T>
     {
         bsl::discard(ptr);
 

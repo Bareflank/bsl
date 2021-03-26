@@ -41,8 +41,8 @@ namespace bsl
                 executed1 = true;
             }};
 
-            bsl::finally test2{[&executed1]() noexcept {
-                executed1 = true;
+            bsl::finally test2{[&executed2]() noexcept {
+                executed2 = true;
             }};
 
             test2.ignore();
@@ -55,11 +55,11 @@ namespace bsl
             bsl::error() << "failure\n";
         }
 
-        if (!executed2) {
-            bsl::print() << "success\n";
+        if (executed2) {
+            bsl::error() << "failure\n";
         }
         else {
-            bsl::error() << "failure\n";
+            bsl::print() << "success\n";
         }
     }
 }

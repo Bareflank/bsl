@@ -54,8 +54,8 @@ namespace bsl
     ///   @param b the bool being outputted
     ///
     template<typename OUT_T>
-    constexpr auto
-    fmt_impl(OUT_T &&o, fmt_options const &ops, bool const b) noexcept -> void
+    constexpr void
+    fmt_impl(OUT_T &&o, fmt_options const &ops, bool const b) noexcept
     {
         if (b) {
             switch (ops.type()) {

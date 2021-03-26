@@ -42,7 +42,10 @@ namespace
         bsl::ut_scenario{"unlikely"} = []() {
             bsl::ut_given{} = []() {
                 bsl::ut_then{} = []() {
-                    if (bsl::unlikely(true)) {
+                    if (bsl::unlikely(false)) {
+                        bsl::ut_check(false);
+                    }
+                    else {
                         bsl::ut_check(true);
                     }
                 };

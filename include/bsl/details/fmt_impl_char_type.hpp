@@ -54,8 +54,8 @@ namespace bsl
     ///   @param c the character being outputted
     ///
     template<typename OUT_T>
-    constexpr auto
-    fmt_impl(OUT_T &&o, fmt_options const &ops, char_type const c) noexcept -> void
+    constexpr void
+    fmt_impl(OUT_T &&o, fmt_options const &ops, char_type const c) noexcept
     {
         switch (ops.type()) {
             case fmt_type::fmt_type_b:

@@ -57,12 +57,22 @@ namespace bsl
     // the use of a lower case name, we want these to mimic C++
     // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
     constexpr cstr_type reset_color{details::if_color_enabled("\033[0m")};
+    /// @brief resets the color output of debug statements
+    // Defining colors using octals is the standard way of doing this. WRT to
+    // the use of a lower case name, we want these to mimic C++
+    // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
+    constexpr cstr_type rst{details::if_color_enabled("\033[0m")};
 
     /// @brief changes the foreground color to normal black
     // Defining colors using octals is the standard way of doing this. WRT to
     // the use of a lower case name, we want these to mimic C++
     // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
     constexpr cstr_type black{details::if_color_enabled("\033[0;90m")};
+    /// @brief changes the foreground color to normal black
+    // Defining colors using octals is the standard way of doing this. WRT to
+    // the use of a lower case name, we want these to mimic C++
+    // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
+    constexpr cstr_type blk{details::if_color_enabled("\033[0;90m")};
     /// @brief changes the foreground color to normal red
     // Defining colors using octals is the standard way of doing this. WRT to
     // the use of a lower case name, we want these to mimic C++
@@ -73,37 +83,72 @@ namespace bsl
     // the use of a lower case name, we want these to mimic C++
     // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
     constexpr cstr_type green{details::if_color_enabled("\033[0;92m")};
+    /// @brief changes the foreground color to normal green
+    // Defining colors using octals is the standard way of doing this. WRT to
+    // the use of a lower case name, we want these to mimic C++
+    // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
+    constexpr cstr_type grn{details::if_color_enabled("\033[0;92m")};
     /// @brief changes the foreground color to normal yellow
     // Defining colors using octals is the standard way of doing this. WRT to
     // the use of a lower case name, we want these to mimic C++
     // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
     constexpr cstr_type yellow{details::if_color_enabled("\033[0;93m")};
+    /// @brief changes the foreground color to normal yellow
+    // Defining colors using octals is the standard way of doing this. WRT to
+    // the use of a lower case name, we want these to mimic C++
+    // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
+    constexpr cstr_type ylw{details::if_color_enabled("\033[0;93m")};
     /// @brief changes the foreground color to normal blue
     // Defining colors using octals is the standard way of doing this. WRT to
     // the use of a lower case name, we want these to mimic C++
     // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
     constexpr cstr_type blue{details::if_color_enabled("\033[0;94m")};
+    /// @brief changes the foreground color to normal blue
+    // Defining colors using octals is the standard way of doing this. WRT to
+    // the use of a lower case name, we want these to mimic C++
+    // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
+    constexpr cstr_type blu{details::if_color_enabled("\033[0;94m")};
     /// @brief changes the foreground color to normal magenta
     // Defining colors using octals is the standard way of doing this. WRT to
     // the use of a lower case name, we want these to mimic C++
     // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
     constexpr cstr_type magenta{details::if_color_enabled("\033[0;95m")};
+    /// @brief changes the foreground color to normal magenta
+    // Defining colors using octals is the standard way of doing this. WRT to
+    // the use of a lower case name, we want these to mimic C++
+    // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
+    constexpr cstr_type mag{details::if_color_enabled("\033[0;95m")};
     /// @brief changes the foreground color to normal cyan
     // Defining colors using octals is the standard way of doing this. WRT to
     // the use of a lower case name, we want these to mimic C++
     // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
     constexpr cstr_type cyan{details::if_color_enabled("\033[0;96m")};
+    /// @brief changes the foreground color to normal cyan
+    // Defining colors using octals is the standard way of doing this. WRT to
+    // the use of a lower case name, we want these to mimic C++
+    // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
+    constexpr cstr_type cyn{details::if_color_enabled("\033[0;96m")};
     /// @brief changes the foreground color to normal white
     // Defining colors using octals is the standard way of doing this. WRT to
     // the use of a lower case name, we want these to mimic C++
     // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
     constexpr cstr_type white{details::if_color_enabled("\033[0;97m")};
+    /// @brief changes the foreground color to normal white
+    // Defining colors using octals is the standard way of doing this. WRT to
+    // the use of a lower case name, we want these to mimic C++
+    // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
+    constexpr cstr_type wht{details::if_color_enabled("\033[0;97m")};
 
     /// @brief changes the foreground color to bold black
     // Defining colors using octals is the standard way of doing this. WRT to
     // the use of a lower case name, we want these to mimic C++
     // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
     constexpr cstr_type bold_black{details::if_color_enabled("\033[1;90m")};
+    /// @brief changes the foreground color to bold black
+    // Defining colors using octals is the standard way of doing this. WRT to
+    // the use of a lower case name, we want these to mimic C++
+    // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
+    constexpr cstr_type bold_blk{details::if_color_enabled("\033[1;90m")};
     /// @brief changes the foreground color to bold red
     // Defining colors using octals is the standard way of doing this. WRT to
     // the use of a lower case name, we want these to mimic C++
@@ -114,31 +159,61 @@ namespace bsl
     // the use of a lower case name, we want these to mimic C++
     // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
     constexpr cstr_type bold_green{details::if_color_enabled("\033[1;92m")};
+    /// @brief changes the foreground color to bold green
+    // Defining colors using octals is the standard way of doing this. WRT to
+    // the use of a lower case name, we want these to mimic C++
+    // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
+    constexpr cstr_type bold_grn{details::if_color_enabled("\033[1;92m")};
     /// @brief changes the foreground color to bold yellow
     // Defining colors using octals is the standard way of doing this. WRT to
     // the use of a lower case name, we want these to mimic C++
     // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
     constexpr cstr_type bold_yellow{details::if_color_enabled("\033[1;93m")};
+    /// @brief changes the foreground color to bold yellow
+    // Defining colors using octals is the standard way of doing this. WRT to
+    // the use of a lower case name, we want these to mimic C++
+    // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
+    constexpr cstr_type bold_ylw{details::if_color_enabled("\033[1;93m")};
     /// @brief changes the foreground color to bold blue
     // Defining colors using octals is the standard way of doing this. WRT to
     // the use of a lower case name, we want these to mimic C++
     // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
     constexpr cstr_type bold_blue{details::if_color_enabled("\033[1;94m")};
+    /// @brief changes the foreground color to bold blue
+    // Defining colors using octals is the standard way of doing this. WRT to
+    // the use of a lower case name, we want these to mimic C++
+    // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
+    constexpr cstr_type bold_blu{details::if_color_enabled("\033[1;94m")};
     /// @brief changes the foreground color to bold magenta
     // Defining colors using octals is the standard way of doing this. WRT to
     // the use of a lower case name, we want these to mimic C++
     // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
     constexpr cstr_type bold_magenta{details::if_color_enabled("\033[1;95m")};
+    /// @brief changes the foreground color to bold magenta
+    // Defining colors using octals is the standard way of doing this. WRT to
+    // the use of a lower case name, we want these to mimic C++
+    // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
+    constexpr cstr_type bold_mag{details::if_color_enabled("\033[1;95m")};
     /// @brief changes the foreground color to bold cyan
     // Defining colors using octals is the standard way of doing this. WRT to
     // the use of a lower case name, we want these to mimic C++
     // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
     constexpr cstr_type bold_cyan{details::if_color_enabled("\033[1;96m")};
+    /// @brief changes the foreground color to bold cyan
+    // Defining colors using octals is the standard way of doing this. WRT to
+    // the use of a lower case name, we want these to mimic C++
+    // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
+    constexpr cstr_type bold_cyn{details::if_color_enabled("\033[1;96m")};
     /// @brief changes the foreground color to bold white
     // Defining colors using octals is the standard way of doing this. WRT to
     // the use of a lower case name, we want these to mimic C++
     // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
     constexpr cstr_type bold_white{details::if_color_enabled("\033[1;97m")};
+    /// @brief changes the foreground color to bold white
+    // Defining colors using octals is the standard way of doing this. WRT to
+    // the use of a lower case name, we want these to mimic C++
+    // NOLINTNEXTLINE(bsl-literals-no-octal, bsl-name-case)
+    constexpr cstr_type bold_wht{details::if_color_enabled("\033[1;97m")};
 }
 
 #endif

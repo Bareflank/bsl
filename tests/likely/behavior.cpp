@@ -45,6 +45,9 @@ namespace
                     if (bsl::likely(true)) {
                         bsl::ut_check(true);
                     }
+                    else {
+                        bsl::ut_check(false);
+                    }
                 };
             };
         };

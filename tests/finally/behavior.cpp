@@ -69,6 +69,34 @@ namespace
             };
         };
 
+        bsl::ut_scenario{"dormant finally"} = []() {
+            bsl::ut_given{} = []() {
+                bool executed{};
+                bsl::ut_then{} = [&executed]() {
+                    {
+                        bsl::finally test{bsl::dormant, [&executed]() noexcept {
+                                              executed = true;
+                                          }};
+                    }
+                    bsl::ut_check(!executed);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bool executed{};
+                bsl::ut_then{} = [&executed]() {
+                    {
+                        bsl::finally test{bsl::dormant, [&executed]() noexcept {
+                                              executed = true;
+                                          }};
+
+                        test.activate();
+                    }
+                    bsl::ut_check(executed);
+                };
+            };
+        };
+
         return bsl::ut_success();
     }
 }

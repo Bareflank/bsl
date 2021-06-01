@@ -36,6 +36,19 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
+    bsl::ut_scenario{"make_safe"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::safe_int32 val{42};
+            bsl::ut_when{} = [&val]() {
+                --val;
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(val == 42 - 1);
+                    bsl::ut_check(!val.failure());
+                };
+            };
+        };
+    };
+
     static_assert(bsl::ZERO_U8 == static_cast<bsl::uint8>(0));
     static_assert(bsl::ZERO_U16 == static_cast<bsl::uint16>(0));
     static_assert(bsl::ZERO_U32 == static_cast<bsl::uint32>(0));

@@ -2690,6 +2690,27 @@ namespace bsl
     }
 
     // -------------------------------------------------------------------------
+    // helpers
+    // -------------------------------------------------------------------------
+
+    /// <!-- description -->
+    ///   @brief Returns safe_integral<T>{val}
+    ///   @include safe_integral/example_safe_integral_make_safe.hpp
+    ///   @related bsl::safe_integral
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the integral type to make safe.
+    ///   @param val the integral to make safe
+    ///   @return Returns safe_integral<T>{val}
+    ///
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    make_safe(T const &val) noexcept -> safe_integral<T>
+    {
+        return safe_integral<T>{val};
+    }
+
+    // -------------------------------------------------------------------------
     // supported safe_integral types
     // -------------------------------------------------------------------------
 

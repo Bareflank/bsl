@@ -29,12 +29,7 @@
 #define BSL_BASIC_ERRC_TYPE_HPP
 
 #include "cstdint.hpp"
-#include "debug.hpp"
-#include "details/out.hpp"
-#include "discard.hpp"
-#include "move.hpp"
 #include "safe_integral.hpp"
-#include "string_view.hpp"
 
 namespace bsl
 {
@@ -236,19 +231,6 @@ namespace bsl
             return m_errc > T{};
         }
 
-        /// <!-- description -->
-        ///   @brief Returns a human readable version of the error code. If
-        ///     the error code is a custom, user defined error code, returns
-        ///     a nullptr.
-        ///   @include basic_errc_type/example_basic_errc_type_message.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return Returns a human readable version of the error code. If
-        ///     the error code is a custom, user defined error code, returns
-        ///     a nullptr.
-        ///
-        [[nodiscard]] constexpr auto message() const noexcept -> bsl::string_view;
-
     private:
         /// @brief stores the error code
         T m_errc;
@@ -347,122 +329,45 @@ namespace bsl
     // We want our implementation to mimic C++ here.
     // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_nullptr_dereference{34};
+    /// @brief Defines when a resource is busy
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
+    constexpr basic_errc_type<> errc_busy{50};
+    /// @brief Defines when a resource already_exists
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
+    constexpr basic_errc_type<> errc_already_exists{51};
 }
 
 // -----------------------------------------------------------------------------
-// Implementation
+// Helpers
 // -----------------------------------------------------------------------------
 
 namespace bsl
 {
     /// <!-- description -->
-    ///   @brief Returns a human readable version of the error code. If
-    ///     the error code is a custom, user defined error code, returns
-    ///     a nullptr.
-    ///   @include basic_errc_type/example_basic_errc_type_message.hpp
+    ///   @brief Returns true if the provided error code is equal to
+    ///     bsl::errc_success or bsl::errc_precondition. Returns false
+    ///     otherwise.
     ///
     /// <!-- inputs/outputs -->
-    ///   @return Returns a human readable version of the error code. If
-    ///     the error code is a custom, user defined error code, returns
-    ///     a nullptr.
+    ///   @param ec the error code to query
+    ///   @return Returns true if the provided error code is equal to
+    ///     bsl::errc_success or bsl::errc_precondition. Returns false
+    ///     otherwise.
     ///
-    template<typename T>
     [[nodiscard]] constexpr auto
-    basic_errc_type<T>::message() const noexcept -> bsl::string_view
+    success_or_precondition(basic_errc_type<> const ec) noexcept -> bool
     {
-        bsl::string_view msg{};
-
-        switch (m_errc) {
-            case errc_success.get(): {
-                msg = "success";
-                break;
-            }
-
-            case errc_failure.get(): {
-                msg = "general failure";
-                break;
-            }
-
-            case errc_precondition.get(): {
-                msg = "general precondition failure";
-                break;
-            }
-
-            case errc_postcondition.get(): {
-                msg = "general postcondition failure";
-                break;
-            }
-
-            case errc_assetion.get(): {
-                msg = "general assertion failure";
-                break;
-            }
-
-            case errc_invalid_argument.get(): {
-                msg = "invalid argument (precondition) failure";
-                break;
-            }
-
-            case errc_index_out_of_bounds.get(): {
-                msg = "index out of bounds (precondition) failure";
-                break;
-            }
-
-            case errc_unsigned_wrap.get(): {
-                msg = "unsigned wrap (assertion) failure";
-                break;
-            }
-
-            case errc_narrow_overflow.get(): {
-                msg = "narrow overflow (assertion) failure";
-                break;
-            }
-
-            case errc_signed_overflow.get(): {
-                msg = "signed overflow (assertion) failure";
-                break;
-            }
-
-            case errc_divide_by_zero.get(): {
-                msg = "divide by zero (assertion) failure";
-                break;
-            }
-
-            case errc_nullptr_dereference.get(): {
-                msg = "null dereference (assertion) failure";
-                break;
-            }
-
-            default: {
-                break;
-            }
+        if (bsl::errc_success == ec) {
+            return true;
         }
 
-        return msg;
-    }
-
-    /// <!-- description -->
-    ///   @brief Outputs the provided bsl::basic_errc_type to the provided
-    ///     output type.
-    ///   @related bsl::basic_errc_type
-    ///   @include basic_errc_type/example_basic_errc_type_ostream.hpp
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T1 the type of outputter provided
-    ///   @tparam T2 the type of element being encapsulated.
-    ///   @param o the instance of the outputter used to output the value.
-    ///   @param val the basic_errc_type to output
-    ///   @return return o
-    ///
-    template<typename T1, typename T2>
-    [[maybe_unused]] constexpr auto
-    operator<<(out<T1> const o, basic_errc_type<T2> const &val) noexcept -> out<T1>
-    {
-        if constexpr (!o) {
-            return o;
+        if (bsl::errc_precondition == ec) {
+            return true;
         }
 
-        return o << val.message();
+        return false;
     }
 }
 

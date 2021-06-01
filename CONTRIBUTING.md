@@ -1,5 +1,5 @@
 ## Contributors License Agreement
-To get started, please sign the <a href="https://cla-assistant.io/Bareflank/bsl"> Contributor License Agreement</a>.
+To get started, <a href="https://www.clahub.com/agreements/Bareflank/microv">sign the Contributor License Agreement</a>.
 
 ## Forking
 
@@ -16,7 +16,7 @@ This project provides multiple methods for asking other community members questi
 https://github.com/Bareflank/bsl/issues
 
 **Slack:** <br>
-https://bareflank.slack.com
+[![Join the chat](https://img.shields.io/badge/chat-on%20Slack-brightgreen.svg)](https://bareflank.herokuapp.com/)
 
 ## Feature Requests
 
@@ -27,22 +27,12 @@ https://github.com/Bareflank/bsl/issues
 
 If a feature request already exists, please use the existing feature request message, and add a “+1” comment to show your desire for the feature. Features requests with higher community support are more likely to be added to the roadmap.
 
-## Reporting Issues
+## Reporting Issues / Vulnerabilities
 
 All issues and vulnerabilities should be submitted to the following issue tracker:
 
 **Bug Tracking:** <br>
 https://github.com/Bareflank/bsl/issues
-
-When submitting an issue, please include the following documentation:
-
-- Title
-- Brief description of the issue
-- Instructions for how to reproduce the issue
-- Version information (or commit hash)
-- Environment information (distribution, supporting library information, compiler, hardware)
-- Console logs (if applicable)
-- Backtrace logs (if applicable)
 
 ## Request for Comments
 
@@ -62,43 +52,25 @@ Although an RFC can take on any format, please ensure that an RFC includes the f
 - Proposed documentation changes (if applicable)
 - Proposed testing changes (if applicable)
 
-Although an RFC should contain as much information as possible to reduce the number of questions likely to be asked by the community, it should also be as brief as possible. RFCs that are too long will likely see limited community involvement, resulting in a higher risk of push back during the submission of any proposed changes.
+An RFC should contain as much information as possible to reduce the number of questions likely to be asked by the community, it should also be as brief as possible. RFCs that are too long will likely see limited community involvement, resulting in a higher risk of push back during the submission of any proposed changes.
 
-## Pull Requests
+## Pull Requests / Commit Message Format
 
 Anyone can submit a pull request to the project. All pull requests must satisfy the requirements defined in the governance documentation. If the pull request includes source code, tests for the source code must also be included (usually in the form of unit tests). All CI tests must also return without error, demonstrating that not only does the source code contain the proper tests to validate it’s implementation, but these tests succeed.
 
-All PRs to the project should have the following commit format:
+## API Documentation
 
-- Title (50 characters or less)
-- Empty line
-- Description (wrapped to 72 characters per line)
-- Empty line
-- \[ISSUE\]: link (if applicable)
-- \[RFC\]: link (if applicable)
-- Empty line
-- Sign-off
+All functions should be documented using Doxygen style comment blocks. Each comment block should define the following:
 
-For Example:
+- All parameters and their expected values
+- Return value (if applicable)
+- Error cases
+- Notes (if applicable)
+- Code Example (if applicable)
 
-```
-Added new API XYZ
+Since comments are kept to a minimum, the function’s comment block is a great place to put notes about the function’s implementation. For more information about Doxygen, please see:
 
-The library was missing the ability to do blah, and as a
-result, blah was not possible. The following commit adds
-XYZ to the project providing the ability to:
-
-- Do blah blah
-- And blah
-- As well as blah
-
-The following blah was added to the unit tests to validate
-that this new API works as intended.
-
-[RFC]: link
-
-Signed-off-by: John Smith <smithj@company.com>
-```
+[Doxygen Manual](http://www.stack.nl/~dimitri/doxygen/)
 
 ## Tagged Releases
 

@@ -111,6 +111,86 @@ namespace bsl
     };
 
     /// <!-- description -->
+    ///   @brief Helper function that returns a reference_wrapper
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of reference to wrap
+    ///   @param val the thing to get the address of and store.
+    ///   @return Returns bsl::reference_wrapper<T>(val)
+    ///
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    ref(T &val) noexcept -> reference_wrapper<T>
+    {
+        return reference_wrapper<T>(val);
+    }
+
+    /// <!-- description -->
+    ///   @brief Helper function that returns a reference_wrapper
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of reference to wrap
+    ///   @param val the thing to get the address of and store.
+    ///   @return Returns bsl::ref(val.get());
+    ///
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    ref(reference_wrapper<T> val) noexcept -> reference_wrapper<T>
+    {
+        return ref(val.get());
+    }
+
+    /// <!-- description -->
+    ///   @brief Deletes the rvalue version of bsl::ref
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of reference to wrap
+    ///   @param val the thing to get the address of and store.
+    ///
+    template<typename T>
+    void ref(const T &&val) = delete;
+
+    /// <!-- description -->
+    ///   @brief Helper function that returns a reference_wrapper
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of reference to wrap
+    ///   @param val the thing to get the address of and store.
+    ///   @return Returns bsl::reference_wrapper<const T>(val)
+    ///
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    cref(const T &val) noexcept -> reference_wrapper<const T>
+    {
+        return reference_wrapper<const T>(val);
+    }
+
+    /// <!-- description -->
+    ///   @brief Helper function that returns a reference_wrapper
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of reference to wrap
+    ///   @param val the thing to get the address of and store.
+    ///   @return Returns bsl::cref(val.get());
+    ///
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    cref(reference_wrapper<T> val) noexcept -> reference_wrapper<const T>
+    {
+        return cref(val.get());
+    }
+
+    /// <!-- description -->
+    ///   @brief Deletes the rvalue version of bsl::cref
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of reference to wrap
+    ///   @param val the thing to get the address of and store.
+    ///
+    template<typename T>
+    void cref(const T &&val) = delete;
+
+    /// <!-- description -->
     ///   @brief Outputs the provided bsl::reference_wrapper to the provided
     ///     output type.
     ///   @related bsl::reference_wrapper

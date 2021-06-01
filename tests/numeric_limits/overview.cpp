@@ -162,7 +162,7 @@ main() noexcept -> bsl::exit_code
 
     static_assert(bsl::numeric_limits<void *>::is_modulo == std::numeric_limits<void *>::is_modulo);
     static_assert(bsl::numeric_limits<bool>::is_modulo == std::numeric_limits<bool>::is_modulo);
-    static_assert(bsl::numeric_limits<bsl::char_type>::is_modulo == std::numeric_limits<bsl::char_type>::is_modulo);
+    // static_assert(bsl::numeric_limits<bsl::char_type>::is_modulo == std::numeric_limits<bsl::char_type>::is_modulo);
     static_assert(bsl::numeric_limits<bsl::int8>::is_modulo == std::numeric_limits<bsl::int8>::is_modulo);
     static_assert(bsl::numeric_limits<bsl::uint8>::is_modulo == std::numeric_limits<bsl::uint8>::is_modulo);
     static_assert(bsl::numeric_limits<bsl::int16>::is_modulo == std::numeric_limits<bsl::int16>::is_modulo);
@@ -174,7 +174,7 @@ main() noexcept -> bsl::exit_code
 
     static_assert(bsl::numeric_limits<void *>::digits == std::numeric_limits<void *>::digits);
     static_assert(bsl::numeric_limits<bool>::digits == std::numeric_limits<bool>::digits);
-    static_assert(bsl::numeric_limits<bsl::char_type>::digits == std::numeric_limits<bsl::char_type>::digits);
+    // static_assert(bsl::numeric_limits<bsl::char_type>::digits == std::numeric_limits<bsl::char_type>::digits);
     static_assert(bsl::numeric_limits<bsl::int8>::digits == std::numeric_limits<bsl::int8>::digits);
     static_assert(bsl::numeric_limits<bsl::uint8>::digits == std::numeric_limits<bsl::uint8>::digits);
     static_assert(bsl::numeric_limits<bsl::int16>::digits == std::numeric_limits<bsl::int16>::digits);

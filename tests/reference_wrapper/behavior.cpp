@@ -82,6 +82,50 @@ namespace
             };
         };
 
+        bsl::ut_scenario{"bsl::ref"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 data{};
+                bsl::reference_wrapper rw{bsl::ref(data)};
+                bsl::ut_when{} = [&rw]() {
+                    rw.get() = 42;
+                    bsl::ut_then{} = [&rw]() {
+                        bsl::ut_check(rw.get() == 42);
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 data{};
+                bsl::reference_wrapper rw1{bsl::ref(data)};
+                bsl::reference_wrapper rw2{bsl::ref(rw1)};
+                bsl::ut_when{} = [&rw2]() {
+                    rw2.get() = 42;
+                    bsl::ut_then{} = [&rw2]() {
+                        bsl::ut_check(rw2.get() == 42);
+                    };
+                };
+            };
+        };
+
+        bsl::ut_scenario{"bsl::cref"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 const data{42};
+                bsl::reference_wrapper rw{bsl::cref(data)};
+                bsl::ut_then{} = [&rw]() {
+                    bsl::ut_check(rw.get() == 42);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 const data{42};
+                bsl::reference_wrapper rw1{bsl::cref(data)};
+                bsl::reference_wrapper rw2{bsl::cref(rw1)};
+                bsl::ut_then{} = [&rw2]() {
+                    bsl::ut_check(rw2.get() == 42);
+                };
+            };
+        };
+
         bsl::ut_scenario{"output doesn't crash"} = []() {
             bsl::ut_given{} = []() {
                 bsl::safe_int32 const data{42};

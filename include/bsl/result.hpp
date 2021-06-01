@@ -595,7 +595,7 @@ namespace bsl
             return o << *ptr;
         }
 
-        return o << val.errc();
+        return o << val.errc().get();
     }
 }
 

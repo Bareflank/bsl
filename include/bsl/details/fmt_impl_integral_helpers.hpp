@@ -181,9 +181,8 @@ namespace bsl::details
     ///   @param val the integral being outputted
     ///
     template<typename OUT_T, typename T>
-    constexpr auto
+    constexpr void
     fmt_impl_integral(OUT_T &&o, fmt_options const &ops, safe_integral<T> const &val) noexcept
-        -> void
     {
         fmt_impl_integral_info<T> const info{get_integral_info(ops, val)};
         safe_uintmax const padding{fmt_impl_align_pre(o, ops, info.digits + info.extras, false)};

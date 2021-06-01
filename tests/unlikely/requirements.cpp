@@ -39,7 +39,7 @@ main() noexcept -> bsl::exit_code
     bsl::ut_scenario{"verify noexcept"} = []() {
         bsl::ut_given{} = []() {
             bsl::ut_then{} = []() {
-                static_assert(noexcept(bsl::unlikely(true)));
+                static_assert(noexcept(bsl::unlikely(false)));
             };
         };
     };

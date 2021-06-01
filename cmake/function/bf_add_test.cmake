@@ -27,16 +27,23 @@
 # NAME: The name of the test case to add
 #
 macro(bf_add_test NAME)
+    set(multiVal SOURCES INCLUDES SYSTEM_INCLUDES LIBRARIES DEFINES)
+    cmake_parse_arguments(ARG "" "" "${multiVal}" ${ARGN})
+
     file(RELATIVE_PATH REL_NAME ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_LIST_DIR})
     file(TO_CMAKE_PATH "${REL_NAME}" REL_NAME)
     string(REPLACE "/" "_" REL_NAME ${REL_NAME})
     string(REPLACE " " "_" REL_NAME ${REL_NAME})
 
-    add_executable(${REL_NAME}_${NAME} ${NAME}.cpp)
-    target_link_libraries(${REL_NAME}_${NAME} PRIVATE bsl)
+    add_executable(${REL_NAME}_${NAME} ${NAME}.cpp ${ARG_SOURCES})
+    target_include_directories(${REL_NAME}_${NAME} PRIVATE ${ARG_INCLUDES})
+    target_include_directories(${REL_NAME}_${NAME} SYSTEM PRIVATE ${ARG_SYSTEM_INCLUDES})
+    target_link_libraries(${REL_NAME}_${NAME} PRIVATE bsl ${ARG_LIBRARIES})
     if(WIN32)
         target_link_libraries(${REL_NAME}_${NAME} PRIVATE libcmt.lib)
     endif()
+    target_compile_definitions(${REL_NAME}_${NAME} PRIVATE ${ARG_DEFINES})
+    target_compile_options(${REL_NAME}_${NAME} PRIVATE -Wframe-larger-than=4294967295)
 
     add_test(${REL_NAME}_${NAME} ${REL_NAME}_${NAME})
 endmacro(bf_add_test)

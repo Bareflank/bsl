@@ -28,6 +28,8 @@
 #ifndef BSL_FINALLY_HPP
 #define BSL_FINALLY_HPP
 
+#include "discard.hpp"
+#include "dormant_t.hpp"
 #include "is_nothrow_invocable.hpp"
 #include "move.hpp"
 #include "touch.hpp"
@@ -45,15 +47,15 @@ namespace bsl
     ///   @include example_finally_overview.hpp
     ///
     /// <!-- template parameters -->
-    ///   @tparam FUNC the type of function to call
+    ///   @tparam FUNC_T the type of function to call
     ///
-    template<typename FUNC>
+    template<typename FUNC_T>
     class finally final
     {
-        static_assert(is_nothrow_invocable<FUNC>::value);
+        static_assert(is_nothrow_invocable<FUNC_T>::value);
 
         /// @brief stores the function invoke on destruction
-        FUNC m_func;
+        FUNC_T m_func;
         /// @brief stores whether or not the function was invoked
         bool m_invoked;
 
@@ -66,9 +68,24 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param func the function to call on destruction
         ///
-        explicit constexpr finally(FUNC &&func) noexcept    // --
+        explicit constexpr finally(FUNC_T &&func) noexcept    // --
             : m_func{bsl::move(func)}, m_invoked{}
         {}
+
+        /// <!-- description -->
+        ///   @brief Creates a bsl::finally given the function to call
+        ///     on destruction only if activated.
+        ///   @include example_finally_overview.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param d ignored
+        ///   @param func the function to call on destruction
+        ///
+        explicit constexpr finally(bsl::dormant_t const &d, FUNC_T &&func) noexcept    // --
+            : m_func{bsl::move(func)}, m_invoked{true}
+        {
+            bsl::discard(d);
+        }
 
         /// <!-- description -->
         ///   @brief Destroyes a previously created bsl::finally, calling
@@ -127,6 +144,17 @@ namespace bsl
         ignore() noexcept
         {
             m_invoked = true;
+        }
+
+        /// <!-- description -->
+        ///   @brief Set the invoked status to false, causing the provided
+        ///     function to be called on destruction.
+        ///   @include example_finally_overview.hpp
+        ///
+        constexpr void
+        activate() noexcept
+        {
+            m_invoked = false;
         }
     };
 }

@@ -59,10 +59,8 @@
 #include "basic_errc_type/example_basic_errc_type_get.hpp"
 #include "basic_errc_type/example_basic_errc_type_is_checked.hpp"
 #include "basic_errc_type/example_basic_errc_type_is_unchecked.hpp"
-#include "basic_errc_type/example_basic_errc_type_message.hpp"
 #include "basic_errc_type/example_basic_errc_type_not_equals.hpp"
 #include "basic_errc_type/example_basic_errc_type_operator_bool.hpp"
-#include "basic_errc_type/example_basic_errc_type_ostream.hpp"
 #include "basic_errc_type/example_basic_errc_type_success.hpp"
 #include "basic_string_view/example_basic_string_view_at_if.hpp"
 #include "basic_string_view/example_basic_string_view_back_if.hpp"
@@ -166,7 +164,6 @@
 #include "example_add_pointer_overview.hpp"
 #include "example_add_rvalue_reference_overview.hpp"
 #include "example_addressof_overview.hpp"
-#include "example_adopt_lock_t_overview.hpp"
 #include "example_aligned_storage_overview.hpp"
 #include "example_aligned_union_overview.hpp"
 #include "example_alignment_of_overview.hpp"
@@ -197,6 +194,7 @@
 #include "example_detected_t_overview.hpp"
 #include "example_discard_overview.hpp"
 #include "example_disjunction_overview.hpp"
+#include "example_dormant_overview.hpp"
 #include "example_enable_if_overview.hpp"
 #include "example_errc_type_overview.hpp"
 #include "example_exchange_overview.hpp"
@@ -204,6 +202,7 @@
 #include "example_extent_overview.hpp"
 #include "example_false_type_for_overview.hpp"
 #include "example_false_type_overview.hpp"
+#include "example_finally_assert_overview.hpp"
 #include "example_finally_overview.hpp"
 #include "example_fmt_overview.hpp"
 #include "example_forward_overview.hpp"
@@ -301,8 +300,8 @@
 #include "example_is_unsigned_overview.hpp"
 #include "example_is_void_overview.hpp"
 #include "example_is_volatile_overview.hpp"
+#include "example_likely_assert_overview.hpp"
 #include "example_likely_overview.hpp"
-#include "example_lock_guard_overview.hpp"
 #include "example_make_index_sequence_overview.hpp"
 #include "example_make_integer_sequence_overview.hpp"
 #include "example_make_signed_overview.hpp"
@@ -329,9 +328,9 @@
 #include "example_result_overview.hpp"
 #include "example_reverse_iterator_overview.hpp"
 #include "example_safe_integral_overview.hpp"
+#include "example_sort_overview.hpp"
 #include "example_source_location_overview.hpp"
 #include "example_span_overview.hpp"
-#include "example_spinlock_overview.hpp"
 #include "example_string_view_overview.hpp"
 #include "example_swap_overview.hpp"
 #include "example_touch_overview.hpp"
@@ -339,6 +338,7 @@
 #include "example_true_type_overview.hpp"
 #include "example_type_identity_overview.hpp"
 #include "example_underlying_type_overview.hpp"
+#include "example_unlikely_assert_overview.hpp"
 #include "example_unlikely_overview.hpp"
 #include "example_void_t_overview.hpp"
 #include "fmt/example_fmt_align.hpp"
@@ -355,8 +355,6 @@
 #include "integer_sequence/example_integer_sequence_max.hpp"
 #include "integer_sequence/example_integer_sequence_min.hpp"
 #include "integer_sequence/example_integer_sequence_size.hpp"
-#include "lock_guard/example_lock_guard_constructor_adopt.hpp"
-#include "lock_guard/example_lock_guard_constructor_lck.hpp"
 #include "reference_wrapper/example_reference_wrapper_constructor.hpp"
 #include "reference_wrapper/example_reference_wrapper_functor.hpp"
 #include "reference_wrapper/example_reference_wrapper_get.hpp"
@@ -425,6 +423,7 @@
 #include "safe_integral/example_safe_integral_is_zero.hpp"
 #include "safe_integral/example_safe_integral_lshift.hpp"
 #include "safe_integral/example_safe_integral_lt.hpp"
+#include "safe_integral/example_safe_integral_make_safe.hpp"
 #include "safe_integral/example_safe_integral_max.hpp"
 #include "safe_integral/example_safe_integral_min.hpp"
 #include "safe_integral/example_safe_integral_mod.hpp"
@@ -471,11 +470,6 @@
 #include "span/example_span_size.hpp"
 #include "span/example_span_size_bytes.hpp"
 #include "span/example_span_subspan.hpp"
-#include "spinlock/example_spinlock_constructor_val.hpp"
-#include "spinlock/example_spinlock_default_constructor.hpp"
-#include "spinlock/example_spinlock_lock.hpp"
-#include "spinlock/example_spinlock_try_lock.hpp"
-#include "spinlock/example_spinlock_unlock.hpp"
 
 #include <bsl/cstr_type.hpp>
 #include <bsl/debug.hpp>
@@ -519,7 +513,6 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_add_pointer_overview, "example_add_pointer_overview");
     example(&bsl::example_add_rvalue_reference_overview, "example_add_rvalue_reference_overview");
     example(&bsl::example_addressof_overview, "example_addressof_overview");
-    example(&bsl::example_adopt_lock_t_overview, "example_adopt_lock_t_overview");
     example(&bsl::example_aligned_storage_overview, "example_aligned_storage_overview");
     example(&bsl::example_aligned_union_overview, "example_aligned_union_overview");
     example(&bsl::example_alignment_of_overview, "example_alignment_of_overview");
@@ -565,10 +558,8 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_basic_errc_type_get, "example_basic_errc_type_get");
     example(&bsl::example_basic_errc_type_is_checked, "example_basic_errc_type_is_checked");
     example(&bsl::example_basic_errc_type_is_unchecked, "example_basic_errc_type_is_unchecked");
-    example(&bsl::example_basic_errc_type_message, "example_basic_errc_type_message");
     example(&bsl::example_basic_errc_type_not_equals, "example_basic_errc_type_not_equals");
     example(&bsl::example_basic_errc_type_operator_bool, "example_basic_errc_type_operator_bool");
-    example(&bsl::example_basic_errc_type_ostream, "example_basic_errc_type_ostream");
     example(&bsl::example_basic_errc_type_success, "example_basic_errc_type_success");
     example(&bsl::example_basic_string_view_overview, "example_basic_string_view_overview");
     example(&bsl::example_basic_string_view_at_if, "example_basic_string_view_at_if");
@@ -689,6 +680,7 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_detected_t_overview, "example_detected_t_overview");
     example(&bsl::example_discard_overview, "example_discard_overview");
     example(&bsl::example_disjunction_overview, "example_disjunction_overview");
+    example(&bsl::example_dormant_overview, "example_dormant_overview");
     example(&bsl::example_enable_if_overview, "example_enable_if_overview");
     example(&bsl::example_errc_type_overview, "example_errc_type_overview");
     example(&bsl::example_exchange_overview, "example_exchange_overview");
@@ -696,6 +688,7 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_extent_overview, "example_extent_overview");
     example(&bsl::example_false_type_overview, "example_false_type_overview");
     example(&bsl::example_false_type_for_overview, "example_false_type_for_overview");
+    example(&bsl::example_finally_assert_overview, "example_finally_assert_overview");
     example(&bsl::example_finally_overview, "example_finally_overview");
     example(&bsl::example_fmt_overview, "example_fmt_overview");
     example(&bsl::example_fmt_align, "example_fmt_align");
@@ -807,10 +800,8 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_is_union_overview, "example_is_union_overview");
     example(&bsl::example_is_void_overview, "example_is_void_overview");
     example(&bsl::example_is_volatile_overview, "example_is_volatile_overview");
+    example(&bsl::example_likely_assert_overview, "example_likely_assert_overview");
     example(&bsl::example_likely_overview, "example_likely_overview");
-    example(&bsl::example_lock_guard_overview, "example_lock_guard_overview");
-    example(&bsl::example_lock_guard_constructor_adopt, "example_lock_guard_constructor_adopt");
-    example(&bsl::example_lock_guard_constructor_lck, "example_lock_guard_constructor_lck");
     example(&bsl::example_make_index_sequence_overview, "example_make_index_sequence_overview");
     example(&bsl::example_make_integer_sequence_overview, "example_make_integer_sequence_overview");
     example(&bsl::example_make_signed_overview, "example_make_signed_overview");
@@ -905,6 +896,7 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_safe_integral_is_zero, "example_safe_integral_is_zero");
     example(&bsl::example_safe_integral_lshift, "example_safe_integral_lshift");
     example(&bsl::example_safe_integral_lt, "example_safe_integral_lt");
+    example(&bsl::example_safe_integral_make_safe, "example_safe_integral_make_safe");
     example(&bsl::example_safe_integral_max, "example_safe_integral_max");
     example(&bsl::example_safe_integral_min, "example_safe_integral_min");
     example(&bsl::example_safe_integral_mod, "example_safe_integral_mod");
@@ -917,6 +909,7 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_safe_integral_sub, "example_safe_integral_sub");
     example(&bsl::example_safe_integral_unary, "example_safe_integral_unary");
     example(&bsl::example_safe_integral_xor, "example_safe_integral_xor");
+    example(&bsl::example_sort_overview, "example_sort_overview");
     example(&bsl::example_source_location_overview, "example_source_location_overview");
     example(&bsl::example_source_location_current, "example_source_location_current");
     example(&bsl::example_source_location_default_constructor, "example_source_location_default_constructor");
@@ -953,12 +946,6 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_span_size_bytes, "example_span_size_bytes");
     example(&bsl::example_span_size, "example_span_size");
     example(&bsl::example_span_subspan, "example_span_subspan");
-    example(&bsl::example_spinlock_overview, "example_spinlock_overview");
-    example(&bsl::example_spinlock_constructor_val, "example_spinlock_constructor_val");
-    example(&bsl::example_spinlock_default_constructor, "example_spinlock_default_constructor");
-    example(&bsl::example_spinlock_lock, "example_spinlock_lock");
-    example(&bsl::example_spinlock_try_lock, "example_spinlock_try_lock");
-    example(&bsl::example_spinlock_unlock, "example_spinlock_unlock");
     example(&bsl::example_string_view_overview, "example_string_view_overview");
     example(&bsl::example_swap_overview, "example_swap_overview");
     example(&bsl::example_touch_overview, "example_touch_overview");
@@ -966,6 +953,7 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_true_type_overview, "example_true_type_overview");
     example(&bsl::example_type_identity_overview, "example_type_identity_overview");
     example(&bsl::example_underlying_type_overview, "example_underlying_type_overview");
+    example(&bsl::example_unlikely_assert_overview, "example_unlikely_assert_overview");
     example(&bsl::example_unlikely_overview, "example_unlikely_overview");
     example(&bsl::example_void_t_overview, "example_void_t_overview");
 

@@ -187,6 +187,7 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(42U ^ val3));
                 static_assert(noexcept(~val3));
                 static_assert(noexcept(-val1));
+                static_assert(noexcept(bsl::make_safe(42)));
             };
         };
     };

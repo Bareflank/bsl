@@ -33,11 +33,11 @@ namespace bsl
     inline void
     example_unlikely_overview() noexcept
     {
-        if (bsl::unlikely(true)) {
-            bsl::print() << "success\n";
+        if (bsl::unlikely(false)) {
+            bsl::error() << "failure\n";
         }
         else {
-            bsl::error() << "failure\n";
+            bsl::print() << "success\n";
         }
     }
 }

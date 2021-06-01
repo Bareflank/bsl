@@ -116,7 +116,7 @@ namespace
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    bsl::ut_scenario{"verify supports constinit "} = []() {
+    bsl::ut_scenario{"verify supports constinit"} = []() {
         bsl::discard(verify_constinit);
     };
 

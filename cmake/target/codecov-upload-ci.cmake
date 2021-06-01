@@ -19,10 +19,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# TODO:
+# - Once we have full branch coverage in the BSL, we need to turn branch
+#   coverage on for CI. For now, codecov will ignore it's own config settings
+#   if you include branch coverage in the uploaded report, so we have it
+#   turned off in grcov.
+#
+
 if(CMAKE_BUILD_TYPE STREQUAL CODECOV)
     add_custom_target(codecov-upload-ci
-        COMMAND curl -s https://codecov.io/bash > ${CMAKE_BINARY_DIR}/codecov.sh
-        COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR}
-        bash ${CMAKE_BINARY_DIR}/codecov.sh -f ${CMAKE_BINARY_DIR}/codecov.info -Z
+        COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} cmake --build . --target unittest
+        COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_GRCOV} . -s ${CMAKE_SOURCE_DIR} -t lcov -o ${CMAKE_BINARY_DIR}/codecov.info --ignore '/**'
+        COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR} bash ${CMAKE_BINARY_DIR}/codecov.sh -f ${CMAKE_BINARY_DIR}/codecov.info
     )
 endif()

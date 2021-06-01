@@ -57,3 +57,4 @@
 build/
 site/
 doxygen_output/
+grcov/

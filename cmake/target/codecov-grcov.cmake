@@ -19,9 +19,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+include(${CMAKE_CURRENT_LIST_DIR}/../colors.cmake)
+
 if(CMAKE_BUILD_TYPE STREQUAL CODECOV)
-    add_custom_target(codecov-info
-        COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} cmake --build . --target unittest
-        COMMAND grcov ${CMAKE_BINARY_DIR} -s ${CMAKE_SOURCE_DIR} -t lcov -o ${CMAKE_BINARY_DIR}/codecov.info
-    )
+    if(DEFINED BF_GENHTML)
+        add_custom_target(codecov-grcov
+            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} cmake --build . --target unittest
+            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_GRCOV} . -s ${CMAKE_SOURCE_DIR} -t html -o ${CMAKE_SOURCE_DIR}/grcov/ --ignore '/**' --branch
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_GRN}success${BF_COLOR_RST}: open ${BF_COLOR_YLW}${CMAKE_SOURCE_DIR}/grcov/index.html${BF_COLOR_RST} in a browser to see the report"
+        )
+    endif()
 endif()

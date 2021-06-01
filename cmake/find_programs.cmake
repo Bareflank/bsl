@@ -34,5 +34,23 @@ if(CMAKE_BUILD_TYPE STREQUAL CLANG_TIDY)
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL CODECOV)
+    bf_find_program(BF_GCOV "gcov" "https://llvm.org/docs/CommandGuide/llvm-cov.html")
     bf_find_program(BF_GRCOV "grcov" "https://github.com/mozilla/grcov")
+
+    # These are optional
+    #
+
+    find_program(BF_LCOV "lcov")
+    find_program(BF_GENHTML "genhtml")
+
+    # NOTE:
+    # - For GRCOV to work, gcov must actually point to llvm-cov. This will
+    #   cause llvm-cov to act like GCOV which is needed because you cannot
+    #   mix GCOV with Clang.
+    #
+
+    execute_process(COMMAND gcov --version OUTPUT_VARIABLE GCOV_OUTPUT)
+    if(NOT GCOV_OUTPUT MATCHES "LLVM")
+        message(FATAL_ERROR "gcov must be a symlink to, or rename of llvm-cov")
+    endif()
 endif()

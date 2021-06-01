@@ -104,9 +104,7 @@ list(APPEND BSL_FLAGS_UBSAN
 )
 
 list(APPEND BSL_FLAGS_CODECOV
-    -O0
-    -fprofile-arcs
-    -ftest-coverage
+    --coverage
     ${BSL_WARNINGS}
     ${BSL_ENABLE_CONSOLE_COLORS}
 )

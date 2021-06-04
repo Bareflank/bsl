@@ -169,17 +169,18 @@ jobs:
     - name: Setup
       run: |
         sudo apt-get update
-        sudo apt-get install -y clang cmake ninja-build
-        wget https://github.com/mozilla/grcov/releases/download/v0.5.9/grcov-linux-x86_64.tar.bz2
+        sudo apt-get install -y clang cmake ninja-build llvm
+        wget https://github.com/mozilla/grcov/releases/download/v0.8.0/grcov-linux-x86_64.tar.bz2
         tar xvf grcov-linux-x86_64.tar.bz2
         sudo mv grcov /usr/bin/
+        sudo rm /usr/bin/gcov
+        sudo ln -s /usr/bin/llvm-cov-10 /usr/bin/gcov
       shell: bash
     - name: Gather Codecov Info
       run: |
         mkdir build && cd build
         cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=CODECOV -DBUILD_TESTS=ON ../bsl
         ninja
-        ninja codecov-info
       shell: bash
     - name: Upload Codecov Info
       run: |

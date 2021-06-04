@@ -68,7 +68,7 @@ main() noexcept -> bsl::exit_code
 {
     constexpr bsl::safe_uint8 byte42{bsl::to_u8(42)};
 
-    bsl::ut_scenario{"verify supports constinit "} = []() {
+    bsl::ut_scenario{"verify supports constinit"} = []() {
         bsl::discard(verify_constinit);
     };
 

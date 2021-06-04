@@ -19,23 +19,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-include(${CMAKE_CURRENT_LIST_DIR}/config/all_projects.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/config/default.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/config/cmake.cmake)
+if(CMAKE_BUILD_TYPE STREQUAL CODECOV)
+    if(DEFINED BF_LCOV AND DEFINED BF_GENHTML)
+        add_custom_target(codecov-genhtml
+            COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/genhtml.info
+            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_LCOV} --zerocounters --directory ${CMAKE_BINARY_DIR}
+            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} cmake --build . --target unittest
+            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_GRCOV} . -s ${CMAKE_SOURCE_DIR} -t lcov -o ${CMAKE_BINARY_DIR}/genhtml.info --ignore '/**' --branch
+            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR} ${BF_GENHTML} -s --function-coverage --branch-coverage --legend --demangle-cpp --highlight -rc genhtml_hi_limit=100 ${CMAKE_BINARY_DIR}/genhtml.info -o ${CMAKE_SOURCE_DIR}/genhtml/ --prefix ${CMAKE_SOURCE_DIR}
+        )
+    endif()
+endif()
 
-include(${CMAKE_CURRENT_LIST_DIR}/build_types.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/find_programs.cmake)
 
-include(${CMAKE_CURRENT_LIST_DIR}/target/codecov-genhtml.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/target/codecov-grcov.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/target/codecov-upload-ci.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/target/codecov-upload.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/target/doxygen.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/target/format.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/target/info.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/target/unittest.cmake)
-
-include(${CMAKE_CURRENT_LIST_DIR}/depend/codecov.cmake)
-
-include(${CMAKE_CURRENT_LIST_DIR}/interface/bsl.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/validate.cmake)

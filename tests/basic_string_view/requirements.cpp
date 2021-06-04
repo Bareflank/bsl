@@ -148,7 +148,7 @@ main() noexcept -> bsl::exit_code
 {
     using bsv_type = bsl::basic_string_view<bsl::char_type>;
 
-    bsl::ut_scenario{"verify supports constinit "} = []() {
+    bsl::ut_scenario{"verify supports constinit"} = []() {
         bsl::discard(verify_constinit);
     };
 

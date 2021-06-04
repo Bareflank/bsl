@@ -82,7 +82,7 @@ namespace bsl
     /// <!-- inputs/outputs -->
     ///   @param test if test is true, this function returns true. If test is
     ///     false, this function will exit fast with a failure code.
-    ///   @param sloc used to identify the location in the unit test that a
+    ///   @param sloc used to identify the location in the unit test where a
     ///     check failed.
     ///   @return returns test
     ///
@@ -112,7 +112,7 @@ namespace bsl
     ///   @param ec if ec is bsl::errc_success, this function returns true.
     ///     If ec is bsl::errc_failure, this function will exit fast with a
     ///     failure code.
-    ///   @param sloc used to identify the location in the unit test that a
+    ///   @param sloc used to identify the location in the unit test where a
     ///     check failed.
     ///   @return returns test
     ///
@@ -131,7 +131,7 @@ namespace bsl
     ///   @param val if val does not contain an error, this function returns
     ///     true. If val contains an error, this function will exit fast with a
     ///     failure code.
-    ///   @param sloc used to identify the location in the unit test that a
+    ///   @param sloc used to identify the location in the unit test where a
     ///     check failed.
     ///   @return returns test
     ///
@@ -161,7 +161,7 @@ namespace bsl
     /// <!-- inputs/outputs -->
     ///   @param test if test is true, this function returns true. If test is
     ///     false, this function will exit fast with a failure code.
-    ///   @param sloc used to identify the location in the unit test that a
+    ///   @param sloc used to identify the location in the unit test where a
     ///     check failed.
     ///   @return returns test
     ///
@@ -190,7 +190,7 @@ namespace bsl
     ///   @param ec if ec is bsl::errc_success, this function returns true.
     ///     If ec is bsl::errc_failure, this function will exit fast with a
     ///     failure code.
-    ///   @param sloc used to identify the location in the unit test that a
+    ///   @param sloc used to identify the location in the unit test where a
     ///     check failed.
     ///   @return returns test
     ///
@@ -209,7 +209,7 @@ namespace bsl
     ///   @param val if val does not contain an error, this function returns
     ///     true. If val contains an error, this function will exit fast with a
     ///     failure code.
-    ///   @param sloc used to identify the location in the unit test that a
+    ///   @param sloc used to identify the location in the unit test where a
     ///     check failed.
     ///   @return returns test
     ///

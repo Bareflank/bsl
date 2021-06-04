@@ -110,6 +110,20 @@ macro(bf_add_info NAME)
         VERBATIM
     )
 
+    if(CMAKE_BUILD_TYPE STREQUAL CODECOV)
+        if(DEFINED BSL_CODECOV_TOKEN)
+            add_custom_command(TARGET info
+                COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   BSL_CODECOV_TOKEN              ${BF_COLOR_CYN}${BSL_CODECOV_TOKEN}${BF_COLOR_RST}"
+                VERBATIM
+            )
+        else()
+            add_custom_command(TARGET info
+                COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   BSL_CODECOV_TOKEN              ${BF_COLOR_RED}not defined${BF_COLOR_RST}"
+                VERBATIM
+            )
+        endif()
+    endif()
+
     if(CMAKE_BUILD_TYPE STREQUAL CLANG_TIDY)
         add_custom_command(TARGET info
             COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   CMAKE_BUILD_TYPE               ${BF_COLOR_CYN}${CMAKE_BUILD_TYPE}${BF_COLOR_RST} - ${CMAKE_CXX_CLANG_TIDY}"
@@ -117,7 +131,7 @@ macro(bf_add_info NAME)
         )
     elseif(CMAKE_BUILD_TYPE STREQUAL CODECOV)
         add_custom_command(TARGET info
-            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   CMAKE_BUILD_TYPE               ${BF_COLOR_CYN}${CMAKE_BUILD_TYPE}${BF_COLOR_RST} - ${BF_GRCOV}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   CMAKE_BUILD_TYPE               ${BF_COLOR_CYN}${CMAKE_BUILD_TYPE}${BF_COLOR_RST} - ${BF_GCOV}, ${BF_GRCOV}"
             VERBATIM
         )
     else()

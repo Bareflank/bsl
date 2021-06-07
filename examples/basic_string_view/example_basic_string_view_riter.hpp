@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/basic_string_view.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -33,11 +34,11 @@ namespace bsl
     inline void
     example_basic_string_view_riter() noexcept
     {
-        constexpr bsl::safe_uintmax idx{bsl::to_umax(1)};
+        constexpr auto idx{1_umax};
         constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
 
         for (auto iter{str.riter(idx)}; iter != str.rend(); ++iter) {
-            bsl::print() << "element [" << iter.index() << "] == " << iter << bsl::endl;
+            bsl::print() << "element [" << iter.index() << "] == " << iter.data() << bsl::endl;
         }
     }
 }

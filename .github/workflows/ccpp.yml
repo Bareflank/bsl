@@ -158,6 +158,13 @@ jobs:
         cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=DEBUG -DBUILD_EXAMPLES=ON -DBUILD_TESTS=ON ../bsl
         ninja
         ninja unittest
+        ./examples/examples 2> errors.txt 1> /dev/null
+        if [[ -s errors.txt ]]; then
+          echo "The examples have errors"
+          echo ""
+          git diff
+          exit -1
+        fi
       shell: bash
 
   Codecov:
@@ -179,7 +186,7 @@ jobs:
     - name: Gather Codecov Info
       run: |
         mkdir build && cd build
-        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=CODECOV -DBUILD_TESTS=ON ../bsl
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=CODECOV -DBUILD_TESTS=ON -DENABLE_BRANCH=off ../bsl
         ninja
       shell: bash
     - name: Upload Codecov Info

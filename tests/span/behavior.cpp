@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/array.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/npos.hpp>
 #include <bsl/span.hpp>
 #include <bsl/ut.hpp>
@@ -57,76 +58,31 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"at_if"} = []() {
+        bsl::ut_scenario{"default constructor"} = []() {
             bsl::ut_given{} = []() {
                 bsl::span<bool> spn{};
                 bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(spn.empty());
+                    bsl::ut_check(spn.data() == nullptr);
+                    bsl::ut_check(spn.size().is_zero());
+                };
+            };
+        };
+
+        bsl::ut_scenario{"ptr/count constructor"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::array const arr{test_arr};
+                bsl::span const spn{arr.data(), 0_umax};
+                bsl::ut_then{} = [&spn]() {
                     bsl::ut_check(spn.at_if(bsl::to_umax(0)) == nullptr);
-                    bsl::ut_check(spn.at_if(bsl::npos) == nullptr);
-                    bsl::ut_check(spn.at_if(bsl::safe_uintmax::zero(true)) == nullptr);
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::span<bool> const spn{};
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::array const arr{test_arr};
+                bsl::span const spn{arr.data(), bsl::safe_uintmax::failure()};
                 bsl::ut_then{} = [&spn]() {
                     bsl::ut_check(spn.at_if(bsl::to_umax(0)) == nullptr);
-                    bsl::ut_check(spn.at_if(bsl::npos) == nullptr);
-                    bsl::ut_check(spn.at_if(bsl::safe_uintmax::zero(true)) == nullptr);
-                };
-            };
-
-            bsl::ut_given{} = []() {
-                bsl::span<bool> spn{nullptr, bsl::to_umax(5)};
-                bsl::ut_then{} = [&spn]() {
-                    bsl::ut_check(spn.at_if(bsl::to_umax(0)) == nullptr);
-                    bsl::ut_check(spn.at_if(bsl::npos) == nullptr);
-                    bsl::ut_check(spn.at_if(bsl::safe_uintmax::zero(true)) == nullptr);
-                };
-            };
-
-            bsl::ut_given{} = []() {
-                bsl::span<bool> const spn{nullptr, bsl::to_umax(5)};
-                bsl::ut_then{} = [&spn]() {
-                    bsl::ut_check(spn.at_if(bsl::to_umax(0)) == nullptr);
-                    bsl::ut_check(spn.at_if(bsl::npos) == nullptr);
-                    bsl::ut_check(spn.at_if(bsl::safe_uintmax::zero(true)) == nullptr);
-                };
-            };
-
-            bsl::ut_given{} = []() {
-                bsl::array arr{test_arr};
-                bsl::span spn{arr.data(), bsl::to_umax(0)};
-                bsl::ut_then{} = [&spn]() {
-                    bsl::ut_check(spn.at_if(bsl::to_umax(0)) == nullptr);
-                    bsl::ut_check(spn.at_if(bsl::npos) == nullptr);
-                    bsl::ut_check(spn.at_if(bsl::safe_uintmax::zero(true)) == nullptr);
-                };
-            };
-
-            bsl::ut_given{} = []() {
-                bsl::array arr{test_arr};
-                bsl::span const spn{arr.data(), bsl::to_umax(0)};
-                bsl::ut_then{} = [&spn]() {
-                    bsl::ut_check(spn.at_if(bsl::to_umax(0)) == nullptr);
-                    bsl::ut_check(spn.at_if(bsl::npos) == nullptr);
-                    bsl::ut_check(spn.at_if(bsl::safe_uintmax::zero(true)) == nullptr);
-                };
-            };
-
-            bsl::ut_given{} = []() {
-                bsl::array arr{test_arr};
-                bsl::span spn{arr.data(), arr.size()};
-                bsl::ut_then{} = [&spn]() {
-                    bsl::ut_check(*spn.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
-                    bsl::ut_check(*spn.at_if(bsl::to_umax(1)) == bsl::to_i32(8));
-                    bsl::ut_check(*spn.at_if(bsl::to_umax(2)) == bsl::to_i32(15));
-                    bsl::ut_check(*spn.at_if(bsl::to_umax(3)) == bsl::to_i32(16));
-                    bsl::ut_check(*spn.at_if(bsl::to_umax(4)) == bsl::to_i32(23));
-                    bsl::ut_check(*spn.at_if(bsl::to_umax(5)) == bsl::to_i32(42));
-                    bsl::ut_check(spn.at_if(bsl::to_umax(6)) == nullptr);
-                    bsl::ut_check(spn.at_if(bsl::npos) == nullptr);
-                    bsl::ut_check(spn.at_if(bsl::safe_uintmax::zero(true)) == nullptr);
                 };
             };
 
@@ -142,7 +98,192 @@ namespace
                     bsl::ut_check(*spn.at_if(bsl::to_umax(5)) == bsl::to_i32(42));
                     bsl::ut_check(spn.at_if(bsl::to_umax(6)) == nullptr);
                     bsl::ut_check(spn.at_if(bsl::npos) == nullptr);
-                    bsl::ut_check(spn.at_if(bsl::safe_uintmax::zero(true)) == nullptr);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::array const arr{test_arr};
+                bsl::span const spn{arr.data(), arr.size()};
+                bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(spn.at_if(bsl::safe_uintmax::failure()) == nullptr);
+                };
+            };
+        };
+
+        bsl::ut_scenario{"array constructors"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::array arr{test_arr};
+                bsl::span const spn{arr};
+                bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(1)) == bsl::to_i32(8));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(2)) == bsl::to_i32(15));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(3)) == bsl::to_i32(16));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(4)) == bsl::to_i32(23));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(5)) == bsl::to_i32(42));
+                    bsl::ut_check(spn.at_if(bsl::to_umax(6)) == nullptr);
+                    bsl::ut_check(spn.at_if(bsl::npos) == nullptr);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::array arr{test_arr};
+                bsl::span const spn{arr};
+                bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(spn.at_if(bsl::safe_uintmax::failure()) == nullptr);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::array const arr{test_arr};
+                bsl::span const spn{arr};
+                bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(1)) == bsl::to_i32(8));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(2)) == bsl::to_i32(15));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(3)) == bsl::to_i32(16));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(4)) == bsl::to_i32(23));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(5)) == bsl::to_i32(42));
+                    bsl::ut_check(spn.at_if(bsl::to_umax(6)) == nullptr);
+                    bsl::ut_check(spn.at_if(bsl::npos) == nullptr);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::array const arr{test_arr};
+                bsl::span const spn{arr};
+                bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(spn.at_if(bsl::safe_uintmax::failure()) == nullptr);
+                };
+            };
+        };
+
+        bsl::ut_scenario{"at_if"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::span<bool> spn{};
+                bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(spn.at_if(bsl::to_umax(0)) == nullptr);
+                    bsl::ut_check(spn.at_if(bsl::npos) == nullptr);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::span<bool> spn{};
+                bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(spn.at_if(bsl::safe_uintmax::failure()) == nullptr);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::span<bool> const spn{};
+                bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(spn.at_if(bsl::to_umax(0)) == nullptr);
+                    bsl::ut_check(spn.at_if(bsl::npos) == nullptr);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::span<bool> const spn{};
+                bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(spn.at_if(bsl::safe_uintmax::failure()) == nullptr);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::span<bool> spn{nullptr, bsl::to_umax(5)};
+                bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(spn.at_if(bsl::to_umax(0)) == nullptr);
+                    bsl::ut_check(spn.at_if(bsl::npos) == nullptr);
+                    bsl::ut_check(spn.at_if(bsl::safe_uintmax::failure()) == nullptr);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::span<bool> const spn{nullptr, bsl::to_umax(5)};
+                bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(spn.at_if(bsl::to_umax(0)) == nullptr);
+                    bsl::ut_check(spn.at_if(bsl::npos) == nullptr);
+                    bsl::ut_check(spn.at_if(bsl::safe_uintmax::failure()) == nullptr);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::array arr{test_arr};
+                bsl::span spn{arr.data(), bsl::to_umax(0)};
+                bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(spn.at_if(bsl::to_umax(0)) == nullptr);
+                    bsl::ut_check(spn.at_if(bsl::npos) == nullptr);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::array arr{test_arr};
+                bsl::span spn{arr.data(), bsl::to_umax(0)};
+                bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(spn.at_if(bsl::safe_uintmax::failure()) == nullptr);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::array arr{test_arr};
+                bsl::span const spn{arr.data(), bsl::to_umax(0)};
+                bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(spn.at_if(bsl::to_umax(0)) == nullptr);
+                    bsl::ut_check(spn.at_if(bsl::npos) == nullptr);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::array arr{test_arr};
+                bsl::span const spn{arr.data(), bsl::to_umax(0)};
+                bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(spn.at_if(bsl::safe_uintmax::failure()) == nullptr);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::array arr{test_arr};
+                bsl::span spn{arr.data(), arr.size()};
+                bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(1)) == bsl::to_i32(8));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(2)) == bsl::to_i32(15));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(3)) == bsl::to_i32(16));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(4)) == bsl::to_i32(23));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(5)) == bsl::to_i32(42));
+                    bsl::ut_check(spn.at_if(bsl::to_umax(6)) == nullptr);
+                    bsl::ut_check(spn.at_if(bsl::npos) == nullptr);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::array arr{test_arr};
+                bsl::span spn{arr.data(), arr.size()};
+                bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(spn.at_if(bsl::safe_uintmax::failure()) == nullptr);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::array const arr{test_arr};
+                bsl::span const spn{arr.data(), arr.size()};
+                bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(1)) == bsl::to_i32(8));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(2)) == bsl::to_i32(15));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(3)) == bsl::to_i32(16));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(4)) == bsl::to_i32(23));
+                    bsl::ut_check(*spn.at_if(bsl::to_umax(5)) == bsl::to_i32(42));
+                    bsl::ut_check(spn.at_if(bsl::to_umax(6)) == nullptr);
+                    bsl::ut_check(spn.at_if(bsl::npos) == nullptr);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::array const arr{test_arr};
+                bsl::span const spn{arr.data(), arr.size()};
+                bsl::ut_then{} = [&spn]() {
+                    bsl::ut_check(spn.at_if(bsl::safe_uintmax::failure()) == nullptr);
                 };
             };
         };
@@ -428,30 +569,30 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array arr{test_arr};
                 bsl::span spn{arr.data(), arr.size()};
                 bsl::ut_then{} = [&spn]() {
-                    bsl::ut_check(spn.iter(bsl::safe_uintmax::zero(true)).get_if() == nullptr);
-                    bsl::ut_check(spn.iter(bsl::safe_uintmax::zero(true)).index() == spn.size());
+                    bsl::ut_check(spn.iter(bsl::safe_uintmax::failure()).get_if() == nullptr);
+                    bsl::ut_check(spn.iter(bsl::safe_uintmax::failure()).index() == spn.size());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array const arr{test_arr};
                 bsl::span const spn{arr.data(), arr.size()};
                 bsl::ut_then{} = [&spn]() {
-                    bsl::ut_check(spn.iter(bsl::safe_uintmax::zero(true)).get_if() == nullptr);
-                    bsl::ut_check(spn.iter(bsl::safe_uintmax::zero(true)).index() == spn.size());
+                    bsl::ut_check(spn.iter(bsl::safe_uintmax::failure()).get_if() == nullptr);
+                    bsl::ut_check(spn.iter(bsl::safe_uintmax::failure()).index() == spn.size());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array const arr{test_arr};
                 bsl::span const spn{arr.data(), arr.size()};
                 bsl::ut_then{} = [&spn]() {
-                    bsl::ut_check(spn.citer(bsl::safe_uintmax::zero(true)).get_if() == nullptr);
-                    bsl::ut_check(spn.citer(bsl::safe_uintmax::zero(true)).index() == spn.size());
+                    bsl::ut_check(spn.citer(bsl::safe_uintmax::failure()).get_if() == nullptr);
+                    bsl::ut_check(spn.citer(bsl::safe_uintmax::failure()).index() == spn.size());
                 };
             };
         };
@@ -641,30 +782,30 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array arr{test_arr};
                 bsl::span spn{arr.data(), arr.size()};
                 bsl::ut_then{} = [&spn]() {
-                    bsl::ut_check(spn.riter(bsl::safe_uintmax::zero(true)).get_if() == nullptr);
-                    bsl::ut_check(spn.riter(bsl::safe_uintmax::zero(true)).index() == spn.size());
+                    bsl::ut_check(spn.riter(bsl::safe_uintmax::failure()).get_if() == nullptr);
+                    bsl::ut_check(spn.riter(bsl::safe_uintmax::failure()).index() == spn.size());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array const arr{test_arr};
                 bsl::span const spn{arr.data(), arr.size()};
                 bsl::ut_then{} = [&spn]() {
-                    bsl::ut_check(spn.riter(bsl::safe_uintmax::zero(true)).get_if() == nullptr);
-                    bsl::ut_check(spn.riter(bsl::safe_uintmax::zero(true)).index() == spn.size());
+                    bsl::ut_check(spn.riter(bsl::safe_uintmax::failure()).get_if() == nullptr);
+                    bsl::ut_check(spn.riter(bsl::safe_uintmax::failure()).index() == spn.size());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array const arr{test_arr};
                 bsl::span const spn{arr.data(), arr.size()};
                 bsl::ut_then{} = [&spn]() {
-                    bsl::ut_check(spn.criter(bsl::safe_uintmax::zero(true)).get_if() == nullptr);
-                    bsl::ut_check(spn.criter(bsl::safe_uintmax::zero(true)).index() == spn.size());
+                    bsl::ut_check(spn.criter(bsl::safe_uintmax::failure()).get_if() == nullptr);
+                    bsl::ut_check(spn.criter(bsl::safe_uintmax::failure()).index() == spn.size());
                 };
             };
         };
@@ -928,21 +1069,21 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array arr{test_arr};
                 bsl::span spn1{arr.data(), arr.size()};
                 bsl::span<bsl::safe_int32> spn2{};
                 bsl::ut_then{} = [&spn1, &spn2]() {
-                    bsl::ut_check(spn1.first(bsl::safe_uintmax::zero(true)) == spn2);
+                    bsl::ut_check(spn1.first(bsl::safe_uintmax::failure()) == spn2);
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array const arr{test_arr};
                 bsl::span const spn1{arr.data(), arr.size()};
                 bsl::span<bsl::safe_int32 const> const spn2{};
                 bsl::ut_then{} = [&spn1, &spn2]() {
-                    bsl::ut_check(spn1.first(bsl::safe_uintmax::zero(true)) == spn2);
+                    bsl::ut_check(spn1.first(bsl::safe_uintmax::failure()) == spn2);
                 };
             };
         };
@@ -1044,21 +1185,21 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array arr{test_arr};
                 bsl::span spn1{arr.data(), arr.size()};
                 bsl::span<bsl::safe_int32> spn2{};
                 bsl::ut_then{} = [&spn1, &spn2]() {
-                    bsl::ut_check(spn1.last(bsl::safe_uintmax::zero(true)) == spn2);
+                    bsl::ut_check(spn1.last(bsl::safe_uintmax::failure()) == spn2);
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array const arr{test_arr};
                 bsl::span const spn1{arr.data(), arr.size()};
                 bsl::span<bsl::safe_int32 const> const spn2{};
                 bsl::ut_then{} = [&spn1, &spn2]() {
-                    bsl::ut_check(spn1.last(bsl::safe_uintmax::zero(true)) == spn2);
+                    bsl::ut_check(spn1.last(bsl::safe_uintmax::failure()) == spn2);
                 };
             };
         };
@@ -1134,17 +1275,17 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::span<bool> spn{};
                 bsl::ut_then{} = [&spn]() {
-                    bsl::ut_check(spn.subspan(bsl::safe_uintmax::zero(true)) == spn);
+                    bsl::ut_check(spn.subspan(bsl::safe_uintmax::failure()) == spn);
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::span<bool> const spn{};
                 bsl::ut_then{} = [&spn]() {
-                    bsl::ut_check(spn.subspan(bsl::safe_uintmax::zero(true)) == spn);
+                    bsl::ut_check(spn.subspan(bsl::safe_uintmax::failure()) == spn);
                 };
             };
 
@@ -1176,19 +1317,19 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::span<bool> spn{};
                 bsl::ut_then{} = [&spn]() {
                     bsl::ut_check(
-                        spn.subspan(bsl::to_umax(0), bsl::safe_uintmax::zero(true)) == spn);
+                        spn.subspan(bsl::to_umax(0), bsl::safe_uintmax::failure()) == spn);
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::span<bool> const spn{};
                 bsl::ut_then{} = [&spn]() {
                     bsl::ut_check(
-                        spn.subspan(bsl::to_umax(0), bsl::safe_uintmax::zero(true)) == spn);
+                        spn.subspan(bsl::to_umax(0), bsl::safe_uintmax::failure()) == spn);
                 };
             };
 

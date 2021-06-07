@@ -28,6 +28,9 @@
 #ifndef BSL_UT_GIVEN_HPP
 #define BSL_UT_GIVEN_HPP
 
+#include "cstr_type.hpp"
+#include "discard.hpp"
+
 namespace bsl
 {
     /// @class bsl::ut_given
@@ -43,7 +46,13 @@ namespace bsl
         /// <!-- description -->
         ///   @brief Default constructor
         ///
-        constexpr ut_given() noexcept = default;
+        /// <!-- inputs/outputs -->
+        ///   @param name the name of the scenario (i.e., test case)
+        ///
+        explicit constexpr ut_given(cstr_type const name = "ignored") noexcept
+        {
+            bsl::discard(name);
+        }
 
         /// <!-- description -->
         ///   @brief Executes a lambda function as the body of the

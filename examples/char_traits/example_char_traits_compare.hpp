@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/char_traits.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -33,7 +34,7 @@ namespace bsl
     inline void
     example_char_traits_compare() noexcept
     {
-        constexpr bsl::safe_uintmax n{bsl::to_umax(2)};
+        constexpr auto n{2_umax};
 
         if constexpr (bsl::char_traits<bsl::char_type>::compare("42", "42", n) == 0) {
             bsl::print() << "success\n";

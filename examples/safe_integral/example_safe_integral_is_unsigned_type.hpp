@@ -22,8 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
-#include <bsl/safe_integral.hpp>
 
 namespace bsl
 {
@@ -33,8 +33,8 @@ namespace bsl
     inline void
     example_safe_integral_is_unsigned_type() noexcept
     {
-        constexpr bsl::safe_int32 val1{42};
-        constexpr bsl::safe_uint32 val2{42U};
+        constexpr auto val1{42_i32};
+        constexpr auto val2{42_u32};
 
         if constexpr (val1.is_signed_type()) {
             bsl::print() << "success\n";

@@ -22,8 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
-#include <bsl/safe_integral.hpp>
 
 namespace bsl
 {
@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_safe_integral_complement() noexcept
     {
-        constexpr bsl::safe_uint32 val{42U};
+        constexpr auto val{42_u32};
         bsl::print() << "success: " << (~val) << bsl::endl;
     }
 }

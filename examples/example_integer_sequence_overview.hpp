@@ -25,7 +25,6 @@
 #include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/integer_sequence.hpp>
-#include <bsl/safe_integral.hpp>
 
 namespace bsl
 {
@@ -35,8 +34,8 @@ namespace bsl
     inline void
     example_integer_sequence_overview() noexcept
     {
-        constexpr bsl::safe_int32 val1{4};
-        constexpr bsl::safe_int32 val2{8};
+        constexpr auto val1{4_i32};
+        constexpr auto val2{8_i32};
 
         // clang-format off
         if constexpr (bsl::integer_sequence<bsl::int32, val1.get(), val2.get()>::min() == val1.get()) {

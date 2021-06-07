@@ -27,9 +27,17 @@
 #
 
 if(CMAKE_BUILD_TYPE STREQUAL CODECOV)
-    add_custom_target(codecov-upload-ci
-        COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} cmake --build . --target unittest
-        COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_GRCOV} . -s ${CMAKE_SOURCE_DIR} -t lcov -o ${CMAKE_BINARY_DIR}/codecov.info --ignore '/**'
-        COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR} bash ${CMAKE_BINARY_DIR}/codecov.sh -f ${CMAKE_BINARY_DIR}/codecov.info
-    )
+    if(ENABLE_BRANCH)
+        add_custom_target(codecov-upload-ci
+            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} cmake --build . --target unittest
+            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_GRCOV} . -s ${CMAKE_SOURCE_DIR} -t lcov -o ${CMAKE_BINARY_DIR}/codecov.info --ignore '/**' --branch --excl-line GRCOV_EXCLUDE --excl-br-line GRCOV_EXCLUDE_BR
+            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR} bash ${CMAKE_BINARY_DIR}/codecov.sh -f ${CMAKE_BINARY_DIR}/codecov.info
+        )
+    else()
+        add_custom_target(codecov-upload-ci
+            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} cmake --build . --target unittest
+            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_GRCOV} . -s ${CMAKE_SOURCE_DIR} -t lcov -o ${CMAKE_BINARY_DIR}/codecov.info --ignore '/**' --excl-line GRCOV_EXCLUDE --excl-br-line GRCOV_EXCLUDE_BR
+            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR} bash ${CMAKE_BINARY_DIR}/codecov.sh -f ${CMAKE_BINARY_DIR}/codecov.info
+        )
+    endif()
 endif()

@@ -22,8 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
-#include <bsl/safe_integral.hpp>
 
 namespace bsl
 {
@@ -33,9 +33,9 @@ namespace bsl
     inline void
     example_safe_integral_rshift() noexcept
     {
-        constexpr bsl::safe_uint32 val{42U};
-        constexpr bsl::safe_uint32 shift{2U};
-        constexpr bsl::safe_uint32 expected{val.get() >> shift.get()};
+        constexpr auto val{42_u32};
+        constexpr auto shift{2_u32};
+        constexpr auto expected{bsl::to_u32(val.get() >> shift.get())};
 
         if constexpr ((val >> shift) == expected) {
             bsl::print() << "success\n";

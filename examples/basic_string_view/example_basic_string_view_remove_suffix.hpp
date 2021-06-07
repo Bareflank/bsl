@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/basic_string_view.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -33,7 +34,7 @@ namespace bsl
     inline void
     example_basic_string_view_remove_suffix() noexcept
     {
-        constexpr bsl::safe_uintmax num{to_umax(6)};
+        constexpr auto num{6_umax};
         bsl::basic_string_view<bsl::char_type> str{"Hello World"};
 
         if (str.remove_suffix(num) == "Hello") {

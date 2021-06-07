@@ -36,7 +36,7 @@ namespace bsl
         constexpr bsl::string_view str{"Hello"};
 
         for (auto iter{str.begin()}; iter != str.end(); ++iter) {
-            bsl::print() << iter;
+            bsl::print() << iter.data();
         }
         bsl::print() << bsl::endl;
     }

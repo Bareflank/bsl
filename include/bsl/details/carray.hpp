@@ -28,9 +28,10 @@
 #ifndef BSL_CARRAY_HPP
 #define BSL_CARRAY_HPP
 
-#include "../convert.hpp"
 #include "../cstdint.hpp"
+#include "../likely.hpp"
 #include "../safe_integral.hpp"
+#include "../unlikely.hpp"
 
 namespace bsl::details
 {
@@ -91,11 +92,12 @@ namespace bsl::details
         [[nodiscard]] constexpr auto
         at_if(size_type const &index) &noexcept -> pointer_type
         {
-            if (!index) {
+            if (unlikely(!index)) {
+                unlikely_invalid_argument_failure();
                 return nullptr;
             }
 
-            if (index < N) {
+            if (likely(index < N)) {
                 // We are implementing std::array here, which is what this test
                 // wants you to use instead.
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index, bsl-implicit-conversions-forbidden)
@@ -119,11 +121,12 @@ namespace bsl::details
         [[nodiscard]] constexpr auto
         at_if(size_type const &index) const &noexcept -> const_pointer_type
         {
-            if (!index) {
+            if (unlikely(!index)) {
+                unlikely_invalid_argument_failure();
                 return nullptr;
             }
 
-            if (index < N) {
+            if (likely(index < N)) {
                 // We are implementing std::array here, which is what this test
                 // wants you to use instead.
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index, bsl-implicit-conversions-forbidden)
@@ -175,13 +178,13 @@ namespace bsl::details
         [[nodiscard]] static constexpr auto
         size() noexcept -> size_type
         {
-            return to_umax(N);
+            return N;
         }
     };
 
     /// @brief deduction guideline for bsl::array
     template<typename T, typename... U>
-    carray(T, U...) -> carray<T, safe_uintmax::one().get() + sizeof...(U)>;
+    carray(T, U...) -> carray<T, static_cast<bsl::uintmax>(1) + sizeof...(U)>;
 }
 
 #endif

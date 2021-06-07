@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/array.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/span.hpp>
 
@@ -36,7 +37,7 @@ namespace bsl
     {
         constexpr bsl::array arr{true, false};
 
-        if (auto const *const ptr{arr.at_if(bsl::to_umax(0))}) {
+        if (auto const *const ptr{arr.at_if(0_umax)}) {
             bsl::print() << "success: " << *ptr << bsl::endl;
         }
         else {

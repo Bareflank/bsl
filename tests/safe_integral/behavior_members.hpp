@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/numeric_limits.hpp>
 #include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
@@ -38,14 +39,14 @@ namespace
     ///   @return Always returns bsl::exit_success.
     ///
     [[nodiscard]] constexpr auto
-    tests() noexcept -> bsl::exit_code
+    tests_members() noexcept -> bsl::exit_code
     {
         bsl::ut_scenario{"default constructor"} = []() {
             bsl::ut_given{} = []() {
                 bsl::safe_int32 val{};
                 bsl::ut_then{} = [&val]() {
                     bsl::ut_check(val == 0);
-                    bsl::ut_check(!val.failure());
+                    bsl::ut_check(!val.invalid());
                 };
             };
         };
@@ -55,7 +56,7 @@ namespace
                 bsl::safe_int32 val{42};
                 bsl::ut_then{} = [&val]() {
                     bsl::ut_check(val == 42);
-                    bsl::ut_check(!val.failure());
+                    bsl::ut_check(!val.invalid());
                 };
             };
         };
@@ -65,14 +66,14 @@ namespace
                 bsl::safe_int32 val{42, false};
                 bsl::ut_then{} = [&val]() {
                     bsl::ut_check(val == 42);
-                    bsl::ut_check(!val.failure());
+                    bsl::ut_check(!val.invalid());
                 };
             };
 
             bsl::ut_given{} = []() {
                 bsl::safe_int32 val{42, true};
                 bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(val.failure());
+                    bsl::ut_check(val.invalid());
                 };
             };
         };
@@ -84,7 +85,7 @@ namespace
                     val = 42;
                     bsl::ut_then{} = [&val]() {
                         bsl::ut_check(val == 42);
-                        bsl::ut_check(!val.failure());
+                        bsl::ut_check(!val.invalid());
                     };
                 };
             };
@@ -95,7 +96,7 @@ namespace
                     val = 42;
                     bsl::ut_then{} = [&val]() {
                         bsl::ut_check(val == 42);
-                        bsl::ut_check(!val.failure());
+                        bsl::ut_check(!val.invalid());
                     };
                 };
             };
@@ -106,14 +107,49 @@ namespace
                 bsl::safe_int32 val{42, false};
                 bsl::ut_then{} = [&val]() {
                     bsl::ut_check(val.get() == 42);
-                    bsl::ut_check(!val.failure());
+                    bsl::ut_check(!val.invalid());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 val{42, true};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(val.get() == 0);
+                    bsl::ut_check(val.invalid());
+                };
+            };
+        };
+
+        bsl::ut_scenario{"data"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42, false};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(*val.data() == 42);
+                    bsl::ut_check(!val.invalid());
                 };
             };
 
             bsl::ut_given{} = []() {
+                bsl::safe_int32 const val{42, false};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(*val.data() == 42);
+                    bsl::ut_check(!val.invalid());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val{42, true};
                 bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(val.failure());
+                    bsl::ut_check(*val.data() == 42);
+                    bsl::ut_check(val.invalid());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 const val{42, true};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(*val.data() == 42);
+                    bsl::ut_check(val.invalid());
                 };
             };
         };
@@ -130,44 +166,6 @@ namespace
                 bsl::safe_int32 val{42, true};
                 bsl::ut_then{} = [&val]() {
                     bsl::ut_check(!val);
-                };
-            };
-        };
-
-        bsl::ut_scenario{"failure"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::safe_int32 val{42, false};
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(!val.failure());
-                };
-            };
-
-            bsl::ut_given{} = []() {
-                bsl::safe_int32 val{42, true};
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(val.failure());
-                };
-            };
-        };
-
-        bsl::ut_scenario{"set_failure"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::safe_int32 val{42, false};
-                bsl::ut_then{} = [&val]() {
-                    val.set_failure();
-                    bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
-                    };
-                };
-            };
-
-            bsl::ut_given{} = []() {
-                bsl::safe_int32 val{42, true};
-                bsl::ut_then{} = [&val]() {
-                    val.set_failure();
-                    bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
-                    };
                 };
             };
         };
@@ -190,34 +188,34 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{23, true};
                 bsl::safe_int32 val2{42, false};
                 bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check(val1.max(val2).failure());
+                    bsl::ut_check(val1.max(val2).invalid());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{23, false};
                 bsl::safe_int32 val2{42, true};
                 bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check(val1.max(val2).failure());
+                    bsl::ut_check(val1.max(val2).invalid());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{23, true};
                 bsl::safe_int32 val2{42, true};
                 bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check(val1.max(val2).failure());
+                    bsl::ut_check(val1.max(val2).invalid());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val{23, true};
                 bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(val.max(42).failure());
+                    bsl::ut_check(val.max(42).invalid());
                 };
             };
         };
@@ -240,50 +238,36 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{23, true};
                 bsl::safe_int32 val2{42, false};
                 bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check(val1.min(val2).failure());
+                    bsl::ut_check(val1.min(val2).invalid());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{23, false};
                 bsl::safe_int32 val2{42, true};
                 bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check(val1.min(val2).failure());
+                    bsl::ut_check(val1.min(val2).invalid());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{23, true};
                 bsl::safe_int32 val2{42, true};
                 bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check(val1.min(val2).failure());
+                    bsl::ut_check(val1.min(val2).invalid());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val{23, true};
                 bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(val.min(42).failure());
+                    bsl::ut_check(val.min(42).invalid());
                 };
             };
-        };
-
-        bsl::ut_scenario{"zero"} = []() {
-            bsl::ut_check(bsl::safe_intmax::zero() == bsl::to_imax(0));
-            bsl::ut_check(!bsl::safe_intmax::zero(true));
-            bsl::ut_check(bsl::safe_uintmax::zero() == bsl::to_umax(0));
-            bsl::ut_check(!bsl::safe_uintmax::zero(true));
-        };
-
-        bsl::ut_scenario{"one"} = []() {
-            bsl::ut_check(bsl::safe_intmax::one() == bsl::to_imax(1));
-            bsl::ut_check(!bsl::safe_intmax::one(true));
-            bsl::ut_check(bsl::safe_uintmax::one() == bsl::to_umax(1));
-            bsl::ut_check(!bsl::safe_uintmax::one(true));
         };
 
         bsl::ut_scenario{"is_signed_type"} = []() {
@@ -318,7 +302,7 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 const val{42, true};
                 bsl::ut_then{} = [&val]() {
                     bsl::ut_check(!val.is_pos());
@@ -326,30 +310,265 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"is_neg"} = []() {
+        bsl::ut_scenario{"is_neg int8"} = []() {
             bsl::ut_given{} = []() {
-                bsl::safe_int32 const val{-42};
+                bsl::safe_int8 const val{-42_i8};
                 bsl::ut_then{} = [&val]() {
                     bsl::ut_check(val.is_neg());
                 };
             };
 
             bsl::ut_given{} = []() {
-                bsl::safe_int32 const val{0};
+                bsl::safe_int8 const val{0_i8};
                 bsl::ut_then{} = [&val]() {
                     bsl::ut_check(!val.is_neg());
                 };
             };
 
             bsl::ut_given{} = []() {
-                bsl::safe_int32 const val{42};
+                bsl::safe_int8 const val{42_i8};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int8 const val{-42_i8, true};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+        };
+
+        bsl::ut_scenario{"is_neg int16"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int16 const val{-42_i16};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(val.is_neg());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int16 const val{0_i16};
                 bsl::ut_then{} = [&val]() {
                     bsl::ut_check(!val.is_neg());
                 };
             };
 
             bsl::ut_given{} = []() {
-                bsl::safe_int32 const val{-42, true};
+                bsl::safe_int16 const val{42_i16};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int16 const val{-42_i16, true};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+        };
+
+        bsl::ut_scenario{"is_neg int32"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 const val{-42_i32};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(val.is_neg());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 const val{0_i32};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 const val{42_i32};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 const val{-42_i32, true};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+        };
+
+        bsl::ut_scenario{"is_neg int64"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int64 const val{-42_i64};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(val.is_neg());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int64 const val{0_i64};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int64 const val{42_i64};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int64 const val{-42_i64, true};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+        };
+
+        bsl::ut_scenario{"is_neg intmax"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_intmax const val{-42_imax};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(val.is_neg());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_intmax const val{0_imax};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_intmax const val{42_imax};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_intmax const val{-42_imax, true};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+        };
+
+        bsl::ut_scenario{"is_neg uint8"} = []() {
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_uint8 const val{0_u8};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_uint8 const val{42_u8};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_uint8 const val{42_u8, true};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+        };
+
+        bsl::ut_scenario{"is_neg uint16"} = []() {
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_uint16 const val{0_u16};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_uint16 const val{42_u16};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_uint16 const val{42_u16, true};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+        };
+
+        bsl::ut_scenario{"is_neg uint32"} = []() {
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_uint32 const val{0_u32};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_uint32 const val{42_u32};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_uint32 const val{42_u32, true};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+        };
+
+        bsl::ut_scenario{"is_neg uint64"} = []() {
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_uint64 const val{0_u64};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_uint64 const val{42_u64};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_uint64 const val{42_u64, true};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+        };
+
+        bsl::ut_scenario{"is_neg uintmax"} = []() {
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_uintmax const val{0_umax};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_uintmax const val{42_umax};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_neg());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_uintmax const val{42_umax, true};
                 bsl::ut_then{} = [&val]() {
                     bsl::ut_check(!val.is_neg());
                 };
@@ -378,10 +597,56 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 const val{0, true};
                 bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(val.is_zero());
+                    bsl::ut_check(!val.is_zero());
+                };
+            };
+        };
+
+        bsl::ut_scenario{"is_zero_or_invalid"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 const val{0};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(val.is_zero_or_invalid());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 const val{42};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_zero_or_invalid());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 const val{-42};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.is_zero_or_invalid());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 const val{0, true};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(val.is_zero_or_invalid());
+                };
+            };
+        };
+
+        bsl::ut_scenario{"invalid"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42, false};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(!val.invalid());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42, true};
+                bsl::ut_then{} = [&val]() {
+                    bsl::ut_check(val.invalid());
                 };
             };
         };
@@ -401,8 +666,8 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::safe_int32 const val{bsl::safe_int32::max(), true};
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 const val{bsl::safe_int32::max().get(), true};
                 bsl::ut_then{} = [&val]() {
                     bsl::ut_check(!val.is_max());
                 };
@@ -424,8 +689,8 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::safe_int32 const val{bsl::safe_int32::min(), true};
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::safe_int32 const val{bsl::safe_int32::min().get(), true};
                 bsl::ut_then{} = [&val]() {
                     bsl::ut_check(!val.is_min());
                 };
@@ -440,7 +705,7 @@ namespace
                     val1 += val2;
                     bsl::ut_then{} = [&val1]() {
                         bsl::ut_check(val1 == 42 + 42);
-                        bsl::ut_check(!val1.failure());
+                        bsl::ut_check(!val1.invalid());
                     };
                 };
             };
@@ -451,7 +716,7 @@ namespace
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 += val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -462,7 +727,7 @@ namespace
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 += val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -474,7 +739,7 @@ namespace
                     val1 += val2;
                     val1 += val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -486,40 +751,40 @@ namespace
                     val1 += val2;
                     val1 += val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{42, true};
                 bsl::safe_int32 val2{42, false};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 += val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{42, false};
                 bsl::safe_int32 val2{42, true};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 += val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{42, true};
                 bsl::safe_int32 val2{42, true};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 += val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -532,7 +797,7 @@ namespace
                     val += 42;
                     bsl::ut_then{} = [&val]() {
                         bsl::ut_check(val == 42 + 42);
-                        bsl::ut_check(!val.failure());
+                        bsl::ut_check(!val.invalid());
                     };
                 };
             };
@@ -542,7 +807,7 @@ namespace
                 bsl::ut_when{} = [&val]() {
                     val += 1;
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -552,7 +817,7 @@ namespace
                 bsl::ut_when{} = [&val]() {
                     val += (-1);
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -563,17 +828,17 @@ namespace
                     val += 1;
                     val += 1;
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val{42, true};
                 bsl::ut_when{} = [&val]() {
                     val += 42;
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -587,7 +852,7 @@ namespace
                     val1 -= val2;
                     bsl::ut_then{} = [&val1]() {
                         bsl::ut_check(val1 == 42 - 23);
-                        bsl::ut_check(!val1.failure());
+                        bsl::ut_check(!val1.invalid());
                     };
                 };
             };
@@ -598,7 +863,7 @@ namespace
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 -= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -609,7 +874,7 @@ namespace
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 -= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -621,7 +886,7 @@ namespace
                     val1 -= val2;
                     val1 -= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -632,40 +897,40 @@ namespace
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 -= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{42, true};
                 bsl::safe_int32 val2{23, false};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 -= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{42, false};
                 bsl::safe_int32 val2{23, true};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 -= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{42, true};
                 bsl::safe_int32 val2{23, true};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 -= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -678,7 +943,7 @@ namespace
                     val -= 23;
                     bsl::ut_then{} = [&val]() {
                         bsl::ut_check(val == 42 - 23);
-                        bsl::ut_check(!val.failure());
+                        bsl::ut_check(!val.invalid());
                     };
                 };
             };
@@ -688,7 +953,7 @@ namespace
                 bsl::ut_when{} = [&val]() {
                     val -= (-1);
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -698,7 +963,7 @@ namespace
                 bsl::ut_when{} = [&val]() {
                     val -= (1);
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -709,17 +974,17 @@ namespace
                     val -= (-1);
                     val -= (-1);
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val{42, true};
                 bsl::ut_when{} = [&val]() {
                     val -= 23;
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -733,7 +998,7 @@ namespace
                     val1 *= val2;
                     bsl::ut_then{} = [&val1]() {
                         bsl::ut_check(val1 == 42 * 42);
-                        bsl::ut_check(!val1.failure());
+                        bsl::ut_check(!val1.invalid());
                     };
                 };
             };
@@ -744,7 +1009,7 @@ namespace
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 *= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -755,7 +1020,7 @@ namespace
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 *= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -767,7 +1032,7 @@ namespace
                     val1 *= val2;
                     val1 *= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -778,40 +1043,40 @@ namespace
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 *= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{42, true};
                 bsl::safe_int32 val2{42, false};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 *= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{42, false};
                 bsl::safe_int32 val2{42, true};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 *= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{42, true};
                 bsl::safe_int32 val2{42, true};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 *= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -824,7 +1089,7 @@ namespace
                     val *= 42;
                     bsl::ut_then{} = [&val]() {
                         bsl::ut_check(val == 42 * 42);
-                        bsl::ut_check(!val.failure());
+                        bsl::ut_check(!val.invalid());
                     };
                 };
             };
@@ -834,7 +1099,7 @@ namespace
                 bsl::ut_when{} = [&val]() {
                     val *= 2;
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -844,7 +1109,7 @@ namespace
                 bsl::ut_when{} = [&val]() {
                     val *= (-2);
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -855,17 +1120,17 @@ namespace
                     val *= 2;
                     val *= 2;
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val{42, true};
                 bsl::ut_when{} = [&val]() {
                     val *= 42;
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -879,7 +1144,7 @@ namespace
                     val1 /= val2;
                     bsl::ut_then{} = [&val1]() {
                         bsl::ut_check(val1 == 42 / 23);
-                        bsl::ut_check(!val1.failure());
+                        bsl::ut_check(!val1.invalid());
                     };
                 };
             };
@@ -890,7 +1155,7 @@ namespace
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 /= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -902,7 +1167,7 @@ namespace
                     val1 /= val2;
                     val1 /= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -913,7 +1178,7 @@ namespace
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 /= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -924,7 +1189,7 @@ namespace
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 /= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -936,7 +1201,7 @@ namespace
                     val1 /= val2;
                     val1 /= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -947,40 +1212,40 @@ namespace
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 /= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{42, true};
                 bsl::safe_int32 val2{23, false};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 /= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{42, false};
                 bsl::safe_int32 val2{23, true};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 /= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{42, true};
                 bsl::safe_int32 val2{23, true};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 /= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -993,7 +1258,7 @@ namespace
                     val /= 23;
                     bsl::ut_then{} = [&val]() {
                         bsl::ut_check(val == 42 / 23);
-                        bsl::ut_check(!val.failure());
+                        bsl::ut_check(!val.invalid());
                     };
                 };
             };
@@ -1003,7 +1268,7 @@ namespace
                 bsl::ut_when{} = [&val]() {
                     val /= 0;
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -1014,7 +1279,7 @@ namespace
                     val /= 0;
                     val /= 0;
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -1024,7 +1289,7 @@ namespace
                 bsl::ut_when{} = [&val]() {
                     val /= (-1);
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -1035,17 +1300,17 @@ namespace
                     val /= (-1);
                     val /= (-1);
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val{42, true};
                 bsl::ut_when{} = [&val]() {
                     val /= 23;
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -1059,7 +1324,7 @@ namespace
                     val1 %= val2;
                     bsl::ut_then{} = [&val1]() {
                         bsl::ut_check(val1 == 42 % 23);
-                        bsl::ut_check(!val1.failure());
+                        bsl::ut_check(!val1.invalid());
                     };
                 };
             };
@@ -1070,7 +1335,7 @@ namespace
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 %= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -1082,7 +1347,7 @@ namespace
                     val1 %= val2;
                     val1 %= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -1093,7 +1358,7 @@ namespace
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 %= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -1104,7 +1369,7 @@ namespace
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 %= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -1116,7 +1381,7 @@ namespace
                     val1 %= val2;
                     val1 %= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -1127,40 +1392,40 @@ namespace
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 %= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{42, true};
                 bsl::safe_int32 val2{23, false};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 %= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{42, false};
                 bsl::safe_int32 val2{23, true};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 %= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val1{42, true};
                 bsl::safe_int32 val2{23, true};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 %= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -1173,7 +1438,7 @@ namespace
                     val %= 23;
                     bsl::ut_then{} = [&val]() {
                         bsl::ut_check(val == 42 % 23);
-                        bsl::ut_check(!val.failure());
+                        bsl::ut_check(!val.invalid());
                     };
                 };
             };
@@ -1183,7 +1448,7 @@ namespace
                 bsl::ut_when{} = [&val]() {
                     val %= 0;
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -1194,7 +1459,7 @@ namespace
                     val %= 0;
                     val %= 0;
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -1204,7 +1469,7 @@ namespace
                 bsl::ut_when{} = [&val]() {
                     val %= (-1);
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -1215,17 +1480,17 @@ namespace
                     val %= (-1);
                     val %= (-1);
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val{42, true};
                 bsl::ut_when{} = [&val]() {
                     val %= 23;
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -1238,7 +1503,7 @@ namespace
                     ++val;
                     bsl::ut_then{} = [&val]() {
                         bsl::ut_check(val == 42 + 1);
-                        bsl::ut_check(!val.failure());
+                        bsl::ut_check(!val.invalid());
                     };
                 };
             };
@@ -1248,7 +1513,7 @@ namespace
                 bsl::ut_when{} = [&val]() {
                     ++val;
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -1259,17 +1524,17 @@ namespace
                     ++val;
                     ++val;
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val{42, true};
                 bsl::ut_when{} = [&val]() {
                     ++val;
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -1282,7 +1547,7 @@ namespace
                     --val;
                     bsl::ut_then{} = [&val]() {
                         bsl::ut_check(val == 42 - 1);
-                        bsl::ut_check(!val.failure());
+                        bsl::ut_check(!val.invalid());
                     };
                 };
             };
@@ -1292,7 +1557,7 @@ namespace
                 bsl::ut_when{} = [&val]() {
                     --val;
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -1303,17 +1568,17 @@ namespace
                     --val;
                     --val;
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_int32 val{42, true};
                 bsl::ut_when{} = [&val]() {
                     --val;
                     bsl::ut_then{} = [&val]() {
-                        bsl::ut_check(val.failure());
+                        bsl::ut_check(val.invalid());
                     };
                 };
             };
@@ -1321,19 +1586,4 @@ namespace
 
         return bsl::ut_success();
     }
-}
-
-/// <!-- description -->
-///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
-///     the application will fast fail. If all calls to bsl::ut_check() pass, this
-///     function will successfully return with bsl::exit_success.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-[[nodiscard]] auto
-main() noexcept -> bsl::exit_code
-{
-    static_assert(tests() == bsl::ut_success());
-    return tests();
 }

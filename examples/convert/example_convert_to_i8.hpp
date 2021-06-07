@@ -34,7 +34,7 @@ namespace bsl
     inline void
     example_convert_to_i8() noexcept
     {
-        constexpr bsl::safe_int8 val{bsl::to_i8(42)};
+        constexpr auto val{bsl::to_i8(42)};
         bsl::print() << "success: " << val << bsl::endl;
     }
 }

@@ -25,6 +25,7 @@
 #include <bsl/aligned_storage.hpp>
 #include <bsl/alignment_of.hpp>
 #include <bsl/array.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/ut.hpp>
 
 namespace

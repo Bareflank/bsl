@@ -28,6 +28,7 @@
 #include "../cstddef.hpp"
 #include "../discard.hpp"
 #include "../fmt_options.hpp"
+#include "../is_constant_evaluated.hpp"
 #include "out.hpp"
 
 namespace bsl
@@ -47,6 +48,10 @@ namespace bsl
     operator<<(out<T> const o, bsl::nullptr_t const ptr) noexcept -> out<T>
     {
         bsl::discard(ptr);
+
+        if (is_constant_evaluated()) {
+            return o;
+        }
 
         if constexpr (!o) {
             return o;

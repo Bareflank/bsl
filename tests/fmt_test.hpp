@@ -29,7 +29,6 @@
 #define BSL_DETAILS_PUTS_STDOUT_HPP
 
 #include <bsl/char_type.hpp>
-#include <bsl/convert.hpp>
 #include <bsl/cstdint.hpp>
 #include <bsl/cstdio.hpp>
 #include <bsl/cstdlib.hpp>
@@ -44,7 +43,7 @@ namespace fmt_test
     namespace details
     {
         /// @brief stores the total number of chars that can be outputted
-        constexpr inline bsl::safe_uintmax FMT_TEST_BUF_SIZE{bsl::to_umax(10000)};
+        constexpr inline bsl::safe_uintmax FMT_TEST_BUF_SIZE{static_cast<bsl::uintmax>(10000)};
 
         /// @brief stores the total number of chars that have been outputted
         constinit inline bsl::safe_uintmax g_fmt_test_num{};
@@ -66,7 +65,7 @@ namespace fmt_test
             *details::g_fmt_test_buf.at_if(i) = static_cast<bsl::char_type>(0);
         }
 
-        details::g_fmt_test_num = bsl::to_umax(0);
+        details::g_fmt_test_num = static_cast<bsl::uintmax>(0);
     }
 
     /// <!-- description -->
@@ -102,14 +101,14 @@ namespace bsl::details
     putc_stdout(bsl::char_type const c) noexcept
     {
         auto const i{fmt_test::details::g_fmt_test_num};
-        if (auto *const ptr{fmt_test::details::g_fmt_test_buf.at_if(i)}) {
+        if (auto *const ptr{fmt_test::details::g_fmt_test_buf.at_if(i)}) {    // GRCOV_EXCLUDE_BR
             *ptr = c;
         }
         else {
             // This is required by stdio
             // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
-            bsl::discard(fputs("res.data too small\n", stderr));
-            exit(1);
+            bsl::discard(fputs("res.data too small\n", stderr));    // GRCOV_EXCLUDE
+            exit(1);                                                // GRCOV_EXCLUDE
         }
 
         ++fmt_test::details::g_fmt_test_num;

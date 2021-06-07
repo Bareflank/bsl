@@ -29,9 +29,6 @@
 #define BSL_CONTIGUOUS_ITERATOR_HPP
 
 #include "contiguous_iterator_element.hpp"
-#include "convert.hpp"
-#include "debug.hpp"
-#include "details/out.hpp"
 #include "safe_integral.hpp"
 #include "touch.hpp"
 #include "unlikely.hpp"
@@ -116,41 +113,28 @@ namespace bsl
             : m_ptr{ptr}, m_count{count}, m_i{i}
         {
             if (unlikely(nullptr == m_ptr)) {
-                bsl::alert() << "contiguous_iterator: invalid constructor args\n";
-                bsl::alert() << "  - ptr: " << static_cast<void const *>(ptr) << bsl::endl;
-                bsl::alert() << "  - count: " << count << bsl::endl;
-                bsl::alert() << "  - i: " << i << bsl::endl;
-
                 *this = contiguous_iterator{};
                 return;
             }
 
-            if (unlikely(count.is_zero())) {
-                bsl::alert() << "contiguous_iterator: invalid constructor args\n";
-                bsl::alert() << "  - ptr: " << static_cast<void const *>(ptr) << bsl::endl;
-                bsl::alert() << "  - count: " << count << bsl::endl;
-                bsl::alert() << "  - i: " << i << bsl::endl;
-
+            if (unlikely(!count)) {
+                unlikely_invalid_argument_failure();
                 *this = contiguous_iterator{};
                 return;
             }
 
             if (unlikely(!i)) {
-                bsl::alert() << "contiguous_iterator: invalid constructor args\n";
-                bsl::alert() << "  - ptr: " << static_cast<void const *>(ptr) << bsl::endl;
-                bsl::alert() << "  - count: " << count << bsl::endl;
-                bsl::alert() << "  - i: " << i << bsl::endl;
-
+                unlikely_invalid_argument_failure();
                 m_i = count;
+                return;
             }
-            else if (unlikely(i > count)) {
-                bsl::alert() << "contiguous_iterator: invalid constructor args\n";
-                bsl::alert() << "  - ptr: " << static_cast<void const *>(ptr) << bsl::endl;
-                bsl::alert() << "  - count: " << count << bsl::endl;
-                bsl::alert() << "  - i: " << i << bsl::endl;
 
+            if (unlikely(i > count)) {
                 m_i = count;
+                return;
             }
+
+            bsl::touch();
         }
 
         /// <!-- description -->
@@ -257,7 +241,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         empty() const noexcept -> bool
         {
-            return nullptr == this->data();
+            return m_count.is_zero();
         }
 
         /// <!-- description -->
@@ -300,12 +284,10 @@ namespace bsl
         get_if() noexcept -> pointer_type
         {
             if (unlikely(nullptr == m_ptr)) {
-                bsl::error() << "contiguous_iterator: null iterator\n";
                 return nullptr;
             }
 
             if (unlikely(m_i == m_count)) {
-                bsl::error() << "contiguous_iterator: attempt to get value from end() iterator\n";
                 return nullptr;
             }
 
@@ -327,12 +309,10 @@ namespace bsl
         get_if() const noexcept -> const_pointer_type
         {
             if (unlikely(nullptr == m_ptr)) {
-                bsl::error() << "contiguous_iterator: null iterator\n";
                 return nullptr;
             }
 
             if (unlikely(m_i == m_count)) {
-                bsl::error() << "contiguous_iterator: attempt to get value from end() iterator\n";
                 return nullptr;
             }
 
@@ -376,12 +356,10 @@ namespace bsl
         operator++() noexcept -> contiguous_iterator &
         {
             if (unlikely(nullptr == m_ptr)) {
-                bsl::error() << "contiguous_iterator: attempt to inc null iterator\n";
                 return *this;
             }
 
             if (unlikely(m_count == m_i)) {
-                bsl::error() << "contiguous_iterator: attempt to inc end() iterator\n";
                 return *this;
             }
 
@@ -400,12 +378,10 @@ namespace bsl
         operator--() noexcept -> contiguous_iterator &
         {
             if (unlikely(nullptr == m_ptr)) {
-                bsl::error() << "contiguous_iterator: attempt to dec null iterator\n";
                 return *this;
             }
 
             if (unlikely(m_i.is_zero())) {
-                bsl::error() << "contiguous_iterator: attempt to inc begin() iterator\n";
                 return *this;
             }
 
@@ -509,34 +485,6 @@ namespace bsl
     operator>(contiguous_iterator<T> const &lhs, contiguous_iterator<T> const &rhs) noexcept -> bool
     {
         return lhs.index() > rhs.index();
-    }
-
-    /// <!-- description -->
-    ///   @brief Outputs the provided bsl::contiguous_iterator to the provided
-    ///     output type.
-    ///   @related bsl::contiguous_iterator
-    ///   @include contiguous_iterator/example_contiguous_iterator_ostream.hpp
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T1 the type of outputter provided
-    ///   @tparam T2 the type of element being encapsulated.
-    ///   @param o the instance of the outputter used to output the value.
-    ///   @param val the contiguous_iterator to output
-    ///   @return return o
-    ///
-    template<typename T1, typename T2>
-    [[maybe_unused]] constexpr auto
-    operator<<(out<T1> const o, contiguous_iterator<T2> const &val) noexcept -> out<T1>
-    {
-        if constexpr (!o) {
-            return o;
-        }
-
-        if (auto const *const ptr{val.get_if()}) {
-            return o << *ptr;
-        }
-
-        return o << "[error]";
     }
 }
 

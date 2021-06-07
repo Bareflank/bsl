@@ -28,6 +28,7 @@
 #include "../../../char_type.hpp"
 #include "../../../cstdio.hpp"
 #include "../../../discard.hpp"
+#include "../../../is_constant_evaluated.hpp"
 
 namespace bsl::details
 {
@@ -37,9 +38,13 @@ namespace bsl::details
     /// <!-- inputs/outputs -->
     ///   @param c the character to output to stderr
     ///
-    inline void
+    constexpr void
     putc_stderr(char_type const c) noexcept
     {
+        if (is_constant_evaluated()) {
+            return;
+        }
+
         // This is required by stdio
         // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
         bsl::discard(fputc(c, stderr));

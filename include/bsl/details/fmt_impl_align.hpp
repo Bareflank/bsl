@@ -25,7 +25,6 @@
 #ifndef BSL_DETAILS_FMT_IMPL_ALIGN_HPP
 #define BSL_DETAILS_FMT_IMPL_ALIGN_HPP
 
-#include "../convert.hpp"
 #include "../fmt_options.hpp"
 #include "../safe_integral.hpp"
 #include "../touch.hpp"
@@ -62,18 +61,18 @@ namespace bsl::details
             padding = ops.width() - len;
         }
         else {
-            padding = to_umax(0);
+            padding = static_cast<bsl::uintmax>(0);
         }
 
         if (!ops.sign_aware()) {
-            if (padding != to_umax(0)) {
+            if (padding != static_cast<bsl::uintmax>(0)) {
                 switch (ops.align()) {
                     case fmt_align::fmt_align_left: {
                         break;
                     }
 
                     case fmt_align::fmt_align_center: {
-                        safe_uintmax half{padding >> safe_uintmax::one()};
+                        safe_uintmax half{padding >> static_cast<bsl::uintmax>(1)};
                         for (safe_uintmax cpi{}; cpi < half; ++cpi) {
                             o.write(ops.fill());
                         }
@@ -140,11 +139,11 @@ namespace bsl::details
             padding = ops.width() - len;
         }
         else {
-            padding = to_umax(0);
+            padding = static_cast<bsl::uintmax>(0);
         }
 
         if (!ops.sign_aware()) {
-            if (padding != to_umax(0)) {
+            if (padding != static_cast<bsl::uintmax>(0)) {
                 switch (ops.align()) {
                     case fmt_align::fmt_align_left: {
                         for (safe_uintmax lpi{}; lpi < padding; ++lpi) {
@@ -154,7 +153,7 @@ namespace bsl::details
                     }
 
                     case fmt_align::fmt_align_center: {
-                        safe_uintmax half{padding - (padding >> safe_uintmax::one())};
+                        safe_uintmax half{padding - (padding >> static_cast<bsl::uintmax>(1))};
                         for (safe_uintmax cpi{}; cpi < half; ++cpi) {
                             o.write(ops.fill());
                         }

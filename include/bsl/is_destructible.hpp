@@ -54,19 +54,19 @@ namespace bsl
         [[nodiscard]] constexpr auto
         check_is_destructible() noexcept -> bool
         {
-            if (is_reference<T>::value) {
+            if constexpr (is_reference<T>::value) {
                 return true;
             }
 
-            if (is_void<T>::value) {
+            if constexpr (is_void<T>::value) {
                 return false;
             }
 
-            if (is_function<T>::value) {
+            if constexpr (is_function<T>::value) {
                 return false;
             }
 
-            if (is_unbounded_array<T>::value) {
+            if constexpr (is_unbounded_array<T>::value) {
                 return false;
             }
 

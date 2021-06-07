@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/integer_sequence.hpp>
 
@@ -33,7 +34,7 @@ namespace bsl
     inline void
     example_integer_sequence_size() noexcept
     {
-        constexpr auto num{to_umax(6)};
+        constexpr auto num{6_umax};
 
         if constexpr (bsl::make_index_sequence<num.get()>::size() == num.get()) {
             bsl::print() << "success\n";

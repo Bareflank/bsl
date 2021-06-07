@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/discard.hpp>
 #include <bsl/ut.hpp>
 
@@ -113,6 +114,17 @@ namespace
                     bsl::alert() << &val << '\n';
                     bsl::alert() << &val << '\n';
                     bsl::error() << &val << '\n';
+                };
+            };
+        };
+
+        bsl::ut_scenario{"source location from constexpr"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::ut_then{} = []() {
+                    bsl::print() << bsl::here();
+                    bsl::alert() << bsl::here();
+                    bsl::alert() << bsl::here();
+                    bsl::error() << bsl::here();
                 };
             };
         };

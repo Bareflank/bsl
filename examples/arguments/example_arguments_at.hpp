@@ -24,6 +24,7 @@
 
 #include <bsl/arguments.hpp>
 #include <bsl/array.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -34,7 +35,7 @@ namespace bsl
     inline void
     example_arguments_at() noexcept
     {
-        constexpr bsl::safe_uintmax arg3{bsl::to_umax(3)};
+        constexpr auto arg3{3_umax};
         constexpr bsl::array argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
         bsl::arguments const args{argv.size(), argv.data()};
 

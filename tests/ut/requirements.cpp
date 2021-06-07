@@ -22,7 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/safe_integral.hpp>
+#include <bsl/addressof.hpp>
 #include <bsl/ut.hpp>
 
 /// <!-- description -->
@@ -36,42 +36,14 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    bsl::ut_scenario{"make_safe"} = []() {
+    bsl::ut_scenario{"verify noexcept"} = []() {
         bsl::ut_given{} = []() {
-            bsl::safe_int32 val{42};
-            bsl::ut_when{} = [&val]() {
-                --val;
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(val == 42 - 1);
-                    bsl::ut_check(!val.failure());
-                };
+            bool mydata{};
+            bsl::ut_then{} = []() {
+                static_assert(noexcept(bsl::addressof(mydata)));
             };
         };
     };
-
-    static_assert(bsl::ZERO_U8 == static_cast<bsl::uint8>(0));
-    static_assert(bsl::ZERO_U16 == static_cast<bsl::uint16>(0));
-    static_assert(bsl::ZERO_U32 == static_cast<bsl::uint32>(0));
-    static_assert(bsl::ZERO_U64 == static_cast<bsl::uint64>(0));
-    static_assert(bsl::ZERO_UMAX == static_cast<bsl::uintmax>(0));
-
-    static_assert(bsl::ZERO_I8 == static_cast<bsl::int8>(0));
-    static_assert(bsl::ZERO_I16 == static_cast<bsl::int16>(0));
-    static_assert(bsl::ZERO_I32 == static_cast<bsl::int32>(0));
-    static_assert(bsl::ZERO_I64 == static_cast<bsl::int64>(0));
-    static_assert(bsl::ZERO_IMAX == static_cast<bsl::intmax>(0));
-
-    static_assert(bsl::ONE_U8 == static_cast<bsl::uint8>(1));
-    static_assert(bsl::ONE_U16 == static_cast<bsl::uint16>(1));
-    static_assert(bsl::ONE_U32 == static_cast<bsl::uint32>(1));
-    static_assert(bsl::ONE_U64 == static_cast<bsl::uint64>(1));
-    static_assert(bsl::ONE_UMAX == static_cast<bsl::uintmax>(1));
-
-    static_assert(bsl::ONE_I8 == static_cast<bsl::int8>(1));
-    static_assert(bsl::ONE_I16 == static_cast<bsl::int16>(1));
-    static_assert(bsl::ONE_I32 == static_cast<bsl::int32>(1));
-    static_assert(bsl::ONE_I64 == static_cast<bsl::int64>(1));
-    static_assert(bsl::ONE_IMAX == static_cast<bsl::intmax>(1));
 
     return bsl::ut_success();
 }

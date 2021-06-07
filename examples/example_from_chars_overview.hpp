@@ -22,9 +22,9 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/from_chars.hpp>
-#include <bsl/safe_integral.hpp>
 
 namespace bsl
 {
@@ -34,19 +34,11 @@ namespace bsl
     inline void
     example_from_chars_overview() noexcept
     {
-        bsl::safe_int32 val{};
-        bsl::safe_uintmax idx{bsl::from_chars("-42", val)};
+        constexpr auto base10{10_i32};
+        auto const val{bsl::from_chars<bsl::int32>("-42", base10)};
 
-        constexpr bsl::safe_int32 expected_val{-42};
+        constexpr auto expected_val{-42_i32};
         if (expected_val == val) {
-            bsl::print() << "success\n";
-        }
-        else {
-            bsl::error() << "failure\n";
-        }
-
-        constexpr bsl::safe_uintmax expected_idx{bsl::to_umax(3)};
-        if (expected_idx == idx) {
             bsl::print() << "success\n";
         }
         else {

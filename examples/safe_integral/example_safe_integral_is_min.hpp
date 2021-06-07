@@ -33,8 +33,8 @@ namespace bsl
     inline void
     example_safe_integral_is_min() noexcept
     {
-        constexpr bsl::safe_int32 val1{bsl::safe_int32::min()};
-        constexpr bsl::safe_int32 val2{bsl::safe_int32::max()};
+        constexpr auto val1{bsl::safe_int32::min()};
+        constexpr auto val2{bsl::safe_int32::max()};
 
         if constexpr (val1.is_min()) {
             bsl::print() << "success\n";

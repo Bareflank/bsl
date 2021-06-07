@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/discard.hpp>
 #include <bsl/forward.hpp>
@@ -72,8 +73,8 @@ namespace bsl
     inline void
     example_forward_overview() noexcept
     {
-        constexpr bsl::safe_int32 val1{42};
-        bsl::safe_int32 val2{val1};
+        constexpr auto val1{42_i32};
+        auto val2{val1};
 
         if constexpr (example_forwarder(val1)) {
             bsl::print() << "success\n";

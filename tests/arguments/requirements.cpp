@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/arguments.hpp>
+#include <bsl/array.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/discard.hpp>
 #include <bsl/ut.hpp>
@@ -33,7 +34,8 @@ namespace
     // NOLINTNEXTLINE(bsl-user-defined-type-names-match-header-name)
     class fixture_t final
     {
-        bsl::arguments args{bsl::to_umax(0), nullptr};
+        bsl::array<bsl::cstr_type, (2_umax).get()> argv{"0", "-opt_arg=0"};
+        bsl::arguments args{argv.size(), argv.data()};
 
     public:
         [[nodiscard]] constexpr auto
@@ -51,16 +53,16 @@ namespace
             bsl::discard(args.get<bsl::safe_uint16>(bsl::to_umax(0)));
             bsl::discard(args.get<bsl::safe_uint32>(bsl::to_umax(0)));
             bsl::discard(args.get<bsl::safe_uint64>(bsl::to_umax(0)));
-            bsl::discard(args.get<bool>(""));
-            bsl::discard(args.get<bsl::string_view>(""));
-            bsl::discard(args.get<bsl::safe_int8>(""));
-            bsl::discard(args.get<bsl::safe_int16>(""));
-            bsl::discard(args.get<bsl::safe_int32>(""));
-            bsl::discard(args.get<bsl::safe_int64>(""));
-            bsl::discard(args.get<bsl::safe_uint8>(""));
-            bsl::discard(args.get<bsl::safe_uint16>(""));
-            bsl::discard(args.get<bsl::safe_uint32>(""));
-            bsl::discard(args.get<bsl::safe_uint64>(""));
+            bsl::discard(args.get<bool>("-blah"));
+            bsl::discard(args.get<bsl::string_view>("-opt_arg"));
+            bsl::discard(args.get<bsl::safe_int8>("-opt_arg"));
+            bsl::discard(args.get<bsl::safe_int16>("-opt_arg"));
+            bsl::discard(args.get<bsl::safe_int32>("-opt_arg"));
+            bsl::discard(args.get<bsl::safe_int64>("-opt_arg"));
+            bsl::discard(args.get<bsl::safe_uint8>("-opt_arg"));
+            bsl::discard(args.get<bsl::safe_uint16>("-opt_arg"));
+            bsl::discard(args.get<bsl::safe_uint32>("-opt_arg"));
+            bsl::discard(args.get<bsl::safe_uint64>("-opt_arg"));
             bsl::discard(args.at<bool>(bsl::to_umax(0)));
             bsl::discard(args.at<bsl::string_view>(bsl::to_umax(0)));
             bsl::discard(args.at<bsl::safe_int8>(bsl::to_umax(0)));

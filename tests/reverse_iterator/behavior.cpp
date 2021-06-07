@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/array.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/npos.hpp>
 #include <bsl/reverse_iterator.hpp>
 #include <bsl/ut.hpp>
@@ -324,22 +325,6 @@ namespace
                 bsl::reverse_iterator ri2{arr.begin()};
                 bsl::ut_then{} = [&ri1, &ri2]() {
                     bsl::ut_check(ri1 < ri2);
-                };
-            };
-        };
-
-        bsl::ut_scenario{"output doesn't crash"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::reverse_iterator ri{arr.begin()};
-                bsl::ut_then{} = [&ri]() {
-                    bsl::debug() << ri << '\n';
-                };
-            };
-
-            bsl::ut_given{} = []() {
-                bsl::reverse_iterator ri{arr.end()};
-                bsl::ut_then{} = [&ri]() {
-                    bsl::debug() << ri << '\n';
                 };
             };
         };

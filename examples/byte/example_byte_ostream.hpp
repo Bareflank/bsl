@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/byte.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -33,7 +34,7 @@ namespace bsl
     inline void
     example_byte_ostream() noexcept
     {
-        constexpr bsl::safe_uint8 val{bsl::to_u8(42)};
+        constexpr auto val{42_u8};
         constexpr bsl::byte b{val};
 
         bsl::print() << b << bsl::endl;

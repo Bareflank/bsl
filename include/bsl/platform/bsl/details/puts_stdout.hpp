@@ -28,6 +28,7 @@
 #include "../../../cstdio.hpp"
 #include "../../../cstr_type.hpp"
 #include "../../../discard.hpp"
+#include "../../../is_constant_evaluated.hpp"
 
 namespace bsl::details
 {
@@ -37,9 +38,13 @@ namespace bsl::details
     /// <!-- inputs/outputs -->
     ///   @param str the string to output to stdout
     ///
-    inline void
+    constexpr void
     puts_stdout(cstr_type const str) noexcept
     {
+        if (is_constant_evaluated()) {
+            return;
+        }
+
         // This is required by stdio
         // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
         bsl::discard(fputs(str, stdout));

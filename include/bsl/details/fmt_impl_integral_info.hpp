@@ -32,7 +32,7 @@
 namespace bsl::details
 {
     /// @brief stores the maximum number of digits.
-    constexpr safe_uintmax MAX_NUM_DIGITS{to_umax(64)};
+    constexpr safe_uintmax MAX_NUM_DIGITS{static_cast<bsl::uintmax>(64)};
 
     /// @class bsl::details::fmt_impl_integral_info
     ///

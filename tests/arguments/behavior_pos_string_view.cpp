@@ -24,6 +24,7 @@
 
 #include <bsl/arguments.hpp>
 #include <bsl/array.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/cstr_type.hpp>
 #include <bsl/ut.hpp>
 
@@ -42,23 +43,22 @@ namespace
     tests() noexcept -> bsl::exit_code
     {
         bsl::ut_scenario{"get positional string_view"} = []() {
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::arguments args{bsl::to_umax(0), nullptr};
                 bsl::ut_then{} = [&args]() {
                     bsl::ut_check(args.get<bsl::string_view>(bsl::to_umax(0)).empty());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array argv{"app"};
                 bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(
-                        args.get<bsl::string_view>(bsl::safe_uintmax::zero(true)).empty());
+                    bsl::ut_check(args.get<bsl::string_view>(bsl::safe_uintmax::failure()).empty());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array argv{"-app"};
                 bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
@@ -66,7 +66,7 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array argv{"42"};
                 bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {

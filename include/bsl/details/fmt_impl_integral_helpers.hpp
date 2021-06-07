@@ -26,8 +26,8 @@
 #define BSL_DETAILS_FMT_IMPL_INTEGRAL_HELPERS_HPP
 
 #include "../char_type.hpp"
-#include "../convert.hpp"
 #include "../fmt_options.hpp"
+#include "../is_signed.hpp"
 #include "../safe_integral.hpp"
 #include "../touch.hpp"
 #include "fmt_impl_align.hpp"
@@ -71,11 +71,11 @@ namespace bsl::details
     get_integral_info(fmt_options const &ops, safe_integral<T> val) noexcept
         -> fmt_impl_integral_info<T>
     {
-        constexpr safe_integral<T> base2{convert<T>(2)};
-        constexpr safe_integral<T> base10{convert<T>(10)};
-        constexpr safe_integral<T> base16{convert<T>(16)};
-        constexpr safe_integral<T> last_numerical_digit{convert<T>(9)};
-        constexpr safe_uintmax extra_chars{to_umax(2)};
+        constexpr safe_integral<T> base2{static_cast<T>(2)};
+        constexpr safe_integral<T> base10{static_cast<T>(10)};
+        constexpr safe_integral<T> base16{static_cast<T>(16)};
+        constexpr safe_integral<T> last_numerical_digit{static_cast<T>(9)};
+        constexpr safe_uintmax extra_chars{static_cast<bsl::uintmax>(2)};
 
         safe_integral<T> base{base10};
         fmt_impl_integral_info<T> info{};
@@ -121,11 +121,13 @@ namespace bsl::details
             }
 
             case fmt_sign::fmt_sign_neg_only: {
-                if (val.is_neg()) {
-                    ++info.extras;
-                }
-                else {
-                    bsl::touch();
+                if constexpr (is_signed<T>::value) {
+                    if (val.is_neg()) {
+                        ++info.extras;
+                    }
+                    else {
+                        bsl::touch();
+                    }
                 }
 
                 break;
@@ -144,7 +146,7 @@ namespace bsl::details
                 safe_integral<T> digit{val % base};
                 val /= base;
 
-                if constexpr (val.is_signed_type()) {
+                if constexpr (is_signed<T>::value) {
                     if (digit.is_neg()) {
                         digit = -digit;
                     }
@@ -155,10 +157,10 @@ namespace bsl::details
 
                 if (digit > last_numerical_digit) {
                     digit -= base10;
-                    digit += convert<T>('A');
+                    digit += static_cast<T>('A');
                 }
                 else {
-                    digit += convert<T>('0');
+                    digit += static_cast<T>('0');
                 }
 
                 *info.buf.at_if(info.digits) = static_cast<char_type>(digit.get());
@@ -265,7 +267,7 @@ namespace bsl::details
         }
         else {
             for (safe_uintmax i{info.digits}; i.is_pos(); --i) {
-                o.write(*info.buf.at_if(i - safe_uintmax::one()));
+                o.write(*info.buf.at_if(i - static_cast<bsl::uintmax>(1)));
             }
         }
 

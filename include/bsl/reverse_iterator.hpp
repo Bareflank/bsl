@@ -28,9 +28,6 @@
 #ifndef BSL_REVERSE_ITERATOR_HPP
 #define BSL_REVERSE_ITERATOR_HPP
 
-#include "convert.hpp"
-#include "debug.hpp"
-#include "details/out.hpp"
 #include "safe_integral.hpp"
 #include "unlikely.hpp"
 
@@ -170,7 +167,7 @@ namespace bsl
                 return m_i.size();
             }
 
-            return m_i.index() - size_type::one();
+            return m_i.index() - static_cast<bsl::uintmax>(1);
         }
 
         /// <!-- description -->
@@ -226,16 +223,14 @@ namespace bsl
         get_if() noexcept -> pointer_type
         {
             if (unlikely(nullptr == m_i.data())) {
-                bsl::error() << "reverse_iterator: null iterator\n";
                 return nullptr;
             }
 
             if (unlikely(m_i.index().is_zero())) {
-                bsl::error() << "reverse_iterator: attempt to get value from end() iterator\n";
                 return nullptr;
             }
 
-            return &m_i.data()[(m_i.index() - size_type::one()).get()];
+            return &m_i.data()[(m_i.index() - static_cast<bsl::uintmax>(1)).get()];
         }
 
         /// <!-- description -->
@@ -253,16 +248,14 @@ namespace bsl
         get_if() const noexcept -> const_pointer_type
         {
             if (unlikely(nullptr == m_i.data())) {
-                bsl::error() << "reverse_iterator: null iterator\n";
                 return nullptr;
             }
 
             if (unlikely(m_i.index().is_zero())) {
-                bsl::error() << "reverse_iterator: attempt to get value from end() iterator\n";
                 return nullptr;
             }
 
-            return &m_i.data()[(m_i.index() - size_type::one()).get()];
+            return &m_i.data()[(m_i.index() - static_cast<bsl::uintmax>(1)).get()];
         }
 
         /// <!-- description -->
@@ -384,34 +377,6 @@ namespace bsl
     make_reverse_iterator(ITER const &i) noexcept -> reverse_iterator<ITER>
     {
         return {i};
-    }
-
-    /// <!-- description -->
-    ///   @brief Outputs the provided bsl::reverse_iterator to the provided
-    ///     output type.
-    ///   @related bsl::reverse_iterator
-    ///   @include reverse_iterator/example_reverse_iterator_ostream.hpp
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T1 the type of outputter provided
-    ///   @tparam T2 the type of element being encapsulated.
-    ///   @param o the instance of the outputter used to output the value.
-    ///   @param val the reverse_iterator to output
-    ///   @return return o
-    ///
-    template<typename T1, typename T2>
-    [[maybe_unused]] constexpr auto
-    operator<<(out<T1> const o, reverse_iterator<T2> const &val) noexcept -> out<T1>
-    {
-        if constexpr (!o) {
-            return o;
-        }
-
-        if (auto const *const ptr{val.get_if()}) {
-            return o << *ptr;
-        }
-
-        return o << "[error]";
     }
 }
 

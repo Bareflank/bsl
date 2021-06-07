@@ -25,9 +25,9 @@
 #ifndef BSL_DETAILS_FMT_IMPL_BOOL_HPP
 #define BSL_DETAILS_FMT_IMPL_BOOL_HPP
 
-#include "../convert.hpp"
 #include "../fmt_options.hpp"
 #include "../forward.hpp"
+#include "../is_constant_evaluated.hpp"
 #include "../safe_integral.hpp"
 #include "fmt_impl_align.hpp"
 #include "fmt_impl_integral_helpers.hpp"
@@ -57,19 +57,24 @@ namespace bsl
     constexpr void
     fmt_impl(OUT_T &&o, fmt_options const &ops, bool const b) noexcept
     {
+        if (is_constant_evaluated()) {
+            return;
+        }
+
         if (b) {
             switch (ops.type()) {
                 case fmt_type::fmt_type_b:
                 case fmt_type::fmt_type_c:
                 case fmt_type::fmt_type_d:
                 case fmt_type::fmt_type_x: {
-                    details::fmt_impl_integral(bsl::forward<OUT_T>(o), ops, safe_uint32::one());
+                    details::fmt_impl_integral(
+                        bsl::forward<OUT_T>(o), ops, safe_uint32{static_cast<bsl::uint32>(1)});
                     break;
                 }
 
                 case fmt_type::fmt_type_s:
                 case fmt_type::fmt_type_default: {
-                    constexpr safe_uintmax len_true{to_umax(4)};
+                    constexpr safe_uintmax len_true{static_cast<bsl::uintmax>(4)};
                     details::fmt_impl_align_pre(o, ops, len_true, true);
                     o.write("true");
                     details::fmt_impl_align_suf(o, ops, len_true, true);
@@ -83,13 +88,14 @@ namespace bsl
                 case fmt_type::fmt_type_c:
                 case fmt_type::fmt_type_d:
                 case fmt_type::fmt_type_x: {
-                    details::fmt_impl_integral(bsl::forward<OUT_T>(o), ops, to_u32(0));
+                    details::fmt_impl_integral(
+                        bsl::forward<OUT_T>(o), ops, safe_uint32{static_cast<bsl::uint32>(0)});
                     break;
                 }
 
                 case fmt_type::fmt_type_s:
                 case fmt_type::fmt_type_default: {
-                    constexpr safe_uintmax len_false{to_umax(5)};
+                    constexpr safe_uintmax len_false{static_cast<bsl::uintmax>(5)};
                     details::fmt_impl_align_pre(o, ops, len_false, true);
                     o.write("false");
                     details::fmt_impl_align_suf(o, ops, len_false, true);
@@ -113,6 +119,10 @@ namespace bsl
     [[maybe_unused]] constexpr auto
     operator<<(out<T> const o, bool const b) noexcept -> out<T>
     {
+        if (is_constant_evaluated()) {
+            return o;
+        }
+
         if constexpr (!o) {
             return o;
         }

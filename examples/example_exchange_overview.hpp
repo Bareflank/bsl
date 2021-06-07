@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/exchange.hpp>
 
@@ -33,11 +34,11 @@ namespace bsl
     inline void
     example_exchange_overview() noexcept
     {
-        constexpr bsl::safe_int32 val1{23};
-        constexpr bsl::safe_int32 val2{42};
+        constexpr auto val1{23_i32};
+        constexpr auto val2{42_i32};
 
-        bsl::safe_int32 var1{val1};
-        bsl::safe_int32 var2{val2};
+        auto var1{val1};
+        auto var2{val2};
         var2 = bsl::exchange(var1, var2);
 
         if (val2 == var1) {

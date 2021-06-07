@@ -33,6 +33,11 @@ list(APPEND BSL_WARNINGS
     -Wno-missing-prototypes
     -Wno-missing-variable-declarations
     -Wno-covered-switch-default
+    -Wno-invalid-constexpr
+    -fconstexpr-steps=134217728
+)
+
+list(APPEND BSL_DOXYGEN_FLAGS
     -fcomment-block-commands=include
     -fcomment-block-commands=cond
     -fcomment-block-commands=endcond
@@ -48,6 +53,7 @@ list(APPEND BSL_FLAGS_RELEASE
     -Wframe-larger-than=1024
     -Werror
     ${BSL_WARNINGS}
+    ${BSL_DOXYGEN_FLAGS}
     ${BSL_ENABLE_CONSOLE_COLORS}
 )
 
@@ -56,6 +62,7 @@ list(APPEND BSL_FLAGS_MINSIZEREL
     -Wframe-larger-than=1024
     -Werror
     ${BSL_WARNINGS}
+    ${BSL_DOXYGEN_FLAGS}
     ${BSL_ENABLE_CONSOLE_COLORS}
 )
 
@@ -75,6 +82,7 @@ list(APPEND BSL_FLAGS_DEBUG
     -Wframe-larger-than=1024
     -ftime-trace
     ${BSL_WARNINGS}
+    ${BSL_DOXYGEN_FLAGS}
     ${BSL_ENABLE_CONSOLE_COLORS}
 )
 
@@ -83,6 +91,7 @@ list(APPEND BSL_FLAGS_CLANG_TIDY
     -g
     -Werror
     ${BSL_WARNINGS}
+    ${BSL_DOXYGEN_FLAGS}
     ${BSL_ENABLE_CONSOLE_COLORS}
 )
 
@@ -92,6 +101,7 @@ list(APPEND BSL_FLAGS_ASAN
     -fno-omit-frame-pointer
     -fsanitize=address
     ${BSL_WARNINGS}
+    ${BSL_DOXYGEN_FLAGS}
     ${BSL_ENABLE_CONSOLE_COLORS}
 )
 
@@ -100,11 +110,13 @@ list(APPEND BSL_FLAGS_UBSAN
     -g
     -fsanitize=undefined
     ${BSL_WARNINGS}
+    ${BSL_DOXYGEN_FLAGS}
     ${BSL_ENABLE_CONSOLE_COLORS}
 )
 
 list(APPEND BSL_FLAGS_CODECOV
     --coverage
     ${BSL_WARNINGS}
+    ${BSL_DOXYGEN_FLAGS}
     ${BSL_ENABLE_CONSOLE_COLORS}
 )

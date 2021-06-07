@@ -28,6 +28,7 @@
 #include "../func.hpp"
 #include "../func_might_throw.hpp"
 
+#include <bsl/convert.hpp>
 #include <bsl/invoke.hpp>
 #include <bsl/reference_wrapper.hpp>
 #include <bsl/ut.hpp>

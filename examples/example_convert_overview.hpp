@@ -34,8 +34,8 @@ namespace bsl
     inline void
     example_convert_overview() noexcept
     {
-        constexpr bsl::safe_intmax val1{bsl::to_imax(42)};
-        constexpr bsl::safe_uintmax val2{bsl::safe_uintmax::max()};
+        constexpr auto val1{42_imax};
+        constexpr auto val2{bsl::safe_uintmax::max()};
 
         if constexpr (val1) {
             bsl::print() << "success\n";

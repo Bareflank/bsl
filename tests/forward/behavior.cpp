@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/forward.hpp>
 #include <bsl/is_const.hpp>
 #include <bsl/is_lvalue_reference.hpp>

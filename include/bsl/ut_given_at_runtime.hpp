@@ -28,6 +28,8 @@
 #ifndef BSL_UT_GIVEN_AT_RUNTIME_HPP
 #define BSL_UT_GIVEN_AT_RUNTIME_HPP
 
+#include "cstr_type.hpp"
+#include "discard.hpp"
 #include "is_constant_evaluated.hpp"
 #include "touch.hpp"
 
@@ -46,7 +48,13 @@ namespace bsl
         /// <!-- description -->
         ///   @brief Default constructor
         ///
-        constexpr ut_given_at_runtime() noexcept = default;
+        /// <!-- inputs/outputs -->
+        ///   @param name the name of the scenario (i.e., test case)
+        ///
+        explicit constexpr ut_given_at_runtime(cstr_type const name = "ignored") noexcept
+        {
+            bsl::discard(name);
+        }
 
         /// <!-- description -->
         ///   @brief Executes a lambda function as the body of the

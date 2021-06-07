@@ -30,7 +30,6 @@
 
 #include "conjunction.hpp"
 #include "construct_at.hpp"
-#include "debug.hpp"
 #include "destroy_at.hpp"
 #include "details/out.hpp"
 #include "details/result_type.hpp"
@@ -591,11 +590,11 @@ namespace bsl
             return o;
         }
 
-        if (auto const *const ptr{val.get_if()}) {
-            return o << *ptr;
+        if (unlikely(!val)) {
+            return o << val.errc();
         }
 
-        return o << val.errc().get();
+        return o << *val.get_if();
     }
 }
 

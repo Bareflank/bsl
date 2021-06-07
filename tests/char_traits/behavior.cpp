@@ -65,38 +65,37 @@ namespace
         };
 
         bsl::ut_scenario{"compare"} = []() {
-            bsl::ut_then{} = []() {
-                bsl::ut_check(traits::compare(nullptr, "42", bsl::to_umax(2)) == 0);
-                bsl::ut_check(traits::compare("42", nullptr, bsl::to_umax(2)) == 0);
-                bsl::ut_check(traits::compare("42", nullptr, bsl::safe_uintmax::zero(true)) == 0);
-                bsl::ut_check(traits::compare("42", "42", bsl::to_umax(0)) == 0);
-                bsl::ut_check(traits::compare("42", "42", bsl::to_umax(1)) == 0);
-                bsl::ut_check(traits::compare("42", "42", bsl::to_umax(2)) == 0);
-                bsl::ut_check(traits::compare("42", "23", bsl::to_umax(1)) != 0);
-                bsl::ut_check(traits::compare("42", "23", bsl::to_umax(2)) != 0);
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::ut_then{} = []() {
+                    bsl::ut_check(!traits::compare(nullptr, "42", bsl::to_umax(2)));
+                    bsl::ut_check(!traits::compare("42", nullptr, bsl::to_umax(2)));
+                    bsl::ut_check(!traits::compare("42", "42", bsl::safe_uintmax::failure()));
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::ut_then{} = []() {
+                    bsl::ut_check(traits::compare("42", "42", bsl::to_umax(0)) == 0);
+                    bsl::ut_check(traits::compare("42", "42", bsl::to_umax(1)) == 0);
+                    bsl::ut_check(traits::compare("42", "42", bsl::to_umax(2)) == 0);
+                    bsl::ut_check(traits::compare("42", "23", bsl::to_umax(1)) != 0);
+                    bsl::ut_check(traits::compare("42", "23", bsl::to_umax(2)) != 0);
+                };
             };
         };
 
         bsl::ut_scenario{"length"} = []() {
-            bsl::ut_then{} = []() {
-                bsl::ut_check(traits::length(nullptr) == bsl::to_umax(0));
-                bsl::ut_check(traits::length("") == bsl::to_umax(0));
-                bsl::ut_check(traits::length("42") == bsl::to_umax(2));
-                bsl::ut_check(traits::length("4\0 2") == bsl::to_umax(1));
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::ut_then{} = []() {
+                    bsl::ut_check(!traits::length(nullptr));
+                };
             };
-        };
 
-        bsl::ut_scenario{"find"} = []() {
             bsl::ut_given{} = []() {
-                bsl::cstr_type const msg{"Hello World"};
-                bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(traits::find(nullptr, bsl::to_umax(5), 'l') == nullptr);
-                    bsl::ut_check(traits::find(msg, bsl::to_umax(0), 'l') == nullptr);
-                    bsl::ut_check(traits::find(msg, bsl::safe_uintmax::zero(true), 'l') == nullptr);
-                    bsl::ut_check(traits::find(msg, bsl::to_umax(5), 'l') == &msg[2]);
-                    bsl::ut_check(traits::find(msg, bsl::npos, 'l') == &msg[2]);
-                    bsl::ut_check(traits::find(msg, bsl::to_umax(1), 'z') == nullptr);
-                    bsl::ut_check(traits::find(msg, bsl::npos, 'z') == nullptr);
+                bsl::ut_then{} = []() {
+                    bsl::ut_check(traits::length("") == bsl::to_umax(0));
+                    bsl::ut_check(traits::length("42") == bsl::to_umax(2));
+                    bsl::ut_check(traits::length("4\0 2") == bsl::to_umax(1));
                 };
             };
         };

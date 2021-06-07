@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/rank.hpp>
 
@@ -33,7 +34,7 @@ namespace bsl
     inline void
     example_rank_overview() noexcept
     {
-        constexpr bsl::safe_uintmax expected_rank{to_umax(1)};
+        constexpr auto expected_rank{1_umax};
         // This is needed to demonstrate how to use this type trait
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
         if constexpr (bsl::rank<bool[]>::value == expected_rank.get()) {

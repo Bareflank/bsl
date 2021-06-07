@@ -49,11 +49,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         check_is_fundamental() noexcept -> bool
         {
-            if (is_arithmetic<T>::value) {
+            if constexpr (is_arithmetic<T>::value) {
                 return true;
             }
 
-            if (is_void<T>::value) {
+            if constexpr (is_void<T>::value) {
                 return true;
             }
 

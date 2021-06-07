@@ -28,11 +28,10 @@
 #ifndef BSL_SPAN_HPP
 #define BSL_SPAN_HPP
 
+#include "array.hpp"
 #include "byte.hpp"
 #include "char_type.hpp"
 #include "contiguous_iterator.hpp"
-#include "convert.hpp"
-#include "debug.hpp"
 #include "details/out.hpp"
 #include "disjunction.hpp"
 #include "is_same.hpp"
@@ -49,7 +48,7 @@ namespace bsl
     namespace details
     {
         /// @brief defined the expected size of the pt_t struct
-        constexpr bsl::safe_uintmax EXPECTED_SPAN_SIZE{bsl::to_umax(16)};
+        constexpr bsl::safe_uintmax EXPECTED_SPAN_SIZE{static_cast<bsl::uintmax>(16)};
     }
 
     /// @class bsl::span
@@ -159,6 +158,13 @@ namespace bsl
             static_assert(is_standard_layout<span<T>>::value, "standard layout test failed");
 
             if (unlikely(nullptr == m_ptr)) {
+                unlikely_invalid_argument_failure();
+                *this = span{};
+                return;
+            }
+
+            if (unlikely(!count)) {
+                unlikely_invalid_argument_failure();
                 *this = span{};
                 return;
             }
@@ -170,6 +176,34 @@ namespace bsl
 
             bsl::touch();
         }
+
+        /// <!-- description -->
+        ///   @brief Creates a span given a a bsl::array
+        ///   @include span/example_span_array_constructor.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam U the array's value type
+        ///   @tparam N the size of the array
+        ///   @param arr the array being spaned.
+        ///
+        template<typename U, bsl::uintmax N>
+        explicit constexpr span(bsl::array<U, N> &arr) noexcept    // --
+            : m_ptr{arr.data()}, m_count{N}
+        {}
+
+        /// <!-- description -->
+        ///   @brief Creates a span given a a bsl::array
+        ///   @include span/example_span_array_constructor.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam U the array's value type
+        ///   @tparam N the size of the array
+        ///   @param arr the array being spaned.
+        ///
+        template<typename U, bsl::uintmax N>
+        explicit constexpr span(bsl::array<U, N> const &arr) noexcept    // --
+            : m_ptr{arr.data()}, m_count{N}
+        {}
 
         /// <!-- description -->
         ///   @brief Destroyes a previously created bsl::span
@@ -226,6 +260,7 @@ namespace bsl
         at_if(size_type const &index) noexcept -> pointer_type
         {
             if (unlikely(!index)) {
+                unlikely_invalid_argument_failure();
                 return nullptr;
             }
 
@@ -255,6 +290,7 @@ namespace bsl
         at_if(size_type const &index) const noexcept -> const_pointer_type
         {
             if (unlikely(!index)) {
+                unlikely_invalid_argument_failure();
                 return nullptr;
             }
 
@@ -282,7 +318,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front_if() noexcept -> pointer_type
         {
-            return this->at_if(size_type::zero());
+            return this->at_if(static_cast<bsl::uintmax>(0));
         }
 
         /// <!-- description -->
@@ -299,7 +335,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front_if() const noexcept -> const_pointer_type
         {
-            return this->at_if(size_type::zero());
+            return this->at_if(static_cast<bsl::uintmax>(0));
         }
 
         /// <!-- description -->
@@ -316,11 +352,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back_if() noexcept -> pointer_type
         {
-            if (unlikely(this->empty())) {
-                return nullptr;
-            }
-
-            return this->at_if(m_count - size_type::one());
+            return this->at_if(m_count - static_cast<bsl::uintmax>(1));
         }
 
         /// <!-- description -->
@@ -337,11 +369,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back_if() const noexcept -> const_pointer_type
         {
-            if (unlikely(this->empty())) {
-                return nullptr;
-            }
-
-            return this->at_if(m_count - size_type::one());
+            return this->at_if(m_count - static_cast<bsl::uintmax>(1));
         }
 
         /// <!-- description -->
@@ -388,7 +416,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         begin() noexcept -> iterator_type
         {
-            return iterator_type{m_ptr, m_count, size_type::zero()};
+            return iterator_type{m_ptr, m_count, static_cast<bsl::uintmax>(0)};
         }
 
         /// <!-- description -->
@@ -401,7 +429,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         begin() const noexcept -> const_iterator_type
         {
-            return const_iterator_type{m_ptr, m_count, size_type::zero()};
+            return const_iterator_type{m_ptr, m_count, static_cast<bsl::uintmax>(0)};
         }
 
         /// <!-- description -->
@@ -414,7 +442,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         cbegin() const noexcept -> const_iterator_type
         {
-            return const_iterator_type{m_ptr, m_count, size_type::zero()};
+            return const_iterator_type{m_ptr, m_count, static_cast<bsl::uintmax>(0)};
         }
 
         /// <!-- description -->
@@ -585,14 +613,15 @@ namespace bsl
         riter(size_type const &i) noexcept -> reverse_iterator_type
         {
             if (unlikely(!i)) {
-                return reverse_iterator_type{this->iter(size_type::zero())};
+                unlikely_invalid_argument_failure();
+                return reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
             }
 
             if (likely(i < m_count)) {
-                return reverse_iterator_type{this->iter(i + size_type::one())};
+                return reverse_iterator_type{this->iter(i + static_cast<bsl::uintmax>(1))};
             }
 
-            return reverse_iterator_type{this->iter(size_type::zero())};
+            return reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
         }
 
         /// <!-- description -->
@@ -613,14 +642,15 @@ namespace bsl
         riter(size_type const &i) const noexcept -> const_reverse_iterator_type
         {
             if (unlikely(!i)) {
-                return const_reverse_iterator_type{this->iter(size_type::zero())};
+                unlikely_invalid_argument_failure();
+                return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
             }
 
             if (likely(i < m_count)) {
-                return const_reverse_iterator_type{this->iter(i + size_type::one())};
+                return const_reverse_iterator_type{this->iter(i + static_cast<bsl::uintmax>(1))};
             }
 
-            return const_reverse_iterator_type{this->iter(size_type::zero())};
+            return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
         }
 
         /// <!-- description -->
@@ -641,14 +671,15 @@ namespace bsl
         criter(size_type const &i) const noexcept -> const_reverse_iterator_type
         {
             if (unlikely(!i)) {
-                return const_reverse_iterator_type{this->iter(size_type::zero())};
+                unlikely_invalid_argument_failure();
+                return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
             }
 
             if (likely(i < m_count)) {
-                return const_reverse_iterator_type{this->iter(i + size_type::one())};
+                return const_reverse_iterator_type{this->iter(i + static_cast<bsl::uintmax>(1))};
             }
 
-            return const_reverse_iterator_type{this->iter(size_type::zero())};
+            return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
         }
 
         /// <!-- description -->
@@ -760,7 +791,7 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         max_size() noexcept -> size_type
         {
-            return size_type::max() / to_umax(sizeof(T));
+            return size_type::max() / static_cast<bsl::uintmax>(sizeof(T));
         }
 
         /// <!-- description -->
@@ -773,7 +804,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         size_bytes() const noexcept -> size_type
         {
-            return m_count * to_umax(sizeof(T));
+            return m_count * static_cast<bsl::uintmax>(sizeof(T));
         }
 
         /// <!-- description -->
@@ -789,7 +820,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         first(size_type const &count = npos) const noexcept -> span<T>
         {
-            return this->subspan(size_type::zero(), count);
+            return this->subspan(static_cast<bsl::uintmax>(0), count);
         }
 
         /// <!-- description -->
@@ -809,11 +840,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         last(size_type const &count = npos) const noexcept -> span<T>
         {
-            if (likely(count < this->size())) {
+            if (count < this->size()) {
                 return this->subspan(this->size() - count, count);
             }
 
-            return this->subspan(size_type::zero(), count);
+            return this->subspan(static_cast<bsl::uintmax>(0), count);
         }
 
         /// <!-- description -->
@@ -833,10 +864,12 @@ namespace bsl
         subspan(size_type const &pos, size_type const &count = npos) const noexcept -> span<T>
         {
             if (unlikely(!pos)) {
+                unlikely_invalid_argument_failure();
                 return {};
             }
 
             if (unlikely(!count)) {
+                unlikely_invalid_argument_failure();
                 return {};
             }
 
@@ -853,6 +886,28 @@ namespace bsl
         /// @brief stores the number of elements in the array being viewed
         bsl::uint64 m_count;
     };
+
+    /// <!-- description -->
+    ///   @brief Creates user-defined deduction guide for bsl::array
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam U the array's value type
+    ///   @tparam N the size of the array
+    ///   @param arr the array being spaned.
+    ///
+    template<typename U, bsl::uintmax N>
+    span(bsl::array<U, N> &arr) -> span<U>;
+
+    /// <!-- description -->
+    ///   @brief Creates user-defined deduction guide for bsl::array
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam U the array's value type
+    ///   @tparam N the size of the array
+    ///   @param arr the array being spaned.
+    ///
+    template<typename U, bsl::uintmax N>
+    span(bsl::array<U, N> const &arr) -> span<U const>;
 
     /// <!-- description -->
     ///   @brief Returns a span<byte const> given a pointer to an array

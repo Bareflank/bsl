@@ -29,7 +29,7 @@
 
 namespace
 {
-    constinit bsl::basic_string_view<bsl::char_type> const verify_constinit{};
+    constinit bsl::basic_string_view<bsl::char_type> const verify_constinit{"Hello World"};
 
     // Needed for requirements testing
     // NOLINTNEXTLINE(bsl-user-defined-type-names-match-header-name)
@@ -64,21 +64,21 @@ namespace
             bsl::discard(msg.max_size());
             bsl::discard(msg.size_bytes());
             bsl::discard(msg.substr());
-            bsl::discard(msg.compare(bsl::basic_string_view<bsl::char_type>{}));
-            bsl::discard(msg.compare({}, {}, bsl::basic_string_view<bsl::char_type>{}));
-            bsl::discard(msg.compare({}, {}, bsl::basic_string_view<bsl::char_type>{}, {}, {}));
-            bsl::discard(msg.compare(""));
-            bsl::discard(msg.compare({}, {}, ""));
-            bsl::discard(msg.compare({}, {}, "", {}));
-            bsl::discard(msg.starts_with(bsl::basic_string_view<bsl::char_type>{}));
+            bsl::discard(msg.compare(bsl::basic_string_view<bsl::char_type>{"H"}));
+            bsl::discard(msg.compare({}, {}, bsl::basic_string_view<bsl::char_type>{"H"}));
+            bsl::discard(msg.compare({}, {}, bsl::basic_string_view<bsl::char_type>{"H"}, {}, {}));
+            bsl::discard(msg.compare("H"));
+            bsl::discard(msg.compare({}, {}, "H"));
+            bsl::discard(msg.compare({}, {}, "H", {}));
+            bsl::discard(msg.starts_with(bsl::basic_string_view<bsl::char_type>{"H"}));
             bsl::discard(msg.starts_with('H'));
             bsl::discard(msg.starts_with(""));
-            bsl::discard(msg.ends_with(bsl::basic_string_view<bsl::char_type>{}));
+            bsl::discard(msg.ends_with(bsl::basic_string_view<bsl::char_type>{"H"}));
             bsl::discard(msg.ends_with('H'));
-            bsl::discard(msg.ends_with(""));
-            bsl::discard(msg.find(bsl::basic_string_view<bsl::char_type>{}));
+            bsl::discard(msg.ends_with("H"));
+            bsl::discard(msg.find(bsl::basic_string_view<bsl::char_type>{"H"}));
             bsl::discard(msg.find('H'));
-            bsl::discard(msg.find(""));
+            bsl::discard(msg.find("H"));
 
             return true;
         }
@@ -112,19 +112,19 @@ namespace
             bsl::discard(msg.remove_prefix(bsl::to_umax(0)));
             bsl::discard(msg.remove_suffix(bsl::to_umax(0)));
             bsl::discard(msg.substr());
-            bsl::discard(msg.compare(bsl::basic_string_view<bsl::char_type>{}));
-            bsl::discard(msg.compare({}, {}, bsl::basic_string_view<bsl::char_type>{}));
-            bsl::discard(msg.compare({}, {}, bsl::basic_string_view<bsl::char_type>{}, {}, {}));
-            bsl::discard(msg.compare(""));
-            bsl::discard(msg.compare({}, {}, ""));
-            bsl::discard(msg.compare({}, {}, "", {}));
-            bsl::discard(msg.starts_with(bsl::basic_string_view<bsl::char_type>{}));
+            bsl::discard(msg.compare(bsl::basic_string_view<bsl::char_type>{"H"}));
+            bsl::discard(msg.compare({}, {}, bsl::basic_string_view<bsl::char_type>{"H"}));
+            bsl::discard(msg.compare({}, {}, bsl::basic_string_view<bsl::char_type>{"H"}, {}, {}));
+            bsl::discard(msg.compare("H"));
+            bsl::discard(msg.compare({}, {}, "H"));
+            bsl::discard(msg.compare({}, {}, "H", {}));
+            bsl::discard(msg.starts_with(bsl::basic_string_view<bsl::char_type>{"H"}));
             bsl::discard(msg.starts_with('H'));
             bsl::discard(msg.starts_with(""));
-            bsl::discard(msg.ends_with(bsl::basic_string_view<bsl::char_type>{}));
+            bsl::discard(msg.ends_with(bsl::basic_string_view<bsl::char_type>{"H"}));
             bsl::discard(msg.ends_with('H'));
             bsl::discard(msg.ends_with(""));
-            bsl::discard(msg.find(bsl::basic_string_view<bsl::char_type>{}));
+            bsl::discard(msg.find(bsl::basic_string_view<bsl::char_type>{"H"}));
             bsl::discard(msg.find('H'));
             bsl::discard(msg.find(""));
 
@@ -185,12 +185,12 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(msg1.remove_prefix(bsl::to_umax(0))));
                 static_assert(noexcept(msg1.remove_suffix(bsl::to_umax(0))));
                 static_assert(noexcept(msg1.substr()));
-                static_assert(noexcept(msg1.compare(bsv_type{})));
-                static_assert(noexcept(msg1.compare({}, {}, bsv_type{})));
-                static_assert(noexcept(msg1.compare({}, {}, bsv_type{}, {}, {})));
-                static_assert(noexcept(msg1.compare("")));
-                static_assert(noexcept(msg1.compare({}, {}, "")));
-                static_assert(noexcept(msg1.compare({}, {}, "", {})));
+                static_assert(noexcept(msg1.compare(bsv_type{"H"})));
+                static_assert(noexcept(msg1.compare({}, {}, bsv_type{"H"})));
+                static_assert(noexcept(msg1.compare({}, {}, bsv_type{"H"}, {}, {})));
+                static_assert(noexcept(msg1.compare("H")));
+                static_assert(noexcept(msg1.compare({}, {}, "H")));
+                static_assert(noexcept(msg1.compare({}, {}, "H", {})));
                 static_assert(noexcept(msg1.starts_with(bsv_type{})));
                 static_assert(noexcept(msg1.starts_with('H')));
                 static_assert(noexcept(msg1.starts_with("")));

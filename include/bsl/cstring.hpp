@@ -29,9 +29,13 @@
 #define BSL_CSTRING_HPP
 
 #include "char_type.hpp"
-#include "convert.hpp"
+#include "cstdint.hpp"
 #include "cstr_type.hpp"
+#include "discard.hpp"
+#include "is_constant_evaluated.hpp"
+#include "is_trivial.hpp"
 #include "safe_integral.hpp"
+#include "touch.hpp"
 #include "unlikely.hpp"
 
 // Notes: --
@@ -54,49 +58,78 @@
 namespace bsl
 {
     /// <!-- description -->
-    ///   @brief Same as std::strncmp with parameter checks. If lhs, rhs are a
-    ///     nullptr, or count is 0, this function returns 0.
+    ///   @brief Returns the same result as std::strncmp with the exception
+    ///     that any undefined behavior will return safe_int32::failure().
     ///
     /// <!-- inputs/outputs -->
     ///   @param lhs the left hand side of the comparison
     ///   @param rhs the right hand side of the comparison
     ///   @param count the total number of bytes to compare
-    ///   @return Returns the same result as std::strncmp.
+    ///   @return Returns the same result as std::strncmp with the exception
+    ///     that any undefined behavior will return safe_int32::failure().
     ///
-    [[nodiscard]] inline constexpr auto
+    [[nodiscard]] constexpr auto
     builtin_strncmp(cstr_type const lhs, cstr_type const rhs, safe_uintmax const &count) noexcept
         -> safe_int32
     {
         if (unlikely(nullptr == lhs)) {
-            return to_i32(0);
+            unlikely_invalid_argument_failure();
+            return safe_int32::failure();
         }
 
         if (unlikely(nullptr == rhs)) {
-            return to_i32(0);
+            unlikely_invalid_argument_failure();
+            return safe_int32::failure();
         }
 
-        if (unlikely(count.is_zero())) {
-            return to_i32(0);
+        if (unlikely(!count)) {
+            unlikely_invalid_argument_failure();
+            return safe_int32::failure();
         }
 
-        return to_i32(__builtin_strncmp(lhs, rhs, count.get()));
+        for (safe_uintmax i{}; i < count; ++i) {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic, cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+            safe_int32 const lhsc{static_cast<bsl::int32>(lhs[i.get()])};
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic, cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+            safe_int32 const rhsc{static_cast<bsl::int32>(rhs[i.get()])};
+
+            if (lhsc.is_zero()) {
+                unlikely_invalid_argument_failure();
+                return safe_int32::failure();
+            }
+
+            if (rhsc.is_zero()) {
+                unlikely_invalid_argument_failure();
+                return safe_int32::failure();
+            }
+
+            if (lhsc != rhsc) {
+                return lhsc - rhsc;
+            }
+
+            bsl::touch();
+        }
+
+        return static_cast<bsl::int32>(0);
     }
 
     /// <!-- description -->
-    ///   @brief Same as std::strlen with parameter checks. If str is a
-    ///     nullptr, this returns 0.
+    ///   @brief Returns the same result as std::strlen with the exception
+    ///     that any undefined behavior will return safe_int32::failure().
     ///
     /// <!-- inputs/outputs -->
     ///   @param str a pointer to a string to get the length of
-    ///   @return Returns the same result as std::strlen.
+    ///   @return Returns the same result as std::strlen with the exception
+    ///     that any undefined behavior will return safe_int32::failure().
     ///
-    [[nodiscard]] inline constexpr auto
+    [[nodiscard]] constexpr auto
     builtin_strlen(cstr_type const str) noexcept -> safe_uintmax
     {
         bsl::safe_uintmax len{};
 
         if (unlikely(nullptr == str)) {
-            return len;
+            unlikely_invalid_argument_failure();
+            return safe_uintmax::failure();
         }
 
         while ('\0' != str[len.get()]) {
@@ -107,62 +140,65 @@ namespace bsl
     }
 
     /// <!-- description -->
-    ///   @brief Same as std::strnchr with parameter checks. If str is a
-    ///     nullptr, or count is 0, this function returns a nullptr.
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @param str the string to search
-    ///   @param ch the character to look for.
-    ///   @param count the total number of character in str to search through
-    ///   @return Returns the same result as std::strnchr.
-    ///
-    [[nodiscard]] inline constexpr auto
-    builtin_strnchr(cstr_type const str, char_type const ch, safe_uintmax const &count) noexcept
-        -> cstr_type
-    {
-        if (unlikely(nullptr == str)) {
-            return nullptr;
-        }
-
-        if (unlikely(count.is_zero())) {
-            return nullptr;
-        }
-
-        safe_uintmax len{to_umax(__builtin_strlen(str))};
-        return __builtin_char_memchr(str, ch, count.min(len + safe_uintmax::one()).get());
-    }
-
-    /// <!-- description -->
     ///   @brief Same as std::memset with parameter checks. If dst or count
     ///     is 0, this function returns nullptr.
     ///
     /// <!-- inputs/outputs -->
+    ///   @tparam T the type of dst to set
     ///   @param dst a pointer to the memory to set
     ///   @param ch the value to set the memory to
     ///   @param count the total number of bytes to set
     ///   @return Returns the same result as std::memset.
     ///
-    [[maybe_unused]] inline constexpr auto
-    builtin_memset(void *const dst, char_type const ch, safe_uintmax const &count) noexcept
-        -> void *
+    template<typename T>
+    [[maybe_unused]] constexpr auto
+    builtin_memset(T *const dst, char_type const ch, safe_uintmax const &count) noexcept -> T *
     {
+        static_assert(is_trivial<T>::value);
+
         if (unlikely(nullptr == dst)) {
+            unlikely_invalid_argument_failure();
+            return nullptr;
+        }
+
+        if (unlikely(!count)) {
+            unlikely_invalid_argument_failure();
             return nullptr;
         }
 
         if (unlikely(count.is_zero())) {
-            return nullptr;
+            return dst;
         }
 
-        for (safe_uintmax i{}; i < count; ++i) {
-            // Array access is needed here as the only other way to handle
-            // this could be through the use of span, but the cstring library
-            // is designed to have fewer dependencies, allowing it to be used
-            // by span in it's implementation if needed.
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic, cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-            static_cast<char_type *>(dst)[i.get()] = ch;
+        /// NOTE:
+        /// - For now, with a constexpr version of this function, we only
+        ///   support using memset to clear an array. During runtime, this
+        ///   will get forwarded to a memset function which either the compiler
+        ///   will provide, or the user will have to provide, which in most
+        ///   cases should be arch specific as optimizations are critical
+        ///   here.
+        ///
+
+        if (is_constant_evaluated()) {
+            if ('\0' != ch) {
+                unlikely_invalid_argument_failure();
+                return nullptr;
+            }
+
+            if ((count % sizeof(T)).is_pos()) {
+                unlikely_invalid_argument_failure();
+                return nullptr;
+            }
+
+            for (safe_uintmax i{}; i < count / sizeof(T); ++i) {
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic, cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+                dst[i.get()] = {};
+            }
+
+            return dst;
         }
 
+        bsl::discard(__builtin_memset(dst, ch, count.get()));
         return dst;
     }
 
@@ -171,36 +207,52 @@ namespace bsl
     ///     nullptr, or count is 0, this function returns nullptr.
     ///
     /// <!-- inputs/outputs -->
+    ///   @tparam T the type of src/dst to copy
     ///   @param dst a pointer to the memory to copy to
     ///   @param src a pointer to the memory to copy from
     ///   @param count the total number of bytes to copy
     ///   @return Returns the same result as std::memcpy.
     ///
-    [[maybe_unused]] inline constexpr auto
-    builtin_memcpy(void *const dst, void const *const src, safe_uintmax const &count) noexcept
-        -> void *
+    template<typename T>
+    [[maybe_unused]] constexpr auto
+    builtin_memcpy(T *const dst, T const *const src, safe_uintmax const &count) noexcept -> T *
     {
+        static_assert(is_trivial<T>::value);
+
         if (unlikely(nullptr == dst)) {
+            unlikely_invalid_argument_failure();
             return nullptr;
         }
 
         if (unlikely(nullptr == src)) {
+            unlikely_invalid_argument_failure();
+            return nullptr;
+        }
+
+        if (unlikely(!count)) {
+            unlikely_invalid_argument_failure();
             return nullptr;
         }
 
         if (unlikely(count.is_zero())) {
-            return nullptr;
+            return dst;
         }
 
-        for (safe_uintmax i{}; i < count; ++i) {
-            // Array access is needed here as the only other way to handle
-            // this could be through the use of span, but the cstring library
-            // is designed to have fewer dependencies, allowing it to be used
-            // by span in it's implementation if needed.
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic, cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-            static_cast<char_type *>(dst)[i.get()] = static_cast<char_type const *>(src)[i.get()];
+        if (is_constant_evaluated()) {
+            if ((count % sizeof(T)).is_pos()) {
+                unlikely_invalid_argument_failure();
+                return nullptr;
+            }
+
+            for (safe_uintmax i{}; i < count / sizeof(T); ++i) {
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic, cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
+                dst[i.get()] = src[i.get()];
+            }
+
+            return dst;
         }
 
+        bsl::discard(__builtin_memcpy(dst, src, count.get()));
         return dst;
     }
 }

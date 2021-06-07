@@ -25,27 +25,33 @@
 #include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
 
-/// <!-- description -->
-///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
-///     the application will fast fail. If all calls to bsl::ut_check() pass, this
-///     function will successfully return with bsl::exit_success.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-[[nodiscard]] auto
-main() noexcept -> bsl::exit_code
+namespace
 {
-    bsl::ut_scenario{"make_safe"} = []() {
-        bsl::ut_given{} = []() {
-            // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
-            bsl::int32 val1{42};
-            auto val2{bsl::make_safe(val1)};
-            bsl::ut_then{} = [&val1, &val2]() {
-                bsl::ut_check(val1 == val2);
+    /// <!-- description -->
+    ///   @brief Used to execute the actual checks. We put the checks in this
+    ///     function so that we can validate the tests both at compile-time
+    ///     and at run-time. If a bsl::ut_check fails, the tests will either
+    ///     fail fast at run-time, or will produce a compile-time error.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @return Always returns bsl::exit_success.
+    ///
+    [[nodiscard]] constexpr auto
+    tests_make_safe() noexcept -> bsl::exit_code
+    {
+        bsl::ut_scenario{"make_safe"} = []() {
+            bsl::ut_given{} = []() {
+                bsl::safe_int32 val{42};
+                bsl::ut_when{} = [&val]() {
+                    --val;
+                    bsl::ut_then{} = [&val]() {
+                        bsl::ut_check(val == 42 - 1);
+                        bsl::ut_check(!val.invalid());
+                    };
+                };
             };
         };
-    };
 
-    return bsl::ut_success();
+        return bsl::ut_success();
+    }
 }

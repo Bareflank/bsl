@@ -26,14 +26,15 @@
 #define BSL_DETAILS_FMT_IMPL_INTEGRAL_HPP
 
 #include "../char_type.hpp"
-#include "../convert.hpp"
 #include "../enable_if.hpp"
 #include "../fmt_options.hpp"
 #include "../forward.hpp"
+#include "../is_constant_evaluated.hpp"
 #include "../is_integral.hpp"
 #include "../is_signed.hpp"
 #include "../safe_integral.hpp"
 #include "../touch.hpp"
+#include "../unlikely.hpp"
 #include "fmt_impl_align.hpp"
 #include "fmt_impl_integral_helpers.hpp"
 #include "out.hpp"
@@ -64,8 +65,12 @@ namespace bsl
     constexpr void
     fmt_impl(OUT_T &&o, fmt_options const &ops, safe_integral<T> const &val) noexcept
     {
-        if (!val) {
-            constexpr safe_uintmax len_error{to_umax(7)};
+        if (is_constant_evaluated()) {
+            return;
+        }
+
+        if (unlikely(!val)) {
+            constexpr safe_uintmax len_error{static_cast<bsl::uintmax>(7)};
             details::fmt_impl_align_pre(o, ops, len_error, true);
             o.write("[error]");
             details::fmt_impl_align_suf(o, ops, len_error, true);
@@ -83,9 +88,9 @@ namespace bsl
 
             case fmt_type::fmt_type_c:
             case fmt_type::fmt_type_s: {
-                details::fmt_impl_align_pre(o, ops, safe_uintmax::one(), true);
+                details::fmt_impl_align_pre(o, ops, static_cast<bsl::uintmax>(1), true);
                 o.write(static_cast<char_type>(val.get()));
-                details::fmt_impl_align_suf(o, ops, safe_uintmax::one(), true);
+                details::fmt_impl_align_suf(o, ops, static_cast<bsl::uintmax>(1), true);
                 break;
             }
         }
@@ -115,20 +120,24 @@ namespace bsl
     constexpr void
     fmt_impl(OUT_T &&o, fmt_options const &ops, T const val) noexcept
     {
+        if (is_constant_evaluated()) {
+            return;
+        }
+
         switch (ops.type()) {
             case fmt_type::fmt_type_b:
             case fmt_type::fmt_type_d:
             case fmt_type::fmt_type_x:
             case fmt_type::fmt_type_default: {
-                fmt_impl_integral(bsl::forward<OUT_T>(o), ops, convert<T>(val));
+                fmt_impl_integral(bsl::forward<OUT_T>(o), ops, safe_integral<T>{val});
                 break;
             }
 
             case fmt_type::fmt_type_c:
             case fmt_type::fmt_type_s: {
-                details::fmt_impl_align_pre(o, ops, safe_uintmax::one(), true);
+                details::fmt_impl_align_pre(o, ops, static_cast<bsl::uintmax>(1), true);
                 o.write(static_cast<char_type>(val));
-                details::fmt_impl_align_suf(o, ops, safe_uintmax::one(), true);
+                details::fmt_impl_align_suf(o, ops, static_cast<bsl::uintmax>(1), true);
                 break;
             }
         }
@@ -149,30 +158,42 @@ namespace bsl
     [[maybe_unused]] constexpr auto
     operator<<(out<T1> const o, safe_integral<T2> const &val) noexcept -> out<T1>
     {
+        if (is_constant_evaluated()) {
+            if (unlikely(!val)) {
+                unlikely_invalid_argument_failure();
+                return o;
+            }
+
+            return o;
+        }
+
         if constexpr (!o) {
             return o;
         }
 
-        if (!val) {
+        if (unlikely(!val)) {
             o.write("[error]");
             return o;
         }
 
-        details::fmt_impl_integral_info<T2> const info{details::get_integral_info(nullops, val)};
+        details::fmt_impl_integral_info<T2> const info{
+            details::get_integral_info<T2>(nullops, val)};
 
         if (val.is_zero()) {
             o.write('0');
         }
         else {
-            if (val.is_neg()) {
-                o.write('-');
-            }
-            else {
-                bsl::touch();
+            if constexpr (is_signed<T2>::value) {
+                if (val.is_neg()) {
+                    o.write('-');
+                }
+                else {
+                    bsl::touch();
+                }
             }
 
             for (safe_uintmax i{info.digits}; i.is_pos(); --i) {
-                o.write(*info.buf.at_if(i - safe_uintmax::one()));
+                o.write(*info.buf.at_if(i - static_cast<bsl::uintmax>(1)));
             }
         }
 
@@ -194,12 +215,16 @@ namespace bsl
     [[maybe_unused]] constexpr auto
     operator<<(out<T1> const o, T2 const val) noexcept -> out<T1>
     {
+        if (is_constant_evaluated()) {
+            return o;
+        }
+
         if constexpr (!o) {
             return o;
         }
 
         details::fmt_impl_integral_info<T2> const info{
-            details::get_integral_info(nullops, convert<T2>(val))};
+            details::get_integral_info<T2>(nullops, static_cast<T2>(val))};
 
         if (static_cast<bsl::uintmax>(val) == static_cast<bsl::uintmax>(0)) {
             o.write('0');
@@ -215,7 +240,7 @@ namespace bsl
             }
 
             for (safe_uintmax i{info.digits}; i.is_pos(); --i) {
-                o.write(*info.buf.at_if(i - safe_uintmax::one()));
+                o.write(*info.buf.at_if(i - static_cast<bsl::uintmax>(1)));
             }
         }
 

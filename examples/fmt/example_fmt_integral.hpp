@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -32,8 +33,8 @@ namespace bsl
     inline void
     example_fmt_integral() noexcept
     {
-        constexpr bsl::safe_int32 val1{42};
-        constexpr bsl::safe_int32 val2{-42};
+        constexpr auto val1{42_i32};
+        constexpr auto val2{-42_i32};
 
         bsl::print() << bsl::fmt{"", val1} << bsl::endl;
         bsl::print() << bsl::fmt{"b", val1} << bsl::endl;

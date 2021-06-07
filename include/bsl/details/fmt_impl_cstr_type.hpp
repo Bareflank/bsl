@@ -28,7 +28,8 @@
 #include "../cstr_type.hpp"
 #include "../cstring.hpp"
 #include "../fmt_options.hpp"
-#include "../safe_integral.hpp"
+#include "../is_constant_evaluated.hpp"
+#include "fmt_impl_align.hpp"
 #include "out.hpp"
 
 namespace bsl
@@ -55,7 +56,11 @@ namespace bsl
     constexpr void
     fmt_impl(OUT_T &&o, fmt_options const &ops, cstr_type const str) noexcept
     {
-        safe_uintmax const len{bsl::builtin_strlen(str)};
+        if (is_constant_evaluated()) {
+            return;
+        }
+
+        auto const len{bsl::builtin_strlen(str)};
         details::fmt_impl_align_pre(o, ops, len, true);
         o.write(str);
         details::fmt_impl_align_suf(o, ops, len, true);
@@ -75,7 +80,21 @@ namespace bsl
     [[maybe_unused]] constexpr auto
     operator<<(out<T> const o, cstr_type const str) noexcept -> out<T>
     {
+        if (is_constant_evaluated()) {
+            if (unlikely(nullptr == str)) {
+                unlikely_invalid_argument_failure();
+                return o;
+            }
+
+            return o;
+        }
+
         if constexpr (!o) {
+            return o;
+        }
+
+        if (unlikely(nullptr == str)) {
+            o.write("[empty bsl::cstr_type]");
             return o;
         }
 

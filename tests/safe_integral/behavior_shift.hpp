@@ -37,7 +37,7 @@ namespace
     ///   @return Always returns bsl::exit_success.
     ///
     [[nodiscard]] constexpr auto
-    tests() noexcept -> bsl::exit_code
+    tests_shift() noexcept -> bsl::exit_code
     {
         bsl::ut_scenario{"left shift assign"} = []() {
             bsl::ut_given{} = []() {
@@ -61,45 +61,45 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_uint32 val1{42U, true};
                 bsl::safe_uint32 val2{1U};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 <<= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_uint32 val1{42U, true};
                 bsl::ut_when{} = [&val1]() {
                     val1 <<= 1U;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_uint32 val1{42U};
                 bsl::safe_uint32 val2{1U, true};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 <<= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_uint32 val1{42U, true};
                 bsl::safe_uint32 val2{1U, true};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 <<= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -121,34 +121,34 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_uint32 val1{42U, true};
                 bsl::safe_uint32 val2{1U};
                 bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 << val2).failure());
+                    bsl::ut_check((val1 << val2).invalid());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_uint32 val1{42U, true};
                 bsl::ut_then{} = [&val1]() {
-                    bsl::ut_check((val1 << 1U).failure());
+                    bsl::ut_check((val1 << 1U).invalid());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_uint32 val1{42U};
                 bsl::safe_uint32 val2{1U, true};
                 bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 << val2).failure());
+                    bsl::ut_check((val1 << val2).invalid());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_uint32 val1{42U, true};
                 bsl::safe_uint32 val2{1U, true};
                 bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 << val2).failure());
+                    bsl::ut_check((val1 << val2).invalid());
                 };
             };
         };
@@ -175,45 +175,45 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_uint32 val1{42U, true};
                 bsl::safe_uint32 val2{1U};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 >>= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_uint32 val1{42U, true};
                 bsl::ut_when{} = [&val1]() {
                     val1 >>= 1U;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_uint32 val1{42U};
                 bsl::safe_uint32 val2{1U, true};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 >>= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_uint32 val1{42U, true};
                 bsl::safe_uint32 val2{1U, true};
                 bsl::ut_when{} = [&val1, &val2]() {
                     val1 >>= val2;
                     bsl::ut_then{} = [&val1]() {
-                        bsl::ut_check(val1.failure());
+                        bsl::ut_check(val1.invalid());
                     };
                 };
             };
@@ -235,53 +235,38 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_uint32 val1{42U, true};
                 bsl::safe_uint32 val2{1U};
                 bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 >> val2).failure());
+                    bsl::ut_check((val1 >> val2).invalid());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_uint32 val1{42U, true};
                 bsl::ut_then{} = [&val1]() {
-                    bsl::ut_check((val1 >> 1U).failure());
+                    bsl::ut_check((val1 >> 1U).invalid());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_uint32 val1{42U};
                 bsl::safe_uint32 val2{1U, true};
                 bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 >> val2).failure());
+                    bsl::ut_check((val1 >> val2).invalid());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::safe_uint32 val1{42U, true};
                 bsl::safe_uint32 val2{1U, true};
                 bsl::ut_then{} = [&val1, &val2]() {
-                    bsl::ut_check((val1 >> val2).failure());
+                    bsl::ut_check((val1 >> val2).invalid());
                 };
             };
         };
 
         return bsl::ut_success();
     }
-}
-
-/// <!-- description -->
-///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
-///     the application will fast fail. If all calls to bsl::ut_check() pass, this
-///     function will successfully return with bsl::exit_success.
-///
-/// <!-- inputs/outputs -->
-///   @return Always returns bsl::exit_success.
-///
-[[nodiscard]] auto
-main() noexcept -> bsl::exit_code
-{
-    static_assert(tests() == bsl::ut_success());
-    return tests();
 }

@@ -22,8 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
-#include <bsl/safe_integral.hpp>
 
 namespace bsl
 {
@@ -33,9 +33,9 @@ namespace bsl
     inline void
     example_safe_integral_is_pos() noexcept
     {
-        constexpr bsl::safe_int32 val1{42};
-        constexpr bsl::safe_int32 val2{0};
-        constexpr bsl::safe_int32 val3{-42};
+        constexpr auto val1{42_i32};
+        constexpr auto val2{0_i32};
+        constexpr auto val3{-42_i32};
 
         if constexpr (val1.is_pos()) {
             bsl::print() << "success\n";

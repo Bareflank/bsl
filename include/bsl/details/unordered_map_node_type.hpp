@@ -22,25 +22,31 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/char_traits.hpp>
-#include <bsl/debug.hpp>
+#ifndef BSL_DETAILS_UNORDERED_MAP_NODE_TYPE_HPP
+#define BSL_DETAILS_UNORDERED_MAP_NODE_TYPE_HPP
 
-namespace bsl
+namespace bsl::details
 {
-    /// <!-- description -->
-    ///   @brief Provides the example's main function
+    /// @class bsl::details::unordered_map_node_type
     ///
-    inline void
-    example_char_traits_find() noexcept
+    /// <!-- description -->
+    ///   @brief Used by the bsl::unordered_map to implement it's
+    ///     internal linked list.
+    ///
+    /// <!-- template parameters -->
+    ///   @tparam KEY_TYPE the type of key to use
+    ///   @tparam T the type of value to use
+    ///
+    template<typename KEY_TYPE, typename T>
+    struct unordered_map_node_type final
     {
-        constexpr bsl::safe_uintmax n{bsl::to_umax(2)};
-        constexpr bsl::char_type ch{'2'};
-
-        if constexpr (bsl::char_traits<bsl::char_type>::find("42", n, ch) != nullptr) {
-            bsl::print() << "success\n";
-        }
-        else {
-            bsl::error() << "failure\n";
-        }
-    }
+        /// @brief stores the key for each node in the map
+        KEY_TYPE key;
+        /// @brief stores the data for each node in the map
+        T val;
+        /// @brief stores the next node in the list
+        unordered_map_node_type *next;
+    };
 }
+
+#endif

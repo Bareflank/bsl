@@ -23,8 +23,10 @@
 #define BSL_CONVERT_HPP
 
 #include "conditional.hpp"
+#include "cstr_type.hpp"
 #include "enable_if.hpp"
 #include "forward.hpp"
+#include "from_chars.hpp"
 #include "is_constant_evaluated.hpp"
 #include "is_pointer.hpp"
 #include "is_same.hpp"
@@ -33,6 +35,7 @@
 #include "is_standard_layout.hpp"
 #include "numeric_limits.hpp"
 #include "safe_integral.hpp"
+#include "string_view.hpp"
 #include "unlikely.hpp"
 
 namespace bsl
@@ -90,12 +93,12 @@ namespace bsl
                 else {
                     if (unlikely(static_cast<bsl::intmax>(val) > t_max)) {
                         conversion_failure_narrowing_results_in_loss_of_data();
-                        return safe_integral<T>::zero(true);
+                        return safe_integral<T>::failure();
                     }
 
                     if (unlikely(static_cast<bsl::intmax>(val) < t_min)) {
                         conversion_failure_narrowing_results_in_loss_of_data();
-                        return safe_integral<T>::zero(true);
+                        return safe_integral<T>::failure();
                     }
 
                     return safe_integral<T>{static_cast<T>(val)};
@@ -107,7 +110,7 @@ namespace bsl
 
                 if (unlikely(static_cast<bsl::intmax>(val) < static_cast<bsl::intmax>(0))) {
                     conversion_failure_narrowing_results_in_loss_of_data();
-                    return safe_integral<T>::zero(true);
+                    return safe_integral<T>::failure();
                 }
 
                 if constexpr (f_max < t_max) {
@@ -119,7 +122,7 @@ namespace bsl
                 else {
                     if (unlikely(static_cast<bsl::uintmax>(val) > t_max)) {
                         conversion_failure_narrowing_results_in_loss_of_data();
-                        return safe_integral<T>::zero(true);
+                        return safe_integral<T>::failure();
                     }
 
                     return safe_integral<T>{static_cast<T>(val)};
@@ -140,7 +143,7 @@ namespace bsl
                 else {
                     if (unlikely(static_cast<bsl::uintmax>(val) > t_max)) {
                         conversion_failure_narrowing_results_in_loss_of_data();
-                        return safe_integral<T>::zero(true);
+                        return safe_integral<T>::failure();
                     }
 
                     return safe_integral<T>{static_cast<T>(val)};
@@ -159,7 +162,7 @@ namespace bsl
                 else {
                     if (unlikely(static_cast<bsl::uintmax>(val) > t_max)) {
                         conversion_failure_narrowing_results_in_loss_of_data();
-                        return safe_integral<T>::zero(true);
+                        return safe_integral<T>::failure();
                     }
 
                     return safe_integral<T>{static_cast<T>(val)};
@@ -191,12 +194,16 @@ namespace bsl
     [[nodiscard]] constexpr auto
     convert(safe_integral<F> const &val) noexcept -> safe_integral<T>
     {
-        if (unlikely(val.failure())) {
-            return safe_integral<T>::zero(true);
+        if (unlikely(val.invalid())) {
+            return safe_integral<T>::failure();
         }
 
         return convert<T>(val.get());
     }
+
+    // -------------------------------------------------------------------------
+    // predefined conversion functions
+    // -------------------------------------------------------------------------
 
     /// <!-- description -->
     ///   @brief Returns convert<bsl::int8>(val)
@@ -675,7 +682,7 @@ namespace bsl
             static_assert(is_standard_layout<T>::value);
 
             if (unlikely(nullptr == val)) {
-                return bsl::safe_uintmax::zero(true);
+                return bsl::safe_uintmax::failure();
             }
 
             // A reinterpret cast is needed her as there is no other way
@@ -765,6 +772,396 @@ namespace bsl
     {
         return to_umax(sizeof(T));
     }
+}
+
+// -------------------------------------------------------------------------
+// user defined literals
+// -------------------------------------------------------------------------
+
+/// NOTE:
+/// - Rule A13-1-1 of the AUTOSAR spec specifically prohibits the use
+///   of user-defined literals because "A programmer has limited control on
+///   the types of parameters passed to user-defined conversion operators.
+///   Also, it is implementation-defined whether fixed-size types from
+///   <cstdint> header are compatible with the types allowed by user-defined
+///   literals."
+///
+///   The problem with this rule is it is total nonsense (due to how raw
+///   literals work, vs. cooked literals which is what the rule focuses on).
+///   This rule is also dangerous, specifically because of how these types
+///   are handled:
+///   https://en.cppreference.com/w/cpp/language/integer_literal
+///
+///   As can be seen from the list above, the compiler has to determine which
+///   type to return based on the size of the literal. This is even worse
+///   for hexidecimal types, where the compiler has to determine whether or
+///   not the type is signed or not. Most importantly, the way the compiler
+///   converts these types from literal to "int" or "unsigned long long" has
+///   no direct comparison to fixed-width types. In otherwords, the following
+///   is extremely dangerous:
+///
+///   uint64_t mask = 0xFFFF00000000FFFF
+///
+///   Based on the rules above, the compiler is allowed to view these as
+///   either a long long int, or an unsigned long long int.
+///
+///   uint64_t mask = 0xFFFF00000000FFFFU
+///
+///   The above adds a U. Based on the above reference, the compiler would
+///   be forced to convert this to an unsigned long long int. The problem is,
+///   most compilers complain about the use of U when you should be using UL
+///   or ULL (depending on your compiler). In most cases, the compile will
+///   attempt an implicit cast to make it work. Meaning, U is really reserved
+///   for "unsigned", but you cannot use UL or ULL because these have different
+///   meanings depending on the compiler you use.
+///
+///   AUTOSAR itself does not allow you to use the native types specifically
+///   because of this issue, but at the same time, it only allows you to use
+///   native literal types, forcing implicit casts that could lose data.
+///
+///   In the example for rule A13-1-1:
+///
+///   constexpr std::uint64_t operator"" _m(std::uint64_t meters)
+///   {
+///       return meters;
+///   }
+///
+///   They claim that because you cannot state std::uint64_t, user-defined
+///   literals should not be allowed because you don't have control, but then
+///   do not provide an alternative on how to handle unsigned, 64bit literals.
+///   This example is total non-sense as it is not valid C++. They are making
+///   changes to the syntax and then complaining that the compiler cannot
+///   make sense of this. Really? Let's look at the following:
+///
+///   uint64_t mask = static_cast<uint64_t>(0xFFFF00000000FFFF)
+///
+///   The above code does not tell the compiler that the literal is 64bits.
+///   Instead, it says, please take the literal that you have, whatever type
+///   it is, and convert it to a uint64_t. This can be seen when asking Clang
+///   to dump the contents of it's AST tree, as an explicit cast can be seen
+///   in the tree. If you don't include the static cast, you will see an
+///   implicit cast instead. The type of the literal is compiler specific,
+///   which is then converted into a uint64_t.
+///
+///   The problem with this rule is that it ignores how literals are processed
+///   by the compiler. Literals by the compiler are just a string, that is
+///   converted into a type based on the rules provided by C++. User-defined
+///   literals tell the compiler how to interpret this string. The reason that
+///   the user-defined literal signature only supports unsigned long long is
+///   not because it converts the type to an unsigned long long. It tells the
+///   compiler, "if you have an intergal type, do this". Meaning, you don't
+///   need a std::uint64_t version of a user-defined literal to ensure you get
+///   fixed-width types from user-defined literals.
+///
+///   To further explain this, just look at negative literals. C++ itself
+///   states that all decimals are "int" (at least with most compilers).
+///   This would suggest that "-42" is then an int that contains "-42". It is
+///   not. The literal "-42" is actually "42" as an "int". Then, the compiler
+///   will apply the "-" operator to this int, producing a value of "-42". This
+///   is why INT_MIN uses math. The value of INT_MIN without the negative is
+///   too large to fit into an int, and the compiler must first place the
+///   positive version of the number into "int" and then apply the "-"
+///   operator. To handle this, INT_MIN is actually -INT_MAX -1. Another way
+///   of putting it is, there is no way to define INT_MIN as a literal, it
+///   must be calculated (assuming 2's compliment, which we do).
+///
+///   This rule also doesn't talk about the difference between cooked literals
+///   and raw literals.
+///   - A raw literal takes the form char const *. It allows the user-defined
+///     literal to take any integral or float type and convert it to the
+///     type that they care about.
+///   - A cooked literal is the rest of the user-defined literal signatures.
+///
+///   Even if cooked user-defined literals were a problem, surely the raw
+///   literal type would be acceptable. Specifically, using the raw literal
+///   form, you could take any integral and parse the characters manually,
+///   ensuring that you have complete control of the resulting type.
+///
+///   In otherwords... user-defined literals absolutely give you complete
+///   control. In fact, there is no way to give you more control of how to
+///   interpret a literal then giving you raw access to character tokens in the
+///   literal. What this suggests is that rule A13-1-1 makes no sense, or
+///   was not fully evaluated, or simply not evaluated properly.
+///
+///   So, we will need an exception for this, as not allowing user-defined
+///   literals is actually more dangerous in practice due to the fact that C++
+///   does not provide a means to initialize fixed-width types in a safe
+///   way that doesn't generate implicit casts. The question then becomes, how
+///   should we implement user-defined literals to safely initialize our
+///   fixed-width types, which is what this rule should actually have done.
+///
+///   One approach would be to use the cooked versions as described here.
+///   http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1280r2.html
+///
+///   The problem with this approach is that overflows are allowed. Meaning
+///   the compiler will truncate silently any info that is not actually used.
+///   For this reason, we use the raw literal approach, and we parse the
+///   actual literal tokens by hand. This is all constexpr friendly, but it
+///   ensures that it is impossible to make a mistake. We also add tests at
+///   the end of the header to prove that these are working properly.
+///
+///   If this rule is specific to the cooked versions, with complaints about
+///   you cannot prevent the detection of overflowed data, the rule should
+///   have stated to use raw literals instead of the cooked versions. Simply
+///   stating that they are not allowed is dangerous and demonstrates that
+///   user-defined literals were never actually looked at properly.
+///
+
+/// <!-- description -->
+///   @brief Returns bsl::to_u8(str) using bsl::from_chars
+///
+/// <!-- inputs/outputs -->
+///   @param str the literal to convert
+///   @return Returns bsl::to_u8(str) using bsl::from_chars
+///
+[[nodiscard]] constexpr auto
+// NOLINTNEXTLINE(bsl-namespace-global)
+operator""_u8(bsl::cstr_type const str) noexcept -> bsl::safe_uint8
+{
+    constexpr auto offset{bsl::to_umax(2)};
+    constexpr auto base10{bsl::to_i32(10)};
+    constexpr auto base16{bsl::to_i32(16)};
+
+    bsl::string_view view{str};
+
+    if (view.starts_with("0x")) {
+        return bsl::from_chars<bsl::uint8>(view.substr(offset, bsl::npos).data(), base16);
+    }
+
+    return bsl::from_chars<bsl::uint8>(view, base10);
+}
+
+/// <!-- description -->
+///   @brief Returns bsl::to_u16(str) using bsl::from_chars
+///
+/// <!-- inputs/outputs -->
+///   @param str the literal to convert
+///   @return Returns bsl::to_u16(str) using bsl::from_chars
+///
+[[nodiscard]] constexpr auto
+// NOLINTNEXTLINE(bsl-namespace-global)
+operator""_u16(bsl::cstr_type const str) noexcept -> bsl::safe_uint16
+{
+    constexpr auto offset{bsl::to_umax(2)};
+    constexpr auto base10{bsl::to_i32(10)};
+    constexpr auto base16{bsl::to_i32(16)};
+
+    bsl::string_view view{str};
+
+    if (view.starts_with("0x")) {
+        return bsl::from_chars<bsl::uint16>(view.substr(offset, bsl::npos).data(), base16);
+    }
+
+    return bsl::from_chars<bsl::uint16>(view, base10);
+}
+
+/// <!-- description -->
+///   @brief Returns bsl::to_u32(str) using bsl::from_chars
+///
+/// <!-- inputs/outputs -->
+///   @param str the literal to convert
+///   @return Returns bsl::to_u32(str) using bsl::from_chars
+///
+
+[[nodiscard]] constexpr auto
+// NOLINTNEXTLINE(bsl-namespace-global)
+operator""_u32(bsl::cstr_type const str) noexcept -> bsl::safe_uint32
+{
+    constexpr auto offset{bsl::to_umax(2)};
+    constexpr auto base10{bsl::to_i32(10)};
+    constexpr auto base16{bsl::to_i32(16)};
+
+    bsl::string_view view{str};
+
+    if (view.starts_with("0x")) {
+        return bsl::from_chars<bsl::uint32>(view.substr(offset, bsl::npos).data(), base16);
+    }
+
+    return bsl::from_chars<bsl::uint32>(view, base10);
+}
+
+/// <!-- description -->
+///   @brief Returns bsl::to_u64(str) using bsl::from_chars
+///
+/// <!-- inputs/outputs -->
+///   @param str the literal to convert
+///   @return Returns bsl::to_u64(str) using bsl::from_chars
+///
+
+[[nodiscard]] constexpr auto
+// NOLINTNEXTLINE(bsl-namespace-global)
+operator""_u64(bsl::cstr_type const str) noexcept -> bsl::safe_uint64
+{
+    constexpr auto offset{bsl::to_umax(2)};
+    constexpr auto base10{bsl::to_i32(10)};
+    constexpr auto base16{bsl::to_i32(16)};
+
+    bsl::string_view view{str};
+
+    if (view.starts_with("0x")) {
+        return bsl::from_chars<bsl::uint64>(view.substr(offset, bsl::npos).data(), base16);
+    }
+
+    return bsl::from_chars<bsl::uint64>(view, base10);
+}
+
+/// <!-- description -->
+///   @brief Returns bsl::to_umax(str) using bsl::from_chars
+///
+/// <!-- inputs/outputs -->
+///   @param str the literal to convert
+///   @return Returns bsl::to_umax(str) using bsl::from_chars
+///
+
+[[nodiscard]] constexpr auto
+// NOLINTNEXTLINE(bsl-namespace-global)
+operator""_umax(bsl::cstr_type const str) noexcept -> bsl::safe_uintmax
+{
+    constexpr auto offset{bsl::to_umax(2)};
+    constexpr auto base10{bsl::to_i32(10)};
+    constexpr auto base16{bsl::to_i32(16)};
+
+    bsl::string_view view{str};
+
+    if (view.starts_with("0x")) {
+        return bsl::from_chars<bsl::uintmax>(view.substr(offset, bsl::npos).data(), base16);
+    }
+
+    return bsl::from_chars<bsl::uintmax>(view, base10);
+}
+
+/// <!-- description -->
+///   @brief Returns bsl::to_i8(str) using bsl::from_chars
+///
+/// <!-- inputs/outputs -->
+///   @param str the literal to convert
+///   @return Returns bsl::to_i8(str) using bsl::from_chars
+///
+[[nodiscard]] constexpr auto
+// NOLINTNEXTLINE(bsl-namespace-global)
+operator""_i8(bsl::cstr_type const str) noexcept -> bsl::safe_int8
+{
+    constexpr auto base10{bsl::to_i32(10)};
+    return bsl::from_chars<bsl::int8>(str, base10);
+}
+
+/// <!-- description -->
+///   @brief Returns bsl::to_i16(str) using bsl::from_chars
+///
+/// <!-- inputs/outputs -->
+///   @param str the literal to convert
+///   @return Returns bsl::to_i16(str) using bsl::from_chars
+///
+[[nodiscard]] constexpr auto
+// NOLINTNEXTLINE(bsl-namespace-global)
+operator""_i16(bsl::cstr_type const str) noexcept -> bsl::safe_int16
+{
+    constexpr auto base10{bsl::to_i32(10)};
+    return bsl::from_chars<bsl::int16>(str, base10);
+}
+
+/// <!-- description -->
+///   @brief Returns bsl::to_i32(str) using bsl::from_chars
+///
+/// <!-- inputs/outputs -->
+///   @param str the literal to convert
+///   @return Returns bsl::to_i32(str) using bsl::from_chars
+///
+[[nodiscard]] constexpr auto
+// NOLINTNEXTLINE(bsl-namespace-global)
+operator""_i32(bsl::cstr_type const str) noexcept -> bsl::safe_int32
+{
+    constexpr auto base10{bsl::to_i32(10)};
+    return bsl::from_chars<bsl::int32>(str, base10);
+}
+
+/// <!-- description -->
+///   @brief Returns bsl::to_i64(str) using bsl::from_chars
+///
+/// <!-- inputs/outputs -->
+///   @param str the literal to convert
+///   @return Returns bsl::to_i64(str) using bsl::from_chars
+///
+[[nodiscard]] constexpr auto
+// NOLINTNEXTLINE(bsl-namespace-global)
+operator""_i64(bsl::cstr_type const str) noexcept -> bsl::safe_int64
+{
+    constexpr auto base10{bsl::to_i32(10)};
+    return bsl::from_chars<bsl::int64>(str, base10);
+}
+
+/// <!-- description -->
+///   @brief Returns bsl::to_imax(str) using bsl::from_chars
+///
+/// <!-- inputs/outputs -->
+///   @param str the literal to convert
+///   @return Returns bsl::to_imax(str) using bsl::from_chars
+///
+[[nodiscard]] constexpr auto
+// NOLINTNEXTLINE(bsl-namespace-global)
+operator""_imax(bsl::cstr_type const str) noexcept -> bsl::safe_intmax
+{
+    constexpr auto base10{bsl::to_i32(10)};
+    return bsl::from_chars<bsl::intmax>(str, base10);
+}
+
+// -------------------------------------------------------------------------
+// user defined literal tests
+// -------------------------------------------------------------------------
+
+namespace bsl
+{
+    /// NOTE:
+    /// - These tests are here, and not in the unit tests to ensure that
+    ///   wherever this header is used, these are verified.
+    ///
+
+    static_assert(0_u8 == bsl::safe_uint8::min());
+    static_assert(0_u16 == bsl::safe_uint16::min());
+    static_assert(0_u32 == bsl::safe_uint32::min());
+    static_assert(0_u64 == bsl::safe_uint64::min());
+    static_assert(0_umax == bsl::safe_uintmax::min());
+
+    static_assert(255_u8 == bsl::safe_uint8::max());
+    static_assert(65535_u16 == bsl::safe_uint16::max());
+    static_assert(4294967295_u32 == bsl::safe_uint32::max());
+    static_assert(18446744073709551615_u64 == bsl::safe_uint64::max());
+    static_assert(18446744073709551615_umax == bsl::safe_uintmax::max());
+
+    static_assert(0x0_u8 == bsl::safe_uint8::min());
+    static_assert(0x0_u16 == bsl::safe_uint16::min());
+    static_assert(0x0_u32 == bsl::safe_uint32::min());
+    static_assert(0x0_u64 == bsl::safe_uint64::min());
+    static_assert(0x0_umax == bsl::safe_uintmax::min());
+
+    static_assert(0xFF_u8 == bsl::safe_uint8::max());
+    static_assert(0xFFFF_u16 == bsl::safe_uint16::max());
+    static_assert(0xFFFFFFFF_u32 == bsl::safe_uint32::max());
+    static_assert(0xFFFFFFFFFFFFFFFF_u64 == bsl::safe_uint64::max());
+    static_assert(0xFFFFFFFFFFFFFFFF_umax == bsl::safe_uintmax::max());
+
+    /// NOTE:
+    /// - As stated above, it is impossible to have an INT_MIN literal due to
+    ///   how literals work. This is not only true for user-defined literals,
+    ///   but also for the actual INT_MIN and friend macros that the compiler
+    ///   provides.
+    /// - These values must be calculated using -INT_MAX - 1. This is because
+    ///   there is no such thing as a negative literal. Instead, you get the
+    ///   positive portion of the literal, and the compiler then adds the "-"
+    ///   operator later.
+    ///
+
+    static_assert(-127_i8 - 1_i8 == bsl::safe_int8::min());
+    static_assert(-32767_i16 - 1_i16 == bsl::safe_int16::min());
+    static_assert(-2147483647_i32 - 1_i32 == bsl::safe_int32::min());
+    static_assert(-9223372036854775807_i64 - 1_i64 == bsl::safe_int64::min());
+    static_assert(-9223372036854775807_imax - 1_imax == bsl::safe_intmax::min());
+
+    static_assert(127_i8 == bsl::safe_int8::max());
+    static_assert(32767_i16 == bsl::safe_int16::max());
+    static_assert(2147483647_i32 == bsl::safe_int32::max());
+    static_assert(9223372036854775807_i64 == bsl::safe_int64::max());
+    static_assert(9223372036854775807_imax == bsl::safe_intmax::max());
 }
 
 #endif

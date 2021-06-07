@@ -24,6 +24,7 @@
 
 #include "../fmt_test.hpp"
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/ut.hpp>
 
@@ -91,7 +92,7 @@ main() noexcept -> bsl::exit_code
 
         bsl::ut_when{} = []() {
             fmt_test::reset();
-            bsl::print() << bsl::safe_uintmax::zero(true);
+            bsl::print() << bsl::safe_uintmax::failure();
             bsl::ut_then{} = []() {
                 bsl::ut_check(fmt_test::was_this_outputted("[error]"));
             };
@@ -151,7 +152,7 @@ main() noexcept -> bsl::exit_code
 
         bsl::ut_when{} = []() {
             fmt_test::reset();
-            bsl::print() << bsl::fmt{bsl::nullops, bsl::safe_uintmax::zero(true)};
+            bsl::print() << bsl::fmt{bsl::nullops, bsl::safe_uintmax::failure()};
             bsl::ut_then{} = []() {
                 bsl::ut_check(fmt_test::was_this_outputted("[error]"));
             };

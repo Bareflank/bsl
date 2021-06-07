@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/basic_string_view.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -35,7 +36,7 @@ namespace bsl
     {
         constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
 
-        if (auto const *const ptr{str.at_if(bsl::to_umax(0))}) {
+        if (auto const *const ptr{str.at_if(0_umax)}) {
             bsl::print() << "success: " << *ptr << bsl::endl;
         }
         else {

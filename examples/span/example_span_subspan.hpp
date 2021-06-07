@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/array.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/span.hpp>
 
@@ -34,8 +35,8 @@ namespace bsl
     inline void
     example_span_subspan() noexcept
     {
-        constexpr bsl::safe_uintmax i{bsl::to_umax(1)};
-        constexpr bsl::safe_uintmax n{bsl::to_umax(1)};
+        constexpr auto i{1_umax};
+        constexpr auto n{1_umax};
 
         constexpr bsl::array arr{true, false};
         bsl::span const spn{arr.data(), arr.size()};

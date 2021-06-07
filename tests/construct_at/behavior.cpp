@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/construct_at.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/ut.hpp>
 
 namespace
@@ -39,19 +40,69 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"construct_at"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"construct_at bool"} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::ut_when{} = []() {
-                    bsl::construct_at<bsl::safe_int32>(nullptr, bsl::to_i32(42));
+                    bsl::construct_at<bool>(nullptr, true);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::ut_when{} = []() {
+                    bsl::construct_at<bool>(nullptr, false);
                 };
             };
 
             bsl::ut_given{} = []() {
-                bsl::safe_int32 mydata{};
-                bsl::ut_when{} = [&mydata]() {
-                    bsl::construct_at<bsl::safe_int32>(&mydata, bsl::to_i32(42));
-                    bsl::ut_then{} = [&mydata]() {
-                        bsl::ut_check(mydata == 42);
+                bool b{};
+                bsl::ut_when{} = [&b]() {
+                    bsl::construct_at<bool>(&b, true);
+                    bsl::ut_then{} = [&b]() {
+                        bsl::ut_check(b);
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bool b{true};
+                bsl::ut_when{} = [&b]() {
+                    bsl::construct_at<bool>(&b, false);
+                    bsl::ut_then{} = [&b]() {
+                        bsl::ut_check(!b);
+                    };
+                };
+            };
+        };
+
+        bsl::ut_scenario{"construct_at bool"} = []() {
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::ut_when{} = []() {
+                    bsl::construct_at<bsl::errc_type>(nullptr, bsl::errc_success.get());
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::ut_when{} = []() {
+                    bsl::construct_at<bsl::errc_type>(nullptr, bsl::errc_failure.get());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::errc_type errc{bsl::errc_failure};
+                bsl::ut_when{} = [&errc]() {
+                    bsl::construct_at<bsl::errc_type>(&errc, bsl::errc_success.get());
+                    bsl::ut_then{} = [&errc]() {
+                        bsl::ut_check(errc);
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::errc_type errc{};
+                bsl::ut_when{} = [&errc]() {
+                    bsl::construct_at<bsl::errc_type>(&errc, bsl::errc_failure.get());
+                    bsl::ut_then{} = [&errc]() {
+                        bsl::ut_check(!errc);
                     };
                 };
             };

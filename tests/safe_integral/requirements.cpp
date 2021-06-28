@@ -42,7 +42,7 @@ namespace
         {
             bsl::discard(val1.get());
             bsl::discard(!!val1);
-            bsl::discard(val1.failure());
+            bsl::discard(val1.invalid());
             bsl::discard(val1.max());
             bsl::discard(val1.max(val2));
             bsl::discard(val1.max(42));
@@ -61,7 +61,7 @@ namespace
             bsl::discard(val1 = 42);
             bsl::discard(val1.get());
             bsl::discard(!!val1);
-            bsl::discard(val1.failure());
+            bsl::discard(val1.invalid());
             bsl::discard(val1.max());
             bsl::discard(val1.max(val2));
             bsl::discard(val1.max(42));
@@ -118,7 +118,7 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(val1 = 42));
                 static_assert(noexcept(val1.get()));
                 static_assert(noexcept(!!val1));
-                static_assert(noexcept(val1.failure()));
+                static_assert(noexcept(val1.invalid()));
                 static_assert(noexcept(val1.max()));
                 static_assert(noexcept(val1.max(val2)));
                 static_assert(noexcept(val1.max(42)));

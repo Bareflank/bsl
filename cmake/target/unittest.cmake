@@ -23,8 +23,20 @@ if(BUILD_TESTS)
     include(ProcessorCount)
     ProcessorCount(NUM_THREADS)
 
-    add_custom_target(
-        unittest
-        COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ctest -j ${NUM_THREADS} --output-on-failure
-    )
+    if(BF_LCOV)
+        add_custom_target(
+            unittest
+            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_LCOV} --zerocounters --directory ${CMAKE_BINARY_DIR}
+            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ctest -j ${NUM_THREADS} --output-on-failure
+        )
+    else()
+        add_custom_target(
+            unittest
+            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ctest -j ${NUM_THREADS} --output-on-failure
+        )
+    endif()
 endif()
+
+
+
+

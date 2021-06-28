@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/npos.hpp>
 #include <bsl/string_view.hpp>
@@ -34,7 +35,7 @@ namespace bsl
     inline void
     example_npos_overview() noexcept
     {
-        constexpr bsl::safe_uintmax pos{to_umax(6)};
+        constexpr auto pos{6_umax};
         constexpr bsl::string_view str{"Hello World"};
 
         if constexpr (str.substr(pos, bsl::npos) == "World") {

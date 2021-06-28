@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/byte.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/discard.hpp>
 #include <bsl/ut.hpp>
 

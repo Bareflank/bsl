@@ -41,1737 +41,990 @@ namespace
     tests() noexcept -> bsl::exit_code
     {
         bsl::ut_scenario{"pos/count compare pos/count"} = []() {
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::basic_string_view<bsl::char_type> const msg1{};
                 bsl::basic_string_view<bsl::char_type> const msg2{};
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
                 bsl::basic_string_view<bsl::char_type> const msg2{};
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::basic_string_view<bsl::char_type> const msg1{};
                 bsl::basic_string_view<bsl::char_type> const msg2{"Hello"};
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
             };
 
@@ -1780,576 +1033,327 @@ namespace
                 bsl::basic_string_view<bsl::char_type> const msg2{"World"};
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
             };
 
@@ -2358,576 +1362,327 @@ namespace
                 bsl::basic_string_view<bsl::char_type> const msg2{"42"};
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
             };
 
@@ -2936,576 +1691,327 @@ namespace
                 bsl::basic_string_view<bsl::char_type> const msg2{"Hello"};
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
             };
 
@@ -3514,576 +2020,327 @@ namespace
                 bsl::basic_string_view<bsl::char_type> const msg2{"Hell"};
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
             };
 
@@ -4092,576 +2349,327 @@ namespace
                 bsl::basic_string_view<bsl::char_type> const msg2{"Hello"};
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
             };
 
@@ -4670,576 +2678,327 @@ namespace
                 bsl::basic_string_view<bsl::char_type> const msg2{"ell"};
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
             };
 
@@ -5248,576 +3007,327 @@ namespace
                 bsl::basic_string_view<bsl::char_type> const msg2{"Hello"};
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
             };
 
@@ -5826,621 +3336,348 @@ namespace
                 bsl::basic_string_view<bsl::char_type> const msg2{"Hello"};
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1),
-                            bsl::to_umax(1),
-                            msg2,
-                            bsl::to_umax(1),
-                            bsl::to_umax(1)) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) ==
-                        0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::to_umax(1)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(0), bsl::npos) != 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(0), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(0), bsl::npos));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) !=
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) != 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) ==
-                        0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                    bsl::ut_check(msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::to_umax(1), bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(1), bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(0), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::to_umax(1), msg2, bsl::npos, bsl::npos));
                 };
 
-                bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos) == 0);
+                bsl::ut_then_at_runtime{} = [&msg1, msg2]() {
+                    bsl::ut_check(!msg1.compare(bsl::npos, bsl::npos, msg2, bsl::npos, bsl::npos));
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
                 bsl::basic_string_view<bsl::char_type> const msg2{"Hello"};
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::safe_uintmax::zero(true),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::safe_uintmax::failure(), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::safe_uintmax::zero(true),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::safe_uintmax::failure(), msg2, bsl::to_umax(0), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::safe_uintmax::zero(true),
-                            bsl::to_umax(0)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::safe_uintmax::failure(), bsl::to_umax(0)));
                 };
 
                 bsl::ut_then{} = [&msg1, msg2]() {
-                    bsl::ut_check(
-                        msg1.compare(
-                            bsl::to_umax(0),
-                            bsl::to_umax(0),
-                            msg2,
-                            bsl::to_umax(0),
-                            bsl::safe_uintmax::zero(true)) == 0);
+                    bsl::ut_check(!msg1.compare(bsl::to_umax(0), bsl::to_umax(0), msg2, bsl::to_umax(0), bsl::safe_uintmax::failure()));
                 };
             };
         };

@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_span_default_constructor() noexcept
     {
-        constexpr bsl::span<bool> spn{};
+        bsl::span<bool> spn{};
 
         if (spn.empty()) {
             bsl::print() << "success\n";

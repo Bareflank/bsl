@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/byte.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -33,8 +34,8 @@ namespace bsl
     inline void
     example_byte_by_value_constructor() noexcept
     {
-        constexpr bsl::safe_uint8 val{bsl::to_u8(0x10)};
-        constexpr bsl::safe_uint8 expected{bsl::to_u8(0x10)};
+        constexpr auto val{0x10_u8};
+        constexpr auto expected{0x10_u8};
 
         constexpr bsl::byte b{val.get()};
         if constexpr (b.to_integer() == expected) {

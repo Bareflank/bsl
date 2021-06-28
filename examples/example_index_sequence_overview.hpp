@@ -25,7 +25,6 @@
 #include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/index_sequence.hpp>
-#include <bsl/safe_integral.hpp>
 
 namespace bsl
 {
@@ -35,8 +34,8 @@ namespace bsl
     inline void
     example_index_sequence_overview() noexcept
     {
-        constexpr bsl::safe_uintmax val1{bsl::to_umax(4)};
-        constexpr bsl::safe_uintmax val2{bsl::to_umax(8)};
+        constexpr auto val1{4_umax};
+        constexpr auto val2{8_umax};
 
         if constexpr (bsl::index_sequence<val1.get(), val2.get()>::min() == val1.get()) {
             bsl::print() << "success\n";

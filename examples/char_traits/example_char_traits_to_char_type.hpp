@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/char_traits.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -33,7 +34,7 @@ namespace bsl
     inline void
     example_char_traits_to_char_type() noexcept
     {
-        constexpr bsl::safe_intmax val{bsl::to_imax(42)};
+        constexpr auto val{42_imax};
 
         bsl::print() << "success: " << bsl::char_traits<bsl::char_type>::to_char_type(val.get())
                      << bsl::endl;

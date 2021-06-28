@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/is_array.hpp>
 
@@ -42,7 +43,7 @@ namespace bsl
             bsl::error() << "failure\n";
         }
 
-        constexpr bsl::safe_uintmax bounds{bsl::to_umax(42)};
+        constexpr auto bounds{42_umax};
         // This is needed to demonstrate how to use this type trait
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
         if constexpr (bsl::is_array<bool[bounds.get()]>::value) {

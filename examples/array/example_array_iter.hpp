@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/array.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -33,11 +34,11 @@ namespace bsl
     inline void
     example_array_iter() noexcept
     {
-        constexpr bsl::safe_uintmax idx{bsl::to_umax(1)};
+        constexpr auto idx{1_umax};
         constexpr bsl::array arr{true, false};
 
         for (auto iter{arr.iter(idx)}; iter != arr.end(); ++iter) {
-            bsl::print() << "element [" << iter.index() << "] == " << iter << bsl::endl;
+            bsl::print() << "element [" << iter.index() << "] == " << iter.data() << bsl::endl;
         }
     }
 }

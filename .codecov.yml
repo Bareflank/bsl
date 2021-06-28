@@ -35,10 +35,10 @@ coverage:
 parsers:
   gcov:
     branch_detection:
-      conditional: yes
-      loop: yes
-      method: yes
-      macro: yes
+      conditional: no
+      loop: no
+      method: no
+      macro: no
 
 ignore:
   - "examples/**"

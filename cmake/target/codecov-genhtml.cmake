@@ -20,14 +20,26 @@
 # SOFTWARE.
 
 if(CMAKE_BUILD_TYPE STREQUAL CODECOV)
-    if(DEFINED BF_LCOV AND DEFINED BF_GENHTML)
-        add_custom_target(codecov-genhtml
-            COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/genhtml.info
-            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_LCOV} --zerocounters --directory ${CMAKE_BINARY_DIR}
-            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} cmake --build . --target unittest
-            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_GRCOV} . -s ${CMAKE_SOURCE_DIR} -t lcov -o ${CMAKE_BINARY_DIR}/genhtml.info --ignore '/**' --branch
-            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR} ${BF_GENHTML} -s --function-coverage --branch-coverage --legend --demangle-cpp --highlight -rc genhtml_hi_limit=100 ${CMAKE_BINARY_DIR}/genhtml.info -o ${CMAKE_SOURCE_DIR}/genhtml/ --prefix ${CMAKE_SOURCE_DIR}
-        )
+    if(BF_LCOV AND BF_GENHTML)
+        if(ENABLE_BRANCH)
+            add_custom_target(codecov-genhtml
+                COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_SOURCE_DIR}/genhtml
+                COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/genhtml.info
+                COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_LCOV} --zerocounters --directory ${CMAKE_BINARY_DIR}
+                COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} cmake --build . --target unittest
+                COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_GRCOV} . -s ${CMAKE_SOURCE_DIR} -t lcov -o ${CMAKE_BINARY_DIR}/genhtml.info --ignore '/**' --branch --excl-line GRCOV_EXCLUDE --excl-br-line GRCOV_EXCLUDE_BR
+                COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR} ${BF_GENHTML} -s --function-coverage --branch-coverage --legend --demangle-cpp --highlight -rc genhtml_hi_limit=100 ${CMAKE_BINARY_DIR}/genhtml.info -o ${CMAKE_SOURCE_DIR}/genhtml/ --prefix ${CMAKE_SOURCE_DIR}
+            )
+        else()
+            add_custom_target(codecov-genhtml
+                COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_SOURCE_DIR}/genhtml
+                COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/genhtml.info
+                COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_LCOV} --zerocounters --directory ${CMAKE_BINARY_DIR}
+                COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} cmake --build . --target unittest
+                COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_GRCOV} . -s ${CMAKE_SOURCE_DIR} -t lcov -o ${CMAKE_BINARY_DIR}/genhtml.info --ignore '/**' --excl-line GRCOV_EXCLUDE --excl-br-line GRCOV_EXCLUDE_BR
+                COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR} ${BF_GENHTML} -s --function-coverage --legend --demangle-cpp --highlight -rc genhtml_hi_limit=100 ${CMAKE_BINARY_DIR}/genhtml.info -o ${CMAKE_SOURCE_DIR}/genhtml/ --prefix ${CMAKE_SOURCE_DIR}
+            )
+        endif()
     endif()
 endif()
 

@@ -29,7 +29,7 @@
 #define BSL_REFERENCE_WRAPPER_HPP
 
 #include "addressof.hpp"
-#include "debug.hpp"
+#include "details/out.hpp"
 #include "forward.hpp"
 #include "invoke_result.hpp"
 

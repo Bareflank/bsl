@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/safe_integral.hpp>
 
@@ -34,7 +35,7 @@ namespace bsl
     example_safe_integral_assignment_t() noexcept
     {
         bsl::safe_int32 val1{};
-        constexpr bsl::safe_int32 val2{42};
+        constexpr auto val2{42_i32};
 
         val1 = val2.get();
         if (val1 == val2) {

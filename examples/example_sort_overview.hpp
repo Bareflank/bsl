@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/array.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/sort.hpp>
 
 namespace bsl
@@ -33,12 +34,12 @@ namespace bsl
     inline void
     example_sort_overview() noexcept
     {
-        constexpr bsl::safe_int32 val1{4};
-        constexpr bsl::safe_int32 val2{8};
-        constexpr bsl::safe_int32 val3{15};
-        constexpr bsl::safe_int32 val4{16};
-        constexpr bsl::safe_int32 val5{23};
-        constexpr bsl::safe_int32 val6{42};
+        constexpr auto val1{4_i32};
+        constexpr auto val2{8_i32};
+        constexpr auto val3{15_i32};
+        constexpr auto val4{16_i32};
+        constexpr auto val5{23_i32};
+        constexpr auto val6{42_i32};
 
         bsl::array data{val6, val3, val4, val2, val5, val1};
         bsl::sort(data);

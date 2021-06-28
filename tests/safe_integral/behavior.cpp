@@ -22,18 +22,37 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/debug.hpp>
-#include <bsl/string_view.hpp>
+#include "behavior_arithmetic.hpp"
+#include "behavior_binary.hpp"
+#include "behavior_make_safe.hpp"
+#include "behavior_members.hpp"
+#include "behavior_rational.hpp"
+#include "behavior_shift.hpp"
 
-namespace bsl
+/// <!-- description -->
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
+///     function will successfully return with bsl::exit_success.
+///
+/// <!-- inputs/outputs -->
+///   @return Always returns bsl::exit_success.
+///
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
-    /// <!-- description -->
-    ///   @brief Provides the example's main function
-    ///
-    inline void
-    example_contiguous_iterator_ostream() noexcept
-    {
-        constexpr bsl::basic_string_view str{"success"};
-        bsl::print() << str.begin() << bsl::endl;
-    }
+    static_assert(tests_arithmetic() == bsl::ut_success());
+    static_assert(tests_binary() == bsl::ut_success());
+    static_assert(tests_make_safe() == bsl::ut_success());
+    static_assert(tests_members() == bsl::ut_success());
+    static_assert(tests_rational() == bsl::ut_success());
+    static_assert(tests_shift() == bsl::ut_success());
+
+    bsl::discard(tests_arithmetic());
+    bsl::discard(tests_binary());
+    bsl::discard(tests_make_safe());
+    bsl::discard(tests_members());
+    bsl::discard(tests_rational());
+    bsl::discard(tests_shift());
+
+    return bsl::ut_success();
 }

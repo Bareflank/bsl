@@ -205,8 +205,22 @@ macro(bf_add_info NAME)
 
     if(CMAKE_BUILD_TYPE STREQUAL CODECOV)
         add_custom_command(TARGET info
-            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ${BF_BUILD_COMMAND} codecov-info             gathers info about unit test coverage${BF_COLOR_RST}"
-            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ${BF_BUILD_COMMAND} codecov-upload           uploads results of unit test coverage${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ${BF_BUILD_COMMAND} codecov-grcov            creates a coverage report using grcov${BF_COLOR_RST}"
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ${BF_BUILD_COMMAND} codecov-upload           uploads a coverage report to your CodeCov account${BF_COLOR_RST}"
+            VERBATIM
+        )
+    endif()
+
+    if(CMAKE_BUILD_TYPE STREQUAL CODECOV AND BF_LCOV AND BF_GENHTML)
+        add_custom_command(TARGET info
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ${BF_BUILD_COMMAND} codecov-genhtml          creates a coverage report using lcov's genhtml${BF_COLOR_RST}"
+            VERBATIM
+        )
+    endif()
+
+    if(CMAKE_BUILD_TYPE STREQUAL CODECOV AND CMAKE_SYSTEM_NAME STREQUAL "Linux")
+        add_custom_command(TARGET info
+            COMMAND ${CMAKE_COMMAND} -E echo "${BF_COLOR_YLW}   ${BF_BUILD_COMMAND} codecov-install-grcov    installs grcov${BF_COLOR_RST}"
             VERBATIM
         )
     endif()

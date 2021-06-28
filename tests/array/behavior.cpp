@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/array.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/details/carray.hpp>
 #include <bsl/npos.hpp>
 #include <bsl/ut.hpp>
@@ -69,7 +70,13 @@ namespace
                     bsl::ut_check(*arr.at_if(bsl::to_umax(5)) == bsl::to_i32(42));
                     bsl::ut_check(arr.at_if(bsl::to_umax(6)) == nullptr);
                     bsl::ut_check(arr.at_if(bsl::npos) == nullptr);
-                    bsl::ut_check(arr.at_if(bsl::safe_uintmax::zero(true)) == nullptr);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::array arr{test_arr};
+                bsl::ut_then{} = [&arr]() {
+                    bsl::ut_check(arr.at_if(bsl::safe_uintmax::failure()) == nullptr);
                 };
             };
 
@@ -84,7 +91,13 @@ namespace
                     bsl::ut_check(*arr.at_if(bsl::to_umax(5)) == bsl::to_i32(42));
                     bsl::ut_check(arr.at_if(bsl::to_umax(6)) == nullptr);
                     bsl::ut_check(arr.at_if(bsl::npos) == nullptr);
-                    bsl::ut_check(arr.at_if(bsl::safe_uintmax::zero(true)) == nullptr);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::array const arr{test_arr};
+                bsl::ut_then{} = [&arr]() {
+                    bsl::ut_check(arr.at_if(bsl::safe_uintmax::failure()) == nullptr);
                 };
             };
         };
@@ -101,7 +114,13 @@ namespace
                     bsl::ut_check(*arr.at_if(bsl::to_umax(5)) == bsl::to_i32(42));
                     bsl::ut_check(arr.at_if(bsl::to_umax(6)) == nullptr);
                     bsl::ut_check(arr.at_if(bsl::npos) == nullptr);
-                    bsl::ut_check(arr.at_if(bsl::safe_uintmax::zero(true)) == nullptr);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::details::carray arr{test_carr};
+                bsl::ut_then{} = [&arr]() {
+                    bsl::ut_check(arr.at_if(bsl::safe_uintmax::failure()) == nullptr);
                 };
             };
 
@@ -116,7 +135,13 @@ namespace
                     bsl::ut_check(*arr.at_if(bsl::to_umax(5)) == bsl::to_i32(42));
                     bsl::ut_check(arr.at_if(bsl::to_umax(6)) == nullptr);
                     bsl::ut_check(arr.at_if(bsl::npos) == nullptr);
-                    bsl::ut_check(arr.at_if(bsl::safe_uintmax::zero(true)) == nullptr);
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::details::carray const arr{test_carr};
+                bsl::ut_then{} = [&arr]() {
+                    bsl::ut_check(arr.at_if(bsl::safe_uintmax::failure()) == nullptr);
                 };
             };
         };
@@ -247,7 +272,20 @@ namespace
             bsl::ut_given{} = []() {
                 bsl::array arr{test_arr};
                 bsl::ut_then{} = [&arr]() {
+                    bsl::ut_check(arr.end().index() == arr.size());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::array arr{test_arr};
+                bsl::ut_then{} = [&arr]() {
                     bsl::ut_check(arr.end().get_if() == nullptr);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::array const arr{test_arr};
+                bsl::ut_then{} = [&arr]() {
                     bsl::ut_check(arr.end().index() == arr.size());
                 };
             };
@@ -256,7 +294,13 @@ namespace
                 bsl::array const arr{test_arr};
                 bsl::ut_then{} = [&arr]() {
                     bsl::ut_check(arr.end().get_if() == nullptr);
-                    bsl::ut_check(arr.end().index() == arr.size());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::array const arr{test_arr};
+                bsl::ut_then{} = [&arr]() {
+                    bsl::ut_check(arr.cend().index() == arr.size());
                 };
             };
 
@@ -264,7 +308,6 @@ namespace
                 bsl::array const arr{test_arr};
                 bsl::ut_then{} = [&arr]() {
                     bsl::ut_check(arr.cend().get_if() == nullptr);
-                    bsl::ut_check(arr.cend().index() == arr.size());
                 };
             };
         };
@@ -318,27 +361,27 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array arr{test_arr};
                 bsl::ut_then{} = [&arr]() {
-                    bsl::ut_check(arr.iter(bsl::safe_uintmax::zero(true)).get_if() == nullptr);
-                    bsl::ut_check(arr.iter(bsl::safe_uintmax::zero(true)).index() == arr.size());
+                    bsl::ut_check(arr.iter(bsl::safe_uintmax::failure()).get_if() == nullptr);
+                    bsl::ut_check(arr.iter(bsl::safe_uintmax::failure()).index() == arr.size());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array const arr{test_arr};
                 bsl::ut_then{} = [&arr]() {
-                    bsl::ut_check(arr.iter(bsl::safe_uintmax::zero(true)).get_if() == nullptr);
-                    bsl::ut_check(arr.iter(bsl::safe_uintmax::zero(true)).index() == arr.size());
+                    bsl::ut_check(arr.iter(bsl::safe_uintmax::failure()).get_if() == nullptr);
+                    bsl::ut_check(arr.iter(bsl::safe_uintmax::failure()).index() == arr.size());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array const arr{test_arr};
                 bsl::ut_then{} = [&arr]() {
-                    bsl::ut_check(arr.citer(bsl::safe_uintmax::zero(true)).get_if() == nullptr);
-                    bsl::ut_check(arr.citer(bsl::safe_uintmax::zero(true)).index() == arr.size());
+                    bsl::ut_check(arr.citer(bsl::safe_uintmax::failure()).get_if() == nullptr);
+                    bsl::ut_check(arr.citer(bsl::safe_uintmax::failure()).index() == arr.size());
                 };
             };
         };
@@ -373,7 +416,20 @@ namespace
             bsl::ut_given{} = []() {
                 bsl::array arr{test_arr};
                 bsl::ut_then{} = [&arr]() {
+                    bsl::ut_check(arr.rend().index() == arr.size());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::array arr{test_arr};
+                bsl::ut_then{} = [&arr]() {
                     bsl::ut_check(arr.rend().get_if() == nullptr);
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::array const arr{test_arr};
+                bsl::ut_then{} = [&arr]() {
                     bsl::ut_check(arr.rend().index() == arr.size());
                 };
             };
@@ -382,7 +438,13 @@ namespace
                 bsl::array const arr{test_arr};
                 bsl::ut_then{} = [&arr]() {
                     bsl::ut_check(arr.rend().get_if() == nullptr);
-                    bsl::ut_check(arr.rend().index() == arr.size());
+                };
+            };
+
+            bsl::ut_given{} = []() {
+                bsl::array const arr{test_arr};
+                bsl::ut_then{} = [&arr]() {
+                    bsl::ut_check(arr.crend().index() == arr.size());
                 };
             };
 
@@ -390,7 +452,6 @@ namespace
                 bsl::array const arr{test_arr};
                 bsl::ut_then{} = [&arr]() {
                     bsl::ut_check(arr.crend().get_if() == nullptr);
-                    bsl::ut_check(arr.crend().index() == arr.size());
                 };
             };
         };
@@ -444,27 +505,27 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array arr{test_arr};
                 bsl::ut_then{} = [&arr]() {
-                    bsl::ut_check(arr.riter(bsl::safe_uintmax::zero(true)).get_if() == nullptr);
-                    bsl::ut_check(arr.riter(bsl::safe_uintmax::zero(true)).index() == arr.size());
+                    bsl::ut_check(arr.riter(bsl::safe_uintmax::failure()).get_if() == nullptr);
+                    bsl::ut_check(arr.riter(bsl::safe_uintmax::failure()).index() == arr.size());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array const arr{test_arr};
                 bsl::ut_then{} = [&arr]() {
-                    bsl::ut_check(arr.riter(bsl::safe_uintmax::zero(true)).get_if() == nullptr);
-                    bsl::ut_check(arr.riter(bsl::safe_uintmax::zero(true)).index() == arr.size());
+                    bsl::ut_check(arr.riter(bsl::safe_uintmax::failure()).get_if() == nullptr);
+                    bsl::ut_check(arr.riter(bsl::safe_uintmax::failure()).index() == arr.size());
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array const arr{test_arr};
                 bsl::ut_then{} = [&arr]() {
-                    bsl::ut_check(arr.criter(bsl::safe_uintmax::zero(true)).get_if() == nullptr);
-                    bsl::ut_check(arr.criter(bsl::safe_uintmax::zero(true)).index() == arr.size());
+                    bsl::ut_check(arr.criter(bsl::safe_uintmax::failure()).get_if() == nullptr);
+                    bsl::ut_check(arr.criter(bsl::safe_uintmax::failure()).index() == arr.size());
                 };
             };
         };

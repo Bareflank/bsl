@@ -44,7 +44,7 @@ main() noexcept -> bsl::exit_code
             fmt_test::reset();
             bsl::print() << bsl::string_view{};
             bsl::ut_then{} = []() {
-                bsl::ut_check(fmt_test::was_this_outputted(""));
+                bsl::ut_check(fmt_test::was_this_outputted("[empty bsl::string_view]"));
             };
         };
     };

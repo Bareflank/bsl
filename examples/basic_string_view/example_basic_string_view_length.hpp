@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/basic_string_view.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -33,7 +34,7 @@ namespace bsl
     inline void
     example_basic_string_view_length() noexcept
     {
-        constexpr bsl::safe_uintmax expected{bsl::to_umax(5)};
+        constexpr auto expected{5_umax};
         constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
 
         if constexpr (str.length() == expected) {

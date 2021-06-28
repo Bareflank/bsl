@@ -27,6 +27,19 @@
 
 namespace
 {
+    /// @brief stores whether or not the finally was executed.
+    constinit bool g_executed{};
+
+    /// <!-- description -->
+    ///   @brief Used by some of the finally tests to ensure that we can
+    ///     get 100% code coverage.
+    ///
+    void
+    finally_function() noexcept
+    {
+        g_executed = true;
+    }
+
     /// <!-- description -->
     ///   @brief Used to execute the actual checks. We put the checks in this
     ///     function so that we can validate the tests both at compile-time
@@ -40,59 +53,49 @@ namespace
     tests() noexcept -> bsl::exit_code
     {
         bsl::ut_scenario{"finally"} = []() {
-            bsl::ut_given{} = []() {
-                bool executed{};
-                bsl::ut_then{} = [&executed]() {
+            bsl::ut_given_at_runtime{} = []() {
+                g_executed = {};
+                bsl::ut_then{} = []() {
                     {
-                        bsl::finally test{[&executed]() noexcept {
-                            executed = true;
-                        }};
+                        bsl::finally test{&finally_function};
                     }
-                    bsl::ut_check(executed);
+                    bsl::ut_check(g_executed);
                 };
             };
         };
 
         bsl::ut_scenario{"ignore finally"} = []() {
-            bsl::ut_given{} = []() {
-                bool executed{};
-                bsl::ut_then{} = [&executed]() {
+            bsl::ut_given_at_runtime{} = []() {
+                g_executed = {};
+                bsl::ut_then{} = []() {
                     {
-                        bsl::finally test{[&executed]() noexcept {
-                            executed = true;
-                        }};
-
+                        bsl::finally test{&finally_function};
                         test.ignore();
                     }
-                    bsl::ut_check(!executed);
+                    bsl::ut_check(!g_executed);
                 };
             };
         };
 
         bsl::ut_scenario{"dormant finally"} = []() {
-            bsl::ut_given{} = []() {
-                bool executed{};
-                bsl::ut_then{} = [&executed]() {
+            bsl::ut_given_at_runtime{} = []() {
+                g_executed = {};
+                bsl::ut_then{} = []() {
                     {
-                        bsl::finally test{bsl::dormant, [&executed]() noexcept {
-                                              executed = true;
-                                          }};
+                        bsl::finally test{bsl::dormant, &finally_function};
                     }
-                    bsl::ut_check(!executed);
+                    bsl::ut_check(!g_executed);
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bool executed{};
-                bsl::ut_then{} = [&executed]() {
+            bsl::ut_given_at_runtime{} = []() {
+                g_executed = {};
+                bsl::ut_then{} = []() {
                     {
-                        bsl::finally test{bsl::dormant, [&executed]() noexcept {
-                                              executed = true;
-                                          }};
-
+                        bsl::finally test{bsl::dormant, &finally_function};
                         test.activate();
                     }
-                    bsl::ut_check(executed);
+                    bsl::ut_check(g_executed);
                 };
             };
         };

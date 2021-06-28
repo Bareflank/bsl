@@ -34,6 +34,6 @@ namespace bsl
     example_exit_code_overview() noexcept
     {
         bsl::print() << "exit success: " << bsl::exit_success << bsl::endl;
-        bsl::print() << "exit failure: " << bsl::exit_failure << bsl::endl;
+        bsl::print() << "exit failur: " << bsl::exit_failure << bsl::endl;
     }
 }

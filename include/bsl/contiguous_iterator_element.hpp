@@ -25,7 +25,6 @@
 #ifndef BSL_CONTIGUOUS_ITERATOR_ELEMENT_HPP
 #define BSL_CONTIGUOUS_ITERATOR_ELEMENT_HPP
 
-#include "details/out.hpp"
 #include "safe_integral.hpp"
 
 namespace bsl
@@ -49,33 +48,6 @@ namespace bsl
         /// @brief stores the current index of the iterator
         safe_uintmax const &index;
     };
-
-    /// <!-- description -->
-    ///   @brief Outputs the provided bsl::contiguous_iterator_element to the
-    ///     provided output type.
-    ///   @related bsl::contiguous_iterator_element
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T1 the type of outputter provided
-    ///   @tparam T2 the type of element being encapsulated.
-    ///   @param o the instance of the outputter used to output the value.
-    ///   @param elem the contiguous_iterator_element to output
-    ///   @return return o
-    ///
-    template<typename T1, typename T2>
-    [[maybe_unused]] constexpr auto
-    operator<<(out<T1> const o, contiguous_iterator_element<T2> const &elem) noexcept -> out<T1>
-    {
-        if constexpr (!o) {
-            return o;
-        }
-
-        if (nullptr != elem.data) {
-            return o << *elem.data;
-        }
-
-        return o << "[error]";
-    }
 }
 
 #endif

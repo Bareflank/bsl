@@ -29,7 +29,6 @@
 #define BSL_CHAR_TRAITS_HPP
 
 #include "char_type.hpp"
-#include "convert.hpp"
 #include "cstring.hpp"
 #include "safe_integral.hpp"
 #include "touch.hpp"
@@ -129,7 +128,7 @@ namespace bsl
             char_type const *const s2,    // --
             safe_uintmax const &count) noexcept -> safe_int32
         {
-            return to_i32(bsl::builtin_strncmp(s1, s2, count));
+            return bsl::builtin_strncmp(s1, s2, count);
         }
 
         /// <!-- description -->
@@ -148,28 +147,6 @@ namespace bsl
         length(char_type const *const s) noexcept -> safe_uintmax
         {
             return bsl::builtin_strlen(s);
-        }
-
-        /// <!-- description -->
-        ///   @brief Returns a pointer to the first occurrence of "ch" in "p".
-        ///   @include char_traits/example_char_traits_find.hpp
-        ///
-        /// <!-- notes -->
-        ///   @note The BSL adds a nullptr check to this call, and will
-        ///     return a nullptr if p is a nullptr.
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param p a pointer to the string to search through.
-        ///   @param count the total number of characters in the string to
-        ///     search through
-        ///   @param ch the character to search for.
-        ///   @return Returns a pointer to the first occurrence of "ch" in "p".
-        ///
-        [[nodiscard]] static constexpr auto
-        find(char_type const *const p, safe_uintmax const &count, char_type const &ch) noexcept
-            -> char_type const *
-        {
-            return bsl::builtin_strnchr(p, ch, count);
         }
 
         /// <!-- description -->

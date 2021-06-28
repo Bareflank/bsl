@@ -22,8 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
-#include <bsl/safe_integral.hpp>
 
 namespace bsl
 {
@@ -33,11 +33,11 @@ namespace bsl
     inline void
     example_safe_integral_assign_xor() noexcept
     {
-        constexpr bsl::safe_uint32 val1{23U};
-        constexpr bsl::safe_uint32 val2{42U};
+        constexpr auto val1{23_u32};
+        constexpr auto val2{42_u32};
 
-        bsl::safe_uint32 val{val1};
-        constexpr bsl::safe_uint32 expected{val1.get() ^ val2.get()};
+        auto val{val1};
+        constexpr auto expected{bsl::to_u32(val1.get() ^ val2.get())};
 
         val ^= val2;
         if (expected == val) {

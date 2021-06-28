@@ -27,6 +27,7 @@
 
 #include "../errc_type.hpp"
 #include "../fmt_options.hpp"
+#include "../is_constant_evaluated.hpp"
 #include "out.hpp"
 
 namespace bsl
@@ -45,6 +46,10 @@ namespace bsl
     [[maybe_unused]] constexpr auto
     operator<<(out<T> const o, bsl::errc_type const errc) noexcept -> out<T>
     {
+        if (is_constant_evaluated()) {
+            return o;
+        }
+
         if constexpr (!o) {
             return o;
         }

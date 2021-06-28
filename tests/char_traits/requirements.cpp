@@ -44,7 +44,6 @@ main() noexcept -> bsl::exit_code
         static_assert(noexcept(traits::lt('H', 'H')));
         static_assert(noexcept(traits::compare(nullptr, nullptr, bsl::to_umax(0))));
         static_assert(noexcept(traits::length(nullptr)));
-        static_assert(noexcept(traits::find(nullptr, bsl::to_umax(0), ' ')));
         static_assert(noexcept(traits::to_char_type(bsl::to_imax(0).get())));
         static_assert(noexcept(traits::to_int_type(' ')));
         static_assert(noexcept(traits::eq_int_type(bsl::to_imax(0).get(), bsl::to_imax(0).get())));

@@ -34,7 +34,7 @@ namespace bsl
     inline void
     example_convert_to_i64() noexcept
     {
-        constexpr bsl::safe_int64 val{bsl::to_i64(42)};
+        constexpr auto val{bsl::to_i64(42)};
         bsl::print() << "success: " << val << bsl::endl;
     }
 }

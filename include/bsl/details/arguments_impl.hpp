@@ -26,7 +26,6 @@
 #define BSL_DETAILS_ARGUMENTS_IMPL_HPP
 
 #include "../always_false.hpp"
-#include "../convert.hpp"
 #include "../cstdint.hpp"
 #include "../cstr_type.hpp"
 #include "../debug.hpp"
@@ -38,6 +37,14 @@
 
 namespace bsl::details
 {
+    /// <!-- description -->
+    ///   @brief Used to tell the user during compile-time that an
+    ///     invalid positional argument has been provided to the code.
+    ///
+    inline void
+    invalid_positional_argument_index() noexcept
+    {}
+
     /** @brief defines the default base for getting an argument */
     constexpr bsl::safe_int32 ARGUMENTS_DEFAULT_BASE{10};
 
@@ -90,8 +97,9 @@ namespace bsl::details
         [[nodiscard]] static constexpr auto
         get(span<cstr_type const> const &args, safe_uintmax const &pos) noexcept -> string_view
         {
-            if (!pos) {
-                bsl::error() << "invalid positional argument index: " << pos << bsl::endl;
+            if (unlikely(!pos)) {
+                unlikely_invalid_argument_failure();
+                bsl::error() << "invalid pos" << pos << bsl::endl;
                 return {};
             }
 
@@ -111,6 +119,7 @@ namespace bsl::details
                 return arg;
             }
 
+            invalid_positional_argument_index();
             return {};
         }
 
@@ -132,13 +141,14 @@ namespace bsl::details
         [[nodiscard]] static constexpr auto
         get(span<cstr_type const> const &args, string_view const &opt) noexcept -> string_view
         {
-            if (opt.empty()) {
+            if (unlikely(opt.empty())) {
+                unlikely_invalid_argument_failure();
                 bsl::error() << "cannot request an empty optional argument\n";
                 return {};
             }
 
             for (safe_uintmax i{args.size()}; i.is_pos(); --i) {
-                string_view arg{*args.at_if(i - safe_uintmax::one())};
+                string_view arg{*args.at_if(i - static_cast<bsl::uintmax>(1))};
 
                 if (!arg.starts_with(opt)) {
                     continue;
@@ -147,10 +157,16 @@ namespace bsl::details
                 arg.remove_prefix(opt.length());
 
                 if (!arg.starts_with('=')) {
-                    continue;
+                    unlikely_invalid_argument_failure();
+                    return {};
                 }
 
-                arg.remove_prefix(safe_uintmax::one());
+                arg.remove_prefix(static_cast<bsl::uintmax>(1));
+                if (arg.empty()) {
+                    unlikely_invalid_argument_failure();
+                    return {};
+                }
+
                 return arg;
             }
 
@@ -193,11 +209,11 @@ namespace bsl::details
                 return true;
             }
 
-            safe_int32 val{};
-            if (from_chars(arg, val) != arg.length()) {
+            if (arg == "false") {
                 return false;
             }
 
+            auto const val{from_chars<bsl::uint8>(arg.data(), B)};
             if (!val) {
                 return false;
             }
@@ -218,7 +234,8 @@ namespace bsl::details
         [[nodiscard]] static constexpr auto
         get(span<cstr_type const> const &args, string_view const &opt) noexcept -> bool
         {
-            if (opt.empty()) {
+            if (unlikely(opt.empty())) {
+                unlikely_invalid_argument_failure();
                 bsl::error() << "cannot request an empty optional argument\n";
                 return false;
             }
@@ -269,14 +286,8 @@ namespace bsl::details
         [[nodiscard]] static constexpr auto
         get(span<cstr_type const> const &args, safe_uintmax const &pos) noexcept -> safe_integral<T>
         {
-            safe_integral<T> val{};
             string_view const arg{arguments_impl<string_view, B>::get(args, pos)};
-
-            if (from_chars(arg, val, to_i32(B)) != arg.length()) {
-                return safe_integral<T>::zero(true);
-            }
-
-            return val;
+            return from_chars<T>(arg.data(), B);
         }
 
         /// <!-- description -->
@@ -297,14 +308,12 @@ namespace bsl::details
         [[nodiscard]] static constexpr auto
         get(span<cstr_type const> const &args, string_view const &opt) noexcept -> safe_integral<T>
         {
-            safe_integral<T> val{};
             string_view const arg{arguments_impl<string_view, B>::get(args, opt)};
-
-            if (from_chars(arg, val, to_i32(B)) != arg.length()) {
-                return safe_integral<T>::zero(true);
+            if (arg.empty()) {
+                return safe_integral<T>::failure();
             }
 
-            return val;
+            return from_chars<T>(arg.data(), B);
         }
     };
 }

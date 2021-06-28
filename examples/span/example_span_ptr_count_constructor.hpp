@@ -38,7 +38,7 @@ namespace bsl
         bsl::span const spn{arr.data(), arr.size()};
 
         for (auto iter{spn.begin()}; iter != spn.end(); ++iter) {
-            bsl::print() << "element [" << iter.index() << "] == " << iter << bsl::endl;
+            bsl::print() << "element [" << iter.index() << "] == " << iter.data() << bsl::endl;
         }
     }
 }

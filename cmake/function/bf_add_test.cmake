@@ -31,8 +31,8 @@ macro(bf_add_test NAME)
     cmake_parse_arguments(ARG "" "" "${multiVal}" ${ARGN})
 
     file(RELATIVE_PATH REL_NAME ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_LIST_DIR})
-    file(TO_CMAKE_PATH "${REL_NAME}" REL_NAME)
-    string(REPLACE "/" "_" REL_NAME ${REL_NAME})
+    file(TO_CMAKE_PATH "${REL_NAME}" REL_NAME_UNMODIFIED)
+    string(REPLACE "/" "_" REL_NAME ${REL_NAME_UNMODIFIED})
     string(REPLACE " " "_" REL_NAME ${REL_NAME})
 
     add_executable(${REL_NAME}_${NAME} ${NAME}.cpp ${ARG_SOURCES})
@@ -46,4 +46,17 @@ macro(bf_add_test NAME)
     target_compile_options(${REL_NAME}_${NAME} PRIVATE -Wframe-larger-than=4294967295)
 
     add_test(${REL_NAME}_${NAME} ${REL_NAME}_${NAME})
+
+    if(BF_LCOV)
+        add_custom_target(
+            unittest_${REL_NAME}_${NAME}
+            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_LCOV} --zerocounters --directory ${CMAKE_BINARY_DIR}
+            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/${REL_NAME_UNMODIFIED} ./${REL_NAME}_${NAME}
+        )
+    else()
+        add_custom_target(
+            unittest_${REL_NAME}_${NAME}
+            COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/${REL_NAME_UNMODIFIED} ./${REL_NAME}_${NAME}
+        )
+    endif()
 endmacro(bf_add_test)

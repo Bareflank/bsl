@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/array.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/span.hpp>
 
@@ -34,13 +35,13 @@ namespace bsl
     inline void
     example_span_iter() noexcept
     {
-        constexpr bsl::safe_uintmax idx{bsl::to_umax(1)};
+        constexpr auto idx{1_umax};
 
         constexpr bsl::array arr{true, false};
         bsl::span const spn{arr.data(), arr.size()};
 
         for (auto iter{spn.iter(idx)}; iter != spn.end(); ++iter) {
-            bsl::print() << "element [" << iter.index() << "] == " << iter << bsl::endl;
+            bsl::print() << "element [" << iter.index() << "] == " << iter.data() << bsl::endl;
         }
     }
 }

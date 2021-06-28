@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/array.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/sort.hpp>
 #include <bsl/span.hpp>
 #include <bsl/ut.hpp>
@@ -57,11 +58,11 @@ namespace
     {
         bsl::ut_scenario{"sort empty doesn't crash"} = []() {
             bsl::ut_given{} = []() {
-                bsl::span<bool> data{};
-                bsl::ut_when{} = [&data]() {
-                    bsl::sort(data);
-                    bsl::ut_then{} = [&data]() {
-                        bsl::ut_check(data.empty());
+                bsl::span<bsl::safe_int32> view{};
+                bsl::ut_when{} = [&view]() {
+                    bsl::sort(view);
+                    bsl::ut_then{} = [&view]() {
+                        bsl::ut_check(view.empty());
                     };
                 };
             };
@@ -70,10 +71,11 @@ namespace
         bsl::ut_scenario{"sort 1 number"} = []() {
             bsl::ut_given{} = []() {
                 bsl::array data{bsl::to_i32(4)};
-                bsl::ut_when{} = [&data]() {
-                    bsl::sort(data);
-                    bsl::ut_then{} = [&data]() {
-                        bsl::ut_check(*data.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
+                bsl::span view{data};
+                bsl::ut_when{} = [&view]() {
+                    bsl::sort(view);
+                    bsl::ut_then{} = [&view]() {
+                        bsl::ut_check(*view.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
                     };
                 };
             };
@@ -82,11 +84,12 @@ namespace
         bsl::ut_scenario{"sort 2 numbers"} = []() {
             bsl::ut_given{} = []() {
                 bsl::array data{bsl::to_i32(4), bsl::to_i32(23)};
-                bsl::ut_when{} = [&data]() {
-                    bsl::sort(data);
-                    bsl::ut_then{} = [&data]() {
-                        bsl::ut_check(*data.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
-                        bsl::ut_check(*data.at_if(bsl::to_umax(1)) == bsl::to_i32(23));
+                bsl::span view{data};
+                bsl::ut_when{} = [&view]() {
+                    bsl::sort(view);
+                    bsl::ut_then{} = [&view]() {
+                        bsl::ut_check(*view.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
+                        bsl::ut_check(*view.at_if(bsl::to_umax(1)) == bsl::to_i32(23));
                     };
                 };
             };
@@ -101,15 +104,16 @@ namespace
                     bsl::to_i32(8),
                     bsl::to_i32(15),
                     bsl::to_i32(4)};
-                bsl::ut_when{} = [&data]() {
-                    bsl::sort(data);
-                    bsl::ut_then{} = [&data]() {
-                        bsl::ut_check(*data.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
-                        bsl::ut_check(*data.at_if(bsl::to_umax(1)) == bsl::to_i32(8));
-                        bsl::ut_check(*data.at_if(bsl::to_umax(2)) == bsl::to_i32(15));
-                        bsl::ut_check(*data.at_if(bsl::to_umax(3)) == bsl::to_i32(16));
-                        bsl::ut_check(*data.at_if(bsl::to_umax(4)) == bsl::to_i32(23));
-                        bsl::ut_check(*data.at_if(bsl::to_umax(5)) == bsl::to_i32(42));
+                bsl::span view{data};
+                bsl::ut_when{} = [&view]() {
+                    bsl::sort(view);
+                    bsl::ut_then{} = [&view]() {
+                        bsl::ut_check(*view.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
+                        bsl::ut_check(*view.at_if(bsl::to_umax(1)) == bsl::to_i32(8));
+                        bsl::ut_check(*view.at_if(bsl::to_umax(2)) == bsl::to_i32(15));
+                        bsl::ut_check(*view.at_if(bsl::to_umax(3)) == bsl::to_i32(16));
+                        bsl::ut_check(*view.at_if(bsl::to_umax(4)) == bsl::to_i32(23));
+                        bsl::ut_check(*view.at_if(bsl::to_umax(5)) == bsl::to_i32(42));
                     };
                 };
             };
@@ -124,15 +128,16 @@ namespace
                     bsl::to_i32(8),
                     bsl::to_i32(15),
                     bsl::to_i32(4)};
-                bsl::ut_when{} = [&data]() {
-                    bsl::sort(data, &reverse_sort_cmp);
-                    bsl::ut_then{} = [&data]() {
-                        bsl::ut_check(*data.at_if(bsl::to_umax(0)) == bsl::to_i32(42));
-                        bsl::ut_check(*data.at_if(bsl::to_umax(1)) == bsl::to_i32(23));
-                        bsl::ut_check(*data.at_if(bsl::to_umax(2)) == bsl::to_i32(16));
-                        bsl::ut_check(*data.at_if(bsl::to_umax(3)) == bsl::to_i32(15));
-                        bsl::ut_check(*data.at_if(bsl::to_umax(4)) == bsl::to_i32(8));
-                        bsl::ut_check(*data.at_if(bsl::to_umax(5)) == bsl::to_i32(4));
+                bsl::span view{data};
+                bsl::ut_when{} = [&view]() {
+                    bsl::sort(view, &reverse_sort_cmp);
+                    bsl::ut_then{} = [&view]() {
+                        bsl::ut_check(*view.at_if(bsl::to_umax(0)) == bsl::to_i32(42));
+                        bsl::ut_check(*view.at_if(bsl::to_umax(1)) == bsl::to_i32(23));
+                        bsl::ut_check(*view.at_if(bsl::to_umax(2)) == bsl::to_i32(16));
+                        bsl::ut_check(*view.at_if(bsl::to_umax(3)) == bsl::to_i32(15));
+                        bsl::ut_check(*view.at_if(bsl::to_umax(4)) == bsl::to_i32(8));
+                        bsl::ut_check(*view.at_if(bsl::to_umax(5)) == bsl::to_i32(4));
                     };
                 };
             };

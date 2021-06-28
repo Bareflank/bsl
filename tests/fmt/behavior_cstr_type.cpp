@@ -24,6 +24,7 @@
 
 #include "../fmt_test.hpp"
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/ut.hpp>
 
@@ -38,6 +39,16 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
+    bsl::ut_scenario{"cstr_type with no formatting"} = []() {
+        bsl::ut_when{} = []() {
+            fmt_test::reset();
+            bsl::print() << bsl::cstr_type{};
+            bsl::ut_then{} = []() {
+                bsl::ut_check(fmt_test::was_this_outputted("[empty bsl::cstr_type]"));
+            };
+        };
+    };
+
     bsl::ut_scenario{"cstr_type with no formatting"} = []() {
         bsl::ut_when{} = []() {
             fmt_test::reset();

@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/extent.hpp>
 
@@ -33,7 +34,7 @@ namespace bsl
     inline void
     example_extent_overview() noexcept
     {
-        constexpr bsl::safe_uintmax ext{bsl::to_umax(2)};
+        constexpr auto ext{2_umax};
 
         // This is needed to demonstrate how to use this type trait
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)

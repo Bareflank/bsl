@@ -84,6 +84,7 @@ namespace std
         noexcept(noexcept(new (ptr) T{bsl::declval<ARGS>()...}))
     {
         if (bsl::unlikely(nullptr == ptr)) {
+            bsl::unlikely_invalid_argument_failure();
             return;
         }
 

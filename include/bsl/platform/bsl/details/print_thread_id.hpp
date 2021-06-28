@@ -25,8 +25,8 @@
 #ifndef BSL_DETAILS_PRINT_THREAD_ID_HPP
 #define BSL_DETAILS_PRINT_THREAD_ID_HPP
 
+#include "../../../details/out.hpp"
 #include "../../../discard.hpp"
-#include "../../../safe_integral.hpp"
 
 namespace bsl::details
 {

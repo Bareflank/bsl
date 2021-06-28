@@ -25,7 +25,6 @@
 #ifndef BSL_DETAILS_FMT_IMPL_VOID_POINTER_HPP
 #define BSL_DETAILS_FMT_IMPL_VOID_POINTER_HPP
 
-#include "../convert.hpp"
 #include "../fmt_options.hpp"
 #include "../is_constant_evaluated.hpp"
 #include "fmt_impl_integral_helpers.hpp"
@@ -47,12 +46,11 @@ namespace bsl
     [[maybe_unused]] constexpr auto
     operator<<(out<T> const o, void const *const ptr) noexcept -> out<T>
     {
-        if constexpr (!o) {
+        if (is_constant_evaluated()) {
             return o;
         }
 
-        if (is_constant_evaluated()) {
-            o.write("unknown");
+        if constexpr (!o) {
             return o;
         }
 
@@ -62,8 +60,11 @@ namespace bsl
         else {
             // We must convert the pointer to an integer before we can use
             // output it. There is no math being performed to this number.
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            details::fmt_impl_integral(o, ptrops, to_umax(reinterpret_cast<bsl::uintmax>(ptr)));
+            details::fmt_impl_integral(    // --
+                o,                         // --
+                ptrops,                    // --
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+                safe_uintmax{reinterpret_cast<bsl::uintmax>(ptr)});
         }
 
         return o;

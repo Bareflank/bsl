@@ -28,13 +28,13 @@
 #ifndef BSL_FMT_HPP
 #define BSL_FMT_HPP
 
-#include "convert.hpp"
 #include "details/fmt_impl_bool.hpp"
 #include "details/fmt_impl_char_type.hpp"
 #include "details/fmt_impl_cstr_type.hpp"
 #include "details/fmt_impl_errc_type.hpp"
 #include "details/fmt_impl_integral.hpp"
 #include "details/fmt_impl_null_pointer.hpp"
+#include "details/fmt_impl_string_view.hpp"
 #include "details/fmt_impl_void_pointer.hpp"
 #include "details/out.hpp"
 #include "enable_if.hpp"
@@ -44,7 +44,6 @@
 #include "is_null_pointer.hpp"
 #include "is_pointer.hpp"
 #include "is_same.hpp"
-#include "likely.hpp"
 #include "safe_integral.hpp"
 #include "unlikely.hpp"
 
@@ -370,17 +369,21 @@ namespace bsl
         constexpr fmt(fmt_options const &ops, VAL_T const &val, safe_uintmax const &width) noexcept
             : m_ops{ops}, m_val{val}
         {
-            constexpr safe_uintmax max_width{to_umax(999)};
+            constexpr safe_uintmax max_width{static_cast<bsl::uintmax>(999)};
 
             if (unlikely(!width)) {
+                unlikely_invalid_argument_failure();
                 m_ops.set_width(max_width);
+                return;
             }
-            else if (likely(width < max_width)) {
-                m_ops.set_width(width);
-            }
-            else {
+
+            if (width > max_width) {
+                unlikely_invalid_argument_failure();
                 m_ops.set_width(max_width);
+                return;
             }
+
+            m_ops.set_width(width);
         }
 
         /// <!-- description -->

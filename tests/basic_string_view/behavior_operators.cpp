@@ -42,7 +42,7 @@ namespace
     tests() noexcept -> bsl::exit_code
     {
         bsl::ut_scenario{"equals/not equals"} = []() {
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::basic_string_view<bsl::char_type> const msg1{};
                 bsl::basic_string_view<bsl::char_type> const msg2{};
 
@@ -52,7 +52,7 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::basic_string_view<bsl::char_type> const msg1{};
 
                 bsl::ut_then{} = [&msg1]() {
@@ -61,7 +61,17 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::basic_string_view<bsl::char_type> const msg1{};
+                bsl::cstr_type const msg2{};
+
+                bsl::ut_then{} = [&msg1, &msg2]() {
+                    bsl::ut_check(msg1 == msg2);
+                    bsl::ut_check(!(msg1 != msg2));
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::basic_string_view<bsl::char_type> const msg1{};
 
                 bsl::ut_then{} = [&msg1]() {
@@ -70,7 +80,17 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::cstr_type const msg1{};
+                bsl::basic_string_view<bsl::char_type> const msg2{};
+
+                bsl::ut_then{} = [&msg1, &msg2]() {
+                    bsl::ut_check(msg1 == msg2);
+                    bsl::ut_check(!(msg1 != msg2));
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::basic_string_view<bsl::char_type> const msg1{"Hello"};
                 bsl::basic_string_view<bsl::char_type> const msg2{};
 
@@ -98,7 +118,7 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::basic_string_view<bsl::char_type> const msg1{};
                 bsl::basic_string_view<bsl::char_type> const msg2{"Hello"};
 
@@ -108,7 +128,7 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::basic_string_view<bsl::char_type> const msg1{};
 
                 bsl::ut_then{} = [&msg1]() {
@@ -117,7 +137,7 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::basic_string_view<bsl::char_type> const msg1{};
 
                 bsl::ut_then{} = [&msg1]() {

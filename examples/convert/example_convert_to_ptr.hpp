@@ -34,7 +34,7 @@ namespace bsl
     inline void
     example_convert_to_ptr() noexcept
     {
-        void *const val{bsl::to_ptr<void *>(bsl::to_umax(0))};
+        auto *const val{bsl::to_ptr<void *>(0_umax)};
 
         if (nullptr == val) {
             bsl::print() << "success: " << val << bsl::endl;

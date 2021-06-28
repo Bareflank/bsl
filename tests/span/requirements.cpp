@@ -23,13 +23,15 @@
 /// SOFTWARE.
 
 #include <bsl/array.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/discard.hpp>
 #include <bsl/span.hpp>
 #include <bsl/ut.hpp>
 
 namespace
 {
-    constinit bsl::span<bool> const verify_constinit{};
+    constinit bsl::array<bool, static_cast<bsl::uintmax>(5)> verify_constinit_arr{};
+    constinit bsl::span<bool> const verify_constinit{verify_constinit_arr};
 
     // Needed for requirements testing
     // NOLINTNEXTLINE(bsl-user-defined-type-names-match-header-name)

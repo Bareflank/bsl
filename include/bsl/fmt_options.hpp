@@ -29,7 +29,6 @@
 #define BSL_FMT_OPTIONS_HPP
 
 #include "char_type.hpp"
-#include "convert.hpp"
 #include "cstdint.hpp"
 #include "cstr_type.hpp"
 #include "cstring.hpp"
@@ -367,17 +366,21 @@ namespace bsl
         constexpr void
         set_width(bsl::safe_uintmax const &val) noexcept
         {
-            constexpr safe_uintmax max_width{to_umax(999)};
+            constexpr safe_uintmax max_width{static_cast<bsl::uintmax>(999)};
 
             if (unlikely(!val)) {
+                unlikely_invalid_argument_failure();
                 m_width = max_width;
+                return;
             }
-            else if (likely(val < max_width)) {
-                m_width = val;
-            }
-            else {
+
+            if (val > max_width) {
+                unlikely_invalid_argument_failure();
                 m_width = max_width;
+                return;
             }
+
+            m_width = val;
         }
 
         /// <!-- description -->
@@ -433,8 +436,8 @@ namespace bsl
             cstr_type const f, bsl::safe_uintmax &idx, bsl::safe_uintmax const &len) noexcept
             -> void
         {
-            constexpr bsl::safe_uintmax one_char{bsl::to_umax(1)};
-            constexpr bsl::safe_uintmax two_chars{bsl::to_umax(2)};
+            constexpr bsl::safe_uintmax one_char{static_cast<bsl::uintmax>(1)};
+            constexpr bsl::safe_uintmax two_chars{static_cast<bsl::uintmax>(2)};
 
             char_type f_fill{' '};
             char_type f_align{};
@@ -605,29 +608,28 @@ namespace bsl
             cstr_type const f, bsl::safe_uintmax &idx, bsl::safe_uintmax const &len) noexcept
             -> void
         {
-            constexpr bsl::safe_uintmax max_num_width_digits{bsl::to_umax(3)};
-            constexpr bsl::safe_uintmax base10{bsl::to_umax(10)};
+            constexpr bsl::safe_uintmax max_num_width_digits{static_cast<bsl::uintmax>(3)};
+            constexpr bsl::safe_uintmax base10{static_cast<bsl::uintmax>(10)};
 
             for (bsl::safe_uintmax i{}; idx < len; ++i) {
                 if (unlikely(i == max_num_width_digits)) {
+                    unlikely_invalid_argument_failure();
                     break;
                 }
 
                 char_type const digit{f[idx.get()]};
-                if (digit > '/') {
-                    if (digit < ':') {
-                        m_width *= base10;
-                        m_width += bsl::to_umax(digit);
-                        m_width -= bsl::to_umax('0');
-                        ++idx;
-                    }
-                    else {
-                        bsl::touch();
-                    }
+                if (digit < '0') {
+                    break;
                 }
-                else {
-                    bsl::touch();
+
+                if (digit > '9') {
+                    break;
                 }
+
+                m_width *= base10;
+                m_width += static_cast<bsl::uintmax>(digit);
+                m_width -= static_cast<bsl::uintmax>('0');
+                ++idx;
             }
         }
 

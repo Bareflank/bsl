@@ -43,12 +43,21 @@
 namespace bsl
 {
     /// <!-- description -->
-    ///   @brief Used to tell the user during compile-time that and
+    ///   @brief Used to tell the user during compile-time that an
     ///     error has occurred during an add, sub or mul operation
     ///     from a bsl::safe_integral.
     ///
-    [[maybe_unused]] inline void
+    inline void
     integral_overflow_underflow_wrap_error() noexcept
+    {}
+
+    /// <!-- description -->
+    ///   @brief Used to tell the user during compile-time that an
+    ///     operation was taking place with a safe integral that
+    ///     has it's error bit set.
+    ///
+    inline void
+    illegal_use_of_invalid_safe_integral() noexcept
     {}
 
     /// <!-- description -->
@@ -288,6 +297,20 @@ namespace bsl
         ///   @include safe_integral/example_safe_integral_constructor_t_error.hpp
         ///
         /// <!-- inputs/outputs -->
+        ///   @param val the value to set the bsl::safe_integral to
+        ///   @param err used to create a safe_integer that has already
+        ///     resulted in an error.
+        ///
+        constexpr safe_integral(safe_integral const &val, bool const err) noexcept    // --
+            : m_val{val.get()}, m_error{err}
+        {}
+
+        /// <!-- description -->
+        ///   @brief Creates a bsl::safe_integral given a BSL fixed width
+        ///     type.
+        ///   @include safe_integral/example_safe_integral_constructor_t_error.hpp
+        ///
+        /// <!-- inputs/outputs -->
         ///   @tparam U Used to ensure the provided integer is the same as
         ///     T, effectively preventing implicit conversions from being
         ///     allowed.
@@ -387,6 +410,7 @@ namespace bsl
         get() const noexcept -> value_type
         {
             if (unlikely(m_error)) {
+                illegal_use_of_invalid_safe_integral();
                 return static_cast<value_type>(0);
             }
 
@@ -407,6 +431,13 @@ namespace bsl
         [[nodiscard]] constexpr auto
         data() noexcept -> pointer_type
         {
+            if (unlikely(m_error)) {
+                illegal_use_of_invalid_safe_integral();
+            }
+            else {
+                bsl::touch();
+            }
+
             return &m_val;
         }
 
@@ -424,6 +455,13 @@ namespace bsl
         [[nodiscard]] constexpr auto
         data() const noexcept -> const_pointer_type
         {
+            if (unlikely(m_error)) {
+                illegal_use_of_invalid_safe_integral();
+            }
+            else {
+                bsl::touch();
+            }
+
             return &m_val;
         }
 
@@ -442,29 +480,17 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief Returns true if the safe_integral has experienced
-        ///     a wrap, overflow, underflow, divide by 0, etc.
+        ///   @brief Returns safe_integral<value_type>{0, true}
         ///   @include safe_integral/example_safe_integral_failure.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Returns true if the safe_integral has experienced
-        ///     a wrap, overflow, underflow, divide by 0, etc.
+        ///   @return Returns safe_integral<value_type>{0, true}
         ///
-        [[nodiscard]] constexpr auto
-        failure() const noexcept -> bool
+        [[nodiscard]] static constexpr auto
+        failure() noexcept -> safe_integral<value_type>
         {
-            return m_error;
-        }
-
-        /// <!-- description -->
-        ///   @brief Used to indicate that the integral has experienced an
-        ///     error.
-        ///   @include safe_integral/example_safe_integral_set_failure.hpp
-        ///
-        constexpr void
-        set_failure() noexcept
-        {
-            m_error = true;
+            constexpr value_type val{static_cast<value_type>(0)};
+            return safe_integral<value_type>{val, true};
         }
 
         /// <!-- description -->
@@ -475,7 +501,7 @@ namespace bsl
         ///   @return Returns the max value the bsl::safe_integral can store.
         ///
         [[nodiscard]] static constexpr auto
-        max() noexcept -> value_type
+        max() noexcept -> safe_integral<value_type>
         {
             return numeric_limits<value_type>::max();
         }
@@ -495,12 +521,14 @@ namespace bsl
         [[nodiscard]] constexpr auto
         max(safe_integral<value_type> const &other) const noexcept -> safe_integral<value_type>
         {
-            if (unlikely(this->failure())) {
-                return zero(true);
+            if (unlikely(this->invalid())) {
+                illegal_use_of_invalid_safe_integral();
+                return safe_integral<value_type>::failure();
             }
 
-            if (unlikely(other.failure())) {
-                return zero(true);
+            if (unlikely(other.invalid())) {
+                illegal_use_of_invalid_safe_integral();
+                return safe_integral<value_type>::failure();
             }
 
             if (m_val < other.m_val) {
@@ -529,8 +557,9 @@ namespace bsl
         [[nodiscard]] constexpr auto
         max(U const other) const noexcept -> safe_integral<value_type>
         {
-            if (unlikely(this->failure())) {
-                return zero(true);
+            if (unlikely(this->invalid())) {
+                illegal_use_of_invalid_safe_integral();
+                return safe_integral<value_type>::failure();
             }
 
             if (m_val < other) {
@@ -548,7 +577,7 @@ namespace bsl
         ///   @return Returns the min value the bsl::safe_integral can store.
         ///
         [[nodiscard]] static constexpr auto
-        min() noexcept -> value_type
+        min() noexcept -> safe_integral<value_type>
         {
             return numeric_limits<value_type>::min();
         }
@@ -568,12 +597,14 @@ namespace bsl
         [[nodiscard]] constexpr auto
         min(safe_integral<value_type> const &other) const noexcept -> safe_integral<value_type>
         {
-            if (unlikely(this->failure())) {
-                return zero(true);
+            if (unlikely(this->invalid())) {
+                illegal_use_of_invalid_safe_integral();
+                return safe_integral<value_type>::failure();
             }
 
-            if (unlikely(other.failure())) {
-                return zero(true);
+            if (unlikely(other.invalid())) {
+                illegal_use_of_invalid_safe_integral();
+                return safe_integral<value_type>::failure();
             }
 
             if (m_val < other.m_val) {
@@ -602,8 +633,9 @@ namespace bsl
         [[nodiscard]] constexpr auto
         min(U const other) const noexcept -> safe_integral<value_type>
         {
-            if (unlikely(this->failure())) {
-                return zero(true);
+            if (unlikely(this->invalid())) {
+                illegal_use_of_invalid_safe_integral();
+                return safe_integral<value_type>::failure();
             }
 
             if (m_val < other) {
@@ -611,36 +643,6 @@ namespace bsl
             }
 
             return safe_integral<value_type>{other};
-        }
-
-        /// <!-- description -->
-        ///   @brief Returns 0
-        ///   @include safe_integral/example_safe_integral_min.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param err used to indicate a failure()
-        ///   @return Returns 0
-        ///
-        [[nodiscard]] static constexpr auto
-        one(bool const err = false) noexcept -> safe_integral<value_type>
-        {
-            constexpr value_type val{static_cast<value_type>(1)};
-            return safe_integral<value_type>{val, err};
-        }
-
-        /// <!-- description -->
-        ///   @brief Returns 0
-        ///   @include safe_integral/example_safe_integral_min.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param err used to indicate a failure()
-        ///   @return Returns 0
-        ///
-        [[nodiscard]] static constexpr auto
-        zero(bool const err = false) noexcept -> safe_integral<value_type>
-        {
-            constexpr value_type val{static_cast<value_type>(0)};
-            return safe_integral<value_type>{val, err};
         }
 
         /// <!-- description -->
@@ -680,7 +682,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         is_pos() const noexcept -> bool
         {
-            return zero() < *this;
+            return safe_integral<value_type>{static_cast<value_type>(0)} < *this;
         }
 
         /// <!-- description -->
@@ -694,11 +696,43 @@ namespace bsl
         [[nodiscard]] constexpr auto
         is_neg() const noexcept -> bool
         {
+            /// NOTE:
+            /// - Unsigned integrals cannot be negative. If you are running
+            ///   into this error at compile-time, you need to make better use
+            ///   of type traits and if constexpr () statements to ensure at
+            ///   runtime, you are not executing code that will never happen.
+            /// - In this case, you should wrap a call to this in a constexpr
+            ///   if statement checking to see if your type if signed. Any
+            ///   type that is unsigned will always return false, and therefore
+            ///   that branch does not actually need to be there.
+            /// - More importantly, it would be impossible to get 100% branch
+            ///   coverage if you don't add these types of optimizations as
+            ///   there would be no way to convince a unit test to execute
+            ///   code that triggered on is_neg() for unsigned values.
+            /// - Finally, a review of your existing code for other instances
+            ///   of this type of problem would be a good idea.
+            ///
+
             if constexpr (is_unsigned_type()) {
+                illegal_use_of_invalid_safe_integral();
                 return false;
             }
 
-            return zero() > *this;
+            return safe_integral<value_type>{static_cast<value_type>(0)} > *this;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns true if the safe_integral is 0. Will
+        ///     always return false if an error has been encountered.
+        ///   @include safe_integral/example_safe_integral_is_zero.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns true if the safe_integral is 0
+        ///
+        [[nodiscard]] constexpr auto
+        is_zero() const noexcept -> bool
+        {
+            return safe_integral<value_type>{static_cast<value_type>(0)} == *this;
         }
 
         /// <!-- description -->
@@ -710,13 +744,27 @@ namespace bsl
         ///   @return Returns true if the safe_integral is 0
         ///
         [[nodiscard]] constexpr auto
-        is_zero() const noexcept -> bool
+        is_zero_or_invalid() const noexcept -> bool
         {
-            if (unlikely(m_error)) {
+            if (m_error) {
                 return true;
             }
 
-            return zero() == *this;
+            return safe_integral<value_type>{static_cast<value_type>(0)} == *this;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns true if the safe_integral has encountered and
+        ///     error, false otherwise.
+        ///   @include safe_integral/example_safe_integral_invalid.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns true if the safe_integral is 0
+        ///
+        [[nodiscard]] constexpr auto
+        invalid() const noexcept -> bool
+        {
+            return m_error;
         }
 
         /// <!-- description -->
@@ -764,12 +812,14 @@ namespace bsl
         {
             bool const e{builtin_add_overflow(m_val, rhs.m_val, &m_val)};
 
-            if (unlikely(this->failure())) {
+            if (unlikely(this->invalid())) {
+                illegal_use_of_invalid_safe_integral();
                 m_error = true;
                 return *this;
             }
 
-            if (unlikely(rhs.failure())) {
+            if (unlikely(rhs.invalid())) {
+                illegal_use_of_invalid_safe_integral();
                 m_error = true;
                 return *this;
             }
@@ -815,7 +865,8 @@ namespace bsl
         {
             bool const e{builtin_add_overflow(m_val, rhs, &m_val)};
 
-            if (unlikely(this->failure())) {
+            if (unlikely(this->invalid())) {
+                illegal_use_of_invalid_safe_integral();
                 m_error = true;
                 return *this;
             }
@@ -858,12 +909,14 @@ namespace bsl
         {
             bool const e{builtin_sub_overflow(m_val, rhs.m_val, &m_val)};
 
-            if (unlikely(this->failure())) {
+            if (unlikely(this->invalid())) {
+                illegal_use_of_invalid_safe_integral();
                 m_error = true;
                 return *this;
             }
 
-            if (unlikely(rhs.failure())) {
+            if (unlikely(rhs.invalid())) {
+                illegal_use_of_invalid_safe_integral();
                 m_error = true;
                 return *this;
             }
@@ -909,7 +962,8 @@ namespace bsl
         {
             bool const e{builtin_sub_overflow(m_val, rhs, &m_val)};
 
-            if (unlikely(this->failure())) {
+            if (unlikely(this->invalid())) {
+                illegal_use_of_invalid_safe_integral();
                 m_error = true;
                 return *this;
             }
@@ -952,12 +1006,14 @@ namespace bsl
         {
             bool const e{builtin_mul_overflow(m_val, rhs.m_val, &m_val)};
 
-            if (unlikely(this->failure())) {
+            if (unlikely(this->invalid())) {
+                illegal_use_of_invalid_safe_integral();
                 m_error = true;
                 return *this;
             }
 
-            if (unlikely(rhs.failure())) {
+            if (unlikely(rhs.invalid())) {
+                illegal_use_of_invalid_safe_integral();
                 m_error = true;
                 return *this;
             }
@@ -1003,7 +1059,8 @@ namespace bsl
         {
             bool const e{builtin_mul_overflow(m_val, rhs, &m_val)};
 
-            if (unlikely(this->failure())) {
+            if (unlikely(this->invalid())) {
+                illegal_use_of_invalid_safe_integral();
                 m_error = true;
                 return *this;
             }
@@ -1046,12 +1103,14 @@ namespace bsl
         {
             bool const e{builtin_div_overflow(m_val, rhs.m_val, &m_val)};
 
-            if (unlikely(this->failure())) {
+            if (unlikely(this->invalid())) {
+                illegal_use_of_invalid_safe_integral();
                 m_error = true;
                 return *this;
             }
 
-            if (unlikely(rhs.failure())) {
+            if (unlikely(rhs.invalid())) {
+                illegal_use_of_invalid_safe_integral();
                 m_error = true;
                 return *this;
             }
@@ -1097,7 +1156,8 @@ namespace bsl
         {
             bool const e{builtin_div_overflow(m_val, rhs, &m_val)};
 
-            if (unlikely(this->failure())) {
+            if (unlikely(this->invalid())) {
+                illegal_use_of_invalid_safe_integral();
                 m_error = true;
                 return *this;
             }
@@ -1140,12 +1200,14 @@ namespace bsl
         {
             bool const e{builtin_mod_overflow(m_val, rhs.m_val, &m_val)};
 
-            if (unlikely(this->failure())) {
+            if (unlikely(this->invalid())) {
+                illegal_use_of_invalid_safe_integral();
                 m_error = true;
                 return *this;
             }
 
-            if (unlikely(rhs.failure())) {
+            if (unlikely(rhs.invalid())) {
+                illegal_use_of_invalid_safe_integral();
                 m_error = true;
                 return *this;
             }
@@ -1191,7 +1253,8 @@ namespace bsl
         {
             bool const e{builtin_mod_overflow(m_val, rhs, &m_val)};
 
-            if (unlikely(this->failure())) {
+            if (unlikely(this->invalid())) {
+                illegal_use_of_invalid_safe_integral();
                 m_error = true;
                 return *this;
             }
@@ -1239,12 +1302,14 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val <<= rhs.m_val;
 
-                if (unlikely(this->failure())) {
+                if (unlikely(this->invalid())) {
+                    illegal_use_of_invalid_safe_integral();
                     m_error = true;
                     return *this;
                 }
 
-                if (unlikely(rhs.failure())) {
+                if (unlikely(rhs.invalid())) {
+                    illegal_use_of_invalid_safe_integral();
                     m_error = true;
                     return *this;
                 }
@@ -1291,7 +1356,8 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val <<= rhs;
 
-                if (unlikely(this->failure())) {
+                if (unlikely(this->invalid())) {
+                    illegal_use_of_invalid_safe_integral();
                     m_error = true;
                     return *this;
                 }
@@ -1335,12 +1401,14 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val >>= rhs.get();
 
-                if (unlikely(this->failure())) {
+                if (unlikely(this->invalid())) {
+                    illegal_use_of_invalid_safe_integral();
                     m_error = true;
                     return *this;
                 }
 
-                if (unlikely(rhs.failure())) {
+                if (unlikely(rhs.invalid())) {
+                    illegal_use_of_invalid_safe_integral();
                     m_error = true;
                     return *this;
                 }
@@ -1387,7 +1455,8 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val >>= rhs;
 
-                if (unlikely(this->failure())) {
+                if (unlikely(this->invalid())) {
+                    illegal_use_of_invalid_safe_integral();
                     m_error = true;
                     return *this;
                 }
@@ -1431,12 +1500,14 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val &= rhs.get();
 
-                if (unlikely(this->failure())) {
+                if (unlikely(this->invalid())) {
+                    illegal_use_of_invalid_safe_integral();
                     m_error = true;
                     return *this;
                 }
 
-                if (unlikely(rhs.failure())) {
+                if (unlikely(rhs.invalid())) {
+                    illegal_use_of_invalid_safe_integral();
                     m_error = true;
                     return *this;
                 }
@@ -1483,7 +1554,8 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val &= rhs;
 
-                if (unlikely(this->failure())) {
+                if (unlikely(this->invalid())) {
+                    illegal_use_of_invalid_safe_integral();
                     m_error = true;
                     return *this;
                 }
@@ -1527,12 +1599,14 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val |= rhs.get();
 
-                if (unlikely(this->failure())) {
+                if (unlikely(this->invalid())) {
+                    illegal_use_of_invalid_safe_integral();
                     m_error = true;
                     return *this;
                 }
 
-                if (unlikely(rhs.failure())) {
+                if (unlikely(rhs.invalid())) {
+                    illegal_use_of_invalid_safe_integral();
                     m_error = true;
                     return *this;
                 }
@@ -1579,7 +1653,8 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val |= rhs;
 
-                if (unlikely(this->failure())) {
+                if (unlikely(this->invalid())) {
+                    illegal_use_of_invalid_safe_integral();
                     m_error = true;
                     return *this;
                 }
@@ -1623,12 +1698,14 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val ^= rhs.get();
 
-                if (unlikely(this->failure())) {
+                if (unlikely(this->invalid())) {
+                    illegal_use_of_invalid_safe_integral();
                     m_error = true;
                     return *this;
                 }
 
-                if (unlikely(rhs.failure())) {
+                if (unlikely(rhs.invalid())) {
+                    illegal_use_of_invalid_safe_integral();
                     m_error = true;
                     return *this;
                 }
@@ -1675,7 +1752,8 @@ namespace bsl
                 // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 m_val ^= rhs;
 
-                if (unlikely(this->failure())) {
+                if (unlikely(this->invalid())) {
+                    illegal_use_of_invalid_safe_integral();
                     m_error = true;
                     return *this;
                 }
@@ -1711,7 +1789,7 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         operator++() &noexcept -> safe_integral<value_type> &
         {
-            return *this += one();
+            return *this += safe_integral<value_type>{static_cast<value_type>(1)};
         }
 
         /// <!-- description -->
@@ -1737,7 +1815,7 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         operator--() &noexcept -> safe_integral<value_type> &
         {
-            return *this -= one();
+            return *this -= safe_integral<value_type>{static_cast<value_type>(1)};
         }
 
         /// <!-- description -->
@@ -1771,11 +1849,13 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator==(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
-        if (unlikely(lhs.failure())) {
+        if (unlikely(lhs.invalid())) {
+            illegal_use_of_invalid_safe_integral();
             return false;
         }
 
-        if (unlikely(rhs.failure())) {
+        if (unlikely(rhs.invalid())) {
+            illegal_use_of_invalid_safe_integral();
             return false;
         }
 
@@ -1804,7 +1884,8 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator==(safe_integral<T> const &lhs, T const rhs) noexcept -> bool
     {
-        if (unlikely(lhs.failure())) {
+        if (unlikely(lhs.invalid())) {
+            illegal_use_of_invalid_safe_integral();
             return false;
         }
 
@@ -1833,7 +1914,8 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator==(T const lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
-        if (unlikely(rhs.failure())) {
+        if (unlikely(rhs.invalid())) {
+            illegal_use_of_invalid_safe_integral();
             return false;
         }
 
@@ -1922,11 +2004,13 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator<(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
-        if (unlikely(lhs.failure())) {
+        if (unlikely(lhs.invalid())) {
+            illegal_use_of_invalid_safe_integral();
             return false;
         }
 
-        if (unlikely(rhs.failure())) {
+        if (unlikely(rhs.invalid())) {
+            illegal_use_of_invalid_safe_integral();
             return false;
         }
 
@@ -1955,7 +2039,8 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator<(safe_integral<T> const &lhs, T const rhs) noexcept -> bool
     {
-        if (unlikely(lhs.failure())) {
+        if (unlikely(lhs.invalid())) {
+            illegal_use_of_invalid_safe_integral();
             return false;
         }
 
@@ -1984,7 +2069,8 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator<(T const lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
-        if (unlikely(rhs.failure())) {
+        if (unlikely(rhs.invalid())) {
+            illegal_use_of_invalid_safe_integral();
             return false;
         }
 
@@ -2013,11 +2099,13 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator>(safe_integral<T> const &lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
-        if (unlikely(lhs.failure())) {
+        if (unlikely(lhs.invalid())) {
+            illegal_use_of_invalid_safe_integral();
             return false;
         }
 
-        if (unlikely(rhs.failure())) {
+        if (unlikely(rhs.invalid())) {
+            illegal_use_of_invalid_safe_integral();
             return false;
         }
 
@@ -2046,7 +2134,8 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator>(safe_integral<T> const &lhs, T const rhs) noexcept -> bool
     {
-        if (unlikely(lhs.failure())) {
+        if (unlikely(lhs.invalid())) {
+            illegal_use_of_invalid_safe_integral();
             return false;
         }
 
@@ -2075,7 +2164,8 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator>(T const lhs, safe_integral<T> const &rhs) noexcept -> bool
     {
-        if (unlikely(rhs.failure())) {
+        if (unlikely(rhs.invalid())) {
+            illegal_use_of_invalid_safe_integral();
             return false;
         }
 
@@ -2686,7 +2776,7 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator-(safe_integral<T> const &rhs) noexcept -> safe_integral<T>
     {
-        return safe_integral<T>::zero() - rhs;
+        return safe_integral<T>{static_cast<T>(0)} - rhs;
     }
 
     // -------------------------------------------------------------------------
@@ -2771,54 +2861,6 @@ namespace bsl
     using safe_uintmax = safe_integral<bsl::uintmax>;
     /// @brief provides the bsl::safe_integral version of bsl::uintptr
     using safe_uintptr = safe_integral<bsl::uintptr>;
-
-    // -------------------------------------------------------------------------
-    // predefined constants
-    // -------------------------------------------------------------------------
-
-    /// @brief defines a predefined constant for 0
-    constexpr bsl::safe_uint8 ZERO_U8{static_cast<bsl::uint8>(0)};
-    /// @brief defines a predefined constant for 0
-    constexpr bsl::safe_uint16 ZERO_U16{static_cast<bsl::uint16>(0)};
-    /// @brief defines a predefined constant for 0
-    constexpr bsl::safe_uint32 ZERO_U32{static_cast<bsl::uint32>(0)};
-    /// @brief defines a predefined constant for 0
-    constexpr bsl::safe_uint64 ZERO_U64{static_cast<bsl::uint64>(0)};
-    /// @brief defines a predefined constant for 0
-    constexpr bsl::safe_uintmax ZERO_UMAX{static_cast<bsl::uintmax>(0)};
-
-    /// @brief defines a predefined constant for 0
-    constexpr bsl::safe_int8 ZERO_I8{static_cast<bsl::int8>(0)};
-    /// @brief defines a predefined constant for 0
-    constexpr bsl::safe_int16 ZERO_I16{static_cast<bsl::int16>(0)};
-    /// @brief defines a predefined constant for 0
-    constexpr bsl::safe_int32 ZERO_I32{static_cast<bsl::int32>(0)};
-    /// @brief defines a predefined constant for 0
-    constexpr bsl::safe_int64 ZERO_I64{static_cast<bsl::int64>(0)};
-    /// @brief defines a predefined constant for 0
-    constexpr bsl::safe_intmax ZERO_IMAX{static_cast<bsl::intmax>(0)};
-
-    /// @brief defines a predefined constant for 1
-    constexpr bsl::safe_uint8 ONE_U8{static_cast<bsl::uint8>(1)};
-    /// @brief defines a predefined constant for 1
-    constexpr bsl::safe_uint16 ONE_U16{static_cast<bsl::uint16>(1)};
-    /// @brief defines a predefined constant for 1
-    constexpr bsl::safe_uint32 ONE_U32{static_cast<bsl::uint32>(1)};
-    /// @brief defines a predefined constant for 1
-    constexpr bsl::safe_uint64 ONE_U64{static_cast<bsl::uint64>(1)};
-    /// @brief defines a predefined constant for 1
-    constexpr bsl::safe_uintmax ONE_UMAX{static_cast<bsl::uintmax>(1)};
-
-    /// @brief defines a predefined constant for 1
-    constexpr bsl::safe_int8 ONE_I8{static_cast<bsl::int8>(1)};
-    /// @brief defines a predefined constant for 1
-    constexpr bsl::safe_int16 ONE_I16{static_cast<bsl::int16>(1)};
-    /// @brief defines a predefined constant for 1
-    constexpr bsl::safe_int32 ONE_I32{static_cast<bsl::int32>(1)};
-    /// @brief defines a predefined constant for 1
-    constexpr bsl::safe_int64 ONE_I64{static_cast<bsl::int64>(1)};
-    /// @brief defines a predefined constant for 1
-    constexpr bsl::safe_intmax ONE_IMAX{static_cast<bsl::intmax>(1)};
 }
 
 #endif

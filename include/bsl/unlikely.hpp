@@ -45,6 +45,22 @@ namespace bsl
     {
         return __builtin_expect(!!(a), 0L) != 0L;
     }
+
+    /// <!-- description -->
+    ///   @brief Used to tell the user during compile-time that an
+    ///     invalid argument has been provided to the code.
+    ///
+    inline void
+    unlikely_invalid_argument_failure() noexcept
+    {}
+
+    /// <!-- description -->
+    ///   @brief Used to tell the user during compile-time that a
+    ///     precondition check has failed.
+    ///
+    inline void
+    unlikely_precondition_failure() noexcept
+    {}
 }
 
 #endif

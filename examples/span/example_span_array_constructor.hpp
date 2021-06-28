@@ -22,8 +22,9 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/array.hpp>
 #include <bsl/debug.hpp>
-#include <bsl/safe_integral.hpp>
+#include <bsl/span.hpp>
 
 namespace bsl
 {
@@ -31,16 +32,13 @@ namespace bsl
     ///   @brief Provides the example's main function
     ///
     inline void
-    example_safe_integral_set_failure() noexcept
+    example_span_array_constructor() noexcept
     {
-        bsl::safe_int32 val{};
-        val.set_failure();
+        constexpr bsl::array arr{true, false};
+        bsl::span const spn{arr};
 
-        if (val.failure()) {
-            bsl::print() << "success\n";
-        }
-        else {
-            bsl::error() << "failure\n";
+        for (auto iter{spn.begin()}; iter != spn.end(); ++iter) {
+            bsl::print() << "element [" << iter.index() << "] == " << iter.data() << bsl::endl;
         }
     }
 }

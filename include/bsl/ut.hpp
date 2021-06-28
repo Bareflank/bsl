@@ -35,10 +35,12 @@
 #include "exit_code.hpp"
 #include "source_location.hpp"
 #include "touch.hpp"
+#include "unlikely.hpp"
 #include "ut_given.hpp"
 #include "ut_given_at_runtime.hpp"
 #include "ut_scenario.hpp"
 #include "ut_then.hpp"
+#include "ut_then_at_runtime.hpp"
 #include "ut_when.hpp"
 
 #include <bsl/enable_color.hpp>
@@ -89,13 +91,13 @@ namespace bsl
     [[maybe_unused]] constexpr auto
     ut_required_step(bool const test, source_location const &sloc = here()) noexcept -> bool
     {
-        if (!test) {
-            bsl::error() << bsl::magenta << "[REQUIRED STEP FAILED]" << bsl::reset_color
-                         << bsl::endl;
-            bsl::error() << sloc;
+        if (unlikely(!test)) {                                      // GRCOV_EXCLUDE_BR
+            bsl::error() << bsl::mag << "[REQUIRED STEP FAILED]"    // GRCOV_EXCLUDE
+                         << bsl::rst << bsl::endl;                  // GRCOV_EXCLUDE
+            bsl::error() << sloc;                                   // GRCOV_EXCLUDE
 
-            ut_required_step_failed();
-            exit(1);
+            ut_required_step_failed();    // GRCOV_EXCLUDE
+            exit(1);                      // GRCOV_EXCLUDE
         }
         else {
             bsl::touch();
@@ -168,12 +170,13 @@ namespace bsl
     [[maybe_unused]] constexpr auto
     ut_check(bool const test, source_location const &sloc = here()) noexcept -> bool
     {
-        if (!test) {
-            bsl::error() << bsl::magenta << "[CHECK FAILED]" << bsl::reset_color << bsl::endl;
-            bsl::error() << sloc;
+        if (unlikely(!test)) {                              // GRCOV_EXCLUDE_BR
+            bsl::error() << bsl::mag << "[CHECK FAILED]"    // GRCOV_EXCLUDE
+                         << bsl::rst << bsl::endl;          // GRCOV_EXCLUDE
+            bsl::error() << sloc;                           // GRCOV_EXCLUDE
 
-            ut_check_failed();
-            exit(1);
+            ut_check_failed();    // GRCOV_EXCLUDE
+            exit(1);              // GRCOV_EXCLUDE
         }
         else {
             bsl::touch();

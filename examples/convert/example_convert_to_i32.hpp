@@ -34,7 +34,7 @@ namespace bsl
     inline void
     example_convert_to_i32() noexcept
     {
-        constexpr bsl::safe_int32 val{bsl::to_i32(42)};
+        constexpr auto val{bsl::to_i32(42)};
         bsl::print() << "success: " << val << bsl::endl;
     }
 }

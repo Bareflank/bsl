@@ -24,6 +24,7 @@
 
 #include <bsl/array.hpp>
 #include <bsl/contiguous_iterator.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/ut.hpp>
 
 namespace

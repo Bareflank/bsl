@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/char_traits.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -33,7 +34,7 @@ namespace bsl
     inline void
     example_char_traits_length() noexcept
     {
-        constexpr bsl::safe_uintmax len{bsl::to_umax(2)};
+        constexpr auto len{2_umax};
 
         if constexpr (bsl::char_traits<bsl::char_type>::length("42") == len) {
             bsl::print() << "success\n";

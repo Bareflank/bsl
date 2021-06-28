@@ -22,18 +22,32 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/debug.hpp>
-#include <bsl/string_view.hpp>
+#include <bsl/array.hpp>
+#include <bsl/cstring.hpp>
+#include <bsl/ut.hpp>
 
-namespace bsl
+/// <!-- description -->
+///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
+///     the application will fast fail. If all calls to bsl::ut_check() pass, this
+///     function will successfully return with bsl::exit_success.
+///
+/// <!-- inputs/outputs -->
+///   @return Always returns bsl::exit_success.
+///
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
 {
-    /// <!-- description -->
-    ///   @brief Provides the example's main function
-    ///
-    inline void
-    example_reverse_iterator_ostream() noexcept
-    {
-        constexpr bsl::basic_string_view str{"success"};
-        bsl::print() << str.rbegin() << bsl::endl;
-    }
+    bsl::ut_scenario{"verify noexcept"} = []() {
+        bsl::ut_given{} = []() {
+            bsl::array arr{true, true, true, true, true};
+            bsl::ut_then{} = []() {
+                static_assert(noexcept(bsl::builtin_strncmp("", "", {})));
+                static_assert(noexcept(bsl::builtin_strlen("")));
+                static_assert(noexcept(bsl::builtin_memset(arr.data(), '\0', arr.size())));
+                static_assert(noexcept(bsl::builtin_memcpy(arr.data(), arr.data(), arr.size())));
+            };
+        };
+    };
+
+    return bsl::ut_success();
 }

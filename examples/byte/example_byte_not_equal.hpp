@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/byte.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -33,8 +34,8 @@ namespace bsl
     inline void
     example_byte_not_equal() noexcept
     {
-        constexpr bsl::safe_uint8 val1{bsl::to_u8(0x10)};
-        constexpr bsl::safe_uint8 val2{bsl::to_u8(0x11)};
+        constexpr auto val1{0x10_u8};
+        constexpr auto val2{0x11_u8};
 
         constexpr bsl::byte b1{val1};
         constexpr bsl::byte b2{val2};

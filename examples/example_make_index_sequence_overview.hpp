@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/make_index_sequence.hpp>
 
@@ -33,9 +34,9 @@ namespace bsl
     inline void
     example_make_index_sequence_overview() noexcept
     {
-        constexpr bsl::safe_uintmax size{bsl::to_umax(6)};
-        constexpr bsl::safe_uintmax max{bsl::to_umax(5)};
-        constexpr bsl::safe_uintmax min{bsl::to_umax(0)};
+        constexpr auto size{6_umax};
+        constexpr auto max{5_umax};
+        constexpr auto min{0_umax};
 
         if constexpr (bsl::make_index_sequence<size.get()>::size() == size.get()) {
             bsl::print() << "success\n";

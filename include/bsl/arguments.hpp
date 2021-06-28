@@ -28,16 +28,15 @@
 #ifndef BSL_ARGUMENTS_HPP
 #define BSL_ARGUMENTS_HPP
 
-#include "convert.hpp"
 #include "cstdint.hpp"
 #include "cstr_type.hpp"
-#include "debug.hpp"
 #include "details/arguments_impl.hpp"
 #include "details/out.hpp"
-#include "from_chars.hpp"
+#include "likely.hpp"
 #include "safe_integral.hpp"
 #include "span.hpp"
 #include "string_view.hpp"
+#include "unlikely.hpp"
 
 namespace bsl
 {
@@ -258,19 +257,19 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief Returns this->at<T, B>(size_type::zero()).
+        ///   @brief Returns this->at<T, B>(static_cast<bsl::uintmax>(0)).
         ///   @include arguments/example_arguments_front.hpp
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
         ///   @tparam B the base to convert the argument to
-        ///   @return Returns this->at<T, B>(size_type::zero()).
+        ///   @return Returns this->at<T, B>(static_cast<bsl::uintmax>(0)).
         ///
         template<typename T, bsl::int32 B = details::ARGUMENTS_DEFAULT_BASE.get()>
         [[nodiscard]] constexpr auto
         front() const noexcept -> T
         {
-            return this->at<T, B>(size_type::zero());
+            return this->at<T, B>(static_cast<bsl::uintmax>(0));
         }
 
         /// <!-- description -->
@@ -352,11 +351,11 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         operator++() noexcept -> arguments &
         {
-            if (m_index < this->size()) {
+            if (likely(m_index < this->size())) {
                 ++m_index;
             }
             else {
-                bsl::touch();
+                unlikely_precondition_failure();
             }
 
             return *this;

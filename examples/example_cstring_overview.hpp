@@ -50,12 +50,5 @@ namespace bsl
         else {
             bsl::error() << "failure\n";
         }
-
-        if constexpr (bsl::builtin_strnchr(str.data(), 'H', str.size()) == str.data()) {
-            bsl::print() << "success\n";
-        }
-        else {
-            bsl::error() << "failure\n";
-        }
     }
 }

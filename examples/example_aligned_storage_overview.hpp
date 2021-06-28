@@ -24,6 +24,7 @@
 
 #include <bsl/aligned_storage.hpp>
 #include <bsl/alignment_of.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -34,10 +35,10 @@ namespace bsl
     inline void
     example_aligned_storage_overview() noexcept
     {
-        constexpr bsl::safe_uintmax align{to_umax(64)};
-        using page_type = bsl::aligned_storage_t<to_umax(BSL_PAGE_SIZE).get(), align.get()>;
+        constexpr auto align{64_umax};
+        using page_type = bsl::aligned_storage_t<BSL_PAGE_SIZE.get(), align.get()>;
 
-        if constexpr (sizeof(page_type) < to_umax(BSL_PAGE_SIZE)) {
+        if constexpr (sizeof(page_type) < BSL_PAGE_SIZE) {
             bsl::error() << "failure\n";
         }
         else {

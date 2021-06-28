@@ -39,5 +39,12 @@ namespace bsl
         else {
             bsl::error() << "failure\n";
         }
+
+        if constexpr (!bsl::errc_failure) {
+            bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
+        }
     }
 }

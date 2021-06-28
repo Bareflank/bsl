@@ -41,7 +41,7 @@ namespace
     tests() noexcept -> bsl::exit_code
     {
         bsl::ut_scenario{"attempting to destroy nullptr is ignored"} = []() {
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bool *b{};
                 bsl::ut_when{} = [b]() {
                     bsl::destroy_at(b);

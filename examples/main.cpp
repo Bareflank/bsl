@@ -118,7 +118,6 @@
 #include "char_traits/example_char_traits_eof.hpp"
 #include "char_traits/example_char_traits_eq.hpp"
 #include "char_traits/example_char_traits_eq_int_type.hpp"
-#include "char_traits/example_char_traits_find.hpp"
 #include "char_traits/example_char_traits_length.hpp"
 #include "char_traits/example_char_traits_lt.hpp"
 #include "char_traits/example_char_traits_not_eof.hpp"
@@ -137,7 +136,6 @@
 #include "contiguous_iterator/example_contiguous_iterator_not_equals.hpp"
 #include "contiguous_iterator/example_contiguous_iterator_operator_bool.hpp"
 #include "contiguous_iterator/example_contiguous_iterator_operator_star.hpp"
-#include "contiguous_iterator/example_contiguous_iterator_ostream.hpp"
 #include "contiguous_iterator/example_contiguous_iterator_size.hpp"
 #include "convert/example_convert_to_i16.hpp"
 #include "convert/example_convert_to_i32.hpp"
@@ -155,9 +153,9 @@
 #include "convert/example_convert_to_u8_unsafe.hpp"
 #include "convert/example_convert_to_umax.hpp"
 #include "convert/example_convert_to_umax_unsafe.hpp"
-#include "debug/example_debug_alert.hpp"
+// #include "debug/example_debug_alert.hpp"
 #include "debug/example_debug_debug.hpp"
-#include "debug/example_debug_error.hpp"
+// #include "debug/example_debug_error.hpp"
 #include "debug/example_debug_print.hpp"
 #include "example_add_const_overview.hpp"
 #include "example_add_lvalue_reference_overview.hpp"
@@ -389,7 +387,6 @@
 #include "reverse_iterator/example_reverse_iterator_lt.hpp"
 #include "reverse_iterator/example_reverse_iterator_not_equals.hpp"
 #include "reverse_iterator/example_reverse_iterator_operator_bool.hpp"
-#include "reverse_iterator/example_reverse_iterator_ostream.hpp"
 #include "reverse_iterator/example_reverse_iterator_size.hpp"
 #include "safe_integral/example_safe_integral_add.hpp"
 #include "safe_integral/example_safe_integral_and.hpp"
@@ -414,6 +411,7 @@
 #include "safe_integral/example_safe_integral_get.hpp"
 #include "safe_integral/example_safe_integral_gt.hpp"
 #include "safe_integral/example_safe_integral_inc.hpp"
+#include "safe_integral/example_safe_integral_invalid.hpp"
 #include "safe_integral/example_safe_integral_is_max.hpp"
 #include "safe_integral/example_safe_integral_is_min.hpp"
 #include "safe_integral/example_safe_integral_is_neg.hpp"
@@ -432,7 +430,6 @@
 #include "safe_integral/example_safe_integral_operator_bool.hpp"
 #include "safe_integral/example_safe_integral_or.hpp"
 #include "safe_integral/example_safe_integral_rshift.hpp"
-#include "safe_integral/example_safe_integral_set_failure.hpp"
 #include "safe_integral/example_safe_integral_sub.hpp"
 #include "safe_integral/example_safe_integral_unary.hpp"
 #include "safe_integral/example_safe_integral_xor.hpp"
@@ -443,6 +440,7 @@
 #include "source_location/example_source_location_here.hpp"
 #include "source_location/example_source_location_line.hpp"
 #include "source_location/example_source_location_ostream.hpp"
+#include "span/example_span_array_constructor.hpp"
 #include "span/example_span_as_bytes.hpp"
 #include "span/example_span_as_t.hpp"
 #include "span/example_span_as_writable_bytes.hpp"
@@ -554,7 +552,7 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_basic_errc_type_constructor_t, "example_basic_errc_type_constructor_t");
     example(&bsl::example_basic_errc_type_default_constructor, "example_basic_errc_type_default_constructor");
     example(&bsl::example_basic_errc_type_equals, "example_basic_errc_type_equals");
-    example(&bsl::example_basic_errc_type_failure, "example_basic_errc_type_failure");
+    example(&bsl::example_basic_errc_type_failure, "example_basic_errc_type_failur");
     example(&bsl::example_basic_errc_type_get, "example_basic_errc_type_get");
     example(&bsl::example_basic_errc_type_is_checked, "example_basic_errc_type_is_checked");
     example(&bsl::example_basic_errc_type_is_unchecked, "example_basic_errc_type_is_unchecked");
@@ -621,7 +619,6 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_char_traits_eof, "example_char_traits_eof");
     example(&bsl::example_char_traits_eq_int_type, "example_char_traits_eq_int_type");
     example(&bsl::example_char_traits_eq, "example_char_traits_eq");
-    example(&bsl::example_char_traits_find, "example_char_traits_find");
     example(&bsl::example_char_traits_length, "example_char_traits_length");
     example(&bsl::example_char_traits_lt, "example_char_traits_lt");
     example(&bsl::example_char_traits_not_eof, "example_char_traits_not_eof");
@@ -647,7 +644,6 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_contiguous_iterator_not_equals, "example_contiguous_iterator_not_equals");
     example(&bsl::example_contiguous_iterator_operator_bool, "example_contiguous_iterator_operator_bool");
     example(&bsl::example_contiguous_iterator_operator_star, "example_contiguous_iterator_operator_star");
-    example(&bsl::example_contiguous_iterator_ostream, "example_contiguous_iterator_ostream");
     example(&bsl::example_contiguous_iterator_size, "example_contiguous_iterator_size");
     example(&bsl::example_convert_overview, "example_convert_overview");
     example(&bsl::example_cstr_type_overview, "example_cstr_type_overview");
@@ -668,9 +664,9 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_convert_to_umax, "example_convert_to_umax");
     example(&bsl::example_convert_to_umax_unsafe, "example_convert_to_umax_unsafe");
     example(&bsl::example_convert_to_ptr, "example_convert_to_ptr");
-    example(&bsl::example_debug_alert, "example_debug_alert");
+    // example(&bsl::example_debug_alert, "example_debug_alert");
     example(&bsl::example_debug_debug, "example_debug_debug");
-    example(&bsl::example_debug_error, "example_debug_error");
+    // example(&bsl::example_debug_error, "example_debug_error");
     example(&bsl::example_debug_print, "example_debug_print");
     example(&bsl::example_decay_overview, "example_decay_overview");
     example(&bsl::example_declval_overview, "example_declval_overview");
@@ -837,7 +833,7 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_result_errc_copy_constructor, "example_result_errc_copy_constructor");
     example(&bsl::example_result_errc_move_constructor, "example_result_errc_move_constructor");
     example(&bsl::example_result_errc, "example_result_errc");
-    example(&bsl::example_result_failure, "example_result_failure");
+    example(&bsl::example_result_failure, "example_result_failur");
     example(&bsl::example_result_get_if, "example_result_get_if");
     example(&bsl::example_result_move_assignment, "example_result_move_assignment");
     example(&bsl::example_result_move_constructor, "example_result_move_constructor");
@@ -861,7 +857,6 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_reverse_iterator_lt, "example_reverse_iterator_lt");
     example(&bsl::example_reverse_iterator_not_equals, "example_reverse_iterator_not_equals");
     example(&bsl::example_reverse_iterator_operator_bool, "example_reverse_iterator_operator_bool");
-    example(&bsl::example_reverse_iterator_ostream, "example_reverse_iterator_ostream");
     example(&bsl::example_reverse_iterator_size, "example_reverse_iterator_size");
     example(&bsl::example_safe_integral_overview, "example_safe_integral_overview");
     example(&bsl::example_safe_integral_add, "example_safe_integral_add");
@@ -884,6 +879,7 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_safe_integral_div, "example_safe_integral_div");
     example(&bsl::example_safe_integral_equals, "example_safe_integral_equals");
     example(&bsl::example_safe_integral_failure, "example_safe_integral_failure");
+    example(&bsl::example_safe_integral_invalid, "example_safe_integral_invalid");
     example(&bsl::example_safe_integral_get, "example_safe_integral_get");
     example(&bsl::example_safe_integral_gt, "example_safe_integral_gt");
     example(&bsl::example_safe_integral_inc, "example_safe_integral_inc");
@@ -905,7 +901,6 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_safe_integral_operator_bool, "example_safe_integral_operator_bool");
     example(&bsl::example_safe_integral_or, "example_safe_integral_or");
     example(&bsl::example_safe_integral_rshift, "example_safe_integral_rshift");
-    example(&bsl::example_safe_integral_set_failure, "example_safe_integral_set_failure");
     example(&bsl::example_safe_integral_sub, "example_safe_integral_sub");
     example(&bsl::example_safe_integral_unary, "example_safe_integral_unary");
     example(&bsl::example_safe_integral_xor, "example_safe_integral_xor");
@@ -919,6 +914,7 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_source_location_line, "example_source_location_line");
     example(&bsl::example_source_location_ostream, "example_source_location_ostream");
     example(&bsl::example_span_overview, "example_span_overview");
+    example(&bsl::example_span_array_constructor, "example_span_array_constructor");
     example(&bsl::example_span_as_bytes, "example_span_as_bytes");
     example(&bsl::example_span_as_t, "example_span_as_t");
     example(&bsl::example_span_as_writable_bytes, "example_span_as_writable_bytes");

@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/errc_type.hpp>
 
@@ -33,8 +34,8 @@ namespace bsl
     inline void
     example_basic_errc_type_equals() noexcept
     {
-        constexpr bsl::safe_int32 errc1{42};
-        constexpr bsl::safe_int32 errc2{42};
+        constexpr auto errc1{42_i32};
+        constexpr auto errc2{42_i32};
 
         constexpr bsl::basic_errc_type<> my_errc1{errc1};
         constexpr bsl::basic_errc_type<> my_errc2{errc2};

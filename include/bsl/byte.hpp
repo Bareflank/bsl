@@ -29,7 +29,6 @@
 #define BSL_BYTE_HPP
 
 #include "cstdint.hpp"
-#include "debug.hpp"
 #include "details/out.hpp"
 #include "enable_if.hpp"
 #include "is_integral.hpp"
@@ -477,7 +476,7 @@ namespace bsl
     namespace details
     {
         /// @brief defines the expected size of a bsl::byte
-        constexpr bsl::safe_uintmax EXPECTED_SIZEOF_BYTE{bsl::to_umax(1)};
+        constexpr bsl::safe_uintmax EXPECTED_SIZEOF_BYTE{static_cast<bsl::uintmax>(1)};
 
         /// Check to make sure a byte is the right size
         static_assert(sizeof(byte) == EXPECTED_SIZEOF_BYTE);

@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/ut.hpp>
 
@@ -49,10 +50,8 @@ main() noexcept -> bsl::exit_code
         };
 
         bsl::ut_given{} = []() {
-            bsl::safe_uintmax width{bsl::to_umax(0)};
-            width.set_failure();
-            bsl::ut_when{} = [&width]() {
-                bsl::print() << bsl::fmt{bsl::fmt_options{""}, true, width};
+            bsl::ut_when{} = []() {
+                bsl::print() << bsl::fmt{bsl::fmt_options{""}, true, bsl::safe_uintmax::failure()};
             };
         };
 
@@ -82,10 +81,8 @@ main() noexcept -> bsl::exit_code
         };
 
         bsl::ut_given{} = []() {
-            bsl::safe_uintmax width{bsl::to_umax(0)};
-            width.set_failure();
-            bsl::ut_when{} = [&width]() {
-                bsl::print() << bsl::fmt{"", true, width};
+            bsl::ut_when{} = []() {
+                bsl::print() << bsl::fmt{"", true, bsl::safe_uintmax::failure()};
             };
         };
 

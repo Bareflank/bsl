@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/reference_wrapper.hpp>
 
@@ -33,7 +34,7 @@ namespace bsl
     inline void
     example_reference_wrapper_constructor() noexcept
     {
-        constexpr bsl::safe_int32 expected{42};
+        constexpr auto expected{42_i32};
 
         bsl::safe_int32 data{};
         bsl::reference_wrapper const rw{data};

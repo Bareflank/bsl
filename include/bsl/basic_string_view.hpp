@@ -30,9 +30,6 @@
 
 #include "char_traits.hpp"
 #include "contiguous_iterator.hpp"
-#include "convert.hpp"
-#include "debug.hpp"
-#include "details/out.hpp"
 #include "likely.hpp"
 #include "npos.hpp"
 #include "reverse_iterator.hpp"
@@ -109,11 +106,7 @@ namespace bsl
             : m_ptr{s}, m_count{TRAITS::length(s)}
         {
             if (unlikely(nullptr == m_ptr)) {
-                *this = basic_string_view{};
-                return;
-            }
-
-            if (unlikely(m_count.is_zero())) {
+                unlikely_invalid_argument_failure();
                 *this = basic_string_view{};
                 return;
             }
@@ -135,11 +128,13 @@ namespace bsl
             : m_ptr{s}, m_count{count}
         {
             if (unlikely(nullptr == m_ptr)) {
+                unlikely_invalid_argument_failure();
                 *this = basic_string_view{};
                 return;
             }
 
-            if (unlikely(m_count.is_zero())) {
+            if (unlikely(!m_count)) {
+                unlikely_invalid_argument_failure();
                 *this = basic_string_view{};
                 return;
             }
@@ -234,6 +229,7 @@ namespace bsl
         at_if(size_type const &index) noexcept -> pointer_type
         {
             if (unlikely(!index)) {
+                unlikely_invalid_argument_failure();
                 return nullptr;
             }
 
@@ -263,6 +259,7 @@ namespace bsl
         at_if(size_type const &index) const noexcept -> const_pointer_type
         {
             if (unlikely(!index)) {
+                unlikely_invalid_argument_failure();
                 return nullptr;
             }
 
@@ -290,7 +287,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front_if() noexcept -> pointer_type
         {
-            return this->at_if(size_type::zero());
+            return this->at_if(static_cast<bsl::uintmax>(0));
         }
 
         /// <!-- description -->
@@ -307,7 +304,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front_if() const noexcept -> const_pointer_type
         {
-            return this->at_if(size_type::zero());
+            return this->at_if(static_cast<bsl::uintmax>(0));
         }
 
         /// <!-- description -->
@@ -325,10 +322,11 @@ namespace bsl
         back_if() noexcept -> pointer_type
         {
             if (unlikely(m_count.is_zero())) {
-                return this->at_if(size_type::zero());
+                unlikely_precondition_failure();
+                return this->at_if(static_cast<bsl::uintmax>(0));
             }
 
-            return this->at_if(m_count - size_type::one());
+            return this->at_if(m_count - static_cast<bsl::uintmax>(1));
         }
 
         /// <!-- description -->
@@ -346,10 +344,11 @@ namespace bsl
         back_if() const noexcept -> const_pointer_type
         {
             if (unlikely(m_count.is_zero())) {
-                return this->at_if(size_type::zero());
+                unlikely_precondition_failure();
+                return this->at_if(static_cast<bsl::uintmax>(0));
             }
 
-            return this->at_if(m_count - size_type::one());
+            return this->at_if(m_count - static_cast<bsl::uintmax>(1));
         }
 
         /// <!-- description -->
@@ -396,7 +395,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         begin() noexcept -> iterator_type
         {
-            return iterator_type{m_ptr, m_count, size_type::zero()};
+            return iterator_type{m_ptr, m_count, static_cast<bsl::uintmax>(0)};
         }
 
         /// <!-- description -->
@@ -409,7 +408,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         begin() const noexcept -> const_iterator_type
         {
-            return const_iterator_type{m_ptr, m_count, size_type::zero()};
+            return const_iterator_type{m_ptr, m_count, static_cast<bsl::uintmax>(0)};
         }
 
         /// <!-- description -->
@@ -422,7 +421,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         cbegin() const noexcept -> const_iterator_type
         {
-            return const_iterator_type{m_ptr, m_count, size_type::zero()};
+            return const_iterator_type{m_ptr, m_count, static_cast<bsl::uintmax>(0)};
         }
 
         /// <!-- description -->
@@ -593,14 +592,15 @@ namespace bsl
         riter(size_type const &i) noexcept -> reverse_iterator_type
         {
             if (unlikely(!i)) {
-                return reverse_iterator_type{this->iter(size_type::zero())};
+                unlikely_invalid_argument_failure();
+                return reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
             }
 
             if (likely(i < m_count)) {
-                return reverse_iterator_type{this->iter(i + size_type::one())};
+                return reverse_iterator_type{this->iter(i + static_cast<bsl::uintmax>(1))};
             }
 
-            return reverse_iterator_type{this->iter(size_type::zero())};
+            return reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
         }
 
         /// <!-- description -->
@@ -621,14 +621,15 @@ namespace bsl
         riter(size_type const &i) const noexcept -> const_reverse_iterator_type
         {
             if (unlikely(!i)) {
-                return const_reverse_iterator_type{this->iter(size_type::zero())};
+                unlikely_invalid_argument_failure();
+                return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
             }
 
             if (likely(i < m_count)) {
-                return const_reverse_iterator_type{this->iter(i + size_type::one())};
+                return const_reverse_iterator_type{this->iter(i + static_cast<bsl::uintmax>(1))};
             }
 
-            return const_reverse_iterator_type{this->iter(size_type::zero())};
+            return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
         }
 
         /// <!-- description -->
@@ -649,14 +650,15 @@ namespace bsl
         criter(size_type const &i) const noexcept -> const_reverse_iterator_type
         {
             if (unlikely(!i)) {
-                return const_reverse_iterator_type{this->iter(size_type::zero())};
+                unlikely_invalid_argument_failure();
+                return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
             }
 
             if (likely(i < m_count)) {
-                return const_reverse_iterator_type{this->iter(i + size_type::one())};
+                return const_reverse_iterator_type{this->iter(i + static_cast<bsl::uintmax>(1))};
             }
 
-            return const_reverse_iterator_type{this->iter(size_type::zero())};
+            return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
         }
 
         /// <!-- description -->
@@ -785,7 +787,7 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         max_size() noexcept -> size_type
         {
-            return size_type::max() / to_umax(sizeof(CHAR_T));
+            return size_type::max() / static_cast<bsl::uintmax>(sizeof(CHAR_T));
         }
 
         /// <!-- description -->
@@ -798,7 +800,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         size_bytes() const noexcept -> size_type
         {
-            return m_count * to_umax(sizeof(CHAR_T));
+            return m_count * static_cast<bsl::uintmax>(sizeof(CHAR_T));
         }
 
         /// <!-- description -->
@@ -816,6 +818,7 @@ namespace bsl
         remove_prefix(size_type const &n) noexcept -> basic_string_view &
         {
             if (unlikely(!n)) {
+                unlikely_invalid_argument_failure();
                 *this = basic_string_view{};
                 return *this;
             }
@@ -844,6 +847,7 @@ namespace bsl
         remove_suffix(size_type const &n) noexcept -> basic_string_view &
         {
             if (unlikely(!n)) {
+                unlikely_invalid_argument_failure();
                 *this = basic_string_view{};
                 return *this;
             }
@@ -881,10 +885,12 @@ namespace bsl
             -> basic_string_view
         {
             if (unlikely(!pos)) {
+                unlikely_invalid_argument_failure();
                 return basic_string_view{};
             }
 
             if (unlikely(!count)) {
+                unlikely_invalid_argument_failure();
                 return basic_string_view{};
             }
 
@@ -1006,7 +1012,8 @@ namespace bsl
             pointer_type const str,     // --
             size_type const &count2) const noexcept -> safe_int32
         {
-            return this->compare(pos, count1, basic_string_view{str}, size_type::zero(), count2);
+            return this->compare(
+                pos, count1, basic_string_view{str}, static_cast<bsl::uintmax>(0), count2);
         }
 
         /// <!-- description -->
@@ -1021,11 +1028,15 @@ namespace bsl
         [[nodiscard]] constexpr auto
         starts_with(basic_string_view const &str) const noexcept -> bool
         {
+            if (unlikely(str.empty())) {
+                return false;
+            }
+
             if (this->size() < str.size()) {
                 return false;
             }
 
-            return this->substr(size_type::zero(), str.size()) == str;
+            return this->compare({}, str.size(), str) == 0;
         }
 
         /// <!-- description -->
@@ -1040,11 +1051,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         starts_with(value_type const c) const noexcept -> bool
         {
-            if (auto const *const ptr{this->front_if()}) {
-                return TRAITS::eq(*ptr, c);
+            if (unlikely(this->empty())) {
+                return false;
             }
 
-            return false;
+            return TRAITS::eq(*this->front_if(), c);
         }
 
         /// <!-- description -->
@@ -1074,11 +1085,15 @@ namespace bsl
         [[nodiscard]] constexpr auto
         ends_with(basic_string_view const &str) const noexcept -> bool
         {
+            if (unlikely(str.empty())) {
+                return false;
+            }
+
             if (this->size() < str.size()) {
                 return false;
             }
 
-            return this->compare(this->size() - str.size(), npos, str) == 0;
+            return this->compare(this->size() - str.size(), str.size(), str) == 0;
         }
 
         /// <!-- description -->
@@ -1093,11 +1108,11 @@ namespace bsl
         [[nodiscard]] constexpr auto
         ends_with(value_type const c) const noexcept -> bool
         {
-            if (auto const *const ptr{this->back_if()}) {
-                return TRAITS::eq(*ptr, c);
+            if (unlikely(this->empty())) {
+                return false;
             }
 
-            return false;
+            return TRAITS::eq(*this->back_if(), c);
         }
 
         /// <!-- description -->
@@ -1129,28 +1144,30 @@ namespace bsl
         [[nodiscard]] constexpr auto
         find(basic_string_view const &str, size_type const &pos = {}) const noexcept -> size_type
         {
+            constexpr bsl::safe_uintmax offset{static_cast<bsl::uintmax>(1)};
+
+            auto const view{this->substr(pos)};
+            if (view.empty()) {
+                unlikely_invalid_argument_failure();
+                return size_type::failure();
+            }
+
             if (unlikely(str.empty())) {
+                unlikely_invalid_argument_failure();
+                return size_type::failure();
+            }
+
+            if (unlikely(str.length() > view.length())) {
                 return npos;
             }
 
-            if (unlikely(str.length() > m_count)) {
-                return npos;
-            }
-
-            if (unlikely(!pos)) {
-                return npos;
-            }
-
-            if (likely(pos < m_count)) {
-                for (size_type i{pos}; i < m_count - (str.length() - size_type::one()); ++i) {
-                    if (this->compare(i, npos, str) == 0) {
-                        return i;
-                    }
-
-                    bsl::touch();
+            auto const len{(view.length() - str.length()) + offset};
+            for (size_type i{}; i < len; ++i) {
+                if (view.compare(i, npos, str) == 0) {
+                    return i + pos;
                 }
 
-                return npos;
+                bsl::touch();
             }
 
             return npos;
@@ -1172,20 +1189,18 @@ namespace bsl
         [[nodiscard]] constexpr auto
         find(CHAR_T const ch, size_type const &pos = {}) const noexcept -> size_type
         {
-            if (unlikely(!pos)) {
-                return npos;
+            auto const view{this->substr(pos)};
+            if (view.empty()) {
+                unlikely_invalid_argument_failure();
+                return size_type::failure();
             }
 
-            if (likely(pos < m_count)) {
-                for (size_type i{pos}; i < m_count; ++i) {
-                    if (*this->at_if(i) == ch) {
-                        return i;
-                    }
-
-                    bsl::touch();
+            for (size_type i{}; i < view.length(); ++i) {
+                if (*view.at_if(i) == ch) {
+                    return i + pos;
                 }
 
-                return npos;
+                bsl::touch();
             }
 
             return npos;
@@ -1243,6 +1258,10 @@ namespace bsl
             return false;
         }
 
+        if (lhs.empty()) {
+            return rhs.empty();
+        }
+
         return lhs.compare(rhs) == 0;
     }
 
@@ -1269,6 +1288,11 @@ namespace bsl
     operator==(bsl::basic_string_view<CHAR_T, TRAITS> const &lhs, CHAR_T const *const rhs) noexcept
         -> bool
     {
+        if (nullptr == rhs) {
+            unlikely_invalid_argument_failure();
+            return lhs.empty();
+        }
+
         return lhs == bsl::basic_string_view<CHAR_T, TRAITS>{rhs};
     }
 
@@ -1295,6 +1319,11 @@ namespace bsl
     operator==(CHAR_T const *const lhs, bsl::basic_string_view<CHAR_T, TRAITS> const &rhs) noexcept
         -> bool
     {
+        if (nullptr == lhs) {
+            unlikely_invalid_argument_failure();
+            return rhs.empty();
+        }
+
         return bsl::basic_string_view<CHAR_T, TRAITS>{lhs} == rhs;
     }
 
@@ -1375,58 +1404,6 @@ namespace bsl
         -> bool
     {
         return !(lhs == rhs);
-    }
-
-    /// <!-- description -->
-    ///   @brief This function is responsible for implementing bsl::fmt
-    ///     for string_view types. For strings, the only fmt options
-    ///     that are available are alignment, fill and width, all of which
-    ///     are handled by the fmt_impl_align_xxx functions.
-    ///   @related bsl::basic_string_view
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam OUT_T the type of out (i.e., debug, alert, etc)
-    ///   @tparam CHAR_T the type of characters in the string
-    ///   @param o the instance of out<T> to output to
-    ///   @param ops ops the fmt options used to format the output
-    ///   @param str the string_view being outputted
-    ///
-    template<typename OUT_T, typename CHAR_T>
-    constexpr void
-    fmt_impl(OUT_T &&o, fmt_options const &ops, basic_string_view<CHAR_T> const &str) noexcept
-    {
-        details::fmt_impl_align_pre(o, ops, str.length(), true);
-        o.write(str.data());
-        details::fmt_impl_align_suf(o, ops, str.length(), true);
-    }
-
-    /// <!-- description -->
-    ///   @brief Outputs the provided bsl::basic_string_view to the provided
-    ///     output type.
-    ///   @related bsl::basic_string_view
-    ///   @include basic_string_view/example_basic_string_view_ostream.hpp
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the type of outputter provided
-    ///   @tparam CHAR_T the type of characters in the string
-    ///   @param o the instance of the outputter used to output the value.
-    ///   @param str the basic_string_view to output
-    ///   @return return o
-    ///
-    template<typename T, typename CHAR_T>
-    [[maybe_unused]] constexpr auto
-    operator<<(out<T> const o, basic_string_view<CHAR_T> const &str) noexcept -> out<T>
-    {
-        if constexpr (!o) {
-            return o;
-        }
-
-        if (!str) {
-            return o;
-        }
-
-        o.write(str.data());
-        return o;
     }
 }
 

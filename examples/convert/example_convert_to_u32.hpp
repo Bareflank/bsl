@@ -34,7 +34,7 @@ namespace bsl
     inline void
     example_convert_to_u32() noexcept
     {
-        constexpr bsl::safe_uint32 val{bsl::to_u32(42)};
+        constexpr auto val{bsl::to_u32(42)};
         bsl::print() << "success: " << val << bsl::endl;
     }
 }

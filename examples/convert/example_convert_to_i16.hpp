@@ -34,7 +34,7 @@ namespace bsl
     inline void
     example_convert_to_i16() noexcept
     {
-        constexpr bsl::safe_int16 val{bsl::to_i16(42)};
+        constexpr auto val{bsl::to_i16(42)};
         bsl::print() << "success: " << val << bsl::endl;
     }
 }

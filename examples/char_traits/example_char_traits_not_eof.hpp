@@ -23,7 +23,10 @@
 /// SOFTWARE.
 
 #include <bsl/char_traits.hpp>
+#include <bsl/char_type.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
+#include <bsl/safe_integral.hpp>
 
 namespace bsl
 {
@@ -33,7 +36,7 @@ namespace bsl
     inline void
     example_char_traits_not_eof() noexcept
     {
-        constexpr bsl::safe_intmax val1{bsl::to_imax(23)};
+        constexpr auto val1{23_imax};
         constexpr bsl::safe_intmax val2{bsl::char_traits<bsl::char_type>::eof()};
 
         if constexpr (bsl::char_traits<bsl::char_type>::not_eof(val1.get()) == val1) {
@@ -43,7 +46,7 @@ namespace bsl
             bsl::error() << "failure\n";
         }
 
-        if constexpr (bsl::char_traits<bsl::char_type>::not_eof(val2.get()) == bsl::to_imax(0)) {
+        if constexpr (bsl::char_traits<bsl::char_type>::not_eof(val2.get()) == 0_imax) {
             bsl::print() << "success\n";
         }
         else {

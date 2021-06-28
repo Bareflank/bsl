@@ -24,6 +24,7 @@
 
 #include <bsl/arguments.hpp>
 #include <bsl/array.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/cstr_type.hpp>
 #include <bsl/ut.hpp>
 
@@ -109,7 +110,6 @@ namespace
                         bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(3)) == "16");
                         bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(4)) == "23");
                         bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(5)) == "42");
-                        bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(6)).empty());
                     };
                 };
             };
@@ -124,7 +124,7 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::arguments const args{bsl::to_umax(0), nullptr};
                 bsl::ut_then{} = [&args]() {
                     bsl::ut_check(args.front<bsl::string_view>().empty());
@@ -141,7 +141,7 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::arguments const args{bsl::to_umax(0), nullptr};
                 bsl::ut_then{} = [&args]() {
                     bsl::ut_check(args.empty());
@@ -150,7 +150,7 @@ namespace
         };
 
         bsl::ut_scenario{"operator bool"} = []() {
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::arguments args{bsl::to_umax(0), nullptr};
                 bsl::ut_then{} = [&args]() {
                     bsl::ut_check(!args);
@@ -175,7 +175,7 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::arguments const args{bsl::to_umax(0), nullptr};
                 bsl::ut_then{} = [&args]() {
                     bsl::ut_check(args.size().is_zero());
@@ -200,7 +200,7 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::arguments const args{bsl::to_umax(0), nullptr};
                 bsl::ut_then{} = [&args]() {
                     bsl::ut_check(args.remaining().is_zero());
@@ -220,7 +220,6 @@ namespace
                         bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(2)) == "16");
                         bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(3)) == "23");
                         bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(4)) == "42");
-                        bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(5)).empty());
                         bsl::ut_check(args.get<bool>("-opt1"));
                     };
                 };
@@ -232,7 +231,6 @@ namespace
                         bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(1)) == "16");
                         bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(2)) == "23");
                         bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(3)) == "42");
-                        bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(4)).empty());
                         bsl::ut_check(args.get<bool>("-opt1"));
                     };
                 };
@@ -243,7 +241,6 @@ namespace
                         bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(0)) == "16");
                         bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(1)) == "23");
                         bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(2)) == "42");
-                        bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(3)).empty());
                         bsl::ut_check(args.get<bool>("-opt1"));
                     };
                 };
@@ -253,7 +250,6 @@ namespace
                     bsl::ut_then{} = [&args]() {
                         bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(0)) == "23");
                         bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(1)) == "42");
-                        bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(2)).empty());
                         bsl::ut_check(args.get<bool>("-opt1"));
                     };
                 };
@@ -262,7 +258,6 @@ namespace
                     ++args;
                     bsl::ut_then{} = [&args]() {
                         bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(0)) == "42");
-                        bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(1)).empty());
                         bsl::ut_check(args.get<bool>("-opt1"));
                     };
                 };
@@ -270,13 +265,28 @@ namespace
                 bsl::ut_when{} = [&args]() {
                     ++args;
                     bsl::ut_then{} = [&args]() {
-                        bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(0)).empty());
                         bsl::ut_check(args.get<bool>("-opt1"));
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::array argv{"4", "-opt1", "8"};
+                bsl::arguments args{argv.size(), argv.data()};
+                bsl::ut_when{} = [&args]() {
+                    ++args;
+                    ++args;
+                    ++args;
+                    ++args;
+                    ++args;
+                    ++args;
+                    bsl::ut_then{} = [&args]() {
+                        bsl::ut_check(args.get<bool>("-opt1"));
+                    };
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::arguments const args{bsl::to_umax(0), nullptr};
                 bsl::ut_then{} = [&args]() {
                     bsl::ut_check(args.size().is_zero());

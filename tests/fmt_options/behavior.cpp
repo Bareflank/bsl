@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/fmt_options.hpp>
 #include <bsl/ut.hpp>
 
@@ -278,14 +279,14 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = [&digit3]() {
+            bsl::ut_given_at_runtime{} = [&digit3]() {
                 bsl::fmt_options ops{"9999"};
                 bsl::ut_then{} = [&ops, &digit3]() {
                     bsl::ut_check(ops.width() == digit3);
                 };
             };
 
-            bsl::ut_given{} = [&digit3]() {
+            bsl::ut_given_at_runtime{} = [&digit3]() {
                 bsl::fmt_options ops{"999999999999999999999999999999999999999"};
                 bsl::ut_then{} = [&ops, &digit3]() {
                     bsl::ut_check(ops.width() == digit3);
@@ -336,7 +337,7 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::fmt_options ops{""};
                 bsl::ut_when{} = [&ops]() {
                     ops.set_width(bsl::to_umax(9999));
@@ -346,10 +347,10 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::fmt_options ops{""};
                 bsl::ut_when{} = [&ops]() {
-                    ops.set_width(bsl::safe_uintmax::zero(true));
+                    ops.set_width(bsl::safe_uintmax::failure());
                     bsl::ut_then{} = [&ops]() {
                         bsl::ut_check(ops.width() == bsl::to_umax(999));
                     };

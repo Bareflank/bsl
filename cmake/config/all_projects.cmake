@@ -26,6 +26,7 @@ option(BUILD_TESTS "Turns on/off building the tests" OFF)
 option(ENABLE_CLANG_FORMAT "Turns on/off support for clang format" OFF)
 option(ENABLE_DOXYGEN "Turns on/off support for doxygen" OFF)
 option(ENABLE_COLOR "Turns on/off support for color" ON)
+option(ENABLE_BRANCH "Turns on/off support for branch coverage with grcov" ON)
 
 bf_add_config(
     CONFIG_NAME BSL_DEBUG_LEVEL
@@ -40,5 +41,5 @@ bf_add_config(
     CONFIG_TYPE STRING
     DEFAULT_VAL "0x1000"
     DESCRIPTION "Defines the size of a page"
-    SKIP_VALIDATION
+    OPTIONS 0x1000
 )

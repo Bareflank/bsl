@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/basic_string_view.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -33,8 +34,8 @@ namespace bsl
     inline void
     example_basic_string_view_substr() noexcept
     {
-        constexpr bsl::safe_uintmax pos{to_umax(0)};
-        constexpr bsl::safe_uintmax count{to_umax(5)};
+        constexpr auto pos{0_umax};
+        constexpr auto count{5_umax};
         constexpr bsl::basic_string_view<bsl::char_type> str{"Hello World"};
 
         if constexpr (str.substr(pos, count) == "Hello") {

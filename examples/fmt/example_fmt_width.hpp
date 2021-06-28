@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -32,8 +33,8 @@ namespace bsl
     inline void
     example_fmt_width() noexcept
     {
-        constexpr bsl::safe_int32 val{42};
-        constexpr bsl::safe_uintmax width{bsl::to_umax(10)};
+        constexpr auto val{42_i32};
+        constexpr auto width{10_umax};
 
         bsl::print() << bsl::fmt{"<10", val} << bsl::endl;
         bsl::print() << bsl::fmt{">10", val} << bsl::endl;

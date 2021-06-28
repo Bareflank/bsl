@@ -29,9 +29,7 @@
 #define BSL_ARRAY_HPP
 
 #include "contiguous_iterator.hpp"
-#include "convert.hpp"
 #include "cstdint.hpp"
-#include "debug.hpp"
 #include "details/out.hpp"
 #include "likely.hpp"
 #include "reverse_iterator.hpp"
@@ -118,10 +116,11 @@ namespace bsl
         at_if(size_type const &index) &noexcept -> pointer_type
         {
             if (unlikely(!index)) {
+                unlikely_invalid_argument_failure();
                 return nullptr;
             }
 
-            if (likely(index < to_umax(N))) {
+            if (likely(index < N)) {
                 // We are implementing std::array here, which is what this test
                 // wants you to use instead.
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index, bsl-implicit-conversions-forbidden)
@@ -147,10 +146,11 @@ namespace bsl
         at_if(size_type const &index) const &noexcept -> const_pointer_type
         {
             if (unlikely(!index)) {
+                unlikely_invalid_argument_failure();
                 return nullptr;
             }
 
-            if (likely(index < to_umax(N))) {
+            if (likely(index < N)) {
                 // We are implementing std::array here, which is what this test
                 // wants you to use instead.
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index, bsl-implicit-conversions-forbidden)
@@ -180,7 +180,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front() &noexcept -> reference_type
         {
-            return *this->at_if(size_type::zero());
+            return *this->at_if(static_cast<bsl::uintmax>(0));
         }
 
         /// <!-- description -->
@@ -193,7 +193,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front() const &noexcept -> const_reference_type
         {
-            return *this->at_if(size_type::zero());
+            return *this->at_if(static_cast<bsl::uintmax>(0));
         }
 
         /// <!-- description -->
@@ -214,7 +214,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front_if() &noexcept -> pointer_type
         {
-            return this->at_if(size_type::zero());
+            return this->at_if(static_cast<bsl::uintmax>(0));
         }
 
         /// <!-- description -->
@@ -227,7 +227,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front_if() const &noexcept -> const_pointer_type
         {
-            return this->at_if(size_type::zero());
+            return this->at_if(static_cast<bsl::uintmax>(0));
         }
 
         /// <!-- description -->
@@ -248,7 +248,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back() &noexcept -> reference_type
         {
-            return *this->at_if(to_umax(N) - size_type::one());
+            return *this->at_if(N - static_cast<bsl::uintmax>(1));
         }
 
         /// <!-- description -->
@@ -261,7 +261,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back() const &noexcept -> const_reference_type
         {
-            return *this->at_if(to_umax(N) - size_type::one());
+            return *this->at_if(N - static_cast<bsl::uintmax>(1));
         }
 
         /// <!-- description -->
@@ -282,7 +282,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back_if() &noexcept -> pointer_type
         {
-            return this->at_if(to_umax(N) - size_type::one());
+            return this->at_if(N - static_cast<bsl::uintmax>(1));
         }
 
         /// <!-- description -->
@@ -295,7 +295,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back_if() const &noexcept -> const_pointer_type
         {
-            return this->at_if(to_umax(N) - size_type::one());
+            return this->at_if(N - static_cast<bsl::uintmax>(1));
         }
 
         /// <!-- description -->
@@ -350,7 +350,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         begin() &noexcept -> iterator_type
         {
-            return iterator_type{this->front_if(), to_umax(N), size_type::zero()};
+            return iterator_type{this->front_if(), N, static_cast<bsl::uintmax>(0)};
         }
 
         /// <!-- description -->
@@ -363,7 +363,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         begin() const &noexcept -> const_iterator_type
         {
-            return const_iterator_type{this->front_if(), to_umax(N), size_type::zero()};
+            return const_iterator_type{this->front_if(), N, static_cast<bsl::uintmax>(0)};
         }
 
         /// <!-- description -->
@@ -384,7 +384,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         cbegin() const &noexcept -> const_iterator_type
         {
-            return const_iterator_type{this->front_if(), to_umax(N), size_type::zero()};
+            return const_iterator_type{this->front_if(), N, static_cast<bsl::uintmax>(0)};
         }
 
         /// <!-- description -->
@@ -406,7 +406,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         iter(size_type const &i) &noexcept -> iterator_type
         {
-            return iterator_type{this->front_if(), to_umax(N), i};
+            return iterator_type{this->front_if(), N, i};
         }
 
         /// <!-- description -->
@@ -420,7 +420,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         iter(size_type const &i) const &noexcept -> const_iterator_type
         {
-            return const_iterator_type{this->front_if(), to_umax(N), i};
+            return const_iterator_type{this->front_if(), N, i};
         }
 
         /// <!-- description -->
@@ -444,7 +444,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         citer(size_type const &i) const &noexcept -> const_iterator_type
         {
-            return const_iterator_type{this->front_if(), to_umax(N), i};
+            return const_iterator_type{this->front_if(), N, i};
         }
 
         /// <!-- description -->
@@ -471,7 +471,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         end() &noexcept -> iterator_type
         {
-            return iterator_type{this->front_if(), to_umax(N), to_umax(N)};
+            return iterator_type{this->front_if(), N, N};
         }
 
         /// <!-- description -->
@@ -488,7 +488,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         end() const &noexcept -> const_iterator_type
         {
-            return const_iterator_type{this->front_if(), to_umax(N), to_umax(N)};
+            return const_iterator_type{this->front_if(), N, N};
         }
 
         /// <!-- description -->
@@ -513,7 +513,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         cend() const &noexcept -> const_iterator_type
         {
-            return const_iterator_type{this->front_if(), to_umax(N), to_umax(N)};
+            return const_iterator_type{this->front_if(), N, N};
         }
 
         /// <!-- description -->
@@ -617,14 +617,15 @@ namespace bsl
         riter(size_type const &i) &noexcept -> reverse_iterator_type
         {
             if (unlikely(!i)) {
-                return reverse_iterator_type{this->iter(size_type::zero())};
+                unlikely_invalid_argument_failure();
+                return reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
             }
 
-            if (likely(i < to_umax(N))) {
-                return reverse_iterator_type{this->iter(i + size_type::one())};
+            if (likely(i < N)) {
+                return reverse_iterator_type{this->iter(i + static_cast<bsl::uintmax>(1))};
             }
 
-            return reverse_iterator_type{this->iter(size_type::zero())};
+            return reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
         }
 
         /// <!-- description -->
@@ -645,14 +646,15 @@ namespace bsl
         riter(size_type const &i) const &noexcept -> const_reverse_iterator_type
         {
             if (unlikely(!i)) {
-                return const_reverse_iterator_type{this->iter(size_type::zero())};
+                unlikely_invalid_argument_failure();
+                return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
             }
 
-            if (likely(i < to_umax(N))) {
-                return const_reverse_iterator_type{this->iter(i + size_type::one())};
+            if (likely(i < N)) {
+                return const_reverse_iterator_type{this->iter(i + static_cast<bsl::uintmax>(1))};
             }
 
-            return const_reverse_iterator_type{this->iter(size_type::zero())};
+            return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
         }
 
         /// <!-- description -->
@@ -683,14 +685,15 @@ namespace bsl
         criter(size_type const &i) const &noexcept -> const_reverse_iterator_type
         {
             if (unlikely(!i)) {
-                return const_reverse_iterator_type{this->iter(size_type::zero())};
+                unlikely_invalid_argument_failure();
+                return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
             }
 
-            if (likely(i < to_umax(N))) {
-                return const_reverse_iterator_type{this->iter(i + size_type::one())};
+            if (likely(i < N)) {
+                return const_reverse_iterator_type{this->iter(i + static_cast<bsl::uintmax>(1))};
             }
 
-            return const_reverse_iterator_type{this->iter(size_type::zero())};
+            return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
         }
 
         /// <!-- description -->
@@ -817,7 +820,7 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         size() noexcept -> size_type
         {
-            return to_umax(N);
+            return N;
         }
 
         /// <!-- description -->
@@ -830,7 +833,7 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         max_size() noexcept -> size_type
         {
-            return size_type::max() / to_umax(sizeof(T));
+            return size_type::max() / static_cast<bsl::uintmax>(sizeof(T));
         }
 
         /// <!-- description -->
@@ -843,13 +846,13 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         size_bytes() noexcept -> size_type
         {
-            return to_umax(N) * to_umax(sizeof(T));
+            return N * static_cast<bsl::uintmax>(sizeof(T));
         }
     };
 
     /// @brief deduction guideline for bsl::array
     template<typename T, typename... U>
-    array(T, U...) -> array<T, safe_uintmax::one().get() + sizeof...(U)>;
+    array(T, U...) -> array<T, static_cast<bsl::uintmax>(1) + sizeof...(U)>;
 
     /// <!-- description -->
     ///   @brief Returns true if two arrays contain the same contents.

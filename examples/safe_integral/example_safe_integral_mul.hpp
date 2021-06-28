@@ -22,8 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
-#include <bsl/safe_integral.hpp>
 
 namespace bsl
 {
@@ -33,9 +33,9 @@ namespace bsl
     inline void
     example_safe_integral_mul() noexcept
     {
-        constexpr bsl::safe_int32 val1{23};
-        constexpr bsl::safe_int32 val2{42};
-        constexpr bsl::safe_int32 expected{23 * 42};
+        constexpr auto val1{23_i32};
+        constexpr auto val2{42_i32};
+        constexpr auto expected{bsl::to_i32(23 * 42)};
 
         if constexpr (val1 * val2 == expected) {
             bsl::print() << "success\n";

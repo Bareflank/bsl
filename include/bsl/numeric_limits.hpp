@@ -52,7 +52,7 @@ namespace bsl
         {
             constexpr bsl::int32 dec{1};
 
-            if (is_unsigned<T>::value) {
+            if constexpr (is_unsigned<T>::value) {
                 return (CHAR_BIT * static_cast<bsl::int32>(sizeof(T)));
             }
 

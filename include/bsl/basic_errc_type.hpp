@@ -329,6 +329,7 @@ namespace bsl
     // We want our implementation to mimic C++ here.
     // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_nullptr_dereference{34};
+
     /// @brief Defines when a resource is busy
     // We want our implementation to mimic C++ here.
     // NOLINTNEXTLINE(bsl-name-case)
@@ -337,6 +338,10 @@ namespace bsl
     // We want our implementation to mimic C++ here.
     // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_already_exists{51};
+    /// @brief Defines when something is unsupported
+    // We want our implementation to mimic C++ here.
+    // NOLINTNEXTLINE(bsl-name-case)
+    constexpr basic_errc_type<> errc_unsupported{52};
 }
 
 // -----------------------------------------------------------------------------

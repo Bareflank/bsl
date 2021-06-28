@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/byte.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 
 namespace bsl
@@ -33,9 +34,9 @@ namespace bsl
     inline void
     example_byte_lshift_assign() noexcept
     {
-        constexpr bsl::safe_uint8 val{bsl::to_u8(0x01)};
-        constexpr bsl::safe_uint8 expected{bsl::to_u8(0x02)};
-        constexpr bsl::safe_uint8 shift{bsl::to_u8(1)};
+        constexpr auto val{0x01_u8};
+        constexpr auto expected{0x02_u8};
+        constexpr auto shift{1_u8};
 
         bsl::byte b{val.get()};
 

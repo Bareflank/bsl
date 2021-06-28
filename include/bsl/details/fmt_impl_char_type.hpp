@@ -26,9 +26,9 @@
 #define BSL_DETAILS_FMT_IMPL_CHAR_TYPE_HPP
 
 #include "../char_type.hpp"
-#include "../convert.hpp"
 #include "../fmt_options.hpp"
 #include "../forward.hpp"
+#include "../is_constant_evaluated.hpp"
 #include "fmt_impl_align.hpp"
 #include "fmt_impl_integral_helpers.hpp"
 #include "out.hpp"
@@ -57,20 +57,25 @@ namespace bsl
     constexpr void
     fmt_impl(OUT_T &&o, fmt_options const &ops, char_type const c) noexcept
     {
+        if (is_constant_evaluated()) {
+            return;
+        }
+
         switch (ops.type()) {
             case fmt_type::fmt_type_b:
             case fmt_type::fmt_type_d:
             case fmt_type::fmt_type_x: {
-                details::fmt_impl_integral(bsl::forward<OUT_T>(o), ops, to_u8(c));
+                details::fmt_impl_integral(
+                    bsl::forward<OUT_T>(o), ops, safe_uint8{static_cast<bsl::uint8>(c)});
                 break;
             }
 
             case fmt_type::fmt_type_c:
             case fmt_type::fmt_type_s:
             case fmt_type::fmt_type_default: {
-                details::fmt_impl_align_pre(o, ops, safe_uintmax::one(), true);
+                details::fmt_impl_align_pre(o, ops, static_cast<bsl::uintmax>(1), true);
                 o.write(c);
-                details::fmt_impl_align_suf(o, ops, safe_uintmax::one(), true);
+                details::fmt_impl_align_suf(o, ops, static_cast<bsl::uintmax>(1), true);
                 break;
             }
         }
@@ -90,6 +95,10 @@ namespace bsl
     [[maybe_unused]] constexpr auto
     operator<<(out<T> const o, char_type const c) noexcept -> out<T>
     {
+        if (is_constant_evaluated()) {
+            return o;
+        }
+
         if constexpr (!o) {
             return o;
         }

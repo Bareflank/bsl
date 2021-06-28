@@ -22,8 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
-#include <bsl/safe_integral.hpp>
 
 namespace bsl
 {
@@ -33,9 +33,11 @@ namespace bsl
     inline void
     example_safe_integral_is_zero() noexcept
     {
-        constexpr bsl::safe_int32 val1{0};
-        constexpr bsl::safe_int32 val2{42};
-        constexpr bsl::safe_int32 val3{-42};
+        constexpr auto val1{0_i32};
+        constexpr auto val2{42_i32};
+        constexpr auto val3{-42_i32};
+        constexpr auto val4{bsl::safe_int32{0, true}};
+        constexpr auto val5{bsl::safe_int32{42_i32, true}};
 
         if constexpr (val1.is_zero()) {
             bsl::print() << "success\n";
@@ -52,6 +54,34 @@ namespace bsl
         }
 
         if constexpr (!val3.is_zero()) {
+            bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
+        }
+
+        if (!val4.is_zero()) {
+            bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
+        }
+
+        if constexpr (val4.is_zero_or_invalid()) {
+            bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
+        }
+
+        if (!val5.is_zero()) {
+            bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
+        }
+
+        if constexpr (val5.is_zero_or_invalid()) {
             bsl::print() << "success\n";
         }
         else {

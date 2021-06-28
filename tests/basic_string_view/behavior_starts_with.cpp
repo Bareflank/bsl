@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/basic_string_view.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/ut.hpp>
 
 namespace
@@ -40,10 +41,10 @@ namespace
     tests() noexcept -> bsl::exit_code
     {
         bsl::ut_scenario{"starts_with"} = []() {
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(msg.starts_with(bsl::basic_string_view<bsl::char_type>{}));
+                    bsl::ut_check(!msg.starts_with(bsl::basic_string_view<bsl::char_type>{}));
                 };
 
                 bsl::ut_then{} = [&msg]() {
@@ -71,12 +72,15 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
                 bsl::ut_then{} = [&msg]() {
-                    bsl::ut_check(msg.starts_with(bsl::basic_string_view<bsl::char_type>{}));
+                    bsl::ut_check(!msg.starts_with(bsl::basic_string_view<bsl::char_type>{}));
                 };
+            };
 
+            bsl::ut_given{} = []() {
+                bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
                 bsl::ut_then{} = [&msg]() {
                     bsl::ut_check(msg.starts_with(bsl::basic_string_view<bsl::char_type>{"Hell"}));
                 };

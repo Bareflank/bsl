@@ -48,7 +48,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         check_is_member_object_pointer() noexcept -> bool
         {
-            if (bsl::is_member_function_pointer<T>::value) {
+            if constexpr (bsl::is_member_function_pointer<T>::value) {
                 return false;
             }
 

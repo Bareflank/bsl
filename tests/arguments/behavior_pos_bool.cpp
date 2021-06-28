@@ -24,6 +24,7 @@
 
 #include <bsl/arguments.hpp>
 #include <bsl/array.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/cstr_type.hpp>
 #include <bsl/ut.hpp>
 
@@ -42,22 +43,22 @@ namespace
     tests() noexcept -> bsl::exit_code
     {
         bsl::ut_scenario{"get positional bool"} = []() {
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::arguments args{bsl::to_umax(0), nullptr};
                 bsl::ut_then{} = [&args]() {
                     bsl::ut_check(!args.get<bool>(bsl::to_umax(0)));
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array argv{"app"};
                 bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
-                    bsl::ut_check(!args.get<bool>(bsl::safe_uintmax::zero(true)));
+                    bsl::ut_check(!args.get<bool>(bsl::safe_uintmax::failure()));
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array argv{"-app"};
                 bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
@@ -65,7 +66,7 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array argv{"42"};
                 bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
@@ -73,7 +74,7 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array argv{"app"};
                 bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
@@ -81,11 +82,20 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given_at_runtime{} = []() {
                 bsl::array argv{"42 "};
                 bsl::arguments args{argv.size(), argv.data()};
                 bsl::ut_then{} = [&args]() {
                     bsl::ut_check(!args.get<bool>(bsl::to_umax(0)));
+                };
+            };
+
+            bsl::ut_given_at_runtime{} = []() {
+                bsl::array argv{"true", "-opt1", "false", "1", "0", "42", "-opt2", "hello", "42 "};
+                bsl::arguments args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&args]() {
+                    bsl::ut_check(!args.get<bool>(bsl::to_umax(5)));
+                    bsl::ut_check(!args.get<bool>(bsl::to_umax(6)));
                 };
             };
 
@@ -98,8 +108,6 @@ namespace
                     bsl::ut_check(args.get<bool>(bsl::to_umax(2)));
                     bsl::ut_check(!args.get<bool>(bsl::to_umax(3)));
                     bsl::ut_check(args.get<bool>(bsl::to_umax(4)));
-                    bsl::ut_check(!args.get<bool>(bsl::to_umax(5)));
-                    bsl::ut_check(!args.get<bool>(bsl::to_umax(6)));
                 };
             };
         };

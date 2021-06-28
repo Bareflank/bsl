@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/is_bounded_array.hpp>
 
 namespace bsl
@@ -32,7 +33,7 @@ namespace bsl
     inline void
     example_is_bounded_array_overview() noexcept
     {
-        constexpr bsl::safe_int32 bounds{42};
+        constexpr auto bounds{42_i32};
 
         // This is needed to demonstrate how to use this type trait
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)

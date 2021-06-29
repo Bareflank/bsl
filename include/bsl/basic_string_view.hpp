@@ -732,15 +732,15 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief Returns !empty()
+        ///   @brief Returns false if the string points to null
         ///   @include basic_string_view/example_basic_string_view_operator_bool.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Returns !empty()
+        ///   @return Returns false if the string points to null
         ///
         [[nodiscard]] constexpr explicit operator bool() const noexcept
         {
-            return !this->empty();
+            return nullptr != m_ptr;
         }
 
         /// <!-- description -->
@@ -1289,8 +1289,7 @@ namespace bsl
         -> bool
     {
         if (nullptr == rhs) {
-            unlikely_invalid_argument_failure();
-            return lhs.empty();
+            return !lhs;
         }
 
         return lhs == bsl::basic_string_view<CHAR_T, TRAITS>{rhs};
@@ -1320,8 +1319,7 @@ namespace bsl
         -> bool
     {
         if (nullptr == lhs) {
-            unlikely_invalid_argument_failure();
-            return rhs.empty();
+            return !rhs;
         }
 
         return bsl::basic_string_view<CHAR_T, TRAITS>{lhs} == rhs;

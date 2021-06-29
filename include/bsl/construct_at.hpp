@@ -74,21 +74,22 @@ namespace std
     ///   @tparam ARGS the types of args to initialize T with
     ///   @param ptr a pointer to the object to initialize
     ///   @param a the args to initialize T with
+    ///   @return returns a pointer to the newly constructed T
     ///
     /// <!-- exceptions -->
     ///   @throw throws if T throws during construction
     ///
     template<typename T, typename... ARGS>
-    constexpr void
+    [[nodiscard]] constexpr auto
     construct_at_impl(void *const ptr, ARGS &&...a)    // --
-        noexcept(noexcept(new (ptr) T{bsl::declval<ARGS>()...}))
+        noexcept(noexcept(new (ptr) T{bsl::declval<ARGS>()...})) -> T *
     {
         if (bsl::unlikely(nullptr == ptr)) {
             bsl::unlikely_invalid_argument_failure();
-            return;
+            return nullptr;
         }
 
-        bsl::discard(new (ptr) T{bsl::forward<ARGS>(a)...});
+        return new (ptr) T{bsl::forward<ARGS>(a)...};
     }
 }
 
@@ -103,16 +104,17 @@ namespace bsl
     ///   @tparam ARGS the types of args to initialize T with
     ///   @param ptr a pointer to the object to initialize
     ///   @param a the args to initialize T with
+    ///   @return returns a pointer to the newly constructed T
     ///
     /// <!-- exceptions -->
     ///   @throw throws if T throws during construction
     ///
     template<typename T, typename... ARGS>
-    constexpr void
+    [[nodiscard]] constexpr auto
     construct_at(void *const ptr, ARGS &&...a)    // --
-        noexcept(noexcept(std::construct_at_impl<T, ARGS...>(ptr, bsl::declval<ARGS>()...)))
+        noexcept(noexcept(std::construct_at_impl<T, ARGS...>(ptr, bsl::declval<ARGS>()...))) -> T *
     {
-        std::construct_at_impl<T, ARGS...>(ptr, bsl::forward<ARGS>(a)...);
+        return std::construct_at_impl<T, ARGS...>(ptr, bsl::forward<ARGS>(a)...);
     }
 }
 

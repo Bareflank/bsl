@@ -44,7 +44,7 @@ namespace
             bsl::ut_given{} = []() {
                 bsl::ut_then{} = []() {
                     bsl::print() << true << '\n';
-                    bsl::alert() << true << '\n';
+                    bsl::debug() << true << '\n';
                     bsl::alert() << true << '\n';
                     bsl::error() << true << '\n';
                 };
@@ -55,7 +55,7 @@ namespace
             bsl::ut_given{} = []() {
                 bsl::ut_then{} = []() {
                     bsl::print() << '*' << '\n';
-                    bsl::alert() << '*' << '\n';
+                    bsl::debug() << '*' << '\n';
                     bsl::alert() << '*' << '\n';
                     bsl::error() << '*' << '\n';
                 };
@@ -66,7 +66,7 @@ namespace
             bsl::ut_given{} = []() {
                 bsl::ut_then{} = []() {
                     bsl::print() << "42" << '\n';
-                    bsl::alert() << "42" << '\n';
+                    bsl::debug() << "42" << '\n';
                     bsl::alert() << "42" << '\n';
                     bsl::error() << "42" << '\n';
                 };
@@ -77,7 +77,7 @@ namespace
             bsl::ut_given{} = []() {
                 bsl::ut_then{} = []() {
                     bsl::print() << 42 << '\n';
-                    bsl::alert() << 42 << '\n';
+                    bsl::debug() << 42 << '\n';
                     bsl::alert() << 42 << '\n';
                     bsl::error() << 42 << '\n';
                 };
@@ -88,7 +88,7 @@ namespace
             bsl::ut_given{} = []() {
                 bsl::ut_then{} = []() {
                     bsl::print() << bsl::to_u8(42) << '\n';
-                    bsl::alert() << bsl::to_u8(42) << '\n';
+                    bsl::debug() << bsl::to_u8(42) << '\n';
                     bsl::alert() << bsl::to_u8(42) << '\n';
                     bsl::error() << bsl::to_u8(42) << '\n';
                 };
@@ -99,7 +99,7 @@ namespace
             bsl::ut_given{} = []() {
                 bsl::ut_then{} = []() {
                     bsl::print() << nullptr << '\n';
-                    bsl::alert() << nullptr << '\n';
+                    bsl::debug() << nullptr << '\n';
                     bsl::alert() << nullptr << '\n';
                     bsl::error() << nullptr << '\n';
                 };
@@ -111,7 +111,7 @@ namespace
                 bool val{};
                 bsl::ut_then{} = [&val]() {
                     bsl::print() << &val << '\n';
-                    bsl::alert() << &val << '\n';
+                    bsl::debug() << &val << '\n';
                     bsl::alert() << &val << '\n';
                     bsl::error() << &val << '\n';
                 };
@@ -122,7 +122,7 @@ namespace
             bsl::ut_given{} = []() {
                 bsl::ut_then{} = []() {
                     bsl::print() << bsl::here();
-                    bsl::alert() << bsl::here();
+                    bsl::debug() << bsl::here();
                     bsl::alert() << bsl::here();
                     bsl::error() << bsl::here();
                 };
@@ -133,7 +133,7 @@ namespace
             bsl::ut_given{} = []() {
                 bsl::ut_then{} = []() {
                     bsl::print() << bsl::fmt{"#010x", 42} << '\n';
-                    bsl::alert() << bsl::fmt{"#010x", 42} << '\n';
+                    bsl::debug() << bsl::fmt{"#010x", 42} << '\n';
                     bsl::alert() << bsl::fmt{"#010x", 42} << '\n';
                     bsl::error() << bsl::fmt{"#010x", 42} << '\n';
                 };
@@ -144,7 +144,7 @@ namespace
             bsl::ut_given{} = []() {
                 bsl::ut_then{} = []() {
                     bsl::print() << bsl::hex(42U) << '\n';
-                    bsl::alert() << bsl::hex(42U) << '\n';
+                    bsl::debug() << bsl::hex(42U) << '\n';
                     bsl::alert() << bsl::hex(42U) << '\n';
                     bsl::error() << bsl::hex(42U) << '\n';
                 };
@@ -154,7 +154,7 @@ namespace
         bsl::ut_scenario{"disable from constexpr"} = []() {
             bsl::ut_given{} = []() {
                 bsl::ut_then{} = []() {
-                    bsl::alert<42>() << true << '\n';
+                    bsl::debug<42>() << true << '\n';
                     bsl::alert<42>() << true << '\n';
                 };
             };

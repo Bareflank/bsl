@@ -82,7 +82,6 @@ namespace bsl
     {
         if (is_constant_evaluated()) {
             if (unlikely(nullptr == str)) {
-                unlikely_invalid_argument_failure();
                 return o;
             }
 

@@ -27,6 +27,7 @@
 #include <bsl/construct_at.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/destroy_at.hpp>
+#include <bsl/discard.hpp>
 
 namespace bsl
 {
@@ -38,7 +39,7 @@ namespace bsl
     {
         example_class_subclass myclass{};
 
-        bsl::construct_at<example_class_subclass>(&myclass);
+        bsl::discard(bsl::construct_at<example_class_subclass>(&myclass));
         if (myclass.get()) {
             bsl::print() << "success\n";
         }

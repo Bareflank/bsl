@@ -160,7 +160,6 @@ namespace bsl
     {
         if (is_constant_evaluated()) {
             if (unlikely(!val)) {
-                unlikely_invalid_argument_failure();
                 return o;
             }
 

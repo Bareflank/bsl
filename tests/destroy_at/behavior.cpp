@@ -24,6 +24,7 @@
 
 #include <bsl/construct_at.hpp>
 #include <bsl/destroy_at.hpp>
+#include <bsl/discard.hpp>
 #include <bsl/ut.hpp>
 
 namespace
@@ -54,7 +55,7 @@ namespace
                 bool b{};
                 bsl::ut_when{} = [&b]() {
                     bsl::destroy_at(&b);
-                    bsl::construct_at<bool>(&b);
+                    bsl::discard(bsl::construct_at<bool>(&b));
                 };
             };
         };

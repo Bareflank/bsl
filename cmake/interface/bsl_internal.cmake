@@ -19,40 +19,40 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-add_library(bsl INTERFACE)
+add_library(bsl_internal INTERFACE)
 
-target_compile_options(bsl INTERFACE
+target_compile_options(bsl_internal INTERFACE
     -fno-exceptions
     -fno-rtti
     -fstack-protector-strong
 )
 
-target_compile_definitions(bsl INTERFACE
+target_compile_definitions(bsl_internal INTERFACE
     BSL_DEBUG_LEVEL=${BSL_DEBUG_LEVEL}
     BSL_PAGE_SIZE=${BSL_PAGE_SIZE}_umax
 )
 
 if(CMAKE_BUILD_TYPE STREQUAL RELEASE OR CMAKE_BUILD_TYPE STREQUAL MINSIZEREL)
-    target_compile_definitions(bsl INTERFACE
+    target_compile_definitions(bsl_internal INTERFACE
         BSL_RELEASE_MODE=true
     )
 else()
-    target_compile_definitions(bsl INTERFACE
+    target_compile_definitions(bsl_internal INTERFACE
         BSL_RELEASE_MODE=false
     )
 endif()
 
 if(ENABLE_COLOR)
-    target_compile_definitions(bsl INTERFACE
+    target_compile_definitions(bsl_internal INTERFACE
         ENABLE_COLOR=true
     )
 else()
-    target_compile_definitions(bsl INTERFACE
+    target_compile_definitions(bsl_internal INTERFACE
         ENABLE_COLOR=false
     )
 endif()
 
-target_include_directories(bsl SYSTEM INTERFACE
+target_include_directories(bsl_internal INTERFACE
     ${CMAKE_CURRENT_LIST_DIR}/../../include
     $<$<PLATFORM_ID:Linux>:${CMAKE_CURRENT_LIST_DIR}/../../include/bsl/platform>
     $<$<PLATFORM_ID:Linux>:${CMAKE_CURRENT_LIST_DIR}/../../include/bsl/platform/linux>

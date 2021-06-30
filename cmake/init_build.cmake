@@ -37,4 +37,5 @@ include(${CMAKE_CURRENT_LIST_DIR}/target/unittest.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/depend/codecov.cmake)
 
 include(${CMAKE_CURRENT_LIST_DIR}/interface/bsl.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/interface/bsl_internal.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/validate.cmake)

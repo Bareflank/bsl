@@ -19,4 +19,4 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-bf_add_test(overview)
+bf_add_test_internal(overview)

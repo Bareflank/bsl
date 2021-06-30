@@ -19,5 +19,5 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-bf_add_test(requirements)
-bf_add_test(behavior)
+bf_add_test_internal(requirements)
+bf_add_test_internal(behavior)

@@ -21,7 +21,7 @@
 
 add_executable(examples main.cpp)
 
-target_link_libraries(examples PRIVATE bsl)
+target_link_libraries(examples PRIVATE bsl_internal)
 if(WIN32)
     target_link_libraries(examples PRIVATE libcmt.lib)
 endif()

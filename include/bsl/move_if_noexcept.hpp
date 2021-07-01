@@ -47,17 +47,17 @@ namespace bsl
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type that defines the value being moved
-    ///   @param val the value being moved
-    ///   @return std::move(val) or val, depending on exception guarantees.
+    ///   @param mut_val the value being moved
+    ///   @return std::move(mut_val) or mut_val, depending on exception guarantees.
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    move_if_noexcept(T &val) noexcept -> conditional_t<
+    move_if_noexcept(T &mut_val) noexcept -> conditional_t<
         conjunction<negation<is_nothrow_move_constructible<T>>, is_copy_constructible<T>>::value,
         T const &,
         T &&>
     {
-        return move(val);
+        return move(mut_val);
     }
 }
 

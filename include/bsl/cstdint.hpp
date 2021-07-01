@@ -28,6 +28,8 @@
 #ifndef BSL_CSTDINT_HPP
 #define BSL_CSTDINT_HPP
 
+#include "is_same.hpp"
+
 // We are implementing cstdint
 // NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
 #include <stdint.h>
@@ -97,6 +99,10 @@ namespace bsl
     using intmax = ::intmax_t;
     /// @brief defines a unsigned integer with the maximum possible size
     using uintmax = ::uintmax_t;
+
+    /// @brief ensure that uint8 is a proper byte type. otherwise, UB can
+    ///   occur for byte arrays that are used with trivial types.
+    static_assert(is_same<bsl::uint8, unsigned char>::value);
 }
 
 #endif

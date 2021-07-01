@@ -167,7 +167,8 @@ namespace bsl
                 return m_i.size();
             }
 
-            return m_i.index() - static_cast<bsl::uintmax>(1);
+            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
+            return m_i.index() - one;
         }
 
         /// <!-- description -->
@@ -190,7 +191,7 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns !is_end()
         ///
-        [[nodiscard]] constexpr explicit operator bool() const noexcept
+        [[nodiscard]] explicit constexpr operator bool() const noexcept
         {
             return !this->is_end();
         }
@@ -230,7 +231,8 @@ namespace bsl
                 return nullptr;
             }
 
-            return &m_i.data()[(m_i.index() - static_cast<bsl::uintmax>(1)).get()];
+            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
+            return &m_i.data()[(m_i.index() - one).get()];
         }
 
         /// <!-- description -->
@@ -255,7 +257,8 @@ namespace bsl
                 return nullptr;
             }
 
-            return &m_i.data()[(m_i.index() - static_cast<bsl::uintmax>(1)).get()];
+            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
+            return &m_i.data()[(m_i.index() - one).get()];
         }
 
         /// <!-- description -->

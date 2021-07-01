@@ -42,67 +42,69 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"get positional bool"} = []() {
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::arguments args{bsl::to_umax(0), nullptr};
-                bsl::ut_then{} = [&args]() {
+        bsl::ut_scenario{"get positional bool"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::arguments const args{bsl::to_umax(0), nullptr};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bool>(bsl::to_umax(0)));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"app"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"app"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bool>(bsl::safe_uintmax::failure()));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"-app"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"-app"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bool>(bsl::to_umax(0)));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"42"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"42"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bool>(bsl::to_umax(1)));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"app"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"app"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bool>(bsl::to_umax(0)));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"42 "};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"42 "};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bool>(bsl::to_umax(0)));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"true", "-opt1", "false", "1", "0", "42", "-opt2", "hello", "42 "};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{
+                    "true", "-opt1", "false", "1", "0", "42", "-opt2", "hello", "42 "};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bool>(bsl::to_umax(5)));
                     bsl::ut_check(!args.get<bool>(bsl::to_umax(6)));
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::array argv{"true", "-opt1", "false", "1", "0", "42", "-opt2", "hello", "42 "};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given{} = []() noexcept {
+                bsl::array const argv{
+                    "true", "-opt1", "false", "1", "0", "42", "-opt2", "hello", "42 "};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(args.get<bool>(bsl::to_umax(0)));
                     bsl::ut_check(!args.get<bool>(bsl::to_umax(1)));
                     bsl::ut_check(args.get<bool>(bsl::to_umax(2)));

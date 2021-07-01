@@ -35,6 +35,7 @@ namespace bsl
     {
         constexpr auto val{42_u32};
         constexpr auto shift{2_u32};
+        // NOLINTNEXTLINE(bsl-types-fixed-width-ints-arithmetic-check)
         constexpr auto expected{bsl::to_u32(val.get() << shift.get())};
 
         if constexpr ((val << shift) == expected) {

@@ -57,7 +57,7 @@ namespace bsl
             return o;
         }
 
-        o.write("nullptr");
+        o.write_to_console("nullptr");
         return o;
     }
 }

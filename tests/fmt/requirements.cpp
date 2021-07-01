@@ -38,17 +38,18 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    bsl::ut_scenario{"verify noexcept"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::ut_then{} = []() {
-                static_assert(noexcept(bsl::fmt{bsl::fmt_options{""}, ""}));
-                static_assert(noexcept(bsl::fmt{bsl::fmt_options{""}, "", bsl::to_umax(42)}));
+    bsl::ut_scenario{"verify noexcept"} = []() noexcept {
+        bsl::ut_given{} = []() noexcept {
+            constexpr bsl::fmt_options ops{""};
+            bsl::ut_then{} = []() noexcept {
+                static_assert(noexcept(bsl::fmt{ops, ""}));
+                static_assert(noexcept(bsl::fmt{ops, "", bsl::to_umax(42)}));
                 static_assert(noexcept(bsl::fmt{"", ""}));
                 static_assert(noexcept(bsl::fmt{"", "", bsl::to_umax(42)}));
-                static_assert(noexcept(bsl::fmt_impl(bsl::print(), {""}, true)));
-                static_assert(noexcept(bsl::fmt_impl(bsl::print(), {""}, '*')));
-                static_assert(noexcept(bsl::fmt_impl(bsl::print(), {""}, "")));
-                static_assert(noexcept(bsl::fmt_impl(bsl::print(), {""}, bsl::to_umax(42))));
+                static_assert(noexcept(bsl::fmt_impl(bsl::print(), ops, true)));
+                static_assert(noexcept(bsl::fmt_impl(bsl::print(), ops, '*')));
+                static_assert(noexcept(bsl::fmt_impl(bsl::print(), ops, "")));
+                static_assert(noexcept(bsl::fmt_impl(bsl::print(), ops, bsl::to_umax(42))));
             };
         };
     };

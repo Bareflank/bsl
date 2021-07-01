@@ -31,9 +31,6 @@
 namespace bsl
 {
     /// @brief Standard Char Type
-    // This BSL check wants you to use char_type instead of char, which is
-    // what we are defining here (chicken/egg issue)
-    // NOLINTNEXTLINE(bsl-types-fixed-width-ints)
     using char_type = char;
 }
 

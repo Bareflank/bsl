@@ -42,58 +42,58 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"get positional safe_uint8"} = []() {
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::arguments args{bsl::to_umax(0), nullptr};
-                bsl::ut_then{} = [&args]() {
+        bsl::ut_scenario{"get positional safe_uint8"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::arguments const args{bsl::to_umax(0), nullptr};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bsl::safe_uint8>(bsl::to_umax(0)));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"app"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"app"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bsl::safe_uint8>(bsl::safe_uintmax::failure()));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"-app"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"-app"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bsl::safe_uint8>(bsl::to_umax(0)));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"42"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"42"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bsl::safe_uint8>(bsl::to_umax(1)));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"app"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"app"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bsl::safe_uint8>(bsl::to_umax(0)));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"42 "};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"42 "};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bsl::safe_uint8>(bsl::to_umax(0)));
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::array argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given{} = []() noexcept {
+                bsl::array const argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(args.get<bsl::safe_uint8>(bsl::to_umax(0)) == bsl::to_u8(4));
                     bsl::ut_check(args.get<bsl::safe_uint8>(bsl::to_umax(1)) == bsl::to_u8(8));
                     bsl::ut_check(args.get<bsl::safe_uint8>(bsl::to_umax(2)) == bsl::to_u8(15));

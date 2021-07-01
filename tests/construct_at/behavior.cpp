@@ -41,71 +41,73 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"construct_at bool"} = []() {
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::ut_when{} = []() {
+        bsl::ut_scenario{"construct_at bool"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::ut_when{} = []() noexcept {
                     bsl::discard(bsl::construct_at<bool>(nullptr, true));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::ut_when{} = []() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::ut_when{} = []() noexcept {
                     bsl::discard(bsl::construct_at<bool>(nullptr, false));
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bool b{};
-                bsl::ut_when{} = [&b]() {
-                    bsl::discard(bsl::construct_at<bool>(&b, true));
-                    bsl::ut_then{} = [&b]() {
-                        bsl::ut_check(b);
+            bsl::ut_given{} = []() noexcept {
+                bool mut_b{};
+                bsl::ut_when{} = [&]() noexcept {
+                    bsl::discard(bsl::construct_at<bool>(&mut_b, true));
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_b);
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bool b{true};
-                bsl::ut_when{} = [&b]() {
-                    bsl::discard(bsl::construct_at<bool>(&b, false));
-                    bsl::ut_then{} = [&b]() {
-                        bsl::ut_check(!b);
+            bsl::ut_given{} = []() noexcept {
+                bool mut_b{true};
+                bsl::ut_when{} = [&]() noexcept {
+                    bsl::discard(bsl::construct_at<bool>(&mut_b, false));
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(!mut_b);
                     };
                 };
             };
         };
 
-        bsl::ut_scenario{"construct_at errc_type"} = []() {
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::ut_when{} = []() {
+        bsl::ut_scenario{"construct_at errc_type"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::ut_when{} = []() noexcept {
                     bsl::discard(
                         bsl::construct_at<bsl::errc_type>(nullptr, bsl::errc_success.get()));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::ut_when{} = []() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::ut_when{} = []() noexcept {
                     bsl::discard(
                         bsl::construct_at<bsl::errc_type>(nullptr, bsl::errc_failure.get()));
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::errc_type errc{bsl::errc_failure};
-                bsl::ut_when{} = [&errc]() {
-                    bsl::discard(bsl::construct_at<bsl::errc_type>(&errc, bsl::errc_success.get()));
-                    bsl::ut_then{} = [&errc]() {
-                        bsl::ut_check(errc);
+            bsl::ut_given{} = []() noexcept {
+                bsl::errc_type mut_errc{bsl::errc_failure};
+                bsl::ut_when{} = [&]() noexcept {
+                    bsl::discard(
+                        bsl::construct_at<bsl::errc_type>(&mut_errc, bsl::errc_success.get()));
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_errc);
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::errc_type errc{};
-                bsl::ut_when{} = [&errc]() {
-                    bsl::discard(bsl::construct_at<bsl::errc_type>(&errc, bsl::errc_failure.get()));
-                    bsl::ut_then{} = [&errc]() {
-                        bsl::ut_check(!errc);
+            bsl::ut_given{} = []() noexcept {
+                bsl::errc_type mut_errc{};
+                bsl::ut_when{} = [&]() noexcept {
+                    bsl::discard(
+                        bsl::construct_at<bsl::errc_type>(&mut_errc, bsl::errc_failure.get()));
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(!mut_errc);
                     };
                 };
             };

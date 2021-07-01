@@ -37,6 +37,59 @@
 namespace bsl::details
 {
     /// <!-- description -->
+    ///   @brief Returns the base to format the integral with
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of integral to output
+    ///   @param ops ops the fmt options used to format the output
+    ///   @param mut_info the info to return
+    ///   @return Returns the base to format the integral with
+    ///
+    template<typename T>
+    [[nodiscard]] constexpr auto
+    get_integral_info_base(fmt_options const &ops, fmt_impl_integral_info<T> &mut_info) noexcept
+        -> safe_integral<T>
+    {
+        constexpr safe_integral<T> base2{static_cast<T>(2)};
+        constexpr safe_integral<T> base10{static_cast<T>(10)};
+        constexpr safe_integral<T> base16{static_cast<T>(16)};
+        constexpr safe_uintmax extra_chars{static_cast<bsl::uintmax>(2)};
+
+        switch (ops.type()) {
+            case fmt_type::fmt_type_b: {
+                if (ops.alternate_form()) {
+                    mut_info.extras += extra_chars;
+                }
+                else {
+                    bsl::touch();
+                }
+
+                return base2;
+            }
+
+            case fmt_type::fmt_type_x: {
+                if (ops.alternate_form()) {
+                    mut_info.extras += extra_chars;
+                }
+                else {
+                    bsl::touch();
+                }
+
+                return base16;
+            }
+
+            case fmt_type::fmt_type_c:
+            case fmt_type::fmt_type_d:
+            case fmt_type::fmt_type_s:
+            case fmt_type::fmt_type_default: {
+                break;
+            }
+        }
+
+        return base10;
+    }
+
+    /// <!-- description -->
     ///   @brief This function gathers information about an integral
     ///     number which is used by fmt_impl_integral. Specifically:
     ///     - The base is determined by parsing the fmt_options for
@@ -68,62 +121,26 @@ namespace bsl::details
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    get_integral_info(fmt_options const &ops, safe_integral<T> val) noexcept
+    get_integral_info(fmt_options const &ops, safe_integral<T> const &val) noexcept
         -> fmt_impl_integral_info<T>
     {
-        constexpr safe_integral<T> base2{static_cast<T>(2)};
         constexpr safe_integral<T> base10{static_cast<T>(10)};
-        constexpr safe_integral<T> base16{static_cast<T>(16)};
         constexpr safe_integral<T> last_numerical_digit{static_cast<T>(9)};
-        constexpr safe_uintmax extra_chars{static_cast<bsl::uintmax>(2)};
 
-        safe_integral<T> base{base10};
-        fmt_impl_integral_info<T> info{};
-
-        switch (ops.type()) {
-            case fmt_type::fmt_type_b: {
-                if (ops.alternate_form()) {
-                    info.extras += extra_chars;
-                }
-                else {
-                    bsl::touch();
-                }
-
-                base = base2;
-                break;
-            }
-
-            case fmt_type::fmt_type_x: {
-                if (ops.alternate_form()) {
-                    info.extras += extra_chars;
-                }
-                else {
-                    bsl::touch();
-                }
-
-                base = base16;
-                break;
-            }
-
-            case fmt_type::fmt_type_c:
-            case fmt_type::fmt_type_d:
-            case fmt_type::fmt_type_s:
-            case fmt_type::fmt_type_default: {
-                break;
-            }
-        }
+        fmt_impl_integral_info<T> mut_info{};
+        auto const base{get_integral_info_base(ops, mut_info)};
 
         switch (ops.sign()) {
             case fmt_sign::fmt_sign_pos_neg:
             case fmt_sign::fmt_sign_space_for_pos: {
-                ++info.extras;
+                ++mut_info.extras;
                 break;
             }
 
             case fmt_sign::fmt_sign_neg_only: {
                 if constexpr (is_signed<T>::value) {
                     if (val.is_neg()) {
-                        ++info.extras;
+                        ++mut_info.extras;
                     }
                     else {
                         bsl::touch();
@@ -135,39 +152,40 @@ namespace bsl::details
         }
 
         if (val.is_zero()) {
-            ++info.digits;
+            ++mut_info.digits;
         }
         else {
-            for (info.digits = {}; info.digits < MAX_NUM_DIGITS; ++info.digits) {
-                if (val.is_zero()) {
+            auto mut_val{val};
+            for (mut_info.digits = {}; mut_info.digits < MAX_NUM_DIGITS; ++mut_info.digits) {
+                if (mut_val.is_zero()) {
                     break;
                 }
 
-                safe_integral<T> digit{val % base};
-                val /= base;
+                safe_integral<T> mut_digit{mut_val % base};
+                mut_val /= base;
 
                 if constexpr (is_signed<T>::value) {
-                    if (digit.is_neg()) {
-                        digit = -digit;
+                    if (mut_digit.is_neg()) {
+                        mut_digit = -mut_digit;
                     }
                     else {
                         bsl::touch();
                     }
                 }
 
-                if (digit > last_numerical_digit) {
-                    digit -= base10;
-                    digit += static_cast<T>('A');
+                if (mut_digit > last_numerical_digit) {
+                    mut_digit -= base10;
+                    mut_digit += static_cast<T>('A');
                 }
                 else {
-                    digit += static_cast<T>('0');
+                    mut_digit += static_cast<T>('0');
                 }
 
-                *info.buf.at_if(info.digits) = static_cast<char_type>(digit.get());
+                *mut_info.buf.at_if(mut_info.digits) = static_cast<char_type>(mut_digit.get());
             }
         }
 
-        return info;
+        return mut_info;
     }
 
     /// <!-- description -->
@@ -184,7 +202,8 @@ namespace bsl::details
     ///
     template<typename OUT_T, typename T>
     constexpr void
-    fmt_impl_integral(OUT_T &&o, fmt_options const &ops, safe_integral<T> const &val) noexcept
+    fmt_impl_integral(
+        out<OUT_T> const o, fmt_options const &ops, safe_integral<T> const &val) noexcept
     {
         fmt_impl_integral_info<T> const info{get_integral_info(ops, val)};
         safe_uintmax const padding{fmt_impl_align_pre(o, ops, info.digits + info.extras, false)};
@@ -193,10 +212,10 @@ namespace bsl::details
             switch (ops.sign()) {
                 case fmt_sign::fmt_sign_pos_neg: {
                     if (val.is_neg()) {
-                        o.write('-');
+                        o.write_to_console('-');
                     }
                     else {
-                        o.write('+');
+                        o.write_to_console('+');
                     }
 
                     break;
@@ -204,10 +223,10 @@ namespace bsl::details
 
                 case fmt_sign::fmt_sign_space_for_pos: {
                     if (val.is_neg()) {
-                        o.write('-');
+                        o.write_to_console('-');
                     }
                     else {
-                        o.write(' ');
+                        o.write_to_console(' ');
                     }
 
                     break;
@@ -215,7 +234,7 @@ namespace bsl::details
 
                 case fmt_sign::fmt_sign_neg_only: {
                     if (val.is_neg()) {
-                        o.write('-');
+                        o.write_to_console('-');
                     }
                     else {
                         bsl::touch();
@@ -232,12 +251,12 @@ namespace bsl::details
         if (ops.alternate_form()) {
             switch (ops.type()) {
                 case fmt_type::fmt_type_b: {
-                    o.write("0b");
+                    o.write_to_console("0b");
                     break;
                 }
 
                 case fmt_type::fmt_type_x: {
-                    o.write("0x");
+                    o.write_to_console("0x");
                     break;
                 }
 
@@ -254,8 +273,8 @@ namespace bsl::details
         }
 
         if (ops.sign_aware()) {
-            for (safe_uintmax pi{}; pi < padding; ++pi) {
-                o.write('0');
+            for (safe_uintmax mut_pi{}; mut_pi < padding; ++mut_pi) {
+                o.write_to_console('0');
             }
         }
         else {
@@ -263,11 +282,12 @@ namespace bsl::details
         }
 
         if (val.is_zero()) {
-            o.write('0');
+            o.write_to_console('0');
         }
         else {
-            for (safe_uintmax i{info.digits}; i.is_pos(); --i) {
-                o.write(*info.buf.at_if(i - static_cast<bsl::uintmax>(1)));
+            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
+            for (safe_uintmax mut_i{info.digits}; mut_i.is_pos(); --mut_i) {
+                o.write_to_console(*info.buf.at_if(mut_i - one));
             }
         }
 

@@ -59,17 +59,17 @@ namespace bsl::details
         ///   @tparam FUNC the type that defines the function being called
         ///   @tparam TN the types that define the arguments passed to the
         ///     provided function when called.
-        ///   @param f a pointer to the function being called.
-        ///   @param valn the arguments passed to the function f when called.
-        ///   @return Returns the result of calling "f" with "valn"
+        ///   @param pudm_udm_func a pointer to the function being called.
+        ///   @param pudm_udm_valn the arguments passed to the function pudm_udm_func when called.
+        ///   @return Returns the result of calling "pudm_udm_func" with "pudm_udm_valn"
         ///
         template<typename FUNC, typename... TN>
         [[maybe_unused]] static constexpr auto
-        call(FUNC &&f, TN &&...valn) noexcept(
-            noexcept(bsl::forward<FUNC>(f)(bsl::forward<TN>(valn)...)))
-            -> decltype(bsl::forward<FUNC>(f)(bsl::forward<TN>(valn)...))
+        call(FUNC &&pudm_udm_func, TN &&...pudm_udm_valn) noexcept(
+            noexcept(bsl::forward<FUNC>(pudm_udm_func)(bsl::forward<TN>(pudm_udm_valn)...)))
+            -> decltype(bsl::forward<FUNC>(pudm_udm_func)(bsl::forward<TN>(pudm_udm_valn)...))
         {
-            return bsl::forward<FUNC>(f)(bsl::forward<TN>(valn)...);
+            return bsl::forward<FUNC>(pudm_udm_func)(bsl::forward<TN>(pudm_udm_valn)...);
         }
 
     protected:
@@ -90,9 +90,9 @@ namespace bsl::details
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr invoke_impl_fp(invoke_impl_fp &&o) noexcept = default;
+        constexpr invoke_impl_fp(invoke_impl_fp &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -108,10 +108,10 @@ namespace bsl::details
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(invoke_impl_fp &&o) &noexcept
+        [[maybe_unused]] constexpr auto operator=(invoke_impl_fp &&mut_o) &noexcept
             -> invoke_impl_fp & = default;
     };
 }

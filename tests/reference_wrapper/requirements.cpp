@@ -23,7 +23,6 @@
 /// SOFTWARE.
 
 #include <bsl/convert.hpp>
-#include <bsl/discard.hpp>
 #include <bsl/reference_wrapper.hpp>
 #include <bsl/ut.hpp>
 
@@ -34,36 +33,6 @@ namespace
     {
         return val;
     }
-
-    // Needed for requirements testing
-    // NOLINTNEXTLINE(bsl-user-defined-type-names-match-header-name)
-    class fixture_t final
-    {
-        // BUG: Need to figure out why we cannot use & here
-        // NOLINTNEXTLINE(bsl-function-name-use)
-        bsl::reference_wrapper<bsl::safe_int32(bsl::safe_int32)> rw{func};
-
-    public:
-        [[nodiscard]] constexpr auto
-        test_member_const() const noexcept -> bool
-        {
-            bsl::discard(rw.get());
-            bsl::discard(rw(bsl::to_i32(42)));
-
-            return true;
-        }
-
-        [[nodiscard]] constexpr auto
-        test_member_nonconst() noexcept -> bool
-        {
-            bsl::discard(rw.get());
-            bsl::discard(rw(bsl::to_i32(42)));
-
-            return true;
-        }
-    };
-
-    constexpr fixture_t fixture1{};
 }
 
 /// <!-- description -->
@@ -78,28 +47,28 @@ namespace
 main() noexcept -> bsl::exit_code
 {
     // clang-format off
+    bsl::ut_scenario{"quiet the func"} = []() noexcept {
+        bsl::discard(func(42_i32));
+    };
 
-    bsl::ut_scenario{"verify noexcept"} = []() {
-        bsl::ut_given{} = []() {
+    bsl::ut_scenario{"verify noexcept"} = []() noexcept {
+        bsl::ut_given{} = []() noexcept {
             // BUG: Need to figure out why we cannot use & here
             // NOLINTNEXTLINE(bsl-function-name-use)
-            bsl::reference_wrapper<bsl::safe_int32(bsl::safe_int32)> rw{func};
-            bsl::ut_then{} = []() {
+            bsl::reference_wrapper<bsl::safe_int32(bsl::safe_int32)> mut_rw{func};
+            // BUG: Need to figure out why we cannot use & here
+            // NOLINTNEXTLINE(bsl-function-name-use)
+            bsl::reference_wrapper<bsl::safe_int32(bsl::safe_int32)> const rw{func};
+            bsl::ut_then{} = []() noexcept {
                 // BUG: Need to figure out why we cannot use & here
                 // NOLINTNEXTLINE(bsl-function-name-use)
                 static_assert(noexcept(bsl::reference_wrapper<bsl::safe_int32(bsl::safe_int32)>{func}));
+
+                static_assert(noexcept(mut_rw.get()));
+                static_assert(!noexcept(mut_rw(bsl::to_i32(42))));
+
                 static_assert(noexcept(rw.get()));
                 static_assert(!noexcept(rw(bsl::to_i32(42))));
-            };
-        };
-    };
-
-    bsl::ut_scenario{"verify constness"} = []() {
-        bsl::ut_given{} = []() {
-            fixture_t fixture2{};
-            bsl::ut_then{} = [&fixture2]() {
-                static_assert(fixture1.test_member_const());
-                bsl::ut_check(fixture2.test_member_nonconst());
             };
         };
     };

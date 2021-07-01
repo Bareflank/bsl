@@ -38,11 +38,11 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    bsl::ut_scenario{"errc_type"} = []() {
-        bsl::ut_when{} = []() {
+    bsl::ut_scenario{"errc_type"} = []() noexcept {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::errc_success;
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("0"));
             };
         };

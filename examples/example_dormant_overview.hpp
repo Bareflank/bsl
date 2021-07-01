@@ -33,29 +33,29 @@ namespace bsl
     inline void
     example_dormant_overview() noexcept
     {
-        bool executed1{};
-        bool executed2{};
+        bool mut_executed1{};
+        bool mut_executed2{};
 
         {
-            bsl::finally test1{bsl::dormant, [&executed1]() noexcept {
-                                   executed1 = true;
-                               }};
+            bsl::finally mut_test1{bsl::dormant, [&mut_executed1]() noexcept {
+                                       mut_executed1 = true;
+                                   }};
 
-            bsl::finally test2{bsl::dormant, [&executed2]() noexcept {
-                                   executed2 = true;
-                               }};
+            bsl::finally mut_test2{bsl::dormant, [&mut_executed2]() noexcept {
+                                       mut_executed2 = true;
+                                   }};
 
-            test1.activate();
+            mut_test1.activate();
         }
 
-        if (executed1) {
+        if (mut_executed1) {
             bsl::print() << "success\n";
         }
         else {
             bsl::error() << "failure\n";
         }
 
-        if (executed2) {
+        if (mut_executed2) {
             bsl::error() << "failure\n";
         }
         else {

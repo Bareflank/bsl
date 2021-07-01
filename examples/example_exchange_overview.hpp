@@ -37,18 +37,18 @@ namespace bsl
         constexpr auto val1{23_i32};
         constexpr auto val2{42_i32};
 
-        auto var1{val1};
-        auto var2{val2};
-        var2 = bsl::exchange(var1, var2);
+        auto mut_var1{val1};
+        auto mut_var2{val2};
+        mut_var2 = bsl::exchange(mut_var1, mut_var2);
 
-        if (val2 == var1) {
+        if (val2 == mut_var1) {
             bsl::print() << "success\n";
         }
         else {
             bsl::error() << "failure\n";
         }
 
-        if (val1 == var2) {
+        if (val1 == mut_var2) {
             bsl::print() << "success\n";
         }
         else {

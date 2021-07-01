@@ -39,9 +39,9 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"touch"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::ut_then{} = []() {
+        bsl::ut_scenario{"touch"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::ut_then{} = []() noexcept {
                     bsl::touch();    // <--- Helps with line coverage
                 };
             };

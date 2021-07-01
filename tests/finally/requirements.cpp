@@ -36,12 +36,12 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    bsl::ut_scenario{"verify noexcept"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::finally test{[]() noexcept {}};
-            bsl::ut_then{} = []() {
-                static_assert(noexcept(test.ignore()));
-                static_assert(noexcept(test.activate()));
+    bsl::ut_scenario{"verify noexcept"} = []() noexcept {
+        bsl::ut_given{} = []() noexcept {
+            bsl::finally mut_test{[]() noexcept {}};
+            bsl::ut_then{} = []() noexcept {
+                static_assert(noexcept(mut_test.ignore()));
+                static_assert(noexcept(mut_test.activate()));
             };
         };
     };

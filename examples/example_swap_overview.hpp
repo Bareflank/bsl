@@ -33,11 +33,11 @@ namespace bsl
     inline void
     example_swap_overview() noexcept
     {
-        bool val1{};
-        bool val2{true};
-        bsl::swap(val1, val2);
+        bool mut_val1{};
+        bool mut_val2{true};
+        bsl::swap(mut_val1, mut_val2);
 
-        if (val1) {
+        if (mut_val1) {
             bsl::print() << "success\n";
         }
         else {

@@ -33,10 +33,10 @@ namespace bsl
     inline void
     example_basic_string_view_s_assignment() noexcept
     {
-        bsl::basic_string_view<bsl::char_type> str{};
-        str = "Hello";
+        bsl::basic_string_view<bsl::char_type> mut_str{};
+        mut_str = "Hello";
 
-        if (str == "Hello") {
+        if (mut_str == "Hello") {
             bsl::print() << "success\n";
         }
         else {

@@ -29,6 +29,7 @@ namespace bsl
 {
     void swap(bsl::safe_uint16, bsl::safe_uint16) noexcept;
     void swap(bsl::safe_uint32, bsl::safe_uint32) noexcept = delete;
+    // NOLINTNEXTLINE(bsl-function-noexcept)
     void swap(bsl::safe_uint64, bsl::safe_uint64);
 }
 

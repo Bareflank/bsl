@@ -36,12 +36,12 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    bsl::ut_scenario{"verify except"} = []() {
-        bsl::ut_given{} = []() {
-            bool mydata1{};
-            bool mydata2{};
-            bsl::ut_then{} = []() {
-                static_assert(!noexcept(bsl::exchange(mydata1, mydata2)));
+    bsl::ut_scenario{"verify except"} = []() noexcept {
+        bsl::ut_given{} = []() noexcept {
+            bool mut_mydata1{};
+            bool mut_mydata2{};
+            bsl::ut_then{} = []() noexcept {
+                static_assert(!noexcept(bsl::exchange(mut_mydata1, mut_mydata2)));
             };
         };
     };

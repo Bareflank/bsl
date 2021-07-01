@@ -42,75 +42,75 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"get optional string_view"} = []() {
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::arguments args{bsl::to_umax(0), nullptr};
-                bsl::ut_then{} = [&args]() {
+        bsl::ut_scenario{"get optional string_view"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::arguments const args{bsl::to_umax(0), nullptr};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(args.get<bsl::string_view>("-app").empty());
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"-app"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"-app"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(args.get<bsl::string_view>("").empty());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::array argv{"app"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given{} = []() noexcept {
+                bsl::array const argv{"app"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(args.get<bsl::string_view>("-app").empty());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::array argv{"-app"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given{} = []() noexcept {
+                bsl::array const argv{"-app"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(args.get<bsl::string_view>("-app_blah").empty());
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"-app"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"-app"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(args.get<bsl::string_view>("-ap").empty());
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"-app"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"-app"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(args.get<bsl::string_view>("-app").empty());
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"-app="};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"-app="};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(args.get<bsl::string_view>("-app").empty());
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"-app=42"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"-app=42"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(args.get<bsl::string_view>("-app=").empty());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::array argv{
+            bsl::ut_given{} = []() noexcept {
+                bsl::array const argv{
                     "-app=ignored", "pos1", "-4=16", "-8=23", "pos2", "-15=42", "-app=42"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(args.get<bsl::string_view>("-app") == "42");
                     bsl::ut_check(args.get<bsl::string_view>("-4") == "16");
                     bsl::ut_check(args.get<bsl::string_view>("-8") == "23");

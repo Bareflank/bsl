@@ -30,7 +30,6 @@
 
 #include "contiguous_iterator.hpp"
 #include "cstdint.hpp"
-#include "details/out.hpp"
 #include "likely.hpp"
 #include "reverse_iterator.hpp"
 #include "safe_integral.hpp"
@@ -61,21 +60,13 @@ namespace bsl
     ///   @tparam N the total number of elements in the array. Cannot be 0
     ///
     template<typename T, bsl::uintmax N>
-    // This triggers on ArrayToPointerDecay which is needed
-    // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
     class array final
     {
-        static_assert(N != static_cast<bsl::uintmax>(0), "arrays of size 0 are not supported");
+        static_assert(static_cast<bsl::uintmax>(0) != N, "arrays of size 0 are not supported");
 
     public:
         /// @brief stores the array being wrapped
-        // The *-c-arrays tests wants you to use a std::array, which is what
-        // this class is implementing (chicken/egg issue). The non-private
-        // member check is complaining about the use of non-private member
-        // variables. In this case, std::array should be an aggregate type
-        // which means that the array must be made public.
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays, misc-non-private-member-variables-in-classes, bsl-non-pod-classdef)
-        T m_data[N];
+        T m_data[N];    // NOLINT
 
         /// @brief alias for: T
         using value_type = T;
@@ -123,7 +114,7 @@ namespace bsl
             if (likely(index < N)) {
                 // We are implementing std::array here, which is what this test
                 // wants you to use instead.
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index, bsl-implicit-conversions-forbidden)
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
                 return &m_data[index.get()];
             }
 
@@ -153,7 +144,7 @@ namespace bsl
             if (likely(index < N)) {
                 // We are implementing std::array here, which is what this test
                 // wants you to use instead.
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index, bsl-implicit-conversions-forbidden)
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
                 return &m_data[index.get()];
             }
 
@@ -180,7 +171,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front() &noexcept -> reference_type
         {
-            return *this->at_if(static_cast<bsl::uintmax>(0));
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+            return *this->at_if(zero);
         }
 
         /// <!-- description -->
@@ -193,7 +185,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front() const &noexcept -> const_reference_type
         {
-            return *this->at_if(static_cast<bsl::uintmax>(0));
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+            return *this->at_if(zero);
         }
 
         /// <!-- description -->
@@ -214,7 +207,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front_if() &noexcept -> pointer_type
         {
-            return this->at_if(static_cast<bsl::uintmax>(0));
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+            return this->at_if(zero);
         }
 
         /// <!-- description -->
@@ -227,7 +221,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front_if() const &noexcept -> const_pointer_type
         {
-            return this->at_if(static_cast<bsl::uintmax>(0));
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+            return this->at_if(zero);
         }
 
         /// <!-- description -->
@@ -248,7 +243,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back() &noexcept -> reference_type
         {
-            return *this->at_if(N - static_cast<bsl::uintmax>(1));
+            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
+            return *this->at_if(N - one);
         }
 
         /// <!-- description -->
@@ -261,7 +257,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back() const &noexcept -> const_reference_type
         {
-            return *this->at_if(N - static_cast<bsl::uintmax>(1));
+            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
+            return *this->at_if(N - one);
         }
 
         /// <!-- description -->
@@ -282,7 +279,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back_if() &noexcept -> pointer_type
         {
-            return this->at_if(N - static_cast<bsl::uintmax>(1));
+            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
+            return this->at_if(N - one);
         }
 
         /// <!-- description -->
@@ -295,7 +293,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back_if() const &noexcept -> const_pointer_type
         {
-            return this->at_if(N - static_cast<bsl::uintmax>(1));
+            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
+            return this->at_if(N - one);
         }
 
         /// <!-- description -->
@@ -350,7 +349,9 @@ namespace bsl
         [[nodiscard]] constexpr auto
         begin() &noexcept -> iterator_type
         {
-            return iterator_type{this->front_if(), N, static_cast<bsl::uintmax>(0)};
+            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+            return iterator_type{this->front_if(), n, zero};
         }
 
         /// <!-- description -->
@@ -363,7 +364,9 @@ namespace bsl
         [[nodiscard]] constexpr auto
         begin() const &noexcept -> const_iterator_type
         {
-            return const_iterator_type{this->front_if(), N, static_cast<bsl::uintmax>(0)};
+            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+            return const_iterator_type{this->front_if(), n, zero};
         }
 
         /// <!-- description -->
@@ -384,7 +387,9 @@ namespace bsl
         [[nodiscard]] constexpr auto
         cbegin() const &noexcept -> const_iterator_type
         {
-            return const_iterator_type{this->front_if(), N, static_cast<bsl::uintmax>(0)};
+            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+            return const_iterator_type{this->front_if(), n, zero};
         }
 
         /// <!-- description -->
@@ -406,7 +411,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         iter(size_type const &i) &noexcept -> iterator_type
         {
-            return iterator_type{this->front_if(), N, i};
+            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
+            return iterator_type{this->front_if(), n, i};
         }
 
         /// <!-- description -->
@@ -420,7 +426,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         iter(size_type const &i) const &noexcept -> const_iterator_type
         {
-            return const_iterator_type{this->front_if(), N, i};
+            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
+            return const_iterator_type{this->front_if(), n, i};
         }
 
         /// <!-- description -->
@@ -444,7 +451,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         citer(size_type const &i) const &noexcept -> const_iterator_type
         {
-            return const_iterator_type{this->front_if(), N, i};
+            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
+            return const_iterator_type{this->front_if(), n, i};
         }
 
         /// <!-- description -->
@@ -471,7 +479,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         end() &noexcept -> iterator_type
         {
-            return iterator_type{this->front_if(), N, N};
+            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
+            return iterator_type{this->front_if(), n, n};
         }
 
         /// <!-- description -->
@@ -488,7 +497,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         end() const &noexcept -> const_iterator_type
         {
-            return const_iterator_type{this->front_if(), N, N};
+            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
+            return const_iterator_type{this->front_if(), n, n};
         }
 
         /// <!-- description -->
@@ -513,7 +523,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         cend() const &noexcept -> const_iterator_type
         {
-            return const_iterator_type{this->front_if(), N, N};
+            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
+            return const_iterator_type{this->front_if(), n, n};
         }
 
         /// <!-- description -->
@@ -616,16 +627,19 @@ namespace bsl
         [[nodiscard]] constexpr auto
         riter(size_type const &i) &noexcept -> reverse_iterator_type
         {
+            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+
             if (unlikely(!i)) {
                 unlikely_invalid_argument_failure();
-                return reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
+                return reverse_iterator_type{this->iter(zero)};
             }
 
             if (likely(i < N)) {
-                return reverse_iterator_type{this->iter(i + static_cast<bsl::uintmax>(1))};
+                return reverse_iterator_type{this->iter(i + one)};
             }
 
-            return reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
+            return reverse_iterator_type{this->iter(zero)};
         }
 
         /// <!-- description -->
@@ -645,16 +659,19 @@ namespace bsl
         [[nodiscard]] constexpr auto
         riter(size_type const &i) const &noexcept -> const_reverse_iterator_type
         {
+            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+
             if (unlikely(!i)) {
                 unlikely_invalid_argument_failure();
-                return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
+                return const_reverse_iterator_type{this->iter(zero)};
             }
 
             if (likely(i < N)) {
-                return const_reverse_iterator_type{this->iter(i + static_cast<bsl::uintmax>(1))};
+                return const_reverse_iterator_type{this->iter(i + one)};
             }
 
-            return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
+            return const_reverse_iterator_type{this->iter(zero)};
         }
 
         /// <!-- description -->
@@ -684,16 +701,19 @@ namespace bsl
         [[nodiscard]] constexpr auto
         criter(size_type const &i) const &noexcept -> const_reverse_iterator_type
         {
+            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+
             if (unlikely(!i)) {
                 unlikely_invalid_argument_failure();
-                return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
+                return const_reverse_iterator_type{this->iter(zero)};
             }
 
             if (likely(i < N)) {
-                return const_reverse_iterator_type{this->iter(i + static_cast<bsl::uintmax>(1))};
+                return const_reverse_iterator_type{this->iter(i + one)};
             }
 
-            return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
+            return const_reverse_iterator_type{this->iter(zero)};
         }
 
         /// <!-- description -->
@@ -782,13 +802,11 @@ namespace bsl
             -> const_reverse_iterator_type = delete;
 
         /// <!-- description -->
-        ///   @brief Since arrays of size 0 are not allowed, always returns
-        ///     false.
+        ///   @brief Returns false
         ///   @include array/example_array_empty.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Since arrays of size 0 are not allowed, always returns
-        ///     false.
+        ///   @return Returns false
         ///
         [[nodiscard]] static constexpr auto
         empty() noexcept -> bool
@@ -797,15 +815,15 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief Returns !empty()
+        ///   @brief Returns true
         ///   @include array/example_array_operator_bool.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Returns !empty()
+        ///   @return Returns true
         ///
-        [[nodiscard]] constexpr explicit operator bool() const noexcept
+        [[nodiscard]] explicit constexpr operator bool() const noexcept
         {
-            return !this->empty();
+            return true;
         }
 
         /// <!-- description -->
@@ -820,7 +838,8 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         size() noexcept -> size_type
         {
-            return N;
+            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
+            return n;
         }
 
         /// <!-- description -->
@@ -833,7 +852,8 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         max_size() noexcept -> size_type
         {
-            return size_type::max() / static_cast<bsl::uintmax>(sizeof(T));
+            constexpr safe_uintmax size_of_t{static_cast<bsl::uintmax>(sizeof(T))};
+            return size_type::max() / size_of_t;
         }
 
         /// <!-- description -->
@@ -846,13 +866,16 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         size_bytes() noexcept -> size_type
         {
-            return N * static_cast<bsl::uintmax>(sizeof(T));
+            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
+            constexpr safe_uintmax size_of_t{static_cast<bsl::uintmax>(sizeof(T))};
+            return n * size_of_t;
         }
     };
 
     /// @brief deduction guideline for bsl::array
     template<typename T, typename... U>
-    array(T, U...) -> array<T, static_cast<bsl::uintmax>(1) + sizeof...(U)>;
+    // NOLINTNEXTLINE(bsl-types-fixed-width-ints-arithmetic-check)
+    array(T, U...) noexcept->array<T, static_cast<bsl::uintmax>(1) + sizeof...(U)>;
 
     /// <!-- description -->
     ///   @brief Returns true if two arrays contain the same contents.
@@ -872,8 +895,8 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator==(bsl::array<T, N> const &lhs, bsl::array<T, N> const &rhs) noexcept -> bool
     {
-        for (safe_uintmax i{}; i < lhs.size(); ++i) {
-            if (*lhs.at_if(i) != *rhs.at_if(i)) {
+        for (safe_uintmax mut_i{}; mut_i < lhs.size(); ++mut_i) {
+            if (*lhs.at_if(mut_i) != *rhs.at_if(mut_i)) {
                 return false;
             }
 
@@ -902,40 +925,6 @@ namespace bsl
     operator!=(bsl::array<T, N> const &lhs, bsl::array<T, N> const &rhs) noexcept -> bool
     {
         return !(lhs == rhs);
-    }
-
-    /// <!-- description -->
-    ///   @brief Outputs the provided bsl::array to the provided
-    ///     output type.
-    ///   @related bsl::array
-    ///   @include array/example_array_ostream.hpp
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T1 the type of outputter provided
-    ///   @tparam T2 the type of element being encapsulated.
-    ///   @tparam N the total number of elements in the array. Cannot be 0
-    ///   @param o the instance of the outputter used to output the value.
-    ///   @param val the array to output
-    ///   @return return o
-    ///
-    template<typename T1, typename T2, bsl::uintmax N>
-    [[maybe_unused]] constexpr auto
-    operator<<(out<T1> const o, bsl::array<T2, N> const &val) noexcept -> out<T1>
-    {
-        if constexpr (!o) {
-            return o;
-        }
-
-        for (safe_uintmax i{}; i < val.size(); ++i) {
-            if (i.is_zero()) {
-                o << "[" << *val.at_if(i);
-            }
-            else {
-                o << ", " << *val.at_if(i);
-            }
-        }
-
-        return o << ']';
     }
 }
 

@@ -39,14 +39,14 @@ namespace bsl
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type of object to get the address of.
-    ///   @param val the object of type T to get the address of.
-    ///   @return Returns the address of val
+    ///   @param pudm_udm_val the object of type T to get the address of.
+    ///   @return Returns the address of pudm_udm_val
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    addressof(T &val) noexcept -> T *
+    addressof(T &pudm_udm_val) noexcept -> T *
     {
-        return __builtin_addressof(val);
+        return __builtin_addressof(pudm_udm_val);
     }
 
     /// <!-- description -->
@@ -57,11 +57,11 @@ namespace bsl
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type of object to get the address of.
-    ///   @param val the object of type T to get the address of.
+    ///   @param pudm_udm_val the object of type T to get the address of.
     ///   @return Returns the address of val
     ///
     template<typename T>
-    [[nodiscard]] constexpr auto addressof(T const &&val) -> T const * = delete;
+    [[nodiscard]] constexpr auto addressof(T const &&pudm_udm_val) noexcept -> T const * = delete;
 }
 
 #endif

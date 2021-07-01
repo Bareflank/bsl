@@ -39,7 +39,7 @@ main() noexcept -> bsl::exit_code
 {
     using traits = bsl::char_traits<bsl::char_type>;
 
-    bsl::ut_scenario{"verify noexcept"} = []() {
+    bsl::ut_scenario{"verify noexcept"} = []() noexcept {
         static_assert(noexcept(traits::eq('H', 'H')));
         static_assert(noexcept(traits::lt('H', 'H')));
         static_assert(noexcept(traits::compare(nullptr, nullptr, bsl::to_umax(0))));

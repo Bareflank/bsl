@@ -68,15 +68,7 @@ namespace bsl
     struct common_type<T1, T2> final
     {
         /// @brief provides the member typedef "type"
-        // The ternary operator is one of the few ways that you can
-        // implement this type traits (if not the only way), so in this
-        // case it makes sense to allow. Also, it is not actually being
-        // executed, so not testing is needed here. It is only used as a
-        // means to impelement this type trait as a side effect of how
-        // this operator is view by the compiler. This also triggers on the
-        // implicit conversion which we need for this to work as well.
-        // NOLINTNEXTLINE(bsl-ternary-operator-forbidden, bsl-implicit-conversions-forbidden, cppcoreguidelines-pro-bounds-array-to-pointer-decay, hicpp-no-array-decay)
-        using type = decay_t<decltype(true ? declval<T1>() : declval<T2>())>;
+        using type = decay_t<decltype(true ? declval<T1>() : declval<T2>())>;    // NOLINT
     };
 
     template<typename T1, typename T2, typename... R>

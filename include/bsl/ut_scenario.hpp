@@ -61,14 +61,14 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam FUNC_T the type of lambda being executed
-        ///   @param func the lambda being executed
+        ///   @param mut_func the lambda being executed
         ///   @return Returns a reference to the scenario.
         ///
         template<typename FUNC_T>
         [[maybe_unused]] constexpr auto
-        operator=(FUNC_T &&func) &&noexcept -> ut_scenario &
+        operator=(FUNC_T &&mut_func) &&noexcept -> ut_scenario &
         {
-            func();
+            mut_func();
             return *this;
         }
 
@@ -77,11 +77,11 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam FUNC_T ignored
-        ///   @param func ignored
+        ///   @param mut_func ignored
         ///   @return this
         ///
         template<typename FUNC_T>
-        [[maybe_unused]] constexpr auto operator=(FUNC_T &&func) const &noexcept
+        [[maybe_unused]] constexpr auto operator=(FUNC_T &&mut_func) const &noexcept
             -> ut_scenario & = delete;
 
         /// <!-- description -->
@@ -101,9 +101,9 @@ namespace bsl
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr ut_scenario(ut_scenario &&o) noexcept = default;
+        constexpr ut_scenario(ut_scenario &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -119,10 +119,10 @@ namespace bsl
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(ut_scenario &&o) &noexcept
+        [[maybe_unused]] constexpr auto operator=(ut_scenario &&mut_o) &noexcept
             -> ut_scenario & = default;
     };
 }

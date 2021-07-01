@@ -29,14 +29,12 @@
 #define BSL_SPAN_HPP
 
 #include "array.hpp"
-#include "byte.hpp"
 #include "char_type.hpp"
 #include "contiguous_iterator.hpp"
 #include "details/out.hpp"
-#include "disjunction.hpp"
+#include "is_constant_evaluated.hpp"
 #include "is_same.hpp"
 #include "is_standard_layout.hpp"
-#include "is_void.hpp"
 #include "npos.hpp"
 #include "reverse_iterator.hpp"
 #include "safe_integral.hpp"
@@ -80,9 +78,6 @@ namespace bsl
     ///       iterator's index is always within bounds or == end(). Note
     ///       that for invalid views, begin() and friends always return an
     ///       interator to end().
-    ///     - We do not provide any of the as_byte helper functions as they
-    ///       would all require a reinterpret_cast which is not allowed
-    ///       by AUTOSAR.
     ///     - A bsl::span is always a dynamic_extent type. The reason the
     ///       dynamic_extent type exists in a std::span is to optimize away
     ///       the need to store the size of the array the span is viewing.
@@ -137,7 +132,7 @@ namespace bsl
             : m_ptr{}, m_count{}
         {
             static_assert(sizeof(span<T>) == details::EXPECTED_SPAN_SIZE);
-            static_assert(is_standard_layout<span<T>>::value, "standard layout test failed");
+            static_assert(is_standard_layout<span<T>>::value);
         }
 
         /// <!-- description -->
@@ -148,14 +143,14 @@ namespace bsl
         ///   @include span/example_span_ptr_count_constructor.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @param ptr a pointer to the array being spaned.
+        ///   @param pudm_ptr a pointer to the array being spaned.
         ///   @param count the number of elements in the array being spaned.
         ///
-        constexpr span(pointer_type const ptr, size_type const &count) noexcept    // --
-            : m_ptr{ptr}, m_count{count.get()}
+        constexpr span(pointer_type const pudm_ptr, size_type const &count) noexcept    // --
+            : m_ptr{pudm_ptr}, m_count{count.get()}
         {
             static_assert(sizeof(span<T>) == details::EXPECTED_SPAN_SIZE);
-            static_assert(is_standard_layout<span<T>>::value, "standard layout test failed");
+            static_assert(is_standard_layout<span<T>>::value);
 
             if (unlikely(nullptr == m_ptr)) {
                 unlikely_invalid_argument_failure();
@@ -184,11 +179,11 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @tparam U the array's value type
         ///   @tparam N the size of the array
-        ///   @param arr the array being spaned.
+        ///   @param mut_arr the array being spaned.
         ///
         template<typename U, bsl::uintmax N>
-        explicit constexpr span(bsl::array<U, N> &arr) noexcept    // --
-            : m_ptr{arr.data()}, m_count{N}
+        explicit constexpr span(bsl::array<U, N> &mut_arr) noexcept    // --
+            : m_ptr{mut_arr.data()}, m_count{N}
         {}
 
         /// <!-- description -->
@@ -222,9 +217,9 @@ namespace bsl
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr span(span &&o) noexcept = default;
+        constexpr span(span &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -239,10 +234,10 @@ namespace bsl
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(span &&o) &noexcept -> span & = default;
+        [[maybe_unused]] constexpr auto operator=(span &&mut_o) &noexcept -> span & = default;
 
         /// <!-- description -->
         ///   @brief Returns a pointer to the instance of T stored at index
@@ -318,7 +313,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front_if() noexcept -> pointer_type
         {
-            return this->at_if(static_cast<bsl::uintmax>(0));
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+            return this->at_if(zero);
         }
 
         /// <!-- description -->
@@ -335,7 +331,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front_if() const noexcept -> const_pointer_type
         {
-            return this->at_if(static_cast<bsl::uintmax>(0));
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+            return this->at_if(zero);
         }
 
         /// <!-- description -->
@@ -352,7 +349,14 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back_if() noexcept -> pointer_type
         {
-            return this->at_if(m_count - static_cast<bsl::uintmax>(1));
+            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+
+            if (m_count == zero) {
+                return nullptr;
+            }
+
+            return this->at_if(m_count - one);
         }
 
         /// <!-- description -->
@@ -369,7 +373,14 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back_if() const noexcept -> const_pointer_type
         {
-            return this->at_if(m_count - static_cast<bsl::uintmax>(1));
+            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+
+            if (m_count == zero) {
+                return nullptr;
+            }
+
+            return this->at_if(m_count - one);
         }
 
         /// <!-- description -->
@@ -416,7 +427,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         begin() noexcept -> iterator_type
         {
-            return iterator_type{m_ptr, m_count, static_cast<bsl::uintmax>(0)};
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+            return iterator_type{m_ptr, safe_uintmax{m_count}, zero};
         }
 
         /// <!-- description -->
@@ -429,7 +441,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         begin() const noexcept -> const_iterator_type
         {
-            return const_iterator_type{m_ptr, m_count, static_cast<bsl::uintmax>(0)};
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+            return const_iterator_type{m_ptr, safe_uintmax{m_count}, zero};
         }
 
         /// <!-- description -->
@@ -442,7 +455,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         cbegin() const noexcept -> const_iterator_type
         {
-            return const_iterator_type{m_ptr, m_count, static_cast<bsl::uintmax>(0)};
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+            return const_iterator_type{m_ptr, safe_uintmax{m_count}, zero};
         }
 
         /// <!-- description -->
@@ -456,7 +470,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         iter(size_type const &i) noexcept -> iterator_type
         {
-            return iterator_type{m_ptr, m_count, i};
+            return iterator_type{m_ptr, safe_uintmax{m_count}, i};
         }
 
         /// <!-- description -->
@@ -470,7 +484,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         iter(size_type const &i) const noexcept -> const_iterator_type
         {
-            return const_iterator_type{m_ptr, m_count, i};
+            return const_iterator_type{m_ptr, safe_uintmax{m_count}, i};
         }
 
         /// <!-- description -->
@@ -484,7 +498,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         citer(size_type const &i) const noexcept -> const_iterator_type
         {
-            return const_iterator_type{m_ptr, m_count, i};
+            return const_iterator_type{m_ptr, safe_uintmax{m_count}, i};
         }
 
         /// <!-- description -->
@@ -501,7 +515,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         end() noexcept -> iterator_type
         {
-            return iterator_type{m_ptr, m_count, m_count};
+            return iterator_type{m_ptr, safe_uintmax{m_count}, safe_uintmax{m_count}};
         }
 
         /// <!-- description -->
@@ -518,7 +532,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         end() const noexcept -> const_iterator_type
         {
-            return const_iterator_type{m_ptr, m_count, m_count};
+            return const_iterator_type{m_ptr, safe_uintmax{m_count}, safe_uintmax{m_count}};
         }
 
         /// <!-- description -->
@@ -535,7 +549,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         cend() const noexcept -> const_iterator_type
         {
-            return const_iterator_type{m_ptr, m_count, m_count};
+            return const_iterator_type{m_ptr, safe_uintmax{m_count}, safe_uintmax{m_count}};
         }
 
         /// <!-- description -->
@@ -612,16 +626,19 @@ namespace bsl
         [[nodiscard]] constexpr auto
         riter(size_type const &i) noexcept -> reverse_iterator_type
         {
+            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+
             if (unlikely(!i)) {
                 unlikely_invalid_argument_failure();
-                return reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
+                return reverse_iterator_type{this->iter(zero)};
             }
 
             if (likely(i < m_count)) {
-                return reverse_iterator_type{this->iter(i + static_cast<bsl::uintmax>(1))};
+                return reverse_iterator_type{this->iter(i + one)};
             }
 
-            return reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
+            return reverse_iterator_type{this->iter(zero)};
         }
 
         /// <!-- description -->
@@ -641,16 +658,19 @@ namespace bsl
         [[nodiscard]] constexpr auto
         riter(size_type const &i) const noexcept -> const_reverse_iterator_type
         {
+            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+
             if (unlikely(!i)) {
                 unlikely_invalid_argument_failure();
-                return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
+                return const_reverse_iterator_type{this->iter(zero)};
             }
 
             if (likely(i < m_count)) {
-                return const_reverse_iterator_type{this->iter(i + static_cast<bsl::uintmax>(1))};
+                return const_reverse_iterator_type{this->iter(i + one)};
             }
 
-            return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
+            return const_reverse_iterator_type{this->iter(zero)};
         }
 
         /// <!-- description -->
@@ -670,16 +690,19 @@ namespace bsl
         [[nodiscard]] constexpr auto
         criter(size_type const &i) const noexcept -> const_reverse_iterator_type
         {
+            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+
             if (unlikely(!i)) {
                 unlikely_invalid_argument_failure();
-                return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
+                return const_reverse_iterator_type{this->iter(zero)};
             }
 
             if (likely(i < m_count)) {
-                return const_reverse_iterator_type{this->iter(i + static_cast<bsl::uintmax>(1))};
+                return const_reverse_iterator_type{this->iter(i + one)};
             }
 
-            return const_reverse_iterator_type{this->iter(static_cast<bsl::uintmax>(0))};
+            return const_reverse_iterator_type{this->iter(zero)};
         }
 
         /// <!-- description -->
@@ -740,28 +763,28 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief Returns size() == 0
+        ///   @brief Returns size().is_zero()
         ///   @include span/example_span_empty.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Returns size() == 0
+        ///   @return Returns size().is_zero()
         ///
         [[nodiscard]] constexpr auto
         empty() const noexcept -> bool
         {
-            return (nullptr == m_ptr);
+            return this->size().is_zero();
         }
 
         /// <!-- description -->
-        ///   @brief Returns !empty()
+        ///   @brief Returns data() != nullptr
         ///   @include span/example_span_operator_bool.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Returns !empty()
+        ///   @return Returns data() != nullptr
         ///
-        [[nodiscard]] constexpr explicit operator bool() const noexcept
+        [[nodiscard]] explicit constexpr operator bool() const noexcept
         {
-            return !this->empty();
+            return this->data() != nullptr;
         }
 
         /// <!-- description -->
@@ -778,7 +801,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         size() const noexcept -> size_type
         {
-            return {m_count};
+            return size_type{m_count};
         }
 
         /// <!-- description -->
@@ -791,7 +814,8 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         max_size() noexcept -> size_type
         {
-            return size_type::max() / static_cast<bsl::uintmax>(sizeof(T));
+            constexpr safe_uintmax size_of_t{static_cast<bsl::uintmax>(sizeof(T))};
+            return size_type::max() / size_of_t;
         }
 
         /// <!-- description -->
@@ -804,7 +828,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         size_bytes() const noexcept -> size_type
         {
-            return m_count * static_cast<bsl::uintmax>(sizeof(T));
+            constexpr safe_uintmax size_of_t{static_cast<bsl::uintmax>(sizeof(T))};
+            return m_count * size_of_t;
         }
 
         /// <!-- description -->
@@ -820,7 +845,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         first(size_type const &count = npos) const noexcept -> span<T>
         {
-            return this->subspan(static_cast<bsl::uintmax>(0), count);
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+            return this->subspan(zero, count);
         }
 
         /// <!-- description -->
@@ -844,7 +870,8 @@ namespace bsl
                 return this->subspan(this->size() - count, count);
             }
 
-            return this->subspan(static_cast<bsl::uintmax>(0), count);
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+            return this->subspan(zero, count);
         }
 
         /// <!-- description -->
@@ -893,10 +920,10 @@ namespace bsl
     /// <!-- inputs/outputs -->
     ///   @tparam U the array's value type
     ///   @tparam N the size of the array
-    ///   @param arr the array being spaned.
+    ///   @param mut_arr the array being spaned.
     ///
     template<typename U, bsl::uintmax N>
-    span(bsl::array<U, N> &arr) -> span<U>;
+    span(bsl::array<U, N> &mut_arr) -> span<U>;
 
     /// <!-- description -->
     ///   @brief Creates user-defined deduction guide for bsl::array
@@ -908,194 +935,6 @@ namespace bsl
     ///
     template<typename U, bsl::uintmax N>
     span(bsl::array<U, N> const &arr) -> span<U const>;
-
-    /// <!-- description -->
-    ///   @brief Returns a span<byte const> given a pointer to an array
-    ///     type and the total number of bytes
-    ///   @include span/example_span_as_bytes.hpp
-    ///   @related bsl::span
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam U the src memory type.
-    ///   @param ptr a pointer to the array to create the span for
-    ///   @param bytes the total number of bytes in the array
-    ///   @return Returns a span<byte const> given a pointer to an array
-    ///     type and the total number of bytes
-    ///
-    template<typename U>
-    [[nodiscard]] constexpr auto
-    as_bytes(U const *const ptr, safe_uintmax const &bytes) noexcept -> span<byte const>
-    {
-        static_assert(bsl::disjunction<bsl::is_void<U>, bsl::is_standard_layout<U>>::value);
-        return {static_cast<byte const *>(static_cast<void const *>(ptr)), bytes};
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns a span<byte const> given an existing span<T>
-    ///   @include span/example_span_as_bytes.hpp
-    ///   @related bsl::span
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the type of element being viewed.
-    ///   @param spn the span<T> to convert into a span<byte const>
-    ///   @return Returns a span<byte const> given an existing span<T>
-    ///
-    template<typename T>
-    [[nodiscard]] constexpr auto
-    as_bytes(span<T> const &spn) noexcept -> span<byte const>
-    {
-        static_assert(bsl::disjunction<bsl::is_void<T>, bsl::is_standard_layout<T>>::value);
-        return as_bytes(spn.data(), spn.size_bytes());
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns a span<byte> given a pointer to an array
-    ///     type and the total number of bytes
-    ///   @include span/example_span_as_writable_bytes.hpp
-    ///   @related bsl::span
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam U the src memory type.
-    ///   @param ptr a pointer to the array to create the span for
-    ///   @param bytes the total number of bytes in the array
-    ///   @return Returns a span<byte> given a pointer to an array
-    ///     type and the total number of bytes
-    ///
-    template<typename U>
-    [[nodiscard]] constexpr auto
-    as_writable_bytes(U *const ptr, safe_uintmax const &bytes) noexcept -> span<byte>
-    {
-        static_assert(bsl::disjunction<bsl::is_void<U>, bsl::is_standard_layout<U>>::value);
-        return {static_cast<byte *>(static_cast<void *>(ptr)), bytes};
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns a span<byte> given an existing span<T>
-    ///   @include span/example_span_as_writable_bytes.hpp
-    ///   @related bsl::span
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the type of element being viewed.
-    ///   @param spn the span<T> to convert into a span<byte>
-    ///   @return Returns a span<byte> given an existing span<T>
-    ///
-    template<typename T>
-    [[nodiscard]] constexpr auto
-    as_writable_bytes(span<T> &spn) noexcept -> span<byte>
-    {
-        static_assert(bsl::disjunction<bsl::is_void<T>, bsl::is_standard_layout<T>>::value);
-        return as_writable_bytes(spn.data(), spn.size_bytes());
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns a span<T const> given a pointer and the total number
-    ///     of bytes. Note that both T and U must have a standard layout to
-    ///     use this function (i.e., the type must be memcpy-able, otherwise
-    ///     this conversion would produce UB).
-    ///   @include span/example_span_as_t.hpp
-    ///   @related bsl::span
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the dst span type
-    ///   @tparam U the src memory type.
-    ///   @param ptr a pointer to the memory to create the span from
-    ///   @param bytes the total number of bytes
-    ///   @return Returns a span<T const> given a pointer and the total number
-    ///     of bytes.
-    ///
-    template<typename T, typename U, enable_if_t<!is_void<U>::value, bool> = true>
-    [[nodiscard]] constexpr auto
-    as_t(U const *const ptr, safe_uintmax const &bytes) noexcept -> span<T const>
-    {
-        if constexpr (is_void<U>::value) {
-            static_assert(is_standard_layout<T>::value, "T must be a standard layout");
-            return {static_cast<T const *>(ptr), bytes / sizeof(T)};
-        }
-        else {
-            static_assert(is_standard_layout<T>::value, "T must be a standard layout");
-            static_assert(is_standard_layout<U>::value, "U must be a standard layout");
-            return {static_cast<T const *>(static_cast<void const *>(ptr)), bytes / sizeof(T)};
-        }
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns a span<T const> given a span\<U\>. Note that both T
-    ///     and U must have a standard layout to use this function (i.e.,
-    ///     the type must be memcpy-able, otherwise this conversion would
-    ///     produce UB).
-    ///   @include span/example_span_as_t.hpp
-    ///   @related bsl::span
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the dst span type
-    ///   @tparam U the src span type.
-    ///   @param spn a span to create the new span from
-    ///   @return Returns a span<T const> given a pointer and the total number
-    ///     of bytes.
-    ///
-    template<typename T, typename U>
-    [[nodiscard]] constexpr auto
-    as_t(span<U> const &spn) noexcept -> span<T const>
-    {
-        static_assert(is_standard_layout<T>::value, "T must be a standard layout");
-        static_assert(is_standard_layout<U>::value, "U must be a standard layout");
-        return as_t<T, U>(spn.data(), spn.size_bytes());
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns a span<T> given a pointer and the total number
-    ///     of bytes. Note that both T and U must have a standard layout to
-    ///     use this function (i.e., the type must be memcpy-able, otherwise
-    ///     this conversion would produce UB).
-    ///   @include span/example_span_as_writable_t.hpp
-    ///   @related bsl::span
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the dst span type
-    ///   @tparam U the src span type.
-    ///   @param ptr a pointer to the memory to create the span from
-    ///   @param bytes the total number of bytes
-    ///   @return Returns a span<T> given a pointer and the total number
-    ///     of bytes.
-    ///
-    template<typename T, typename U>
-    [[nodiscard]] constexpr auto
-    as_writable_t(U *const ptr, safe_uintmax const &bytes) noexcept -> span<T>
-    {
-        if constexpr (is_void<U>::value) {
-            static_assert(is_standard_layout<T>::value, "T must be a standard layout");
-            return {static_cast<T *>(ptr), bytes / sizeof(T)};
-        }
-        else {
-            static_assert(is_standard_layout<T>::value, "T must be a standard layout");
-            static_assert(is_standard_layout<U>::value, "U must be a standard layout");
-            return {static_cast<T *>(static_cast<void *>(ptr)), bytes / sizeof(T)};
-        }
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns a span<T> given a span\<U\>. Note that both T
-    ///     and U must have a standard layout to use this function (i.e.,
-    ///     the type must be memcpy-able, otherwise this conversion would
-    ///     produce UB).
-    ///   @include span/example_span_as_writable_t.hpp
-    ///   @related bsl::span
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the dst span type
-    ///   @tparam U the src span type.
-    ///   @param spn a span to create the new span from
-    ///   @return Returns a span<T> given a pointer and the total number
-    ///     of bytes.
-    ///
-    template<typename T, typename U>
-    [[nodiscard]] constexpr auto
-    as_writable_t(span<U> &spn) noexcept -> span<T>
-    {
-        static_assert(is_standard_layout<T>::value, "T must be a standard layout");
-        static_assert(is_standard_layout<U>::value, "U must be a standard layout");
-        return as_writable_t<T, U>(spn.data(), spn.size_bytes());
-    }
 
     /// <!-- description -->
     ///   @brief Returns true if two spans have the same size and contain
@@ -1118,8 +957,8 @@ namespace bsl
             return false;
         }
 
-        for (safe_uintmax i{}; i < lhs.size(); ++i) {
-            if (*lhs.at_if(i) != *rhs.at_if(i)) {
+        for (safe_uintmax mut_i{}; mut_i < lhs.size(); ++mut_i) {
+            if (*lhs.at_if(mut_i) != *rhs.at_if(mut_i)) {
                 return false;
             }
 
@@ -1166,6 +1005,10 @@ namespace bsl
     [[maybe_unused]] constexpr auto
     operator<<(out<T1> const o, bsl::span<T2> const &val) noexcept -> out<T1>
     {
+        if (is_constant_evaluated()) {
+            return o;
+        }
+
         if constexpr (!o) {
             return o;
         }
@@ -1174,12 +1017,12 @@ namespace bsl
             return o << "[]";
         }
 
-        for (safe_uintmax i{}; i < val.size(); ++i) {
-            if (i.is_zero()) {
-                o << "[" << *val.at_if(i);
+        for (safe_uintmax mut_i{}; mut_i < val.size(); ++mut_i) {
+            if (mut_i.is_zero()) {
+                o << "[" << *val.at_if(mut_i);
             }
             else {
-                o << ", " << *val.at_if(i);
+                o << ", " << *val.at_if(mut_i);
             }
         }
 

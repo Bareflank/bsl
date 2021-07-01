@@ -47,14 +47,14 @@ namespace bsl
     ///     fmt support for their own types.
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam OUT_T the type of out (i.e., debug, alert, etc)
+    ///   @tparam T the type of out (i.e., debug, alert, etc)
     ///   @param o the instance of out<T> to output to
     ///   @param ops ops the fmt options used to format the output
     ///   @param str the cstr_type being outputted
     ///
-    template<typename OUT_T>
+    template<typename T>
     constexpr void
-    fmt_impl(OUT_T &&o, fmt_options const &ops, cstr_type const str) noexcept
+    fmt_impl(out<T> const o, fmt_options const &ops, cstr_type const str) noexcept
     {
         if (is_constant_evaluated()) {
             return;
@@ -62,7 +62,7 @@ namespace bsl
 
         auto const len{bsl::builtin_strlen(str)};
         details::fmt_impl_align_pre(o, ops, len, true);
-        o.write(str);
+        o.write_to_console(str);
         details::fmt_impl_align_suf(o, ops, len, true);
     }
 
@@ -93,11 +93,11 @@ namespace bsl
         }
 
         if (unlikely(nullptr == str)) {
-            o.write("[empty bsl::cstr_type]");
+            o.write_to_console("[empty bsl::cstr_type]");
             return o;
         }
 
-        o.write(str);
+        o.write_to_console(str);
         return o;
     }
 }

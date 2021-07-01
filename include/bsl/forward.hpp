@@ -42,14 +42,14 @@ namespace bsl
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type that defines the value being forwarded
-    ///   @param val the value being forwarded
-    ///   @return static_cast<T &&>(val)
+    ///   @param pudm_udm_val the value being forwarded
+    ///   @return static_cast<T &&>(pudm_udm_val)
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    forward(bsl::remove_reference_t<T> &val) noexcept -> T &&
+    forward(bsl::remove_reference_t<T> &pudm_udm_val) noexcept -> T &&
     {
-        return static_cast<T &&>(val);
+        return static_cast<T &&>(pudm_udm_val);
     }
 
     /// <!-- description -->
@@ -62,14 +62,14 @@ namespace bsl
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type that defines the value being forwarded
-    ///   @param val the value being forwarded
-    ///   @return static_cast<T &&>(val)
+    ///   @param pudm_udm_val the value being forwarded
+    ///   @return static_cast<T &&>(pudm_udm_val)
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    forward(bsl::remove_reference_t<T> &&val) noexcept -> T &&
+    forward(bsl::remove_reference_t<T> &&pudm_udm_val) noexcept -> T &&
     {
-        return static_cast<T &&>(val);
+        return static_cast<T &&>(pudm_udm_val);
     }
 }
 

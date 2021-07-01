@@ -44,7 +44,7 @@ namespace bsl
         ///   @return only used for decltype
         ///
         template<typename T>
-        [[maybe_unused]] auto try_add_lvalue_reference(bsl::int32 ignored) noexcept
+        [[maybe_unused]] auto try_add_lvalue_reference(bsl::int32 const ignored) noexcept
             -> type_identity<T &>;
 
         /// <!-- description -->
@@ -56,7 +56,8 @@ namespace bsl
         ///   @return only used for decltype
         ///
         template<typename T>
-        [[maybe_unused]] auto try_add_lvalue_reference(bool ignored) noexcept -> type_identity<T>;
+        [[maybe_unused]] auto try_add_lvalue_reference(bool const ignored) noexcept
+            -> type_identity<T>;
     }
 
     /// @class bsl::add_lvalue_reference
@@ -73,8 +74,6 @@ namespace bsl
     struct add_lvalue_reference final
     {
         /// @brief provides the member typedef "type"
-        // We need the implicit conversion for this to work
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
         using type = typename decltype(details::try_add_lvalue_reference<T>(0))::type;
     };
 

@@ -28,35 +28,7 @@
 
 namespace
 {
-    // Needed for requirements testing
-    // NOLINTNEXTLINE(bsl-user-defined-type-names-match-header-name)
-    class fixture_t final
-    {
-        bsl::source_location sloc{bsl::here()};
-
-    public:
-        [[nodiscard]] constexpr auto
-        test_member_const() const noexcept -> bool
-        {
-            bsl::discard(sloc.file_name());
-            bsl::discard(sloc.function_name());
-            bsl::discard(sloc.line());
-
-            return true;
-        }
-
-        [[nodiscard]] constexpr auto
-        test_member_nonconst() noexcept -> bool
-        {
-            bsl::discard(sloc.file_name());
-            bsl::discard(sloc.function_name());
-            bsl::discard(sloc.line());
-
-            return true;
-        }
-    };
-
-    constexpr fixture_t fixture1{};
+    constinit bsl::source_location const g_verify_constinit{bsl::here()};
 }
 
 /// <!-- description -->
@@ -70,24 +42,26 @@ namespace
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    bsl::ut_scenario{"verify noexcept"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::ut_then{} = []() {
-                static_assert(noexcept(bsl::source_location::current()));
-                static_assert(noexcept(bsl::here()));
-                static_assert(noexcept(bsl::here().file_name()));
-                static_assert(noexcept(bsl::here().function_name()));
-                static_assert(noexcept(bsl::here().line()));
-            };
-        };
+    bsl::ut_scenario{"verify supports constinit"} = []() noexcept {
+        bsl::discard(g_verify_constinit);
     };
 
-    bsl::ut_scenario{"verify constness"} = []() {
-        bsl::ut_given{} = []() {
-            fixture_t fixture2{};
-            bsl::ut_then{} = [&fixture2]() {
-                static_assert(fixture1.test_member_const());
-                bsl::ut_check(fixture2.test_member_nonconst());
+    bsl::ut_scenario{"verify noexcept"} = []() noexcept {
+        bsl::ut_given{} = []() noexcept {
+            bsl::source_location mut_sloc{bsl::here()};
+            bsl::source_location const sloc{bsl::here()};
+            bsl::ut_then{} = []() noexcept {
+                static_assert(noexcept(bsl::source_location::current()));
+
+                static_assert(noexcept(mut_sloc.file_name()));
+                static_assert(noexcept(mut_sloc.function_name()));
+                static_assert(noexcept(mut_sloc.line()));
+
+                static_assert(noexcept(sloc.file_name()));
+                static_assert(noexcept(sloc.function_name()));
+                static_assert(noexcept(sloc.line()));
+
+                static_assert(noexcept(bsl::here()));
             };
         };
     };

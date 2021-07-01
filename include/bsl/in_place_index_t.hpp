@@ -72,9 +72,9 @@ namespace bsl
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr in_place_index_t(in_place_index_t &&o) noexcept = default;
+        constexpr in_place_index_t(in_place_index_t &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -90,10 +90,10 @@ namespace bsl
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(in_place_index_t &&o) &noexcept
+        [[maybe_unused]] constexpr auto operator=(in_place_index_t &&mut_o) &noexcept
             -> in_place_index_t & = default;
     };
 }

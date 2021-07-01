@@ -33,8 +33,8 @@ namespace bsl
     inline void
     example_move_overview() noexcept
     {
-        bool val1{true};
-        bool const &&val2{bsl::move(val1)};
+        bool mut_val1{true};
+        bool const &&val2{bsl::move(mut_val1)};
 
         if (val2) {
             bsl::print() << "success\n";

@@ -88,9 +88,9 @@ namespace bsl
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr example_class_polymorphic(example_class_polymorphic &&o) noexcept = default;
+        constexpr example_class_polymorphic(example_class_polymorphic &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -106,10 +106,10 @@ namespace bsl
         ///   @brief copy constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] auto operator=(example_class_polymorphic &&o) &noexcept
+        [[maybe_unused]] auto operator=(example_class_polymorphic &&mut_o) &noexcept
             -> example_class_polymorphic & = default;
 
     private:

@@ -40,18 +40,18 @@ namespace bsl
     ///   @related bsl::basic_string_view
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam OUT_T the type of out (i.e., debug, alert, etc)
+    ///   @tparam T the type of out (i.e., debug, alert, etc)
     ///   @tparam CHAR_T the type of characters in the string
     ///   @param o the instance of out<T> to output to
     ///   @param ops ops the fmt options used to format the output
     ///   @param str the string_view being outputted
     ///
-    template<typename OUT_T, typename CHAR_T>
+    template<typename T, typename CHAR_T>
     constexpr void
-    fmt_impl(OUT_T &&o, fmt_options const &ops, basic_string_view<CHAR_T> const &str) noexcept
+    fmt_impl(out<T> const o, fmt_options const &ops, basic_string_view<CHAR_T> const &str) noexcept
     {
         details::fmt_impl_align_pre(o, ops, str.length(), true);
-        o.write(str.data());
+        o.write_to_console(str.data());
         details::fmt_impl_align_suf(o, ops, str.length(), true);
     }
 
@@ -85,11 +85,11 @@ namespace bsl
         }
 
         if (unlikely(!str)) {
-            o.write("[empty bsl::string_view]");
+            o.write_to_console("[empty bsl::string_view]");
             return o;
         }
 
-        o.write(str.data());
+        o.write_to_console(str.data());
         return o;
     }
 }

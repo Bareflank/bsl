@@ -62,9 +62,9 @@ namespace bsl
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr dormant_t(dormant_t &&o) noexcept = default;
+        constexpr dormant_t(dormant_t &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -80,15 +80,14 @@ namespace bsl
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(dormant_t &&o) &noexcept -> dormant_t & = default;
+        [[maybe_unused]] constexpr auto operator=(dormant_t &&mut_o) &noexcept
+            -> dormant_t & = default;
     };
 
     /// @brief reduces the verbosity of bsl::dormant_t
-    // We want our implementation to mimic C++ here.
-    // NOLINTNEXTLINE(bsl-name-case)
     constexpr dormant_t dormant{};
 }
 

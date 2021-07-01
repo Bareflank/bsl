@@ -34,11 +34,11 @@ namespace bsl
     example_reverse_iterator_increment() noexcept
     {
         constexpr bsl::string_view str{"Hello"};
-        bsl::string_view::reverse_iterator_type iter{str.rbegin()};
+        bsl::string_view::reverse_iterator_type mut_iter{str.rbegin()};
 
-        ++iter;
-        if (nullptr != iter.get_if()) {
-            bsl::print() << "success: " << *iter.get_if() << bsl::endl;
+        ++mut_iter;
+        if (nullptr != mut_iter.get_if()) {
+            bsl::print() << "success: " << *mut_iter.get_if() << bsl::endl;
         }
         else {
             bsl::error() << "failure\n";

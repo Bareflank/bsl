@@ -28,7 +28,8 @@
 namespace
 {
     /// @brief stores whether or not the finally was executed.
-    constinit bool g_executed{};
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
+    constinit bool g_mut_executed{};
 
     /// <!-- description -->
     ///   @brief Used by some of the finally tests to ensure that we can
@@ -37,7 +38,7 @@ namespace
     void
     finally_function() noexcept
     {
-        g_executed = true;
+        g_mut_executed = true;
     }
 
     /// <!-- description -->
@@ -52,50 +53,50 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"finally"} = []() {
-            bsl::ut_given_at_runtime{} = []() {
-                g_executed = {};
-                bsl::ut_then{} = []() {
+        bsl::ut_scenario{"finally"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                g_mut_executed = {};
+                bsl::ut_then{} = []() noexcept {
                     {
-                        bsl::finally test{&finally_function};
+                        bsl::finally mut_test{&finally_function};
                     }
-                    bsl::ut_check(g_executed);
+                    bsl::ut_check(g_mut_executed);
                 };
             };
         };
 
-        bsl::ut_scenario{"ignore finally"} = []() {
-            bsl::ut_given_at_runtime{} = []() {
-                g_executed = {};
-                bsl::ut_then{} = []() {
+        bsl::ut_scenario{"ignore finally"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                g_mut_executed = {};
+                bsl::ut_then{} = []() noexcept {
                     {
-                        bsl::finally test{&finally_function};
-                        test.ignore();
+                        bsl::finally mut_test{&finally_function};
+                        mut_test.ignore();
                     }
-                    bsl::ut_check(!g_executed);
+                    bsl::ut_check(!g_mut_executed);
                 };
             };
         };
 
-        bsl::ut_scenario{"dormant finally"} = []() {
-            bsl::ut_given_at_runtime{} = []() {
-                g_executed = {};
-                bsl::ut_then{} = []() {
+        bsl::ut_scenario{"dormant finally"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                g_mut_executed = {};
+                bsl::ut_then{} = []() noexcept {
                     {
-                        bsl::finally test{bsl::dormant, &finally_function};
+                        bsl::finally mut_test{bsl::dormant, &finally_function};
                     }
-                    bsl::ut_check(!g_executed);
+                    bsl::ut_check(!g_mut_executed);
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                g_executed = {};
-                bsl::ut_then{} = []() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                g_mut_executed = {};
+                bsl::ut_then{} = []() noexcept {
                     {
-                        bsl::finally test{bsl::dormant, &finally_function};
-                        test.activate();
+                        bsl::finally mut_test{bsl::dormant, &finally_function};
+                        mut_test.activate();
                     }
-                    bsl::ut_check(g_executed);
+                    bsl::ut_check(g_mut_executed);
                 };
             };
         };

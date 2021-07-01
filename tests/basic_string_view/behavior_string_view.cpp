@@ -39,211 +39,211 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    bsl::ut_scenario{"empty"} = []() {
-        bsl::ut_when{} = []() {
+    bsl::ut_scenario{"empty"} = []() noexcept {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::string_view{};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("[empty bsl::string_view]"));
             };
         };
     };
 
-    bsl::ut_scenario{"string_view with no formatting"} = []() {
-        bsl::ut_when{} = []() {
+    bsl::ut_scenario{"string_view with no formatting"} = []() noexcept {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::string_view{"Hello"};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("Hello"));
             };
         };
     };
 
-    bsl::ut_scenario{"string_view with no formatting using fmt"} = []() {
-        bsl::ut_when{} = []() {
+    bsl::ut_scenario{"string_view with no formatting using fmt"} = []() noexcept {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{bsl::nullops, bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("Hello"));
             };
         };
     };
 
-    bsl::ut_scenario{"string_view with formatting type s"} = []() {
-        bsl::ut_when{} = []() {
+    bsl::ut_scenario{"string_view with formatting type s"} = []() noexcept {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"s", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("Hello"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"10s", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("Hello     "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"<s", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("Hello"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{">s", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("Hello"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"^s", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("Hello"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"<10s", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("Hello     "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{">10s", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("     Hello"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"^10s", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("  Hello   "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#<10s", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("Hello#####"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#>10s", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("#####Hello"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#^10s", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("##Hello###"));
             };
         };
     };
 
-    bsl::ut_scenario{"string_view with default formatting type"} = []() {
-        bsl::ut_when{} = []() {
+    bsl::ut_scenario{"string_view with default formatting type"} = []() noexcept {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("Hello"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"10", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("Hello     "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"<", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("Hello"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{">", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("Hello"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"^", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("Hello"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"<10", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("Hello     "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{">10", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("     Hello"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"^10", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("  Hello   "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#<10", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("Hello#####"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#>10", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("#####Hello"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#^10", bsl::string_view{"Hello"}};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("##Hello###"));
             };
         };

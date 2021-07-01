@@ -59,9 +59,9 @@ namespace bsl
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr example_class_nodefault(example_class_nodefault &&o) noexcept = default;
+        constexpr example_class_nodefault(example_class_nodefault &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -77,10 +77,10 @@ namespace bsl
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(example_class_nodefault &&o) &noexcept
+        [[maybe_unused]] constexpr auto operator=(example_class_nodefault &&mut_o) &noexcept
             -> example_class_nodefault & = default;
 
         /// <!-- description -->

@@ -32,11 +32,12 @@ Enjoy:
 #include <bsl/exit_code.hpp>
 #include <bsl/fmt.hpp>
 #include <bsl/safe_integral.hpp>
+#include <bsl/unlikely.hpp>
 
 [[nodiscard]] auto
 main(bsl::int32 const argc, bsl::cstr_type const argv[]) noexcept -> bsl::exit_code
 {
-    constexpr auto num_expected_args{bsl::to_umax(2)};
+    constexpr auto num_expected_args{2_umax};
     bsl::arguments const args{argc, argv};
 
     if (args.size() < num_expected_args) {
@@ -44,25 +45,24 @@ main(bsl::int32 const argc, bsl::cstr_type const argv[]) noexcept -> bsl::exit_c
         return bsl::exit_failure;
     }
 
-    constexpr auto size_of_arr{bsl::to_umax(42)};
+    constexpr auto size_of_arr{42_umax};
     bsl::array<bsl::safe_int32, size_of_arr.get()> arr{};
 
-    constexpr auto index_of_arg{bsl::to_umax(1)};
+    constexpr auto index_of_arg{1_umax};
     auto const val{args.at<bsl::safe_int32>(index_of_arg)};
 
-    if (!val) {
+    if (bsl::unlikely(!val)) {
         bsl::error() << "Invalid argument\n";
         return bsl::exit_failure;
     }
 
     for (auto const elem : arr) {
-        if (nullptr != elem.data) {
-            *elem.data = val;
-        }
-        else {
+        if (bsl::unlikely(nullptr == elem.data)) {
             bsl::error() << "Impossible when using ranged loops.\n";
             return bsl::exit_failure;
         }
+
+        *elem.data = val;
     }
 
     for (auto const elem : bsl::as_const(arr)) {
@@ -125,6 +125,63 @@ cmake -DCMAKE_CXX_COMPILER="clang++" -DBUILD_EXAMPLES=ON -DBUILD_TESTS=ON ..
 make info
 make
 ```
+
+### **Why 'constexpr everything'**
+The BSL implements everything as a constexpr. Beyond the usual reasons for compile-time code, the BSL enables unit tests to be executed at compile-time. Although C++20 added an enormous amount of additional support for constexpr support, there are a number of things that are still not allowed in a constexpr, and this is a good thing, especially if critical systems compliance is important to your use case. This includes:
+- No support for Undefined Behavior (UB)
+- No support for casts from a void* to something else, or any other attempts to change an object's type without proper lifetime management.
+- No support for memory leaks and any other memory related issues like out-of-bounds array accesses, etc.
+- No support for reinterpret_cast, goto, etc.
+- No support for the use of uninitialized variables
+- No support for global or static local variables
+- And much more
+
+In other words, the constexpr validation checker in the compiler is in a way, the ultimate static analysis tool. Tools like ASAN, UBSAN and Clang-Tidy are helpful, and should still be used (especially if AUTOSAR compliance is required as static analysis is still needed), but if you ensure 100% code coverage at compile-time, most of the hard to find bugs will be eliminated. To perform compile-time unit testing, consider the following test:
+
+``` c++
+[[nodiscard]] constexpr auto
+tests() noexcept -> bsl::exit_code
+{
+    bsl::ut_scenario{"verify += adds correctly"} = []() noexcept {
+        bsl::ut_given{} = []() noexcept {
+            constexpr auto data1{42_umax};
+            bsl::safe_uintmax data2{};
+            bsl::ut_when{} = [&]() noexcept {
+                data2 += data1;
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(data2 == data1);
+                };
+            };
+        };
+    };
+
+    return bsl::ut_success();
+}
+```
+
+To execute this test at compile-time, simply do the following:
+
+``` c++
+[[nodiscard]] auto
+main() noexcept -> bsl::exit_code
+{
+    static_assert(tests() == bsl::ut_success());
+    return tests();
+}
+```
+
+Using this pattern, all unit tests will be executed at both compile-time and at runtime, allowing you to use things like code coverage tools to ensure complete coverage of your unit tests.
+
+If you think this is impossible in any real-world example, take a look at the [Bareflank Hypervisor](https://github.com/Bareflank/hypervisor). This is not a simple "Hello World" application, but instead is a hypervisor microkernel, complete with paging, ASM logic, etc. With a couple small exceptions (like virtual address to physical address conversions), all of the C++ code in this repro is tested at compile-time.
+
+## **AUTOSAR Compliance**
+The BSL is mostly compliant with AUTOSAR, and in a lot of ways far exceeds the AUTOSAR rules. This means the BSL is one of the few, if not the only partial C++ library that is AUTOSAR compliant in open source. There are some rules that are not adhered to:
+- The BSL uses C++20. Without C++20, constexpr unit testing would not be possible. AUTOSAR requires the use of C++14. The advantages of constexpr unit testing far out-weight the disadvantages of needing an exception to this rule. To ensure as much compliance as possible, the BSL does not attempt to use most of the new features added with C++17 and C++20 until a new AUTOSAR/MISRA specification is available to provide proper guidance.
+- Since C++14 is not used, issues with things like `auto i{};` are fixed and therefor allowed. Two's compliment as well. This does not mean that all uses of `auto` are allowed as a number of rules still exist around `auto` that have nothing to do with the ambiguity issues with `auto i{};` in C++14.
+- Some user-defined literals are provided for initializing fixed-width integrals. How this is done to ensure there are no issues with initializing variables can be found in the [convert.hpp](https://github.com/Bareflank/bsl/blob/master/include/bsl/convert.hpp#L900) header file, but the short story is, it is absolutely possible to create safe user-defined literals if raw literals are used (instead of their cooked counterparts). Raw literals require the code to manually parse the literal's tokens and thanks to C++20's extensive support for constexpr, this is all possible at compile-time (although arguably it was still possible with C++14, just not as easy).
+- In some rare situations the BSL does not use an explicit single argument constructor to ensure compatibility with the C++ standard library where it makes sense. In these cases, a deleted single argument template function is provided which ensures that implicit conversions are still not possible, mitigating this issue. In fact, implicit conversions of any kind do not occur and are no allowed by our custom version of the Clang-Tidy static analysis engine, including implicit conversions of integral types (which gets real interesting when working with sub-32 bit integral types).
+- There are some rules that simply cannot be adhered to when implementing the C++ standard library features. For example, the BSL must perform pointer arithmetic using the subscript operator when implementing bsl::array. It must also include some non-C++ headers like stdint.h to implement cstdint.hpp as required by the spec. Grep for NOLINTNEXTLINE in the BSL to see all of the exceptions that are required (although it should be noted that a vast number of these are self-imposed rules that go above and beyond AUTOSAR like bsl-name-case and bsl-implicit-conversions-forbidden which make up more than half of the exceptions).
+- C++ exceptions are not used by the BSL, but they are supported (meaning you can use C++ exceptions with the BSL if you choose). This is due to the fact that a lot of embedded, IoT and kernel/hypervisor applications for the BSL cannot support C++ exceptions due to the need for an unwinder, which is only really provided for Windows, Linux and macOS. There is a lot of work in the C++ community to address this with static exceptions, so maybe someday this will change, but for now, freestanding environments usually do not support C++ exceptions.
 
 ## **Resources**
 [![Join the chat](https://img.shields.io/badge/chat-on%20Slack-brightgreen.svg)](https://bareflank.herokuapp.com/)

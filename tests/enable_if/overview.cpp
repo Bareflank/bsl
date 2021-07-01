@@ -132,28 +132,28 @@ main() noexcept -> bsl::exit_code
     bsl::discard(foo3<bool>());
     bsl::discard(foo3<void>());
 
-    bsl::ut_scenario{"enable_if with default bool T"} = []() {
-        bsl::ut_given{} = []() {
-            bool which{foo1<bool>()};
-            bsl::ut_then{} = [&which]() {
+    bsl::ut_scenario{"enable_if with default bool T"} = []() noexcept {
+        bsl::ut_given{} = []() noexcept {
+            constexpr bool which{foo1<bool>()};
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(which);
             };
         };
     };
 
-    bsl::ut_scenario{"enable_if with default bool T as a pointer"} = []() {
-        bsl::ut_given{} = []() {
-            bool which{foo2<bool>()};
-            bsl::ut_then{} = [&which]() {
+    bsl::ut_scenario{"enable_if with default bool T as a pointer"} = []() noexcept {
+        bsl::ut_given{} = []() noexcept {
+            constexpr bool which{foo2<bool>()};
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(which);
             };
         };
     };
 
-    bsl::ut_scenario{"enable_if with bsl::int32 T"} = []() {
-        bsl::ut_given{} = []() {
-            bool which{foo3<bool>()};
-            bsl::ut_then{} = [&which]() {
+    bsl::ut_scenario{"enable_if with bsl::int32 T"} = []() noexcept {
+        bsl::ut_given{} = []() noexcept {
+            constexpr bool which{foo3<bool>()};
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(which);
             };
         };

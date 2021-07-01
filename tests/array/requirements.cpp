@@ -30,77 +30,7 @@
 
 namespace
 {
-    constinit bsl::array const verify_constinit{true, false};
-
-    // Needed for requirements testing
-    // NOLINTNEXTLINE(bsl-user-defined-type-names-match-header-name)
-    class fixture_t final
-    {
-        bsl::array<bool, static_cast<bsl::uintmax>(6)> arr{};
-
-    public:
-        [[nodiscard]] constexpr auto
-        test_member_const() const noexcept -> bool
-        {
-            bsl::discard(arr.at_if(bsl::to_umax(0)));
-            bsl::discard(arr.front());
-            bsl::discard(arr.front_if());
-            bsl::discard(arr.back());
-            bsl::discard(arr.back_if());
-            bsl::discard(arr.data());
-            bsl::discard(arr.begin());
-            bsl::discard(arr.cbegin());
-            bsl::discard(arr.iter(bsl::to_umax(0)));
-            bsl::discard(arr.citer(bsl::to_umax(0)));
-            bsl::discard(arr.end());
-            bsl::discard(arr.cend());
-            bsl::discard(arr.rbegin());
-            bsl::discard(arr.crbegin());
-            bsl::discard(arr.riter(bsl::to_umax(0)));
-            bsl::discard(arr.criter(bsl::to_umax(0)));
-            bsl::discard(arr.rend());
-            bsl::discard(arr.crend());
-            bsl::discard(arr.empty());
-            bsl::discard(!!arr);
-            bsl::discard(arr.size());
-            bsl::discard(arr.max_size());
-            bsl::discard(arr.size_bytes());
-
-            return true;
-        }
-
-        [[nodiscard]] constexpr auto
-        test_member_nonconst() noexcept -> bool
-        {
-            bsl::discard(arr.at_if(bsl::to_umax(0)));
-            bsl::discard(arr.front());
-            bsl::discard(arr.front_if());
-            bsl::discard(arr.back());
-            bsl::discard(arr.back_if());
-            bsl::discard(arr.data());
-            bsl::discard(arr.begin());
-            bsl::discard(arr.cbegin());
-            bsl::discard(arr.iter(bsl::to_umax(0)));
-            bsl::discard(arr.citer(bsl::to_umax(0)));
-            bsl::discard(arr.end());
-            bsl::discard(arr.cend());
-            bsl::discard(arr.rbegin());
-            bsl::discard(arr.crbegin());
-            bsl::discard(arr.riter(bsl::to_umax(0)));
-            bsl::discard(arr.criter(bsl::to_umax(0)));
-            bsl::discard(arr.rend());
-            bsl::discard(arr.crend());
-            bsl::discard(arr.empty());
-            bsl::discard(!!arr);
-            bsl::discard(arr.size());
-            bsl::discard(arr.max_size());
-            bsl::discard(arr.size_bytes());
-
-            return true;
-        }
-    };
-
-    constexpr fixture_t fixture1{};
+    constinit bsl::array const g_verify_constinit{true, false};
 }
 
 /// <!-- description -->
@@ -114,15 +44,44 @@ namespace
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    bsl::ut_scenario{"verify supports constinit"} = []() {
-        bsl::discard(verify_constinit);
+    bsl::ut_scenario{"verify supports constinit"} = []() noexcept {
+        bsl::discard(g_verify_constinit);
     };
 
-    bsl::ut_scenario{"verify noexcept"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::array arr1{true, false};
-            bsl::array arr2{true, false};
-            bsl::ut_then{} = []() {
+    bsl::ut_scenario{"verify noexcept"} = []() noexcept {
+        bsl::ut_given{} = []() noexcept {
+            bsl::array mut_arr1{true, false};
+            bsl::array mut_arr2{true, false};
+            bsl::array const arr1{true, false};
+            bsl::array const arr2{true, false};
+            bsl::ut_then{} = []() noexcept {
+                static_assert(noexcept(mut_arr1.at_if(bsl::to_umax(0))));
+                static_assert(noexcept(mut_arr1.front()));
+                static_assert(noexcept(mut_arr1.front_if()));
+                static_assert(noexcept(mut_arr1.back()));
+                static_assert(noexcept(mut_arr1.back_if()));
+                static_assert(noexcept(mut_arr1.data()));
+                static_assert(noexcept(mut_arr1.begin()));
+                static_assert(noexcept(mut_arr1.cbegin()));
+                static_assert(noexcept(mut_arr1.iter(bsl::to_umax(0))));
+                static_assert(noexcept(mut_arr1.citer(bsl::to_umax(0))));
+                static_assert(noexcept(mut_arr1.end()));
+                static_assert(noexcept(mut_arr1.cend()));
+                static_assert(noexcept(mut_arr1.rbegin()));
+                static_assert(noexcept(mut_arr1.crbegin()));
+                static_assert(noexcept(mut_arr1.riter(bsl::to_umax(0))));
+                static_assert(noexcept(mut_arr1.criter(bsl::to_umax(0))));
+                static_assert(noexcept(mut_arr1.rend()));
+                static_assert(noexcept(mut_arr1.crend()));
+                static_assert(noexcept(mut_arr1.empty()));
+                static_assert(noexcept(!!mut_arr1));
+                static_assert(noexcept(mut_arr1.size()));
+                static_assert(noexcept(mut_arr1.max_size()));
+                static_assert(noexcept(mut_arr1.size_bytes()));
+                static_assert(noexcept(mut_arr1 == mut_arr2));
+                static_assert(noexcept(mut_arr1 != mut_arr2));
+                static_assert(noexcept(bsl::print() << mut_arr1));
+
                 static_assert(noexcept(arr1.at_if(bsl::to_umax(0))));
                 static_assert(noexcept(arr1.front()));
                 static_assert(noexcept(arr1.front_if()));
@@ -149,16 +108,6 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(arr1 == arr2));
                 static_assert(noexcept(arr1 != arr2));
                 static_assert(noexcept(bsl::print() << arr1));
-            };
-        };
-    };
-
-    bsl::ut_scenario{"verify constness"} = []() {
-        bsl::ut_given{} = []() {
-            fixture_t fixture2{};
-            bsl::ut_then{} = [&fixture2]() {
-                static_assert(fixture1.test_member_const());
-                bsl::ut_check(fixture2.test_member_nonconst());
             };
         };
     };

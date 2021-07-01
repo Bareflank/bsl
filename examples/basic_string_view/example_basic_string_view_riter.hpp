@@ -37,8 +37,8 @@ namespace bsl
         constexpr auto idx{1_umax};
         constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
 
-        for (auto iter{str.riter(idx)}; iter != str.rend(); ++iter) {
-            bsl::print() << "element [" << iter.index() << "] == " << iter.data() << bsl::endl;
+        for (auto mut_i{str.riter(idx)}; mut_i != str.rend(); ++mut_i) {
+            bsl::print() << "element [" << mut_i.index() << "] == " << mut_i.data() << bsl::endl;
         }
     }
 }

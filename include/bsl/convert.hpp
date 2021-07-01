@@ -28,11 +28,12 @@
 #include "forward.hpp"
 #include "from_chars.hpp"
 #include "is_constant_evaluated.hpp"
+#include "is_integral.hpp"
 #include "is_pointer.hpp"
 #include "is_same.hpp"
 #include "is_same_signedness.hpp"
 #include "is_signed.hpp"
-#include "is_standard_layout.hpp"
+#include "is_unsigned.hpp"
 #include "numeric_limits.hpp"
 #include "safe_integral.hpp"
 #include "string_view.hpp"
@@ -46,6 +47,14 @@ namespace bsl
     ///     data.
     inline void
     conversion_failure_narrowing_results_in_loss_of_data() noexcept
+    {}
+
+    /// <!-- description -->
+    ///   @brief Used to signal to the user during compile-time that a
+    ///     conversion error occurred when attempting to perform a masking
+    ///     operation on a signed integral.
+    inline void
+    conversion_failure_bit_masks_on_signed_integral() noexcept
     {}
 
     /// <!-- description -->
@@ -217,7 +226,7 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    to_i8(safe_integral<T> const &val) noexcept -> bsl::safe_int8
+    to_i8(safe_integral<T> const &val) noexcept -> safe_int8
     {
         return convert<bsl::int8>(val);
     }
@@ -232,9 +241,9 @@ namespace bsl
     ///   @param val the integral to convert
     ///   @return Returns convert<bsl::int8>(val)
     ///
-    template<typename T>
+    template<typename T, enable_if_t<is_integral<T>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    to_i8(T const val) noexcept -> bsl::safe_int8
+    to_i8(T const val) noexcept -> safe_int8
     {
         return convert<bsl::int8>(val);
     }
@@ -251,7 +260,7 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    to_i16(safe_integral<T> const &val) noexcept -> bsl::safe_int16
+    to_i16(safe_integral<T> const &val) noexcept -> safe_int16
     {
         return convert<bsl::int16>(val);
     }
@@ -266,9 +275,9 @@ namespace bsl
     ///   @param val the integral to convert
     ///   @return Returns convert<bsl::int16>(val)
     ///
-    template<typename T>
+    template<typename T, enable_if_t<is_integral<T>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    to_i16(T const val) noexcept -> bsl::safe_int16
+    to_i16(T const val) noexcept -> safe_int16
     {
         return convert<bsl::int16>(val);
     }
@@ -285,7 +294,7 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    to_i32(safe_integral<T> const &val) noexcept -> bsl::safe_int32
+    to_i32(safe_integral<T> const &val) noexcept -> safe_int32
     {
         return convert<bsl::int32>(val);
     }
@@ -300,9 +309,9 @@ namespace bsl
     ///   @param val the integral to convert
     ///   @return Returns convert<bsl::int32>(val)
     ///
-    template<typename T>
+    template<typename T, enable_if_t<is_integral<T>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    to_i32(T const val) noexcept -> bsl::safe_int32
+    to_i32(T const val) noexcept -> safe_int32
     {
         return convert<bsl::int32>(val);
     }
@@ -319,7 +328,7 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    to_i64(safe_integral<T> const &val) noexcept -> bsl::safe_int64
+    to_i64(safe_integral<T> const &val) noexcept -> safe_int64
     {
         return convert<bsl::int64>(val);
     }
@@ -334,9 +343,9 @@ namespace bsl
     ///   @param val the integral to convert
     ///   @return Returns convert<bsl::int64>(val)
     ///
-    template<typename T>
+    template<typename T, enable_if_t<is_integral<T>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    to_i64(T const val) noexcept -> bsl::safe_int64
+    to_i64(T const val) noexcept -> safe_int64
     {
         return convert<bsl::int64>(val);
     }
@@ -353,7 +362,7 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    to_imax(safe_integral<T> const &val) noexcept -> bsl::safe_intmax
+    to_imax(safe_integral<T> const &val) noexcept -> safe_intmax
     {
         return convert<bsl::intmax>(val);
     }
@@ -368,9 +377,9 @@ namespace bsl
     ///   @param val the integral to convert
     ///   @return Returns convert<bsl::intmax>(val)
     ///
-    template<typename T>
+    template<typename T, enable_if_t<is_integral<T>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    to_imax(T const val) noexcept -> bsl::safe_intmax
+    to_imax(T const val) noexcept -> safe_intmax
     {
         return convert<bsl::intmax>(val);
     }
@@ -387,7 +396,7 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    to_u8(safe_integral<T> const &val) noexcept -> bsl::safe_uint8
+    to_u8(safe_integral<T> const &val) noexcept -> safe_uint8
     {
         return convert<bsl::uint8>(val);
     }
@@ -402,9 +411,9 @@ namespace bsl
     ///   @param val the integral to convert
     ///   @return Returns convert<bsl::uint8>(val)
     ///
-    template<typename T>
+    template<typename T, enable_if_t<is_integral<T>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    to_u8(T const val) noexcept -> bsl::safe_uint8
+    to_u8(T const val) noexcept -> safe_uint8
     {
         return convert<bsl::uint8>(val);
     }
@@ -421,9 +430,9 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    to_u8_unsafe(safe_integral<T> const &val) noexcept -> bsl::safe_uint8
+    to_u8_unsafe(safe_integral<T> const &val) noexcept -> safe_uint8
     {
-        return static_cast<bsl::uint8>(val.get());
+        return safe_uint8{static_cast<bsl::uint8>(val.get())};
     }
 
     /// <!-- description -->
@@ -436,11 +445,11 @@ namespace bsl
     ///   @param val the integral to convert
     ///   @return Returns static_cast<bsl::uint8>(val);
     ///
-    template<typename T>
+    template<typename T, enable_if_t<is_integral<T>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    to_u8_unsafe(T const val) noexcept -> bsl::safe_uint8
+    to_u8_unsafe(T const val) noexcept -> safe_uint8
     {
-        return static_cast<bsl::uint8>(val);
+        return safe_uint8{static_cast<bsl::uint8>(val)};
     }
 
     /// <!-- description -->
@@ -455,7 +464,7 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    to_u16(safe_integral<T> const &val) noexcept -> bsl::safe_uint16
+    to_u16(safe_integral<T> const &val) noexcept -> safe_uint16
     {
         return convert<bsl::uint16>(val);
     }
@@ -470,9 +479,9 @@ namespace bsl
     ///   @param val the integral to convert
     ///   @return Returns convert<bsl::uint16>(val)
     ///
-    template<typename T>
+    template<typename T, enable_if_t<is_integral<T>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    to_u16(T const val) noexcept -> bsl::safe_uint16
+    to_u16(T const val) noexcept -> safe_uint16
     {
         return convert<bsl::uint16>(val);
     }
@@ -489,9 +498,9 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    to_u16_unsafe(safe_integral<T> const &val) noexcept -> bsl::safe_uint16
+    to_u16_unsafe(safe_integral<T> const &val) noexcept -> safe_uint16
     {
-        return static_cast<bsl::uint16>(val.get());
+        return safe_uint16{static_cast<bsl::uint16>(val.get())};
     }
 
     /// <!-- description -->
@@ -504,11 +513,11 @@ namespace bsl
     ///   @param val the integral to convert
     ///   @return Returns static_cast<bsl::uint16>(val);
     ///
-    template<typename T>
+    template<typename T, enable_if_t<is_integral<T>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    to_u16_unsafe(T const val) noexcept -> bsl::safe_uint16
+    to_u16_unsafe(T const val) noexcept -> safe_uint16
     {
-        return static_cast<bsl::uint16>(val);
+        return safe_uint16{static_cast<bsl::uint16>(val)};
     }
 
     /// <!-- description -->
@@ -523,7 +532,7 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    to_u32(safe_integral<T> const &val) noexcept -> bsl::safe_uint32
+    to_u32(safe_integral<T> const &val) noexcept -> safe_uint32
     {
         return convert<bsl::uint32>(val);
     }
@@ -538,9 +547,9 @@ namespace bsl
     ///   @param val the integral to convert
     ///   @return Returns convert<bsl::uint32>(val)
     ///
-    template<typename T>
+    template<typename T, enable_if_t<is_integral<T>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    to_u32(T const val) noexcept -> bsl::safe_uint32
+    to_u32(T const val) noexcept -> safe_uint32
     {
         return convert<bsl::uint32>(val);
     }
@@ -557,9 +566,9 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    to_u32_unsafe(safe_integral<T> const &val) noexcept -> bsl::safe_uint32
+    to_u32_unsafe(safe_integral<T> const &val) noexcept -> safe_uint32
     {
-        return static_cast<bsl::uint32>(val.get());
+        return safe_uint32{static_cast<bsl::uint32>(val.get())};
     }
 
     /// <!-- description -->
@@ -572,11 +581,11 @@ namespace bsl
     ///   @param val the integral to convert
     ///   @return Returns static_cast<bsl::uint32>(val);
     ///
-    template<typename T>
+    template<typename T, enable_if_t<is_integral<T>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    to_u32_unsafe(T const val) noexcept -> bsl::safe_uint32
+    to_u32_unsafe(T const val) noexcept -> safe_uint32
     {
-        return static_cast<bsl::uint32>(val);
+        return safe_uint32{static_cast<bsl::uint32>(val)};
     }
 
     /// <!-- description -->
@@ -591,7 +600,7 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    to_u64(safe_integral<T> const &val) noexcept -> bsl::safe_uint64
+    to_u64(safe_integral<T> const &val) noexcept -> safe_uint64
     {
         return convert<bsl::uint64>(val);
     }
@@ -606,9 +615,9 @@ namespace bsl
     ///   @param val the integral to convert
     ///   @return Returns convert<bsl::uint64>(val)
     ///
-    template<typename T>
+    template<typename T, enable_if_t<is_integral<T>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    to_u64(T const val) noexcept -> bsl::safe_uint64
+    to_u64(T const val) noexcept -> safe_uint64
     {
         return convert<bsl::uint64>(val);
     }
@@ -625,9 +634,9 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    to_u64_unsafe(safe_integral<T> const &val) noexcept -> bsl::safe_uint64
+    to_u64_unsafe(safe_integral<T> const &val) noexcept -> safe_uint64
     {
-        return static_cast<bsl::uint64>(val.get());
+        return safe_uint64{static_cast<bsl::uint64>(val.get())};
     }
 
     /// <!-- description -->
@@ -640,11 +649,11 @@ namespace bsl
     ///   @param val the integral to convert
     ///   @return Returns static_cast<bsl::uint64>(val);
     ///
-    template<typename T>
+    template<typename T, enable_if_t<is_integral<T>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    to_u64_unsafe(T const val) noexcept -> bsl::safe_uint64
+    to_u64_unsafe(T const val) noexcept -> safe_uint64
     {
-        return static_cast<bsl::uint64>(val);
+        return safe_uint64{static_cast<bsl::uint64>(val)};
     }
 
     /// <!-- description -->
@@ -659,7 +668,7 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    to_umax(safe_integral<T> const &val) noexcept -> bsl::safe_uintmax
+    to_umax(safe_integral<T> const &val) noexcept -> safe_uintmax
     {
         return convert<bsl::uintmax>(val);
     }
@@ -674,26 +683,11 @@ namespace bsl
     ///   @param val the integral/pointer to convert
     ///   @return Returns convert<bsl::uintmax>(val)
     ///
-    template<typename T>
+    template<typename T, enable_if_t<is_integral<T>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    to_umax(T const val) noexcept -> bsl::safe_uintmax
+    to_umax(T const val) noexcept -> safe_uintmax
     {
-        if constexpr (bsl::is_pointer<T>::value) {
-            static_assert(is_standard_layout<T>::value);
-
-            if (unlikely(nullptr == val)) {
-                return bsl::safe_uintmax::failure();
-            }
-
-            // A reinterpret cast is needed her as there is no other way
-            // to perform the conversion. If a conversion like this is
-            // needed, this is the compliant way to do it.
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            return convert<bsl::uintmax>(reinterpret_cast<bsl::uintmax>(val));
-        }
-        else {
-            return convert<bsl::uintmax>(val);
-        }
+        return convert<bsl::uintmax>(val);
     }
 
     /// <!-- description -->
@@ -708,9 +702,9 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    to_umax_unsafe(safe_integral<T> const &val) noexcept -> bsl::safe_uintmax
+    to_umax_unsafe(safe_integral<T> const &val) noexcept -> safe_uintmax
     {
-        return static_cast<bsl::uintmax>(val.get());
+        return safe_uintmax{static_cast<bsl::uintmax>(val.get())};
     }
 
     /// <!-- description -->
@@ -723,54 +717,11 @@ namespace bsl
     ///   @param val the integral to convert
     ///   @return Returns static_cast<bsl::uintmax>(val);
     ///
-    template<typename T>
+    template<typename T, enable_if_t<is_integral<T>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    to_umax_unsafe(T const val) noexcept -> bsl::safe_uintmax
+    to_umax_unsafe(T const val) noexcept -> safe_uintmax
     {
-        return static_cast<bsl::uintmax>(val);
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns reinterpret_cast<T *>(val.get())
-    ///   @include convert/example_convert_to_ptr.hpp
-    ///   @related bsl::safe_integral
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the type of integral to convert
-    ///   @param val the integral to convert
-    ///   @return Returns reinterpret_cast<T *>(val.get())
-    ///
-    template<typename T>
-    [[nodiscard]] constexpr auto
-    to_ptr(bsl::safe_uintmax const &val) noexcept -> T
-    {
-        static_assert(is_pointer<T>::value);
-        static_assert(is_standard_layout<T>::value);
-
-        if (unlikely(!val)) {
-            return nullptr;
-        }
-
-        // A reinterpret cast is needed her as there is no other way
-        // to perform the conversion. If a conversion like this is
-        // needed, this is the compliant way to do it.
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-        return reinterpret_cast<T>(val.get());
-    }
-
-    /// <!-- description -->
-    ///   @brief Returns to_umax(sizeof(T))
-    ///   @related bsl::safe_integral
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @tparam T the type of integral to get the sizeof
-    ///   @return Returns to_umax(sizeof(T))
-    ///
-    template<typename T>
-    [[nodiscard]] constexpr auto
-    size_of() noexcept -> bsl::safe_uintmax
-    {
-        return to_umax(sizeof(T));
+        return safe_uintmax{static_cast<bsl::uintmax>(val)};
     }
 }
 
@@ -914,15 +865,13 @@ namespace bsl
 ///   @param str the literal to convert
 ///   @return Returns bsl::to_u8(str) using bsl::from_chars
 ///
-[[nodiscard]] constexpr auto
-// NOLINTNEXTLINE(bsl-namespace-global)
-operator""_u8(bsl::cstr_type const str) noexcept -> bsl::safe_uint8
+[[nodiscard]] constexpr auto operator""_u8(bsl::cstr_type const str) noexcept -> bsl::safe_uint8
 {
     constexpr auto offset{bsl::to_umax(2)};
     constexpr auto base10{bsl::to_i32(10)};
     constexpr auto base16{bsl::to_i32(16)};
 
-    bsl::string_view view{str};
+    bsl::string_view const view{str};
 
     if (view.starts_with("0x")) {
         return bsl::from_chars<bsl::uint8>(view.substr(offset, bsl::npos).data(), base16);
@@ -938,15 +887,13 @@ operator""_u8(bsl::cstr_type const str) noexcept -> bsl::safe_uint8
 ///   @param str the literal to convert
 ///   @return Returns bsl::to_u16(str) using bsl::from_chars
 ///
-[[nodiscard]] constexpr auto
-// NOLINTNEXTLINE(bsl-namespace-global)
-operator""_u16(bsl::cstr_type const str) noexcept -> bsl::safe_uint16
+[[nodiscard]] constexpr auto operator""_u16(bsl::cstr_type const str) noexcept -> bsl::safe_uint16
 {
     constexpr auto offset{bsl::to_umax(2)};
     constexpr auto base10{bsl::to_i32(10)};
     constexpr auto base16{bsl::to_i32(16)};
 
-    bsl::string_view view{str};
+    bsl::string_view const view{str};
 
     if (view.starts_with("0x")) {
         return bsl::from_chars<bsl::uint16>(view.substr(offset, bsl::npos).data(), base16);
@@ -963,15 +910,13 @@ operator""_u16(bsl::cstr_type const str) noexcept -> bsl::safe_uint16
 ///   @return Returns bsl::to_u32(str) using bsl::from_chars
 ///
 
-[[nodiscard]] constexpr auto
-// NOLINTNEXTLINE(bsl-namespace-global)
-operator""_u32(bsl::cstr_type const str) noexcept -> bsl::safe_uint32
+[[nodiscard]] constexpr auto operator""_u32(bsl::cstr_type const str) noexcept -> bsl::safe_uint32
 {
     constexpr auto offset{bsl::to_umax(2)};
     constexpr auto base10{bsl::to_i32(10)};
     constexpr auto base16{bsl::to_i32(16)};
 
-    bsl::string_view view{str};
+    bsl::string_view const view{str};
 
     if (view.starts_with("0x")) {
         return bsl::from_chars<bsl::uint32>(view.substr(offset, bsl::npos).data(), base16);
@@ -988,15 +933,13 @@ operator""_u32(bsl::cstr_type const str) noexcept -> bsl::safe_uint32
 ///   @return Returns bsl::to_u64(str) using bsl::from_chars
 ///
 
-[[nodiscard]] constexpr auto
-// NOLINTNEXTLINE(bsl-namespace-global)
-operator""_u64(bsl::cstr_type const str) noexcept -> bsl::safe_uint64
+[[nodiscard]] constexpr auto operator""_u64(bsl::cstr_type const str) noexcept -> bsl::safe_uint64
 {
     constexpr auto offset{bsl::to_umax(2)};
     constexpr auto base10{bsl::to_i32(10)};
     constexpr auto base16{bsl::to_i32(16)};
 
-    bsl::string_view view{str};
+    bsl::string_view const view{str};
 
     if (view.starts_with("0x")) {
         return bsl::from_chars<bsl::uint64>(view.substr(offset, bsl::npos).data(), base16);
@@ -1013,15 +956,13 @@ operator""_u64(bsl::cstr_type const str) noexcept -> bsl::safe_uint64
 ///   @return Returns bsl::to_umax(str) using bsl::from_chars
 ///
 
-[[nodiscard]] constexpr auto
-// NOLINTNEXTLINE(bsl-namespace-global)
-operator""_umax(bsl::cstr_type const str) noexcept -> bsl::safe_uintmax
+[[nodiscard]] constexpr auto operator""_umax(bsl::cstr_type const str) noexcept -> bsl::safe_uintmax
 {
     constexpr auto offset{bsl::to_umax(2)};
     constexpr auto base10{bsl::to_i32(10)};
     constexpr auto base16{bsl::to_i32(16)};
 
-    bsl::string_view view{str};
+    bsl::string_view const view{str};
 
     if (view.starts_with("0x")) {
         return bsl::from_chars<bsl::uintmax>(view.substr(offset, bsl::npos).data(), base16);
@@ -1037,9 +978,7 @@ operator""_umax(bsl::cstr_type const str) noexcept -> bsl::safe_uintmax
 ///   @param str the literal to convert
 ///   @return Returns bsl::to_i8(str) using bsl::from_chars
 ///
-[[nodiscard]] constexpr auto
-// NOLINTNEXTLINE(bsl-namespace-global)
-operator""_i8(bsl::cstr_type const str) noexcept -> bsl::safe_int8
+[[nodiscard]] constexpr auto operator""_i8(bsl::cstr_type const str) noexcept -> bsl::safe_int8
 {
     constexpr auto base10{bsl::to_i32(10)};
     return bsl::from_chars<bsl::int8>(str, base10);
@@ -1052,9 +991,7 @@ operator""_i8(bsl::cstr_type const str) noexcept -> bsl::safe_int8
 ///   @param str the literal to convert
 ///   @return Returns bsl::to_i16(str) using bsl::from_chars
 ///
-[[nodiscard]] constexpr auto
-// NOLINTNEXTLINE(bsl-namespace-global)
-operator""_i16(bsl::cstr_type const str) noexcept -> bsl::safe_int16
+[[nodiscard]] constexpr auto operator""_i16(bsl::cstr_type const str) noexcept -> bsl::safe_int16
 {
     constexpr auto base10{bsl::to_i32(10)};
     return bsl::from_chars<bsl::int16>(str, base10);
@@ -1067,9 +1004,7 @@ operator""_i16(bsl::cstr_type const str) noexcept -> bsl::safe_int16
 ///   @param str the literal to convert
 ///   @return Returns bsl::to_i32(str) using bsl::from_chars
 ///
-[[nodiscard]] constexpr auto
-// NOLINTNEXTLINE(bsl-namespace-global)
-operator""_i32(bsl::cstr_type const str) noexcept -> bsl::safe_int32
+[[nodiscard]] constexpr auto operator""_i32(bsl::cstr_type const str) noexcept -> bsl::safe_int32
 {
     constexpr auto base10{bsl::to_i32(10)};
     return bsl::from_chars<bsl::int32>(str, base10);
@@ -1082,9 +1017,7 @@ operator""_i32(bsl::cstr_type const str) noexcept -> bsl::safe_int32
 ///   @param str the literal to convert
 ///   @return Returns bsl::to_i64(str) using bsl::from_chars
 ///
-[[nodiscard]] constexpr auto
-// NOLINTNEXTLINE(bsl-namespace-global)
-operator""_i64(bsl::cstr_type const str) noexcept -> bsl::safe_int64
+[[nodiscard]] constexpr auto operator""_i64(bsl::cstr_type const str) noexcept -> bsl::safe_int64
 {
     constexpr auto base10{bsl::to_i32(10)};
     return bsl::from_chars<bsl::int64>(str, base10);
@@ -1097,9 +1030,7 @@ operator""_i64(bsl::cstr_type const str) noexcept -> bsl::safe_int64
 ///   @param str the literal to convert
 ///   @return Returns bsl::to_imax(str) using bsl::from_chars
 ///
-[[nodiscard]] constexpr auto
-// NOLINTNEXTLINE(bsl-namespace-global)
-operator""_imax(bsl::cstr_type const str) noexcept -> bsl::safe_intmax
+[[nodiscard]] constexpr auto operator""_imax(bsl::cstr_type const str) noexcept -> bsl::safe_intmax
 {
     constexpr auto base10{bsl::to_i32(10)};
     return bsl::from_chars<bsl::intmax>(str, base10);
@@ -1162,6 +1093,111 @@ namespace bsl
     static_assert(2147483647_i32 == bsl::safe_int32::max());
     static_assert(9223372036854775807_i64 == bsl::safe_int64::max());
     static_assert(9223372036854775807_imax == bsl::safe_intmax::max());
+}
+
+// -------------------------------------------------------------------------
+// upper/lower conversion
+// -------------------------------------------------------------------------
+
+namespace bsl
+{
+    /// <!-- description -->
+    ///   @brief Returns ((upper & mask) | bsl::to_umax(lower)) with mask
+    ///     being defined by the number of bits in "lower".
+    ///   @include convert/example_convert_to_umax_upper_lower.hpp
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of integral to operate on
+    ///   @param upper the integral to add lower to
+    ///   @param lower the integral to add to upper
+    ///   @return Returns ((upper & mask) | bsl::to_umax(lower)) with mask
+    ///     being defined by the number of bits in "lower".
+    ///
+    template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
+    [[nodiscard]] constexpr auto
+    to_umax_upper_lower(safe_uintmax const &upper, safe_integral<T> const &lower) noexcept
+        -> safe_uintmax
+    {
+        if constexpr (is_same<T, bsl::uint8>::value) {
+            constexpr auto mask{0xFFFFFFFFFFFFFF00_umax};
+            return ((upper & mask) | bsl::to_umax(lower));
+        }
+
+        if constexpr (is_same<T, bsl::uint16>::value) {
+            constexpr auto mask{0xFFFFFFFFFFFF0000_umax};
+            return ((upper & mask) | bsl::to_umax(lower));
+        }
+
+        if constexpr (is_same<T, bsl::uint32>::value) {
+            constexpr auto mask{0xFFFFFFFF00000000_umax};
+            return ((upper & mask) | bsl::to_umax(lower));
+        }
+
+        if constexpr (is_same<T, bsl::uint64>::value) {
+            return lower;
+        }
+
+        conversion_failure_bit_masks_on_signed_integral();
+        return safe_uintmax::failure();
+    }
+
+    /// <!-- description -->
+    ///   @brief Returns ((upper & mask) | bsl::to_umax(lower)) with mask
+    ///     being defined by the number of bits in "lower".
+    ///   @include convert/example_convert_to_umax_upper_lower.hpp
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of integral to operate on
+    ///   @param upper the integral to add lower to
+    ///   @param lower the integral to add to upper
+    ///   @return Returns ((upper & mask) | bsl::to_umax(lower)) with mask
+    ///     being defined by the number of bits in "lower".
+    ///
+    template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
+    [[nodiscard]] constexpr auto
+    to_umax_upper_lower(bsl::uintmax const upper, safe_integral<T> const &lower) noexcept
+        -> safe_uintmax
+    {
+        return to_umax_upper_lower(safe_uintmax{upper}, lower);
+    }
+
+    /// <!-- description -->
+    ///   @brief Returns ((upper & mask) | bsl::to_umax(lower)) with mask
+    ///     being defined by the number of bits in "lower".
+    ///   @include convert/example_convert_to_umax_upper_lower.hpp
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of integral to operate on
+    ///   @param upper the integral to add lower to
+    ///   @param lower the integral to add to upper
+    ///   @return Returns ((upper & mask) | bsl::to_umax(lower)) with mask
+    ///     being defined by the number of bits in "lower".
+    ///
+    template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
+    [[nodiscard]] constexpr auto
+    to_umax_upper_lower(safe_uintmax const &upper, T const lower) noexcept -> safe_uintmax
+    {
+        return to_umax_upper_lower(upper, safe_integral<T>{lower});
+    }
+
+    /// <!-- description -->
+    ///   @brief Returns ((upper & mask) | bsl::to_umax(lower)) with mask
+    ///     being defined by the number of bits in "lower".
+    ///   @include convert/example_convert_to_umax_upper_lower.hpp
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of integral to operate on
+    ///   @param upper the integral to add lower to
+    ///   @param lower the integral to add to upper
+    ///   @return Returns ((upper & mask) | bsl::to_umax(lower)) with mask
+    ///     being defined by the number of bits in "lower".
+    ///
+    template<typename T, enable_if_t<is_unsigned<T>::value, bool> = true>
+    [[nodiscard]] constexpr auto
+    to_umax_upper_lower(bsl::uintmax const upper, T const lower) noexcept -> safe_uintmax
+    {
+        return to_umax_upper_lower(safe_uintmax{upper}, safe_integral<T>{lower});
+    }
 }
 
 #endif

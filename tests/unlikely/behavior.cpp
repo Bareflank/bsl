@@ -39,9 +39,9 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"unlikely"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::ut_then{} = []() {
+        bsl::ut_scenario{"unlikely"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::ut_then{} = []() noexcept {
                     if (bsl::unlikely(false)) {
                         bsl::ut_check(false);
                     }

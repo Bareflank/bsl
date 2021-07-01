@@ -39,20 +39,20 @@ namespace bsl
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T defines the type pointer to by ptr
-    ///   @param ptr a pointer to the object to destroy
+    ///   @param pmut_ptr a pointer to the object to destroy
     ///
     /// <!-- exceptions -->
     ///   @throw throws if T throws during destruction
     ///
     template<typename T>
     constexpr void
-    destroy_at(T *const ptr) noexcept(noexcept(ptr->T::~T()))
+    destroy_at(T *const pmut_ptr) noexcept(noexcept(pmut_ptr->T::~T()))
     {
-        if (unlikely(nullptr == ptr)) {
+        if (unlikely(nullptr == pmut_ptr)) {
             unlikely_invalid_argument_failure();
         }
         else {
-            ptr->T::~T();
+            pmut_ptr->T::~T();
         }
     }
 }

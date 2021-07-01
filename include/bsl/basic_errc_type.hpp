@@ -111,9 +111,9 @@ namespace bsl
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr basic_errc_type(basic_errc_type &&o) noexcept = default;
+        constexpr basic_errc_type(basic_errc_type &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -129,10 +129,10 @@ namespace bsl
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(basic_errc_type &&o) &noexcept
+        [[maybe_unused]] constexpr auto operator=(basic_errc_type &&mut_o) &noexcept
             -> basic_errc_type & = default;
 
         /// <!-- description -->
@@ -158,7 +158,7 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns success()
         ///
-        [[nodiscard]] constexpr explicit operator bool() const noexcept
+        [[nodiscard]] explicit constexpr operator bool() const noexcept
         {
             return this->success();
         }
@@ -177,7 +177,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         success() const noexcept -> bool
         {
-            return m_errc == T{};
+            return T{} == m_errc;
         }
 
         /// <!-- description -->
@@ -194,7 +194,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         failure() const noexcept -> bool
         {
-            return m_errc != T{};
+            return T{} != m_errc;
         }
 
         /// <!-- description -->
@@ -280,67 +280,37 @@ namespace bsl
 namespace bsl
 {
     /// @brief Defines the "no error" case
-    // We want our implementation to mimic C++ here.
-    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_success{0};
     /// @brief Defines the general unchecked error case
-    // We want our implementation to mimic C++ here.
-    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_failure{1};
     /// @brief Defines the general precondition error case
-    // We want our implementation to mimic C++ here.
-    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_precondition{2};
     /// @brief Defines the general postcondition error case
-    // We want our implementation to mimic C++ here.
-    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_postcondition{3};
     /// @brief Defines the general assertion error case
-    // We want our implementation to mimic C++ here.
-    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_assetion{4};
 
     /// @brief Defines an invalid argument error code
-    // We want our implementation to mimic C++ here.
-    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_invalid_argument{10};
     /// @brief Defines an out of bounds error code
-    // We want our implementation to mimic C++ here.
-    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_index_out_of_bounds{11};
 
     /// @brief Defines an unsigned wrap error
-    // We want our implementation to mimic C++ here.
-    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_unsigned_wrap{30};
     /// @brief Defines a narrow overflow error
-    // We want our implementation to mimic C++ here.
-    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_narrow_overflow{31};
     /// @brief Defines a signed overflow error
-    // We want our implementation to mimic C++ here.
-    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_signed_overflow{32};
     /// @brief Defines a divide by zero error
-    // We want our implementation to mimic C++ here.
-    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_divide_by_zero{33};
     /// @brief Defines an out of bounds error code
-    // We want our implementation to mimic C++ here.
-    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_nullptr_dereference{34};
 
     /// @brief Defines when a resource is busy
-    // We want our implementation to mimic C++ here.
-    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_busy{50};
     /// @brief Defines when a resource already_exists
-    // We want our implementation to mimic C++ here.
-    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_already_exists{51};
     /// @brief Defines when something is unsupported
-    // We want our implementation to mimic C++ here.
-    // NOLINTNEXTLINE(bsl-name-case)
     constexpr basic_errc_type<> errc_unsupported{52};
 }
 

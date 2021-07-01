@@ -41,17 +41,17 @@ namespace bsl
         constexpr auto val5{23_i32};
         constexpr auto val6{42_i32};
 
-        bsl::array data{val6, val3, val4, val2, val5, val1};
-        bsl::sort(data);
+        bsl::array mut_data{val6, val3, val4, val2, val5, val1};
+        bsl::sort(mut_data);
 
-        if (data.front() == val1) {
+        if (mut_data.front() == val1) {
             bsl::print() << "success\n";
         }
         else {
             bsl::error() << "failure\n";
         }
 
-        if (data.back() == val6) {
+        if (mut_data.back() == val6) {
             bsl::print() << "success\n";
         }
         else {

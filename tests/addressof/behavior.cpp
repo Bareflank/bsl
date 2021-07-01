@@ -27,8 +27,6 @@
 
 namespace
 {
-    constexpr bool mydata{};
-
     /// <!-- description -->
     ///   @brief Used to execute the actual checks. We put the checks in this
     ///     function so that we can validate the tests both at compile-time
@@ -41,8 +39,15 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"verify addressof"} = []() {
-            bsl::ut_check(bsl::addressof(mydata) == &mydata);
+        bsl::ut_scenario{"verify addressof"} = []() noexcept {
+            constexpr bool var{};
+            bool mut_var{};
+            bool *pmut_mut_var{};
+            bool *pudm_udm_var{};
+            bsl::ut_check(bsl::addressof(var) == &var);
+            bsl::ut_check(bsl::addressof(mut_var) == &mut_var);
+            bsl::ut_check(bsl::addressof(pmut_mut_var) == &pmut_mut_var);
+            bsl::ut_check(bsl::addressof(pudm_udm_var) == &pudm_udm_var);
         };
 
         return bsl::ut_success();

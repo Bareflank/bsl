@@ -48,15 +48,17 @@ namespace bsl
     ///     fmt support for their own types.
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam OUT_T the type of out (i.e., debug, alert, etc)
+    ///   @tparam T the type of out (i.e., debug, alert, etc)
     ///   @param o the instance of out<T> to output to
     ///   @param ops ops the fmt options used to format the output
     ///   @param c the character being outputted
     ///
-    template<typename OUT_T>
+    template<typename T>
     constexpr void
-    fmt_impl(OUT_T &&o, fmt_options const &ops, char_type const c) noexcept
+    fmt_impl(out<T> const o, fmt_options const &ops, char_type const c) noexcept
     {
+        constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
+
         if (is_constant_evaluated()) {
             return;
         }
@@ -65,17 +67,16 @@ namespace bsl
             case fmt_type::fmt_type_b:
             case fmt_type::fmt_type_d:
             case fmt_type::fmt_type_x: {
-                details::fmt_impl_integral(
-                    bsl::forward<OUT_T>(o), ops, safe_uint8{static_cast<bsl::uint8>(c)});
+                details::fmt_impl_integral(o, ops, safe_uint8{static_cast<bsl::uint8>(c)});
                 break;
             }
 
             case fmt_type::fmt_type_c:
             case fmt_type::fmt_type_s:
             case fmt_type::fmt_type_default: {
-                details::fmt_impl_align_pre(o, ops, static_cast<bsl::uintmax>(1), true);
-                o.write(c);
-                details::fmt_impl_align_suf(o, ops, static_cast<bsl::uintmax>(1), true);
+                details::fmt_impl_align_pre(o, ops, one, true);
+                o.write_to_console(c);
+                details::fmt_impl_align_suf(o, ops, one, true);
                 break;
             }
         }
@@ -103,7 +104,7 @@ namespace bsl
             return o;
         }
 
-        o.write(c);
+        o.write_to_console(c);
         return o;
     }
 }

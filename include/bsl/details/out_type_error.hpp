@@ -57,9 +57,9 @@ namespace bsl::details
         ///   @brief Used to define bsl::out_type_error as useless
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr out_type_error(out_type_error &&o) noexcept = delete;
+        constexpr out_type_error(out_type_error &&mut_o) noexcept = delete;
 
         /// <!-- description -->
         ///   @brief Used to define bsl::out_type_error as useless
@@ -75,10 +75,10 @@ namespace bsl::details
         ///   @brief Used to define bsl::out_type_error as useless
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[nodiscard]] constexpr auto operator=(out_type_error &&o) &noexcept
+        [[nodiscard]] constexpr auto operator=(out_type_error &&mut_o) &noexcept
             -> out_type_error & = delete;
     };
 }

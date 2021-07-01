@@ -36,11 +36,11 @@ namespace bsl
     {
         constexpr auto expected{42_i32};
 
-        bsl::safe_int32 data{};
-        bsl::reference_wrapper const rw{data};
+        bsl::safe_int32 mut_data{};
+        bsl::reference_wrapper const rw{mut_data};
 
         rw.get() = expected;
-        if (expected == data) {
+        if (expected == mut_data) {
             bsl::print() << "success\n";
         }
         else {

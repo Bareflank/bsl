@@ -35,8 +35,8 @@ namespace bsl
     {
         constexpr bsl::array arr{true, false};
 
-        for (auto iter{arr.begin()}; iter != arr.end(); ++iter) {
-            bsl::print() << "element [" << iter.index() << "] == " << iter.data() << bsl::endl;
+        for (auto mut_i{arr.begin()}; mut_i != arr.end(); ++mut_i) {
+            bsl::print() << "element [" << mut_i.index() << "] == " << mut_i.data() << bsl::endl;
         }
     }
 }

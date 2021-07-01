@@ -55,7 +55,7 @@ namespace bsl
         }
 
         if (nullptr == ptr) {
-            o.write("nullptr");
+            o.write_to_console("nullptr");
         }
         else {
             // We must convert the pointer to an integer before we can use

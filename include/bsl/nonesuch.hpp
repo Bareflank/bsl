@@ -60,9 +60,9 @@ namespace bsl
         ///   @brief Used to define bsl::nonesuch as useless
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr nonesuch(nonesuch &&o) noexcept = delete;
+        constexpr nonesuch(nonesuch &&mut_o) noexcept = delete;
 
         /// <!-- description -->
         ///   @brief Used to define bsl::nonesuch as useless
@@ -78,10 +78,11 @@ namespace bsl
         ///   @brief Used to define bsl::nonesuch as useless
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(nonesuch &&o) &noexcept -> nonesuch & = delete;
+        [[maybe_unused]] constexpr auto operator=(nonesuch &&mut_o) &noexcept
+            -> nonesuch & = delete;
     };
 }
 

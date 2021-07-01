@@ -51,7 +51,7 @@ namespace bsl
         ///   @return returns true if T is returnable, false otherwise
         ///
         template<typename T>
-        [[maybe_unused]] auto test_is_nothrow_convertible1(bsl::int32 ignored) noexcept
+        [[maybe_unused]] auto test_is_nothrow_convertible1(bsl::int32 const ignored) noexcept
             -> true_type_for<T()>;
 
         /// <!-- description -->
@@ -65,7 +65,8 @@ namespace bsl
         ///   @return returns true if T is returnable, false otherwise
         ///
         template<typename T>
-        [[maybe_unused]] auto test_is_nothrow_convertible1(bool ignored) noexcept -> false_type;
+        [[maybe_unused]] auto test_is_nothrow_convertible1(bool const ignored) noexcept
+            -> false_type;
 
         /// <!-- description -->
         ///   @brief Tests whether or not the provided to can be converted from
@@ -81,9 +82,7 @@ namespace bsl
         ///   @return returns true if T is returnable, false otherwise
         ///
         template<typename FROM, typename TO>
-        [[maybe_unused]] auto test_is_nothrow_convertible2(bsl::int32 ignored) noexcept
-            // We rely on the implicit cast to perform detection here.
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
+        [[maybe_unused]] auto test_is_nothrow_convertible2(bsl::int32 const ignored) noexcept
             -> bool_constant<noexcept(declval<void (&)(TO) noexcept>()(declval<FROM>()))>;
 
         /// <!-- description -->
@@ -100,7 +99,8 @@ namespace bsl
         ///   @return returns true if T is returnable, false otherwise
         ///
         template<typename FROM, typename TO>
-        [[maybe_unused]] auto test_is_nothrow_convertible2(bool ignored) noexcept -> false_type;
+        [[maybe_unused]] auto test_is_nothrow_convertible2(bool const ignored) noexcept
+            -> false_type;
 
         /// <!-- description -->
         ///   @brief Performs all of the tests including testing if both
@@ -120,11 +120,7 @@ namespace bsl
             }
 
             return conjunction<
-                // We rely on the implicit cast to perform detection here.
-                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 decltype(test_is_nothrow_convertible2<FROM, TO>(0)),
-                // We rely on the implicit cast to perform detection here.
-                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 decltype(test_is_nothrow_convertible1<TO>(0))>::value;
         }
     }

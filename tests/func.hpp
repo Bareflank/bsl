@@ -28,7 +28,7 @@
 namespace test
 {
     [[nodiscard]] constexpr auto
-    func(bool val) noexcept -> bool
+    func(bool const val) noexcept -> bool
     {
         return val;
     }

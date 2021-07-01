@@ -102,9 +102,9 @@ namespace bsl::details
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr swappable_traits(swappable_traits &&o) noexcept = default;
+        constexpr swappable_traits(swappable_traits &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -120,10 +120,10 @@ namespace bsl::details
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(swappable_traits &&o) &noexcept
+        [[maybe_unused]] constexpr auto operator=(swappable_traits &&mut_o) &noexcept
             -> swappable_traits & = default;
     };
 
@@ -195,9 +195,9 @@ namespace bsl::details
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr swappable_traits(swappable_traits &&o) noexcept = default;
+        constexpr swappable_traits(swappable_traits &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -213,10 +213,10 @@ namespace bsl::details
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(swappable_traits &&o) &noexcept
+        [[maybe_unused]] constexpr auto operator=(swappable_traits &&mut_o) &noexcept
             -> swappable_traits & = default;
     };
 }

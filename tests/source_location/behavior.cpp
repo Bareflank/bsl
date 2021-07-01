@@ -39,39 +39,39 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"empty source location"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::source_location sloc{};
-                bsl::ut_then{} = [&sloc]() {
+        bsl::ut_scenario{"empty source location"} = [&]() noexcept {
+            bsl::ut_given{} = [&]() noexcept {
+                bsl::source_location const sloc{};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(sloc.file_name() != nullptr);
                     bsl::ut_check(sloc.function_name() != nullptr);
-                    bsl::ut_check(sloc.line() == bsl::details::INVALID_LINE);
+                    bsl::ut_check(bsl::details::INVALID_LINE == sloc.line());
                 };
             };
         };
 
-        bsl::ut_scenario{"source location"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::source_location sloc{bsl::here()};
-                bsl::ut_then{} = [&sloc]() {
+        bsl::ut_scenario{"source location"} = [&]() noexcept {
+            bsl::ut_given{} = [&]() noexcept {
+                bsl::source_location const sloc{bsl::here()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(sloc.file_name() != nullptr);
                     bsl::ut_check(sloc.function_name() != nullptr);
-                    bsl::ut_check(sloc.line() == static_cast<bsl::source_location::line_type>(55));
+                    bsl::ut_check(static_cast<bsl::source_location::line_type>(55) == sloc.line());
                 };
             };
         };
 
-        bsl::ut_scenario{"output doesn't crash"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::source_location sloc{};
-                bsl::ut_then{} = [&sloc]() {
+        bsl::ut_scenario{"output doesn't crash"} = [&]() noexcept {
+            bsl::ut_given{} = [&]() noexcept {
+                bsl::source_location const sloc{};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::debug() << sloc;
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::source_location sloc{bsl::here()};
-                bsl::ut_then{} = [&sloc]() {
+            bsl::ut_given{} = [&]() noexcept {
+                bsl::source_location const sloc{bsl::here()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::debug() << sloc;
                 };
             };

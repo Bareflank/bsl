@@ -39,10 +39,10 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"discard"} = []() {
-            bsl::ut_given{} = []() {
-                bool val{};
-                bsl::ut_then{} = [&val]() {
+        bsl::ut_scenario{"discard"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bool const val{};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::discard(val);    // <--- Removes compilers warning
                 };
             };

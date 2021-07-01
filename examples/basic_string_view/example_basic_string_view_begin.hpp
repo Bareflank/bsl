@@ -35,8 +35,8 @@ namespace bsl
     {
         constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
 
-        for (auto iter{str.begin()}; iter != str.end(); ++iter) {
-            bsl::print() << "element [" << iter.index() << "] == " << iter.data() << bsl::endl;
+        for (auto mut_i{str.begin()}; mut_i != str.end(); ++mut_i) {
+            bsl::print() << "element [" << mut_i.index() << "] == " << mut_i.data() << bsl::endl;
         }
     }
 }

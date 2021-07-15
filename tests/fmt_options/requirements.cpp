@@ -28,50 +28,7 @@
 
 namespace
 {
-    // Needed for requirements testing
-    // NOLINTNEXTLINE(bsl-user-defined-type-names-match-header-name)
-    class fixture_t final
-    {
-        bsl::fmt_options ops{""};
-
-    public:
-        [[nodiscard]] constexpr auto
-        test_member_const() const noexcept -> bool
-        {
-            bsl::discard(ops.fill());
-            bsl::discard(ops.align());
-            bsl::discard(ops.sign());
-            bsl::discard(ops.alternate_form());
-            bsl::discard(ops.sign_aware());
-            bsl::discard(ops.width());
-            bsl::discard(ops.type());
-
-            return true;
-        }
-
-        [[nodiscard]] constexpr auto
-        test_member_nonconst() noexcept -> bool
-        {
-            bsl::discard(ops.fill());
-            ops.set_fill(' ');
-            bsl::discard(ops.align());
-            ops.set_align(bsl::fmt_align::fmt_align_default);
-            bsl::discard(ops.sign());
-            ops.set_sign(bsl::fmt_sign::fmt_sign_neg_only);
-            bsl::discard(ops.alternate_form());
-            ops.set_alternate_form(true);
-            bsl::discard(ops.sign_aware());
-            ops.set_sign_aware(true);
-            bsl::discard(ops.width());
-            ops.set_width(bsl::to_umax(10));
-            bsl::discard(ops.type());
-            ops.set_type(bsl::fmt_type::fmt_type_d);
-
-            return true;
-        }
-    };
-
-    constexpr fixture_t fixture1{};
+    constinit bsl::fmt_options const g_verify_constinit{""};
 }
 
 /// <!-- description -->
@@ -85,35 +42,39 @@ namespace
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    bsl::ut_scenario{"verify noexcept"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::fmt_options ops{""};
-            bsl::ut_then{} = []() {
-                static_assert(noexcept(bsl::fmt_options{""}));
-                static_assert(noexcept(ops.fill()));
-                static_assert(noexcept(ops.set_fill(' ')));
-                static_assert(noexcept(ops.align()));
-                static_assert(noexcept(ops.set_align(bsl::fmt_align::fmt_align_default)));
-                static_assert(noexcept(ops.sign()));
-                static_assert(noexcept(ops.set_sign(bsl::fmt_sign::fmt_sign_neg_only)));
-                static_assert(noexcept(ops.alternate_form()));
-                static_assert(noexcept(ops.set_alternate_form(true)));
-                static_assert(noexcept(ops.sign_aware()));
-                static_assert(noexcept(ops.set_sign_aware(true)));
-                static_assert(noexcept(ops.width()));
-                static_assert(noexcept(ops.set_width(bsl::to_umax(10))));
-                static_assert(noexcept(ops.type()));
-                static_assert(noexcept(ops.set_type(bsl::fmt_type::fmt_type_d)));
-            };
-        };
+    bsl::ut_scenario{"verify supports constinit"} = []() noexcept {
+        bsl::discard(g_verify_constinit);
     };
 
-    bsl::ut_scenario{"verify constness"} = []() {
-        bsl::ut_given{} = []() {
-            fixture_t fixture2{};
-            bsl::ut_then{} = [&fixture2]() {
-                static_assert(fixture1.test_member_const());
-                bsl::ut_check(fixture2.test_member_nonconst());
+    bsl::ut_scenario{"verify noexcept"} = []() noexcept {
+        bsl::ut_given{} = []() noexcept {
+            bsl::fmt_options mut_ops{""};
+            bsl::fmt_options const ops{""};
+            bsl::ut_then{} = []() noexcept {
+                static_assert(noexcept(bsl::fmt_options{""}));
+
+                static_assert(noexcept(mut_ops.fill()));
+                static_assert(noexcept(mut_ops.set_fill(' ')));
+                static_assert(noexcept(mut_ops.align()));
+                static_assert(noexcept(mut_ops.set_align(bsl::fmt_align::fmt_align_default)));
+                static_assert(noexcept(mut_ops.sign()));
+                static_assert(noexcept(mut_ops.set_sign(bsl::fmt_sign::fmt_sign_neg_only)));
+                static_assert(noexcept(mut_ops.alternate_form()));
+                static_assert(noexcept(mut_ops.set_alternate_form(true)));
+                static_assert(noexcept(mut_ops.sign_aware()));
+                static_assert(noexcept(mut_ops.set_sign_aware(true)));
+                static_assert(noexcept(mut_ops.width()));
+                static_assert(noexcept(mut_ops.set_width(bsl::to_umax(10))));
+                static_assert(noexcept(mut_ops.type()));
+                static_assert(noexcept(mut_ops.set_type(bsl::fmt_type::fmt_type_d)));
+
+                static_assert(noexcept(ops.fill()));
+                static_assert(noexcept(ops.align()));
+                static_assert(noexcept(ops.sign()));
+                static_assert(noexcept(ops.alternate_form()));
+                static_assert(noexcept(ops.sign_aware()));
+                static_assert(noexcept(ops.width()));
+                static_assert(noexcept(ops.type()));
             };
         };
     };

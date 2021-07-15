@@ -33,7 +33,7 @@ namespace test
         // We need the conversions to be implicit to prove that common_type
         // is working properly.
         // NOLINTNEXTLINE(hicpp-explicit-conversions)
-        [[nodiscard]] operator void *();
+        [[nodiscard]] operator void *() noexcept;
     };
 }
 

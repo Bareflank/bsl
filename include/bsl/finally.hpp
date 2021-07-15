@@ -66,10 +66,10 @@ namespace bsl
         ///   @include example_finally_overview.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @param func the function to call on destruction
+        ///   @param pudm_udm_func the function to call on destruction
         ///
-        explicit constexpr finally(FUNC_T &&func) noexcept    // --
-            : m_func{bsl::move(func)}, m_invoked{}
+        explicit constexpr finally(FUNC_T &&pudm_udm_func) noexcept    // --
+            : m_func{bsl::move(pudm_udm_func)}, m_invoked{}
         {}
 
         /// <!-- description -->
@@ -79,10 +79,11 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @param d ignored
-        ///   @param func the function to call on destruction
+        ///   @param pudm_udm_func the function to call on destruction
         ///
-        explicit constexpr finally(bsl::dormant_t const &d, FUNC_T &&func) noexcept    // --
-            : m_func{bsl::move(func)}, m_invoked{true}
+        explicit constexpr finally(
+            bsl::dormant_t const &d, FUNC_T &&pudm_udm_func) noexcept    // --
+            : m_func{bsl::move(pudm_udm_func)}, m_invoked{true}
         {
             bsl::discard(d);
         }
@@ -113,9 +114,9 @@ namespace bsl
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr finally(finally &&o) noexcept = delete;
+        constexpr finally(finally &&mut_o) noexcept = delete;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -130,10 +131,10 @@ namespace bsl
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(finally &&o) &noexcept -> finally & = delete;
+        [[maybe_unused]] constexpr auto operator=(finally &&mut_o) &noexcept -> finally & = delete;
 
         /// <!-- description -->
         ///   @brief Set the invoked status to true, preventing the provided

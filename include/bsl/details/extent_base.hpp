@@ -61,9 +61,9 @@ namespace bsl::details
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr extent_base(extent_base &&o) noexcept = default;
+        constexpr extent_base(extent_base &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -79,10 +79,10 @@ namespace bsl::details
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(extent_base &&o) &noexcept
+        [[maybe_unused]] constexpr auto operator=(extent_base &&mut_o) &noexcept
             -> extent_base & = default;
     };
 
@@ -110,9 +110,9 @@ namespace bsl::details
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr extent_base(extent_base &&o) noexcept = default;
+        constexpr extent_base(extent_base &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -128,10 +128,10 @@ namespace bsl::details
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(extent_base &&o) &noexcept
+        [[maybe_unused]] constexpr auto operator=(extent_base &&mut_o) &noexcept
             -> extent_base & = default;
     };
 
@@ -158,9 +158,9 @@ namespace bsl::details
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr extent_base(extent_base &&o) noexcept = default;
+        constexpr extent_base(extent_base &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -176,10 +176,10 @@ namespace bsl::details
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(extent_base &&o) &noexcept
+        [[maybe_unused]] constexpr auto operator=(extent_base &&mut_o) &noexcept
             -> extent_base & = default;
     };
 
@@ -207,9 +207,9 @@ namespace bsl::details
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr extent_base(extent_base &&o) noexcept = default;
+        constexpr extent_base(extent_base &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -225,10 +225,10 @@ namespace bsl::details
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(extent_base &&o) &noexcept
+        [[maybe_unused]] constexpr auto operator=(extent_base &&mut_o) &noexcept
             -> extent_base & = default;
     };
 
@@ -255,9 +255,9 @@ namespace bsl::details
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr extent_base(extent_base &&o) noexcept = default;
+        constexpr extent_base(extent_base &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -273,10 +273,10 @@ namespace bsl::details
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(extent_base &&o) &noexcept
+        [[maybe_unused]] constexpr auto operator=(extent_base &&mut_o) &noexcept
             -> extent_base & = default;
     };
 }

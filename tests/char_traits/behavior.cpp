@@ -44,37 +44,37 @@ namespace
     {
         using traits = bsl::char_traits<bsl::char_type>;
 
-        bsl::ut_scenario{"eq"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::char_type a{static_cast<bsl::char_type>(42)};
-                bsl::char_type b{static_cast<bsl::char_type>(42)};
-                bsl::ut_then{} = [&a, &b]() {
+        bsl::ut_scenario{"eq"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::char_type a{static_cast<bsl::char_type>(42)};
+                constexpr bsl::char_type b{static_cast<bsl::char_type>(42)};
+                bsl::ut_then{} = []() noexcept {
                     bsl::ut_check(traits::eq(a, b));
                 };
             };
         };
 
-        bsl::ut_scenario{"lt"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::char_type a{static_cast<bsl::char_type>(23)};
-                bsl::char_type b{static_cast<bsl::char_type>(42)};
-                bsl::ut_then{} = [&a, &b]() {
+        bsl::ut_scenario{"lt"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::char_type a{static_cast<bsl::char_type>(23)};
+                constexpr bsl::char_type b{static_cast<bsl::char_type>(42)};
+                bsl::ut_then{} = []() noexcept {
                     bsl::ut_check(traits::lt(a, b));
                 };
             };
         };
 
-        bsl::ut_scenario{"compare"} = []() {
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::ut_then{} = []() {
+        bsl::ut_scenario{"compare"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::ut_then{} = []() noexcept {
                     bsl::ut_check(!traits::compare(nullptr, "42", bsl::to_umax(2)));
                     bsl::ut_check(!traits::compare("42", nullptr, bsl::to_umax(2)));
                     bsl::ut_check(!traits::compare("42", "42", bsl::safe_uintmax::failure()));
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::ut_then{} = []() {
+            bsl::ut_given{} = []() noexcept {
+                bsl::ut_then{} = []() noexcept {
                     bsl::ut_check(traits::compare("42", "42", bsl::to_umax(0)) == 0);
                     bsl::ut_check(traits::compare("42", "42", bsl::to_umax(1)) == 0);
                     bsl::ut_check(traits::compare("42", "42", bsl::to_umax(2)) == 0);
@@ -84,15 +84,15 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"length"} = []() {
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::ut_then{} = []() {
+        bsl::ut_scenario{"length"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::ut_then{} = []() noexcept {
                     bsl::ut_check(!traits::length(nullptr));
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::ut_then{} = []() {
+            bsl::ut_given{} = []() noexcept {
+                bsl::ut_then{} = []() noexcept {
                     bsl::ut_check(traits::length("") == bsl::to_umax(0));
                     bsl::ut_check(traits::length("42") == bsl::to_umax(2));
                     bsl::ut_check(traits::length("4\0 2") == bsl::to_umax(1));
@@ -100,23 +100,25 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"to_char_type"} = []() {
-            bsl::ut_then{} = []() {
+        bsl::ut_scenario{"to_char_type"} = []() noexcept {
+            bsl::ut_then{} = []() noexcept {
                 constexpr bsl::safe_intmax s{bsl::to_imax(42)};
                 constexpr bsl::safe_intmax b{bsl::to_imax(4242)};
-                bsl::ut_check(bsl::to_imax(traits::to_char_type(s.get())) == s);
-                bsl::ut_check(bsl::to_imax(traits::to_char_type(b.get())) != b);
+                bsl::ut_check(
+                    bsl::to_imax(static_cast<bsl::uint8>(traits::to_char_type(s.get()))) == s);
+                bsl::ut_check(
+                    bsl::to_imax(static_cast<bsl::uint8>(traits::to_char_type(b.get()))) != b);
             };
         };
 
-        bsl::ut_scenario{"to_int_type"} = []() {
-            bsl::ut_then{} = []() {
+        bsl::ut_scenario{"to_int_type"} = []() noexcept {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(traits::to_int_type('*') == bsl::to_imax(42));
             };
         };
 
-        bsl::ut_scenario{"eq_int_type"} = []() {
-            bsl::ut_then{} = []() {
+        bsl::ut_scenario{"eq_int_type"} = []() noexcept {
+            bsl::ut_then{} = []() noexcept {
                 constexpr bsl::safe_intmax i{bsl::to_imax(42)};
                 bsl::ut_check(traits::eq_int_type(i.get(), i.get()));
                 bsl::ut_check(traits::eq_int_type(traits::eof(), traits::eof()));
@@ -125,14 +127,14 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"eof"} = []() {
-            bsl::ut_then{} = []() {
+        bsl::ut_scenario{"eof"} = []() noexcept {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(traits::eof() == bsl::to_imax(-1));
             };
         };
 
-        bsl::ut_scenario{"not_eof"} = []() {
-            bsl::ut_then{} = []() {
+        bsl::ut_scenario{"not_eof"} = []() noexcept {
+            bsl::ut_then{} = []() noexcept {
                 constexpr bsl::safe_intmax i1{};
                 constexpr bsl::safe_intmax i2{bsl::to_imax(42)};
                 bsl::ut_check(traits::not_eof(i1.get()) == i1);

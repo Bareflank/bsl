@@ -60,14 +60,14 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam FUNC_T the type of lambda being executed
-        ///   @param func the lambda being executed
+        ///   @param mut_func the lambda being executed
         ///   @return Returns a reference to the ut_given.
         ///
         template<typename FUNC_T>
         [[maybe_unused]] constexpr auto
-        operator=(FUNC_T &&func) &&noexcept -> ut_given &
+        operator=(FUNC_T &&mut_func) &&noexcept -> ut_given &
         {
-            func();
+            mut_func();
             return *this;
         }
 
@@ -76,11 +76,11 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam FUNC_T ignored
-        ///   @param func ignored
+        ///   @param mut_func ignored
         ///   @return this
         ///
         template<typename FUNC_T>
-        [[maybe_unused]] constexpr auto operator=(FUNC_T &&func) const &noexcept
+        [[maybe_unused]] constexpr auto operator=(FUNC_T &&mut_func) const &noexcept
             -> ut_given & = delete;
 
         /// <!-- description -->
@@ -100,9 +100,9 @@ namespace bsl
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr ut_given(ut_given &&o) noexcept = default;
+        constexpr ut_given(ut_given &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -118,10 +118,11 @@ namespace bsl
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(ut_given &&o) &noexcept -> ut_given & = default;
+        [[maybe_unused]] constexpr auto operator=(ut_given &&mut_o) &noexcept
+            -> ut_given & = default;
     };
 }
 

@@ -103,16 +103,16 @@ namespace bsl::details
                 return {};
             }
 
-            safe_uintmax idx{};
-            for (safe_uintmax i{}; i < args.size(); ++i) {
-                string_view const arg{*args.at_if(i)};
+            safe_uintmax mut_idx{};
+            for (safe_uintmax mut_i{}; mut_i < args.size(); ++mut_i) {
+                string_view const arg{*args.at_if(mut_i)};
 
                 if (arg.starts_with('-')) {
                     continue;
                 }
 
-                if (idx < pos) {
-                    ++idx;
+                if (mut_idx < pos) {
+                    ++mut_idx;
                     continue;
                 }
 
@@ -141,33 +141,35 @@ namespace bsl::details
         [[nodiscard]] static constexpr auto
         get(span<cstr_type const> const &args, string_view const &opt) noexcept -> string_view
         {
+            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
+
             if (unlikely(opt.empty())) {
                 unlikely_invalid_argument_failure();
                 bsl::error() << "cannot request an empty optional argument\n";
                 return {};
             }
 
-            for (safe_uintmax i{args.size()}; i.is_pos(); --i) {
-                string_view arg{*args.at_if(i - static_cast<bsl::uintmax>(1))};
+            for (safe_uintmax mut_i{args.size()}; mut_i.is_pos(); --mut_i) {
+                string_view mut_arg{*args.at_if(mut_i - one)};
 
-                if (!arg.starts_with(opt)) {
+                if (!mut_arg.starts_with(opt)) {
                     continue;
                 }
 
-                arg.remove_prefix(opt.length());
+                mut_arg.remove_prefix(opt.length());
 
-                if (!arg.starts_with('=')) {
+                if (!mut_arg.starts_with('=')) {
                     unlikely_invalid_argument_failure();
                     return {};
                 }
 
-                arg.remove_prefix(static_cast<bsl::uintmax>(1));
-                if (arg.empty()) {
+                mut_arg.remove_prefix(one);
+                if (mut_arg.empty()) {
                     unlikely_invalid_argument_failure();
                     return {};
                 }
 
-                return arg;
+                return mut_arg;
             }
 
             return {};
@@ -213,7 +215,7 @@ namespace bsl::details
                 return false;
             }
 
-            auto const val{from_chars<bsl::uint8>(arg.data(), B)};
+            auto const val{from_chars<bsl::uint8>(arg.data(), safe_int32{B})};
             if (!val) {
                 return false;
             }
@@ -240,8 +242,8 @@ namespace bsl::details
                 return false;
             }
 
-            for (safe_uintmax i{}; i < args.size(); ++i) {
-                string_view const arg{*args.at_if(i)};
+            for (safe_uintmax mut_i{}; mut_i < args.size(); ++mut_i) {
+                string_view const arg{*args.at_if(mut_i)};
 
                 if (arg == opt) {
                     return true;
@@ -287,7 +289,7 @@ namespace bsl::details
         get(span<cstr_type const> const &args, safe_uintmax const &pos) noexcept -> safe_integral<T>
         {
             string_view const arg{arguments_impl<string_view, B>::get(args, pos)};
-            return from_chars<T>(arg.data(), B);
+            return from_chars<T>(arg.data(), safe_int32{B});
         }
 
         /// <!-- description -->
@@ -313,7 +315,7 @@ namespace bsl::details
                 return safe_integral<T>::failure();
             }
 
-            return from_chars<T>(arg.data(), B);
+            return from_chars<T>(arg.data(), safe_int32{B});
         }
     };
 }

@@ -41,8 +41,8 @@ namespace bsl
     /// <!-- inputs/outputs -->
     ///   @tparam T the type that defines the obj being exchanged
     ///   @tparam U the type that defines the new value for obj
-    ///   @param obj the object whose value will be set to new_value
-    ///   @param new_value the new value to set the obj to
+    ///   @param mut_obj the object whose value will be set to new_value
+    ///   @param mut_new_value the new value to set the obj to
     ///   @return returns the old value of obj prior to the exchange
     ///
     /// <!-- exceptions -->
@@ -51,10 +51,10 @@ namespace bsl
     ///
     template<typename T, typename U = T>
     [[nodiscard]] constexpr auto
-    exchange(T &obj, U &&new_value) noexcept(false) -> T
+    exchange(T &mut_obj, U &&mut_new_value) noexcept(false) -> T
     {
-        T const old_value{bsl::move(obj)};
-        obj = bsl::forward<U>(new_value);
+        T const old_value{bsl::move(mut_obj)};
+        mut_obj = bsl::forward<U>(mut_new_value);
         return old_value;
     }
 

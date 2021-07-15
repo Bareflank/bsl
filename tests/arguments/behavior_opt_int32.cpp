@@ -42,91 +42,91 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"get optional safe_int32"} = []() {
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::arguments args{bsl::to_umax(0), nullptr};
-                bsl::ut_then{} = [&args]() {
+        bsl::ut_scenario{"get optional safe_int32"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::arguments const args{bsl::to_umax(0), nullptr};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bsl::safe_int32>("-app"));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"-app"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"-app"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bsl::safe_int32>(""));
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::array argv{"app"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given{} = []() noexcept {
+                bsl::array const argv{"app"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bsl::safe_int32>("-app"));
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::array argv{"-app"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given{} = []() noexcept {
+                bsl::array const argv{"-app"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bsl::safe_int32>("-app_blah"));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"-app"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"-app"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bsl::safe_int32>("-ap"));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"-app"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"-app"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bsl::safe_int32>("-app"));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"-app="};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"-app="};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bsl::safe_int32>("-app"));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"-app=42"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"-app=42"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bsl::safe_int32>("-app="));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"-app=42 "};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"-app=42 "};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bsl::safe_int32>("-app"));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::array argv{"-app=hello"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::array const argv{"-app=hello"};
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bsl::safe_int32>("-app"));
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::array argv{
+            bsl::ut_given{} = []() noexcept {
+                bsl::array const argv{
                     "-app=ignored", "pos1", "-4=16", "-8=23", "pos2", "-15=42", "-app=42"};
-                bsl::arguments args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&args]() {
+                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(args.get<bsl::safe_int32>("-app") == bsl::to_i32(42));
                     bsl::ut_check(args.get<bsl::safe_int32>("-4") == bsl::to_i32(16));
                     bsl::ut_check(args.get<bsl::safe_int32>("-8") == bsl::to_i32(23));

@@ -60,15 +60,15 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam FUNC_T the type of lambda being executed
-        ///   @param func the lambda being executed
+        ///   @param mut_func the lambda being executed
         ///   @return Returns a reference to the ut_then_at_runtime.
         ///
         template<typename FUNC_T>
         [[maybe_unused]] constexpr auto
-        operator=(FUNC_T &&func) &&noexcept -> ut_then_at_runtime &
+        operator=(FUNC_T &&mut_func) &&noexcept -> ut_then_at_runtime &
         {
             if (!is_constant_evaluated()) {
-                func();
+                mut_func();
             }
             else {
                 bsl::touch();
@@ -82,11 +82,11 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam FUNC_T ignored
-        ///   @param func ignored
+        ///   @param mut_func ignored
         ///   @return this
         ///
         template<typename FUNC_T>
-        [[maybe_unused]] constexpr auto operator=(FUNC_T &&func) const &noexcept
+        [[maybe_unused]] constexpr auto operator=(FUNC_T &&mut_func) const &noexcept
             -> ut_then_at_runtime & = delete;
 
         /// <!-- description -->
@@ -106,9 +106,9 @@ namespace bsl
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr ut_then_at_runtime(ut_then_at_runtime &&o) noexcept = default;
+        constexpr ut_then_at_runtime(ut_then_at_runtime &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -124,10 +124,10 @@ namespace bsl
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(ut_then_at_runtime &&o) &noexcept
+        [[maybe_unused]] constexpr auto operator=(ut_then_at_runtime &&mut_o) &noexcept
             -> ut_then_at_runtime & = default;
     };
 }

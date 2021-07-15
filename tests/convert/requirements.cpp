@@ -36,9 +36,9 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    bsl::ut_scenario{"verify noexcept"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::ut_then{} = []() {
+    bsl::ut_scenario{"verify noexcept"} = []() noexcept {
+        bsl::ut_given{} = []() noexcept {
+            bsl::ut_then{} = []() noexcept {
                 static_assert(noexcept(bsl::convert<bsl::int32>(0)));
                 static_assert(noexcept(bsl::convert<bsl::int32>(bsl::safe_int32{})));
                 static_assert(noexcept(bsl::to_i8(0)));
@@ -71,7 +71,6 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(bsl::to_umax(bsl::safe_int32{})));
                 static_assert(noexcept(bsl::to_umax_unsafe(0)));
                 static_assert(noexcept(bsl::to_umax_unsafe(bsl::safe_int32{})));
-                static_assert(noexcept(bsl::size_of<bsl::int32>()));
             };
         };
     };

@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_safe_integral_make_safe() noexcept
     {
-        // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
+        // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden, bsl-integral-literals-in-constexpr)
         constexpr bsl::int32 val1{23};
         constexpr auto val2{bsl::make_safe(val1)};
 

@@ -63,21 +63,18 @@ namespace bsl::details
         ///   @tparam T1 the type that defines the provided object. Note
         ///     that normally, U == T, but if inheritance is used, it might
         ///     not which is why U is provided instead of just using T.
-        ///   @param f a pointer to the function being called.
-        ///   @param val1 a reference wrapper to the object for which the
+        ///   @param pudm_udm_func a pointer to the function being called.
+        ///   @param pudm_udm_val1 a reference wrapper to the object for which the
         ///     function is called from.
-        ///   @return Returns the result of calling "f" from "val1" with "tn"
+        ///   @return Returns the result of calling "f" from "pudm_udm_val1" with "tn"
         ///
         template<typename FUNC, typename U, typename T1>
         [[maybe_unused]] static constexpr auto
-        call(FUNC U::*f, T1 &&val1) noexcept(noexcept(val1.get().*f))    // --
-            // Subclass to base conversions are needed here for invoke to work
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
-            -> decltype(val1.get().*f)
+        call(FUNC U::*pudm_udm_func, T1 &&pudm_udm_val1) noexcept(
+            noexcept(pudm_udm_val1.get().*pudm_udm_func))    // --
+            -> decltype(pudm_udm_val1.get().*pudm_udm_func)
         {
-            // Subclass to base conversions are needed here for invoke to work
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
-            return val1.get().*f;
+            return pudm_udm_val1.get().*pudm_udm_func;
         }
 
     protected:
@@ -98,9 +95,9 @@ namespace bsl::details
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr invoke_impl_mop_r(invoke_impl_mop_r &&o) noexcept = default;
+        constexpr invoke_impl_mop_r(invoke_impl_mop_r &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -116,10 +113,10 @@ namespace bsl::details
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(invoke_impl_mop_r &&o) &noexcept
+        [[maybe_unused]] constexpr auto operator=(invoke_impl_mop_r &&mut_o) &noexcept
             -> invoke_impl_mop_r & = default;
     };
 }

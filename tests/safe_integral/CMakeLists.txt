@@ -20,4 +20,9 @@
 # SOFTWARE.
 
 bf_add_test_internal(requirements)
-bf_add_test_internal(behavior)
+bf_add_test_internal(behavior_arithmetic)
+bf_add_test_internal(behavior_binary)
+bf_add_test_internal(behavior_make_safe)
+bf_add_test_internal(behavior_members)
+bf_add_test_internal(behavior_rational)
+bf_add_test_internal(behavior_shift)

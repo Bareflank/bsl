@@ -66,10 +66,10 @@ namespace bsl
         ///   @include example_finally_assert_overview.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @param func the function to call on destruction
+        ///   @param mut_func the function to call on destruction
         ///
-        explicit constexpr finally_assert(FUNC_T &&func) noexcept    // --
-            : m_func{bsl::move(func)}, m_invoked{}
+        explicit constexpr finally_assert(FUNC_T &&mut_func) noexcept    // --
+            : m_func{bsl::move(mut_func)}, m_invoked{}
         {}
 
         /// <!-- description -->
@@ -79,10 +79,11 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @param d ignored
-        ///   @param func the function to call on destruction
+        ///   @param mut_func the function to call on destruction
         ///
-        explicit constexpr finally_assert(bsl::dormant_t const &d, FUNC_T &&func) noexcept    // --
-            : m_func{bsl::move(func)}, m_invoked{true}
+        explicit constexpr finally_assert(
+            bsl::dormant_t const &d, FUNC_T &&mut_func) noexcept    // --
+            : m_func{bsl::move(mut_func)}, m_invoked{true}
         {
             bsl::discard(d);
         }
@@ -115,9 +116,9 @@ namespace bsl
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr finally_assert(finally_assert &&o) noexcept = delete;
+        constexpr finally_assert(finally_assert &&mut_o) noexcept = delete;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -133,10 +134,10 @@ namespace bsl
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(finally_assert &&o) &noexcept
+        [[maybe_unused]] constexpr auto operator=(finally_assert &&mut_o) &noexcept
             -> finally_assert & = delete;
 
         /// <!-- description -->

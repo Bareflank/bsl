@@ -35,10 +35,10 @@ namespace bsl
     example_arguments_increment() noexcept
     {
         constexpr bsl::array argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-        bsl::arguments args{argv.size(), argv.data()};
+        bsl::arguments mut_args{argv.size(), argv.data()};
 
-        ++args;
-        if (args.front<bsl::string_view>() == "8") {
+        ++mut_args;
+        if (mut_args.front<bsl::string_view>() == "8") {
             bsl::print() << "success\n";
         }
         else {

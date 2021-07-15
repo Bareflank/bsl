@@ -28,7 +28,8 @@
 namespace test
 {
     [[nodiscard]] constexpr auto
-    func_might_throw(bool val) -> bool
+    // NOLINTNEXTLINE(bsl-function-noexcept)
+    func_might_throw(bool const val) -> bool
     {
         return val;
     }

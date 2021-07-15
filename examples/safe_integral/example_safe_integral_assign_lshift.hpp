@@ -36,11 +36,12 @@ namespace bsl
         constexpr auto val1{42_u32};
         constexpr auto val2{2_u32};
 
-        auto val{val1};
+        auto mut_val{val1};
+        // NOLINTNEXTLINE(bsl-types-fixed-width-ints-arithmetic-check)
         constexpr auto expected{bsl::to_u32(val1.get() << val2.get())};
 
-        val <<= val2;
-        if (expected == val) {
+        mut_val <<= val2;
+        if (expected == mut_val) {
             bsl::print() << "success\n";
         }
         else {

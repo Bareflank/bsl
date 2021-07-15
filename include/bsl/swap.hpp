@@ -41,19 +41,19 @@ namespace bsl
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type that defines the values being swapped
-    ///   @param lhs the value being swapped with rhs
-    ///   @param rhs the value being swapped with lhs
+    ///   @param mut_lhs the value being swapped with mut_rhs
+    ///   @param mut_rhs the value being swapped with mut_lhs
     ///
     /// <!-- inputs/outputs -->
     ///   @throw throws if move construction or assignment of T throws
     ///
     template<typename T, enable_if_t<is_movable<T>::value, bool> = true>
     constexpr void
-    swap(T &lhs, T &rhs) noexcept(is_nothrow_movable<T>::value)
+    swap(T &mut_lhs, T &mut_rhs) noexcept(is_nothrow_movable<T>::value)
     {
-        T tmp{bsl::move(lhs)};
-        lhs = bsl::move(rhs);
-        rhs = bsl::move(tmp);
+        T mut_tmp{bsl::move(mut_lhs)};
+        mut_lhs = bsl::move(mut_rhs);
+        mut_rhs = bsl::move(mut_tmp);
     }
 }
 

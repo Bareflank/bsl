@@ -44,31 +44,31 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"move_if_noexcept empty"} = []() {
-            bsl::ut_given{} = []() {
-                test::class_empty c1{};
-                bsl::ut_when{} = [&c1]() {
-                    test::class_empty c2{bsl::move_if_noexcept(c1)};
+        bsl::ut_scenario{"move_if_noexcept empty"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                test::class_empty mut_c1{};
+                bsl::ut_when{} = [&]() noexcept {
+                    test::class_empty const c2{bsl::move_if_noexcept(mut_c1)};
                     bsl::discard(c2);
                 };
             };
         };
 
-        bsl::ut_scenario{"move_if_noexcept except"} = []() {
-            bsl::ut_given{} = []() {
-                test::class_except c1{};
-                bsl::ut_when{} = [&c1]() {
-                    test::class_except c2{bsl::move_if_noexcept(c1)};
+        bsl::ut_scenario{"move_if_noexcept except"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                test::class_except mut_c1{};
+                bsl::ut_when{} = [&]() noexcept {
+                    test::class_except const c2{bsl::move_if_noexcept(mut_c1)};
                     bsl::discard(c2);
                 };
             };
         };
 
-        bsl::ut_scenario{"move_if_noexcept nocopy"} = []() {
-            bsl::ut_given{} = []() {
-                test::class_nocopy c1{};
-                bsl::ut_when{} = [&c1]() {
-                    test::class_nocopy c2{bsl::move_if_noexcept(c1)};
+        bsl::ut_scenario{"move_if_noexcept nocopy"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                test::class_nocopy mut_c1{};
+                bsl::ut_when{} = [&]() noexcept {
+                    test::class_nocopy const c2{bsl::move_if_noexcept(mut_c1)};
                     bsl::discard(c2);
                 };
             };

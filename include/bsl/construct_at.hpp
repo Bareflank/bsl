@@ -40,14 +40,14 @@
 ///
 /// <!-- inputs/outputs -->
 ///   @param count ignored
-///   @param ptr the ptr to return
+///   @param pmut_mut_ptr the ptr to return
 ///   @return returns ptr
 ///
 [[maybe_unused]] constexpr auto
-operator new(bsl::uintmax count, void *ptr) noexcept -> void *
+operator new(bsl::uintmax const count, void *pmut_mut_ptr) noexcept -> void *
 {
     bsl::discard(count);
-    return ptr;
+    return pmut_mut_ptr;
 }
 
 // Currently, the new operator is only allowed in a constexpr if the constexpr
@@ -72,8 +72,8 @@ namespace std
     /// <!-- inputs/outputs -->
     ///   @tparam T the type of object to initialize
     ///   @tparam ARGS the types of args to initialize T with
-    ///   @param ptr a pointer to the object to initialize
-    ///   @param a the args to initialize T with
+    ///   @param pmut_ptr a pointer to the object to initialize
+    ///   @param pudm_udm_a the args to initialize T with
     ///   @return returns a pointer to the newly constructed T
     ///
     /// <!-- exceptions -->
@@ -81,15 +81,15 @@ namespace std
     ///
     template<typename T, typename... ARGS>
     [[nodiscard]] constexpr auto
-    construct_at_impl(void *const ptr, ARGS &&...a)    // --
-        noexcept(noexcept(new (ptr) T{bsl::declval<ARGS>()...})) -> T *
+    construct_at_impl(void *const pmut_ptr, ARGS &&...pudm_udm_a)    // --
+        noexcept(noexcept(new (pmut_ptr) T{bsl::declval<ARGS>()...})) -> T *
     {
-        if (bsl::unlikely(nullptr == ptr)) {
+        if (bsl::unlikely(nullptr == pmut_ptr)) {
             bsl::unlikely_invalid_argument_failure();
             return nullptr;
         }
 
-        return new (ptr) T{bsl::forward<ARGS>(a)...};
+        return new (pmut_ptr) T{bsl::forward<ARGS>(pudm_udm_a)...};
     }
 }
 
@@ -102,8 +102,8 @@ namespace bsl
     /// <!-- inputs/outputs -->
     ///   @tparam T the type of object to initialize
     ///   @tparam ARGS the types of args to initialize T with
-    ///   @param ptr a pointer to the object to initialize
-    ///   @param a the args to initialize T with
+    ///   @param pmut_ptr a pointer to the object to initialize
+    ///   @param pudm_udm_a the args to initialize T with
     ///   @return returns a pointer to the newly constructed T
     ///
     /// <!-- exceptions -->
@@ -111,10 +111,11 @@ namespace bsl
     ///
     template<typename T, typename... ARGS>
     [[nodiscard]] constexpr auto
-    construct_at(void *const ptr, ARGS &&...a)    // --
-        noexcept(noexcept(std::construct_at_impl<T, ARGS...>(ptr, bsl::declval<ARGS>()...))) -> T *
+    construct_at(void *const pmut_ptr, ARGS &&...pudm_udm_a)    // --
+        noexcept(noexcept(std::construct_at_impl<T, ARGS...>(pmut_ptr, bsl::declval<ARGS>()...)))
+            -> T *
     {
-        return std::construct_at_impl<T, ARGS...>(ptr, bsl::forward<ARGS>(a)...);
+        return std::construct_at_impl<T, ARGS...>(pmut_ptr, bsl::forward<ARGS>(pudm_udm_a)...);
     }
 }
 

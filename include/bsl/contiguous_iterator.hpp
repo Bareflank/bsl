@@ -102,15 +102,15 @@ namespace bsl
         ///     container's begin() function.
         ///
         /// <!-- inputs/outputs -->
-        ///   @param ptr a pointer to the array being iterated
+        ///   @param pudm_cst_ptr a pointer to the array being iterated
         ///   @param count the number of elements in the array being iterated
         ///   @param i the initial index of the iterator
         ///
-        constexpr contiguous_iterator(    // --
-            pointer_type const ptr,       // --
-            size_type const &count,       // --
+        constexpr contiguous_iterator(          // --
+            pointer_type const pudm_cst_ptr,    // --
+            size_type const &count,             // --
             size_type const &i) noexcept
-            : m_ptr{ptr}, m_count{count}, m_i{i}
+            : m_ptr{pudm_cst_ptr}, m_count{count}, m_i{i}
         {
             if (unlikely(nullptr == m_ptr)) {
                 *this = contiguous_iterator{};
@@ -154,9 +154,9 @@ namespace bsl
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr contiguous_iterator(contiguous_iterator &&o) noexcept = default;
+        constexpr contiguous_iterator(contiguous_iterator &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -172,10 +172,10 @@ namespace bsl
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(contiguous_iterator &&o) &noexcept
+        [[maybe_unused]] constexpr auto operator=(contiguous_iterator &&mut_o) &noexcept
             -> contiguous_iterator & = default;
 
         /// <!-- description -->
@@ -251,7 +251,7 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns !is_end()
         ///
-        [[nodiscard]] constexpr explicit operator bool() const noexcept
+        [[nodiscard]] explicit constexpr operator bool() const noexcept
         {
             return !this->is_end();
         }

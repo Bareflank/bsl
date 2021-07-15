@@ -34,12 +34,14 @@ namespace test
         virtual constexpr ~class_base() noexcept = default;
 
         [[nodiscard]] constexpr auto
+        // NOLINTNEXTLINE(readability-convert-member-functions-to-static)
         get() const noexcept -> bool
         {
             return true;
         }
 
         [[nodiscard]] constexpr auto
+        // NOLINTNEXTLINE(bsl-function-noexcept, readability-convert-member-functions-to-static)
         get_might_throw() const -> bool
         {
             return true;

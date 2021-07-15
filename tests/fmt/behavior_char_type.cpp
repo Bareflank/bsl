@@ -38,735 +38,735 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    bsl::ut_scenario{"char_type with no formatting"} = []() {
-        bsl::ut_when{} = []() {
+    bsl::ut_scenario{"char_type with no formatting"} = []() noexcept {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << '*';
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("*"));
             };
         };
     };
 
-    bsl::ut_scenario{"char_type with no formatting using fmt"} = []() {
-        bsl::ut_when{} = []() {
+    bsl::ut_scenario{"char_type with no formatting using fmt"} = []() noexcept {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{bsl::nullops, '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("*"));
             };
         };
     };
 
-    bsl::ut_scenario{"char_type with formatting type b"} = []() {
-        bsl::ut_when{} = []() {
+    bsl::ut_scenario{"char_type with formatting type b"} = []() noexcept {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("101010"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"10b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("    101010"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"<b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("101010"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{">b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("101010"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"^b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("101010"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"<10b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("101010    "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{">10b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("    101010"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"^10b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("  101010  "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#<10b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("101010####"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#>10b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("####101010"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#^10b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("##101010##"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"<#10b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("0b101010  "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{">#10b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("  0b101010"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"^#10b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted(" 0b101010 "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#<#10b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("0b101010##"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#>#10b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("##0b101010"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#^#10b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("#0b101010#"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("0b101010"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#10b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("  0b101010"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"0b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("101010"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"010b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("0000101010"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#010b", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("0b00101010"));
             };
         };
     };
 
-    bsl::ut_scenario{"char_type with formatting type d"} = []() {
-        bsl::ut_when{} = []() {
+    bsl::ut_scenario{"char_type with formatting type d"} = []() noexcept {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"10d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("        42"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"<d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{">d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"^d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"<10d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("42        "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{">10d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("        42"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"^10d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("    42    "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#<10d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("42########"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#>10d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("########42"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#^10d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("####42####"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"<#10d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("42        "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{">#10d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("        42"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"^#10d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("    42    "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#<#10d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("42########"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#>#10d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("########42"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#^#10d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("####42####"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#10d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("        42"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"0d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("42"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"010d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("0000000042"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#010d", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("0000000042"));
             };
         };
     };
 
-    bsl::ut_scenario{"char_type with formatting type x"} = []() {
-        bsl::ut_when{} = []() {
+    bsl::ut_scenario{"char_type with formatting type x"} = []() noexcept {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("2A"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"10x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("        2A"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"<x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("2A"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{">x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("2A"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"^x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("2A"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"<10x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("2A        "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{">10x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("        2A"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"^10x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("    2A    "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#<10x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("2A########"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#>10x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("########2A"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#^10x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("####2A####"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"<#10x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("0x2A      "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{">#10x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("      0x2A"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"^#10x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("   0x2A   "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#<#10x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("0x2A######"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#>#10x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("######0x2A"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#^#10x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("###0x2A###"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("0x2A"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#10x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("      0x2A"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"0x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("2A"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"010x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("000000002A"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#010x", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("0x0000002A"));
             };
         };
     };
 
-    bsl::ut_scenario{"char_type with formatting type c"} = []() {
-        bsl::ut_when{} = []() {
+    bsl::ut_scenario{"char_type with formatting type c"} = []() noexcept {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"c", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("*"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"10c", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("*         "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"<c", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("*"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{">c", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("*"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"^c", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("*"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"<10c", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("*         "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{">10c", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("         *"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"^10c", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("    *     "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#<10c", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("*#########"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#>10c", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("#########*"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#^10c", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("####*#####"));
             };
         };
     };
 
-    bsl::ut_scenario{"char_type with default formatting type"} = []() {
-        bsl::ut_when{} = []() {
+    bsl::ut_scenario{"char_type with default formatting type"} = []() noexcept {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("*"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"10", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("*         "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"<", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("*"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{">", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("*"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"^", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("*"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"<10", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("*         "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{">10", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("         *"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"^10", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("    *     "));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#<10", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("*#########"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#>10", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("#########*"));
             };
         };
 
-        bsl::ut_when{} = []() {
+        bsl::ut_when{} = []() noexcept {
             fmt_test::reset();
             bsl::print() << bsl::fmt{"#^10", '*'};
-            bsl::ut_then{} = []() {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("####*#####"));
             };
         };

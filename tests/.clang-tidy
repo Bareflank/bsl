@@ -23,23 +23,15 @@ Checks:
   '
     -*,
     bsl-*,
-      -bsl-comparison-operators-forbidden,
-      -bsl-boolean-operators-forbidden,
-      -bsl-function-noexcept,
-      -bsl-name-prefixes,
-      -bsl-name-case,
-      -bsl-literals-user-defined,
     bugprone-*,
       -bugprone-branch-clone,
     cert-*,
       -cert-dcl21-cpp,
       -cert-oop54-cpp,
-      -cert-dcl59-cpp,
     clang-analyzer-*,
       -clang-analyzer-core.NullDereference,
     cppcoreguidelines-*,
       -cppcoreguidelines-avoid-magic-numbers,
-      -cppcoreguidelines-avoid-non-const-global-variables,
     hicpp-*,
       -hicpp-function-size,
     misc-*,
@@ -51,9 +43,8 @@ Checks:
       -readability-redundant-member-init,
       -readability-avoid-const-params-in-decls,
       -readability-static-accessed-through-instance,
-      -readability-magic-numbers,
       -readability-function-size,
-      -readability-convert-member-functions-to-static
+      -readability-magic-numbers
   '
 WarningsAsErrors: '*'
 HeaderFilterRegex: '.*'

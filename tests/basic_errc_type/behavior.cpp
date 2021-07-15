@@ -40,30 +40,30 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"constructor / get"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::basic_errc_type<> errc{};
-                bsl::ut_then{} = [&errc]() {
-                    bsl::ut_check(errc.get() == 0);
+        bsl::ut_scenario{"constructor / get"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::basic_errc_type<> const errc{};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(0 == errc.get());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::basic_errc_type<> errc{42};
-                bsl::ut_then{} = [&errc]() {
-                    bsl::ut_check(errc.get() == 42);
+            bsl::ut_given{} = []() noexcept {
+                bsl::basic_errc_type<> const errc{42};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(42 == errc.get());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::basic_errc_type<> errc{bsl::to_i32(42)};
-                bsl::ut_then{} = [&errc]() {
-                    bsl::ut_check(errc.get() == 42);
+            bsl::ut_given{} = []() noexcept {
+                bsl::basic_errc_type<> const errc{bsl::to_i32(42)};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(42 == errc.get());
                 };
             };
         };
 
-        bsl::ut_scenario{"operator bool"} = []() {
+        bsl::ut_scenario{"operator bool"} = []() noexcept {
             bsl::ut_check(!!bsl::errc_success);
             bsl::ut_check(!bsl::errc_failure);
             bsl::ut_check(!bsl::errc_precondition);
@@ -78,7 +78,7 @@ namespace
             bsl::ut_check(!bsl::errc_nullptr_dereference);
         };
 
-        bsl::ut_scenario{"success"} = []() {
+        bsl::ut_scenario{"success"} = []() noexcept {
             bsl::ut_check(bsl::errc_success.success());
             bsl::ut_check(!bsl::errc_failure.success());
             bsl::ut_check(!bsl::errc_precondition.success());
@@ -93,7 +93,7 @@ namespace
             bsl::ut_check(!bsl::errc_nullptr_dereference.success());
         };
 
-        bsl::ut_scenario{"failure"} = []() {
+        bsl::ut_scenario{"failure"} = []() noexcept {
             bsl::ut_check(!bsl::errc_success.failure());
             bsl::ut_check(bsl::errc_failure.failure());
             bsl::ut_check(bsl::errc_precondition.failure());
@@ -108,7 +108,7 @@ namespace
             bsl::ut_check(bsl::errc_nullptr_dereference.failure());
         };
 
-        bsl::ut_scenario{"is_checked"} = []() {
+        bsl::ut_scenario{"is_checked"} = []() noexcept {
             bsl::ut_check(!bsl::errc_success.is_checked());
             bsl::ut_check(!bsl::errc_failure.is_checked());
             bsl::ut_check(!bsl::errc_precondition.is_checked());
@@ -123,7 +123,7 @@ namespace
             bsl::ut_check(!bsl::errc_nullptr_dereference.is_checked());
         };
 
-        bsl::ut_scenario{"is_unchecked"} = []() {
+        bsl::ut_scenario{"is_unchecked"} = []() noexcept {
             bsl::ut_check(!bsl::errc_success.is_unchecked());
             bsl::ut_check(bsl::errc_failure.is_unchecked());
             bsl::ut_check(bsl::errc_precondition.is_unchecked());
@@ -138,21 +138,21 @@ namespace
             bsl::ut_check(bsl::errc_nullptr_dereference.is_unchecked());
         };
 
-        bsl::ut_scenario{"equals"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::basic_errc_type<> errc1{42};
-                bsl::basic_errc_type<> errc2{42};
-                bsl::ut_then{} = [&errc1, &errc2]() {
+        bsl::ut_scenario{"equals"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::basic_errc_type<> const errc1{42};
+                bsl::basic_errc_type<> const errc2{42};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(errc1 == errc2);
                 };
             };
         };
 
-        bsl::ut_scenario{"not equals"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::basic_errc_type<> errc1{23};
-                bsl::basic_errc_type<> errc2{42};
-                bsl::ut_then{} = [&errc1, &errc2]() {
+        bsl::ut_scenario{"not equals"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::basic_errc_type<> const errc1{23};
+                bsl::basic_errc_type<> const errc2{42};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(errc1 != errc2);
                 };
             };

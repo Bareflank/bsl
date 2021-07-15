@@ -59,9 +59,9 @@ namespace bsl
         [[nodiscard]] constexpr auto
         from_chars_ignore_whitespace(string_view const &str) noexcept -> safe_uintmax
         {
-            safe_uintmax i{};
-            for (; i < str.length(); ++i) {
-                char_type const digit{*str.at_if(i)};
+            safe_uintmax mut_i{};
+            for (; mut_i < str.length(); ++mut_i) {
+                char_type const digit{*str.at_if(mut_i)};
 
                 if (' ' == digit) {
                     continue;
@@ -90,12 +90,12 @@ namespace bsl
                 break;
             }
 
-            if (unlikely(str.length() == i)) {
+            if (unlikely(str.length() == mut_i)) {
                 details::invalid_dec_or_hex_integral();
                 return safe_uintmax::failure();
             }
 
-            return i;
+            return mut_i;
         }
 
         /// <!-- description -->
@@ -110,25 +110,27 @@ namespace bsl
         ///
         template<typename T>
         [[nodiscard]] constexpr auto
-        from_chars_parse_dec(string_view const &str, safe_uintmax &idx) noexcept -> safe_integral<T>
+        from_chars_parse_dec(string_view const &str, safe_uintmax const &idx) noexcept
+            -> safe_integral<T>
         {
             constexpr safe_integral<T> base10{static_cast<T>(10)};
 
-            bool negate{};
-            safe_integral<T> val{};
+            bool mut_negate{};
+            safe_integral<T> mut_val{};
 
+            auto mut_idx{idx};
             if constexpr (is_signed<T>::value) {
-                if (*str.front_if() == '-') {
-                    negate = true;
-                    ++idx;
+                if ('-' == *str.front_if()) {
+                    mut_negate = true;
+                    ++mut_idx;
                 }
                 else {
                     bsl::touch();
                 }
             }
 
-            for (safe_uintmax i{idx}; i < str.length(); ++i) {
-                safe_integral<T> digit{static_cast<T>(*str.at_if(i))};
+            for (safe_uintmax mut_i{mut_idx}; mut_i < str.length(); ++mut_i) {
+                safe_integral<T> const digit{static_cast<T>(*str.at_if(mut_i))};
 
                 constexpr safe_integral<T> lower_num{static_cast<T>('/')};
                 constexpr safe_integral<T> upper_num{static_cast<T>(':')};
@@ -137,18 +139,18 @@ namespace bsl
                     if (digit < upper_num) {
                         constexpr safe_integral<T> offset{static_cast<T>('0')};
                         if constexpr (is_signed<T>::value) {
-                            if (negate) {
-                                val *= base10;
-                                val -= (digit - offset);
+                            if (mut_negate) {
+                                mut_val *= base10;
+                                mut_val -= (digit - offset);
                             }
                             else {
-                                val *= base10;
-                                val += (digit - offset);
+                                mut_val *= base10;
+                                mut_val += (digit - offset);
                             }
                         }
                         else {
-                            val *= base10;
-                            val += (digit - offset);
+                            mut_val *= base10;
+                            mut_val += (digit - offset);
                         }
 
                         continue;
@@ -164,7 +166,7 @@ namespace bsl
                 return safe_integral<T>::failure();
             }
 
-            return val;
+            return mut_val;
         }
 
         /// <!-- description -->
@@ -190,10 +192,10 @@ namespace bsl
             constexpr safe_integral<T> base10{static_cast<T>(10)};
             constexpr safe_integral<T> base16{static_cast<T>(16)};
 
-            safe_integral<T> val{};
+            safe_integral<T> mut_val{};
 
-            for (safe_uintmax i{idx}; i < str.length(); ++i) {
-                safe_integral<T> digit{static_cast<T>(*str.at_if(i))};
+            for (safe_uintmax mut_i{idx}; mut_i < str.length(); ++mut_i) {
+                safe_integral<T> const digit{static_cast<T>(*str.at_if(mut_i))};
 
                 constexpr safe_integral<T> lower_num{static_cast<T>('/')};
                 constexpr safe_integral<T> upper_num{static_cast<T>(':')};
@@ -201,8 +203,8 @@ namespace bsl
                 if (digit > lower_num) {
                     if (digit < upper_num) {
                         constexpr safe_integral<T> offset{static_cast<T>('0')};
-                        val *= base16;
-                        val += (digit - offset);
+                        mut_val *= base16;
+                        mut_val += (digit - offset);
                         continue;
                     }
 
@@ -218,9 +220,9 @@ namespace bsl
                 if (digit > lower_alpha1) {
                     if (digit < upper_alpha1) {
                         constexpr safe_integral<T> offset{static_cast<T>('A')};
-                        val *= base16;
-                        val += base10;
-                        val += (digit - offset);
+                        mut_val *= base16;
+                        mut_val += base10;
+                        mut_val += (digit - offset);
                         continue;
                     }
 
@@ -236,9 +238,9 @@ namespace bsl
                 if (digit > lower_alpha2) {
                     if (digit < upper_alpha2) {
                         constexpr safe_integral<T> offset{static_cast<T>('a')};
-                        val *= base16;
-                        val += base10;
-                        val += (digit - offset);
+                        mut_val *= base16;
+                        mut_val += base10;
+                        mut_val += (digit - offset);
                         continue;
                     }
 
@@ -252,7 +254,7 @@ namespace bsl
                 return safe_integral<T>::failure();
             }
 
-            return val;
+            return mut_val;
         }
     }
 
@@ -314,7 +316,7 @@ namespace bsl
             return safe_integral<T>::failure();
         }
 
-        auto idx{details::from_chars_ignore_whitespace(str)};
+        auto const idx{details::from_chars_ignore_whitespace(str)};
         if (unlikely(idx.invalid())) {
             unlikely_invalid_argument_failure();
             return safe_integral<T>::failure();

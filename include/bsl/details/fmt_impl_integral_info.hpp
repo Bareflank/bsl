@@ -25,9 +25,9 @@
 #ifndef BSL_DETAILS_FMT_IMPL_INTEGRAL_INFO_HPP
 #define BSL_DETAILS_FMT_IMPL_INTEGRAL_INFO_HPP
 
+#include "../array.hpp"
 #include "../char_type.hpp"
 #include "../safe_integral.hpp"
-#include "carray.hpp"
 
 namespace bsl::details
 {
@@ -52,7 +52,7 @@ namespace bsl::details
         /// @brief stores the total number digits that make up the integral
         safe_uintmax digits{};
         /// @brief stores the integral as a string in reverse
-        carray<char_type, MAX_NUM_DIGITS.get()> buf{};
+        array<char_type, MAX_NUM_DIGITS.get()> buf{};
     };
 }
 

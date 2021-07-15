@@ -36,10 +36,10 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    bsl::ut_scenario{"verify noexcept"} = []() {
-        bsl::ut_given{} = []() {
-            bool mydata{};
-            bsl::ut_then{} = []() {
+    bsl::ut_scenario{"verify noexcept"} = []() noexcept {
+        bsl::ut_given{} = []() noexcept {
+            bool const mydata{};
+            bsl::ut_then{} = []() noexcept {
                 static_assert(noexcept(bsl::discard(mydata)));
             };
         };

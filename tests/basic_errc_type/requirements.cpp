@@ -29,43 +29,7 @@
 
 namespace
 {
-    constinit bsl::basic_errc_type<> const verify_constinit{};
-
-    // Needed for requirements testing
-    // NOLINTNEXTLINE(bsl-user-defined-type-names-match-header-name)
-    class fixture_t final
-    {
-        bsl::basic_errc_type<> errc{};
-
-    public:
-        [[nodiscard]] constexpr auto
-        test_member_const() const noexcept -> bool
-        {
-            bsl::discard(errc.get());
-            bsl::discard(!!errc);
-            bsl::discard(errc.success());
-            bsl::discard(errc.failure());
-            bsl::discard(errc.is_checked());
-            bsl::discard(errc.is_unchecked());
-
-            return true;
-        }
-
-        [[nodiscard]] constexpr auto
-        test_member_nonconst() noexcept -> bool
-        {
-            bsl::discard(errc.get());
-            bsl::discard(!!errc);
-            bsl::discard(errc.success());
-            bsl::discard(errc.failure());
-            bsl::discard(errc.is_checked());
-            bsl::discard(errc.is_unchecked());
-
-            return true;
-        }
-    };
-
-    constexpr fixture_t fixture1{};
+    constinit bsl::basic_errc_type<> const g_verify_constinit{};
 }
 
 /// <!-- description -->
@@ -79,18 +43,30 @@ namespace
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    bsl::ut_scenario{"verify supports constinit"} = []() {
-        bsl::discard(verify_constinit);
+    bsl::ut_scenario{"verify supports constinit"} = []() noexcept {
+        bsl::discard(g_verify_constinit);
     };
 
-    bsl::ut_scenario{"verify noexcept"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::basic_errc_type<> errc1{};
-            bsl::basic_errc_type<> errc2{};
-            bsl::ut_then{} = []() {
+    bsl::ut_scenario{"verify noexcept"} = []() noexcept {
+        bsl::ut_given{} = []() noexcept {
+            bsl::basic_errc_type<> mut_errc1{};
+            bsl::basic_errc_type<> mut_errc2{};
+            bsl::basic_errc_type<> const errc1{};
+            bsl::basic_errc_type<> const errc2{};
+            bsl::ut_then{} = []() noexcept {
                 static_assert(noexcept(bsl::basic_errc_type<>{}));
                 static_assert(noexcept(bsl::basic_errc_type<>{42}));
                 static_assert(noexcept(bsl::basic_errc_type<>{bsl::to_i32(42)}));
+
+                static_assert(noexcept(mut_errc1.get()));
+                static_assert(noexcept(!!mut_errc1));
+                static_assert(noexcept(mut_errc1.success()));
+                static_assert(noexcept(mut_errc1.failure()));
+                static_assert(noexcept(mut_errc1.is_checked()));
+                static_assert(noexcept(mut_errc1.is_unchecked()));
+                static_assert(noexcept(mut_errc1 == mut_errc2));
+                static_assert(noexcept(mut_errc1 != mut_errc2));
+
                 static_assert(noexcept(errc1.get()));
                 static_assert(noexcept(!!errc1));
                 static_assert(noexcept(errc1.success()));
@@ -99,16 +75,6 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(errc1.is_unchecked()));
                 static_assert(noexcept(errc1 == errc2));
                 static_assert(noexcept(errc1 != errc2));
-            };
-        };
-    };
-
-    bsl::ut_scenario{"verify constness"} = []() {
-        bsl::ut_given{} = []() {
-            fixture_t fixture2{};
-            bsl::ut_then{} = [&fixture2]() {
-                static_assert(fixture1.test_member_const());
-                bsl::ut_check(fixture2.test_member_nonconst());
             };
         };
     };

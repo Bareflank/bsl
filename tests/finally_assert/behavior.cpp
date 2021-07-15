@@ -39,8 +39,8 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"finally_assert"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"finally_assert"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bool executed{};
                 bsl::ut_then{} = [&executed]() {
                     {
@@ -53,8 +53,8 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"ignore finally_assert"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"ignore finally_assert"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bool executed{};
                 bsl::ut_then{} = [&executed]() {
                     {
@@ -69,8 +69,8 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"dormant finally_assert"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"dormant finally_assert"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bool executed{};
                 bsl::ut_then{} = [&executed]() {
                     {
@@ -82,7 +82,7 @@ namespace
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = []() noexcept {
                 bool executed{};
                 bsl::ut_then{} = [&executed]() {
                     {

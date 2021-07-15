@@ -37,8 +37,8 @@ namespace bsl
         constexpr auto idx{1_umax};
         constexpr bsl::array arr{true, false};
 
-        for (auto iter{arr.iter(idx)}; iter != arr.end(); ++iter) {
-            bsl::print() << "element [" << iter.index() << "] == " << iter.data() << bsl::endl;
+        for (auto mut_i{arr.iter(idx)}; mut_i != arr.end(); ++mut_i) {
+            bsl::print() << "element [" << mut_i.index() << "] == " << mut_i.data() << bsl::endl;
         }
     }
 }

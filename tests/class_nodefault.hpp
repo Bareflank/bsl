@@ -54,15 +54,15 @@ namespace test
             return *this;
         }
 
-        constexpr class_nodefault(class_nodefault &&o) noexcept
+        constexpr class_nodefault(class_nodefault &&mut_o) noexcept
         {
-            bsl::discard(o);
+            bsl::discard(mut_o);
         }
 
         [[maybe_unused]] constexpr auto
-        operator=(class_nodefault &&o) &noexcept -> class_nodefault &
+        operator=(class_nodefault &&mut_o) &noexcept -> class_nodefault &
         {
-            bsl::discard(o);
+            bsl::discard(mut_o);
             return *this;
         }
     };

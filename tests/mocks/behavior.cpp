@@ -43,18 +43,18 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"reset"} = []() {
-            bsl::ut_given_at_runtime{} = []() {
+        bsl::ut_scenario{"reset"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
                 fmt_test::reset();
             };
         };
 
-        bsl::ut_scenario{"was_this_outputted"} = []() {
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::ut_when{} = []() {
+        bsl::ut_scenario{"was_this_outputted"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::ut_when{} = []() noexcept {
                     fmt_test::reset();
                     bsl::details::putc_stdout('h');
-                    bsl::ut_then{} = []() {
+                    bsl::ut_then{} = []() noexcept {
                         bsl::ut_check(fmt_test::was_this_outputted("h"));
                         bsl::ut_check(!fmt_test::was_this_outputted("w"));
                         bsl::ut_check(!fmt_test::was_this_outputted("world"));
@@ -63,12 +63,12 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"was_this_outputted"} = []() {
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::ut_when{} = []() {
+        bsl::ut_scenario{"was_this_outputted"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::ut_when{} = []() noexcept {
                     fmt_test::reset();
                     bsl::details::puts_stdout("hello");
-                    bsl::ut_then{} = []() {
+                    bsl::ut_then{} = []() noexcept {
                         bsl::ut_check(fmt_test::was_this_outputted("hello"));
                         bsl::ut_check(!fmt_test::was_this_outputted("w"));
                         bsl::ut_check(!fmt_test::was_this_outputted("world"));
@@ -77,18 +77,18 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"class_base"} = []() {
-            bsl::ut_given_at_runtime{} = []() {
-                test::class_base base{};
+        bsl::ut_scenario{"class_base"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                test::class_base const base{};
                 auto const *const ptr{new test::class_base};
                 // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
                 delete ptr;    // GRCOV_EXCLUDE_BR
             };
         };
 
-        bsl::ut_scenario{"class_subclass"} = []() {
-            bsl::ut_given_at_runtime{} = []() {
-                test::class_subclass subclass{};
+        bsl::ut_scenario{"class_subclass"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                test::class_subclass const subclass{};
                 auto const *const ptr{new test::class_subclass};
                 // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
                 delete ptr;    // GRCOV_EXCLUDE_BR

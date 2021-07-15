@@ -49,90 +49,90 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"constructor / get"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::safe_int32 data{};
-                bsl::reference_wrapper rw{data};
-                bsl::ut_when{} = [&rw]() {
-                    rw.get() = 42;
-                    bsl::ut_then{} = [&rw]() {
-                        bsl::ut_check(rw.get() == 42);
+        bsl::ut_scenario{"constructor / get"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::safe_int32 mut_data{};
+                bsl::reference_wrapper mut_rw{mut_data};
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_rw.get() = 42;
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_rw.get() == 42);
                     };
                 };
             };
         };
 
-        bsl::ut_scenario{"const constructor / get"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"const constructor / get"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::safe_int32 const data{42};
-                bsl::reference_wrapper rw{data};
-                bsl::ut_then{} = [&rw]() {
-                    bsl::ut_check(rw.get() == 42);
+                bsl::reference_wrapper mut_rw{data};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(mut_rw.get() == 42);
                 };
             };
         };
 
-        bsl::ut_scenario{"invoke"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"invoke"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 // BUG: Need to figure out why we cannot use & here
                 // NOLINTNEXTLINE(bsl-function-name-use)
-                bsl::reference_wrapper rw{func};
-                bsl::ut_then{} = [&rw]() {
-                    bsl::ut_check(rw(bsl::to_i32(42)) == 42);
+                bsl::reference_wrapper mut_rw{func};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(mut_rw(bsl::to_i32(42)) == 42);
                 };
             };
         };
 
-        bsl::ut_scenario{"bsl::ref"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::safe_int32 data{};
-                bsl::reference_wrapper rw{bsl::ref(data)};
-                bsl::ut_when{} = [&rw]() {
-                    rw.get() = 42;
-                    bsl::ut_then{} = [&rw]() {
-                        bsl::ut_check(rw.get() == 42);
+        bsl::ut_scenario{"bsl::ref"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::safe_int32 mut_data{};
+                bsl::reference_wrapper mut_rw{bsl::ref(mut_data)};
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_rw.get() = 42;
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_rw.get() == 42);
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::safe_int32 data{};
-                bsl::reference_wrapper rw1{bsl::ref(data)};
-                bsl::reference_wrapper rw2{bsl::ref(rw1)};
-                bsl::ut_when{} = [&rw2]() {
-                    rw2.get() = 42;
-                    bsl::ut_then{} = [&rw2]() {
-                        bsl::ut_check(rw2.get() == 42);
+            bsl::ut_given{} = []() noexcept {
+                bsl::safe_int32 mut_data{};
+                bsl::reference_wrapper mut_rw1{bsl::ref(mut_data)};
+                bsl::reference_wrapper mut_rw2{bsl::ref(mut_rw1)};
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_rw2.get() = 42;
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_rw2.get() == 42);
                     };
                 };
             };
         };
 
-        bsl::ut_scenario{"bsl::cref"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"bsl::cref"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::safe_int32 const data{42};
-                bsl::reference_wrapper rw{bsl::cref(data)};
-                bsl::ut_then{} = [&rw]() {
-                    bsl::ut_check(rw.get() == 42);
+                bsl::reference_wrapper mut_rw{bsl::cref(data)};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(mut_rw.get() == 42);
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = []() noexcept {
                 bsl::safe_int32 const data{42};
-                bsl::reference_wrapper rw1{bsl::cref(data)};
-                bsl::reference_wrapper rw2{bsl::cref(rw1)};
-                bsl::ut_then{} = [&rw2]() {
-                    bsl::ut_check(rw2.get() == 42);
+                bsl::reference_wrapper mut_rw1{bsl::cref(data)};
+                bsl::reference_wrapper mut_rw2{bsl::cref(mut_rw1)};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(mut_rw2.get() == 42);
                 };
             };
         };
 
-        bsl::ut_scenario{"output doesn't crash"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"output doesn't crash"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::safe_int32 const data{42};
-                bsl::reference_wrapper rw{data};
-                bsl::ut_then{} = [&rw]() {
-                    bsl::debug() << rw << '\n';
+                bsl::reference_wrapper mut_rw{data};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::debug() << mut_rw << '\n';
                 };
             };
         };

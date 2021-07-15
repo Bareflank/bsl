@@ -40,68 +40,68 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"starts_with"} = []() {
-            bsl::ut_given_at_runtime{} = []() {
+        bsl::ut_scenario{"starts_with"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
-                bsl::ut_then{} = [&msg]() {
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!msg.starts_with(bsl::basic_string_view<bsl::char_type>{}));
                 };
 
-                bsl::ut_then{} = [&msg]() {
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!msg.starts_with(bsl::basic_string_view<bsl::char_type>{"Hell"}));
                 };
 
-                bsl::ut_then{} = [&msg]() {
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!msg.starts_with(bsl::basic_string_view<bsl::char_type>{"ello"}));
                 };
 
-                bsl::ut_then{} = [&msg]() {
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!msg.starts_with('H'));
                 };
 
-                bsl::ut_then{} = [&msg]() {
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!msg.starts_with('e'));
                 };
 
-                bsl::ut_then{} = [&msg]() {
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!msg.starts_with("Hell"));
                 };
 
-                bsl::ut_then{} = [&msg]() {
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!msg.starts_with("ello"));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
+            bsl::ut_given_at_runtime{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
-                bsl::ut_then{} = [&msg]() {
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!msg.starts_with(bsl::basic_string_view<bsl::char_type>{}));
                 };
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
-                bsl::ut_then{} = [&msg]() {
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(msg.starts_with(bsl::basic_string_view<bsl::char_type>{"Hell"}));
                 };
 
-                bsl::ut_then{} = [&msg]() {
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!msg.starts_with(bsl::basic_string_view<bsl::char_type>{"ello"}));
                 };
 
-                bsl::ut_then{} = [&msg]() {
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(msg.starts_with('H'));
                 };
 
-                bsl::ut_then{} = [&msg]() {
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!msg.starts_with('e'));
                 };
 
-                bsl::ut_then{} = [&msg]() {
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(msg.starts_with("Hell"));
                 };
 
-                bsl::ut_then{} = [&msg]() {
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!msg.starts_with("ello"));
                 };
             };

@@ -35,6 +35,7 @@ namespace test
 
         [[nodiscard]] virtual auto get() const noexcept -> bool = 0;
 
+        // NOLINTNEXTLINE(bsl-function-noexcept)
         [[nodiscard]] virtual auto get_might_throw() const -> bool = 0;
 
     protected:

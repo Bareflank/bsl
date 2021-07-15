@@ -34,17 +34,17 @@ namespace
 {
     template<typename T>
     [[nodiscard]] constexpr auto
-    detector(T &&val) noexcept -> bsl::safe_int32
+    detector(T &&pudm_udm_val) noexcept -> bsl::safe_int32
     {
         if constexpr (bsl::is_const<bsl::remove_reference_t<T>>::value) {
             return bsl::to_i32(1);
         }
 
-        if constexpr (bsl::is_lvalue_reference<decltype(val)>::value) {
+        if constexpr (bsl::is_lvalue_reference<decltype(pudm_udm_val)>::value) {
             return bsl::to_i32(2);
         }
 
-        if constexpr (bsl::is_rvalue_reference<decltype(val)>::value) {
+        if constexpr (bsl::is_rvalue_reference<decltype(pudm_udm_val)>::value) {
             return bsl::to_i32(3);
         }
 
@@ -53,9 +53,9 @@ namespace
 
     template<typename T>
     [[nodiscard]] constexpr auto
-    forwarder(T &&val) noexcept -> bsl::safe_int32
+    forwarder(T &&pudm_udm_val) noexcept -> bsl::safe_int32
     {
-        return detector(bsl::forward<T>(val));
+        return detector(bsl::forward<T>(pudm_udm_val));
     }
 
     /// <!-- description -->
@@ -70,23 +70,23 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"exchange"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"exchange"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::safe_int32 const val{42};
-                bsl::ut_then{} = [&val]() {
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(forwarder(val) == 1);
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::safe_int32 val{42};
-                bsl::ut_then{} = [&val]() {
-                    bsl::ut_check(forwarder(val) == 2);
+            bsl::ut_given{} = []() noexcept {
+                bsl::safe_int32 mut_val{42};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(forwarder(mut_val) == 2);
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::ut_then{} = []() {
+            bsl::ut_given{} = []() noexcept {
+                bsl::ut_then{} = []() noexcept {
                     bsl::ut_check(forwarder(bsl::to_i32(42)) == 3);
                 };
             };

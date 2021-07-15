@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/max_align_t.hpp>
 #include <bsl/ut.hpp>
 
@@ -36,6 +37,6 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    static_assert(alignof(bsl::max_align_t) >= alignof(bsl::uintmax));
+    static_assert(bsl::to_umax(alignof(bsl::max_align_t)) >= bsl::to_umax(alignof(bsl::uintmax)));
     return bsl::ut_success();
 }

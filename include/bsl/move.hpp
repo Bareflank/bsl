@@ -33,21 +33,21 @@
 namespace bsl
 {
     /// <!-- description -->
-    ///   @brief Used to indicate that an object "val" may be "moved from",
-    ///     i.e. allowing the efficient transfer of resources from "val" to
+    ///   @brief Used to indicate that an object "pudm_udm_val" may be "moved from",
+    ///     i.e. allowing the efficient transfer of resources from "pudm_udm_val" to
     ///     another object.
     ///   @include example_move_overview.hpp
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type that defines the value being moved
-    ///   @param val the value being moved
-    ///   @return returns an xvalue expression that identifies "val"
+    ///   @param pudm_udm_val the value being moved
+    ///   @return returns an xvalue expression that identifies "pudm_udm_val"
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    move(T &&val) noexcept -> bsl::remove_reference_t<T> &&
+    move(T &&pudm_udm_val) noexcept -> bsl::remove_reference_t<T> &&
     {
-        return static_cast<bsl::remove_reference_t<T> &&>(val);
+        return static_cast<bsl::remove_reference_t<T> &&>(pudm_udm_val);
     }
 }
 

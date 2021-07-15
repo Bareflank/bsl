@@ -34,10 +34,10 @@ namespace bsl
     example_contiguous_iterator_increment() noexcept
     {
         constexpr bsl::string_view str{"Hello"};
-        bsl::string_view::iterator_type iter{str.begin()};
+        bsl::string_view::iterator_type mut_iter{str.begin()};
 
-        ++iter;
-        if (auto const *const ptr{iter.get_if()}) {
+        ++mut_iter;
+        if (auto const *const ptr{mut_iter.get_if()}) {
             bsl::print() << "success: " << *ptr << bsl::endl;
         }
         else {

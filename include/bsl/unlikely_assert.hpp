@@ -38,19 +38,19 @@ namespace bsl
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam ARG the type that define the provided argument
-    ///   @param a the arguments check
+    ///   @param pudm_udm_a the arguments check
     ///   @return Returns the boolean output of __builtin_expect, or false
     ///     if in release mode.
     ///
     template<typename ARG>
     [[nodiscard]] constexpr auto
-    unlikely_assert(ARG &&a) noexcept -> bool
+    unlikely_assert(ARG &&pudm_udm_a) noexcept -> bool
     {
         if constexpr (BSL_RELEASE_MODE) {
             return false;
         }
 
-        return __builtin_expect(!!(a), 0L) != 0L;
+        return 0L != __builtin_expect(!!(pudm_udm_a), 0L);
     }
 }
 

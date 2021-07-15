@@ -29,7 +29,6 @@
 #define BSL_OUT_HPP
 
 #include "../char_type.hpp"
-#include "../color.hpp"
 #include "../cstr_type.hpp"
 #include "../is_constant_evaluated.hpp"
 #include "../is_same.hpp"
@@ -98,9 +97,9 @@ namespace bsl
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr out(out &&o) noexcept = default;
+        constexpr out(out &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -115,10 +114,10 @@ namespace bsl
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(out &&o) &noexcept -> out & = default;
+        [[maybe_unused]] constexpr auto operator=(out &&mut_o) &noexcept -> out & = default;
 
         /// <!-- description -->
         ///   @brief Returns true if this bsl::out represents an empty out
@@ -144,7 +143,7 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns !empty()
         ///
-        [[nodiscard]] constexpr explicit operator bool() const noexcept
+        [[nodiscard]] explicit constexpr operator bool() const noexcept
         {
             return !is_same<T, details::out_type_empty>::value;
         }
@@ -212,10 +211,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param c the character to output
         ///
-        static constexpr auto
-        // This conflicts with write() from unistd.h when it is included.
-        // NOLINTNEXTLINE(bsl-using-ident-unique-namespace)
-        write(char_type const c) noexcept -> void
+        static constexpr void
+        write_to_console(char_type const c) noexcept
         {
             if (is_constant_evaluated()) {
                 return;
@@ -246,10 +243,8 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param str the string to output
         ///
-        static constexpr auto
-        // This conflicts with write() from unistd.h when it is included.
-        // NOLINTNEXTLINE(bsl-using-ident-unique-namespace)
-        write(cstr_type const str) noexcept -> void
+        static constexpr void
+        write_to_console(cstr_type const str) noexcept
         {
             if (is_constant_evaluated()) {
                 return;

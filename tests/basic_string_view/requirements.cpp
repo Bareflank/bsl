@@ -29,110 +29,7 @@
 
 namespace
 {
-    constinit bsl::basic_string_view<bsl::char_type> const verify_constinit{"Hello World"};
-
-    // Needed for requirements testing
-    // NOLINTNEXTLINE(bsl-user-defined-type-names-match-header-name)
-    class fixture_t final
-    {
-        bsl::basic_string_view<bsl::char_type> msg{"Hello World"};
-
-    public:
-        [[nodiscard]] constexpr auto
-        test_member_const() const noexcept -> bool
-        {
-            bsl::discard(msg.at_if(bsl::to_umax(0)));
-            bsl::discard(msg.front_if());
-            bsl::discard(msg.back_if());
-            bsl::discard(msg.data());
-            bsl::discard(msg.begin());
-            bsl::discard(msg.cbegin());
-            bsl::discard(msg.iter(bsl::to_umax(0)));
-            bsl::discard(msg.citer(bsl::to_umax(0)));
-            bsl::discard(msg.end());
-            bsl::discard(msg.cend());
-            bsl::discard(msg.rbegin());
-            bsl::discard(msg.crbegin());
-            bsl::discard(msg.riter(bsl::to_umax(0)));
-            bsl::discard(msg.criter(bsl::to_umax(0)));
-            bsl::discard(msg.rend());
-            bsl::discard(msg.crend());
-            bsl::discard(msg.empty());
-            bsl::discard(!!msg);
-            bsl::discard(msg.size());
-            bsl::discard(msg.length());
-            bsl::discard(msg.max_size());
-            bsl::discard(msg.size_bytes());
-            bsl::discard(msg.substr());
-            bsl::discard(msg.compare(bsl::basic_string_view<bsl::char_type>{"H"}));
-            bsl::discard(msg.compare({}, {}, bsl::basic_string_view<bsl::char_type>{"H"}));
-            bsl::discard(msg.compare({}, {}, bsl::basic_string_view<bsl::char_type>{"H"}, {}, {}));
-            bsl::discard(msg.compare("H"));
-            bsl::discard(msg.compare({}, {}, "H"));
-            bsl::discard(msg.compare({}, {}, "H", {}));
-            bsl::discard(msg.starts_with(bsl::basic_string_view<bsl::char_type>{"H"}));
-            bsl::discard(msg.starts_with('H'));
-            bsl::discard(msg.starts_with(""));
-            bsl::discard(msg.ends_with(bsl::basic_string_view<bsl::char_type>{"H"}));
-            bsl::discard(msg.ends_with('H'));
-            bsl::discard(msg.ends_with("H"));
-            bsl::discard(msg.find(bsl::basic_string_view<bsl::char_type>{"H"}));
-            bsl::discard(msg.find('H'));
-            bsl::discard(msg.find("H"));
-
-            return true;
-        }
-
-        [[nodiscard]] constexpr auto
-        test_member_nonconst() noexcept -> bool
-        {
-            bsl::discard(msg = "");
-            bsl::discard(msg.at_if(bsl::to_umax(0)));
-            bsl::discard(msg.front_if());
-            bsl::discard(msg.back_if());
-            bsl::discard(msg.data());
-            bsl::discard(msg.begin());
-            bsl::discard(msg.cbegin());
-            bsl::discard(msg.iter(bsl::to_umax(0)));
-            bsl::discard(msg.citer(bsl::to_umax(0)));
-            bsl::discard(msg.end());
-            bsl::discard(msg.cend());
-            bsl::discard(msg.rbegin());
-            bsl::discard(msg.crbegin());
-            bsl::discard(msg.riter(bsl::to_umax(0)));
-            bsl::discard(msg.criter(bsl::to_umax(0)));
-            bsl::discard(msg.rend());
-            bsl::discard(msg.crend());
-            bsl::discard(msg.empty());
-            bsl::discard(!!msg);
-            bsl::discard(msg.size());
-            bsl::discard(msg.length());
-            bsl::discard(msg.max_size());
-            bsl::discard(msg.size_bytes());
-            bsl::discard(msg.remove_prefix(bsl::to_umax(0)));
-            bsl::discard(msg.remove_suffix(bsl::to_umax(0)));
-            bsl::discard(msg.substr());
-            bsl::discard(msg.compare(bsl::basic_string_view<bsl::char_type>{"H"}));
-            bsl::discard(msg.compare({}, {}, bsl::basic_string_view<bsl::char_type>{"H"}));
-            bsl::discard(msg.compare({}, {}, bsl::basic_string_view<bsl::char_type>{"H"}, {}, {}));
-            bsl::discard(msg.compare("H"));
-            bsl::discard(msg.compare({}, {}, "H"));
-            bsl::discard(msg.compare({}, {}, "H", {}));
-            bsl::discard(msg.starts_with(bsl::basic_string_view<bsl::char_type>{"H"}));
-            bsl::discard(msg.starts_with('H'));
-            bsl::discard(msg.starts_with(""));
-            bsl::discard(msg.ends_with(bsl::basic_string_view<bsl::char_type>{"H"}));
-            bsl::discard(msg.ends_with('H'));
-            bsl::discard(msg.ends_with(""));
-            bsl::discard(msg.find(bsl::basic_string_view<bsl::char_type>{"H"}));
-            bsl::discard(msg.find('H'));
-            bsl::discard(msg.find(""));
-
-            return true;
-        }
-    };
-
-    constexpr fixture_t fixture1{};
+    constinit bsl::basic_string_view<bsl::char_type> const g_verify_constinit{"Hello World"};
 }
 
 /// <!-- description -->
@@ -148,18 +45,68 @@ main() noexcept -> bsl::exit_code
 {
     using bsv_type = bsl::basic_string_view<bsl::char_type>;
 
-    bsl::ut_scenario{"verify supports constinit"} = []() {
-        bsl::discard(verify_constinit);
+    bsl::ut_scenario{"verify supports constinit"} = []() noexcept {
+        bsl::discard(g_verify_constinit);
     };
 
-    bsl::ut_scenario{"verify noexcept"} = []() {
-        bsl::ut_given{} = []() {
-            bsv_type msg1{};
-            bsv_type msg2{};
-            bsl::ut_then{} = []() {
+    bsl::ut_scenario{"verify noexcept"} = []() noexcept {
+        bsl::ut_given{} = []() noexcept {
+            bsv_type mut_msg1{};
+            bsv_type mut_msg2{};
+            bsv_type const msg1{};
+            bsv_type const msg2{};
+            bsl::ut_then{} = []() noexcept {
                 static_assert(noexcept(bsv_type{}));
                 static_assert(noexcept(bsv_type{""}));
                 static_assert(noexcept(bsv_type{"", bsl::to_umax(0)}));
+
+                static_assert(noexcept(mut_msg1.at_if(bsl::to_umax(0))));
+                static_assert(noexcept(mut_msg1.front_if()));
+                static_assert(noexcept(mut_msg1.back_if()));
+                static_assert(noexcept(mut_msg1.data()));
+                static_assert(noexcept(mut_msg1.begin()));
+                static_assert(noexcept(mut_msg1.cbegin()));
+                static_assert(noexcept(mut_msg1.iter(bsl::to_umax(0))));
+                static_assert(noexcept(mut_msg1.citer(bsl::to_umax(0))));
+                static_assert(noexcept(mut_msg1.end()));
+                static_assert(noexcept(mut_msg1.cend()));
+                static_assert(noexcept(mut_msg1.rbegin()));
+                static_assert(noexcept(mut_msg1.crbegin()));
+                static_assert(noexcept(mut_msg1.riter(bsl::to_umax(0))));
+                static_assert(noexcept(mut_msg1.criter(bsl::to_umax(0))));
+                static_assert(noexcept(mut_msg1.rend()));
+                static_assert(noexcept(mut_msg1.crend()));
+                static_assert(noexcept(mut_msg1.empty()));
+                static_assert(noexcept(!!mut_msg1));
+                static_assert(noexcept(mut_msg1.size()));
+                static_assert(noexcept(mut_msg1.length()));
+                static_assert(noexcept(mut_msg1.max_size()));
+                static_assert(noexcept(mut_msg1.size_bytes()));
+                static_assert(noexcept(mut_msg1.remove_prefix(bsl::to_umax(0))));
+                static_assert(noexcept(mut_msg1.remove_suffix(bsl::to_umax(0))));
+                static_assert(noexcept(mut_msg1.substr()));
+                static_assert(noexcept(mut_msg1.compare(bsv_type{"H"})));
+                static_assert(noexcept(mut_msg1.compare({}, {}, bsv_type{"H"})));
+                static_assert(noexcept(mut_msg1.compare({}, {}, bsv_type{"H"}, {}, {})));
+                static_assert(noexcept(mut_msg1.compare("H")));
+                static_assert(noexcept(mut_msg1.compare({}, {}, "H")));
+                static_assert(noexcept(mut_msg1.compare({}, {}, "H", {})));
+                static_assert(noexcept(mut_msg1.starts_with(bsv_type{})));
+                static_assert(noexcept(mut_msg1.starts_with('H')));
+                static_assert(noexcept(mut_msg1.starts_with("")));
+                static_assert(noexcept(mut_msg1.ends_with(bsv_type{})));
+                static_assert(noexcept(mut_msg1.ends_with('H')));
+                static_assert(noexcept(mut_msg1.ends_with("")));
+                static_assert(noexcept(mut_msg1.find(bsv_type{})));
+                static_assert(noexcept(mut_msg1.find('H')));
+                static_assert(noexcept(mut_msg1.find("")));
+                static_assert(noexcept(mut_msg1 == mut_msg2));
+                static_assert(noexcept(mut_msg1 == ""));
+                static_assert(noexcept("" == mut_msg2));
+                static_assert(noexcept(mut_msg1 != mut_msg2));
+                static_assert(noexcept(mut_msg1 != ""));
+                static_assert(noexcept("" != mut_msg2));
+
                 static_assert(noexcept(msg1.at_if(bsl::to_umax(0))));
                 static_assert(noexcept(msg1.front_if()));
                 static_assert(noexcept(msg1.back_if()));
@@ -182,8 +129,6 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(msg1.length()));
                 static_assert(noexcept(msg1.max_size()));
                 static_assert(noexcept(msg1.size_bytes()));
-                static_assert(noexcept(msg1.remove_prefix(bsl::to_umax(0))));
-                static_assert(noexcept(msg1.remove_suffix(bsl::to_umax(0))));
                 static_assert(noexcept(msg1.substr()));
                 static_assert(noexcept(msg1.compare(bsv_type{"H"})));
                 static_assert(noexcept(msg1.compare({}, {}, bsv_type{"H"})));
@@ -206,16 +151,6 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(msg1 != msg2));
                 static_assert(noexcept(msg1 != ""));
                 static_assert(noexcept("" != msg2));
-            };
-        };
-    };
-
-    bsl::ut_scenario{"verify constness"} = []() {
-        bsl::ut_given{} = []() {
-            fixture_t fixture2{};
-            bsl::ut_then{} = [&fixture2]() {
-                static_assert(fixture1.test_member_const());
-                bsl::ut_check(fixture2.test_member_nonconst());
             };
         };
     };

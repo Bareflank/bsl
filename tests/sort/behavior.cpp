@@ -56,88 +56,88 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"sort empty doesn't crash"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::span<bsl::safe_int32> view{};
-                bsl::ut_when{} = [&view]() {
-                    bsl::sort(view);
-                    bsl::ut_then{} = [&view]() {
-                        bsl::ut_check(view.empty());
+        bsl::ut_scenario{"sort empty doesn't crash"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::span<bsl::safe_int32> mut_view{};
+                bsl::ut_when{} = [&]() noexcept {
+                    bsl::sort(mut_view);
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_view.empty());
                     };
                 };
             };
         };
 
-        bsl::ut_scenario{"sort 1 number"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::array data{bsl::to_i32(4)};
-                bsl::span view{data};
-                bsl::ut_when{} = [&view]() {
-                    bsl::sort(view);
-                    bsl::ut_then{} = [&view]() {
-                        bsl::ut_check(*view.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
+        bsl::ut_scenario{"sort 1 number"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::array mut_data{bsl::to_i32(4)};
+                bsl::span mut_view{mut_data};
+                bsl::ut_when{} = [&]() noexcept {
+                    bsl::sort(mut_view);
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
                     };
                 };
             };
         };
 
-        bsl::ut_scenario{"sort 2 numbers"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::array data{bsl::to_i32(4), bsl::to_i32(23)};
-                bsl::span view{data};
-                bsl::ut_when{} = [&view]() {
-                    bsl::sort(view);
-                    bsl::ut_then{} = [&view]() {
-                        bsl::ut_check(*view.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
-                        bsl::ut_check(*view.at_if(bsl::to_umax(1)) == bsl::to_i32(23));
+        bsl::ut_scenario{"sort 2 numbers"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::array mut_data{bsl::to_i32(4), bsl::to_i32(23)};
+                bsl::span mut_view{mut_data};
+                bsl::ut_when{} = [&]() noexcept {
+                    bsl::sort(mut_view);
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(1)) == bsl::to_i32(23));
                     };
                 };
             };
         };
 
-        bsl::ut_scenario{"sort random numbers"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::array data{
+        bsl::ut_scenario{"sort random numbers"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::array mut_data{
                     bsl::to_i32(42),
                     bsl::to_i32(23),
                     bsl::to_i32(16),
                     bsl::to_i32(8),
                     bsl::to_i32(15),
                     bsl::to_i32(4)};
-                bsl::span view{data};
-                bsl::ut_when{} = [&view]() {
-                    bsl::sort(view);
-                    bsl::ut_then{} = [&view]() {
-                        bsl::ut_check(*view.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
-                        bsl::ut_check(*view.at_if(bsl::to_umax(1)) == bsl::to_i32(8));
-                        bsl::ut_check(*view.at_if(bsl::to_umax(2)) == bsl::to_i32(15));
-                        bsl::ut_check(*view.at_if(bsl::to_umax(3)) == bsl::to_i32(16));
-                        bsl::ut_check(*view.at_if(bsl::to_umax(4)) == bsl::to_i32(23));
-                        bsl::ut_check(*view.at_if(bsl::to_umax(5)) == bsl::to_i32(42));
+                bsl::span mut_view{mut_data};
+                bsl::ut_when{} = [&]() noexcept {
+                    bsl::sort(mut_view);
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(1)) == bsl::to_i32(8));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(2)) == bsl::to_i32(15));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(3)) == bsl::to_i32(16));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(4)) == bsl::to_i32(23));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(5)) == bsl::to_i32(42));
                     };
                 };
             };
         };
 
-        bsl::ut_scenario{"sort random descending"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::array data{
+        bsl::ut_scenario{"sort random descending"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::array mut_data{
                     bsl::to_i32(42),
                     bsl::to_i32(23),
                     bsl::to_i32(16),
                     bsl::to_i32(8),
                     bsl::to_i32(15),
                     bsl::to_i32(4)};
-                bsl::span view{data};
-                bsl::ut_when{} = [&view]() {
-                    bsl::sort(view, &reverse_sort_cmp);
-                    bsl::ut_then{} = [&view]() {
-                        bsl::ut_check(*view.at_if(bsl::to_umax(0)) == bsl::to_i32(42));
-                        bsl::ut_check(*view.at_if(bsl::to_umax(1)) == bsl::to_i32(23));
-                        bsl::ut_check(*view.at_if(bsl::to_umax(2)) == bsl::to_i32(16));
-                        bsl::ut_check(*view.at_if(bsl::to_umax(3)) == bsl::to_i32(15));
-                        bsl::ut_check(*view.at_if(bsl::to_umax(4)) == bsl::to_i32(8));
-                        bsl::ut_check(*view.at_if(bsl::to_umax(5)) == bsl::to_i32(4));
+                bsl::span mut_view{mut_data};
+                bsl::ut_when{} = [&]() noexcept {
+                    bsl::sort(mut_view, &reverse_sort_cmp);
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(0)) == bsl::to_i32(42));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(1)) == bsl::to_i32(23));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(2)) == bsl::to_i32(16));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(3)) == bsl::to_i32(15));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(4)) == bsl::to_i32(8));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(5)) == bsl::to_i32(4));
                     };
                 };
             };

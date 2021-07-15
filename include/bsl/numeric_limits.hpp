@@ -80,12 +80,8 @@ namespace bsl
         /// @brief stores whether or not T has defined infinity
         static constexpr bool has_infinity{false};
         /// @brief stores whether or not T has a quiet NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_quiet_NaN{false};
         /// @brief stores whether or not T has a signaling NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_signaling_NaN{false};
         /// @brief stores the denorm style of T
         static constexpr float_denorm_style has_denorm{float_denorm_style::denorm_absent};
@@ -206,8 +202,6 @@ namespace bsl
         ///   @return Returns the quiet NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         quiet_NaN() noexcept -> T
         {
             return {};
@@ -221,8 +215,6 @@ namespace bsl
         ///   @return Returns the signaling NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         signaling_NaN() noexcept -> T
         {
             return {};
@@ -261,12 +253,8 @@ namespace bsl
         /// @brief stores whether or not T has defined infinity
         static constexpr bool has_infinity{false};
         /// @brief stores whether or not T has a quiet NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_quiet_NaN{false};
         /// @brief stores whether or not T has a signaling NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_signaling_NaN{false};
         /// @brief stores the denorm style of T
         static constexpr float_denorm_style has_denorm{float_denorm_style::denorm_absent};
@@ -387,8 +375,6 @@ namespace bsl
         ///   @return Returns the quiet NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         quiet_NaN() noexcept -> bool
         {
             return false;
@@ -402,8 +388,6 @@ namespace bsl
         ///   @return Returns the signaling NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         signaling_NaN() noexcept -> bool
         {
             return false;
@@ -440,12 +424,8 @@ namespace bsl
         /// @brief stores whether or not T has defined infinity
         static constexpr bool has_infinity{false};
         /// @brief stores whether or not T has a quiet NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_quiet_NaN{false};
         /// @brief stores whether or not T has a signaling NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_signaling_NaN{false};
         /// @brief stores the denorm style of T
         static constexpr float_denorm_style has_denorm{float_denorm_style::denorm_absent};
@@ -566,8 +546,6 @@ namespace bsl
         ///   @return Returns the quiet NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         quiet_NaN() noexcept -> char_type
         {
             return static_cast<char_type>(0);
@@ -581,8 +559,6 @@ namespace bsl
         ///   @return Returns the signaling NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         signaling_NaN() noexcept -> char_type
         {
             return static_cast<char_type>(0);
@@ -619,12 +595,8 @@ namespace bsl
         /// @brief stores whether or not T has defined infinity
         static constexpr bool has_infinity{false};
         /// @brief stores whether or not T has a quiet NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_quiet_NaN{false};
         /// @brief stores whether or not T has a signaling NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_signaling_NaN{false};
         /// @brief stores the denorm style of T
         static constexpr float_denorm_style has_denorm{float_denorm_style::denorm_absent};
@@ -669,8 +641,6 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         min() noexcept -> bsl::int8
         {
-            // The macro itself might perform an implicit conversion
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             return static_cast<bsl::int8>(INT8_MIN);
         }
 
@@ -684,8 +654,6 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         lowest() noexcept -> bsl::int8
         {
-            // The macro itself might perform an implicit conversion
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             return static_cast<bsl::int8>(INT8_MIN);
         }
 
@@ -699,8 +667,6 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         max() noexcept -> bsl::int8
         {
-            // The macro itself might perform an implicit conversion
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             return static_cast<bsl::int8>(INT8_MAX);
         }
 
@@ -751,8 +717,6 @@ namespace bsl
         ///   @return Returns the quiet NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         quiet_NaN() noexcept -> bsl::int8
         {
             return static_cast<bsl::int8>(0);
@@ -766,8 +730,6 @@ namespace bsl
         ///   @return Returns the signaling NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         signaling_NaN() noexcept -> bsl::int8
         {
             return static_cast<bsl::int8>(0);
@@ -804,12 +766,8 @@ namespace bsl
         /// @brief stores whether or not T has defined infinity
         static constexpr bool has_infinity{false};
         /// @brief stores whether or not T has a quiet NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_quiet_NaN{false};
         /// @brief stores whether or not T has a signaling NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_signaling_NaN{false};
         /// @brief stores the denorm style of T
         static constexpr float_denorm_style has_denorm{float_denorm_style::denorm_absent};
@@ -854,8 +812,6 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         min() noexcept -> bsl::int16
         {
-            // The macro itself might perform an implicit conversion
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             return static_cast<bsl::int16>(INT16_MIN);
         }
 
@@ -869,8 +825,6 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         lowest() noexcept -> bsl::int16
         {
-            // The macro itself might perform an implicit conversion
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             return static_cast<bsl::int16>(INT16_MIN);
         }
 
@@ -884,8 +838,6 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         max() noexcept -> bsl::int16
         {
-            // The macro itself might perform an implicit conversion
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             return static_cast<bsl::int16>(INT16_MAX);
         }
 
@@ -936,8 +888,6 @@ namespace bsl
         ///   @return Returns the quiet NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         quiet_NaN() noexcept -> bsl::int16
         {
             return static_cast<bsl::int16>(0);
@@ -951,8 +901,6 @@ namespace bsl
         ///   @return Returns the signaling NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         signaling_NaN() noexcept -> bsl::int16
         {
             return static_cast<bsl::int16>(0);
@@ -989,12 +937,8 @@ namespace bsl
         /// @brief stores whether or not T has defined infinity
         static constexpr bool has_infinity{false};
         /// @brief stores whether or not T has a quiet NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_quiet_NaN{false};
         /// @brief stores whether or not T has a signaling NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_signaling_NaN{false};
         /// @brief stores the denorm style of T
         static constexpr float_denorm_style has_denorm{float_denorm_style::denorm_absent};
@@ -1039,8 +983,6 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         min() noexcept -> bsl::int32
         {
-            // The macro itself might perform an implicit conversion
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             return static_cast<bsl::int32>(INT32_MIN);
         }
 
@@ -1054,8 +996,6 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         lowest() noexcept -> bsl::int32
         {
-            // The macro itself might perform an implicit conversion
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             return static_cast<bsl::int32>(INT32_MIN);
         }
 
@@ -1069,8 +1009,6 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         max() noexcept -> bsl::int32
         {
-            // The macro itself might perform an implicit conversion
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             return static_cast<bsl::int32>(INT32_MAX);
         }
 
@@ -1121,8 +1059,6 @@ namespace bsl
         ///   @return Returns the quiet NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         quiet_NaN() noexcept -> bsl::int32
         {
             return static_cast<bsl::int32>(0);
@@ -1136,8 +1072,6 @@ namespace bsl
         ///   @return Returns the signaling NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         signaling_NaN() noexcept -> bsl::int32
         {
             return static_cast<bsl::int32>(0);
@@ -1174,12 +1108,8 @@ namespace bsl
         /// @brief stores whether or not T has defined infinity
         static constexpr bool has_infinity{false};
         /// @brief stores whether or not T has a quiet NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_quiet_NaN{false};
         /// @brief stores whether or not T has a signaling NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_signaling_NaN{false};
         /// @brief stores the denorm style of T
         static constexpr float_denorm_style has_denorm{float_denorm_style::denorm_absent};
@@ -1224,8 +1154,6 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         min() noexcept -> bsl::int64
         {
-            // The macro itself might perform an implicit conversion
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             return static_cast<bsl::int64>(INT64_MIN);
         }
 
@@ -1239,8 +1167,6 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         lowest() noexcept -> bsl::int64
         {
-            // The macro itself might perform an implicit conversion
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             return static_cast<bsl::int64>(INT64_MIN);
         }
 
@@ -1254,8 +1180,6 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         max() noexcept -> bsl::int64
         {
-            // The macro itself might perform an implicit conversion
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             return static_cast<bsl::int64>(INT64_MAX);
         }
 
@@ -1306,8 +1230,6 @@ namespace bsl
         ///   @return Returns the quiet NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         quiet_NaN() noexcept -> bsl::int64
         {
             return static_cast<bsl::int64>(0);
@@ -1321,8 +1243,6 @@ namespace bsl
         ///   @return Returns the signaling NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         signaling_NaN() noexcept -> bsl::int64
         {
             return static_cast<bsl::int64>(0);
@@ -1359,12 +1279,8 @@ namespace bsl
         /// @brief stores whether or not T has defined infinity
         static constexpr bool has_infinity{false};
         /// @brief stores whether or not T has a quiet NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_quiet_NaN{false};
         /// @brief stores whether or not T has a signaling NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_signaling_NaN{false};
         /// @brief stores the denorm style of T
         static constexpr float_denorm_style has_denorm{float_denorm_style::denorm_absent};
@@ -1485,8 +1401,6 @@ namespace bsl
         ///   @return Returns the quiet NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         quiet_NaN() noexcept -> bsl::uint8
         {
             return static_cast<bsl::uint8>(0);
@@ -1500,8 +1414,6 @@ namespace bsl
         ///   @return Returns the signaling NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         signaling_NaN() noexcept -> bsl::uint8
         {
             return static_cast<bsl::uint8>(0);
@@ -1538,12 +1450,8 @@ namespace bsl
         /// @brief stores whether or not T has defined infinity
         static constexpr bool has_infinity{false};
         /// @brief stores whether or not T has a quiet NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_quiet_NaN{false};
         /// @brief stores whether or not T has a signaling NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_signaling_NaN{false};
         /// @brief stores the denorm style of T
         static constexpr float_denorm_style has_denorm{float_denorm_style::denorm_absent};
@@ -1664,8 +1572,6 @@ namespace bsl
         ///   @return Returns the quiet NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         quiet_NaN() noexcept -> bsl::uint16
         {
             return static_cast<bsl::uint16>(0);
@@ -1679,8 +1585,6 @@ namespace bsl
         ///   @return Returns the signaling NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         signaling_NaN() noexcept -> bsl::uint16
         {
             return static_cast<bsl::uint16>(0);
@@ -1717,12 +1621,8 @@ namespace bsl
         /// @brief stores whether or not T has defined infinity
         static constexpr bool has_infinity{false};
         /// @brief stores whether or not T has a quiet NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_quiet_NaN{false};
         /// @brief stores whether or not T has a signaling NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_signaling_NaN{false};
         /// @brief stores the denorm style of T
         static constexpr float_denorm_style has_denorm{float_denorm_style::denorm_absent};
@@ -1843,8 +1743,6 @@ namespace bsl
         ///   @return Returns the quiet NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         quiet_NaN() noexcept -> bsl::uint32
         {
             return static_cast<bsl::uint32>(0);
@@ -1858,8 +1756,6 @@ namespace bsl
         ///   @return Returns the signaling NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         signaling_NaN() noexcept -> bsl::uint32
         {
             return static_cast<bsl::uint32>(0);
@@ -1896,12 +1792,8 @@ namespace bsl
         /// @brief stores whether or not T has defined infinity
         static constexpr bool has_infinity{false};
         /// @brief stores whether or not T has a quiet NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_quiet_NaN{false};
         /// @brief stores whether or not T has a signaling NaN
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         static constexpr bool has_signaling_NaN{false};
         /// @brief stores the denorm style of T
         static constexpr float_denorm_style has_denorm{float_denorm_style::denorm_absent};
@@ -2022,8 +1914,6 @@ namespace bsl
         ///   @return Returns the quiet NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         quiet_NaN() noexcept -> bsl::uint64
         {
             return static_cast<bsl::uint64>(0);
@@ -2037,8 +1927,6 @@ namespace bsl
         ///   @return Returns the signaling NaN value for T
         ///
         [[nodiscard]] static constexpr auto
-        // We want our implementation to mimic C++ here.
-        // NOLINTNEXTLINE(bsl-name-case)
         signaling_NaN() noexcept -> bsl::uint64
         {
             return static_cast<bsl::uint64>(0);

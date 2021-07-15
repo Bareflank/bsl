@@ -38,9 +38,9 @@ main() noexcept -> bsl::exit_code
 {
     static_assert(bsl::is_constant_evaluated());
 
-    bsl::ut_scenario{"runtime logic is not constant evaluated"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::ut_then{} = []() {
+    bsl::ut_scenario{"runtime logic is not constant evaluated"} = []() noexcept {
+        bsl::ut_given{} = []() noexcept {
+            bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(!bsl::is_constant_evaluated());
             };
         };

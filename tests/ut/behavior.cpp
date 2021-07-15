@@ -39,28 +39,28 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"ut success"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::ut_check(bsl::ut_success() == bsl::exit_success);
+        bsl::ut_scenario{"ut success"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::ut_check(bsl::exit_success == bsl::ut_success());
             };
         };
 
-        bsl::ut_scenario{"silence ut_required_step_failed"} = []() {
-            bsl::ut_given_at_runtime{} = []() {
+        bsl::ut_scenario{"silence ut_required_step_failed"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
                 bsl::ut_required_step_failed();
             };
         };
 
-        bsl::ut_scenario{"ut_required_step success"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"ut_required_step success"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::ut_required_step(true);
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = []() noexcept {
                 bsl::ut_required_step(bsl::errc_success);
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = []() noexcept {
                 bsl::ut_required_step(0_i8);
                 bsl::ut_required_step(0_i16);
                 bsl::ut_required_step(0_i32);
@@ -75,22 +75,22 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"silence ut_check_failed"} = []() {
-            bsl::ut_given_at_runtime{} = []() {
+        bsl::ut_scenario{"silence ut_check_failed"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
                 bsl::ut_check_failed();
             };
         };
 
-        bsl::ut_scenario{"ut_check success"} = []() {
-            bsl::ut_given{} = []() {
+        bsl::ut_scenario{"ut_check success"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::ut_check(true);
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = []() noexcept {
                 bsl::ut_check(bsl::errc_success);
             };
 
-            bsl::ut_given{} = []() {
+            bsl::ut_given{} = []() noexcept {
                 bsl::ut_check(0_i8);
                 bsl::ut_check(0_i16);
                 bsl::ut_check(0_i32);

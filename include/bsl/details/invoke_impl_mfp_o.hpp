@@ -65,23 +65,21 @@ namespace bsl::details
         ///     not which is why U is provided instead of just using T.
         ///   @tparam TN the types that define the arguments passed to the
         ///     provided function when called.
-        ///   @param f a pointer to the function being called.
-        ///   @param val1 a reference to the object for which the function is
+        ///   @param pudm_udm_func a pointer to the function being called.
+        ///   @param pudm_udm_val1 a reference to the object for which the function is
         ///     called from.
-        ///   @param valn the arguments passed to the function f when called.
-        ///   @return Returns the result of calling "f" from "val1" with "valn"
+        ///   @param pudm_udm_valn the arguments passed to the function pudm_udm_func when called.
+        ///   @return Returns the result of calling "pudm_udm_func" from "pudm_udm_val1" with "pudm_udm_valn"
         ///
         template<typename FUNC, typename U, typename T1, typename... TN>
         [[maybe_unused]] static constexpr auto
-        call(FUNC U::*f, T1 &&val1, TN &&...valn) noexcept(
-            noexcept((bsl::forward<T1>(val1).*f)(bsl::forward<TN>(valn)...)))
-            // Subclass to base conversions are needed here for invoke to work
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
-            -> decltype((bsl::forward<T1>(val1).*f)(bsl::forward<TN>(valn)...))
+        call(FUNC U::*pudm_udm_func, T1 &&pudm_udm_val1, TN &&...pudm_udm_valn) noexcept(noexcept(
+            (bsl::forward<T1>(pudm_udm_val1).*pudm_udm_func)(bsl::forward<TN>(pudm_udm_valn)...)))
+            -> decltype((bsl::forward<T1>(pudm_udm_val1).*pudm_udm_func)(
+                bsl::forward<TN>(pudm_udm_valn)...))
         {
-            // Subclass to base conversions are needed here for invoke to work
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
-            return (bsl::forward<T1>(val1).*f)(bsl::forward<TN>(valn)...);
+            return (bsl::forward<T1>(pudm_udm_val1).*pudm_udm_func)(
+                bsl::forward<TN>(pudm_udm_valn)...);
         }
 
     protected:
@@ -102,9 +100,9 @@ namespace bsl::details
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr invoke_impl_mfp_o(invoke_impl_mfp_o &&o) noexcept = default;
+        constexpr invoke_impl_mfp_o(invoke_impl_mfp_o &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -120,10 +118,10 @@ namespace bsl::details
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(invoke_impl_mfp_o &&o) &noexcept
+        [[maybe_unused]] constexpr auto operator=(invoke_impl_mfp_o &&mut_o) &noexcept
             -> invoke_impl_mfp_o & = default;
     };
 }

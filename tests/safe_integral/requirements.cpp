@@ -22,72 +22,13 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/move.hpp>
 #include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
 
 namespace
 {
-    constinit bsl::safe_int32 const verify_constinit{};
-
-    // Needed for requirements testing
-    // NOLINTNEXTLINE(bsl-user-defined-type-names-match-header-name)
-    class fixture_t final
-    {
-        bsl::safe_int32 val1{};
-        bsl::safe_int32 val2{};
-
-    public:
-        [[nodiscard]] constexpr auto
-        test_member_const() const noexcept -> bool
-        {
-            bsl::discard(val1.get());
-            bsl::discard(!!val1);
-            bsl::discard(val1.invalid());
-            bsl::discard(val1.max());
-            bsl::discard(val1.max(val2));
-            bsl::discard(val1.max(42));
-            bsl::discard(val1.min());
-            bsl::discard(val1.min(val2));
-            bsl::discard(val1.min(42));
-            bsl::discard(val1.is_signed_type());
-            bsl::discard(val1.is_unsigned_type());
-
-            return true;
-        }
-
-        [[nodiscard]] constexpr auto
-        test_member_nonconst() noexcept -> bool
-        {
-            bsl::discard(val1 = 42);
-            bsl::discard(val1.get());
-            bsl::discard(!!val1);
-            bsl::discard(val1.invalid());
-            bsl::discard(val1.max());
-            bsl::discard(val1.max(val2));
-            bsl::discard(val1.max(42));
-            bsl::discard(val1.min());
-            bsl::discard(val1.min(val2));
-            bsl::discard(val1.min(42));
-            bsl::discard(val1.is_signed_type());
-            bsl::discard(val1.is_unsigned_type());
-            bsl::discard(val1 += val2);
-            bsl::discard(val1 += 42);
-            bsl::discard(val1 -= val2);
-            bsl::discard(val1 -= 42);
-            bsl::discard(val1 *= val2);
-            bsl::discard(val1 *= 42);
-            bsl::discard(val1 /= val2);
-            bsl::discard(val1 /= 42);
-            bsl::discard(val1 %= val2);
-            bsl::discard(val1 %= 42);
-            bsl::discard(++val1);
-            bsl::discard(--val1);
-
-            return true;
-        }
-    };
-
-    constexpr fixture_t fixture1{};
+    constinit bsl::safe_int32 const g_verify_constinit{};
 }
 
 /// <!-- description -->
@@ -101,44 +42,119 @@ namespace
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    bsl::ut_scenario{"verify supports constinit"} = []() {
-        bsl::discard(verify_constinit);
+    bsl::ut_scenario{"verify supports constinit"} = []() noexcept {
+        bsl::discard(g_verify_constinit);
     };
 
-    bsl::ut_scenario{"verify noexcept"} = []() {
-        bsl::ut_given{} = []() {
-            bsl::safe_int32 val1{42};
-            bsl::safe_int32 val2{42};
-            bsl::safe_uint32 val3{42U};
-            bsl::safe_uint32 val4{42U};
-            bsl::ut_then{} = []() {
+    bsl::ut_scenario{"verify noexcept"} = []() noexcept {
+        bsl::ut_given{} = []() noexcept {
+            bsl::safe_int32 mut_val1{42};
+            bsl::safe_int32 mut_val2{42};
+            bsl::safe_uint32 mut_val3{42U};
+            bsl::safe_uint32 mut_val4{42U};
+            bsl::safe_int32 const val1{42};
+            bsl::safe_int32 const val2{42};
+            bsl::safe_uint32 const val3{42U};
+            bsl::safe_uint32 const val4{42U};
+            bsl::ut_then{} = []() noexcept {
                 static_assert(noexcept(bsl::safe_int32{}));
                 static_assert(noexcept(bsl::safe_int32{42}));
+                static_assert(noexcept(bsl::safe_int32{val1, true}));
                 static_assert(noexcept(bsl::safe_int32{42, true}));
-                static_assert(noexcept(val1 = 42));
+
+                static_assert(noexcept(mut_val1 = 42));
+                static_assert(noexcept(mut_val1 = bsl::move(42)));
+                static_assert(noexcept(mut_val1.get()));
+                static_assert(noexcept(mut_val1.data()));
+                static_assert(noexcept(mut_val1.failure()));
+                static_assert(noexcept(mut_val1.max()));
+                static_assert(noexcept(mut_val1.max(mut_val2)));
+                static_assert(noexcept(mut_val1.max(42)));
+                static_assert(noexcept(mut_val1.min()));
+                static_assert(noexcept(mut_val1.min(mut_val2)));
+                static_assert(noexcept(mut_val1.min(42)));
+                static_assert(noexcept(mut_val1.is_pos()));
+                static_assert(noexcept(mut_val1.is_neg()));
+                static_assert(noexcept(mut_val1.is_zero()));
+                static_assert(noexcept(mut_val1.is_zero_or_invalid()));
+                static_assert(noexcept(mut_val1.invalid()));
+                static_assert(noexcept(!!mut_val1));
+                static_assert(noexcept(mut_val1 += mut_val2));
+                static_assert(noexcept(mut_val1 += 42));
+                static_assert(noexcept(mut_val1 -= mut_val2));
+                static_assert(noexcept(mut_val1 -= 42));
+                static_assert(noexcept(mut_val1 *= mut_val2));
+                static_assert(noexcept(mut_val1 *= 42));
+                static_assert(noexcept(mut_val1 /= mut_val2));
+                static_assert(noexcept(mut_val1 /= 42));
+                static_assert(noexcept(mut_val1 %= mut_val2));
+                static_assert(noexcept(mut_val1 %= 42));
+                static_assert(noexcept(++mut_val1));
+                static_assert(noexcept(--mut_val1));
+                static_assert(noexcept(mut_val1 == mut_val2));
+                static_assert(noexcept(mut_val1 == 42));
+                static_assert(noexcept(42 == mut_val1));
+                static_assert(noexcept(mut_val1 != mut_val2));
+                static_assert(noexcept(mut_val1 != 42));
+                static_assert(noexcept(42 != mut_val1));
+                static_assert(noexcept(mut_val1 < mut_val2));
+                static_assert(noexcept(mut_val1 < 42));
+                static_assert(noexcept(42 < mut_val1));
+                static_assert(noexcept(mut_val1 > mut_val2));
+                static_assert(noexcept(mut_val1 > 42));
+                static_assert(noexcept(42 > mut_val1));
+                static_assert(noexcept(mut_val1 + mut_val2));
+                static_assert(noexcept(mut_val1 + 42));
+                static_assert(noexcept(42 + mut_val1));
+                static_assert(noexcept(mut_val1 - mut_val2));
+                static_assert(noexcept(mut_val1 - 42));
+                static_assert(noexcept(42 - mut_val1));
+                static_assert(noexcept(mut_val1 * mut_val2));
+                static_assert(noexcept(mut_val1 * 42));
+                static_assert(noexcept(42 * mut_val1));
+                static_assert(noexcept(mut_val1 / mut_val2));
+                static_assert(noexcept(mut_val1 / 42));
+                static_assert(noexcept(42 / mut_val1));
+                static_assert(noexcept(mut_val1 % mut_val2));
+                static_assert(noexcept(mut_val1 % 42));
+                static_assert(noexcept(42 % mut_val1));
+                static_assert(noexcept(mut_val3 <<= 42U));
+                static_assert(noexcept(mut_val3 << 42U));
+                static_assert(noexcept(mut_val3 >>= 42U));
+                static_assert(noexcept(mut_val3 >> 42U));
+                static_assert(noexcept(mut_val3 &= mut_val4));
+                static_assert(noexcept(mut_val3 &= 42U));
+                static_assert(noexcept(mut_val3 & mut_val4));
+                static_assert(noexcept(mut_val3 & 42U));
+                static_assert(noexcept(42U & mut_val3));
+                static_assert(noexcept(mut_val3 |= mut_val4));
+                static_assert(noexcept(mut_val3 |= 42U));
+                static_assert(noexcept(mut_val3 | mut_val4));
+                static_assert(noexcept(mut_val3 | 42U));
+                static_assert(noexcept(42U | mut_val3));
+                static_assert(noexcept(mut_val3 ^= mut_val4));
+                static_assert(noexcept(mut_val3 ^= 42U));
+                static_assert(noexcept(mut_val3 ^ mut_val4));
+                static_assert(noexcept(mut_val3 ^ 42U));
+                static_assert(noexcept(42U ^ mut_val3));
+                static_assert(noexcept(~mut_val3));
+                static_assert(noexcept(-mut_val1));
+
                 static_assert(noexcept(val1.get()));
-                static_assert(noexcept(!!val1));
-                static_assert(noexcept(val1.invalid()));
+                static_assert(noexcept(val1.data()));
+                static_assert(noexcept(val1.failure()));
                 static_assert(noexcept(val1.max()));
-                static_assert(noexcept(val1.max(val2)));
+                static_assert(noexcept(val1.max(mut_val2)));
                 static_assert(noexcept(val1.max(42)));
                 static_assert(noexcept(val1.min()));
-                static_assert(noexcept(val1.min(val2)));
+                static_assert(noexcept(val1.min(mut_val2)));
                 static_assert(noexcept(val1.min(42)));
-                static_assert(noexcept(val1.is_signed_type()));
-                static_assert(noexcept(val1.is_unsigned_type()));
-                static_assert(noexcept(val1 += val2));
-                static_assert(noexcept(val1 += 42));
-                static_assert(noexcept(val1 -= val2));
-                static_assert(noexcept(val1 -= 42));
-                static_assert(noexcept(val1 *= val2));
-                static_assert(noexcept(val1 *= 42));
-                static_assert(noexcept(val1 /= val2));
-                static_assert(noexcept(val1 /= 42));
-                static_assert(noexcept(val1 %= val2));
-                static_assert(noexcept(val1 %= 42));
-                static_assert(noexcept(++val1));
-                static_assert(noexcept(--val1));
+                static_assert(noexcept(val1.is_pos()));
+                static_assert(noexcept(val1.is_neg()));
+                static_assert(noexcept(val1.is_zero()));
+                static_assert(noexcept(val1.is_zero_or_invalid()));
+                static_assert(noexcept(val1.invalid()));
+                static_assert(noexcept(!!val1));
                 static_assert(noexcept(val1 == val2));
                 static_assert(noexcept(val1 == 42));
                 static_assert(noexcept(42 == val1));
@@ -166,38 +182,21 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(val1 % val2));
                 static_assert(noexcept(val1 % 42));
                 static_assert(noexcept(42 % val1));
-                static_assert(noexcept(val3 <<= 42U));
                 static_assert(noexcept(val3 << 42U));
-                static_assert(noexcept(val3 >>= 42U));
                 static_assert(noexcept(val3 >> 42U));
-                static_assert(noexcept(val3 &= val4));
-                static_assert(noexcept(val3 &= 42U));
                 static_assert(noexcept(val3 & val4));
                 static_assert(noexcept(val3 & 42U));
                 static_assert(noexcept(42U & val3));
-                static_assert(noexcept(val3 |= val4));
-                static_assert(noexcept(val3 |= 42U));
                 static_assert(noexcept(val3 | val4));
                 static_assert(noexcept(val3 | 42U));
                 static_assert(noexcept(42U | val3));
-                static_assert(noexcept(val3 ^= val4));
-                static_assert(noexcept(val3 ^= 42U));
                 static_assert(noexcept(val3 ^ val4));
                 static_assert(noexcept(val3 ^ 42U));
                 static_assert(noexcept(42U ^ val3));
                 static_assert(noexcept(~val3));
                 static_assert(noexcept(-val1));
-                static_assert(noexcept(bsl::make_safe(42)));
-            };
-        };
-    };
 
-    bsl::ut_scenario{"verify constness"} = []() {
-        bsl::ut_given{} = []() {
-            fixture_t fixture2{};
-            bsl::ut_then{} = [&fixture2]() {
-                static_assert(fixture1.test_member_const());
-                bsl::ut_check(fixture2.test_member_nonconst());
+                static_assert(noexcept(bsl::make_safe(42)));
             };
         };
     };

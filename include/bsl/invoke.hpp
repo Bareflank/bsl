@@ -34,32 +34,32 @@
 namespace bsl
 {
     /// <!-- description -->
-    ///   @brief Invokes the callable object "f" with arguments "val".
+    ///   @brief Invokes the callable object "pudm_udm_func" with arguments "val".
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam FUNC the type that defines the function being called
     ///   @tparam TN the types that define the arguments passed to the
     ///     provided function when called.
-    ///   @param f a pointer to the function being called.
-    ///   @param valn the arguments passed to the function f when called.
-    ///   @return Returns the result of calling "f" with "valn"
+    ///   @param pudm_udm_func a pointer to the function being called.
+    ///   @param pudm_udm_valn the arguments passed to the function f when called.
+    ///   @return Returns the result of calling "pudm_udm_func" with "pudm_udm_valn"
     ///
     /// <!-- inputs/outputs -->
     ///   @throw throws if the provided function throws
     ///
     template<typename FUNC, typename... TN>
     [[maybe_unused]] constexpr auto
-    invoke(FUNC &&f, TN &&...valn) noexcept(                    // --
-        noexcept(details::invoke_impl<FUNC, TN...>::call(       // --
-            bsl::forward<FUNC>(f),                              // --
-            bsl::forward<TN>(valn)...)))                        // --
-        -> decltype(details::invoke_impl<FUNC, TN...>::call(    // --
-            bsl::forward<FUNC>(f),                              // --
-            bsl::forward<TN>(valn)...))                         // --
-    {                                                           // --
-        return details::invoke_impl<FUNC, TN...>::call(         // --
-            bsl::forward<FUNC>(f),                              // --
-            bsl::forward<TN>(valn)...);                         // --
+    invoke(FUNC &&pudm_udm_func, TN &&...pudm_udm_valn) noexcept(    // --
+        noexcept(details::invoke_impl<FUNC, TN...>::call(            // --
+            bsl::forward<FUNC>(pudm_udm_func),                       // --
+            bsl::forward<TN>(pudm_udm_valn)...)))                    // --
+        -> decltype(details::invoke_impl<FUNC, TN...>::call(         // --
+            bsl::forward<FUNC>(pudm_udm_func),                       // --
+            bsl::forward<TN>(pudm_udm_valn)...))                     // --
+    {                                                                // --
+        return details::invoke_impl<FUNC, TN...>::call(              // --
+            bsl::forward<FUNC>(pudm_udm_func),                       // --
+            bsl::forward<TN>(pudm_udm_valn)...);                     // --
     }
 }
 

@@ -37,18 +37,18 @@ namespace bsl
     inline void
     example_construct_at_overview() noexcept
     {
-        example_class_subclass myclass{};
+        example_class_subclass mut_myclass{};
 
-        bsl::discard(bsl::construct_at<example_class_subclass>(&myclass));
-        if (myclass.get()) {
+        bsl::discard(bsl::construct_at<example_class_subclass>(&mut_myclass));
+        if (mut_myclass.get()) {
             bsl::print() << "success\n";
         }
         else {
             bsl::error() << "failure\n";
         }
 
-        bsl::destroy_at(&myclass);
-        if (!myclass.get()) {
+        bsl::destroy_at(&mut_myclass);
+        if (!mut_myclass.get()) {
             bsl::print() << "success\n";
         }
         else {

@@ -58,14 +58,14 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam FUNC_T the type of lambda being executed
-        ///   @param func the lambda being executed
+        ///   @param mut_func the lambda being executed
         ///   @return Returns a reference to the ut_then.
         ///
         template<typename FUNC_T>
         [[maybe_unused]] constexpr auto
-        operator=(FUNC_T &&func) &&noexcept -> ut_then &
+        operator=(FUNC_T &&mut_func) &&noexcept -> ut_then &
         {
-            func();
+            mut_func();
             return *this;
         }
 
@@ -74,11 +74,11 @@ namespace bsl
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam FUNC_T ignored
-        ///   @param func ignored
+        ///   @param mut_func ignored
         ///   @return this
         ///
         template<typename FUNC_T>
-        [[maybe_unused]] constexpr auto operator=(FUNC_T &&func) const &noexcept
+        [[maybe_unused]] constexpr auto operator=(FUNC_T &&mut_func) const &noexcept
             -> ut_then & = delete;
 
         /// <!-- description -->
@@ -98,9 +98,9 @@ namespace bsl
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr ut_then(ut_then &&o) noexcept = default;
+        constexpr ut_then(ut_then &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -116,10 +116,10 @@ namespace bsl
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(ut_then &&o) &noexcept -> ut_then & = default;
+        [[maybe_unused]] constexpr auto operator=(ut_then &&mut_o) &noexcept -> ut_then & = default;
     };
 }
 

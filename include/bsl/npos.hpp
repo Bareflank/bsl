@@ -33,8 +33,6 @@
 namespace bsl
 {
     /// @brief defines npos
-    // We want our implementation to mimic C++ here.
-    // NOLINTNEXTLINE(bsl-name-case)
     constexpr safe_uintmax npos{safe_uintmax::max()};
 }
 

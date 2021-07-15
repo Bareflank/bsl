@@ -40,9 +40,9 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"bool from constexpr"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::ut_then{} = []() {
+        bsl::ut_scenario{"bool from constexpr"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::ut_then{} = []() noexcept {
                     bsl::print() << true << '\n';
                     bsl::debug() << true << '\n';
                     bsl::alert() << true << '\n';
@@ -51,9 +51,9 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"char_type from constexpr"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::ut_then{} = []() {
+        bsl::ut_scenario{"char_type from constexpr"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::ut_then{} = []() noexcept {
                     bsl::print() << '*' << '\n';
                     bsl::debug() << '*' << '\n';
                     bsl::alert() << '*' << '\n';
@@ -62,9 +62,9 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"cstr_type from constexpr"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::ut_then{} = []() {
+        bsl::ut_scenario{"cstr_type from constexpr"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::ut_then{} = []() noexcept {
                     bsl::print() << "42" << '\n';
                     bsl::debug() << "42" << '\n';
                     bsl::alert() << "42" << '\n';
@@ -73,9 +73,9 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"integral from constexpr"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::ut_then{} = []() {
+        bsl::ut_scenario{"integral from constexpr"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::ut_then{} = []() noexcept {
                     bsl::print() << 42 << '\n';
                     bsl::debug() << 42 << '\n';
                     bsl::alert() << 42 << '\n';
@@ -84,9 +84,9 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"small integral from constexpr"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::ut_then{} = []() {
+        bsl::ut_scenario{"small integral from constexpr"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::ut_then{} = []() noexcept {
                     bsl::print() << bsl::to_u8(42) << '\n';
                     bsl::debug() << bsl::to_u8(42) << '\n';
                     bsl::alert() << bsl::to_u8(42) << '\n';
@@ -95,9 +95,9 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"nullptr from constexpr"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::ut_then{} = []() {
+        bsl::ut_scenario{"nullptr from constexpr"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::ut_then{} = []() noexcept {
                     bsl::print() << nullptr << '\n';
                     bsl::debug() << nullptr << '\n';
                     bsl::alert() << nullptr << '\n';
@@ -106,10 +106,10 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"pointer from constexpr"} = []() {
-            bsl::ut_given{} = []() {
-                bool val{};
-                bsl::ut_then{} = [&val]() {
+        bsl::ut_scenario{"pointer from constexpr"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bool const val{};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::print() << &val << '\n';
                     bsl::debug() << &val << '\n';
                     bsl::alert() << &val << '\n';
@@ -118,9 +118,9 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"source location from constexpr"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::ut_then{} = []() {
+        bsl::ut_scenario{"source location from constexpr"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::ut_then{} = []() noexcept {
                     bsl::print() << bsl::here();
                     bsl::debug() << bsl::here();
                     bsl::alert() << bsl::here();
@@ -129,9 +129,9 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"fmt from constexpr"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::ut_then{} = []() {
+        bsl::ut_scenario{"fmt from constexpr"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::ut_then{} = []() noexcept {
                     bsl::print() << bsl::fmt{"#010x", 42} << '\n';
                     bsl::debug() << bsl::fmt{"#010x", 42} << '\n';
                     bsl::alert() << bsl::fmt{"#010x", 42} << '\n';
@@ -140,9 +140,9 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"fmt from constexpr (using hex)"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::ut_then{} = []() {
+        bsl::ut_scenario{"fmt from constexpr (using hex)"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::ut_then{} = []() noexcept {
                     bsl::print() << bsl::hex(42U) << '\n';
                     bsl::debug() << bsl::hex(42U) << '\n';
                     bsl::alert() << bsl::hex(42U) << '\n';
@@ -151,9 +151,9 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"disable from constexpr"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::ut_then{} = []() {
+        bsl::ut_scenario{"disable from constexpr"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::ut_then{} = []() noexcept {
                     bsl::debug<42>() << true << '\n';
                     bsl::alert<42>() << true << '\n';
                 };

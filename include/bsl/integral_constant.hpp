@@ -74,9 +74,9 @@ namespace bsl
         ///   @brief move constructor
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///
-        constexpr integral_constant(integral_constant &&o) noexcept = default;
+        constexpr integral_constant(integral_constant &&mut_o) noexcept = default;
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -92,10 +92,10 @@ namespace bsl
         ///   @brief move assignment
         ///
         /// <!-- inputs/outputs -->
-        ///   @param o the object being moved
+        ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(integral_constant &&o) &noexcept
+        [[maybe_unused]] constexpr auto operator=(integral_constant &&mut_o) &noexcept
             -> integral_constant & = default;
     };
 }

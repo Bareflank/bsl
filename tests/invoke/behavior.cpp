@@ -35,15 +35,6 @@
 
 namespace
 {
-    constexpr test::class_base g_class_base{};
-    constexpr test::class_subclass g_class_subclass{};
-    constexpr test::class_pod g_class_pod{true, true};
-
-    constexpr bsl::reference_wrapper<test::class_base const> g_rw_class_base{g_class_base};
-    constexpr bsl::reference_wrapper<test::class_subclass const> g_rw_class_subclass{
-        g_class_subclass};
-    constexpr bsl::reference_wrapper<test::class_pod const> g_rw_class_pod{g_class_pod};
-
     /// <!-- description -->
     ///   @brief Used to execute the actual checks. We put the checks in this
     ///     function so that we can validate the tests both at compile-time
@@ -56,37 +47,45 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"1.1"} = []() {
-            bsl::ut_check(bsl::invoke(&test::class_base::get, g_class_base));
-            bsl::ut_check(bsl::invoke(&test::class_base::get, g_class_subclass));
-            bsl::ut_check(bsl::invoke(&test::class_subclass::get, g_class_subclass));
+        constexpr test::class_base base{};
+        constexpr test::class_subclass subclass{};
+        constexpr test::class_pod pod{true, true};
+
+        bsl::reference_wrapper<test::class_base const> const rw_base{base};
+        bsl::reference_wrapper<test::class_subclass const> const rw_subclass{subclass};
+        bsl::reference_wrapper<test::class_pod const> const rw_pod{pod};
+
+        bsl::ut_scenario{"1.1"} = [&]() noexcept {
+            bsl::ut_check(bsl::invoke(&test::class_base::get, base));
+            bsl::ut_check(bsl::invoke(&test::class_base::get, subclass));
+            bsl::ut_check(bsl::invoke(&test::class_subclass::get, subclass));
         };
 
-        bsl::ut_scenario{"1.2"} = []() {
-            bsl::ut_check(bsl::invoke(&test::class_base::get, g_rw_class_base));
-            bsl::ut_check(bsl::invoke(&test::class_base::get, g_rw_class_subclass));
-            bsl::ut_check(bsl::invoke(&test::class_subclass::get, g_rw_class_subclass));
+        bsl::ut_scenario{"1.2"} = [&]() noexcept {
+            bsl::ut_check(bsl::invoke(&test::class_base::get, rw_base));
+            bsl::ut_check(bsl::invoke(&test::class_base::get, rw_subclass));
+            bsl::ut_check(bsl::invoke(&test::class_subclass::get, rw_subclass));
         };
 
-        bsl::ut_scenario{"1.3"} = []() {
-            bsl::ut_check(bsl::invoke(&test::class_base::get, &g_class_base));
-            bsl::ut_check(bsl::invoke(&test::class_base::get, &g_class_subclass));
-            bsl::ut_check(bsl::invoke(&test::class_subclass::get, &g_class_subclass));
+        bsl::ut_scenario{"1.3"} = [&]() noexcept {
+            bsl::ut_check(bsl::invoke(&test::class_base::get, &base));
+            bsl::ut_check(bsl::invoke(&test::class_base::get, &subclass));
+            bsl::ut_check(bsl::invoke(&test::class_subclass::get, &subclass));
         };
 
-        bsl::ut_scenario{"2.1"} = []() {
-            bsl::ut_check(bsl::invoke(&test::class_pod::val1, g_class_pod));
+        bsl::ut_scenario{"2.1"} = [&]() noexcept {
+            bsl::ut_check(bsl::invoke(&test::class_pod::val1, pod));
         };
 
-        bsl::ut_scenario{"2.2"} = []() {
-            bsl::ut_check(bsl::invoke(&test::class_pod::val1, g_rw_class_pod));
+        bsl::ut_scenario{"2.2"} = [&]() noexcept {
+            bsl::ut_check(bsl::invoke(&test::class_pod::val1, rw_pod));
         };
 
-        bsl::ut_scenario{"2.3"} = []() {
-            bsl::ut_check(bsl::invoke(&test::class_pod::val1, &g_class_pod));
+        bsl::ut_scenario{"2.3"} = [&]() noexcept {
+            bsl::ut_check(bsl::invoke(&test::class_pod::val1, &pod));
         };
 
-        bsl::ut_scenario{"3.1"} = []() {
+        bsl::ut_scenario{"3.1"} = [&]() noexcept {
             bsl::ut_check(bsl::invoke(&test::func, true));
             bsl::ut_check(bsl::invoke(&test::func_might_throw, true));
         };

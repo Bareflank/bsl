@@ -33,30 +33,30 @@ namespace bsl
     inline void
     example_finally_assert_overview() noexcept
     {
-        bool executed1{};
-        bool executed2{};
+        bool mut_executed1{};
+        bool mut_executed2{};
 
         {
-            bsl::finally_assert test1{[&executed1]() noexcept {
-                executed1 = true;
+            bsl::finally_assert mut_test1{[&mut_executed1]() noexcept {
+                mut_executed1 = true;
             }};
 
-            bsl::finally_assert test2{[&executed2]() noexcept {
-                executed2 = true;
+            bsl::finally_assert mut_test2{[&mut_executed2]() noexcept {
+                mut_executed2 = true;
             }};
 
-            test2.ignore();
+            mut_test2.ignore();
         }
 
         if constexpr (BSL_RELEASE_MODE) {
-            if (executed1) {
+            if (mut_executed1) {
                 bsl::error() << "failure1\n";
             }
             else {
                 bsl::print() << "success2\n";
             }
 
-            if (executed2) {
+            if (mut_executed2) {
                 bsl::error() << "failure3\n";
             }
             else {
@@ -64,14 +64,14 @@ namespace bsl
             }
         }
         else {
-            if (executed1) {
+            if (mut_executed1) {
                 bsl::print() << "success5\n";
             }
             else {
                 bsl::error() << "failure6\n";
             }
 
-            if (executed2) {
+            if (mut_executed2) {
                 bsl::error() << "failure7\n";
             }
             else {

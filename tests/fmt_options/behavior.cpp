@@ -40,387 +40,387 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"empty"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{""};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.fill() == ' ');
-                    bsl::ut_check(ops.align() == bsl::fmt_align::fmt_align_default);
-                    bsl::ut_check(ops.sign() == bsl::fmt_sign::fmt_sign_neg_only);
+        bsl::ut_scenario{"empty"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{""};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(' ' == ops.fill());
+                    bsl::ut_check(bsl::fmt_align::fmt_align_default == ops.align());
+                    bsl::ut_check(bsl::fmt_sign::fmt_sign_neg_only == ops.sign());
                     bsl::ut_check(!ops.alternate_form());
                     bsl::ut_check(!ops.sign_aware());
                     bsl::ut_check(ops.width() == bsl::to_umax(0));
-                    bsl::ut_check(ops.type() == bsl::fmt_type::fmt_type_default);
+                    bsl::ut_check(bsl::fmt_type::fmt_type_default == ops.type());
                 };
             };
         };
 
-        bsl::ut_scenario{"all fields"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"#<+#010d"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.fill() == '#');
-                    bsl::ut_check(ops.align() == bsl::fmt_align::fmt_align_left);
-                    bsl::ut_check(ops.sign() == bsl::fmt_sign::fmt_sign_pos_neg);
+        bsl::ut_scenario{"all fields"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"#<+#010d"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check('#' == ops.fill());
+                    bsl::ut_check(bsl::fmt_align::fmt_align_left == ops.align());
+                    bsl::ut_check(bsl::fmt_sign::fmt_sign_pos_neg == ops.sign());
                     bsl::ut_check(ops.alternate_form());
                     bsl::ut_check(ops.sign_aware());
                     bsl::ut_check(ops.width() == bsl::to_umax(10));
-                    bsl::ut_check(ops.type() == bsl::fmt_type::fmt_type_d);
+                    bsl::ut_check(bsl::fmt_type::fmt_type_d == ops.type());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"#<+#010dHello World"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.fill() == '#');
-                    bsl::ut_check(ops.align() == bsl::fmt_align::fmt_align_left);
-                    bsl::ut_check(ops.sign() == bsl::fmt_sign::fmt_sign_pos_neg);
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"#<+#010dHello World"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check('#' == ops.fill());
+                    bsl::ut_check(bsl::fmt_align::fmt_align_left == ops.align());
+                    bsl::ut_check(bsl::fmt_sign::fmt_sign_pos_neg == ops.sign());
                     bsl::ut_check(ops.alternate_form());
                     bsl::ut_check(ops.sign_aware());
                     bsl::ut_check(ops.width() == bsl::to_umax(10));
-                    bsl::ut_check(ops.type() == bsl::fmt_type::fmt_type_d);
+                    bsl::ut_check(bsl::fmt_type::fmt_type_d == ops.type());
                 };
             };
         };
 
-        bsl::ut_scenario{"fill-and-align"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"<"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.fill() == ' ');
-                    bsl::ut_check(ops.align() == bsl::fmt_align::fmt_align_left);
+        bsl::ut_scenario{"fill-and-align"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"<"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(' ' == ops.fill());
+                    bsl::ut_check(bsl::fmt_align::fmt_align_left == ops.align());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{">"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.fill() == ' ');
-                    bsl::ut_check(ops.align() == bsl::fmt_align::fmt_align_right);
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{">"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(' ' == ops.fill());
+                    bsl::ut_check(bsl::fmt_align::fmt_align_right == ops.align());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"^"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.fill() == ' ');
-                    bsl::ut_check(ops.align() == bsl::fmt_align::fmt_align_center);
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"^"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(' ' == ops.fill());
+                    bsl::ut_check(bsl::fmt_align::fmt_align_center == ops.align());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"#<"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.fill() == '#');
-                    bsl::ut_check(ops.align() == bsl::fmt_align::fmt_align_left);
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"#<"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check('#' == ops.fill());
+                    bsl::ut_check(bsl::fmt_align::fmt_align_left == ops.align());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"#>"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.fill() == '#');
-                    bsl::ut_check(ops.align() == bsl::fmt_align::fmt_align_right);
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"#>"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check('#' == ops.fill());
+                    bsl::ut_check(bsl::fmt_align::fmt_align_right == ops.align());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"#^"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.fill() == '#');
-                    bsl::ut_check(ops.align() == bsl::fmt_align::fmt_align_center);
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"#^"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check('#' == ops.fill());
+                    bsl::ut_check(bsl::fmt_align::fmt_align_center == ops.align());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"H"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.fill() == ' ');
-                    bsl::ut_check(ops.align() == bsl::fmt_align::fmt_align_default);
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"H"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(' ' == ops.fill());
+                    bsl::ut_check(bsl::fmt_align::fmt_align_default == ops.align());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"Hello World"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.fill() == ' ');
-                    bsl::ut_check(ops.align() == bsl::fmt_align::fmt_align_default);
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"Hello World"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(' ' == ops.fill());
+                    bsl::ut_check(bsl::fmt_align::fmt_align_default == ops.align());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{""};
-                bsl::ut_when{} = [&ops]() {
-                    ops.set_fill('#');
-                    ops.set_align(bsl::fmt_align::fmt_align_left);
-                    bsl::ut_then{} = [&ops]() {
-                        bsl::ut_check(ops.fill() == '#');
-                        bsl::ut_check(ops.align() == bsl::fmt_align::fmt_align_left);
+            bsl::ut_given{} = []() noexcept {
+                bsl::fmt_options mut_ops{""};
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_ops.set_fill('#');
+                    mut_ops.set_align(bsl::fmt_align::fmt_align_left);
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check('#' == mut_ops.fill());
+                        bsl::ut_check(bsl::fmt_align::fmt_align_left == mut_ops.align());
                     };
                 };
             };
         };
 
-        bsl::ut_scenario{"sign"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"+"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.sign() == bsl::fmt_sign::fmt_sign_pos_neg);
+        bsl::ut_scenario{"sign"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"+"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(bsl::fmt_sign::fmt_sign_pos_neg == ops.sign());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"-"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.sign() == bsl::fmt_sign::fmt_sign_neg_only);
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"-"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(bsl::fmt_sign::fmt_sign_neg_only == ops.sign());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{" "};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.sign() == bsl::fmt_sign::fmt_sign_space_for_pos);
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{" "};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(bsl::fmt_sign::fmt_sign_space_for_pos == ops.sign());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"Hello World"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.sign() == bsl::fmt_sign::fmt_sign_neg_only);
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"Hello World"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(bsl::fmt_sign::fmt_sign_neg_only == ops.sign());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{""};
-                bsl::ut_when{} = [&ops]() {
-                    ops.set_sign(bsl::fmt_sign::fmt_sign_pos_neg);
-                    bsl::ut_then{} = [&ops]() {
-                        bsl::ut_check(ops.sign() == bsl::fmt_sign::fmt_sign_pos_neg);
+            bsl::ut_given{} = []() noexcept {
+                bsl::fmt_options mut_ops{""};
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_ops.set_sign(bsl::fmt_sign::fmt_sign_pos_neg);
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(bsl::fmt_sign::fmt_sign_pos_neg == mut_ops.sign());
                     };
                 };
             };
         };
 
-        bsl::ut_scenario{"alt form"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"#"};
-                bsl::ut_then{} = [&ops]() {
+        bsl::ut_scenario{"alt form"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"#"};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(ops.alternate_form());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"Hello World"};
-                bsl::ut_then{} = [&ops]() {
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"Hello World"};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!ops.alternate_form());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{""};
-                bsl::ut_when{} = [&ops]() {
-                    ops.set_alternate_form(true);
-                    bsl::ut_then{} = [&ops]() {
-                        bsl::ut_check(ops.alternate_form());
+            bsl::ut_given{} = []() noexcept {
+                bsl::fmt_options mut_ops{""};
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_ops.set_alternate_form(true);
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_ops.alternate_form());
                     };
                 };
             };
         };
 
-        bsl::ut_scenario{"sign aware"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"0"};
-                bsl::ut_then{} = [&ops]() {
+        bsl::ut_scenario{"sign aware"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"0"};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(ops.sign_aware());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"Hello World"};
-                bsl::ut_then{} = [&ops]() {
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"Hello World"};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!ops.sign_aware());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{""};
-                bsl::ut_when{} = [&ops]() {
-                    ops.set_sign_aware(true);
-                    bsl::ut_then{} = [&ops]() {
-                        bsl::ut_check(ops.sign_aware());
+            bsl::ut_given{} = []() noexcept {
+                bsl::fmt_options mut_ops{""};
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_ops.set_sign_aware(true);
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_ops.sign_aware());
                     };
                 };
             };
         };
 
-        bsl::ut_scenario{"width"} = []() {
+        bsl::ut_scenario{"width"} = []() noexcept {
             constexpr bsl::safe_uintmax digit1{bsl::to_umax(9)};
             constexpr bsl::safe_uintmax digit2{bsl::to_umax(99)};
             constexpr bsl::safe_uintmax digit3{bsl::to_umax(999)};
 
-            bsl::ut_given{} = [&digit1]() {
-                bsl::fmt_options ops{"9"};
-                bsl::ut_then{} = [&ops, &digit1]() {
+            bsl::ut_given{} = [&]() noexcept {
+                constexpr bsl::fmt_options ops{"9"};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(ops.width() == digit1);
                 };
             };
 
-            bsl::ut_given{} = [&digit2]() {
-                bsl::fmt_options ops{"99"};
-                bsl::ut_then{} = [&ops, &digit2]() {
+            bsl::ut_given{} = [&]() noexcept {
+                constexpr bsl::fmt_options ops{"99"};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(ops.width() == digit2);
                 };
             };
 
-            bsl::ut_given{} = [&digit3]() {
-                bsl::fmt_options ops{"999"};
-                bsl::ut_then{} = [&ops, &digit3]() {
+            bsl::ut_given{} = [&]() noexcept {
+                constexpr bsl::fmt_options ops{"999"};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(ops.width() == digit3);
                 };
             };
 
-            bsl::ut_given_at_runtime{} = [&digit3]() {
-                bsl::fmt_options ops{"9999"};
-                bsl::ut_then{} = [&ops, &digit3]() {
+            bsl::ut_given_at_runtime{} = [&]() noexcept {
+                bsl::fmt_options const ops{"9999"};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(ops.width() == digit3);
                 };
             };
 
-            bsl::ut_given_at_runtime{} = [&digit3]() {
-                bsl::fmt_options ops{"999999999999999999999999999999999999999"};
-                bsl::ut_then{} = [&ops, &digit3]() {
+            bsl::ut_given_at_runtime{} = [&]() noexcept {
+                bsl::fmt_options const ops{"999999999999999999999999999999999999999"};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(ops.width() == digit3);
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"Hello World"};
-                bsl::ut_then{} = [&ops]() {
+            bsl::ut_given{} = []() noexcept {
+                bsl::fmt_options const ops{"Hello World"};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(ops.width() == bsl::to_umax(0));
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"/:"};
-                bsl::ut_then{} = [&ops]() {
+            bsl::ut_given{} = []() noexcept {
+                bsl::fmt_options const ops{"/:"};
+                bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(ops.width() == bsl::to_umax(0));
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{""};
-                bsl::ut_when{} = [&ops]() {
-                    ops.set_width(bsl::to_umax(9));
-                    bsl::ut_then{} = [&ops]() {
-                        bsl::ut_check(ops.width() == bsl::to_umax(9));
+            bsl::ut_given{} = []() noexcept {
+                bsl::fmt_options mut_ops{""};
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_ops.set_width(bsl::to_umax(9));
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_ops.width() == bsl::to_umax(9));
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{""};
-                bsl::ut_when{} = [&ops]() {
-                    ops.set_width(bsl::to_umax(99));
-                    bsl::ut_then{} = [&ops]() {
-                        bsl::ut_check(ops.width() == bsl::to_umax(99));
+            bsl::ut_given{} = []() noexcept {
+                bsl::fmt_options mut_ops{""};
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_ops.set_width(bsl::to_umax(99));
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_ops.width() == bsl::to_umax(99));
                     };
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{""};
-                bsl::ut_when{} = [&ops]() {
-                    ops.set_width(bsl::to_umax(999));
-                    bsl::ut_then{} = [&ops]() {
-                        bsl::ut_check(ops.width() == bsl::to_umax(999));
+            bsl::ut_given{} = []() noexcept {
+                bsl::fmt_options mut_ops{""};
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_ops.set_width(bsl::to_umax(999));
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_ops.width() == bsl::to_umax(999));
                     };
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::fmt_options ops{""};
-                bsl::ut_when{} = [&ops]() {
-                    ops.set_width(bsl::to_umax(9999));
-                    bsl::ut_then{} = [&ops]() {
-                        bsl::ut_check(ops.width() == bsl::to_umax(999));
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::fmt_options mut_ops{""};
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_ops.set_width(bsl::to_umax(9999));
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_ops.width() == bsl::to_umax(999));
                     };
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() {
-                bsl::fmt_options ops{""};
-                bsl::ut_when{} = [&ops]() {
-                    ops.set_width(bsl::safe_uintmax::failure());
-                    bsl::ut_then{} = [&ops]() {
-                        bsl::ut_check(ops.width() == bsl::to_umax(999));
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::fmt_options mut_ops{""};
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_ops.set_width(bsl::safe_uintmax::failure());
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_ops.width() == bsl::to_umax(999));
                     };
                 };
             };
         };
 
-        bsl::ut_scenario{"type"} = []() {
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"b"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.type() == bsl::fmt_type::fmt_type_b);
+        bsl::ut_scenario{"type"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"b"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(bsl::fmt_type::fmt_type_b == ops.type());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"B"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.type() == bsl::fmt_type::fmt_type_b);
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"B"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(bsl::fmt_type::fmt_type_b == ops.type());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"c"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.type() == bsl::fmt_type::fmt_type_c);
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"c"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(bsl::fmt_type::fmt_type_c == ops.type());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"d"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.type() == bsl::fmt_type::fmt_type_d);
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"d"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(bsl::fmt_type::fmt_type_d == ops.type());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"s"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.type() == bsl::fmt_type::fmt_type_s);
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"s"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(bsl::fmt_type::fmt_type_s == ops.type());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"x"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.type() == bsl::fmt_type::fmt_type_x);
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"x"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(bsl::fmt_type::fmt_type_x == ops.type());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"X"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.type() == bsl::fmt_type::fmt_type_x);
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"X"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(bsl::fmt_type::fmt_type_x == ops.type());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{"Hello World"};
-                bsl::ut_then{} = [&ops]() {
-                    bsl::ut_check(ops.type() == bsl::fmt_type::fmt_type_default);
+            bsl::ut_given{} = []() noexcept {
+                constexpr bsl::fmt_options ops{"Hello World"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(bsl::fmt_type::fmt_type_default == ops.type());
                 };
             };
 
-            bsl::ut_given{} = []() {
-                bsl::fmt_options ops{""};
-                bsl::ut_when{} = [&ops]() {
-                    ops.set_type(bsl::fmt_type::fmt_type_x);
-                    bsl::ut_then{} = [&ops]() {
-                        bsl::ut_check(ops.type() == bsl::fmt_type::fmt_type_x);
+            bsl::ut_given{} = []() noexcept {
+                bsl::fmt_options mut_ops{""};
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_ops.set_type(bsl::fmt_type::fmt_type_x);
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(bsl::fmt_type::fmt_type_x == mut_ops.type());
                     };
                 };
             };

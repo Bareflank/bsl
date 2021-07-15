@@ -87,11 +87,11 @@ namespace bsl
             return safe_int32::failure();
         }
 
-        for (safe_uintmax i{}; i < count; ++i) {
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic, cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-            safe_int32 const lhsc{static_cast<bsl::int32>(lhs[i.get()])};
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic, cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-            safe_int32 const rhsc{static_cast<bsl::int32>(rhs[i.get()])};
+        for (safe_uintmax mut_i{}; mut_i < count; ++mut_i) {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+            safe_int32 const lhsc{static_cast<bsl::int32>(lhs[mut_i.get()])};
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+            safe_int32 const rhsc{static_cast<bsl::int32>(rhs[mut_i.get()])};
 
             if (lhsc.is_zero()) {
                 unlikely_invalid_argument_failure();
@@ -110,7 +110,8 @@ namespace bsl
             bsl::touch();
         }
 
-        return static_cast<bsl::int32>(0);
+        constexpr safe_int32 zero{static_cast<bsl::int32>(0)};
+        return zero;
     }
 
     /// <!-- description -->
@@ -125,18 +126,18 @@ namespace bsl
     [[nodiscard]] constexpr auto
     builtin_strlen(cstr_type const str) noexcept -> safe_uintmax
     {
-        bsl::safe_uintmax len{};
+        bsl::safe_uintmax mut_len{};
 
         if (unlikely(nullptr == str)) {
             unlikely_invalid_argument_failure();
             return safe_uintmax::failure();
         }
 
-        while ('\0' != str[len.get()]) {
-            ++len;
+        while ('\0' != str[mut_len.get()]) {
+            ++mut_len;
         }
 
-        return len;
+        return mut_len;
     }
 
     /// <!-- description -->
@@ -145,18 +146,18 @@ namespace bsl
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type of dst to set
-    ///   @param dst a pointer to the memory to set
+    ///   @param pmut_dst a pointer to the memory to set
     ///   @param ch the value to set the memory to
     ///   @param count the total number of bytes to set
     ///   @return Returns the same result as std::memset.
     ///
     template<typename T>
     [[maybe_unused]] constexpr auto
-    builtin_memset(T *const dst, char_type const ch, safe_uintmax const &count) noexcept -> T *
+    builtin_memset(T *const pmut_dst, char_type const ch, safe_uintmax const &count) noexcept -> T *
     {
         static_assert(is_trivial<T>::value);
 
-        if (unlikely(nullptr == dst)) {
+        if (unlikely(nullptr == pmut_dst)) {
             unlikely_invalid_argument_failure();
             return nullptr;
         }
@@ -167,7 +168,7 @@ namespace bsl
         }
 
         if (unlikely(count.is_zero())) {
-            return dst;
+            return pmut_dst;
         }
 
         /// NOTE:
@@ -190,16 +191,16 @@ namespace bsl
                 return nullptr;
             }
 
-            for (safe_uintmax i{}; i < count / sizeof(T); ++i) {
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic, cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-                dst[i.get()] = {};
+            for (safe_uintmax mut_i{}; mut_i < count / sizeof(T); ++mut_i) {
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+                pmut_dst[mut_i.get()] = {};
             }
 
-            return dst;
+            return pmut_dst;
         }
 
-        bsl::discard(__builtin_memset(dst, ch, count.get()));
-        return dst;
+        bsl::discard(__builtin_memset(pmut_dst, ch, count.get()));
+        return pmut_dst;
     }
 
     /// <!-- description -->
@@ -208,18 +209,18 @@ namespace bsl
     ///
     /// <!-- inputs/outputs -->
     ///   @tparam T the type of src/dst to copy
-    ///   @param dst a pointer to the memory to copy to
+    ///   @param pmut_dst a pointer to the memory to copy to
     ///   @param src a pointer to the memory to copy from
     ///   @param count the total number of bytes to copy
     ///   @return Returns the same result as std::memcpy.
     ///
     template<typename T>
     [[maybe_unused]] constexpr auto
-    builtin_memcpy(T *const dst, T const *const src, safe_uintmax const &count) noexcept -> T *
+    builtin_memcpy(T *const pmut_dst, T const *const src, safe_uintmax const &count) noexcept -> T *
     {
         static_assert(is_trivial<T>::value);
 
-        if (unlikely(nullptr == dst)) {
+        if (unlikely(nullptr == pmut_dst)) {
             unlikely_invalid_argument_failure();
             return nullptr;
         }
@@ -235,7 +236,7 @@ namespace bsl
         }
 
         if (unlikely(count.is_zero())) {
-            return dst;
+            return pmut_dst;
         }
 
         if (is_constant_evaluated()) {
@@ -244,16 +245,16 @@ namespace bsl
                 return nullptr;
             }
 
-            for (safe_uintmax i{}; i < count / sizeof(T); ++i) {
+            for (safe_uintmax mut_i{}; mut_i < count / sizeof(T); ++mut_i) {
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic, cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-                dst[i.get()] = src[i.get()];
+                pmut_dst[mut_i.get()] = src[mut_i.get()];
             }
 
-            return dst;
+            return pmut_dst;
         }
 
-        bsl::discard(__builtin_memcpy(dst, src, count.get()));
-        return dst;
+        bsl::discard(__builtin_memcpy(pmut_dst, src, count.get()));
+        return pmut_dst;
     }
 }
 

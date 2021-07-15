@@ -57,8 +57,7 @@ namespace bsl
         ///   @return returns true if T is nothrow destructible, false otherwise
         ///
         template<typename T>
-        [[maybe_unused]] auto destructor_is_marked_nothrow(bsl::int32 ignored) noexcept
-            // BUG: This is likely a false positive.
+        [[maybe_unused]] auto destructor_is_marked_nothrow(bsl::int32 const ignored) noexcept
             // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
             -> bool_constant<noexcept(bsl::declval<T &>().~T())>;
 
@@ -75,7 +74,8 @@ namespace bsl
         ///   @return returns true if T is nothrow destructible, false otherwise
         ///
         template<typename T>
-        [[maybe_unused]] auto destructor_is_marked_nothrow(bool ignored) noexcept -> false_type;
+        [[maybe_unused]] auto destructor_is_marked_nothrow(bool const ignored) noexcept
+            -> false_type;
 
         /// <!-- description -->
         ///   @brief Checks if a type "T" is destructible and if so, returns
@@ -108,8 +108,6 @@ namespace bsl
 
             return conjunction<
                 is_detected<is_nothrow_destructible_type, remove_all_extents_t<T>>,
-                // We need the implicit conversion for this to work
-                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 decltype(destructor_is_marked_nothrow<remove_all_extents_t<T>>(0))>::value;
         }
     }

@@ -28,10 +28,12 @@
 #ifndef BSL_ARGUMENTS_HPP
 #define BSL_ARGUMENTS_HPP
 
+#include "convert.hpp"
 #include "cstdint.hpp"
 #include "cstr_type.hpp"
 #include "details/arguments_impl.hpp"
 #include "details/out.hpp"
+#include "is_constant_evaluated.hpp"
 #include "likely.hpp"
 #include "safe_integral.hpp"
 #include "span.hpp"
@@ -257,19 +259,20 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief Returns this->at<T, B>(static_cast<bsl::uintmax>(0)).
+        ///   @brief Returns this->at<T, B>(0).
         ///   @include arguments/example_arguments_front.hpp
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
         ///   @tparam B the base to convert the argument to
-        ///   @return Returns this->at<T, B>(static_cast<bsl::uintmax>(0)).
+        ///   @return Returns this->at<T, B>(0).
         ///
         template<typename T, bsl::int32 B = details::ARGUMENTS_DEFAULT_BASE.get()>
         [[nodiscard]] constexpr auto
         front() const noexcept -> T
         {
-            return this->at<T, B>(static_cast<bsl::uintmax>(0));
+            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
+            return this->at<T, B>(zero);
         }
 
         /// <!-- description -->
@@ -292,7 +295,7 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @return Returns !this->empty()
         ///
-        [[nodiscard]] constexpr explicit operator bool() const noexcept
+        [[nodiscard]] explicit constexpr operator bool() const noexcept
         {
             return !this->empty();
         }
@@ -311,18 +314,18 @@ namespace bsl
         [[nodiscard]] constexpr auto
         size() const noexcept -> size_type
         {
-            size_type ret{};
+            size_type mut_ret{};
 
-            for (safe_uintmax i{}; i < m_args.size(); ++i) {
-                if (!bsl::string_view{*m_args.at_if(i)}.starts_with('-')) {
-                    ++ret;
+            for (safe_uintmax mut_i{}; mut_i < m_args.size(); ++mut_i) {
+                if (!bsl::string_view{*m_args.at_if(mut_i)}.starts_with('-')) {
+                    ++mut_ret;
                 }
                 else {
                     bsl::touch();
                 }
             }
 
-            return ret;
+            return mut_ret;
         }
 
         /// <!-- description -->

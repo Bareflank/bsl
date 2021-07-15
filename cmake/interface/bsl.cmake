@@ -42,6 +42,16 @@ else()
     )
 endif()
 
+if(CMAKE_BUILD_TYPE STREQUAL CLANG_TIDY)
+    target_compile_definitions(bsl INTERFACE
+        BSL_CLANG_TIDY_MODE=true
+    )
+else()
+    target_compile_definitions(bsl INTERFACE
+        BSL_CLANG_TIDY_MODE=false
+    )
+endif()
+
 if(ENABLE_COLOR)
     target_compile_definitions(bsl INTERFACE
         ENABLE_COLOR=true

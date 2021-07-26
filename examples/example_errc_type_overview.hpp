@@ -47,16 +47,9 @@ namespace bsl
             bsl::error() << "failure\n";
         }
 
-        constexpr errc_type my_errc{42};
+        constexpr errc_type my_errc{-42};
 
         if constexpr (my_errc.failure()) {
-            bsl::print() << "success\n";
-        }
-        else {
-            bsl::error() << "failure\n";
-        }
-
-        if constexpr (my_errc.is_unchecked()) {
             bsl::print() << "success\n";
         }
         else {

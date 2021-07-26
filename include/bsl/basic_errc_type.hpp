@@ -177,7 +177,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         success() const noexcept -> bool
         {
-            return T{} == m_errc;
+            return T{} <= m_errc;
         }
 
         /// <!-- description -->
@@ -194,41 +194,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         failure() const noexcept -> bool
         {
-            return T{} != m_errc;
-        }
-
-        /// <!-- description -->
-        ///   @brief Returns true if the error code is a checked error (i.e.,
-        ///     that is the error code is negative), false otherwise. If this
-        ///     error code is bsl::errc_success, returns false.
-        ///   @include basic_errc_type/example_basic_errc_type_is_checked.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return Returns true if the error code is a checked error (i.e.,
-        ///     that is the error code is negative), false otherwise. If this
-        ///     error code is bsl::errc_success, returns false.
-        ///
-        [[nodiscard]] constexpr auto
-        is_checked() const noexcept -> bool
-        {
-            return m_errc < T{};
-        }
-
-        /// <!-- description -->
-        ///   @brief Returns true if the error code is an unchecked error
-        ///     (i.e., that is the error code is positive), false otherwise.
-        ///     If this error code is bsl::errc_success, returns false.
-        ///   @include basic_errc_type/example_basic_errc_type_is_unchecked.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return Returns true if the error code is an unchecked error
-        ///     (i.e., that is the error code is positive), false otherwise.
-        ///     If this error code is bsl::errc_success, returns false.
-        ///
-        [[nodiscard]] constexpr auto
-        is_unchecked() const noexcept -> bool
-        {
-            return m_errc > T{};
+            return T{} > m_errc;
         }
 
     private:
@@ -282,36 +248,36 @@ namespace bsl
     /// @brief Defines the "no error" case
     constexpr basic_errc_type<> errc_success{0};
     /// @brief Defines the general unchecked error case
-    constexpr basic_errc_type<> errc_failure{1};
+    constexpr basic_errc_type<> errc_failure{-1};
     /// @brief Defines the general precondition error case
-    constexpr basic_errc_type<> errc_precondition{2};
+    constexpr basic_errc_type<> errc_precondition{-2};
     /// @brief Defines the general postcondition error case
-    constexpr basic_errc_type<> errc_postcondition{3};
+    constexpr basic_errc_type<> errc_postcondition{-3};
     /// @brief Defines the general assertion error case
-    constexpr basic_errc_type<> errc_assetion{4};
+    constexpr basic_errc_type<> errc_assetion{-4};
 
     /// @brief Defines an invalid argument error code
-    constexpr basic_errc_type<> errc_invalid_argument{10};
+    constexpr basic_errc_type<> errc_invalid_argument{-10};
     /// @brief Defines an out of bounds error code
-    constexpr basic_errc_type<> errc_index_out_of_bounds{11};
+    constexpr basic_errc_type<> errc_index_out_of_bounds{-11};
 
     /// @brief Defines an unsigned wrap error
-    constexpr basic_errc_type<> errc_unsigned_wrap{30};
+    constexpr basic_errc_type<> errc_unsigned_wrap{-30};
     /// @brief Defines a narrow overflow error
-    constexpr basic_errc_type<> errc_narrow_overflow{31};
+    constexpr basic_errc_type<> errc_narrow_overflow{-31};
     /// @brief Defines a signed overflow error
-    constexpr basic_errc_type<> errc_signed_overflow{32};
+    constexpr basic_errc_type<> errc_signed_overflow{-32};
     /// @brief Defines a divide by zero error
-    constexpr basic_errc_type<> errc_divide_by_zero{33};
+    constexpr basic_errc_type<> errc_divide_by_zero{-33};
     /// @brief Defines an out of bounds error code
-    constexpr basic_errc_type<> errc_nullptr_dereference{34};
+    constexpr basic_errc_type<> errc_nullptr_dereference{-34};
 
     /// @brief Defines when a resource is busy
-    constexpr basic_errc_type<> errc_busy{50};
+    constexpr basic_errc_type<> errc_busy{-50};
     /// @brief Defines when a resource already_exists
-    constexpr basic_errc_type<> errc_already_exists{51};
+    constexpr basic_errc_type<> errc_already_exists{-51};
     /// @brief Defines when something is unsupported
-    constexpr basic_errc_type<> errc_unsupported{52};
+    constexpr basic_errc_type<> errc_unsupported{-52};
 }
 
 // -----------------------------------------------------------------------------

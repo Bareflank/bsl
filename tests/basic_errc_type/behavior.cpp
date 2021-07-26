@@ -108,36 +108,6 @@ namespace
             bsl::ut_check(bsl::errc_nullptr_dereference.failure());
         };
 
-        bsl::ut_scenario{"is_checked"} = []() noexcept {
-            bsl::ut_check(!bsl::errc_success.is_checked());
-            bsl::ut_check(!bsl::errc_failure.is_checked());
-            bsl::ut_check(!bsl::errc_precondition.is_checked());
-            bsl::ut_check(!bsl::errc_postcondition.is_checked());
-            bsl::ut_check(!bsl::errc_assetion.is_checked());
-            bsl::ut_check(!bsl::errc_invalid_argument.is_checked());
-            bsl::ut_check(!bsl::errc_index_out_of_bounds.is_checked());
-            bsl::ut_check(!bsl::errc_unsigned_wrap.is_checked());
-            bsl::ut_check(!bsl::errc_narrow_overflow.is_checked());
-            bsl::ut_check(!bsl::errc_signed_overflow.is_checked());
-            bsl::ut_check(!bsl::errc_divide_by_zero.is_checked());
-            bsl::ut_check(!bsl::errc_nullptr_dereference.is_checked());
-        };
-
-        bsl::ut_scenario{"is_unchecked"} = []() noexcept {
-            bsl::ut_check(!bsl::errc_success.is_unchecked());
-            bsl::ut_check(bsl::errc_failure.is_unchecked());
-            bsl::ut_check(bsl::errc_precondition.is_unchecked());
-            bsl::ut_check(bsl::errc_postcondition.is_unchecked());
-            bsl::ut_check(bsl::errc_assetion.is_unchecked());
-            bsl::ut_check(bsl::errc_invalid_argument.is_unchecked());
-            bsl::ut_check(bsl::errc_index_out_of_bounds.is_unchecked());
-            bsl::ut_check(bsl::errc_unsigned_wrap.is_unchecked());
-            bsl::ut_check(bsl::errc_narrow_overflow.is_unchecked());
-            bsl::ut_check(bsl::errc_signed_overflow.is_unchecked());
-            bsl::ut_check(bsl::errc_divide_by_zero.is_unchecked());
-            bsl::ut_check(bsl::errc_nullptr_dereference.is_unchecked());
-        };
-
         bsl::ut_scenario{"equals"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
                 bsl::basic_errc_type<> const errc1{42};

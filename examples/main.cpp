@@ -57,8 +57,6 @@
 #include "basic_errc_type/example_basic_errc_type_equals.hpp"
 #include "basic_errc_type/example_basic_errc_type_failure.hpp"
 #include "basic_errc_type/example_basic_errc_type_get.hpp"
-#include "basic_errc_type/example_basic_errc_type_is_checked.hpp"
-#include "basic_errc_type/example_basic_errc_type_is_unchecked.hpp"
 #include "basic_errc_type/example_basic_errc_type_not_equals.hpp"
 #include "basic_errc_type/example_basic_errc_type_operator_bool.hpp"
 #include "basic_errc_type/example_basic_errc_type_success.hpp"
@@ -498,8 +496,6 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_basic_errc_type_equals, "example_basic_errc_type_equals");
     example(&bsl::example_basic_errc_type_failure, "example_basic_errc_type_failur");
     example(&bsl::example_basic_errc_type_get, "example_basic_errc_type_get");
-    example(&bsl::example_basic_errc_type_is_checked, "example_basic_errc_type_is_checked");
-    example(&bsl::example_basic_errc_type_is_unchecked, "example_basic_errc_type_is_unchecked");
     example(&bsl::example_basic_errc_type_not_equals, "example_basic_errc_type_not_equals");
     example(&bsl::example_basic_errc_type_operator_bool, "example_basic_errc_type_operator_bool");
     example(&bsl::example_basic_errc_type_success, "example_basic_errc_type_success");
@@ -778,7 +774,7 @@ main() noexcept -> bsl::exit_code
     example(&bsl::example_safe_integral_default_constructor, "example_safe_integral_default_constructor");
     example(&bsl::example_safe_integral_div, "example_safe_integral_div");
     example(&bsl::example_safe_integral_equals, "example_safe_integral_equals");
-    example(&bsl::example_safe_integral_failure, "example_safe_integral_failure");
+    example(&bsl::example_safe_integral_failure, "example_safe_integral_failur");
     example(&bsl::example_safe_integral_invalid, "example_safe_integral_invalid");
     example(&bsl::example_safe_integral_get, "example_safe_integral_get");
     example(&bsl::example_safe_integral_gt, "example_safe_integral_gt");

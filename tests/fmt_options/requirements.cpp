@@ -64,7 +64,7 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(mut_ops.sign_aware()));
                 static_assert(noexcept(mut_ops.set_sign_aware(true)));
                 static_assert(noexcept(mut_ops.width()));
-                static_assert(noexcept(mut_ops.set_width(bsl::to_umax(10))));
+                static_assert(noexcept(mut_ops.set_width(bsl::to_umx(10))));
                 static_assert(noexcept(mut_ops.type()));
                 static_assert(noexcept(mut_ops.set_type(bsl::fmt_type::fmt_type_d)));
 

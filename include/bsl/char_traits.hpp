@@ -102,36 +102,6 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief Compares two strings. Returns negative value if s1 appears
-        ///     before s2 in lexicographical order. Return 0 if s1 and s2
-        ///     compare equal, if s1 or s2 are nullptr, or if count is zero.
-        ///     Positive value if s1 appears after s2 in lexicographical order.
-        ///   @include char_traits/example_char_traits_compare.hpp
-        ///
-        /// <!-- notes -->
-        ///   @note The BSL adds a nullptr check to this call, and will
-        ///     return 0 if s1 or s2 are a nullptr (same as if num was set
-        ///     to 0).
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param s1 the left hand side of the query
-        ///   @param s2 the right hand side of the query
-        ///   @param count the number of characters to compare
-        ///   @return Returns negative value if s1 appears before s2 in
-        ///     lexicographical order. Return 0 if s1 and s2 compare equal,
-        ///     if s1 or s2 are nullptr, or if count is zero. Positive value
-        ///     if s1 appears after s2 in lexicographical order.
-        ///
-        [[nodiscard]] static constexpr auto
-        compare(                          // --
-            char_type const *const s1,    // --
-            char_type const *const s2,    // --
-            safe_uintmax const &count) noexcept -> safe_int32
-        {
-            return bsl::builtin_strncmp(s1, s2, count);
-        }
-
-        /// <!-- description -->
         ///   @brief Returns the length of the provided string.
         ///   @include char_traits/example_char_traits_length.hpp
         ///
@@ -144,13 +114,13 @@ namespace bsl
         ///   @return Returns the length of the provided string.
         ///
         [[nodiscard]] static constexpr auto
-        length(char_type const *const s) noexcept -> safe_uintmax
+        length(char_type const *const s) noexcept -> safe_umx
         {
             return bsl::builtin_strlen(s);
         }
 
         /// <!-- description -->
-        ///   @brief Converts a value of bsl::intmax to char_type. If there is
+        ///   @brief Converts a value of bsl::int32 to char_type. If there is
         ///     no equivalent value (such as when c is a copy of the eof value),
         ///     the results are unspecified.
         ///   @include char_traits/example_char_traits_to_char_type.hpp
@@ -160,13 +130,13 @@ namespace bsl
         ///   @return c
         ///
         [[nodiscard]] static constexpr auto
-        to_char_type(bsl::intmax const c) noexcept -> char_type
+        to_char_type(bsl::int32 const c) noexcept -> char_type
         {
             return static_cast<char_type>(c);
         }
 
         /// <!-- description -->
-        ///   @brief Converts a value of char_type to bsl::intmax.
+        ///   @brief Converts a value of char_type to bsl::int32.
         ///   @include char_traits/example_char_traits_to_int_type.hpp
         ///
         /// <!-- inputs/outputs -->
@@ -174,9 +144,9 @@ namespace bsl
         ///   @return c
         ///
         [[nodiscard]] static constexpr auto
-        to_int_type(char_type const c) noexcept -> bsl::intmax
+        to_int_type(char_type const c) noexcept -> bsl::int32
         {
-            return static_cast<bsl::intmax>(c);
+            return static_cast<bsl::int32>(c);
         }
 
         /// <!-- description -->
@@ -191,7 +161,7 @@ namespace bsl
         ///     otherwise.
         ///
         [[nodiscard]] static constexpr auto
-        eq_int_type(bsl::intmax const c1, bsl::intmax const c2) noexcept -> bool
+        eq_int_type(bsl::int32 const c1, bsl::int32 const c2) noexcept -> bool
         {
             if (eof() == c1) {
                 if (eof() == c2) {
@@ -215,9 +185,9 @@ namespace bsl
         ///   @return Returns the value of EOF
         ///
         [[nodiscard]] static constexpr auto
-        eof() noexcept -> bsl::intmax
+        eof() noexcept -> bsl::int32
         {
-            constexpr bsl::intmax value_of_eof{static_cast<bsl::intmax>(-1)};
+            constexpr bsl::int32 value_of_eof{static_cast<bsl::int32>(-1)};
             return value_of_eof;
         }
 
@@ -230,13 +200,13 @@ namespace bsl
         ///   @return Returns e if e is not EOF, otherwise returns 0.
         ///
         [[nodiscard]] static constexpr auto
-        not_eof(bsl::intmax const e) noexcept -> bsl::intmax
+        not_eof(bsl::int32 const e) noexcept -> bsl::int32
         {
             if (!eq_int_type(e, eof())) {
                 return e;
             }
 
-            return static_cast<bsl::intmax>(0);
+            return static_cast<bsl::int32>(0);
         }
     };
 }

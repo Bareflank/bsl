@@ -36,66 +36,66 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    static_assert(bsl::index_sequence<>::size() == static_cast<bsl::uintmax>(0));
+    static_assert(bsl::index_sequence<>::size() == static_cast<bsl::uintmx>(0));
 
     static_assert(
         bsl::index_sequence<
-            static_cast<bsl::uintmax>(4),
-            static_cast<bsl::uintmax>(8),
-            static_cast<bsl::uintmax>(15),
-            static_cast<bsl::uintmax>(16),
-            static_cast<bsl::uintmax>(23),
-            static_cast<bsl::uintmax>(42)>::size() == static_cast<bsl::uintmax>(6));
+            static_cast<bsl::uintmx>(4),
+            static_cast<bsl::uintmx>(8),
+            static_cast<bsl::uintmx>(15),
+            static_cast<bsl::uintmx>(16),
+            static_cast<bsl::uintmx>(23),
+            static_cast<bsl::uintmx>(42)>::size() == static_cast<bsl::uintmx>(6));
 
     static_assert(
-        bsl::index_sequence<static_cast<bsl::uintmax>(4)>::min() == static_cast<bsl::uintmax>(4));
+        bsl::index_sequence<static_cast<bsl::uintmx>(4)>::min() == static_cast<bsl::uintmx>(4));
 
     static_assert(
-        bsl::index_sequence<static_cast<bsl::uintmax>(4), static_cast<bsl::uintmax>(8)>::min() ==
-        static_cast<bsl::uintmax>(4));
-
-    static_assert(
-        bsl::index_sequence<
-            static_cast<bsl::uintmax>(4),
-            static_cast<bsl::uintmax>(8),
-            static_cast<bsl::uintmax>(15),
-            static_cast<bsl::uintmax>(16),
-            static_cast<bsl::uintmax>(23),
-            static_cast<bsl::uintmax>(42)>::min() == static_cast<bsl::uintmax>(4));
+        bsl::index_sequence<static_cast<bsl::uintmx>(4), static_cast<bsl::uintmx>(8)>::min() ==
+        static_cast<bsl::uintmx>(4));
 
     static_assert(
         bsl::index_sequence<
-            static_cast<bsl::uintmax>(15),
-            static_cast<bsl::uintmax>(8),
-            static_cast<bsl::uintmax>(4),
-            static_cast<bsl::uintmax>(42),
-            static_cast<bsl::uintmax>(23),
-            static_cast<bsl::uintmax>(16)>::min() == static_cast<bsl::uintmax>(4));
-
-    static_assert(
-        bsl::index_sequence<static_cast<bsl::uintmax>(42)>::max() == static_cast<bsl::uintmax>(42));
-
-    static_assert(
-        bsl::index_sequence<static_cast<bsl::uintmax>(23), static_cast<bsl::uintmax>(42)>::max() ==
-        static_cast<bsl::uintmax>(42));
+            static_cast<bsl::uintmx>(4),
+            static_cast<bsl::uintmx>(8),
+            static_cast<bsl::uintmx>(15),
+            static_cast<bsl::uintmx>(16),
+            static_cast<bsl::uintmx>(23),
+            static_cast<bsl::uintmx>(42)>::min() == static_cast<bsl::uintmx>(4));
 
     static_assert(
         bsl::index_sequence<
-            static_cast<bsl::uintmax>(4),
-            static_cast<bsl::uintmax>(8),
-            static_cast<bsl::uintmax>(15),
-            static_cast<bsl::uintmax>(16),
-            static_cast<bsl::uintmax>(23),
-            static_cast<bsl::uintmax>(42)>::max() == static_cast<bsl::uintmax>(42));
+            static_cast<bsl::uintmx>(15),
+            static_cast<bsl::uintmx>(8),
+            static_cast<bsl::uintmx>(4),
+            static_cast<bsl::uintmx>(42),
+            static_cast<bsl::uintmx>(23),
+            static_cast<bsl::uintmx>(16)>::min() == static_cast<bsl::uintmx>(4));
+
+    static_assert(
+        bsl::index_sequence<static_cast<bsl::uintmx>(42)>::max() == static_cast<bsl::uintmx>(42));
+
+    static_assert(
+        bsl::index_sequence<static_cast<bsl::uintmx>(23), static_cast<bsl::uintmx>(42)>::max() ==
+        static_cast<bsl::uintmx>(42));
 
     static_assert(
         bsl::index_sequence<
-            static_cast<bsl::uintmax>(15),
-            static_cast<bsl::uintmax>(8),
-            static_cast<bsl::uintmax>(4),
-            static_cast<bsl::uintmax>(42),
-            static_cast<bsl::uintmax>(23),
-            static_cast<bsl::uintmax>(16)>::max() == static_cast<bsl::uintmax>(42));
+            static_cast<bsl::uintmx>(4),
+            static_cast<bsl::uintmx>(8),
+            static_cast<bsl::uintmx>(15),
+            static_cast<bsl::uintmx>(16),
+            static_cast<bsl::uintmx>(23),
+            static_cast<bsl::uintmx>(42)>::max() == static_cast<bsl::uintmx>(42));
+
+    static_assert(
+        bsl::index_sequence<
+            static_cast<bsl::uintmx>(15),
+            static_cast<bsl::uintmx>(8),
+            static_cast<bsl::uintmx>(4),
+            static_cast<bsl::uintmx>(42),
+            static_cast<bsl::uintmx>(23),
+            static_cast<bsl::uintmx>(16)>::max() == static_cast<bsl::uintmx>(42));
 
     return bsl::ut_success();
 }

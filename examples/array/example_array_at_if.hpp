@@ -37,7 +37,7 @@ namespace bsl
     {
         constexpr bsl::array arr{true, false};
 
-        if (auto const *const ptr{arr.at_if(0_umax)}) {
+        if (auto const *const ptr{arr.at_if(0_idx)}) {
             bsl::print() << "success: " << *ptr << bsl::endl;
         }
         else {

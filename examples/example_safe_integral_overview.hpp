@@ -40,10 +40,10 @@ namespace bsl
         constexpr auto val5{23_i32};
         constexpr auto val6{42_i32};
 
-        constexpr auto answer{(((((val1 / val2) + val3) % val4) * val5) - val6)};
+        auto mut_answer{(((((val1 / val2) + val3) % val4) * val5) - val6)};
 
-        if constexpr (answer) {
-            bsl::print() << "success: " << answer.get() << bsl::endl;
+        if (!mut_answer.is_poisoned()) {
+            bsl::print() << "success: " << mut_answer << bsl::endl;
         }
         else {
             bsl::error() << "failure\n";

@@ -36,7 +36,7 @@ namespace bsl
     {
         constexpr auto expected{42_i32};
 
-        bsl::safe_int32 mut_data{};
+        bsl::safe_i32 mut_data{};
         bsl::reference_wrapper const rw{mut_data};
 
         rw.get() = expected;

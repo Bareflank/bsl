@@ -22,8 +22,10 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include "../carray_init.hpp"
+
 #include <bsl/arguments.hpp>
-#include <bsl/array.hpp>
+#include <bsl/carray.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/cstr_type.hpp>
 #include <bsl/ut.hpp>
@@ -42,95 +44,87 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"get optional safe_int64"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::arguments const args{bsl::to_umax(0), nullptr};
+        bsl::ut_scenario{"get optional safe_i64"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::carray const argv{test::CARRAY_INIT_STR_DASH_APP};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!args.get<bsl::safe_int64>("-app"));
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::array const argv{"-app"};
-                bsl::arguments const args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!args.get<bsl::safe_int64>(""));
+                    bsl::ut_check(args.get<bsl::safe_i64>("").is_invalid());
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"app"};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_DASH_APP_EQ_42_SPACE};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!args.get<bsl::safe_int64>("-app"));
+                    bsl::ut_check(args.get<bsl::safe_i64>("-app").is_invalid());
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"-app"};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_DASH_APP};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!args.get<bsl::safe_int64>("-app_blah"));
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::array const argv{"-app"};
-                bsl::arguments const args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!args.get<bsl::safe_int64>("-ap"));
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::array const argv{"-app"};
-                bsl::arguments const args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!args.get<bsl::safe_int64>("-app"));
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::array const argv{"-app="};
-                bsl::arguments const args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!args.get<bsl::safe_int64>("-app"));
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::array const argv{"-app=42"};
-                bsl::arguments const args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!args.get<bsl::safe_int64>("-app="));
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::array const argv{"-app=42 "};
-                bsl::arguments const args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!args.get<bsl::safe_int64>("-app"));
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::array const argv{"-app=hello"};
-                bsl::arguments const args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!args.get<bsl::safe_int64>("-app"));
+                    bsl::ut_check(args.get<bsl::safe_i64>("-app_blah").is_invalid());
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{
-                    "-app=ignored", "pos1", "-4=16", "-8=23", "pos2", "-15=42", "-app=42"};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_DASH_APP};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(args.get<bsl::safe_int64>("-app") == bsl::to_i64(42));
-                    bsl::ut_check(args.get<bsl::safe_int64>("-4") == bsl::to_i64(16));
-                    bsl::ut_check(args.get<bsl::safe_int64>("-8") == bsl::to_i64(23));
-                    bsl::ut_check(args.get<bsl::safe_int64>("-15") == bsl::to_i64(42));
+                    bsl::ut_check(args.get<bsl::safe_i64>("-ap").is_invalid());
+                };
+            };
+
+            bsl::ut_given{} = []() noexcept {
+                bsl::carray const argv{test::CARRAY_INIT_STR_DASH_APP};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(args.get<bsl::safe_i64>("-app").is_invalid());
+                };
+            };
+
+            bsl::ut_given{} = []() noexcept {
+                bsl::carray const argv{test::CARRAY_INIT_STR_DASH_APP_EQ};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(args.get<bsl::safe_i64>("-app").is_invalid());
+                };
+            };
+
+            bsl::ut_given{} = []() noexcept {
+                bsl::carray const argv{test::CARRAY_INIT_STR_DASH_APP_EQ_42};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(args.get<bsl::safe_i64>("-app=").is_invalid());
+                };
+            };
+
+            bsl::ut_given{} = []() noexcept {
+                bsl::carray const argv{test::CARRAY_INIT_STR_DASH_APP_EQ_42_SPACE};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(args.get<bsl::safe_i64>("-app").is_invalid());
+                };
+            };
+
+            bsl::ut_given{} = []() noexcept {
+                bsl::carray const argv{test::CARRAY_INIT_STR_DASH_APP_EQ_HELLO};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(args.get<bsl::safe_i64>("-app").is_invalid());
+                };
+            };
+
+            bsl::ut_given{} = []() noexcept {
+                bsl::carray const argv{test::CARRAY_INIT_STR_ARGS};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(args.get<bsl::safe_i64>("-app") == bsl::to_i64(42));
+                    bsl::ut_check(args.get<bsl::safe_i64>("-4") == bsl::to_i64(16));
+                    bsl::ut_check(args.get<bsl::safe_i64>("-8") == bsl::to_i64(23));
+                    bsl::ut_check(args.get<bsl::safe_i64>("-15") == bsl::to_i64(42));
                 };
             };
         };

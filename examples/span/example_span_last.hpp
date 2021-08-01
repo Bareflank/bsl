@@ -35,7 +35,7 @@ namespace bsl
     inline void
     example_span_last() noexcept
     {
-        constexpr auto idx{1_umax};
+        constexpr auto idx{1_umx};
 
         constexpr bsl::array arr{true, false};
         bsl::span const spn{arr.data(), arr.size()};

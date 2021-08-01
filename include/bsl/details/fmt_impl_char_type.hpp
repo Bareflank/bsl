@@ -57,26 +57,30 @@ namespace bsl
     constexpr void
     fmt_impl(out<T> const o, fmt_options const &ops, char_type const c) noexcept
     {
-        constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-
         if (is_constant_evaluated()) {
             return;
         }
 
         switch (ops.type()) {
             case fmt_type::fmt_type_b:
+                [[fallthrough]];
             case fmt_type::fmt_type_d:
+                [[fallthrough]];
             case fmt_type::fmt_type_x: {
-                details::fmt_impl_integral(o, ops, safe_uint8{static_cast<bsl::uint8>(c)});
+                details::fmt_impl_integral(o, ops, safe_u8{static_cast<bsl::uint8>(c)});
                 break;
             }
 
             case fmt_type::fmt_type_c:
+                [[fallthrough]];
             case fmt_type::fmt_type_s:
-            case fmt_type::fmt_type_default: {
-                details::fmt_impl_align_pre(o, ops, one, true);
+                [[fallthrough]];
+            case fmt_type::fmt_type_default:
+                [[fallthrough]];
+            default: {
+                details::fmt_impl_align_pre(o, ops, safe_umx::magic_1(), true);
                 o.write_to_console(c);
-                details::fmt_impl_align_suf(o, ops, one, true);
+                details::fmt_impl_align_suf(o, ops, safe_umx::magic_1(), true);
                 break;
             }
         }
@@ -100,7 +104,7 @@ namespace bsl
             return o;
         }
 
-        if constexpr (!o) {
+        if constexpr (o.empty()) {
             return o;
         }
 

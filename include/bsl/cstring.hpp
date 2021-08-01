@@ -32,8 +32,11 @@
 #include "cstdint.hpp"
 #include "cstr_type.hpp"
 #include "discard.hpp"
+#include "ensures.hpp"
+#include "expects.hpp"
 #include "is_constant_evaluated.hpp"
 #include "is_trivial.hpp"
+#include "safe_idx.hpp"
 #include "safe_integral.hpp"
 #include "touch.hpp"
 #include "unlikely.hpp"
@@ -58,86 +61,25 @@
 namespace bsl
 {
     /// <!-- description -->
-    ///   @brief Returns the same result as std::strncmp with the exception
-    ///     that any undefined behavior will return safe_int32::failure().
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @param lhs the left hand side of the comparison
-    ///   @param rhs the right hand side of the comparison
-    ///   @param count the total number of bytes to compare
-    ///   @return Returns the same result as std::strncmp with the exception
-    ///     that any undefined behavior will return safe_int32::failure().
-    ///
-    [[nodiscard]] constexpr auto
-    builtin_strncmp(cstr_type const lhs, cstr_type const rhs, safe_uintmax const &count) noexcept
-        -> safe_int32
-    {
-        if (unlikely(nullptr == lhs)) {
-            unlikely_invalid_argument_failure();
-            return safe_int32::failure();
-        }
-
-        if (unlikely(nullptr == rhs)) {
-            unlikely_invalid_argument_failure();
-            return safe_int32::failure();
-        }
-
-        if (unlikely(!count)) {
-            unlikely_invalid_argument_failure();
-            return safe_int32::failure();
-        }
-
-        for (safe_uintmax mut_i{}; mut_i < count; ++mut_i) {
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-            safe_int32 const lhsc{static_cast<bsl::int32>(lhs[mut_i.get()])};
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-            safe_int32 const rhsc{static_cast<bsl::int32>(rhs[mut_i.get()])};
-
-            if (lhsc.is_zero()) {
-                unlikely_invalid_argument_failure();
-                return safe_int32::failure();
-            }
-
-            if (rhsc.is_zero()) {
-                unlikely_invalid_argument_failure();
-                return safe_int32::failure();
-            }
-
-            if (lhsc != rhsc) {
-                return lhsc - rhsc;
-            }
-
-            bsl::touch();
-        }
-
-        constexpr safe_int32 zero{static_cast<bsl::int32>(0)};
-        return zero;
-    }
-
-    /// <!-- description -->
     ///   @brief Returns the same result as std::strlen with the exception
-    ///     that any undefined behavior will return safe_int32::failure().
+    ///     that any undefined behavior will return safe_i32::failure().
     ///
     /// <!-- inputs/outputs -->
     ///   @param str a pointer to a string to get the length of
     ///   @return Returns the same result as std::strlen with the exception
-    ///     that any undefined behavior will return safe_int32::failure().
+    ///     that any undefined behavior will return safe_i32::failure().
     ///
     [[nodiscard]] constexpr auto
-    builtin_strlen(cstr_type const str) noexcept -> safe_uintmax
+    builtin_strlen(cstr_type const str) noexcept -> safe_umx
     {
-        bsl::safe_uintmax mut_len{};
+        expects(nullptr != str);
 
-        if (unlikely(nullptr == str)) {
-            unlikely_invalid_argument_failure();
-            return safe_uintmax::failure();
-        }
-
+        bsl::safe_idx mut_len{};
         while ('\0' != str[mut_len.get()]) {
             ++mut_len;
         }
 
-        return mut_len;
+        return safe_umx{mut_len.get()};
     }
 
     /// <!-- description -->
@@ -153,19 +95,12 @@ namespace bsl
     ///
     template<typename T>
     [[maybe_unused]] constexpr auto
-    builtin_memset(T *const pmut_dst, char_type const ch, safe_uintmax const &count) noexcept -> T *
+    builtin_memset(T *const pmut_dst, char_type const ch, safe_umx const &count) noexcept -> T *
     {
         static_assert(is_trivial<T>::value);
 
-        if (unlikely(nullptr == pmut_dst)) {
-            unlikely_invalid_argument_failure();
-            return nullptr;
-        }
-
-        if (unlikely(!count)) {
-            unlikely_invalid_argument_failure();
-            return nullptr;
-        }
+        expects(nullptr != pmut_dst);
+        expects(count.is_valid_and_checked());
 
         if (unlikely(count.is_zero())) {
             return pmut_dst;
@@ -181,17 +116,21 @@ namespace bsl
         ///
 
         if (is_constant_evaluated()) {
-            if ('\0' != ch) {
+            expects('\0' == ch);
+
+            /// NOTE:
+            /// - The input has already been verified. All we need to check
+            ///   for is divide by 0 and this does not occur for both the
+            ///   divide and the modulo, so we mark the results as checked.
+            ///
+
+            if ((count % sizeof(T)).checked().is_pos()) {
                 unlikely_invalid_argument_failure();
                 return nullptr;
             }
 
-            if ((count % sizeof(T)).is_pos()) {
-                unlikely_invalid_argument_failure();
-                return nullptr;
-            }
-
-            for (safe_uintmax mut_i{}; mut_i < count / sizeof(T); ++mut_i) {
+            auto const size{(count / sizeof(T)).checked()};
+            for (safe_idx mut_i{}; mut_i < size; ++mut_i) {
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
                 pmut_dst[mut_i.get()] = {};
             }
@@ -216,36 +155,32 @@ namespace bsl
     ///
     template<typename T>
     [[maybe_unused]] constexpr auto
-    builtin_memcpy(T *const pmut_dst, T const *const src, safe_uintmax const &count) noexcept -> T *
+    builtin_memcpy(T *const pmut_dst, T const *const src, safe_umx const &count) noexcept -> T *
     {
         static_assert(is_trivial<T>::value);
 
-        if (unlikely(nullptr == pmut_dst)) {
-            unlikely_invalid_argument_failure();
-            return nullptr;
-        }
-
-        if (unlikely(nullptr == src)) {
-            unlikely_invalid_argument_failure();
-            return nullptr;
-        }
-
-        if (unlikely(!count)) {
-            unlikely_invalid_argument_failure();
-            return nullptr;
-        }
+        expects(nullptr != pmut_dst);
+        expects(nullptr != src);
+        expects(count.is_valid_and_checked());
 
         if (unlikely(count.is_zero())) {
             return pmut_dst;
         }
 
         if (is_constant_evaluated()) {
-            if ((count % sizeof(T)).is_pos()) {
+            /// NOTE:
+            /// - The input has already been verified. All we need to check
+            ///   for is divide by 0 and this does not occur for both the
+            ///   divide and the modulo, so we mark the results as checked.
+            ///
+
+            if ((count % sizeof(T)).checked().is_pos()) {
                 unlikely_invalid_argument_failure();
                 return nullptr;
             }
 
-            for (safe_uintmax mut_i{}; mut_i < count / sizeof(T); ++mut_i) {
+            auto const size{(count / sizeof(T)).checked()};
+            for (safe_idx mut_i{}; mut_i < size; ++mut_i) {
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic, cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
                 pmut_dst[mut_i.get()] = src[mut_i.get()];
             }

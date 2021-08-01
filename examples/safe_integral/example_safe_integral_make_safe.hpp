@@ -37,7 +37,7 @@ namespace bsl
         constexpr bsl::int32 val1{23};
         constexpr auto val2{bsl::make_safe(val1)};
 
-        if constexpr (bsl::is_same<decltype(val2), bsl::safe_int32 const>::value) {
+        if constexpr (bsl::is_same<decltype(val2), bsl::safe_i32 const>::value) {
             bsl::print() << "success\n";
         }
         else {

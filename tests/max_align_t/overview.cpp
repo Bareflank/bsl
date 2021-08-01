@@ -37,6 +37,6 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    static_assert(bsl::to_umax(alignof(bsl::max_align_t)) >= bsl::to_umax(alignof(bsl::uintmax)));
+    static_assert(bsl::to_umx(alignof(bsl::max_align_t)) >= bsl::to_umx(alignof(bsl::uintmx)));
     return bsl::ut_success();
 }

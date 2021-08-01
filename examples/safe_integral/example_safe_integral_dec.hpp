@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_safe_integral_dec() noexcept
     {
-        bsl::safe_int32 mut_val{};
+        bsl::safe_i32 mut_val{};
 
         --mut_val;
         bsl::print() << "success: " << mut_val << bsl::endl;

@@ -26,6 +26,7 @@
 #define BSL_UNORDERED_MAP_HPP
 
 #include "details/unordered_map_node_type.hpp"
+#include "ensures.hpp"
 #include "is_copy_constructible.hpp"
 #include "is_default_constructible.hpp"
 #include "safe_integral.hpp"
@@ -84,7 +85,7 @@ namespace bsl
         /// @brief stores the head of the linked list.
         nd_t *m_head{};
         /// @brief stores the size of the map
-        safe_uintmax m_size{};
+        safe_umx m_size{};
 
     public:
         /// <!-- description -->
@@ -156,8 +157,9 @@ namespace bsl
         ///   @return Returns the size of the map
         ///
         [[nodiscard]] constexpr auto
-        size() const noexcept -> safe_uintmax const &
+        size() const noexcept -> safe_umx const &
         {
+            ensures(m_size.is_valid_and_checked());
             return m_size;
         }
 
@@ -199,11 +201,16 @@ namespace bsl
                 pmut_mut_node = pmut_mut_node->next;
             }
 
+            /// NOTE:
+            /// - The m_size math below is really acting as an index
+            ///   so it is marked as checked. It cannot overflow.
+            ///
+
             if (nullptr == pmut_mut_node) {
                 // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
                 pmut_mut_node = new nd_t{key, {}, m_head};
                 m_head = pmut_mut_node;
-                ++m_size;
+                m_size = (m_size + safe_umx::magic_1()).checked();
             }
             else {
                 bsl::touch();
@@ -269,6 +276,13 @@ namespace bsl
             else {
                 pmut_mut_prev->next = pmut_mut_node->next;
             }
+
+            /// NOTE:
+            /// - The m_size math below is really acting as an index
+            ///   so it is marked as checked. It cannot underflow.
+            ///
+
+            m_size = (m_size - safe_umx::magic_1()).checked();
 
             // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
             delete pmut_mut_node;    // GRCOV_EXCLUDE_BR

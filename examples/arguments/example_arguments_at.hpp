@@ -35,7 +35,7 @@ namespace bsl
     inline void
     example_arguments_at() noexcept
     {
-        constexpr auto arg3{3_umax};
+        constexpr auto arg3{3_umx};
         constexpr bsl::array argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
         bsl::arguments const args{argv.size(), argv.data()};
 

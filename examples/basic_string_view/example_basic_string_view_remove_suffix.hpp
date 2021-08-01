@@ -34,7 +34,7 @@ namespace bsl
     inline void
     example_basic_string_view_remove_suffix() noexcept
     {
-        constexpr auto num{6_umax};
+        constexpr auto num{6_idx};
         bsl::basic_string_view<bsl::char_type> mut_str{"Hello World"};
 
         if (mut_str.remove_suffix(num) == "Hello") {

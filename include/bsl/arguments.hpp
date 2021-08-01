@@ -33,8 +33,9 @@
 #include "cstr_type.hpp"
 #include "details/arguments_impl.hpp"
 #include "details/out.hpp"
+#include "ensures.hpp"
+#include "expects.hpp"
 #include "is_constant_evaluated.hpp"
-#include "likely.hpp"
 #include "safe_integral.hpp"
 #include "span.hpp"
 #include "string_view.hpp"
@@ -129,10 +130,12 @@ namespace bsl
     public:
         /// @brief alias for: cstr_type const
         using value_type = cstr_type const;
-        /// @brief alias for: safe_uintmax
-        using size_type = safe_uintmax;
-        /// @brief alias for: safe_uintmax
-        using difference_type = safe_uintmax;
+        /// @brief alias for: safe_umx
+        using size_type = safe_umx;
+        /// @brief alias for: safe_umx
+        using difference_type = safe_umx;
+        /// @brief alias for: safe_idx
+        using index_type = safe_idx;
         /// @brief alias for: cstr_type const &
         using reference_type = cstr_type const &;
         /// @brief alias for: cstr_type const &
@@ -153,6 +156,7 @@ namespace bsl
         /// <!-- description -->
         ///   @brief Creates a bsl::arguments object given a provided argc
         ///     and argv.
+        ///   @include arguments/example_arguments_constructor.hpp
         ///
         /// <!-- inputs/outputs -->
         ///   @param argc the total number of arguments passed to the
@@ -160,12 +164,33 @@ namespace bsl
         ///   @param argv the arguments passed to the application
         ///
         constexpr arguments(size_type const &argc, value_type *const argv) noexcept
-            : m_args{argv, argc}, m_index{}
-        {}
+            : m_args{argv, argc}, m_count{}, m_i{}
+        {
+            expects(argc.is_valid_and_checked());
+            expects(nullptr != argv);
+
+            for (safe_idx mut_i{}; mut_i < m_args.size(); ++mut_i) {
+                if (!bsl::string_view{*m_args.at_if(mut_i)}.starts_with('-')) {
+                    ++m_count;
+                }
+                else {
+                    bsl::touch();
+                }
+            }
+
+            /// NOTE:
+            /// - We know that size here cannot overflow as it is initialized
+            ///   to zero and then increments from there, so the resulting
+            ///   size is marked checked.
+            ///
+
+            m_count = m_count.checked();
+        }
 
         /// <!-- description -->
         ///   @brief Returns the provided argc, argv parameters as a span
         ///     that can be parsed manually.
+        ///   @include arguments/example_arguments_args.hpp
         ///
         /// <!-- inputs/outputs -->
         ///   @return Returns the provided argc, argv parameters as a span
@@ -174,27 +199,31 @@ namespace bsl
         [[nodiscard]] constexpr auto
         args() const &noexcept -> span<cstr_type const> const &
         {
+            ensures(m_args.is_valid());
             return m_args;
         }
 
         /// <!-- description -->
         ///   @brief Returns the current index
+        ///   @include arguments/example_arguments_index.hpp
         ///
         /// <!-- inputs/outputs -->
         ///   @return Returns the current index
         ///
         [[nodiscard]] constexpr auto
-        index() const &noexcept -> bsl::safe_uintmax const &
+        index() const &noexcept -> index_type const &
         {
-            return m_index;
+            ensures(m_i.is_valid());
+            return m_i;
         }
 
         /// <!-- description -->
         ///   @brief Returns the positional argument at position "pos"
         ///     converted to "T". If the positional argument "pos" does not
         ///     exist, the result depends on "T". For a bsl::safe_integral,
-        ///     the result is bsl::safe_integral<T>{0, true}, meaning the
+        ///     the result is bsl::safe_integral<T>::failure(), meaning the
         ///     integral has it's error flag set. All other types return T{}.
+        ///   @include arguments/example_arguments_pos.hpp
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
@@ -203,22 +232,53 @@ namespace bsl
         ///   @return Returns the positional argument at position "pos"
         ///     converted to "T". If the positional argument "pos" does not
         ///     exist, the result depends on "T". For a bsl::safe_integral,
-        ///     the result is bsl::safe_integral<T>{0, true}, meaning the
+        ///     the result is bsl::safe_integral<T>::failure(), meaning the
+        ///     integral has it's error flag set. All other types return T{}.
+        ///
+        template<typename T, bsl::int32 B = details::ARGUMENTS_DEFAULT_BASE.get()>
+        [[nodiscard]] constexpr auto
+        get(index_type const &pos) const noexcept -> T
+        {
+            return details::arguments_impl<T, B>::get(m_args, pos);
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns the positional argument at position "pos"
+        ///     converted to "T". If the positional argument "pos" does not
+        ///     exist, the result depends on "T". For a bsl::safe_integral,
+        ///     the result is bsl::safe_integral<T>::failure(), meaning the
+        ///     integral has it's error flag set. All other types return T{}.
+        ///   @include arguments/example_arguments_pos.hpp
+        ///
+        /// <!-- notes -->
+        ///   @note This provides an overload to deal with ambiguity if you
+        ///     happen to use size_type as an index type. Like an index type
+        ///     however, and invalid input results in undefined behavior.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
+        ///   @tparam B the base to convert the argument to
+        ///   @param pos the position of the positional argument to get.
+        ///   @return Returns the positional argument at position "pos"
+        ///     converted to "T". If the positional argument "pos" does not
+        ///     exist, the result depends on "T". For a bsl::safe_integral,
+        ///     the result is bsl::safe_integral<T>::failure(), meaning the
         ///     integral has it's error flag set. All other types return T{}.
         ///
         template<typename T, bsl::int32 B = details::ARGUMENTS_DEFAULT_BASE.get()>
         [[nodiscard]] constexpr auto
         get(size_type const &pos) const noexcept -> T
         {
-            return details::arguments_impl<T, B>::get(m_args, pos);
+            return this->get<T, B>(safe_idx{pos.get()});
         }
 
         /// <!-- description -->
         ///   @brief Returns the requested optional argument. If the optional
         ///     argument "pos" does not exist, the result depends on "T".
         ///     For a bsl::safe_integral, the result is
-        ///     bsl::safe_integral<T>{0, true}, meaning the integral has it's
+        ///     bsl::safe_integral<T>::failure(), meaning the integral has it's
         ///     error flag set. All other types return T{}.
+        ///   @include arguments/example_arguments_opt.hpp
         ///
         /// <!-- inputs/outputs -->
         ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
@@ -227,7 +287,7 @@ namespace bsl
         ///   @return Returns the requested optional argument. If the optional
         ///     argument "pos" does not exist, the result depends on "T".
         ///     For a bsl::safe_integral, the result is
-        ///     bsl::safe_integral<T>{0, true}, meaning the integral has it's
+        ///     bsl::safe_integral<T>::failure(), meaning the integral has it's
         ///     error flag set. All other types return T{}.
         ///
         template<typename T, bsl::int32 B = details::ARGUMENTS_DEFAULT_BASE.get()>
@@ -253,9 +313,35 @@ namespace bsl
         ///
         template<typename T, bsl::int32 B = details::ARGUMENTS_DEFAULT_BASE.get()>
         [[nodiscard]] constexpr auto
+        at(index_type const &pos) const noexcept -> T
+        {
+            return this->get<T, B>(pos + m_i);
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns this->get<T, B>(pos + current_index), where the
+        ///     current_index starts at 0 when the arguments are constructed,
+        ///     and can be incremented using the ++ operator.
+        ///   @include arguments/example_arguments_at.hpp
+        ///
+        /// <!-- notes -->
+        ///   @note This provides an overload to deal with ambiguity if you
+        ///     happen to use size_type as an index type. Like an index type
+        ///     however, and invalid input results in undefined behavior.
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @tparam T either bsl::safe_integral, bsl::string_view or bool
+        ///   @tparam B the base to convert the argument to
+        ///   @param pos the position of the positional argument to get.
+        ///   @return Returns this->get<T, B>(pos + current_index), where the
+        ///     current_index starts at 0 when the arguments are constructed,
+        ///     and can be incremented using the ++ operator.
+        ///
+        template<typename T, bsl::int32 B = details::ARGUMENTS_DEFAULT_BASE.get()>
+        [[nodiscard]] constexpr auto
         at(size_type const &pos) const noexcept -> T
         {
-            return this->get<T, B>(pos + m_index);
+            return this->at<T, B>(safe_idx{pos.get()});
         }
 
         /// <!-- description -->
@@ -271,8 +357,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front() const noexcept -> T
         {
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-            return this->at<T, B>(zero);
+            return this->at<T, B>(safe_idx{});
         }
 
         /// <!-- description -->
@@ -289,15 +374,29 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief Returns !this->empty()
-        ///   @include arguments/example_arguments_operator_bool.hpp
+        ///   @brief m_args->is_invalid()
+        ///   @include arguments/example_arguments_is_invalid.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Returns !this->empty()
+        ///   @return m_args->is_invalid()
         ///
-        [[nodiscard]] explicit constexpr operator bool() const noexcept
+        [[nodiscard]] constexpr auto
+        is_invalid() const noexcept -> bool
         {
-            return !this->empty();
+            return m_args.is_invalid();
+        }
+
+        /// <!-- description -->
+        ///   @brief m_args->is_valid()
+        ///   @include arguments/example_arguments_is_valid.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return m_args->is_valid()
+        ///
+        [[nodiscard]] constexpr auto
+        is_valid() const noexcept -> bool
+        {
+            return m_args.is_valid();
         }
 
         /// <!-- description -->
@@ -314,23 +413,13 @@ namespace bsl
         [[nodiscard]] constexpr auto
         size() const noexcept -> size_type
         {
-            size_type mut_ret{};
-
-            for (safe_uintmax mut_i{}; mut_i < m_args.size(); ++mut_i) {
-                if (!bsl::string_view{*m_args.at_if(mut_i)}.starts_with('-')) {
-                    ++mut_ret;
-                }
-                else {
-                    bsl::touch();
-                }
-            }
-
-            return mut_ret;
+            ensures(m_count.is_valid_and_checked());
+            return m_count;
         }
 
         /// <!-- description -->
         ///   @brief Returns this->size() - this->index()
-        ///   @include arguments/example_arguments_size.hpp
+        ///   @include arguments/example_arguments_remaining.hpp
         ///
         /// <!-- inputs/outputs -->
         ///   @return Returns this->size() - this->index()
@@ -338,7 +427,16 @@ namespace bsl
         [[nodiscard]] constexpr auto
         remaining() const noexcept -> size_type
         {
-            return this->size() - this->index();
+            auto const val{(this->size() - this->index().get()).checked()};
+
+            /// NOTE:
+            /// - The index is not allowed to be greater than size(). Since
+            ///   both are unsigned, this means that overflow can never happen
+            ///   so we mark the result of remaining() as checked.
+            ///
+
+            ensures(val.is_valid_and_checked());
+            return val;
         }
 
         /// <!-- description -->
@@ -354,21 +452,24 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         operator++() noexcept -> arguments &
         {
-            if (likely(m_index < this->size())) {
-                ++m_index;
-            }
-            else {
-                unlikely_precondition_failure();
+            if (unlikely(m_i >= m_count)) {
+                return *this;
             }
 
+            ++m_i;
+
+            ensures(m_i.is_valid());
+            ensures(m_i <= m_count);
             return *this;
         }
 
     private:
         /// @brief stores the argc/argv arguments.
         span<value_type> m_args;
-        /// @brief stores the current index into the arguments.
-        bsl::safe_uintmax m_index;
+        /// @brief stores the number of positional arguments.
+        size_type m_count;
+        /// @brief stores the current index into the positional arguments.
+        index_type m_i;
     };
 
     /// <!-- description -->
@@ -387,7 +488,7 @@ namespace bsl
     [[maybe_unused]] constexpr auto
     operator<<(out<T> const o, arguments const &a) noexcept -> out<T>
     {
-        if constexpr (!o) {
+        if constexpr (o.empty()) {
             return o;
         }
 

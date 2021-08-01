@@ -29,7 +29,7 @@
 namespace
 {
     [[nodiscard]] constexpr auto
-    func(bsl::safe_int32 const val) noexcept -> bsl::safe_int32
+    func(bsl::safe_i32 const val) noexcept -> bsl::safe_i32
     {
         return val;
     }
@@ -55,14 +55,14 @@ main() noexcept -> bsl::exit_code
         bsl::ut_given{} = []() noexcept {
             // BUG: Need to figure out why we cannot use & here
             // NOLINTNEXTLINE(bsl-function-name-use)
-            bsl::reference_wrapper<bsl::safe_int32(bsl::safe_int32)> mut_rw{func};
+            bsl::reference_wrapper<bsl::safe_i32(bsl::safe_i32)> mut_rw{func};
             // BUG: Need to figure out why we cannot use & here
             // NOLINTNEXTLINE(bsl-function-name-use)
-            bsl::reference_wrapper<bsl::safe_int32(bsl::safe_int32)> const rw{func};
+            bsl::reference_wrapper<bsl::safe_i32(bsl::safe_i32)> const rw{func};
             bsl::ut_then{} = []() noexcept {
                 // BUG: Need to figure out why we cannot use & here
                 // NOLINTNEXTLINE(bsl-function-name-use)
-                static_assert(noexcept(bsl::reference_wrapper<bsl::safe_int32(bsl::safe_int32)>{func}));
+                static_assert(noexcept(bsl::reference_wrapper<bsl::safe_i32(bsl::safe_i32)>{func}));
 
                 static_assert(noexcept(mut_rw.get()));
                 static_assert(!noexcept(mut_rw(bsl::to_i32(42))));

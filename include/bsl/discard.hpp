@@ -43,12 +43,12 @@ namespace bsl
     ///   @include example_discard_overview.hpp
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam ARGS the types that define the provided arguments to ignore
-    ///   @param pudm_udm_a the arguments to ignore
+    ///   @tparam T the type of arg to ignore
+    ///   @param pudm_udm_a the arg to ignore
     ///
-    template<typename... ARGS>
+    template<typename T>
     constexpr void
-    discard(ARGS &&...pudm_udm_a) noexcept
+    discard(T &&pudm_udm_a) noexcept
     {}
 }
 

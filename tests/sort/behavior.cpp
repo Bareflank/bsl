@@ -22,6 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include "../array_init.hpp"
+
 #include <bsl/array.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/sort.hpp>
@@ -39,7 +41,7 @@ namespace
     ///   @return Returns true if b is less a, false otherwise
     ///
     [[nodiscard]] constexpr auto
-    reverse_sort_cmp(bsl::safe_int32 const &a, bsl::safe_int32 const &b) noexcept -> bool
+    reverse_sort_cmp(bsl::safe_i32 const &a, bsl::safe_i32 const &b) noexcept -> bool
     {
         return a > b;
     };
@@ -58,7 +60,7 @@ namespace
     {
         bsl::ut_scenario{"sort empty doesn't crash"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
-                bsl::span<bsl::safe_int32> mut_view{};
+                bsl::span<bsl::safe_i32> mut_view{};
                 bsl::ut_when{} = [&]() noexcept {
                     bsl::sort(mut_view);
                     bsl::ut_then{} = [&]() noexcept {
@@ -70,12 +72,12 @@ namespace
 
         bsl::ut_scenario{"sort 1 number"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
-                bsl::array mut_data{bsl::to_i32(4)};
-                bsl::span mut_view{mut_data};
+                bsl::array mut_data{test::ARRAY_INIT_RANDOM};
+                bsl::span mut_view{bsl::span{mut_data}.subspan({}, bsl::to_umx(1))};
                 bsl::ut_when{} = [&]() noexcept {
                     bsl::sort(mut_view);
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_idx(0)) == bsl::to_i32(42));
                     };
                 };
             };
@@ -83,13 +85,13 @@ namespace
 
         bsl::ut_scenario{"sort 2 numbers"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
-                bsl::array mut_data{bsl::to_i32(4), bsl::to_i32(23)};
-                bsl::span mut_view{mut_data};
+                bsl::array mut_data{test::ARRAY_INIT_RANDOM};
+                bsl::span mut_view{bsl::span{mut_data}.subspan({}, bsl::to_umx(2))};
                 bsl::ut_when{} = [&]() noexcept {
                     bsl::sort(mut_view);
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
-                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(1)) == bsl::to_i32(23));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_idx(0)) == bsl::to_i32(23));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_idx(1)) == bsl::to_i32(42));
                     };
                 };
             };
@@ -97,23 +99,17 @@ namespace
 
         bsl::ut_scenario{"sort random numbers"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
-                bsl::array mut_data{
-                    bsl::to_i32(42),
-                    bsl::to_i32(23),
-                    bsl::to_i32(16),
-                    bsl::to_i32(8),
-                    bsl::to_i32(15),
-                    bsl::to_i32(4)};
+                bsl::array mut_data{test::ARRAY_INIT_RANDOM};
                 bsl::span mut_view{mut_data};
                 bsl::ut_when{} = [&]() noexcept {
                     bsl::sort(mut_view);
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(0)) == bsl::to_i32(4));
-                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(1)) == bsl::to_i32(8));
-                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(2)) == bsl::to_i32(15));
-                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(3)) == bsl::to_i32(16));
-                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(4)) == bsl::to_i32(23));
-                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(5)) == bsl::to_i32(42));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_idx(0)) == bsl::to_i32(4));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_idx(1)) == bsl::to_i32(8));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_idx(2)) == bsl::to_i32(15));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_idx(3)) == bsl::to_i32(16));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_idx(4)) == bsl::to_i32(23));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_idx(5)) == bsl::to_i32(42));
                     };
                 };
             };
@@ -121,23 +117,17 @@ namespace
 
         bsl::ut_scenario{"sort random descending"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
-                bsl::array mut_data{
-                    bsl::to_i32(42),
-                    bsl::to_i32(23),
-                    bsl::to_i32(16),
-                    bsl::to_i32(8),
-                    bsl::to_i32(15),
-                    bsl::to_i32(4)};
+                bsl::array mut_data{test::ARRAY_INIT_RANDOM};
                 bsl::span mut_view{mut_data};
                 bsl::ut_when{} = [&]() noexcept {
                     bsl::sort(mut_view, &reverse_sort_cmp);
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(0)) == bsl::to_i32(42));
-                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(1)) == bsl::to_i32(23));
-                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(2)) == bsl::to_i32(16));
-                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(3)) == bsl::to_i32(15));
-                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(4)) == bsl::to_i32(8));
-                        bsl::ut_check(*mut_view.at_if(bsl::to_umax(5)) == bsl::to_i32(4));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_idx(0)) == bsl::to_i32(42));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_idx(1)) == bsl::to_i32(23));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_idx(2)) == bsl::to_i32(16));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_idx(3)) == bsl::to_i32(15));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_idx(4)) == bsl::to_i32(8));
+                        bsl::ut_check(*mut_view.at_if(bsl::to_idx(5)) == bsl::to_i32(4));
                     };
                 };
             };

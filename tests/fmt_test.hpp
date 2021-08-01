@@ -25,33 +25,32 @@
 #ifndef TESTS_FMT_TEST_HPP
 #define TESTS_FMT_TEST_HPP
 
-#define BSL_DETAILS_PUTC_STDOUT_HPP
-#define BSL_DETAILS_PUTS_STDOUT_HPP
+#define REDIRECT_STDOUT
 
-#include <bsl/array.hpp>
+// NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
+#include <stdio.h>
+// NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
+#include <string.h>
+
+#include <bsl/carray.hpp>
 #include <bsl/char_type.hpp>
 #include <bsl/cstdint.hpp>
-#include <bsl/cstdio.hpp>
 #include <bsl/cstdlib.hpp>
 #include <bsl/cstr_type.hpp>
 #include <bsl/cstring.hpp>
 #include <bsl/discard.hpp>
-#include <bsl/safe_integral.hpp>
 
 namespace fmt_test
 {
-    namespace details
-    {
-        /// @brief stores the total number of chars that can be outputted
-        constexpr inline bsl::safe_uintmax FMT_TEST_BUF_SIZE{static_cast<bsl::uintmax>(10000)};
+    /// @brief stores the total number of chars that can be outputted
+    constexpr inline bsl::uintmx FMT_TEST_BUF_SIZE{static_cast<bsl::uintmx>(10000)};    // NOLINT
 
-        /// @brief stores the total number of chars that have been outputted
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
-        constinit inline bsl::safe_uintmax g_mut_fmt_test_num{};
-        /// @brief stores the chars that have been outputted
-        // NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
-        constinit inline bsl::array<bsl::char_type, FMT_TEST_BUF_SIZE.get()> g_mut_fmt_test_buf{};
-    }
+    /// @brief stores the total number of chars that have been outputted
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
+    constinit inline bsl::uintmx g_mut_fmt_test_num{};    // NOLINT
+    /// @brief stores the chars that have been outputted
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
+    constinit inline bsl::carray<bsl::char_type, FMT_TEST_BUF_SIZE> g_mut_fmt_test_buf{};
 
     /// <!-- description -->
     ///   @brief Resets the test. Normally, this is frowned upon in a unit test
@@ -62,11 +61,11 @@ namespace fmt_test
     inline void
     reset() noexcept
     {
-        for (bsl::safe_uintmax mut_i{}; mut_i < details::g_mut_fmt_test_buf.size(); ++mut_i) {
-            *details::g_mut_fmt_test_buf.at_if(mut_i) = static_cast<bsl::char_type>(0);
+        for (bsl::uintmx mut_i{}; mut_i < g_mut_fmt_test_buf.size(); ++mut_i) {    // NOLINT
+            *g_mut_fmt_test_buf.at_if(mut_i) = {};
         }
 
-        details::g_mut_fmt_test_num = static_cast<bsl::uintmax>(0);
+        g_mut_fmt_test_num = {};
     }
 
     /// <!-- description -->
@@ -81,12 +80,11 @@ namespace fmt_test
     [[nodiscard]] inline auto
     was_this_outputted(bsl::cstr_type const str) noexcept -> bool
     {
-        if (bsl::builtin_strlen(str) != details::g_mut_fmt_test_num) {
+        if (bsl::builtin_strlen(str) != g_mut_fmt_test_num) {
             return false;
         }
 
-        return 0 == __builtin_memcmp(
-                        details::g_mut_fmt_test_buf.data(), str, details::g_mut_fmt_test_num.get());
+        return 0 == __builtin_memcmp(g_mut_fmt_test_buf.data(), str, g_mut_fmt_test_num);
     }
 }
 
@@ -99,11 +97,10 @@ namespace bsl::details
     ///   @param c the character to output to stdout
     ///
     inline void
-    putc_stdout(bsl::char_type const c) noexcept
+    redirected_put_char(bsl::char_type const c) noexcept
     {
-        auto const i{fmt_test::details::g_mut_fmt_test_num};
-        if (auto *const pmut_ptr{
-                fmt_test::details::g_mut_fmt_test_buf.at_if(i)}) {    // GRCOV_EXCLUDE_BR
+        bsl::uintmx const i{fmt_test::g_mut_fmt_test_num};                    // NOLINT
+        if (auto *const pmut_ptr{fmt_test::g_mut_fmt_test_buf.at_if(i)}) {    // GRCOV_EXCLUDE_BR
             *pmut_ptr = c;
         }
         else {
@@ -113,7 +110,7 @@ namespace bsl::details
             exit(1);                                                // GRCOV_EXCLUDE
         }
 
-        ++fmt_test::details::g_mut_fmt_test_num;
+        ++fmt_test::g_mut_fmt_test_num;
     }
 
     /// <!-- description -->
@@ -123,11 +120,52 @@ namespace bsl::details
     ///   @param str the string to output to stdout
     ///
     inline void
-    puts_stdout(bsl::cstr_type const str) noexcept
+    redirected_put_cstr(bsl::cstr_type const str) noexcept
     {
-        for (bsl::safe_uintmax mut_i{}; mut_i < bsl::builtin_strlen(str); ++mut_i) {
-            putc_stdout(str[mut_i.get()]);
+        for (bsl::uintmx mut_i{}; mut_i < strlen(str); ++mut_i) {    // NOLINT
+            redirected_put_char(str[mut_i]);
         }
+    }
+}
+
+#include <bsl/debug.hpp>
+
+namespace fmt_test
+{
+    /// <!-- description -->
+    ///   @brief Outputs to all of the out<T> types. This is needed to ensure
+    ///     complete coverage of all functions.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of thing to output
+    ///   @param mut_val the thing to output
+    ///
+    template<typename T>
+    constexpr void
+    output_to_all(T &&mut_val) noexcept    // NOLINT
+    {
+        bsl::print() << mut_val;
+        bsl::debug() << mut_val;
+        bsl::alert() << mut_val;
+        bsl::error() << mut_val;
+    }
+
+    /// <!-- description -->
+    ///   @brief Outputs to all of the out<T> types. This is needed to ensure
+    ///     complete coverage of all functions.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T the type of thing to output
+    ///   @param mut_val the thing to output
+    ///
+    template<typename T>
+    constexpr void
+    output_to_all(bsl::fmt_options const &ops, T &&mut_val) noexcept    // NOLINT
+    {
+        bsl::print() << bsl::fmt{ops, mut_val};
+        bsl::debug() << bsl::fmt{ops, mut_val};
+        bsl::alert() << bsl::fmt{ops, mut_val};
+        bsl::error() << bsl::fmt{ops, mut_val};
     }
 }
 

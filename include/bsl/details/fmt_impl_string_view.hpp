@@ -50,6 +50,13 @@ namespace bsl
     constexpr void
     fmt_impl(out<T> const o, fmt_options const &ops, basic_string_view<CHAR_T> const &str) noexcept
     {
+        if (unlikely(str.empty())) {
+            details::fmt_impl_align_pre(o, ops, {}, true);
+            o.write_to_console("[empty bsl::string_view]");
+            details::fmt_impl_align_suf(o, ops, {}, true);
+            return;
+        }
+
         details::fmt_impl_align_pre(o, ops, str.length(), true);
         o.write_to_console(str.data());
         details::fmt_impl_align_suf(o, ops, str.length(), true);
@@ -73,18 +80,14 @@ namespace bsl
     operator<<(out<T> const o, basic_string_view<CHAR_T> const &str) noexcept -> out<T>
     {
         if (is_constant_evaluated()) {
-            if (unlikely(!str)) {
-                return o;
-            }
-
             return o;
         }
 
-        if constexpr (!o) {
+        if constexpr (o.empty()) {
             return o;
         }
 
-        if (unlikely(!str)) {
+        if (unlikely(str.empty())) {
             o.write_to_console("[empty bsl::string_view]");
             return o;
         }

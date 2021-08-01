@@ -78,8 +78,8 @@ namespace bsl::details
             -> decltype(((*bsl::forward<T1>(pudm_udm_val1)).*pudm_udm_func)(
                 bsl::forward<TN>(pudm_udm_valn)...))
         {
-            return ((*bsl::forward<T1>(pudm_udm_val1)).*pudm_udm_func)(
-                bsl::forward<TN>(pudm_udm_valn)...);
+            return ((*bsl::forward<T1>(pudm_udm_val1)).*pudm_udm_func)(    // GRCOV_EXCLUDE_BR
+                bsl::forward<TN>(pudm_udm_valn)...);                       // GRCOV_EXCLUDE_BR
         }
 
     protected:

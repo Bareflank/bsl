@@ -35,9 +35,26 @@ namespace bsl
     example_span_empty() noexcept
     {
         constexpr bsl::array arr{true, false};
-        bsl::span const spn{arr.data(), arr.size()};
 
-        if (!spn.empty()) {
+        bsl::span<bool> const spn1{};
+        bsl::span const spn2{arr.data(), bsl::safe_umx::magic_0()};
+        bsl::span const spn3{arr.data(), arr.size()};
+
+        if (spn1.empty()) {
+            bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
+        }
+
+        if (spn2.empty()) {
+            bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
+        }
+
+        if (!spn3.empty()) {
             bsl::print() << "success\n";
         }
         else {

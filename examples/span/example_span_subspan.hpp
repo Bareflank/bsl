@@ -35,8 +35,8 @@ namespace bsl
     inline void
     example_span_subspan() noexcept
     {
-        constexpr auto i{1_umax};
-        constexpr auto n{1_umax};
+        constexpr auto i{1_idx};
+        constexpr auto n{1_umx};
 
         constexpr bsl::array arr{true, false};
         bsl::span const spn{arr.data(), arr.size()};

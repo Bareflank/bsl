@@ -36,7 +36,7 @@ namespace bsl
     {
         constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
 
-        if (auto const *const ptr{str.at_if(0_umax)}) {
+        if (auto const *const ptr{str.at_if(0_idx)}) {
             bsl::print() << "success: " << *ptr << bsl::endl;
         }
         else {

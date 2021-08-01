@@ -28,7 +28,9 @@
 #ifndef BSL_CONTIGUOUS_ITERATOR_HPP
 #define BSL_CONTIGUOUS_ITERATOR_HPP
 
-#include "contiguous_iterator_element.hpp"
+#include "ensures.hpp"
+#include "expects.hpp"
+#include "safe_idx.hpp"
 #include "safe_integral.hpp"
 #include "touch.hpp"
 #include "unlikely.hpp"
@@ -71,21 +73,15 @@ namespace bsl
     template<typename T>
     class contiguous_iterator final
     {
-        /// <!-- description -->
-        ///   @brief Default constructor that creates a contiguous iterator
-        ///     with get_if() == nullptr.
-        ///
-        constexpr contiguous_iterator() noexcept    // --
-            : m_ptr{}, m_count{}, m_i{}
-        {}
-
     public:
         /// @brief alias for: T
         using value_type = T;
-        /// @brief alias for: safe_uintmax
-        using size_type = safe_uintmax;
-        /// @brief alias for: safe_uintmax
-        using difference_type = safe_uintmax;
+        /// @brief alias for: safe_umx
+        using size_type = safe_umx;
+        /// @brief alias for: safe_umx
+        using difference_type = safe_umx;
+        /// @brief alias for: safe_idx
+        using index_type = safe_idx;
         /// @brief alias for: T &
         using reference_type = T &;
         /// @brief alias for: T const &
@@ -102,39 +98,25 @@ namespace bsl
         ///     container's begin() function.
         ///
         /// <!-- inputs/outputs -->
-        ///   @param pudm_cst_ptr a pointer to the array being iterated
+        ///   @param pudm_ptr a pointer to the array being iterated
         ///   @param count the number of elements in the array being iterated
         ///   @param i the initial index of the iterator
         ///
-        constexpr contiguous_iterator(          // --
-            pointer_type const pudm_cst_ptr,    // --
-            size_type const &count,             // --
-            size_type const &i) noexcept
-            : m_ptr{pudm_cst_ptr}, m_count{count}, m_i{i}
+        constexpr contiguous_iterator(      // --
+            pointer_type const pudm_ptr,    // --
+            size_type const &count,         // --
+            index_type const &i) noexcept
+            : m_ptr{pudm_ptr}, m_count{count}, m_i{i}
         {
-            if (unlikely(nullptr == m_ptr)) {
-                *this = contiguous_iterator{};
+            if (unlikely(nullptr == pudm_ptr)) {
+                m_count = {};
+                m_i = {};
                 return;
             }
 
-            if (unlikely(!count)) {
-                unlikely_invalid_argument_failure();
-                *this = contiguous_iterator{};
-                return;
-            }
-
-            if (unlikely(!i)) {
-                unlikely_invalid_argument_failure();
-                m_i = count;
-                return;
-            }
-
-            if (unlikely(i > count)) {
-                m_i = count;
-                return;
-            }
-
-            bsl::touch();
+            expects(count.is_valid_and_checked());
+            expects(i.is_valid());
+            expects(i <= count);
         }
 
         /// <!-- description -->
@@ -214,6 +196,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         size() const noexcept -> size_type const &
         {
+            ensures(m_count.is_valid_and_checked());
             return m_count;
         }
 
@@ -226,8 +209,13 @@ namespace bsl
         ///   @return Returns the iterator's current index
         ///
         [[nodiscard]] constexpr auto
-        index() const noexcept -> size_type const &
+        // NOLINTNEXTLINE(bsl-using-ident-unique-namespace)
+        index() const noexcept -> index_type const &
         {
+            ensures(m_i.is_valid());
+            ensures(m_i <= m_count);
+            ensures(m_i >= index_type::magic_0());
+
             return m_i;
         }
 
@@ -245,15 +233,29 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief Returns !is_end()
-        ///   @include contiguous_iterator/example_contiguous_iterator_operator_bool.hpp
+        ///   @brief Returns data() == nullptr;
+        ///   @include contiguous_iterator/example_contiguous_iterator_is_invalid.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Returns !is_end()
+        ///   @return Returns data() == nullptr;
         ///
-        [[nodiscard]] explicit constexpr operator bool() const noexcept
+        [[nodiscard]] constexpr auto
+        is_invalid() const noexcept -> bool
         {
-            return !this->is_end();
+            return this->data() == nullptr;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns data() != nullptr
+        ///   @include contiguous_iterator/example_contiguous_iterator_is_valid.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns data() != nullptr
+        ///
+        [[nodiscard]] constexpr auto
+        is_valid() const noexcept -> bool
+        {
+            return this->data() != nullptr;
         }
 
         /// <!-- description -->
@@ -287,7 +289,7 @@ namespace bsl
                 return nullptr;
             }
 
-            if (unlikely(m_i == m_count)) {
+            if (unlikely(m_i >= m_count)) {
                 return nullptr;
             }
 
@@ -312,7 +314,7 @@ namespace bsl
                 return nullptr;
             }
 
-            if (unlikely(m_i == m_count)) {
+            if (unlikely(m_i >= m_count)) {
                 return nullptr;
             }
 
@@ -320,29 +322,29 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief Returns contiguous_iterator_element<value_type>{data(), index()};
+        ///   @brief Returns *this
         ///   @include contiguous_iterator/example_contiguous_iterator_operator_star.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Returns contiguous_iterator_element<value_type>{data(), index()};
+        ///   @return Returns *this
         ///
         [[nodiscard]] constexpr auto
-        operator*() noexcept -> contiguous_iterator_element<value_type>
+        operator*() noexcept -> value_type &
         {
-            return {this->get_if(), this->index()};
+            return m_ptr[m_i.get()];
         }
 
         /// <!-- description -->
-        ///   @brief Returns contiguous_iterator_element<value_type>{data(), index()};
+        ///   @brief Returns *this
         ///   @include contiguous_iterator/example_contiguous_iterator_operator_star.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Returns contiguous_iterator_element<value_type>{data(), index()};
+        ///   @return Returns *this
         ///
         [[nodiscard]] constexpr auto
-        operator*() const noexcept -> contiguous_iterator_element<value_type const>
+        operator*() const noexcept -> value_type const &
         {
-            return {this->get_if(), this->index()};
+            return m_ptr[m_i.get()];
         }
 
         /// <!-- description -->
@@ -355,15 +357,14 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         operator++() noexcept -> contiguous_iterator &
         {
-            if (unlikely(nullptr == m_ptr)) {
-                return *this;
-            }
-
-            if (unlikely(m_count == m_i)) {
+            if (unlikely(m_i >= m_count)) {
                 return *this;
             }
 
             ++m_i;
+
+            ensures(m_i.is_valid());
+            ensures(m_i <= m_count);
             return *this;
         }
 
@@ -377,15 +378,14 @@ namespace bsl
         [[maybe_unused]] constexpr auto
         operator--() noexcept -> contiguous_iterator &
         {
-            if (unlikely(nullptr == m_ptr)) {
-                return *this;
-            }
-
             if (unlikely(m_i.is_zero())) {
                 return *this;
             }
 
             --m_i;
+
+            ensures(m_i.is_valid());
+            ensures(m_i >= index_type::magic_0());
             return *this;
         }
 
@@ -395,7 +395,7 @@ namespace bsl
         /// @brief stores the number of elements in the array being iterated
         size_type m_count;
         /// @brief stores the current index in the array being iterated
-        size_type m_i;
+        index_type m_i;
     };
 
     /// <!-- description -->
@@ -416,18 +416,7 @@ namespace bsl
     operator==(contiguous_iterator<T> const &lhs, contiguous_iterator<T> const &rhs) noexcept
         -> bool
     {
-        if (lhs.data() == rhs.data()) {
-            if (lhs.index() == rhs.index()) {
-                return true;
-            }
-
-            bsl::touch();
-        }
-        else {
-            bsl::touch();
-        }
-
-        return false;
+        return lhs.index() == rhs.index();
     }
 
     /// <!-- description -->

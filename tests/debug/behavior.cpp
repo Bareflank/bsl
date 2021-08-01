@@ -160,6 +160,19 @@ namespace
             };
         };
 
+        bsl::ut_scenario{"details checks"} = []() noexcept {
+            bsl::ut_given_at_runtime{} = []() noexcept {
+                bsl::ut_then{} = []() noexcept {
+                    bsl::details::put_char('*');
+                    bsl::details::put_cstr("42");
+                    bsl::details::put_line(0);     // NOLINT
+                    bsl::details::put_line(42);    //NOLINT
+                    bsl::details::put_line(
+                        static_cast<bsl::details::line_type>(0xFFFFFFFFFFFFFFFF));
+                };
+            };
+        };
+
         return bsl::ut_success();
     }
 }

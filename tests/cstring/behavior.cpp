@@ -22,7 +22,9 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/array.hpp>
+#include "../carray_init.hpp"
+
+#include <bsl/carray.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/cstring.hpp>
 #include <bsl/ut.hpp>
@@ -41,170 +43,55 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"builtin_strncmp"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::cstr_type const msg1{"Hello World"};
-                bsl::cstr_type const msg2{"Hello World"};
-                bsl::cstr_type const msg3{"Hello World with more stuff"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!bsl::builtin_strncmp(nullptr, msg2, bsl::builtin_strlen(msg1)));
-                    bsl::ut_check(!bsl::builtin_strncmp(msg1, nullptr, bsl::builtin_strlen(msg1)));
-                    bsl::ut_check(!bsl::builtin_strncmp(msg1, msg2, bsl::safe_uintmax::failure()));
-                    bsl::ut_check(!bsl::builtin_strncmp(msg1, msg3, bsl::npos));
-                    bsl::ut_check(!bsl::builtin_strncmp(msg3, msg1, bsl::npos));
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::cstr_type const msg1{"Hello"};
-                bsl::cstr_type const msg2{"Hello World"};
-                bsl::cstr_type const msg3{"Hello World"};
-                bsl::cstr_type const msg4{"Hello Plant"};
-                bsl::cstr_type const msg5{"Something Else"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(bsl::builtin_strncmp(msg1, msg2, bsl::builtin_strlen(msg1)) == 0);
-                    bsl::ut_check(bsl::builtin_strncmp(msg2, msg3, bsl::builtin_strlen(msg2)) == 0);
-                    bsl::ut_check(bsl::builtin_strncmp(msg3, msg4, bsl::builtin_strlen(msg3)) != 0);
-                    bsl::ut_check(bsl::builtin_strncmp(msg4, msg5, bsl::builtin_strlen(msg4)) != 0);
-                    bsl::ut_check(bsl::builtin_strncmp(msg1, msg5, bsl::builtin_strlen(msg1)) != 0);
-                };
-            };
-        };
-
         bsl::ut_scenario{"builtin_strlen"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::cstr_type const msg1{};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!bsl::builtin_strlen(nullptr));
-                    bsl::ut_check(!bsl::builtin_strlen(msg1));
-                };
-            };
-
             bsl::ut_given{} = []() noexcept {
                 bsl::cstr_type const msg1{""};
                 bsl::cstr_type const msg2{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(bsl::builtin_strlen(msg1) == bsl::to_umax(0));
-                    bsl::ut_check(bsl::builtin_strlen(msg2) == bsl::to_umax(5));
+                    bsl::ut_check(bsl::builtin_strlen(msg1) == bsl::to_umx(0));
+                    bsl::ut_check(bsl::builtin_strlen(msg2) == bsl::to_umx(5));
                 };
             };
         };
 
         bsl::ut_scenario{"builtin_memset"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::array mut_arr{true, true, true, true, true};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(
-                        bsl::builtin_memset<bool>(nullptr, '\0', mut_arr.size()) == nullptr);
-                    bsl::ut_check(
-                        bsl::builtin_memset(mut_arr.data(), '\0', bsl::safe_uintmax::failure()) ==
-                        nullptr);
-                    bsl::ut_check(
-                        bsl::builtin_memset(mut_arr.data(), '\0', 0_umax) == mut_arr.data());
-                    for (auto const elem : mut_arr) {
-                        bsl::ut_check(*elem.data);
-                    }
-                    bsl::ut_check(
-                        bsl::builtin_memset(mut_arr.data(), '\0', mut_arr.size()) ==
-                        mut_arr.data());
-                    for (auto const elem : mut_arr) {
-                        bsl::ut_check(!*elem.data);
-                    }
-                };
-            };
-
             bsl::ut_given{} = []() noexcept {
-                bsl::array mut_arr{true, true, true, true, true};
+                bsl::carray mut_arr{test::CARRAY_INIT_INT_42};
+                auto *const pmut_data{mut_arr.data()};
+                auto const size{bsl::to_umx(mut_arr.size_bytes())};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(
-                        bsl::builtin_memset(mut_arr.data(), '\0', 0_umax) == mut_arr.data());
-                    for (auto const elem : mut_arr) {
-                        bsl::ut_check(*elem.data);
+                    bsl::ut_check(bsl::builtin_memset(pmut_data, '\0', 0_umx) == pmut_data);
+                    for (bsl::safe_idx mut_i{}; mut_i < mut_arr.size(); ++mut_i) {
+                        bsl::ut_check(42 == *mut_arr.at_if(mut_i.get()));
                     }
-                    bsl::ut_check(
-                        bsl::builtin_memset(mut_arr.data(), '\0', mut_arr.size()) ==
-                        mut_arr.data());
-                    for (auto const elem : mut_arr) {
-                        bsl::ut_check(!*elem.data);
+
+                    bsl::ut_check(bsl::builtin_memset(pmut_data, '\0', size) == pmut_data);
+                    for (bsl::safe_idx mut_i{}; mut_i < mut_arr.size(); ++mut_i) {
+                        bsl::ut_check(0 == *mut_arr.at_if(mut_i.get()));
                     }
                 };
             };
-
-            /// NOTE:
-            /// - These should not compile as they are not allowed.
-            ///
-
-            // bsl::ut_given{} = []() noexcept {
-            //     bsl::array mut_arr{42, 42, 42, 42, 42};
-            //     bsl::ut_then{} = [&]() noexcept {
-            //         bsl::ut_check(bsl::builtin_memset(mut_arr.data(), '*', mut_arr.size()) == nullptr);
-            //         bsl::ut_check(bsl::builtin_memset(mut_arr.data(), '\0', 1_umax) == nullptr);
-            //         bsl::ut_check(bsl::builtin_memset(mut_arr.data(), '\0', 128_umax) == mut_arr.data());
-            //     };
-            // };
         };
 
         bsl::ut_scenario{"builtin_memcpy"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::array mut_arr1{true, true, true, true, true};
-                bsl::array mut_arr2{false, false, false, false, false};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(
-                        bsl::builtin_memcpy<bool>(nullptr, mut_arr2.data(), mut_arr1.size()) ==
-                        nullptr);
-                    bsl::ut_check(
-                        bsl::builtin_memcpy<bool>(mut_arr1.data(), nullptr, mut_arr1.size()) ==
-                        nullptr);
-                    bsl::ut_check(
-                        bsl::builtin_memcpy(
-                            mut_arr1.data(), mut_arr2.data(), bsl::safe_uintmax::failure()) ==
-                        nullptr);
-                    bsl::ut_check(
-                        bsl::builtin_memcpy(mut_arr1.data(), mut_arr2.data(), 0_umax) ==
-                        mut_arr1.data());
-                    for (auto const elem : mut_arr1) {
-                        bsl::ut_check(*elem.data);
-                    }
-                    bsl::ut_check(
-                        bsl::builtin_memcpy(mut_arr1.data(), mut_arr2.data(), mut_arr1.size()) ==
-                        mut_arr1.data());
-                    for (auto const elem : mut_arr1) {
-                        bsl::ut_check(!*elem.data);
-                    }
-                };
-            };
-
             bsl::ut_given{} = []() noexcept {
-                bsl::array mut_arr1{true, true, true, true, true};
-                bsl::array mut_arr2{false, false, false, false, false};
+                bsl::carray mut_arr1{test::CARRAY_INIT_INT_23};
+                bsl::carray mut_arr2{test::CARRAY_INIT_INT_42};
+                auto *const pmut_data1{mut_arr1.data()};
+                auto const size1{bsl::to_umx(mut_arr1.size_bytes())};
+                auto const *const data2{mut_arr2.data()};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(
-                        bsl::builtin_memcpy(mut_arr1.data(), mut_arr2.data(), 0_umax) ==
-                        mut_arr1.data());
-                    for (auto const elem : mut_arr1) {
-                        bsl::ut_check(*elem.data);
+                    bsl::ut_check(bsl::builtin_memcpy(pmut_data1, data2, 0_umx) == pmut_data1);
+                    for (bsl::safe_idx mut_i{}; mut_i < mut_arr1.size(); ++mut_i) {
+                        bsl::ut_check(23 == *mut_arr1.at_if(mut_i.get()));
                     }
-                    bsl::ut_check(
-                        bsl::builtin_memcpy(mut_arr1.data(), mut_arr2.data(), mut_arr1.size()) ==
-                        mut_arr1.data());
-                    for (auto const elem : mut_arr1) {
-                        bsl::ut_check(!*elem.data);
+
+                    bsl::ut_check(bsl::builtin_memcpy(pmut_data1, data2, size1) == pmut_data1);
+                    for (bsl::safe_idx mut_i{}; mut_i < mut_arr1.size(); ++mut_i) {
+                        bsl::ut_check(42 == *mut_arr1.at_if(mut_i.get()));
                     }
                 };
             };
-
-            /// NOTE:
-            /// - These should not compile as they are not allowed.
-            ///
-
-            // bsl::ut_given{} = []() noexcept {
-            //     bsl::array mut_arr1{42, 42, 42, 42, 42};
-            //     bsl::array mut_arr2{0, 0, 0, 0, 0};
-            //     bsl::ut_then{} = [&]() noexcept {
-            //         bsl::ut_check(bsl::builtin_memcpy(mut_arr1.data(), mut_arr2.data(), 1_umax) == nullptr);
-            //         bsl::ut_check(bsl::builtin_memcpy(mut_arr1.data(), mut_arr2.data(), 128_umax) == mut_arr1.data());
-            //     };
-            // };
         };
 
         return bsl::ut_success();

@@ -20,7 +20,7 @@ jobs:
         utils/linux/doxygen .doxygen
       shell: bash
 
-  Clang_Format:
+  Format:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
@@ -186,7 +186,7 @@ jobs:
     - name: Gather Codecov Info
       run: |
         mkdir build && cd build
-        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=CODECOV -DBUILD_TESTS=ON -DENABLE_BRANCH=off ../bsl
+        cmake -GNinja -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE=CODECOV -DBUILD_TESTS=ON ../bsl
         ninja
       shell: bash
     - name: Upload Codecov Info
@@ -194,3 +194,5 @@ jobs:
         cd build
         ninja codecov-upload-ci
       shell: bash
+
+# curl https://sh.rustup.rs -sSf | sh -s -- -y

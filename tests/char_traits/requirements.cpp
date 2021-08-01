@@ -42,13 +42,12 @@ main() noexcept -> bsl::exit_code
     bsl::ut_scenario{"verify noexcept"} = []() noexcept {
         static_assert(noexcept(traits::eq('H', 'H')));
         static_assert(noexcept(traits::lt('H', 'H')));
-        static_assert(noexcept(traits::compare(nullptr, nullptr, bsl::to_umax(0))));
         static_assert(noexcept(traits::length(nullptr)));
-        static_assert(noexcept(traits::to_char_type(bsl::to_imax(0).get())));
+        static_assert(noexcept(traits::to_char_type(bsl::to_i32(0).get())));
         static_assert(noexcept(traits::to_int_type(' ')));
-        static_assert(noexcept(traits::eq_int_type(bsl::to_imax(0).get(), bsl::to_imax(0).get())));
+        static_assert(noexcept(traits::eq_int_type(bsl::to_i32(0).get(), bsl::to_i32(0).get())));
         static_assert(noexcept(traits::eof()));
-        static_assert(noexcept(traits::not_eof(bsl::to_imax(0).get())));
+        static_assert(noexcept(traits::not_eof(bsl::to_i32(0).get())));
     };
 
     return bsl::ut_success();

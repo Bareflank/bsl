@@ -36,6 +36,7 @@ namespace bsl
     ///     coverage proves that all possible branches are taken. The best
     ///     examples of this is when you have an if statement, that terminates
     ///     without a line of code following.
+    ///   @include example_touch_overview.hpp
     ///
     ///     For example:
     ///     @code

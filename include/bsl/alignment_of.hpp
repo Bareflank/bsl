@@ -46,7 +46,7 @@ namespace bsl
     struct alignment_of final
     {
         /// @brief the alignment of T
-        static constexpr bsl::uintmax value{alignof(T)};
+        static constexpr bsl::uintmx value{alignof(T)};
     };
 }
 

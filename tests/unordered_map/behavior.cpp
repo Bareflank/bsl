@@ -77,12 +77,12 @@ namespace
 
                     mut_map.at(true) = true;
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(bsl::as_const(mut_map).size() == 1_umax);
+                        bsl::ut_check(bsl::as_const(mut_map).size() == 1_umx);
                     };
 
                     mut_map.at(false) = true;
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(bsl::as_const(mut_map).size() == 2_umax);
+                        bsl::ut_check(bsl::as_const(mut_map).size() == 2_umx);
                     };
 
                     mut_map.clear();

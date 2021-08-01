@@ -20,11 +20,16 @@
 # SOFTWARE.
 
 bf_add_test_internal(behavior)
+bf_add_test_internal(behavior_align)
+bf_add_test_internal(behavior_alternate_form)
 bf_add_test_internal(behavior_bool)
 bf_add_test_internal(behavior_char_type)
 bf_add_test_internal(behavior_cstr_type)
 bf_add_test_internal(behavior_errc_type)
 bf_add_test_internal(behavior_integral)
 bf_add_test_internal(behavior_null_pointer)
+bf_add_test_internal(behavior_sign_aware)
+bf_add_test_internal(behavior_sign)
+bf_add_test_internal(behavior_type)
 bf_add_test_internal(behavior_void_pointer)
 bf_add_test_internal(requirements)

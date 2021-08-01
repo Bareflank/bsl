@@ -77,13 +77,10 @@ namespace bsl
     constexpr void
     sort(T &udm_container, COMPARE &&pudm_udm_cmp) noexcept
     {
-        constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-        constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-
-        for (safe_uintmax mut_i{one}; mut_i < udm_container.size(); ++mut_i) {
-            for (safe_uintmax mut_j{mut_i}; mut_j > zero; --mut_j) {
+        for (safe_idx mut_i{safe_idx::magic_1()}; mut_i < udm_container.size(); ++mut_i) {
+            for (safe_idx mut_j{mut_i}; mut_j > safe_idx::magic_0(); --mut_j) {
                 auto &mut_elem1{*udm_container.at_if(mut_j)};
-                auto &mut_elem2{*udm_container.at_if(mut_j - one)};
+                auto &mut_elem2{*udm_container.at_if(mut_j - safe_idx::magic_1())};
 
                 if (!pudm_udm_cmp(mut_elem1, mut_elem2)) {
                     break;

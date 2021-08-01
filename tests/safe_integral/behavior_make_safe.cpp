@@ -66,27 +66,25 @@ namespace bsl
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    static_assert(bsl::tests_make_safe<bsl::uint8>() == bsl::ut_success());
-    static_assert(bsl::tests_make_safe<bsl::uint16>() == bsl::ut_success());
-    static_assert(bsl::tests_make_safe<bsl::uint32>() == bsl::ut_success());
-    static_assert(bsl::tests_make_safe<bsl::uint64>() == bsl::ut_success());
-    static_assert(bsl::tests_make_safe<bsl::uintmax>() == bsl::ut_success());
     static_assert(bsl::tests_make_safe<bsl::int8>() == bsl::ut_success());
     static_assert(bsl::tests_make_safe<bsl::int16>() == bsl::ut_success());
     static_assert(bsl::tests_make_safe<bsl::int32>() == bsl::ut_success());
     static_assert(bsl::tests_make_safe<bsl::int64>() == bsl::ut_success());
-    static_assert(bsl::tests_make_safe<bsl::intmax>() == bsl::ut_success());
+    static_assert(bsl::tests_make_safe<bsl::uint8>() == bsl::ut_success());
+    static_assert(bsl::tests_make_safe<bsl::uint16>() == bsl::ut_success());
+    static_assert(bsl::tests_make_safe<bsl::uint32>() == bsl::ut_success());
+    static_assert(bsl::tests_make_safe<bsl::uint64>() == bsl::ut_success());
+    static_assert(bsl::tests_make_safe<bsl::uintmx>() == bsl::ut_success());
 
-    bsl::discard(bsl::tests_make_safe<bsl::uint8>());
-    bsl::discard(bsl::tests_make_safe<bsl::uint16>());
-    bsl::discard(bsl::tests_make_safe<bsl::uint32>());
-    bsl::discard(bsl::tests_make_safe<bsl::uint64>());
-    bsl::discard(bsl::tests_make_safe<bsl::uintmax>());
     bsl::discard(bsl::tests_make_safe<bsl::int8>());
     bsl::discard(bsl::tests_make_safe<bsl::int16>());
     bsl::discard(bsl::tests_make_safe<bsl::int32>());
     bsl::discard(bsl::tests_make_safe<bsl::int64>());
-    bsl::discard(bsl::tests_make_safe<bsl::intmax>());
+    bsl::discard(bsl::tests_make_safe<bsl::uint8>());
+    bsl::discard(bsl::tests_make_safe<bsl::uint16>());
+    bsl::discard(bsl::tests_make_safe<bsl::uint32>());
+    bsl::discard(bsl::tests_make_safe<bsl::uint64>());
+    bsl::discard(bsl::tests_make_safe<bsl::uintmx>());
 
     return bsl::ut_success();
 }

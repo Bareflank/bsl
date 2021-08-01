@@ -33,11 +33,11 @@ namespace bsl
     inline void
     example_safe_integral_is_neg() noexcept
     {
-        constexpr auto val1{-42_i32};
+        constexpr auto val1{42_i32};
         constexpr auto val2{0_i32};
-        constexpr auto val3{42_i32};
+        constexpr auto val3{-42_i32};
 
-        if constexpr (val1.is_neg()) {
+        if constexpr (!val1.is_neg()) {
             bsl::print() << "success\n";
         }
         else {
@@ -51,7 +51,7 @@ namespace bsl
             bsl::error() << "failure\n";
         }
 
-        if constexpr (!val3.is_neg()) {
+        if constexpr (val3.is_neg()) {
             bsl::print() << "success\n";
         }
         else {

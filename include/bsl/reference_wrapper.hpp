@@ -214,7 +214,7 @@ namespace bsl
             return o;
         }
 
-        if constexpr (!o) {
+        if constexpr (o.empty()) {
             return o;
         }
 

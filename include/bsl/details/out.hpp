@@ -37,11 +37,8 @@
 #include "out_type_empty.hpp"
 #include "out_type_error.hpp"
 #include "out_type_print.hpp"
-
-#include <bsl/details/putc_stderr.hpp>
-#include <bsl/details/putc_stdout.hpp>
-#include <bsl/details/puts_stderr.hpp>
-#include <bsl/details/puts_stdout.hpp>
+#include "put_char.hpp"
+#include "put_cstr.hpp"
 
 namespace bsl
 {
@@ -138,17 +135,6 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief Returns !empty()
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return Returns !empty()
-        ///
-        [[nodiscard]] explicit constexpr operator bool() const noexcept
-        {
-            return !is_same<T, details::out_type_empty>::value;
-        }
-
-        /// <!-- description -->
         ///   @brief Returns true if this bsl::out functions as a print()
         ///     which outputs to stdout and does not contain a label.
         ///
@@ -219,19 +205,19 @@ namespace bsl
             }
 
             if constexpr (is_print()) {
-                details::putc_stdout(c);
+                details::put_char(c);
             }
 
             if constexpr (is_debug()) {
-                details::putc_stdout(c);
+                details::put_char(c);
             }
 
             if constexpr (is_alert()) {
-                details::putc_stderr(c);
+                details::put_char(c);
             }
 
             if constexpr (is_error()) {
-                details::putc_stderr(c);
+                details::put_char(c);
             }
         }
 
@@ -251,19 +237,19 @@ namespace bsl
             }
 
             if constexpr (is_print()) {
-                details::puts_stdout(str);
+                details::put_cstr(str);
             }
 
             if constexpr (is_debug()) {
-                details::puts_stdout(str);
+                details::put_cstr(str);
             }
 
             if constexpr (is_alert()) {
-                details::puts_stderr(str);
+                details::put_cstr(str);
             }
 
             if constexpr (is_error()) {
-                details::puts_stderr(str);
+                details::put_cstr(str);
             }
         }
     };

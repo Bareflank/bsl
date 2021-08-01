@@ -34,8 +34,8 @@ namespace bsl
     inline void
     example_char_traits_eq_int_type() noexcept
     {
-        constexpr auto val1{42_imax};
-        constexpr auto val2{42_imax};
+        constexpr auto val1{42_i32};
+        constexpr auto val2{42_i32};
 
         if constexpr (bsl::char_traits<bsl::char_type>::eq_int_type(val1.get(), val2.get())) {
             bsl::print() << "success\n";

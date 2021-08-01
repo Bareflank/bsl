@@ -33,9 +33,25 @@ namespace bsl
     inline void
     example_basic_string_view_empty() noexcept
     {
-        constexpr bsl::basic_string_view<bsl::char_type> str{"Hello"};
+        constexpr bsl::basic_string_view<bsl::char_type> str1{};
+        constexpr bsl::basic_string_view<bsl::char_type> str2{""};
+        constexpr bsl::basic_string_view<bsl::char_type> str3{"Hello"};
 
-        if constexpr (!str.empty()) {
+        if constexpr (str1.empty()) {
+            bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
+        }
+
+        if constexpr (str2.empty()) {
+            bsl::print() << "success\n";
+        }
+        else {
+            bsl::error() << "failure\n";
+        }
+
+        if constexpr (!str3.empty()) {
             bsl::print() << "success\n";
         }
         else {

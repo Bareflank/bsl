@@ -54,13 +54,6 @@ namespace
                     bsl::ut_check(42 == errc.get());
                 };
             };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::basic_errc_type<> const errc{bsl::to_i32(42)};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(42 == errc.get());
-                };
-            };
         };
 
         bsl::ut_scenario{"operator bool"} = []() noexcept {

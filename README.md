@@ -1,12 +1,9 @@
 ![Bareflank](https://github.com/Bareflank/bsl/raw/master/.github/images/bsl_logo.png)
 
 ## **Description**
-The Bareflank Support Library (BSL) is a C++20, "constexpr everything", AUTOSAR and C++ Core Guideline compliant header-only library intended to support the development of critical systems applications using the Clang/LLVM compiler. Although the BSL does not adhere to the C++ Standard Library specification, it attempts to where possible, to ensure most of the APIs are as familiar as possible. Since a number of critical systems applications do not support dynamic memory or C++ exceptions, the BSL uses neither, but is capable of supporting both if desired.
+The Bareflank Support Library (BSL) is a Rust 2018 and C++20, "constexpr everything", AUTOSAR compliant header-only library intended to support the development of critical systems applications. Although the BSL does not adhere to the Rust and C++ Standard Library specifications, it attempts to where possible, to ensure most of the APIs are as familiar as possible. Since a number of critical systems applications do not support dynamic memory or exceptions, the BSL uses neither, but is capable of supporting both if desired. Since AUTOSAR only support C++, the Rust code was written with the same AUTOSAR rules where applicable.
 
-To ensure compliance with AUTOSAR and the C++ Core Guidelines, the development of the BSL makes heavy use of our own, custom version of [Clang Tidy](https://github.com/Bareflank/llvm-project). It should be noted that our implementation of Clang Tidy used to verify compliance with the AUTOSAR and C++ Core Guideline specifications is more restrictive than required and as such, you may find some of the rules implemented by our version of Clang Tidy more restrictive than is needed for your application. Furthermore, some of the rules in AUTOSAR and the C++ Core Guidelines are OBE due to the lack of dynamic memory, exceptions, and the required use of classes like bsl::safe_integral, which prevent implicit conversions, overflows, underflows, wrapping errors and ensure certain operations are not possible (like using the shift operators on signed integers). Other rules like the use of auto and braced initialization are also OBE thanks to C++17.
-
-With respect to testing, the BSL provides full
-[MC/DC](https://en.wikipedia.org/wiki/Modified_condition/decision_coverage) unit testing with 100% code coverage. To simplify this task, the BSL is written without the use of the binary operators "&&" and "||". In addition, all if statements follow a strict "if", "else if", "else" policy designed to ensure simple line coverage tools can be used to prove all possible branches are taken during testing. Futhermore, the entire BSL is written as a "constexpr", meaning APIs are unit tested both at compile-time and run-time. This allows us to ensure that the compiler's rules for constexpr and undefined behavior are leveraged to prove the BSL does not invoke UB at runtime. Unit tests are still executed at runtime after compilation so that we can use code coverage tools like CodeCov to ensure 100% coverage. 
+With respect to testing, the BSL provides full unit testing with 100% code coverage. Futhermore, the C++ portion of the BSL is written entirely as a "constexpr", meaning APIs are unit tested both at compile-time and run-time. This allows us to ensure that the compiler's rules for constexpr and undefined behavior are leveraged to prove the C++ code does not invoke UB at runtime.
 
 ## **Quick start**
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/bareflank/bsl?color=brightgreen)
@@ -37,7 +34,7 @@ Enjoy:
 [[nodiscard]] auto
 main(bsl::int32 const argc, bsl::cstr_type const argv[]) noexcept -> bsl::exit_code
 {
-    constexpr auto num_expected_args{2_umax};
+    constexpr auto num_expected_args{2_umx};
     bsl::arguments const args{argc, argv};
 
     if (args.size() < num_expected_args) {
@@ -45,11 +42,11 @@ main(bsl::int32 const argc, bsl::cstr_type const argv[]) noexcept -> bsl::exit_c
         return bsl::exit_failure;
     }
 
-    constexpr auto size_of_arr{42_umax};
-    bsl::array<bsl::safe_int32, size_of_arr.get()> arr{};
+    constexpr auto size_of_arr{42_umx};
+    bsl::array<bsl::safe_i32, size_of_arr.get()> arr{};
 
-    constexpr auto index_of_arg{1_umax};
-    auto const val{args.at<bsl::safe_int32>(index_of_arg)};
+    constexpr auto index_of_arg{1_umx};
+    auto const val{args.at<bsl::safe_i32>(index_of_arg)};
 
     if (bsl::unlikely(!val)) {
         bsl::error() << "Invalid argument\n";
@@ -143,8 +140,8 @@ tests() noexcept -> bsl::exit_code
 {
     bsl::ut_scenario{"verify += adds correctly"} = []() noexcept {
         bsl::ut_given{} = []() noexcept {
-            constexpr auto data1{42_umax};
-            bsl::safe_uintmax data2{};
+            constexpr auto data1{42_umx};
+            bsl::safe_umx data2{};
             bsl::ut_when{} = [&]() noexcept {
                 data2 += data1;
                 bsl::ut_then{} = [&]() noexcept {

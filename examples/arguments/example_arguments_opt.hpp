@@ -35,10 +35,10 @@ namespace bsl
     inline void
     example_arguments_opt() noexcept
     {
-        constexpr auto hex_test{16_umax};
-        constexpr auto arg1{1_umax};
-        constexpr auto arg2{2_umax};
-        constexpr auto arg3{3_umax};
+        constexpr auto hex_test{16_umx};
+        constexpr auto arg1{1_umx};
+        constexpr auto arg2{2_umx};
+        constexpr auto arg3{3_umx};
 
         constexpr bsl::array argv1{"-arg1"};
         bsl::arguments const args1{argv1.size(), argv1.data()};
@@ -51,16 +51,16 @@ namespace bsl
         constexpr bsl::array argv2{"-arg1=42", "-arg2=-42", "-arg3=2A", "-arg4=not a number"};
         bsl::arguments const args2{argv2.size(), argv2.data()};
 
-        bsl::print() << "integral test: "                                                     // --
-                     << args2.get<bsl::safe_int32>("-arg1") << bsl::endl;                     // --
-        bsl::print() << "integral test: "                                                     // --
-                     << args2.get<bsl::safe_int32>("-arg2") << bsl::endl;                     // --
-        bsl::print() << "integral test: "                                                     // --
-                     << args2.get<bsl::safe_uint32, hex_test.get()>("-arg3") << bsl::endl;    // --
-        bsl::print() << "integral test: "                                                     // --
-                     << args2.get<bsl::safe_uint32>("-arg4") << bsl::endl;                    // --
-        bsl::print() << "integral test: "                                                     // --
-                     << args2.get<bsl::safe_uint32>("-arg5") << bsl::endl;                    // --
+        bsl::print() << "integral test: "                                                  // --
+                     << args2.get<bsl::safe_i32>("-arg1") << bsl::endl;                    // --
+        bsl::print() << "integral test: "                                                  // --
+                     << args2.get<bsl::safe_i32>("-arg2") << bsl::endl;                    // --
+        bsl::print() << "integral test: "                                                  // --
+                     << args2.get<bsl::safe_u32, hex_test.get()>("-arg3") << bsl::endl;    // --
+        bsl::print() << "integral test: "                                                  // --
+                     << args2.get<bsl::safe_u32>("-arg4") << bsl::endl;                    // --
+        bsl::print() << "integral test: "                                                  // --
+                     << args2.get<bsl::safe_u32>("-arg5") << bsl::endl;                    // --
 
         constexpr bsl::array argv3{"-arg1=hello world"};
         bsl::arguments const args3{argv3.size(), argv3.data()};
@@ -81,8 +81,8 @@ namespace bsl
         constexpr bsl::array argv5{"-arg1=23", "-arg1=42"};
         bsl::arguments const args5{argv5.size(), argv5.data()};
 
-        bsl::print() << "override test: "                               // --
-                     << args5.get<safe_int32>("-arg1") << bsl::endl;    // --
+        bsl::print() << "override test: "                             // --
+                     << args5.get<safe_i32>("-arg1") << bsl::endl;    // --
 
         constexpr bsl::array argv6{"app", "pos1", "-opt1", "pos2", "-opt2=23", "-opt2=42"};
         bsl::arguments const args6{argv6.size(), argv6.data()};

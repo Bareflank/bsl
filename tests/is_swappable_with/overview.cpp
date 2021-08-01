@@ -27,10 +27,10 @@
 
 namespace bsl
 {
-    void swap(bsl::safe_uint16, bsl::safe_uint16) noexcept;
-    void swap(bsl::safe_uint32, bsl::safe_uint32) noexcept = delete;
+    void swap(bsl::safe_u16, bsl::safe_u16) noexcept;
+    void swap(bsl::safe_u32, bsl::safe_u32) noexcept = delete;
     // NOLINTNEXTLINE(bsl-function-noexcept)
-    void swap(bsl::safe_uint64, bsl::safe_uint64);
+    void swap(bsl::safe_u64, bsl::safe_u64);
 }
 
 /// <!-- description -->
@@ -44,10 +44,10 @@ namespace bsl
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    static_assert(bsl::is_swappable_with<bsl::safe_uint16, bsl::safe_uint16>::value);
-    static_assert(!bsl::is_swappable_with<bsl::safe_uint32, bsl::safe_uint32>::value);
-    static_assert(bsl::is_swappable_with<bsl::safe_uint64, bsl::safe_uint64>::value);
-    static_assert(!bsl::is_swappable_with<bsl::safe_uint32, bsl::safe_uint64>::value);
+    static_assert(bsl::is_swappable_with<bsl::safe_u16, bsl::safe_u16>::value);
+    static_assert(!bsl::is_swappable_with<bsl::safe_u32, bsl::safe_u32>::value);
+    static_assert(bsl::is_swappable_with<bsl::safe_u64, bsl::safe_u64>::value);
+    static_assert(!bsl::is_swappable_with<bsl::safe_u32, bsl::safe_u64>::value);
 
     return bsl::ut_success();
 }

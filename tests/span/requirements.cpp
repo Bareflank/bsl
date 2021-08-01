@@ -22,6 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include "../array_init.hpp"
+
 #include <bsl/array.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/discard.hpp>
@@ -31,8 +33,7 @@
 namespace
 {
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
-    constinit bsl::array<bool, static_cast<bsl::uintmax>(5)> const g_verify_constinit_arr{};
-    constinit bsl::span const g_verify_constinit{g_verify_constinit_arr};
+    constinit bsl::span const g_verify_constinit{test::ARRAY_INIT};
 }
 
 /// <!-- description -->
@@ -56,32 +57,24 @@ main() noexcept -> bsl::exit_code
             bsl::span<bool> mut_spn2{};
             bsl::span<bool> const spn1{};
             bsl::span<bool> const spn2{};
-            bsl::array<bool, static_cast<bsl::uintmax>(5)> mut_arr{};
-            bsl::array<bool, static_cast<bsl::uintmax>(5)> const arr{};
             bsl::ut_then{} = []() noexcept {
                 static_assert(noexcept(bsl::span<bool>{}));
                 static_assert(noexcept(bsl::span<bool>{{}, {}}));
-                static_assert(noexcept(bsl::span<bool>{mut_arr}));
-                static_assert(noexcept(bsl::span<bool>{arr}));
+                static_assert(noexcept(bsl::span<bool>{test::ARRAY_INIT}));
 
-                static_assert(noexcept(mut_spn1.at_if(bsl::to_umax(0))));
+                static_assert(noexcept(mut_spn1.at_if(bsl::to_idx(0))));
                 static_assert(noexcept(mut_spn1.front_if()));
                 static_assert(noexcept(mut_spn1.back_if()));
                 static_assert(noexcept(mut_spn1.data()));
                 static_assert(noexcept(mut_spn1.begin()));
                 static_assert(noexcept(mut_spn1.cbegin()));
-                static_assert(noexcept(mut_spn1.iter(bsl::to_umax(0))));
-                static_assert(noexcept(mut_spn1.citer(bsl::to_umax(0))));
                 static_assert(noexcept(mut_spn1.end()));
                 static_assert(noexcept(mut_spn1.cend()));
                 static_assert(noexcept(mut_spn1.rbegin()));
                 static_assert(noexcept(mut_spn1.crbegin()));
-                static_assert(noexcept(mut_spn1.riter(bsl::to_umax(0))));
-                static_assert(noexcept(mut_spn1.criter(bsl::to_umax(0))));
                 static_assert(noexcept(mut_spn1.rend()));
                 static_assert(noexcept(mut_spn1.crend()));
                 static_assert(noexcept(mut_spn1.empty()));
-                static_assert(noexcept(!!mut_spn1));
                 static_assert(noexcept(mut_spn1.size()));
                 static_assert(noexcept(mut_spn1.max_size()));
                 static_assert(noexcept(mut_spn1.size_bytes()));
@@ -90,26 +83,21 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(mut_spn1 != mut_spn2));
                 static_assert(noexcept(mut_spn1.first()));
                 static_assert(noexcept(mut_spn1.last()));
-                static_assert(noexcept(mut_spn1.subspan(bsl::to_umax(0))));
+                static_assert(noexcept(mut_spn1.subspan(bsl::to_idx(0))));
 
-                static_assert(noexcept(spn1.at_if(bsl::to_umax(0))));
+                static_assert(noexcept(spn1.at_if(bsl::to_idx(0))));
                 static_assert(noexcept(spn1.front_if()));
                 static_assert(noexcept(spn1.back_if()));
                 static_assert(noexcept(spn1.data()));
                 static_assert(noexcept(spn1.begin()));
                 static_assert(noexcept(spn1.cbegin()));
-                static_assert(noexcept(spn1.iter(bsl::to_umax(0))));
-                static_assert(noexcept(spn1.citer(bsl::to_umax(0))));
                 static_assert(noexcept(spn1.end()));
                 static_assert(noexcept(spn1.cend()));
                 static_assert(noexcept(spn1.rbegin()));
                 static_assert(noexcept(spn1.crbegin()));
-                static_assert(noexcept(spn1.riter(bsl::to_umax(0))));
-                static_assert(noexcept(spn1.criter(bsl::to_umax(0))));
                 static_assert(noexcept(spn1.rend()));
                 static_assert(noexcept(spn1.crend()));
                 static_assert(noexcept(spn1.empty()));
-                static_assert(noexcept(!!spn1));
                 static_assert(noexcept(spn1.size()));
                 static_assert(noexcept(spn1.max_size()));
                 static_assert(noexcept(spn1.size_bytes()));
@@ -118,7 +106,7 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(spn1 != spn2));
                 static_assert(noexcept(spn1.first()));
                 static_assert(noexcept(spn1.last()));
-                static_assert(noexcept(spn1.subspan(bsl::to_umax(0))));
+                static_assert(noexcept(spn1.subspan(bsl::to_idx(0))));
             };
         };
     };

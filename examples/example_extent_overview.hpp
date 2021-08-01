@@ -34,7 +34,7 @@ namespace bsl
     inline void
     example_extent_overview() noexcept
     {
-        constexpr auto ext{2_umax};
+        constexpr auto ext{2_umx};
 
         // This is needed to demonstrate how to use this type trait
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)

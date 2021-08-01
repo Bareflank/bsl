@@ -38,7 +38,7 @@ namespace bsl
         // NOLINTNEXTLINE(bsl-types-fixed-width-ints-arithmetic-check)
         constexpr auto expected{bsl::to_u32(23U | 42U)};
 
-        if constexpr ((val1 | val2) == expected) {
+        if constexpr ((val1 | val2).checked() == expected) {
             bsl::print() << "success\n";
         }
         else {

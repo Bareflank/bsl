@@ -30,7 +30,9 @@
 
 #include "contiguous_iterator.hpp"
 #include "cstdint.hpp"
-#include "likely.hpp"
+#include "details/out.hpp"
+#include "ensures.hpp"
+#include "expects.hpp"
 #include "reverse_iterator.hpp"
 #include "safe_integral.hpp"
 #include "touch.hpp"
@@ -59,10 +61,10 @@ namespace bsl
     ///   @tparam T the type of element being encapsulated.
     ///   @tparam N the total number of elements in the array. Cannot be 0
     ///
-    template<typename T, bsl::uintmax N>
+    template<typename T, bsl::uintmx N>
     class array final
     {
-        static_assert(static_cast<bsl::uintmax>(0) != N, "arrays of size 0 are not supported");
+        static_assert(static_cast<bsl::uintmx>(0) != N, "arrays of size 0 are not supported");
 
     public:
         /// @brief stores the array being wrapped
@@ -70,10 +72,12 @@ namespace bsl
 
         /// @brief alias for: T
         using value_type = T;
-        /// @brief alias for: safe_uintmax
-        using size_type = safe_uintmax;
-        /// @brief alias for: safe_uintmax
-        using difference_type = safe_uintmax;
+        /// @brief alias for: safe_umx
+        using size_type = safe_umx;
+        /// @brief alias for: safe_idx
+        using index_type = safe_idx;
+        /// @brief alias for: safe_umx
+        using difference_type = safe_umx;
         /// @brief alias for: T &
         using reference_type = T &;
         /// @brief alias for: T const &
@@ -104,21 +108,16 @@ namespace bsl
         ///     this function returns a nullptr.
         ///
         [[nodiscard]] constexpr auto
-        at_if(size_type const &index) &noexcept -> pointer_type
+        at_if(index_type const &index) &noexcept -> pointer_type
         {
-            if (unlikely(!index)) {
-                unlikely_invalid_argument_failure();
+            expects(index.is_valid());
+
+            if (unlikely(index >= N)) {
                 return nullptr;
             }
 
-            if (likely(index < N)) {
-                // We are implementing std::array here, which is what this test
-                // wants you to use instead.
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
-                return &m_data[index.get()];
-            }
-
-            return nullptr;
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            return &m_data[index.get()];
         }
 
         /// <!-- description -->
@@ -134,32 +133,17 @@ namespace bsl
         ///     this function returns a nullptr.
         ///
         [[nodiscard]] constexpr auto
-        at_if(size_type const &index) const &noexcept -> const_pointer_type
+        at_if(index_type const &index) const &noexcept -> const_pointer_type
         {
-            if (unlikely(!index)) {
-                unlikely_invalid_argument_failure();
+            expects(index.is_valid());
+
+            if (unlikely(index >= N)) {
                 return nullptr;
             }
 
-            if (likely(index < N)) {
-                // We are implementing std::array here, which is what this test
-                // wants you to use instead.
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
-                return &m_data[index.get()];
-            }
-
-            return nullptr;
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            return &m_data[index.get()];
         }
-
-        /// <!-- description -->
-        ///   @brief The r-value version of this function is not supported
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param index n/a
-        ///   @return n/a
-        ///
-        [[nodiscard]] constexpr auto at_if(size_type const &index) const &&noexcept
-            -> const_pointer_type = delete;
 
         /// <!-- description -->
         ///   @brief Returns a reference to the first element in the array.
@@ -171,8 +155,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front() &noexcept -> reference_type
         {
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-            return *this->at_if(zero);
+            return *this->at_if({});
         }
 
         /// <!-- description -->
@@ -185,17 +168,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front() const &noexcept -> const_reference_type
         {
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-            return *this->at_if(zero);
+            return *this->at_if({});
         }
-
-        /// <!-- description -->
-        ///   @brief The r-value version of this function is not supported
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return n/a
-        ///
-        [[nodiscard]] constexpr auto front() const &&noexcept -> const_reference_type = delete;
 
         /// <!-- description -->
         ///   @brief Returns a pointer to the first element in the array.
@@ -207,8 +181,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front_if() &noexcept -> pointer_type
         {
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-            return this->at_if(zero);
+            return this->at_if({});
         }
 
         /// <!-- description -->
@@ -221,17 +194,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front_if() const &noexcept -> const_pointer_type
         {
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-            return this->at_if(zero);
+            return this->at_if({});
         }
-
-        /// <!-- description -->
-        ///   @brief The r-value version of this function is not supported
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return n/a
-        ///
-        [[nodiscard]] constexpr auto front_if() const &&noexcept -> const_pointer_type = delete;
 
         /// <!-- description -->
         ///   @brief Returns a reference to the last element in the array.
@@ -243,8 +207,13 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back() &noexcept -> reference_type
         {
-            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-            return *this->at_if(N - one);
+            /// NOTE:
+            /// - Since N cannot be 0, the following will never overflow
+            ///   which is why it is marked as checked().
+            ///
+
+            constexpr index_type index{(N - size_type::magic_1()).checked().get()};
+            return *this->at_if(index);
         }
 
         /// <!-- description -->
@@ -257,17 +226,14 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back() const &noexcept -> const_reference_type
         {
-            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-            return *this->at_if(N - one);
-        }
+            /// NOTE:
+            /// - Since N cannot be 0, the following will never overflow
+            ///   which is why it is marked as checked().
+            ///
 
-        /// <!-- description -->
-        ///   @brief The r-value version of this function is not supported
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return n/a
-        ///
-        [[nodiscard]] constexpr auto back() const &&noexcept -> const_reference_type = delete;
+            constexpr index_type index{(N - size_type::magic_1()).checked().get()};
+            return *this->at_if(index);
+        }
 
         /// <!-- description -->
         ///   @brief Returns a pointer to the last element in the array.
@@ -279,8 +245,13 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back_if() &noexcept -> pointer_type
         {
-            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-            return this->at_if(N - one);
+            /// NOTE:
+            /// - Since N cannot be 0, the following will never overflow
+            ///   which is why it is marked as checked().
+            ///
+
+            constexpr index_type index{(N - size_type::magic_1()).checked().get()};
+            return this->at_if(index);
         }
 
         /// <!-- description -->
@@ -293,17 +264,14 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back_if() const &noexcept -> const_pointer_type
         {
-            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-            return this->at_if(N - one);
-        }
+            /// NOTE:
+            /// - Since N cannot be 0, the following will never overflow
+            ///   which is why it is marked as checked().
+            ///
 
-        /// <!-- description -->
-        ///   @brief The r-value version of this function is not supported
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return n/a
-        ///
-        [[nodiscard]] constexpr auto back_if() const &&noexcept -> const_pointer_type = delete;
+            constexpr index_type index{(N - size_type::magic_1()).checked().get()};
+            return this->at_if(index);
+        }
 
         /// <!-- description -->
         ///   @brief Returns a pointer to the array being encapsulated.
@@ -332,14 +300,6 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief The r-value version of this function is not supported
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return n/a
-        ///
-        [[nodiscard]] constexpr auto data() const &&noexcept -> const_pointer_type = delete;
-
-        /// <!-- description -->
         ///   @brief Returns an iterator to the first element of the array.
         ///   @include array/example_array_begin.hpp
         ///
@@ -349,9 +309,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         begin() &noexcept -> iterator_type
         {
-            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-            return iterator_type{this->front_if(), n, zero};
+            return iterator_type{this->front_if(), size_type{N}, {}};
         }
 
         /// <!-- description -->
@@ -364,18 +322,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         begin() const &noexcept -> const_iterator_type
         {
-            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-            return const_iterator_type{this->front_if(), n, zero};
+            return const_iterator_type{this->front_if(), size_type{N}, {}};
         }
-
-        /// <!-- description -->
-        ///   @brief The r-value version of this function is not supported
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return n/a
-        ///
-        [[nodiscard]] constexpr auto begin() const &&noexcept -> const_iterator_type = delete;
 
         /// <!-- description -->
         ///   @brief Returns an iterator to the first element of the array.
@@ -387,83 +335,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         cbegin() const &noexcept -> const_iterator_type
         {
-            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-            return const_iterator_type{this->front_if(), n, zero};
+            return const_iterator_type{this->front_if(), size_type{N}, {}};
         }
-
-        /// <!-- description -->
-        ///   @brief The r-value version of this function is not supported
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return n/a
-        ///
-        [[nodiscard]] constexpr auto cbegin() const &&noexcept -> const_iterator_type = delete;
-
-        /// <!-- description -->
-        ///   @brief Returns an iterator to the element "i" in the array.
-        ///   @include array/example_array_iter.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param i the element in the array to return an iterator for.
-        ///   @return Returns an iterator to the element "i" in the array.
-        ///
-        [[nodiscard]] constexpr auto
-        iter(size_type const &i) &noexcept -> iterator_type
-        {
-            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
-            return iterator_type{this->front_if(), n, i};
-        }
-
-        /// <!-- description -->
-        ///   @brief Returns an iterator to the element "i" in the array.
-        ///   @include array/example_array_iter.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param i the element in the array to return an iterator for.
-        ///   @return Returns an iterator to the element "i" in the array.
-        ///
-        [[nodiscard]] constexpr auto
-        iter(size_type const &i) const &noexcept -> const_iterator_type
-        {
-            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
-            return const_iterator_type{this->front_if(), n, i};
-        }
-
-        /// <!-- description -->
-        ///   @brief The r-value version of this function is not supported
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param i n/a
-        ///   @return n/a
-        ///
-        [[nodiscard]] constexpr auto iter(size_type const &i) const &&noexcept
-            -> const_iterator_type = delete;
-
-        /// <!-- description -->
-        ///   @brief Returns an iterator to the element "i" in the array.
-        ///   @include array/example_array_iter.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param i the element in the array to return an iterator for.
-        ///   @return Returns an iterator to the element "i" in the array.
-        ///
-        [[nodiscard]] constexpr auto
-        citer(size_type const &i) const &noexcept -> const_iterator_type
-        {
-            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
-            return const_iterator_type{this->front_if(), n, i};
-        }
-
-        /// <!-- description -->
-        ///   @brief The r-value version of this function is not supported
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param i n/a
-        ///   @return n/a
-        ///
-        [[nodiscard]] constexpr auto citer(size_type const &i) const &&noexcept
-            -> const_iterator_type = delete;
 
         /// <!-- description -->
         ///   @brief Returns an iterator to one past the last element of the
@@ -479,8 +352,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         end() &noexcept -> iterator_type
         {
-            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
-            return iterator_type{this->front_if(), n, n};
+            return iterator_type{this->front_if(), size_type{N}, index_type{N}};
         }
 
         /// <!-- description -->
@@ -497,17 +369,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         end() const &noexcept -> const_iterator_type
         {
-            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
-            return const_iterator_type{this->front_if(), n, n};
+            return const_iterator_type{this->front_if(), size_type{N}, index_type{N}};
         }
-
-        /// <!-- description -->
-        ///   @brief The r-value version of this function is not supported
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return n/a
-        ///
-        [[nodiscard]] constexpr auto end() const &&noexcept -> const_iterator_type = delete;
 
         /// <!-- description -->
         ///   @brief Returns an iterator to one past the last element of the
@@ -523,17 +386,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         cend() const &noexcept -> const_iterator_type
         {
-            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
-            return const_iterator_type{this->front_if(), n, n};
+            return const_iterator_type{this->front_if(), size_type{N}, index_type{N}};
         }
-
-        /// <!-- description -->
-        ///   @brief The r-value version of this function is not supported
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return n/a
-        ///
-        [[nodiscard]] constexpr auto cend() const &&noexcept -> const_iterator_type = delete;
 
         /// <!-- description -->
         ///   @brief Returns a reverse iterator to one past the last element
@@ -574,15 +428,6 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief The r-value version of this function is not supported
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return n/a
-        ///
-        [[nodiscard]] constexpr auto rbegin() const &&noexcept
-            -> const_reverse_iterator_type = delete;
-
-        /// <!-- description -->
         ///   @brief Returns a reverse iterator to one past the last element
         ///     of the array. When accessing the iterator, the iterator will
         ///     always return the element T[internal index - 1], providing
@@ -600,131 +445,6 @@ namespace bsl
         {
             return const_reverse_iterator_type{this->cend()};
         }
-
-        /// <!-- description -->
-        ///   @brief The r-value version of this function is not supported
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return n/a
-        ///
-        [[nodiscard]] constexpr auto crbegin() const &&noexcept
-            -> const_reverse_iterator_type = delete;
-
-        /// <!-- description -->
-        ///   @brief Returns a reverse iterator element "i" in the
-        ///     array. When accessing the iterator, the iterator will
-        ///     always return the element T[internal index - 1], providing
-        ///     access to the range [N - 1, 0) while internally storing the
-        ///     range [N, 1) with element 0 representing the end(). For more
-        ///     information, see the bsl::reverse_iterator documentation.
-        ///   @include array/example_array_riter.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param i the element in the array to return an iterator for.
-        ///   @return Returns a reverse iterator element "i" in the
-        ///     array.
-        ///
-        [[nodiscard]] constexpr auto
-        riter(size_type const &i) &noexcept -> reverse_iterator_type
-        {
-            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-
-            if (unlikely(!i)) {
-                unlikely_invalid_argument_failure();
-                return reverse_iterator_type{this->iter(zero)};
-            }
-
-            if (likely(i < N)) {
-                return reverse_iterator_type{this->iter(i + one)};
-            }
-
-            return reverse_iterator_type{this->iter(zero)};
-        }
-
-        /// <!-- description -->
-        ///   @brief Returns a reverse iterator element "i" in the
-        ///     array. When accessing the iterator, the iterator will
-        ///     always return the element T[internal index - 1], providing
-        ///     access to the range [N - 1, 0) while internally storing the
-        ///     range [N, 1) with element 0 representing the end(). For more
-        ///     information, see the bsl::reverse_iterator documentation.
-        ///   @include array/example_array_riter.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param i the element in the array to return an iterator for.
-        ///   @return Returns a reverse iterator element "i" in the
-        ///     array.
-        ///
-        [[nodiscard]] constexpr auto
-        riter(size_type const &i) const &noexcept -> const_reverse_iterator_type
-        {
-            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-
-            if (unlikely(!i)) {
-                unlikely_invalid_argument_failure();
-                return const_reverse_iterator_type{this->iter(zero)};
-            }
-
-            if (likely(i < N)) {
-                return const_reverse_iterator_type{this->iter(i + one)};
-            }
-
-            return const_reverse_iterator_type{this->iter(zero)};
-        }
-
-        /// <!-- description -->
-        ///   @brief The r-value version of this function is not supported
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param i n/a
-        ///   @return n/a
-        ///
-        [[nodiscard]] constexpr auto riter(size_type const &i) const &&noexcept
-            -> const_reverse_iterator_type = delete;
-
-        /// <!-- description -->
-        ///   @brief Returns a reverse iterator element "i" in the
-        ///     array. When accessing the iterator, the iterator will
-        ///     always return the element T[internal index - 1], providing
-        ///     access to the range [N - 1, 0) while internally storing the
-        ///     range [N, 1) with element 0 representing the end(). For more
-        ///     information, see the bsl::reverse_iterator documentation.
-        ///   @include array/example_array_riter.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param i the element in the array to return an iterator for.
-        ///   @return Returns a reverse iterator element "i" in the
-        ///     array.
-        ///
-        [[nodiscard]] constexpr auto
-        criter(size_type const &i) const &noexcept -> const_reverse_iterator_type
-        {
-            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-
-            if (unlikely(!i)) {
-                unlikely_invalid_argument_failure();
-                return const_reverse_iterator_type{this->iter(zero)};
-            }
-
-            if (likely(i < N)) {
-                return const_reverse_iterator_type{this->iter(i + one)};
-            }
-
-            return const_reverse_iterator_type{this->iter(zero)};
-        }
-
-        /// <!-- description -->
-        ///   @brief The r-value version of this function is not supported
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param i n/a
-        ///   @return n/a
-        ///
-        [[nodiscard]] constexpr auto criter(size_type const &i) const &&noexcept
-            -> const_reverse_iterator_type = delete;
 
         /// <!-- description -->
         ///   @brief Returns a reverse iterator first element of the
@@ -765,15 +485,6 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief The r-value version of this function is not supported
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return n/a
-        ///
-        [[nodiscard]] constexpr auto rend() const &&noexcept
-            -> const_reverse_iterator_type = delete;
-
-        /// <!-- description -->
         ///   @brief Returns a reverse iterator first element of the
         ///     array. When accessing the iterator, the iterator will
         ///     always return the element T[internal index - 1], providing
@@ -793,15 +504,6 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief The r-value version of this function is not supported
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return n/a
-        ///
-        [[nodiscard]] constexpr auto crend() const &&noexcept
-            -> const_reverse_iterator_type = delete;
-
-        /// <!-- description -->
         ///   @brief Returns false
         ///   @include array/example_array_empty.hpp
         ///
@@ -812,18 +514,6 @@ namespace bsl
         empty() noexcept -> bool
         {
             return false;
-        }
-
-        /// <!-- description -->
-        ///   @brief Returns true
-        ///   @include array/example_array_operator_bool.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @return Returns true
-        ///
-        [[nodiscard]] explicit constexpr operator bool() const noexcept
-        {
-            return true;
         }
 
         /// <!-- description -->
@@ -838,8 +528,8 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         size() noexcept -> size_type
         {
-            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
-            return n;
+            // ensures(N.is_valid_and_checked());
+            return size_type{N};
         }
 
         /// <!-- description -->
@@ -852,8 +542,16 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         max_size() noexcept -> size_type
         {
-            constexpr safe_uintmax size_of_t{static_cast<bsl::uintmax>(sizeof(T))};
-            return size_type::max() / size_of_t;
+            constexpr auto val{(size_type::max_value() / sizeof(T)).checked()};
+
+            /// NOTE:
+            /// - An error is not possible because the denominator is
+            ///   always positive, so the result of max_size() is marked
+            ///   as checked.
+            ///
+
+            ensures(val.is_valid_and_checked());
+            return val;
         }
 
         /// <!-- description -->
@@ -866,16 +564,23 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         size_bytes() noexcept -> size_type
         {
-            constexpr safe_uintmax n{static_cast<bsl::uintmax>(N)};
-            constexpr safe_uintmax size_of_t{static_cast<bsl::uintmax>(sizeof(T))};
-            return n * size_of_t;
+            constexpr auto val{(size_type{N} * sizeof(T)).checked()};
+
+            /// NOTE:
+            /// - An error is not possible because the denominator is
+            ///   always positive, so the result of size_bytes() is marked
+            ///   as checked.
+            ///
+
+            ensures(val.is_valid_and_checked());
+            return val;
         }
     };
 
     /// @brief deduction guideline for bsl::array
     template<typename T, typename... U>
     // NOLINTNEXTLINE(bsl-types-fixed-width-ints-arithmetic-check)
-    array(T, U...) noexcept->array<T, static_cast<bsl::uintmax>(1) + sizeof...(U)>;
+    array(T, U...) noexcept->array<T, static_cast<bsl::uintmx>(1) + sizeof...(U)>;
 
     /// <!-- description -->
     ///   @brief Returns true if two arrays contain the same contents.
@@ -891,11 +596,11 @@ namespace bsl
     ///   @return Returns true if two arrays contain the same contents.
     ///     Returns false otherwise.
     ///
-    template<typename T, bsl::uintmax N>
+    template<typename T, bsl::uintmx N>
     [[nodiscard]] constexpr auto
     operator==(bsl::array<T, N> const &lhs, bsl::array<T, N> const &rhs) noexcept -> bool
     {
-        for (safe_uintmax mut_i{}; mut_i < lhs.size(); ++mut_i) {
+        for (safe_idx mut_i{}; mut_i < lhs.size(); ++mut_i) {
             if (*lhs.at_if(mut_i) != *rhs.at_if(mut_i)) {
                 return false;
             }
@@ -920,11 +625,54 @@ namespace bsl
     ///   @return Returns true if two arrays have the same size and contain
     ///     the same contents. Returns false otherwise.
     ///
-    template<typename T, bsl::uintmax N>
+    template<typename T, bsl::uintmx N>
     [[nodiscard]] constexpr auto
     operator!=(bsl::array<T, N> const &lhs, bsl::array<T, N> const &rhs) noexcept -> bool
     {
         return !(lhs == rhs);
+    }
+
+    /// <!-- description -->
+    ///   @brief Outputs the provided bsl::array to the provided
+    ///     output type.
+    ///   @related bsl::array
+    ///   @include array/example_array_ostream.hpp
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam T1 the type of outputter provided
+    ///   @tparam T2 the type of element being encapsulated.
+    ///   @tparam N the total number of elements in the array. Cannot be 0
+    ///   @param o the instance of the outputter used to output the value.
+    ///   @param val the array to output
+    ///   @return return o
+    ///
+    template<typename T1, typename T2, bsl::uintmx N>
+    [[maybe_unused]] constexpr auto
+    operator<<(out<T1> const o, bsl::array<T2, N> const &val) noexcept -> out<T1>
+    {
+        if (is_constant_evaluated()) {
+            return o;
+        }
+
+        if constexpr (o.empty()) {
+            return o;
+        }
+
+        if constexpr (N == safe_umx::magic_1()) {
+            o << "[" << *val.front_if();
+        }
+        else {
+            for (safe_idx mut_i{}; mut_i < val.size(); ++mut_i) {
+                if (mut_i.is_zero()) {
+                    o << "[" << *val.at_if(mut_i);
+                }
+                else {
+                    o << ", " << *val.at_if(mut_i);
+                }
+            }
+        }
+
+        return o << ']';
     }
 }
 

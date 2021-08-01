@@ -1,0 +1,17 @@
+[package]
+name = "bsl"
+version = "0.1.0"
+edition = "2018"
+
+[lib]
+path = "lib.rs"
+
+[dependencies]
+static_assertions = "1.1.0"
+
+[features]
+debug_level_v = []
+debug_level_vv = []
+debug_level_vvv = []
+disable_color = []
+release_mode = []

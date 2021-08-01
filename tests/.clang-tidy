@@ -23,6 +23,7 @@ Checks:
   '
     -*,
     bsl-*,
+      -bsl-literals-user-defined,
     bugprone-*,
       -bugprone-branch-clone,
     cert-*,
@@ -30,6 +31,7 @@ Checks:
       -cert-oop54-cpp,
     clang-analyzer-*,
       -clang-analyzer-core.NullDereference,
+      -clang-analyzer-unix.cstring.NullArg,
     cppcoreguidelines-*,
       -cppcoreguidelines-avoid-magic-numbers,
     hicpp-*,

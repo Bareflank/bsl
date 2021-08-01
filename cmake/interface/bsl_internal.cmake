@@ -29,7 +29,8 @@ target_compile_options(bsl_internal INTERFACE
 
 target_compile_definitions(bsl_internal INTERFACE
     BSL_DEBUG_LEVEL=${BSL_DEBUG_LEVEL}
-    BSL_PAGE_SIZE=${BSL_PAGE_SIZE}_umax
+    BSL_PAGE_SIZE=${BSL_PAGE_SIZE}_umx
+    BSL_ASSERT_FAST_FAILS=true
 )
 
 if(CMAKE_BUILD_TYPE STREQUAL RELEASE OR CMAKE_BUILD_TYPE STREQUAL MINSIZEREL)
@@ -39,6 +40,26 @@ if(CMAKE_BUILD_TYPE STREQUAL RELEASE OR CMAKE_BUILD_TYPE STREQUAL MINSIZEREL)
 else()
     target_compile_definitions(bsl_internal INTERFACE
         BSL_RELEASE_MODE=false
+    )
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL CODECOV)
+    target_compile_definitions(bsl_internal INTERFACE
+        BSL_CODECOV=true
+    )
+else()
+    target_compile_definitions(bsl_internal INTERFACE
+        BSL_CODECOV=false
+    )
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL CLANG_TIDY)
+    target_compile_definitions(bsl INTERFACE
+        BSL_CLANG_TIDY_MODE=true
+    )
+else()
+    target_compile_definitions(bsl INTERFACE
+        BSL_CLANG_TIDY_MODE=false
     )
 endif()
 
@@ -54,8 +75,6 @@ endif()
 
 target_include_directories(bsl_internal INTERFACE
     ${CMAKE_CURRENT_LIST_DIR}/../../include
-    $<$<PLATFORM_ID:Linux>:${CMAKE_CURRENT_LIST_DIR}/../../include/bsl/platform>
     $<$<PLATFORM_ID:Linux>:${CMAKE_CURRENT_LIST_DIR}/../../include/bsl/platform/linux>
-    $<$<PLATFORM_ID:Windows>:${CMAKE_CURRENT_LIST_DIR}/../../include/bsl/platform>
     $<$<PLATFORM_ID:Windows>:${CMAKE_CURRENT_LIST_DIR}/../../include/bsl/platform/windows>
 )

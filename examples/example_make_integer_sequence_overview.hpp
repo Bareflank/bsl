@@ -34,25 +34,25 @@ namespace bsl
     inline void
     example_make_integer_sequence_overview() noexcept
     {
-        constexpr auto size{6_umax};
-        constexpr auto max{5_umax};
-        constexpr auto min{0_umax};
+        constexpr auto size{6_umx};
+        constexpr auto max{5_umx};
+        constexpr auto min{0_umx};
 
-        if constexpr (bsl::make_integer_sequence<bsl::uintmax, size.get()>::size() == size.get()) {
+        if constexpr (bsl::make_integer_sequence<bsl::uintmx, size.get()>::size() == size.get()) {
             bsl::print() << "success\n";
         }
         else {
             bsl::error() << "failure\n";
         }
 
-        if constexpr (bsl::make_integer_sequence<bsl::uintmax, size.get()>::max() == max.get()) {
+        if constexpr (bsl::make_integer_sequence<bsl::uintmx, size.get()>::max() == max.get()) {
             bsl::print() << "success\n";
         }
         else {
             bsl::error() << "failure\n";
         }
 
-        if constexpr (bsl::make_integer_sequence<bsl::uintmax, size.get()>::min() == min.get()) {
+        if constexpr (bsl::make_integer_sequence<bsl::uintmx, size.get()>::min() == min.get()) {
             bsl::print() << "success\n";
         }
         else {

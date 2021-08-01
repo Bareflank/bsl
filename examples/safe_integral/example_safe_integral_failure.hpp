@@ -33,9 +33,9 @@ namespace bsl
     inline void
     example_safe_integral_failure() noexcept
     {
-        constexpr auto val{bsl::safe_int32::failure()};
+        constexpr auto val{bsl::safe_i32::failure()};
 
-        if constexpr (val.invalid()) {
+        if constexpr (val.is_invalid()) {
             bsl::print() << "success\n";
         }
         else {

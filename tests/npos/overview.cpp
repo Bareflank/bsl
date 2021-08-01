@@ -37,6 +37,6 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    static_assert(bsl::npos == bsl::safe_uintmax::max());
+    static_assert(bsl::npos == bsl::safe_umx::max_value());
     return bsl::ut_success();
 }

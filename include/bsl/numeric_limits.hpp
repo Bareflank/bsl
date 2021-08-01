@@ -124,7 +124,7 @@ namespace bsl
         ///   @return Returns the min value of T
         ///
         [[nodiscard]] static constexpr auto
-        min() noexcept -> T
+        min_value() noexcept -> T
         {
             return {};
         }
@@ -150,7 +150,7 @@ namespace bsl
         ///   @return Returns the max value of T
         ///
         [[nodiscard]] static constexpr auto
-        max() noexcept -> T
+        max_value() noexcept -> T
         {
             return {};
         }
@@ -297,7 +297,7 @@ namespace bsl
         ///   @return Returns the min value of T
         ///
         [[nodiscard]] static constexpr auto
-        min() noexcept -> bool
+        min_value() noexcept -> bool
         {
             return false;
         }
@@ -323,7 +323,7 @@ namespace bsl
         ///   @return Returns the max value of T
         ///
         [[nodiscard]] static constexpr auto
-        max() noexcept -> bool
+        max_value() noexcept -> bool
         {
             return true;
         }
@@ -468,7 +468,7 @@ namespace bsl
         ///   @return Returns the min value of T
         ///
         [[nodiscard]] static constexpr auto
-        min() noexcept -> char_type
+        min_value() noexcept -> char_type
         {
             return static_cast<char_type>(CHAR_MIN);
         }
@@ -494,7 +494,7 @@ namespace bsl
         ///   @return Returns the max value of T
         ///
         [[nodiscard]] static constexpr auto
-        max() noexcept -> char_type
+        max_value() noexcept -> char_type
         {
             return static_cast<char_type>(CHAR_MAX);
         }
@@ -639,7 +639,7 @@ namespace bsl
         ///   @return Returns the min value of T
         ///
         [[nodiscard]] static constexpr auto
-        min() noexcept -> bsl::int8
+        min_value() noexcept -> bsl::int8
         {
             return static_cast<bsl::int8>(INT8_MIN);
         }
@@ -665,7 +665,7 @@ namespace bsl
         ///   @return Returns the max value of T
         ///
         [[nodiscard]] static constexpr auto
-        max() noexcept -> bsl::int8
+        max_value() noexcept -> bsl::int8
         {
             return static_cast<bsl::int8>(INT8_MAX);
         }
@@ -810,7 +810,7 @@ namespace bsl
         ///   @return Returns the min value of T
         ///
         [[nodiscard]] static constexpr auto
-        min() noexcept -> bsl::int16
+        min_value() noexcept -> bsl::int16
         {
             return static_cast<bsl::int16>(INT16_MIN);
         }
@@ -836,7 +836,7 @@ namespace bsl
         ///   @return Returns the max value of T
         ///
         [[nodiscard]] static constexpr auto
-        max() noexcept -> bsl::int16
+        max_value() noexcept -> bsl::int16
         {
             return static_cast<bsl::int16>(INT16_MAX);
         }
@@ -981,7 +981,7 @@ namespace bsl
         ///   @return Returns the min value of T
         ///
         [[nodiscard]] static constexpr auto
-        min() noexcept -> bsl::int32
+        min_value() noexcept -> bsl::int32
         {
             return static_cast<bsl::int32>(INT32_MIN);
         }
@@ -1007,7 +1007,7 @@ namespace bsl
         ///   @return Returns the max value of T
         ///
         [[nodiscard]] static constexpr auto
-        max() noexcept -> bsl::int32
+        max_value() noexcept -> bsl::int32
         {
             return static_cast<bsl::int32>(INT32_MAX);
         }
@@ -1152,7 +1152,7 @@ namespace bsl
         ///   @return Returns the min value of T
         ///
         [[nodiscard]] static constexpr auto
-        min() noexcept -> bsl::int64
+        min_value() noexcept -> bsl::int64
         {
             return static_cast<bsl::int64>(INT64_MIN);
         }
@@ -1178,7 +1178,7 @@ namespace bsl
         ///   @return Returns the max value of T
         ///
         [[nodiscard]] static constexpr auto
-        max() noexcept -> bsl::int64
+        max_value() noexcept -> bsl::int64
         {
             return static_cast<bsl::int64>(INT64_MAX);
         }
@@ -1323,7 +1323,7 @@ namespace bsl
         ///   @return Returns the min value of T
         ///
         [[nodiscard]] static constexpr auto
-        min() noexcept -> bsl::uint8
+        min_value() noexcept -> bsl::uint8
         {
             return static_cast<bsl::uint8>(0);
         }
@@ -1349,7 +1349,7 @@ namespace bsl
         ///   @return Returns the max value of T
         ///
         [[nodiscard]] static constexpr auto
-        max() noexcept -> bsl::uint8
+        max_value() noexcept -> bsl::uint8
         {
             return static_cast<bsl::uint8>(UINT8_MAX);
         }
@@ -1494,7 +1494,7 @@ namespace bsl
         ///   @return Returns the min value of T
         ///
         [[nodiscard]] static constexpr auto
-        min() noexcept -> bsl::uint16
+        min_value() noexcept -> bsl::uint16
         {
             return static_cast<bsl::uint16>(0);
         }
@@ -1520,7 +1520,7 @@ namespace bsl
         ///   @return Returns the max value of T
         ///
         [[nodiscard]] static constexpr auto
-        max() noexcept -> bsl::uint16
+        max_value() noexcept -> bsl::uint16
         {
             return static_cast<bsl::uint16>(UINT16_MAX);
         }
@@ -1665,7 +1665,7 @@ namespace bsl
         ///   @return Returns the min value of T
         ///
         [[nodiscard]] static constexpr auto
-        min() noexcept -> bsl::uint32
+        min_value() noexcept -> bsl::uint32
         {
             return static_cast<bsl::uint32>(0);
         }
@@ -1691,7 +1691,7 @@ namespace bsl
         ///   @return Returns the max value of T
         ///
         [[nodiscard]] static constexpr auto
-        max() noexcept -> bsl::uint32
+        max_value() noexcept -> bsl::uint32
         {
             return UINT32_MAX;
         }
@@ -1836,7 +1836,7 @@ namespace bsl
         ///   @return Returns the min value of T
         ///
         [[nodiscard]] static constexpr auto
-        min() noexcept -> bsl::uint64
+        min_value() noexcept -> bsl::uint64
         {
             return static_cast<bsl::uint64>(0);
         }
@@ -1862,7 +1862,7 @@ namespace bsl
         ///   @return Returns the max value of T
         ///
         [[nodiscard]] static constexpr auto
-        max() noexcept -> bsl::uint64
+        max_value() noexcept -> bsl::uint64
         {
             return UINT64_MAX;
         }

@@ -34,6 +34,8 @@
 #include "fmt_impl_integral_info.hpp"
 #include "out.hpp"
 
+#pragma clang diagnostic ignored "-Wswitch-enum"
+
 namespace bsl::details
 {
     /// <!-- description -->
@@ -47,18 +49,17 @@ namespace bsl::details
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    get_integral_info_base(fmt_options const &ops, fmt_impl_integral_info<T> &mut_info) noexcept
+    get_integral_info_base(fmt_options const &ops, fmt_impl_integral_info &mut_info) noexcept
         -> safe_integral<T>
     {
         constexpr safe_integral<T> base2{static_cast<T>(2)};
         constexpr safe_integral<T> base10{static_cast<T>(10)};
         constexpr safe_integral<T> base16{static_cast<T>(16)};
-        constexpr safe_uintmax extra_chars{static_cast<bsl::uintmax>(2)};
 
         switch (ops.type()) {
             case fmt_type::fmt_type_b: {
                 if (ops.alternate_form()) {
-                    mut_info.extras += extra_chars;
+                    mut_info.extras += safe_idx::magic_2();
                 }
                 else {
                     bsl::touch();
@@ -69,7 +70,7 @@ namespace bsl::details
 
             case fmt_type::fmt_type_x: {
                 if (ops.alternate_form()) {
-                    mut_info.extras += extra_chars;
+                    mut_info.extras += safe_idx::magic_2();
                 }
                 else {
                     bsl::touch();
@@ -78,10 +79,7 @@ namespace bsl::details
                 return base16;
             }
 
-            case fmt_type::fmt_type_c:
-            case fmt_type::fmt_type_d:
-            case fmt_type::fmt_type_s:
-            case fmt_type::fmt_type_default: {
+            default: {
                 break;
             }
         }
@@ -122,24 +120,36 @@ namespace bsl::details
     template<typename T>
     [[nodiscard]] constexpr auto
     get_integral_info(fmt_options const &ops, safe_integral<T> const &val) noexcept
-        -> fmt_impl_integral_info<T>
+        -> fmt_impl_integral_info
     {
         constexpr safe_integral<T> base10{static_cast<T>(10)};
         constexpr safe_integral<T> last_numerical_digit{static_cast<T>(9)};
 
-        fmt_impl_integral_info<T> mut_info{};
-        auto const base{get_integral_info_base(ops, mut_info)};
+        fmt_impl_integral_info mut_info{};
+        auto const base{get_integral_info_base<T>(ops, mut_info)};
 
+        /// NOTE:
+        /// - The provided val must be valid before this function is called,
+        ///   otherwise the results are undefined. We also convert val from
+        ///   a potential index type to a non-index type (if it is one). This
+        ///   way we can work on it without breaking the safe_integral rules
+        ///   and it simplifies how this works.
+        ///
+
+        safe_integral<T> mut_val{val.get()};
         switch (ops.sign()) {
             case fmt_sign::fmt_sign_pos_neg:
+                [[fallthrough]];
             case fmt_sign::fmt_sign_space_for_pos: {
                 ++mut_info.extras;
                 break;
             }
 
-            case fmt_sign::fmt_sign_neg_only: {
+            case fmt_sign::fmt_sign_neg_only:
+                [[fallthrough]];
+            default: {
                 if constexpr (is_signed<T>::value) {
-                    if (val.is_neg()) {
+                    if (mut_val.is_neg()) {
                         ++mut_info.extras;
                     }
                     else {
@@ -151,38 +161,65 @@ namespace bsl::details
             }
         }
 
-        if (val.is_zero()) {
+        if (mut_val.is_zero()) {
             ++mut_info.digits;
+            return mut_info;
         }
-        else {
-            auto mut_val{val};
-            for (mut_info.digits = {}; mut_info.digits < MAX_NUM_DIGITS; ++mut_info.digits) {
-                if (mut_val.is_zero()) {
-                    break;
-                }
 
-                safe_integral<T> mut_digit{mut_val % base};
-                mut_val /= base;
+        /// NOTE:
+        /// - The buffer is large enough that it will never overflow, so we
+        ///   check for 0 in the for loop instead. This can be seen in the
+        ///   unit tests as the case where the buffer would overflow is
+        ///   impossible to hit with any tests given to it.
+        ///
 
-                if constexpr (is_signed<T>::value) {
-                    if (mut_digit.is_neg()) {
-                        mut_digit = -mut_digit;
-                    }
-                    else {
-                        bsl::touch();
-                    }
-                }
+        for (mut_info.digits = {}; !mut_val.checked().is_zero(); ++mut_info.digits) {
+            /// NOTE:
+            /// - Base cannot be 0. As stated above, we assume that the
+            ///   provided val is valid, so the results of this math must
+            ///   also be valid which is why it is marked as checked.
+            ///
 
-                if (mut_digit > last_numerical_digit) {
-                    mut_digit -= base10;
-                    mut_digit += static_cast<T>('A');
+            safe_integral<T> mut_digit{(mut_val % base).checked()};
+            mut_val = (mut_val / base).checked();
+
+            /// NOTE:
+            /// - If the provided val is negative, we cannot simply swap
+            ///   it's whole val because if it is min(), such a swap would
+            ///   result in overflow. So we need to negate each digit.
+            ///   Since each digit is the result of division, it will
+            ///   always be smaller than the provided type's max(), and
+            ///   there fore doing the negation is safe which is why it
+            ///   is marked as checked.
+            ///
+
+            if constexpr (is_signed<T>::value) {
+                if (mut_digit.is_neg()) {
+                    mut_digit = (-mut_digit).checked();
                 }
                 else {
-                    mut_digit += static_cast<T>('0');
+                    bsl::touch();
                 }
-
-                *mut_info.buf.at_if(mut_info.digits) = static_cast<char_type>(mut_digit.get());
             }
+
+            if (mut_digit > last_numerical_digit) {
+                mut_digit -= base10;
+                mut_digit += static_cast<T>('A');
+            }
+            else {
+                mut_digit += static_cast<T>('0');
+            }
+
+            /// NOTE:
+            /// - Since the highest value that we support is a 16bit
+            ///   integral, even if the provided val is 8bits, we are
+            ///   only using the bottom half of the ASCII table, so
+            ///   the math above cannot overflow which is why we mark
+            ///   it as checked.
+            ///
+
+            *mut_info.buf.at_if(mut_info.digits.get()) =
+                static_cast<char_type>(mut_digit.checked().get());
         }
 
         return mut_info;
@@ -205,47 +242,62 @@ namespace bsl::details
     fmt_impl_integral(
         out<OUT_T> const o, fmt_options const &ops, safe_integral<T> const &val) noexcept
     {
-        fmt_impl_integral_info<T> const info{get_integral_info(ops, val)};
-        safe_uintmax const padding{fmt_impl_align_pre(o, ops, info.digits + info.extras, false)};
+        auto const info{get_integral_info(ops, val)};
+        safe_umx const len{(info.digits + info.extras).get()};
+        auto const padding{fmt_impl_align_pre(o, ops, len, false)};
 
-        if (is_signed<T>::value) {
-            switch (ops.sign()) {
-                case fmt_sign::fmt_sign_pos_neg: {
+        /// NOTE:
+        /// - We assume that val is not invalid. If it is, the execution of
+        ///   this function is undefined.
+        ///
+
+        switch (ops.sign()) {
+            case fmt_sign::fmt_sign_pos_neg: {
+                if constexpr (is_signed<T>::value) {
                     if (val.is_neg()) {
                         o.write_to_console('-');
                     }
                     else {
                         o.write_to_console('+');
                     }
-
-                    break;
+                }
+                else {
+                    o.write_to_console('+');
                 }
 
-                case fmt_sign::fmt_sign_space_for_pos: {
+                break;
+            }
+
+            case fmt_sign::fmt_sign_space_for_pos: {
+                if constexpr (is_signed<T>::value) {
                     if (val.is_neg()) {
                         o.write_to_console('-');
                     }
                     else {
                         o.write_to_console(' ');
                     }
-
-                    break;
+                }
+                else {
+                    o.write_to_console(' ');
                 }
 
-                case fmt_sign::fmt_sign_neg_only: {
+                break;
+            }
+
+            case fmt_sign::fmt_sign_neg_only:
+                [[fallthrough]];
+            default: {
+                if constexpr (is_signed<T>::value) {
                     if (val.is_neg()) {
                         o.write_to_console('-');
                     }
                     else {
                         bsl::touch();
                     }
-
-                    break;
                 }
+
+                break;
             }
-        }
-        else {
-            bsl::touch();
         }
 
         if (ops.alternate_form()) {
@@ -260,10 +312,7 @@ namespace bsl::details
                     break;
                 }
 
-                case fmt_type::fmt_type_c:
-                case fmt_type::fmt_type_d:
-                case fmt_type::fmt_type_s:
-                case fmt_type::fmt_type_default: {
+                default: {
                     break;
                 }
             }
@@ -273,7 +322,7 @@ namespace bsl::details
         }
 
         if (ops.sign_aware()) {
-            for (safe_uintmax mut_pi{}; mut_pi < padding; ++mut_pi) {
+            for (safe_idx mut_pi{}; mut_pi < padding; ++mut_pi) {
                 o.write_to_console('0');
             }
         }
@@ -285,13 +334,12 @@ namespace bsl::details
             o.write_to_console('0');
         }
         else {
-            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-            for (safe_uintmax mut_i{info.digits}; mut_i.is_pos(); --mut_i) {
-                o.write_to_console(*info.buf.at_if(mut_i - one));
+            for (safe_idx mut_i{info.digits}; mut_i.is_pos(); --mut_i) {
+                o.write_to_console(*info.buf.at_if((mut_i - safe_idx::magic_1()).get()));
             }
         }
 
-        fmt_impl_align_suf(o, ops, info.digits + info.extras, false);
+        fmt_impl_align_suf(o, ops, len, false);
     }
 }
 

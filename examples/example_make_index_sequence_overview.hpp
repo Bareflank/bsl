@@ -34,9 +34,9 @@ namespace bsl
     inline void
     example_make_index_sequence_overview() noexcept
     {
-        constexpr auto size{6_umax};
-        constexpr auto max{5_umax};
-        constexpr auto min{0_umax};
+        constexpr auto size{6_umx};
+        constexpr auto max{5_umx};
+        constexpr auto min{0_umx};
 
         if constexpr (bsl::make_index_sequence<size.get()>::size() == size.get()) {
             bsl::print() << "success\n";

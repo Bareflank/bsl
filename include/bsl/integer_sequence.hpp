@@ -62,7 +62,7 @@ namespace bsl
         ///   @return Equivalent to sizeof...(INTS)
         ///
         [[nodiscard]] static constexpr auto
-        size() noexcept -> bsl::uintmax
+        size() noexcept -> bsl::uintmx
         {
             return sizeof...(INTS);
         }

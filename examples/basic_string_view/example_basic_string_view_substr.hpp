@@ -34,8 +34,8 @@ namespace bsl
     inline void
     example_basic_string_view_substr() noexcept
     {
-        constexpr auto pos{0_umax};
-        constexpr auto count{5_umax};
+        constexpr auto pos{0_idx};
+        constexpr auto count{5_umx};
         constexpr bsl::basic_string_view<bsl::char_type> str{"Hello World"};
 
         if constexpr (str.substr(pos, count) == "Hello") {

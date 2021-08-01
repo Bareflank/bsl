@@ -43,13 +43,13 @@ main() noexcept -> bsl::exit_code
             constexpr bsl::fmt_options ops{""};
             bsl::ut_then{} = []() noexcept {
                 static_assert(noexcept(bsl::fmt{ops, ""}));
-                static_assert(noexcept(bsl::fmt{ops, "", bsl::to_umax(42)}));
+                static_assert(noexcept(bsl::fmt{ops, "", bsl::to_umx(42)}));
                 static_assert(noexcept(bsl::fmt{"", ""}));
-                static_assert(noexcept(bsl::fmt{"", "", bsl::to_umax(42)}));
+                static_assert(noexcept(bsl::fmt{"", "", bsl::to_umx(42)}));
                 static_assert(noexcept(bsl::fmt_impl(bsl::print(), ops, true)));
                 static_assert(noexcept(bsl::fmt_impl(bsl::print(), ops, '*')));
                 static_assert(noexcept(bsl::fmt_impl(bsl::print(), ops, "")));
-                static_assert(noexcept(bsl::fmt_impl(bsl::print(), ops, bsl::to_umax(42))));
+                static_assert(noexcept(bsl::fmt_impl(bsl::print(), ops, bsl::to_umx(42))));
             };
         };
     };

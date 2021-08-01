@@ -35,7 +35,7 @@ namespace bsl
     {
         constexpr auto val{42_i32};
 
-        if constexpr (val) {
+        if constexpr (val.is_valid_and_checked()) {
             bsl::print() << "success: " << val.get() << bsl::endl;
         }
         else {

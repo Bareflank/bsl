@@ -22,8 +22,10 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include "../carray_init.hpp"
+
 #include <bsl/arguments.hpp>
-#include <bsl/array.hpp>
+#include <bsl/carray.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/cstr_type.hpp>
 #include <bsl/ut.hpp>
@@ -43,47 +45,32 @@ namespace
     tests() noexcept -> bsl::exit_code
     {
         bsl::ut_scenario{"get positional string_view"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::arguments const args{bsl::to_umax(0), nullptr};
+            bsl::ut_given{} = []() noexcept {
+                bsl::carray const argv{test::CARRAY_INIT_STR_DASH_APP};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umax(0)).empty());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::array const argv{"app"};
-                bsl::arguments const args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(args.get<bsl::string_view>(bsl::safe_uintmax::failure()).empty());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::array const argv{"-app"};
-                bsl::arguments const args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umax(0)).empty());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::array const argv{"42"};
-                bsl::arguments const args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umax(1)).empty());
+                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umx(0)).empty());
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_APP};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umax(0)) == "4");
-                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umax(1)) == "8");
-                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umax(2)) == "15");
-                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umax(3)) == "16");
-                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umax(4)) == "23");
-                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umax(5)) == "42");
+                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umx(1)).empty());
+                };
+            };
+
+            bsl::ut_given{} = []() noexcept {
+                bsl::carray const argv{test::CARRAY_INIT_STR_ARGS_POS};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umx(0)) == "4");
+                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umx(1)) == "8");
+                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umx(2)) == "15");
+                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umx(3)) == "16");
+                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umx(4)) == "23");
+                    bsl::ut_check(args.get<bsl::string_view>(bsl::to_umx(5)) == "42");
                 };
             };
         };

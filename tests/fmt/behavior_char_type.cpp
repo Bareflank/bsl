@@ -38,26 +38,6 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    bsl::ut_scenario{"char_type with no formatting"} = []() noexcept {
-        bsl::ut_when{} = []() noexcept {
-            fmt_test::reset();
-            bsl::print() << '*';
-            bsl::ut_then{} = []() noexcept {
-                bsl::ut_check(fmt_test::was_this_outputted("*"));
-            };
-        };
-    };
-
-    bsl::ut_scenario{"char_type with no formatting using fmt"} = []() noexcept {
-        bsl::ut_when{} = []() noexcept {
-            fmt_test::reset();
-            bsl::print() << bsl::fmt{bsl::nullops, '*'};
-            bsl::ut_then{} = []() noexcept {
-                bsl::ut_check(fmt_test::was_this_outputted("*"));
-            };
-        };
-    };
-
     bsl::ut_scenario{"char_type with formatting type b"} = []() noexcept {
         bsl::ut_when{} = []() noexcept {
             fmt_test::reset();

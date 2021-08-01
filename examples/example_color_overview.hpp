@@ -33,6 +33,6 @@ namespace bsl
     inline void
     example_color_overview() noexcept
     {
-        bsl::print() << bsl::green << "success" << bsl::reset_color << bsl::endl;
+        bsl::print() << bsl::grn << "success" << bsl::rst << bsl::endl;
     }
 }

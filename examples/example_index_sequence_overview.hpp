@@ -34,8 +34,8 @@ namespace bsl
     inline void
     example_index_sequence_overview() noexcept
     {
-        constexpr auto val1{4_umax};
-        constexpr auto val2{8_umax};
+        constexpr auto val1{4_umx};
+        constexpr auto val2{8_umx};
 
         if constexpr (bsl::index_sequence<val1.get(), val2.get()>::min() == val1.get()) {
             bsl::print() << "success\n";

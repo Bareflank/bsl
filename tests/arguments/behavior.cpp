@@ -22,8 +22,10 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include "../carray_init.hpp"
+
 #include <bsl/arguments.hpp>
-#include <bsl/array.hpp>
+#include <bsl/carray.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/cstr_type.hpp>
 #include <bsl/ut.hpp>
@@ -44,45 +46,45 @@ namespace
     {
         bsl::ut_scenario{"constructors"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_ARGS_POS};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(args.get<bsl::safe_uint64>(bsl::to_umax(0)) == bsl::to_u64(4));
+                    bsl::ut_check(args.get<bsl::safe_u64>(bsl::to_umx(0)) == bsl::to_u64(4));
                     bsl::ut_check(args.get<bool>("-opt1"));
-                    bsl::ut_check(args.get<bsl::safe_uint64>(bsl::to_umax(1)) == bsl::to_u64(8));
-                    bsl::ut_check(args.get<bsl::safe_uint64>(bsl::to_umax(2)) == bsl::to_u64(15));
-                    bsl::ut_check(args.get<bsl::safe_uint64>(bsl::to_umax(3)) == bsl::to_u64(16));
+                    bsl::ut_check(args.get<bsl::safe_u64>(bsl::to_umx(1)) == bsl::to_u64(8));
+                    bsl::ut_check(args.get<bsl::safe_u64>(bsl::to_umx(2)) == bsl::to_u64(15));
+                    bsl::ut_check(args.get<bsl::safe_u64>(bsl::to_umx(3)) == bsl::to_u64(16));
                     bsl::ut_check(args.get<bool>("-opt2"));
-                    bsl::ut_check(args.get<bsl::safe_uint64>(bsl::to_umax(4)) == bsl::to_u64(23));
-                    bsl::ut_check(args.get<bsl::safe_uint64>(bsl::to_umax(5)) == bsl::to_u64(42));
+                    bsl::ut_check(args.get<bsl::safe_u64>(bsl::to_umx(4)) == bsl::to_u64(23));
+                    bsl::ut_check(args.get<bsl::safe_u64>(bsl::to_umx(5)) == bsl::to_u64(42));
                 };
             };
         };
 
         bsl::ut_scenario{"args"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_ARGS_POS};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(args.args().data() == argv.data());
-                    bsl::ut_check(args.args().size() == argv.size());
+                    bsl::ut_check(args.args().size() == bsl::to_umx(argv.size()));
                 };
             };
         };
 
         bsl::ut_scenario{"index"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-                bsl::arguments mut_args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_ARGS_POS};
+                bsl::arguments mut_args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_when{} = [&]() noexcept {
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_args.index() == bsl::to_umax(0));
+                        bsl::ut_check(mut_args.index() == bsl::to_umx(0));
                     };
                 };
                 bsl::ut_when{} = [&]() noexcept {
                     ++mut_args;
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_args.index() == bsl::to_umax(1));
+                        bsl::ut_check(mut_args.index() == bsl::to_umx(1));
                     };
                 };
                 bsl::ut_when{} = [&]() noexcept {
@@ -92,7 +94,7 @@ namespace
                     ++mut_args;
                     ++mut_args;
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_args.index() == bsl::to_umax(6));
+                        bsl::ut_check(mut_args.index() == bsl::to_umx(6));
                     };
                 };
             };
@@ -100,16 +102,16 @@ namespace
 
         bsl::ut_scenario{"at"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_ARGS_POS};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_when{} = [&]() noexcept {
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(0)) == "4");
-                        bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(1)) == "8");
-                        bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(2)) == "15");
-                        bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(3)) == "16");
-                        bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(4)) == "23");
-                        bsl::ut_check(args.at<bsl::string_view>(bsl::to_umax(5)) == "42");
+                        bsl::ut_check(args.at<bsl::string_view>(bsl::to_umx(0)) == "4");
+                        bsl::ut_check(args.at<bsl::string_view>(bsl::to_umx(1)) == "8");
+                        bsl::ut_check(args.at<bsl::string_view>(bsl::to_umx(2)) == "15");
+                        bsl::ut_check(args.at<bsl::string_view>(bsl::to_umx(3)) == "16");
+                        bsl::ut_check(args.at<bsl::string_view>(bsl::to_umx(4)) == "23");
+                        bsl::ut_check(args.at<bsl::string_view>(bsl::to_umx(5)) == "42");
                     };
                 };
             };
@@ -117,109 +119,64 @@ namespace
 
         bsl::ut_scenario{"front"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_ARGS_POS};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(args.front<bsl::string_view>() == "4");
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::arguments const args{bsl::to_umax(0), nullptr};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(args.front<bsl::string_view>().empty());
                 };
             };
         };
 
         bsl::ut_scenario{"empty"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_ARGS_POS};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.empty());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::arguments const args{bsl::to_umax(0), nullptr};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(args.empty());
-                };
-            };
-        };
-
-        bsl::ut_scenario{"operator bool"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::arguments const args{bsl::to_umax(0), nullptr};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!args);
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-                bsl::arguments const args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!!args);
                 };
             };
         };
 
         bsl::ut_scenario{"size"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_ARGS_POS};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(args.size() == bsl::to_umax(6));
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::arguments const args{bsl::to_umax(0), nullptr};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(args.size().is_zero());
+                    bsl::ut_check(args.size() == bsl::to_umx(7));
                 };
             };
         };
 
         bsl::ut_scenario{"remaining"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-                bsl::arguments mut_args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_ARGS_POS};
+                bsl::arguments mut_args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_when{} = [&]() noexcept {
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_args.remaining() == bsl::to_umax(6));
+                        bsl::ut_check(mut_args.remaining() == bsl::to_umx(7));
                     };
                 };
                 bsl::ut_when{} = [&]() noexcept {
                     ++mut_args;
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_args.remaining() == bsl::to_umax(5));
+                        bsl::ut_check(mut_args.remaining() == bsl::to_umx(6));
                     };
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::arguments const args{bsl::to_umax(0), nullptr};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(args.remaining().is_zero());
                 };
             };
         };
 
         bsl::ut_scenario{"increment"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-                bsl::arguments mut_args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_ARGS_POS};
+                bsl::arguments mut_args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_when{} = [&]() noexcept {
                     ++mut_args;
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umax(0)) == "8");
-                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umax(1)) == "15");
-                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umax(2)) == "16");
-                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umax(3)) == "23");
-                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umax(4)) == "42");
+                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umx(0)) == "8");
+                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umx(1)) == "15");
+                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umx(2)) == "16");
+                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umx(3)) == "23");
+                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umx(4)) == "42");
                         bsl::ut_check(mut_args.get<bool>("-opt1"));
                     };
                 };
@@ -227,10 +184,10 @@ namespace
                 bsl::ut_when{} = [&]() noexcept {
                     ++mut_args;
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umax(0)) == "15");
-                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umax(1)) == "16");
-                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umax(2)) == "23");
-                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umax(3)) == "42");
+                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umx(0)) == "15");
+                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umx(1)) == "16");
+                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umx(2)) == "23");
+                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umx(3)) == "42");
                         bsl::ut_check(mut_args.get<bool>("-opt1"));
                     };
                 };
@@ -238,9 +195,9 @@ namespace
                 bsl::ut_when{} = [&]() noexcept {
                     ++mut_args;
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umax(0)) == "16");
-                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umax(1)) == "23");
-                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umax(2)) == "42");
+                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umx(0)) == "16");
+                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umx(1)) == "23");
+                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umx(2)) == "42");
                         bsl::ut_check(mut_args.get<bool>("-opt1"));
                     };
                 };
@@ -248,8 +205,8 @@ namespace
                 bsl::ut_when{} = [&]() noexcept {
                     ++mut_args;
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umax(0)) == "23");
-                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umax(1)) == "42");
+                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umx(0)) == "23");
+                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umx(1)) == "42");
                         bsl::ut_check(mut_args.get<bool>("-opt1"));
                     };
                 };
@@ -257,7 +214,7 @@ namespace
                 bsl::ut_when{} = [&]() noexcept {
                     ++mut_args;
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umax(0)) == "42");
+                        bsl::ut_check(mut_args.at<bsl::string_view>(bsl::to_umx(0)) == "42");
                         bsl::ut_check(mut_args.get<bool>("-opt1"));
                     };
                 };
@@ -268,44 +225,29 @@ namespace
                         bsl::ut_check(mut_args.get<bool>("-opt1"));
                     };
                 };
-            };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::array const argv{"4", "-opt1", "8"};
-                bsl::arguments mut_args{argv.size(), argv.data()};
-                bsl::ut_when{} = [&]() noexcept {
+                bsl::ut_when{"doesn't crash"} = [&]() noexcept {
                     ++mut_args;
                     ++mut_args;
                     ++mut_args;
                     ++mut_args;
                     ++mut_args;
-                    ++mut_args;
-                    bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_args.get<bool>("-opt1"));
-                    };
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::arguments const args{bsl::to_umax(0), nullptr};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(args.size().is_zero());
                 };
             };
         };
 
         bsl::ut_scenario{"output doesn't crash"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_ARGS_POS};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::debug() << args << '\n';
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_ARGS_POS};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::debug() << args << '\n';
                 };

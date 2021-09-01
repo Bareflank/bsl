@@ -25,14 +25,14 @@
 #ifndef BSL_DETAILS_FMT_IMPL_INTEGRAL_INFO_HPP
 #define BSL_DETAILS_FMT_IMPL_INTEGRAL_INFO_HPP
 
-#include "../array.hpp"
+#include "../carray.hpp"
 #include "../char_type.hpp"
 #include "../safe_integral.hpp"
 
 namespace bsl::details
 {
     /// @brief stores the maximum number of digits.
-    constexpr safe_uintmax MAX_NUM_DIGITS{static_cast<bsl::uintmax>(64)};
+    constexpr safe_umx MAX_NUM_DIGITS{static_cast<bsl::uintmx>(70)};
 
     /// @class bsl::details::fmt_impl_integral_info
     ///
@@ -41,18 +41,14 @@ namespace bsl::details
     ///     by the fmt logic to output a number. Note that this this is not a
     ///     trivial type, this has to be implemented as a class.
     ///
-    /// <!-- template parameters -->
-    ///   @tparam T the type of integral to get info from
-    ///
-    template<typename T>
     struct fmt_impl_integral_info final
     {
         /// @brief stores the total number of extra characters needed
-        safe_uintmax extras{};
+        safe_idx extras{};
         /// @brief stores the total number digits that make up the integral
-        safe_uintmax digits{};
+        safe_idx digits{};
         /// @brief stores the integral as a string in reverse
-        array<char_type, MAX_NUM_DIGITS.get()> buf{};
+        carray<char_type, MAX_NUM_DIGITS.get()> buf{};
     };
 }
 

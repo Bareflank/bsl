@@ -34,7 +34,7 @@ namespace bsl
     inline void
     example_rank_overview() noexcept
     {
-        constexpr auto expected_rank{1_umax};
+        constexpr auto expected_rank{1_umx};
         // This is needed to demonstrate how to use this type trait
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
         if constexpr (bsl::rank<bool[]>::value == expected_rank.get()) {

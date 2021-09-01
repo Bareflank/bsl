@@ -36,7 +36,7 @@ namespace bsl
         constexpr bsl::string_view str{"Hello"};
 
         for (auto mut_i{str.begin()}; mut_i != str.end(); ++mut_i) {
-            bsl::print() << mut_i.data();
+            bsl::print() << *mut_i.data();
         }
         bsl::print() << bsl::endl;
     }

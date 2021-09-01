@@ -39,54 +39,6 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    bsl::ut_scenario{"cstr_type with no formatting"} = []() noexcept {
-        bsl::ut_when{} = []() noexcept {
-            fmt_test::reset();
-            bsl::print() << bsl::cstr_type{};
-            bsl::ut_then{} = []() noexcept {
-                bsl::ut_check(fmt_test::was_this_outputted("[empty bsl::cstr_type]"));
-            };
-        };
-    };
-
-    bsl::ut_scenario{"cstr_type with no formatting"} = []() noexcept {
-        bsl::ut_when{} = []() noexcept {
-            fmt_test::reset();
-            bsl::print() << "Hello";
-            bsl::ut_then{} = []() noexcept {
-                bsl::ut_check(fmt_test::was_this_outputted("Hello"));
-            };
-        };
-    };
-
-    bsl::ut_scenario{"cstr_type with no formatting using fmt"} = []() noexcept {
-        bsl::ut_when{} = []() noexcept {
-            fmt_test::reset();
-            bsl::print() << bsl::fmt{bsl::nullops, "Hello"};
-            bsl::ut_then{} = []() noexcept {
-                bsl::ut_check(fmt_test::was_this_outputted("Hello"));
-            };
-        };
-    };
-
-    bsl::ut_scenario{"dynamic width tests"} = []() noexcept {
-        bsl::ut_when{} = []() noexcept {
-            fmt_test::reset();
-            bsl::print() << bsl::fmt{bsl::nullops, "Hello", bsl::to_umax(0)};
-            bsl::ut_then{} = []() noexcept {
-                bsl::ut_check(fmt_test::was_this_outputted("Hello"));
-            };
-        };
-
-        bsl::ut_when{} = []() noexcept {
-            fmt_test::reset();
-            bsl::print() << bsl::fmt{bsl::nullops, "Hello", bsl::to_umax(9)};
-            bsl::ut_then{} = []() noexcept {
-                bsl::ut_check(fmt_test::was_this_outputted("Hello    "));
-            };
-        };
-    };
-
     bsl::ut_scenario{"cstr_type with formatting type s"} = []() noexcept {
         bsl::ut_when{} = []() noexcept {
             fmt_test::reset();

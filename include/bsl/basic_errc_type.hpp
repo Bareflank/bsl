@@ -29,7 +29,6 @@
 #define BSL_BASIC_ERRC_TYPE_HPP
 
 #include "cstdint.hpp"
-#include "safe_integral.hpp"
 
 namespace bsl
 {
@@ -39,7 +38,7 @@ namespace bsl
     ///   @brief Defines an error code. We do not use the same pattern as the
     ///     standard library. The goal is to ensure an error code can consume
     ///     a single register to ensure maximum compatibility with different
-    ///     CPU archiectures that only have a 32bit return register. We also do
+    ///     CPU architectures that only have a 32bit return register. We also do
     ///     not use an enum to ensure custom error codes can be created. This
     ///     also means there are no error code categories. Instead, an error
     ///     code is checked if it is negative, and unchecked if it is positive
@@ -68,9 +67,7 @@ namespace bsl
         ///   @brief Default constructor.
         ///   @include basic_errc_type/example_basic_errc_type_default_constructor.hpp
         ///
-        constexpr basic_errc_type() noexcept    // --
-            : m_errc{}
-        {}
+        constexpr basic_errc_type() noexcept = default;
 
         /// <!-- description -->
         ///   @brief Value initialization constructor
@@ -81,17 +78,6 @@ namespace bsl
         ///
         explicit constexpr basic_errc_type(value_type const &val) noexcept    // --
             : m_errc{val}
-        {}
-
-        /// <!-- description -->
-        ///   @brief Value initialization constructor
-        ///   @include basic_errc_type/example_basic_errc_type_constructor_t_safe_int.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param val the error code to store
-        ///
-        explicit constexpr basic_errc_type(safe_integral<value_type> const &val) noexcept    // --
-            : basic_errc_type{val.get()}
         {}
 
         /// <!-- description -->
@@ -137,9 +123,6 @@ namespace bsl
 
         /// <!-- description -->
         ///   @brief Returns the integer value that represents the error code.
-        ///     Normally, this function should not be used, and instead, you
-        ///     should use the other functions like ==, !=, operator bool(),
-        ///     is_checked() and is_unchecked().
         ///   @include basic_errc_type/example_basic_errc_type_get.hpp
         ///
         /// <!-- inputs/outputs -->
@@ -203,7 +186,7 @@ namespace bsl
     };
 
     /// <!-- description -->
-    ///   @brief Returns true if the lhs is equal to the rhs, false otherwise
+    ///   @brief Returns lhs.get() == rhs.get()
     ///   @include basic_errc_type/example_basic_errc_type_equals.hpp
     ///   @related bsl::basic_errc_type
     ///
@@ -211,7 +194,7 @@ namespace bsl
     ///   @tparam T the type to use to store the error code.
     ///   @param lhs the left hand side of the operator
     ///   @param rhs the right hand side of the operator
-    ///   @return Returns true if the lhs is equal to the rhs, false otherwise
+    ///   @return Returns lhs.get() == rhs.get()
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
@@ -221,7 +204,7 @@ namespace bsl
     }
 
     /// <!-- description -->
-    ///   @brief Returns false if the lhs is equal to the rhs, true otherwise
+    ///   @brief Returns !(lhs == rhs).
     ///   @include basic_errc_type/example_basic_errc_type_not_equals.hpp
     ///   @related bsl::basic_errc_type
     ///
@@ -229,86 +212,13 @@ namespace bsl
     ///   @tparam T the type to use to store the error code.
     ///   @param lhs the left hand side of the operator
     ///   @param rhs the right hand side of the operator
-    ///   @return Returns false if the lhs is equal to the rhs, true otherwise
+    ///   @return Returns !(lhs == rhs).
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
     operator!=(basic_errc_type<T> const &lhs, basic_errc_type<T> const &rhs) noexcept -> bool
     {
         return !(lhs == rhs);
-    }
-}
-
-// -----------------------------------------------------------------------------
-// Pre-defined Error Codes
-// -----------------------------------------------------------------------------
-
-namespace bsl
-{
-    /// @brief Defines the "no error" case
-    constexpr basic_errc_type<> errc_success{0};
-    /// @brief Defines the general unchecked error case
-    constexpr basic_errc_type<> errc_failure{-1};
-    /// @brief Defines the general precondition error case
-    constexpr basic_errc_type<> errc_precondition{-2};
-    /// @brief Defines the general postcondition error case
-    constexpr basic_errc_type<> errc_postcondition{-3};
-    /// @brief Defines the general assertion error case
-    constexpr basic_errc_type<> errc_assetion{-4};
-
-    /// @brief Defines an invalid argument error code
-    constexpr basic_errc_type<> errc_invalid_argument{-10};
-    /// @brief Defines an out of bounds error code
-    constexpr basic_errc_type<> errc_index_out_of_bounds{-11};
-
-    /// @brief Defines an unsigned wrap error
-    constexpr basic_errc_type<> errc_unsigned_wrap{-30};
-    /// @brief Defines a narrow overflow error
-    constexpr basic_errc_type<> errc_narrow_overflow{-31};
-    /// @brief Defines a signed overflow error
-    constexpr basic_errc_type<> errc_signed_overflow{-32};
-    /// @brief Defines a divide by zero error
-    constexpr basic_errc_type<> errc_divide_by_zero{-33};
-    /// @brief Defines an out of bounds error code
-    constexpr basic_errc_type<> errc_nullptr_dereference{-34};
-
-    /// @brief Defines when a resource is busy
-    constexpr basic_errc_type<> errc_busy{-50};
-    /// @brief Defines when a resource already_exists
-    constexpr basic_errc_type<> errc_already_exists{-51};
-    /// @brief Defines when something is unsupported
-    constexpr basic_errc_type<> errc_unsupported{-52};
-}
-
-// -----------------------------------------------------------------------------
-// Helpers
-// -----------------------------------------------------------------------------
-
-namespace bsl
-{
-    /// <!-- description -->
-    ///   @brief Returns true if the provided error code is equal to
-    ///     bsl::errc_success or bsl::errc_precondition. Returns false
-    ///     otherwise.
-    ///
-    /// <!-- inputs/outputs -->
-    ///   @param ec the error code to query
-    ///   @return Returns true if the provided error code is equal to
-    ///     bsl::errc_success or bsl::errc_precondition. Returns false
-    ///     otherwise.
-    ///
-    [[nodiscard]] constexpr auto
-    success_or_precondition(basic_errc_type<> const ec) noexcept -> bool
-    {
-        if (bsl::errc_success == ec) {
-            return true;
-        }
-
-        if (bsl::errc_precondition == ec) {
-            return true;
-        }
-
-        return false;
     }
 }
 

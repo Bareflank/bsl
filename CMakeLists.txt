@@ -26,6 +26,7 @@ include(cmake/init_build.cmake)
 
 if(BUILD_EXAMPLES AND NOT BSL_BUILD_EXAMPLES_OVERRIDE)
     add_subdirectory(examples)
+    add_subdirectory(tests/binary_analysis)
 endif()
 
 if(BUILD_TESTS AND NOT BSL_BUILD_TESTS_OVERRIDE)

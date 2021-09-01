@@ -29,7 +29,6 @@
 #define BSL_UT_HPP
 
 #include "color.hpp"
-#include "cstdlib.hpp"
 #include "debug.hpp"
 #include "dontcare_t.hpp"
 #include "exit_code.hpp"
@@ -45,6 +44,7 @@
 #include "ut_then_at_runtime.hpp"
 #include "ut_when.hpp"
 
+#include <bsl/cstdlib.hpp>
 #include <bsl/enable_color.hpp>
 
 #pragma clang diagnostic ignored "-Wunused-member-function"
@@ -65,7 +65,7 @@ namespace bsl
     [[nodiscard]] constexpr auto
     ut_success() noexcept -> bsl::exit_code
     {
-        bsl::print() << bsl::green << "All tests passed" << bsl::reset_color << bsl::endl;
+        bsl::print() << bsl::grn << "All tests passed" << bsl::rst << bsl::endl;
         return bsl::exit_success;
     }
 
@@ -93,13 +93,19 @@ namespace bsl
     [[maybe_unused]] constexpr auto
     ut_required_step(bool const test, source_location const &sloc = here()) noexcept -> bool
     {
-        if (unlikely(!test)) {                                      // GRCOV_EXCLUDE_BR
-            bsl::error() << bsl::mag << "[REQUIRED STEP FAILED]"    // GRCOV_EXCLUDE
-                         << bsl::rst << bsl::endl;                  // GRCOV_EXCLUDE
-            bsl::error() << sloc;                                   // GRCOV_EXCLUDE
+        if (unlikely(!test)) {                               // GRCOV_EXCLUDE_BR // NOLINT
+            auto const *const f{sloc.file_name()};           // GRCOV_EXCLUDE // NOLINT
+            bsl::details::line_type const l{sloc.line()};    // GRCOV_EXCLUDE // NOLINT
+            auto const *const m{bsl::mag.data()};            // GRCOV_EXCLUDE // NOLINT
+            auto const *const y{bsl::ylw.data()};            // GRCOV_EXCLUDE // NOLINT
+            auto const *const c{bsl::cyn.data()};            // GRCOV_EXCLUDE // NOLINT
+            auto const *const r{bsl::rst.data()};            // GRCOV_EXCLUDE // NOLINT
 
-            ut_required_step_failed();    // GRCOV_EXCLUDE
-            exit(1);                      // GRCOV_EXCLUDE
+            ut_required_step_failed();                                  // GRCOV_EXCLUDE // NOLINT
+            fprintf(stderr, "%s[REQUIRED STEP FAILED]%s\n", m, r);      // GRCOV_EXCLUDE // NOLINT
+            fprintf(stderr, "  --> %s%s %s[%d]%s\n", y, f, c, l, r);    // GRCOV_EXCLUDE // NOLINT
+
+            exit(1);    // GRCOV_EXCLUDE // NOLINT
         }
         else {
             bsl::touch();
@@ -145,7 +151,7 @@ namespace bsl
         bsl::safe_integral<FIELD_TYPE> const &val, source_location const &sloc = here()) noexcept
         -> bool
     {
-        return ut_required_step(!!val, sloc);
+        return ut_required_step(val.is_valid_and_checked(), sloc);
     }
 
     /// <!-- description -->
@@ -172,13 +178,19 @@ namespace bsl
     [[maybe_unused]] constexpr auto
     ut_check(bool const test, source_location const &sloc = here()) noexcept -> bool
     {
-        if (unlikely(!test)) {                              // GRCOV_EXCLUDE_BR
-            bsl::error() << bsl::mag << "[CHECK FAILED]"    // GRCOV_EXCLUDE
-                         << bsl::rst << bsl::endl;          // GRCOV_EXCLUDE
-            bsl::error() << sloc;                           // GRCOV_EXCLUDE
+        if (unlikely(!test)) {                               // GRCOV_EXCLUDE_BR
+            auto const *const f{sloc.file_name()};           // GRCOV_EXCLUDE // NOLINT
+            bsl::details::line_type const l{sloc.line()};    // GRCOV_EXCLUDE // NOLINT
+            auto const *const m{bsl::mag.data()};            // GRCOV_EXCLUDE // NOLINT
+            auto const *const y{bsl::ylw.data()};            // GRCOV_EXCLUDE // NOLINT
+            auto const *const c{bsl::cyn.data()};            // GRCOV_EXCLUDE // NOLINT
+            auto const *const r{bsl::rst.data()};            // GRCOV_EXCLUDE // NOLINT
 
-            ut_check_failed();    // GRCOV_EXCLUDE
-            exit(1);              // GRCOV_EXCLUDE
+            ut_check_failed();                                          // GRCOV_EXCLUDE // NOLINT
+            fprintf(stderr, "%s[CHECK FAILED]%s\n", m, r);              // GRCOV_EXCLUDE // NOLINT
+            fprintf(stderr, "  --> %s%s %s[%d]%s\n", y, f, c, l, r);    // GRCOV_EXCLUDE // NOLINT
+
+            exit(1);    // GRCOV_EXCLUDE // NOLINT
         }
         else {
             bsl::touch();
@@ -224,7 +236,7 @@ namespace bsl
         bsl::safe_integral<FIELD_TYPE> const &val, source_location const &sloc = here()) noexcept
         -> bool
     {
-        return ut_check(!!val, sloc);
+        return ut_check(val.is_valid_and_checked(), sloc);
     }
 }
 

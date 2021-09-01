@@ -35,18 +35,14 @@ coverage:
 parsers:
   gcov:
     branch_detection:
-      conditional: no
-      loop: no
-      method: no
-      macro: no
+      conditional: yes
+      loop: yes
+      method: yes
+      macro: yes
 
 ignore:
   - "examples/**"
-  - "include/bsl/arch/**"
   - "include/bsl/platform/**"
-  - "include/bsl/spinlock.hpp"
-  - "include/bsl/ut.hpp"
-  - "tests/**"
 
 comment:
   layout: "reach,diff,flags,tree"

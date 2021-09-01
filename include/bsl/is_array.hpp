@@ -57,7 +57,7 @@ namespace bsl
     class is_array<T[]> final : public true_type
     {};
 
-    template<typename T, bsl::uintmax N>
+    template<typename T, bsl::uintmx N>
     // This is needed to implement the type traits.
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
     class is_array<T[N]> final : public true_type

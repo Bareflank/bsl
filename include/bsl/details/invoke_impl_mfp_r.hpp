@@ -77,7 +77,8 @@ namespace bsl::details
             noexcept((pudm_udm_val1.get().*pudm_udm_func)(bsl::forward<TN>(pudm_udm_valn)...)))
             -> decltype((pudm_udm_val1.get().*pudm_udm_func)(bsl::forward<TN>(pudm_udm_valn)...))
         {
-            return (pudm_udm_val1.get().*pudm_udm_func)(bsl::forward<TN>(pudm_udm_valn)...);
+            return (pudm_udm_val1.get().*pudm_udm_func)(    // GRCOV_EXCLUDE_BR
+                bsl::forward<TN>(pudm_udm_valn)...);        // GRCOV_EXCLUDE_BR
         }
 
     protected:

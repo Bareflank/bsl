@@ -22,7 +22,10 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/array.hpp>
+#include "../carray_init.hpp"
+
+#include <bsl/carray.hpp>
+#include <bsl/convert.hpp>
 #include <bsl/cstring.hpp>
 #include <bsl/ut.hpp>
 
@@ -39,13 +42,12 @@ main() noexcept -> bsl::exit_code
 {
     bsl::ut_scenario{"verify noexcept"} = []() noexcept {
         bsl::ut_given{} = []() noexcept {
-            bsl::array mut_arr{true, true, true, true, true};
+            bsl::carray mut_arr{test::CARRAY_INIT_INT_42};
+            auto const size{bsl::to_umx(mut_arr.size())};
             bsl::ut_then{} = []() noexcept {
-                static_assert(noexcept(bsl::builtin_strncmp("", "", {})));
                 static_assert(noexcept(bsl::builtin_strlen("")));
-                static_assert(noexcept(bsl::builtin_memset(mut_arr.data(), '\0', mut_arr.size())));
-                static_assert(
-                    noexcept(bsl::builtin_memcpy(mut_arr.data(), mut_arr.data(), mut_arr.size())));
+                static_assert(noexcept(bsl::builtin_memset(mut_arr.data(), '\0', size)));
+                static_assert(noexcept(bsl::builtin_memcpy(mut_arr.data(), mut_arr.data(), size)));
             };
         };
     };

@@ -34,7 +34,7 @@ namespace bsl
     inline void
     example_char_traits_to_char_type() noexcept
     {
-        constexpr auto val{42_imax};
+        constexpr auto val{42_i32};
 
         bsl::print() << "success: " << bsl::char_traits<bsl::char_type>::to_char_type(val.get())
                      << bsl::endl;

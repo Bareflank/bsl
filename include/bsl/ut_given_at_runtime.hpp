@@ -80,18 +80,6 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief The l-value version of this function is not supported
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @tparam FUNC_T ignored
-        ///   @param mut_func ignored
-        ///   @return this
-        ///
-        template<typename FUNC_T>
-        [[maybe_unused]] constexpr auto operator=(FUNC_T &&mut_func) const &noexcept
-            -> ut_given_at_runtime & = delete;
-
-        /// <!-- description -->
         ///   @brief Destroyes a previously created bsl::ut_given_at_runtime
         ///
         constexpr ~ut_given_at_runtime() noexcept = default;

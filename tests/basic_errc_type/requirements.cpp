@@ -56,7 +56,6 @@ main() noexcept -> bsl::exit_code
             bsl::ut_then{} = []() noexcept {
                 static_assert(noexcept(bsl::basic_errc_type<>{}));
                 static_assert(noexcept(bsl::basic_errc_type<>{42}));
-                static_assert(noexcept(bsl::basic_errc_type<>{bsl::to_i32(42)}));
 
                 static_assert(noexcept(mut_errc1.get()));
                 static_assert(noexcept(!!mut_errc1));

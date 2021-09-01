@@ -64,62 +64,36 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"compare"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::ut_then{} = []() noexcept {
-                    bsl::ut_check(!traits::compare(nullptr, "42", bsl::to_umax(2)));
-                    bsl::ut_check(!traits::compare("42", nullptr, bsl::to_umax(2)));
-                    bsl::ut_check(!traits::compare("42", "42", bsl::safe_uintmax::failure()));
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::ut_then{} = []() noexcept {
-                    bsl::ut_check(traits::compare("42", "42", bsl::to_umax(0)) == 0);
-                    bsl::ut_check(traits::compare("42", "42", bsl::to_umax(1)) == 0);
-                    bsl::ut_check(traits::compare("42", "42", bsl::to_umax(2)) == 0);
-                    bsl::ut_check(traits::compare("42", "23", bsl::to_umax(1)) != 0);
-                    bsl::ut_check(traits::compare("42", "23", bsl::to_umax(2)) != 0);
-                };
-            };
-        };
-
         bsl::ut_scenario{"length"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::ut_then{} = []() noexcept {
-                    bsl::ut_check(!traits::length(nullptr));
-                };
-            };
-
             bsl::ut_given{} = []() noexcept {
                 bsl::ut_then{} = []() noexcept {
-                    bsl::ut_check(traits::length("") == bsl::to_umax(0));
-                    bsl::ut_check(traits::length("42") == bsl::to_umax(2));
-                    bsl::ut_check(traits::length("4\0 2") == bsl::to_umax(1));
+                    bsl::ut_check(traits::length("") == bsl::to_umx(0));
+                    bsl::ut_check(traits::length("42") == bsl::to_umx(2));
+                    bsl::ut_check(traits::length("4\0 2") == bsl::to_umx(1));
                 };
             };
         };
 
         bsl::ut_scenario{"to_char_type"} = []() noexcept {
             bsl::ut_then{} = []() noexcept {
-                constexpr bsl::safe_intmax s{bsl::to_imax(42)};
-                constexpr bsl::safe_intmax b{bsl::to_imax(4242)};
+                constexpr bsl::safe_i32 s{bsl::to_i32(42)};
+                constexpr bsl::safe_i32 b{bsl::to_i32(4242)};
                 bsl::ut_check(
-                    bsl::to_imax(static_cast<bsl::uint8>(traits::to_char_type(s.get()))) == s);
+                    bsl::to_i32(static_cast<bsl::uint8>(traits::to_char_type(s.get()))) == s);
                 bsl::ut_check(
-                    bsl::to_imax(static_cast<bsl::uint8>(traits::to_char_type(b.get()))) != b);
+                    bsl::to_i32(static_cast<bsl::uint8>(traits::to_char_type(b.get()))) != b);
             };
         };
 
         bsl::ut_scenario{"to_int_type"} = []() noexcept {
             bsl::ut_then{} = []() noexcept {
-                bsl::ut_check(traits::to_int_type('*') == bsl::to_imax(42));
+                bsl::ut_check(traits::to_int_type('*') == bsl::to_i32(42));
             };
         };
 
         bsl::ut_scenario{"eq_int_type"} = []() noexcept {
             bsl::ut_then{} = []() noexcept {
-                constexpr bsl::safe_intmax i{bsl::to_imax(42)};
+                constexpr bsl::safe_i32 i{bsl::to_i32(42)};
                 bsl::ut_check(traits::eq_int_type(i.get(), i.get()));
                 bsl::ut_check(traits::eq_int_type(traits::eof(), traits::eof()));
                 bsl::ut_check(!traits::eq_int_type(i.get(), traits::eof()));
@@ -129,14 +103,14 @@ namespace
 
         bsl::ut_scenario{"eof"} = []() noexcept {
             bsl::ut_then{} = []() noexcept {
-                bsl::ut_check(traits::eof() == bsl::to_imax(-1));
+                bsl::ut_check(traits::eof() == bsl::to_i32(-1));
             };
         };
 
         bsl::ut_scenario{"not_eof"} = []() noexcept {
             bsl::ut_then{} = []() noexcept {
-                constexpr bsl::safe_intmax i1{};
-                constexpr bsl::safe_intmax i2{bsl::to_imax(42)};
+                constexpr bsl::safe_i32 i1{};
+                constexpr bsl::safe_i32 i2{bsl::to_i32(42)};
                 bsl::ut_check(traits::not_eof(i1.get()) == i1);
                 bsl::ut_check(traits::not_eof(i2.get()) == i2);
                 bsl::ut_check(traits::not_eof(traits::eof()) == i1);

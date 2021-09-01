@@ -36,21 +36,21 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    static_assert(bsl::rank<void>::value == static_cast<bsl::uintmax>(0));
-    static_assert(bsl::rank<bool>::value == static_cast<bsl::uintmax>(0));
+    static_assert(bsl::rank<void>::value == static_cast<bsl::uintmx>(0));
+    static_assert(bsl::rank<bool>::value == static_cast<bsl::uintmx>(0));
 
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(bsl::rank<bool[]>::value == static_cast<bsl::uintmax>(1));
+    static_assert(bsl::rank<bool[]>::value == static_cast<bsl::uintmx>(1));
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(bsl::rank<bool[][42]>::value == static_cast<bsl::uintmax>(2));
+    static_assert(bsl::rank<bool[][42]>::value == static_cast<bsl::uintmx>(2));
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(bsl::rank<bool[][42][42]>::value == static_cast<bsl::uintmax>(3));
+    static_assert(bsl::rank<bool[][42][42]>::value == static_cast<bsl::uintmx>(3));
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(bsl::rank<bool[42]>::value == static_cast<bsl::uintmax>(1));
+    static_assert(bsl::rank<bool[42]>::value == static_cast<bsl::uintmx>(1));
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(bsl::rank<bool[42][42]>::value == static_cast<bsl::uintmax>(2));
+    static_assert(bsl::rank<bool[42][42]>::value == static_cast<bsl::uintmx>(2));
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
-    static_assert(bsl::rank<bool[42][42][42]>::value == static_cast<bsl::uintmax>(3));
+    static_assert(bsl::rank<bool[42][42][42]>::value == static_cast<bsl::uintmx>(3));
 
     return bsl::ut_success();
 }

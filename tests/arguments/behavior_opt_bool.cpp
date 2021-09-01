@@ -22,8 +22,10 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include "../carray_init.hpp"
+
 #include <bsl/arguments.hpp>
-#include <bsl/array.hpp>
+#include <bsl/carray.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/cstr_type.hpp>
 #include <bsl/ut.hpp>
@@ -43,72 +45,65 @@ namespace
     tests() noexcept -> bsl::exit_code
     {
         bsl::ut_scenario{"get optional bool"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::arguments const args{bsl::to_umax(0), nullptr};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!args.get<bool>("-app"));
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::array const argv{"-app"};
-                bsl::arguments const args{argv.size(), argv.data()};
+            bsl::ut_given{} = []() noexcept {
+                bsl::carray const argv{test::CARRAY_INIT_STR_DASH_APP};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bool>(""));
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"app"};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_DASH_APP_EQ_42_SPACE};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bool>("-app"));
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"-app"};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_DASH_APP};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bool>("-app_blah"));
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"-app"};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_DASH_APP};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bool>("-ap"));
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"-app="};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_DASH_APP_EQ};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bool>("-app"));
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"-app=42"};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_DASH_APP_EQ_42};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bool>("-app="));
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"-app=42"};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_DASH_APP_EQ_42};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!args.get<bool>("-app"));
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"-app"};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_DASH_APP};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(args.get<bool>("-app"));
                 };

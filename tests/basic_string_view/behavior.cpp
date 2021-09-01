@@ -43,16 +43,8 @@ namespace
     tests() noexcept -> bsl::exit_code
     {
         bsl::ut_scenario{"construction"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(msg.empty());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::cstr_type const null_msg{};
-                bsl::basic_string_view<bsl::char_type> const msg{null_msg};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(msg.empty());
                 };
@@ -72,45 +64,30 @@ namespace
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::cstr_type const null_msg{};
-                bsl::basic_string_view<bsl::char_type> const msg{null_msg, bsl::to_umax(0)};
+            bsl::ut_given{} = []() noexcept {
+                bsl::basic_string_view<bsl::char_type> const msg{"", bsl::to_umx(0)};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(msg.empty());
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{"", bsl::to_umax(0)};
+                bsl::basic_string_view<bsl::char_type> const msg{"Hello", bsl::to_umx(0)};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(msg.empty());
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{"Hello", bsl::to_umax(0)};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(msg.empty());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{"Hello", bsl::safe_uintmax::failure()};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(msg.empty());
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{"Hello", bsl::to_umax(5)};
+                bsl::basic_string_view<bsl::char_type> const msg{"Hello", bsl::to_umx(5)};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(msg == "Hello");
                 };
             };
         };
 
-        bsl::ut_scenario{"assignment"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+        bsl::ut_scenario{"assignmen t"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{};
                 bsl::ut_when{} = [&]() noexcept {
                     mut_msg = "";
@@ -152,74 +129,58 @@ namespace
         };
 
         bsl::ut_scenario{"at_if"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == mut_msg.at_if(bsl::to_umax(0)));
+                    bsl::ut_check(nullptr == mut_msg.at_if(bsl::to_idx(0)));
                     bsl::ut_check(nullptr == mut_msg.at_if(bsl::npos));
-                    bsl::ut_check(nullptr == mut_msg.at_if(bsl::safe_uintmax::failure()));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == msg.at_if(bsl::to_umax(0)));
+                    bsl::ut_check(nullptr == msg.at_if(bsl::to_idx(0)));
                     bsl::ut_check(nullptr == msg.at_if(bsl::npos));
-                    bsl::ut_check(nullptr == msg.at_if(bsl::safe_uintmax::failure()));
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check('H' == *mut_msg.at_if(bsl::to_umax(0)));
-                    bsl::ut_check('e' == *mut_msg.at_if(bsl::to_umax(1)));
-                    bsl::ut_check('l' == *mut_msg.at_if(bsl::to_umax(2)));
-                    bsl::ut_check('l' == *mut_msg.at_if(bsl::to_umax(3)));
-                    bsl::ut_check('o' == *mut_msg.at_if(bsl::to_umax(4)));
-                    bsl::ut_check(nullptr == mut_msg.at_if(bsl::to_umax(5)));
+                    bsl::ut_check('H' == *mut_msg.at_if(bsl::to_idx(0)));
+                    bsl::ut_check('e' == *mut_msg.at_if(bsl::to_idx(1)));
+                    bsl::ut_check('l' == *mut_msg.at_if(bsl::to_idx(2)));
+                    bsl::ut_check('l' == *mut_msg.at_if(bsl::to_idx(3)));
+                    bsl::ut_check('o' == *mut_msg.at_if(bsl::to_idx(4)));
+                    bsl::ut_check(nullptr == mut_msg.at_if(bsl::to_idx(5)));
                     bsl::ut_check(nullptr == mut_msg.at_if(bsl::npos));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> mut_msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == mut_msg.at_if(bsl::safe_uintmax::failure()));
-                };
-            };
-
             bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check('H' == *msg.at_if(bsl::to_umax(0)));
-                    bsl::ut_check('e' == *msg.at_if(bsl::to_umax(1)));
-                    bsl::ut_check('l' == *msg.at_if(bsl::to_umax(2)));
-                    bsl::ut_check('l' == *msg.at_if(bsl::to_umax(3)));
-                    bsl::ut_check('o' == *msg.at_if(bsl::to_umax(4)));
-                    bsl::ut_check(nullptr == msg.at_if(bsl::to_umax(5)));
+                    bsl::ut_check('H' == *msg.at_if(bsl::to_idx(0)));
+                    bsl::ut_check('e' == *msg.at_if(bsl::to_idx(1)));
+                    bsl::ut_check('l' == *msg.at_if(bsl::to_idx(2)));
+                    bsl::ut_check('l' == *msg.at_if(bsl::to_idx(3)));
+                    bsl::ut_check('o' == *msg.at_if(bsl::to_idx(4)));
+                    bsl::ut_check(nullptr == msg.at_if(bsl::to_idx(5)));
                     bsl::ut_check(nullptr == msg.at_if(bsl::npos));
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == msg.at_if(bsl::safe_uintmax::failure()));
                 };
             };
         };
 
         bsl::ut_scenario{"front_if"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(nullptr == mut_msg.front_if());
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(nullptr == msg.front_if());
@@ -242,14 +203,14 @@ namespace
         };
 
         bsl::ut_scenario{"back_if"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(nullptr == mut_msg.back_if());
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(nullptr == msg.back_if());
@@ -272,14 +233,14 @@ namespace
         };
 
         bsl::ut_scenario{"data"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(nullptr == mut_msg.data());
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(nullptr == msg.data());
@@ -302,27 +263,27 @@ namespace
         };
 
         bsl::ut_scenario{"begin"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(nullptr == mut_msg.begin().get_if());
-                    bsl::ut_check(bsl::to_umax(0) == mut_msg.begin().index());
+                    bsl::ut_check(bsl::to_umx(0) == mut_msg.begin().index());
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(nullptr == msg.begin().get_if());
-                    bsl::ut_check(bsl::to_umax(0) == msg.begin().index());
+                    bsl::ut_check(bsl::to_umx(0) == msg.begin().index());
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(nullptr == msg.cbegin().get_if());
-                    bsl::ut_check(bsl::to_umax(0) == msg.cbegin().index());
+                    bsl::ut_check(bsl::to_umx(0) == msg.cbegin().index());
                 };
             };
 
@@ -330,7 +291,7 @@ namespace
                 bsl::basic_string_view<bsl::char_type> mut_msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check('H' == *(mut_msg.begin().get_if()));
-                    bsl::ut_check(bsl::to_umax(0) == mut_msg.begin().index());
+                    bsl::ut_check(bsl::to_umx(0) == mut_msg.begin().index());
                 };
             };
 
@@ -338,7 +299,7 @@ namespace
                 bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check('H' == *(msg.begin().get_if()));
-                    bsl::ut_check(bsl::to_umax(0) == msg.begin().index());
+                    bsl::ut_check(bsl::to_umx(0) == msg.begin().index());
                 };
             };
 
@@ -346,111 +307,13 @@ namespace
                 bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check('H' == *(msg.cbegin().get_if()));
-                    bsl::ut_check(bsl::to_umax(0) == msg.cbegin().index());
-                };
-            };
-        };
-
-        bsl::ut_scenario{"iter"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> mut_msg{};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == mut_msg.iter(bsl::to_umax(1)).get_if());
-                    bsl::ut_check(mut_msg.size() == mut_msg.iter(bsl::to_umax(1)).index());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == msg.iter(bsl::to_umax(1)).get_if());
-                    bsl::ut_check(msg.size() == msg.iter(bsl::to_umax(1)).index());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == msg.citer(bsl::to_umax(1)).get_if());
-                    bsl::ut_check(msg.size() == msg.citer(bsl::to_umax(1)).index());
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> mut_msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check('e' == *(mut_msg.iter(bsl::to_umax(1)).get_if()));
-                    bsl::ut_check(bsl::to_umax(1) == mut_msg.iter(bsl::to_umax(1)).index());
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check('e' == *(msg.iter(bsl::to_umax(1)).get_if()));
-                    bsl::ut_check(bsl::to_umax(1) == msg.iter(bsl::to_umax(1)).index());
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check('e' == *(msg.citer(bsl::to_umax(1)).get_if()));
-                    bsl::ut_check(bsl::to_umax(1) == msg.citer(bsl::to_umax(1)).index());
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> mut_msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == mut_msg.iter(bsl::npos).get_if());
-                    bsl::ut_check(mut_msg.size() == mut_msg.iter(bsl::npos).index());
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == msg.iter(bsl::npos).get_if());
-                    bsl::ut_check(msg.size() == msg.iter(bsl::npos).index());
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == msg.citer(bsl::npos).get_if());
-                    bsl::ut_check(msg.size() == msg.citer(bsl::npos).index());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> mut_msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == mut_msg.iter(bsl::safe_uintmax::failure()).get_if());
-                    bsl::ut_check(mut_msg.size() == mut_msg.iter(bsl::safe_uintmax::failure()).index());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == msg.iter(bsl::safe_uintmax::failure()).get_if());
-                    bsl::ut_check(msg.size() == msg.iter(bsl::safe_uintmax::failure()).index());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == msg.citer(bsl::safe_uintmax::failure()).get_if());
-                    bsl::ut_check(msg.size() == msg.citer(bsl::safe_uintmax::failure()).index());
+                    bsl::ut_check(bsl::to_umx(0) == msg.cbegin().index());
                 };
             };
         };
 
         bsl::ut_scenario{"end"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(nullptr == mut_msg.end().get_if());
@@ -458,7 +321,7 @@ namespace
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(nullptr == msg.end().get_if());
@@ -466,7 +329,7 @@ namespace
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(nullptr == msg.cend().get_if());
@@ -478,7 +341,6 @@ namespace
                 bsl::basic_string_view<bsl::char_type> mut_msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(mut_msg.size() == mut_msg.end().index());
-                    bsl::ut_check(nullptr == mut_msg.end().get_if());
                 };
             };
 
@@ -486,7 +348,6 @@ namespace
                 bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(msg.size() == msg.end().index());
-                    bsl::ut_check(nullptr == msg.end().get_if());
                 };
             };
 
@@ -494,33 +355,32 @@ namespace
                 bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(msg.size() == msg.cend().index());
-                    bsl::ut_check(nullptr == msg.cend().get_if());
                 };
             };
         };
 
         bsl::ut_scenario{"rbegin"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(nullptr == mut_msg.rbegin().get_if());
-                    bsl::ut_check(bsl::to_umax(0) == mut_msg.rbegin().index());
+                    bsl::ut_check(bsl::to_umx(0) == mut_msg.rbegin().index());
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(nullptr == msg.rbegin().get_if());
-                    bsl::ut_check(bsl::to_umax(0) == msg.rbegin().index());
+                    bsl::ut_check(bsl::to_umx(0) == msg.rbegin().index());
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(nullptr == msg.crbegin().get_if());
-                    bsl::ut_check(bsl::to_umax(0) == msg.crbegin().index());
+                    bsl::ut_check(bsl::to_umx(0) == msg.crbegin().index());
                 };
             };
 
@@ -528,7 +388,7 @@ namespace
                 bsl::basic_string_view<bsl::char_type> mut_msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check('o' == *(mut_msg.rbegin().get_if()));
-                    bsl::ut_check(bsl::to_umax(4) == mut_msg.rbegin().index());
+                    bsl::ut_check(bsl::to_umx(4) == mut_msg.rbegin().index());
                 };
             };
 
@@ -536,7 +396,7 @@ namespace
                 bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check('o' == *(msg.rbegin().get_if()));
-                    bsl::ut_check(bsl::to_umax(4) == msg.rbegin().index());
+                    bsl::ut_check(bsl::to_umx(4) == msg.rbegin().index());
                 };
             };
 
@@ -544,111 +404,13 @@ namespace
                 bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check('o' == *(msg.crbegin().get_if()));
-                    bsl::ut_check(bsl::to_umax(4) == msg.crbegin().index());
-                };
-            };
-        };
-
-        bsl::ut_scenario{"riter"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> mut_msg{};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == mut_msg.riter(bsl::to_umax(1)).get_if());
-                    bsl::ut_check(mut_msg.size() == mut_msg.riter(bsl::to_umax(1)).index());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == msg.riter(bsl::to_umax(1)).get_if());
-                    bsl::ut_check(msg.size() == msg.riter(bsl::to_umax(1)).index());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == msg.criter(bsl::to_umax(1)).get_if());
-                    bsl::ut_check(msg.size() == msg.criter(bsl::to_umax(1)).index());
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> mut_msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check('e' == *(mut_msg.riter(bsl::to_umax(1)).get_if()));
-                    bsl::ut_check(bsl::to_umax(1) == mut_msg.riter(bsl::to_umax(1)).index());
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check('e' == *(msg.riter(bsl::to_umax(1)).get_if()));
-                    bsl::ut_check(bsl::to_umax(1) == msg.riter(bsl::to_umax(1)).index());
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check('e' == *(msg.criter(bsl::to_umax(1)).get_if()));
-                    bsl::ut_check(bsl::to_umax(1) == msg.criter(bsl::to_umax(1)).index());
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> mut_msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == mut_msg.riter(bsl::npos).get_if());
-                    bsl::ut_check(mut_msg.size() == mut_msg.riter(bsl::npos).index());
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == msg.riter(bsl::npos).get_if());
-                    bsl::ut_check(msg.size() == msg.riter(bsl::npos).index());
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == msg.criter(bsl::npos).get_if());
-                    bsl::ut_check(msg.size() == msg.criter(bsl::npos).index());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> mut_msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == mut_msg.riter(bsl::safe_uintmax::failure()).get_if());
-                    bsl::ut_check(mut_msg.size() == mut_msg.riter(bsl::safe_uintmax::failure()).index());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == msg.riter(bsl::safe_uintmax::failure()).get_if());
-                    bsl::ut_check(msg.size() == msg.riter(bsl::safe_uintmax::failure()).index());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(nullptr == msg.criter(bsl::safe_uintmax::failure()).get_if());
-                    bsl::ut_check(msg.size() == msg.criter(bsl::safe_uintmax::failure()).index());
+                    bsl::ut_check(bsl::to_umx(4) == msg.crbegin().index());
                 };
             };
         };
 
         bsl::ut_scenario{"rend"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(nullptr == mut_msg.rend().get_if());
@@ -656,7 +418,7 @@ namespace
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(nullptr == msg.rend().get_if());
@@ -664,7 +426,7 @@ namespace
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(nullptr == msg.crend().get_if());
@@ -698,14 +460,14 @@ namespace
         };
 
         bsl::ut_scenario{"empty"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(mut_msg.empty());
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(msg.empty());
@@ -727,168 +489,204 @@ namespace
             };
         };
 
-        bsl::ut_scenario{"operator bool"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+        bsl::ut_scenario{"is_invalid"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!mut_msg);
+                    bsl::ut_check(mut_msg.is_invalid());
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!msg);
+                    bsl::ut_check(msg.is_invalid());
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!!mut_msg);
+                    bsl::ut_check(!mut_msg.is_invalid());
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!!msg);
+                    bsl::ut_check(!msg.is_invalid());
+                };
+            };
+        };
+
+        bsl::ut_scenario{"is_valid"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::basic_string_view<bsl::char_type> mut_msg{};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(!mut_msg.is_valid());
+                };
+            };
+
+            bsl::ut_given{} = []() noexcept {
+                bsl::basic_string_view<bsl::char_type> const msg{};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(!msg.is_valid());
+                };
+            };
+
+            bsl::ut_given{} = []() noexcept {
+                bsl::basic_string_view<bsl::char_type> mut_msg{"Hello"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(mut_msg.is_valid());
+                };
+            };
+
+            bsl::ut_given{} = []() noexcept {
+                bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(msg.is_valid());
                 };
             };
         };
 
         bsl::ut_scenario{"size"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(mut_msg.size() == bsl::to_umax(0));
+                    bsl::ut_check(mut_msg.size() == bsl::to_umx(0));
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(msg.size() == bsl::to_umax(0));
+                    bsl::ut_check(msg.size() == bsl::to_umx(0));
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(mut_msg.size() == bsl::to_umax(5));
+                    bsl::ut_check(mut_msg.size() == bsl::to_umx(5));
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(msg.size() == bsl::to_umax(5));
+                    bsl::ut_check(msg.size() == bsl::to_umx(5));
                 };
             };
         };
 
         bsl::ut_scenario{"length"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(bsl::to_umax(0) == mut_msg.length());
+                    bsl::ut_check(bsl::to_umx(0) == mut_msg.length());
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(bsl::to_umax(0) == msg.length());
+                    bsl::ut_check(bsl::to_umx(0) == msg.length());
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(mut_msg.length() == bsl::to_umax(5));
+                    bsl::ut_check(mut_msg.length() == bsl::to_umx(5));
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(msg.length() == bsl::to_umax(5));
+                    bsl::ut_check(msg.length() == bsl::to_umx(5));
                 };
             };
         };
 
         bsl::ut_scenario{"max_size"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(mut_msg.max_size() == bsl::safe_uintmax::max() / sizeof(bsl::char_type));
+                    constexpr auto expected{bsl::safe_umx::max_value() / sizeof(bsl::char_type)};
+                    bsl::ut_check(mut_msg.max_size() == expected.checked());
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(msg.max_size() == bsl::safe_uintmax::max() / sizeof(bsl::char_type));
+                    constexpr auto expected{bsl::safe_umx::max_value() / sizeof(bsl::char_type)};
+                    bsl::ut_check(msg.max_size() == expected.checked());
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(mut_msg.max_size() == bsl::safe_uintmax::max() / sizeof(bsl::char_type));
+                    constexpr auto expected{bsl::safe_umx::max_value() / sizeof(bsl::char_type)};
+                    bsl::ut_check(mut_msg.max_size() == expected.checked());
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(msg.max_size() == bsl::safe_uintmax::max() / sizeof(bsl::char_type));
+                    constexpr auto expected{bsl::safe_umx::max_value() / sizeof(bsl::char_type)};
+                    bsl::ut_check(msg.max_size() == expected.checked());
                 };
             };
         };
 
         bsl::ut_scenario{"size_bytes"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(bsl::to_umax(0) == mut_msg.size_bytes());
+                    bsl::ut_check(bsl::to_umx(0) == mut_msg.size_bytes());
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(bsl::to_umax(0) == msg.size_bytes());
+                    bsl::ut_check(bsl::to_umx(0) == msg.size_bytes());
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(mut_msg.size_bytes() == bsl::to_umax(5) * sizeof(bsl::char_type));
+                    constexpr auto expected{bsl::to_umx(5) * sizeof(bsl::char_type)};
+                    bsl::ut_check(mut_msg.size_bytes() == expected.checked());
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(msg.size_bytes() == bsl::to_umax(5) * sizeof(bsl::char_type));
+                    constexpr auto expected{bsl::to_umx(5) * sizeof(bsl::char_type)};
+                    bsl::ut_check(msg.size_bytes() == expected.checked());
                 };
             };
         };
 
         bsl::ut_scenario{"remove_prefix"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{};
                 bsl::ut_when{} = [&]() noexcept {
-                    mut_msg.remove_prefix(bsl::to_umax(0));
+                    mut_msg.remove_prefix(bsl::to_idx(0));
                     bsl::ut_then{} = [&]() noexcept {
                         bsl::ut_check(mut_msg.empty());
                     };
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{};
                 bsl::ut_when{} = [&]() noexcept {
                     mut_msg.remove_prefix(bsl::npos);
@@ -901,7 +699,7 @@ namespace
             bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{"Hello World"};
                 bsl::ut_when{} = [&]() noexcept {
-                    mut_msg.remove_prefix(bsl::to_umax(0));
+                    mut_msg.remove_prefix(bsl::to_idx(0));
                     bsl::ut_then{} = [&]() noexcept {
                         bsl::ut_check(mut_msg == "Hello World");
                     };
@@ -911,7 +709,7 @@ namespace
             bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{"Hello World"};
                 bsl::ut_when{} = [&]() noexcept {
-                    mut_msg.remove_prefix(bsl::to_umax(6));
+                    mut_msg.remove_prefix(bsl::to_idx(6));
                     bsl::ut_then{} = [&]() noexcept {
                         bsl::ut_check(mut_msg == "World");
                     };
@@ -927,30 +725,20 @@ namespace
                     };
                 };
             };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> mut_msg{"Hello World"};
-                bsl::ut_when{} = [&]() noexcept {
-                    mut_msg.remove_prefix(bsl::safe_uintmax::failure());
-                    bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_msg.empty());
-                    };
-                };
-            };
         };
 
         bsl::ut_scenario{"remove_suffix"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{};
                 bsl::ut_when{} = [&]() noexcept {
-                    mut_msg.remove_suffix(bsl::to_umax(0));
+                    mut_msg.remove_suffix(bsl::to_idx(0));
                     bsl::ut_then{} = [&]() noexcept {
                         bsl::ut_check(mut_msg.empty());
                     };
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{};
                 bsl::ut_when{} = [&]() noexcept {
                     mut_msg.remove_suffix(bsl::npos);
@@ -963,7 +751,7 @@ namespace
             bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{"Hello World"};
                 bsl::ut_when{} = [&]() noexcept {
-                    mut_msg.remove_suffix(bsl::to_umax(0));
+                    mut_msg.remove_suffix(bsl::to_idx(0));
                     bsl::ut_then{} = [&]() noexcept {
                         bsl::ut_check(mut_msg == "Hello World");
                     };
@@ -973,7 +761,7 @@ namespace
             bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> mut_msg{"Hello World"};
                 bsl::ut_when{} = [&]() noexcept {
-                    mut_msg.remove_suffix(bsl::to_umax(6));
+                    mut_msg.remove_suffix(bsl::to_idx(6));
                     bsl::ut_then{} = [&]() noexcept {
                         bsl::ut_check(mut_msg == "Hello");
                     };
@@ -989,33 +777,22 @@ namespace
                     };
                 };
             };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> mut_msg{"Hello World"};
-                bsl::ut_when{} = [&]() noexcept {
-                    mut_msg.remove_suffix(bsl::safe_uintmax::failure());
-                    bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_msg.empty());
-                    };
-                };
-            };
         };
 
         bsl::ut_scenario{"substr"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_when{} = [&]() noexcept {
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(msg.substr(bsl::to_umax(0), bsl::to_umax(0)).empty());
-                        bsl::ut_check(msg.substr(bsl::to_umax(0), bsl::to_umax(3)).empty());
-                        bsl::ut_check(msg.substr(bsl::to_umax(0), bsl::npos).empty());
-                        bsl::ut_check(msg.substr(bsl::to_umax(1), bsl::to_umax(0)).empty());
-                        bsl::ut_check(msg.substr(bsl::to_umax(1), bsl::to_umax(3)).empty());
-                        bsl::ut_check(msg.substr(bsl::to_umax(1), bsl::npos).empty());
-                        bsl::ut_check(msg.substr(bsl::npos, bsl::to_umax(0)).empty());
-                        bsl::ut_check(msg.substr(bsl::npos, bsl::to_umax(3)).empty());
-                        bsl::ut_check(msg.substr(bsl::npos, bsl::npos).empty());
-                        bsl::ut_check(msg.substr(bsl::safe_uintmax::failure(), bsl::safe_uintmax::failure()).empty());
+                        bsl::ut_check(msg.substr(bsl::to_idx(0), bsl::to_umx(0)).empty());
+                        bsl::ut_check(msg.substr(bsl::to_idx(0), bsl::to_umx(3)).empty());
+                        bsl::ut_check(msg.substr(bsl::to_idx(0), bsl::safe_umx::max_value()).empty());
+                        bsl::ut_check(msg.substr(bsl::to_idx(1), bsl::to_umx(0)).empty());
+                        bsl::ut_check(msg.substr(bsl::to_idx(1), bsl::to_umx(3)).empty());
+                        bsl::ut_check(msg.substr(bsl::to_idx(1), bsl::safe_umx::max_value()).empty());
+                        bsl::ut_check(msg.substr(bsl::npos, bsl::to_umx(0)).empty());
+                        bsl::ut_check(msg.substr(bsl::npos, bsl::to_umx(3)).empty());
+                        bsl::ut_check(msg.substr(bsl::npos, bsl::safe_umx::max_value()).empty());
                     };
                 };
             };
@@ -1024,26 +801,348 @@ namespace
                 bsl::basic_string_view<bsl::char_type> const msg{"Hello World"};
                 bsl::ut_when{} = [&]() noexcept {
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(msg.substr(bsl::to_umax(0), bsl::to_umax(0)).empty());
-                        bsl::ut_check(msg.substr(bsl::to_umax(0), bsl::to_umax(3)) == "Hel");
-                        bsl::ut_check(msg.substr(bsl::to_umax(0), bsl::npos) == "Hello World");
-                        bsl::ut_check(msg.substr(bsl::to_umax(1), bsl::to_umax(0)).empty());
-                        bsl::ut_check(msg.substr(bsl::to_umax(1), bsl::to_umax(3)) == "ell");
-                        bsl::ut_check(msg.substr(bsl::to_umax(1), bsl::npos) == "ello World");
-                        bsl::ut_check(msg.substr(bsl::npos, bsl::to_umax(0)).empty());
-                        bsl::ut_check(msg.substr(bsl::npos, bsl::to_umax(3)).empty());
-                        bsl::ut_check(msg.substr(bsl::npos, bsl::npos).empty());
+                        bsl::ut_check(msg.substr(bsl::to_idx(0), bsl::to_umx(0)).empty());
+                        bsl::ut_check(msg.substr(bsl::to_idx(0), bsl::to_umx(3)) == "Hel");
+                        bsl::ut_check(msg.substr(bsl::to_idx(0), bsl::safe_umx::max_value()) == "Hello World");
+                        bsl::ut_check(msg.substr(bsl::to_idx(1), bsl::to_umx(0)).empty());
+                        bsl::ut_check(msg.substr(bsl::to_idx(1), bsl::to_umx(3)) == "ell");
+                        bsl::ut_check(msg.substr(bsl::to_idx(1), bsl::safe_umx::max_value()) == "ello World");
+                        bsl::ut_check(msg.substr(bsl::npos, bsl::to_umx(0)).empty());
+                        bsl::ut_check(msg.substr(bsl::npos, bsl::to_umx(3)).empty());
+                        bsl::ut_check(msg.substr(bsl::npos, bsl::safe_umx::max_value()).empty());
                     };
                 };
             };
+        };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::basic_string_view<bsl::char_type> const msg{"Hello World"};
-                bsl::ut_when{} = [&]() noexcept {
-                    bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(msg.substr(bsl::to_umax(0), bsl::safe_uintmax::failure()).empty());
-                        bsl::ut_check(msg.substr(bsl::safe_uintmax::failure(), bsl::to_umax(0)).empty());
-                    };
+        bsl::ut_scenario{"equals"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::basic_string_view<bsl::char_type> const msg0{};
+                bsl::basic_string_view<bsl::char_type> const msg1{};
+                bsl::basic_string_view<bsl::char_type> const msg2{""};
+                bsl::basic_string_view<bsl::char_type> const msg3{""};
+                bsl::basic_string_view<bsl::char_type> const msg4{"h"};
+                bsl::basic_string_view<bsl::char_type> const msg5{"h"};
+                bsl::basic_string_view<bsl::char_type> const msg6{"hello"};
+                bsl::basic_string_view<bsl::char_type> const msg7{"hello"};
+                bsl::basic_string_view<bsl::char_type> const msg8{"w"};
+                bsl::basic_string_view<bsl::char_type> const msg9{"help"};
+                bsl::basic_string_view<bsl::char_type> const msga{"helps"};
+                bsl::ut_then{"same length, same contents"} = [&]() noexcept {
+                    bsl::ut_check(msg0.equals(msg1));
+                    bsl::ut_check(msg2.equals(msg3));
+                    bsl::ut_check(msg4.equals(msg5));
+                    bsl::ut_check(msg6.equals(msg7));
+                };
+
+                bsl::ut_then{"same length, different contents"} = [&]() noexcept {
+                    bsl::ut_check(!msg4.equals(msg8));
+                    bsl::ut_check(!msg8.equals(msg4));
+                    bsl::ut_check(!msg6.equals(msga));
+                    bsl::ut_check(!msga.equals(msg6));
+                };
+
+                bsl::ut_then{"invalid with anything"} = [&]() noexcept {
+                    bsl::ut_check(msg0.equals(msg2));
+                    bsl::ut_check(msg0.equals(msg4));
+                    bsl::ut_check(msg0.equals(msg6));
+                    bsl::ut_check(msg2.equals(msg0));
+                    bsl::ut_check(msg4.equals(msg0));
+                    bsl::ut_check(msg6.equals(msg0));
+                };
+
+                bsl::ut_then{"empty with anything"} = [&]() noexcept {
+                    bsl::ut_check(msg2.equals(msg0));
+                    bsl::ut_check(msg2.equals(msg4));
+                    bsl::ut_check(msg2.equals(msg6));
+                    bsl::ut_check(msg0.equals(msg2));
+                    bsl::ut_check(msg4.equals(msg2));
+                    bsl::ut_check(msg6.equals(msg2));
+                };
+
+                bsl::ut_then{"same contents, different lengths"} = [&]() noexcept {
+                    bsl::ut_check(msg4.equals(msg6));
+                    bsl::ut_check(msg6.equals(msg4));
+                };
+
+                bsl::ut_then{"different contents and lengths"} = [&]() noexcept {
+                    bsl::ut_check(!msg4.equals(msg8));
+                    bsl::ut_check(!msg6.equals(msg8));
+                    bsl::ut_check(!msg8.equals(msg4));
+                    bsl::ut_check(!msg8.equals(msg6));
+                };
+
+                bsl::ut_then{"different contents and lengths but close"} = [&]() noexcept {
+                    bsl::ut_check(msg4.equals(msg9));
+                    bsl::ut_check(!msg6.equals(msg9));
+                    bsl::ut_check(msg9.equals(msg4));
+                    bsl::ut_check(!msg9.equals(msg6));
+                };
+            };
+        };
+
+        bsl::ut_scenario{"substr equals"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::basic_string_view<bsl::char_type> const msg0{};
+                bsl::basic_string_view<bsl::char_type> const msg1{};
+                bsl::basic_string_view<bsl::char_type> const msg2{""};
+                bsl::basic_string_view<bsl::char_type> const msg3{""};
+                bsl::basic_string_view<bsl::char_type> const msg4{"h"};
+                bsl::basic_string_view<bsl::char_type> const msg5{"h"};
+                bsl::basic_string_view<bsl::char_type> const msg6{"hello"};
+                bsl::basic_string_view<bsl::char_type> const msg7{"hello"};
+                bsl::basic_string_view<bsl::char_type> const msg8{"w"};
+                bsl::basic_string_view<bsl::char_type> const msg9{"help"};
+                bsl::basic_string_view<bsl::char_type> const msga{"helps"};
+                bsl::ut_then{"same length, same contents"} = [&]() noexcept {
+                    bsl::ut_check(msg0.equals({}, bsl::safe_umx::max_value(), msg1));
+                    bsl::ut_check(msg2.equals({}, bsl::safe_umx::max_value(), msg3));
+                    bsl::ut_check(msg4.equals({}, bsl::safe_umx::max_value(), msg5));
+                    bsl::ut_check(msg6.equals({}, bsl::safe_umx::max_value(), msg7));
+                };
+
+                bsl::ut_then{"same length, different contents"} = [&]() noexcept {
+                    bsl::ut_check(!msg4.equals({}, bsl::safe_umx::max_value(), msg8));
+                    bsl::ut_check(!msg8.equals({}, bsl::safe_umx::max_value(), msg4));
+                    bsl::ut_check(!msg6.equals({}, bsl::safe_umx::max_value(), msga));
+                    bsl::ut_check(!msga.equals({}, bsl::safe_umx::max_value(), msg6));
+                };
+
+                bsl::ut_then{"invalid with anything"} = [&]() noexcept {
+                    bsl::ut_check(msg0.equals({}, bsl::safe_umx::max_value(), msg2));
+                    bsl::ut_check(msg0.equals({}, bsl::safe_umx::max_value(), msg4));
+                    bsl::ut_check(msg0.equals({}, bsl::safe_umx::max_value(), msg6));
+                    bsl::ut_check(msg2.equals({}, bsl::safe_umx::max_value(), msg0));
+                    bsl::ut_check(msg4.equals({}, bsl::safe_umx::max_value(), msg0));
+                    bsl::ut_check(msg6.equals({}, bsl::safe_umx::max_value(), msg0));
+                };
+
+                bsl::ut_then{"empty with anything"} = [&]() noexcept {
+                    bsl::ut_check(msg2.equals({}, bsl::safe_umx::max_value(), msg0));
+                    bsl::ut_check(msg2.equals({}, bsl::safe_umx::max_value(), msg4));
+                    bsl::ut_check(msg2.equals({}, bsl::safe_umx::max_value(), msg6));
+                    bsl::ut_check(msg0.equals({}, bsl::safe_umx::max_value(), msg2));
+                    bsl::ut_check(msg4.equals({}, bsl::safe_umx::max_value(), msg2));
+                    bsl::ut_check(msg6.equals({}, bsl::safe_umx::max_value(), msg2));
+                };
+
+                bsl::ut_then{"same contents, different lengths"} = [&]() noexcept {
+                    bsl::ut_check(msg4.equals({}, bsl::safe_umx::max_value(), msg6));
+                    bsl::ut_check(msg6.equals({}, bsl::safe_umx::max_value(), msg4));
+                };
+
+                bsl::ut_then{"different contents and lengths"} = [&]() noexcept {
+                    bsl::ut_check(!msg4.equals({}, bsl::safe_umx::max_value(), msg8));
+                    bsl::ut_check(!msg6.equals({}, bsl::safe_umx::max_value(), msg8));
+                    bsl::ut_check(!msg8.equals({}, bsl::safe_umx::max_value(), msg4));
+                    bsl::ut_check(!msg8.equals({}, bsl::safe_umx::max_value(), msg6));
+                };
+
+                bsl::ut_then{"different contents and lengths but close"} = [&]() noexcept {
+                    bsl::ut_check(msg4.equals({}, bsl::safe_umx::max_value(), msg9));
+                    bsl::ut_check(!msg6.equals({}, bsl::safe_umx::max_value(), msg9));
+                    bsl::ut_check(msg9.equals({}, bsl::safe_umx::max_value(), msg4));
+                    bsl::ut_check(!msg9.equals({}, bsl::safe_umx::max_value(), msg6));
+                };
+
+                bsl::ut_then{"pos = npos means str == empty, and all true"} = [&]() noexcept {
+                    bsl::ut_check(msg0.equals(bsl::npos, bsl::safe_umx::max_value(), msg1));
+                    bsl::ut_check(msg2.equals(bsl::npos, bsl::safe_umx::max_value(), msg3));
+                    bsl::ut_check(msg4.equals(bsl::npos, bsl::safe_umx::max_value(), msg5));
+                    bsl::ut_check(msg6.equals(bsl::npos, bsl::safe_umx::max_value(), msg7));
+                };
+
+                bsl::ut_then{"count = 0 means str == empty, and all true"} = [&]() noexcept {
+                    bsl::ut_check(msg0.equals({}, {}, msg1));
+                    bsl::ut_check(msg2.equals({}, {}, msg3));
+                    bsl::ut_check(msg4.equals({}, {}, msg5));
+                    bsl::ut_check(msg6.equals({}, {}, msg7));
+                };
+
+                bsl::ut_then{"substr with contents the same"} = [&]() noexcept {
+                    bsl::ut_check(msg6.equals(bsl::safe_idx::magic_0(), bsl::safe_umx::magic_2(), msg7));
+                };
+
+                bsl::ut_then{"substr with contents different"} = [&]() noexcept {
+                    bsl::ut_check(!msg6.equals(bsl::safe_idx::magic_1(), bsl::safe_umx::magic_2(), msg7));
+                };
+            };
+        };
+
+        bsl::ut_scenario{"equals with C-string"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::basic_string_view<bsl::char_type> const msg0{};
+                bsl::basic_string_view<bsl::char_type> const msg2{""};
+                bsl::cstr_type const msg3{""};
+                bsl::basic_string_view<bsl::char_type> const msg4{"h"};
+                bsl::cstr_type const msg5{"h"};
+                bsl::basic_string_view<bsl::char_type> const msg6{"hello"};
+                bsl::cstr_type const msg7{"hello"};
+                bsl::cstr_type const msg8{"w"};
+                bsl::cstr_type const msg9{"help"};
+                bsl::cstr_type const msga{"helps"};
+                bsl::ut_then{"same length, same contents"} = [&]() noexcept {
+                    bsl::ut_check(msg2.equals(msg3));
+                    bsl::ut_check(msg4.equals(msg5));
+                    bsl::ut_check(msg6.equals(msg7));
+                };
+
+                bsl::ut_then{"same length, different contents"} = [&]() noexcept {
+                    bsl::ut_check(!msg4.equals(msg8));
+                    bsl::ut_check(!msg6.equals(msga));
+                };
+
+                bsl::ut_then{"invalid with anything"} = [&]() noexcept {
+                    bsl::ut_check(msg0.equals(msg3));
+                    bsl::ut_check(msg0.equals(msg5));
+                };
+
+                bsl::ut_then{"empty with anything"} = [&]() noexcept {
+                    bsl::ut_check(msg2.equals(msg3));
+                    bsl::ut_check(msg2.equals(msg5));
+                };
+
+                bsl::ut_then{"same contents, different lengths"} = [&]() noexcept {
+                    bsl::ut_check(msg4.equals(msg7));
+                };
+
+                bsl::ut_then{"different contents and lengths"} = [&]() noexcept {
+                    bsl::ut_check(!msg4.equals(msg8));
+                    bsl::ut_check(!msg6.equals(msg8));
+                };
+
+                bsl::ut_then{"different contents and lengths but close"} = [&]() noexcept {
+                    bsl::ut_check(msg4.equals(msg9));
+                    bsl::ut_check(!msg6.equals(msg9));
+                };
+            };
+        };
+
+        bsl::ut_scenario{"comparison"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::basic_string_view<bsl::char_type> const msg0{};
+                bsl::basic_string_view<bsl::char_type> const msg1{};
+                bsl::basic_string_view<bsl::char_type> const msg2{""};
+                bsl::basic_string_view<bsl::char_type> const msg3{""};
+                bsl::basic_string_view<bsl::char_type> const msg4{"h"};
+                bsl::basic_string_view<bsl::char_type> const msg5{"h"};
+                bsl::basic_string_view<bsl::char_type> const msg6{"hello"};
+                bsl::basic_string_view<bsl::char_type> const msg7{"hello"};
+                bsl::basic_string_view<bsl::char_type> const msg8{"w"};
+                bsl::basic_string_view<bsl::char_type> const msg9{"help"};
+                bsl::basic_string_view<bsl::char_type> const msga{"helps"};
+                bsl::ut_then{"same length, same contents"} = [&]() noexcept {
+                    bsl::ut_check(msg0 == msg1);
+                    bsl::ut_check(msg2 == msg3);
+                    bsl::ut_check(msg4 == msg5);
+                    bsl::ut_check(msg6 == msg7);
+                };
+
+                bsl::ut_then{"same length, different contents"} = [&]() noexcept {
+                    bsl::ut_check(!msg4.equals(msg8));
+                    bsl::ut_check(!msg8.equals(msg4));
+                    bsl::ut_check(!msg6.equals(msga));
+                    bsl::ut_check(!msga.equals(msg6));
+                };
+
+                bsl::ut_then{"invalid with anything"} = [&]() noexcept {
+                    bsl::ut_check(msg0 == msg2);
+                    bsl::ut_check(msg0 != msg4);
+                    bsl::ut_check(msg0 != msg6);
+                    bsl::ut_check(msg2 == msg0);
+                    bsl::ut_check(msg4 != msg0);
+                    bsl::ut_check(msg6 != msg0);
+                };
+
+                bsl::ut_then{"empty with anything"} = [&]() noexcept {
+                    bsl::ut_check(msg2 == msg0);
+                    bsl::ut_check(msg2 != msg4);
+                    bsl::ut_check(msg2 != msg6);
+                    bsl::ut_check(msg0 == msg2);
+                    bsl::ut_check(msg4 != msg2);
+                    bsl::ut_check(msg6 != msg2);
+                };
+
+                bsl::ut_then{"same contents, different lengths"} = [&]() noexcept {
+                    bsl::ut_check(msg4 != msg6);
+                    bsl::ut_check(msg6 != msg4);
+                };
+
+                bsl::ut_then{"different contents and lengths"} = [&]() noexcept {
+                    bsl::ut_check(msg4 != msg8);
+                    bsl::ut_check(msg6 != msg8);
+                    bsl::ut_check(msg8 != msg4);
+                    bsl::ut_check(msg8 != msg6);
+                };
+
+                bsl::ut_then{"different contents and lengths but close"} = [&]() noexcept {
+                    bsl::ut_check(msg4 != msg9);
+                    bsl::ut_check(msg6 != msg9);
+                    bsl::ut_check(msg9 != msg4);
+                    bsl::ut_check(msg9 != msg6);
+                };
+            };
+        };
+
+        bsl::ut_scenario{"comparison with C-string"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::basic_string_view<bsl::char_type> const msg0{};
+                bsl::basic_string_view<bsl::char_type> const msg2{""};
+                bsl::cstr_type const msg3{""};
+                bsl::basic_string_view<bsl::char_type> const msg4{"h"};
+                bsl::cstr_type const msg5{"h"};
+                bsl::basic_string_view<bsl::char_type> const msg6{"hello"};
+                bsl::cstr_type const msg7{"hello"};
+                bsl::cstr_type const msg8{"w"};
+                bsl::cstr_type const msg9{"help"};
+                bsl::cstr_type const msga{"helps"};
+                bsl::ut_then{"same length, same contents"} = [&]() noexcept {
+                    bsl::ut_check(msg2 == msg3);
+                    bsl::ut_check(msg4 == msg5);
+                    bsl::ut_check(msg6 == msg7);
+                    bsl::ut_check(msg3 == msg2);
+                    bsl::ut_check(msg5 == msg4);
+                    bsl::ut_check(msg7 == msg6);
+                };
+
+                bsl::ut_then{"same length, different contents"} = [&]() noexcept {
+                    bsl::ut_check(msg4 != msg8);
+                    bsl::ut_check(msg6 != msga);
+                    bsl::ut_check(msg8 != msg4);
+                    bsl::ut_check(msga != msg6);
+                };
+
+                bsl::ut_then{"invalid with anything"} = [&]() noexcept {
+                    bsl::ut_check(msg0 == msg3);
+                    bsl::ut_check(msg0 != msg5);
+                    bsl::ut_check(msg3 == msg0);
+                    bsl::ut_check(msg5 != msg0);
+                };
+
+                bsl::ut_then{"empty with anything"} = [&]() noexcept {
+                    bsl::ut_check(msg2 == msg3);
+                    bsl::ut_check(msg2 != msg5);
+                    bsl::ut_check(msg3 == msg2);
+                    bsl::ut_check(msg5 != msg2);
+                };
+
+                bsl::ut_then{"same contents, different lengths"} = [&]() noexcept {
+                    bsl::ut_check(msg4 != msg7);
+                    bsl::ut_check(msg7 != msg4);
+                };
+
+                bsl::ut_then{"different contents and lengths"} = [&]() noexcept {
+                    bsl::ut_check(msg4 != msg8);
+                    bsl::ut_check(msg6 != msg8);
+                    bsl::ut_check(msg8 != msg4);
+                    bsl::ut_check(msg8 != msg6);
+                };
+
+                bsl::ut_then{"different contents and lengths but close"} = [&]() noexcept {
+                    bsl::ut_check(msg4 != msg9);
+                    bsl::ut_check(msg6 != msg9);
+                    bsl::ut_check(msg9 != msg4);
+                    bsl::ut_check(msg9 != msg6);
                 };
             };
         };

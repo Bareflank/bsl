@@ -50,7 +50,7 @@ namespace bsl
             return o;
         }
 
-        if constexpr (!o) {
+        if constexpr (o.empty()) {
             return o;
         }
 
@@ -64,7 +64,7 @@ namespace bsl
                 o,                         // --
                 ptrops,                    // --
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-                safe_uintmax{reinterpret_cast<bsl::uintmax>(ptr)});
+                safe_umx{reinterpret_cast<bsl::uintmx>(ptr)});
         }
 
         return o;

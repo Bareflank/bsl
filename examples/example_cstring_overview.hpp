@@ -37,13 +37,6 @@ namespace bsl
     {
         constexpr bsl::string_view str{"Hello"};
 
-        if constexpr (bsl::builtin_strncmp(str.data(), str.data(), str.size()) == 0) {
-            bsl::print() << "success\n";
-        }
-        else {
-            bsl::error() << "failure\n";
-        }
-
         if constexpr (bsl::builtin_strlen(str.data()) == str.size()) {
             bsl::print() << "success\n";
         }

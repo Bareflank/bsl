@@ -34,17 +34,17 @@ namespace bsl
     inline void
     example_convert_overview() noexcept
     {
-        constexpr auto val1{42_imax};
-        constexpr auto val2{bsl::safe_uintmax::max()};
+        constexpr auto val1{42_i32};
+        constexpr auto val2{bsl::safe_umx::max_value()};
 
-        if constexpr (val1) {
+        if constexpr (val1.is_valid_and_checked()) {
             bsl::print() << "success\n";
         }
         else {
             bsl::error() << "failure\n";
         }
 
-        if (!bsl::to_i32(val2)) {
+        if (bsl::to_i32(val2).is_invalid()) {
             bsl::print() << "success\n";
         }
         else {

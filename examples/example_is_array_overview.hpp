@@ -43,7 +43,7 @@ namespace bsl
             bsl::error() << "failure\n";
         }
 
-        constexpr auto bounds{42_umax};
+        constexpr auto bounds{42_umx};
         // This is needed to demonstrate how to use this type trait
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
         if constexpr (bsl::is_array<bool[bounds.get()]>::value) {

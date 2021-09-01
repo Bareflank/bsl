@@ -34,8 +34,8 @@ namespace bsl
     inline void
     example_integer_sequence_max() noexcept
     {
-        constexpr auto max{5_umax};
-        constexpr auto num{6_umax};
+        constexpr auto max{5_umx};
+        constexpr auto num{6_umx};
 
         if constexpr (bsl::make_index_sequence<num.get()>::max() == max.get()) {
             bsl::print() << "success\n";

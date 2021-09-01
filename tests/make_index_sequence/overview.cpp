@@ -36,11 +36,11 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    constexpr bsl::safe_uintmax size{static_cast<bsl::uintmax>(6)};
+    constexpr bsl::safe_umx size{static_cast<bsl::uintmx>(6)};
 
-    static_assert(bsl::make_index_sequence<size.get()>::size() == static_cast<bsl::uintmax>(6));
-    static_assert(bsl::make_index_sequence<size.get()>::min() == static_cast<bsl::uintmax>(0));
-    static_assert(bsl::make_index_sequence<size.get()>::max() == static_cast<bsl::uintmax>(5));
+    static_assert(bsl::make_index_sequence<size.get()>::size() == static_cast<bsl::uintmx>(6));
+    static_assert(bsl::make_index_sequence<size.get()>::min() == static_cast<bsl::uintmx>(0));
+    static_assert(bsl::make_index_sequence<size.get()>::max() == static_cast<bsl::uintmx>(5));
 
     return bsl::ut_success();
 }

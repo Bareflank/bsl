@@ -33,9 +33,9 @@ namespace bsl
     inline void
     example_safe_integral_default_constructor() noexcept
     {
-        constexpr bsl::safe_int32 val{};
+        constexpr bsl::safe_i32 val{};
 
-        if constexpr (val) {
+        if constexpr (val.is_valid_and_checked()) {
             bsl::print() << "success: " << val << bsl::endl;
         }
         else {

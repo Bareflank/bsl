@@ -65,13 +65,12 @@ namespace
                 bsl::ut_required_step(0_i16);
                 bsl::ut_required_step(0_i32);
                 bsl::ut_required_step(0_i64);
-                bsl::ut_required_step(0_imax);
 
                 bsl::ut_required_step(0_u8);
                 bsl::ut_required_step(0_u16);
                 bsl::ut_required_step(0_u32);
                 bsl::ut_required_step(0_u64);
-                bsl::ut_required_step(0_umax);
+                bsl::ut_required_step(0_umx);
             };
         };
 
@@ -95,13 +94,12 @@ namespace
                 bsl::ut_check(0_i16);
                 bsl::ut_check(0_i32);
                 bsl::ut_check(0_i64);
-                bsl::ut_check(0_imax);
 
                 bsl::ut_check(0_u8);
                 bsl::ut_check(0_u16);
                 bsl::ut_check(0_u32);
                 bsl::ut_check(0_u64);
-                bsl::ut_check(0_umax);
+                bsl::ut_check(0_umx);
             };
         };
 

@@ -42,18 +42,6 @@ namespace
     tests() noexcept -> bsl::exit_code
     {
         bsl::ut_scenario{"construct_at bool"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::ut_when{} = []() noexcept {
-                    bsl::discard(bsl::construct_at<bool>(nullptr, true));
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::ut_when{} = []() noexcept {
-                    bsl::discard(bsl::construct_at<bool>(nullptr, false));
-                };
-            };
-
             bsl::ut_given{} = []() noexcept {
                 bool mut_b{};
                 bsl::ut_when{} = [&]() noexcept {
@@ -76,20 +64,6 @@ namespace
         };
 
         bsl::ut_scenario{"construct_at errc_type"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::ut_when{} = []() noexcept {
-                    bsl::discard(
-                        bsl::construct_at<bsl::errc_type>(nullptr, bsl::errc_success.get()));
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::ut_when{} = []() noexcept {
-                    bsl::discard(
-                        bsl::construct_at<bsl::errc_type>(nullptr, bsl::errc_failure.get()));
-                };
-            };
-
             bsl::ut_given{} = []() noexcept {
                 bsl::errc_type mut_errc{bsl::errc_failure};
                 bsl::ut_when{} = [&]() noexcept {

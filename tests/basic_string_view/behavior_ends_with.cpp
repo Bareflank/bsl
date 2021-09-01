@@ -41,7 +41,7 @@ namespace
     tests() noexcept -> bsl::exit_code
     {
         bsl::ut_scenario{"ends_with"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!msg.ends_with(bsl::basic_string_view<bsl::char_type>{}));
@@ -72,7 +72,7 @@ namespace
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
                 bsl::basic_string_view<bsl::char_type> const msg{"Hello"};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(!msg.ends_with(bsl::basic_string_view<bsl::char_type>{}));

@@ -22,8 +22,10 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include "../carray_init.hpp"
+
 #include <bsl/arguments.hpp>
-#include <bsl/array.hpp>
+#include <bsl/carray.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/cstr_type.hpp>
 #include <bsl/ut.hpp>
@@ -42,70 +44,49 @@ namespace
     [[nodiscard]] constexpr auto
     tests() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"get positional safe_uint32"} = []() noexcept {
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::arguments const args{bsl::to_umax(0), nullptr};
+        bsl::ut_scenario{"get positional safe_u32"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::carray const argv{test::CARRAY_INIT_STR_DASH_APP};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!args.get<bsl::safe_uint32, 16>(bsl::to_umax(0)));
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::array const argv{"app"};
-                bsl::arguments const args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!args.get<bsl::safe_uint32, 16>(bsl::safe_uintmax::failure()));
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::array const argv{"-app"};
-                bsl::arguments const args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!args.get<bsl::safe_uint32, 16>(bsl::to_umax(0)));
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::array const argv{"42"};
-                bsl::arguments const args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!args.get<bsl::safe_uint32, 16>(bsl::to_umax(1)));
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::array const argv{"app"};
-                bsl::arguments const args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!args.get<bsl::safe_uint32, 16>(bsl::to_umax(0)));
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::array const argv{"42 "};
-                bsl::arguments const args{argv.size(), argv.data()};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(!args.get<bsl::safe_uint32, 16>(bsl::to_umax(0)));
+                    bsl::ut_check(args.get<bsl::safe_u32, 16>(bsl::to_umx(0)).is_invalid());
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::array const argv{"4", "-opt1", "8", "15", "16", "-opt2", "23", "42"};
-                bsl::arguments const args{argv.size(), argv.data()};
+                bsl::carray const argv{test::CARRAY_INIT_STR_42};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(
-                        args.get<bsl::safe_uint32, 16>(bsl::to_umax(0)) == bsl::to_u32(0x4));
-                    bsl::ut_check(
-                        args.get<bsl::safe_uint32, 16>(bsl::to_umax(1)) == bsl::to_u32(0x8));
-                    bsl::ut_check(
-                        args.get<bsl::safe_uint32, 16>(bsl::to_umax(2)) == bsl::to_u32(0x15));
-                    bsl::ut_check(
-                        args.get<bsl::safe_uint32, 16>(bsl::to_umax(3)) == bsl::to_u32(0x16));
-                    bsl::ut_check(
-                        args.get<bsl::safe_uint32, 16>(bsl::to_umax(4)) == bsl::to_u32(0x23));
-                    bsl::ut_check(
-                        args.get<bsl::safe_uint32, 16>(bsl::to_umax(5)) == bsl::to_u32(0x42));
+                    bsl::ut_check(args.get<bsl::safe_u32, 16>(bsl::to_umx(1)).is_invalid());
+                };
+            };
+
+            bsl::ut_given{} = []() noexcept {
+                bsl::carray const argv{test::CARRAY_INIT_STR_APP};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(args.get<bsl::safe_u32, 16>(bsl::to_umx(0)).is_invalid());
+                };
+            };
+
+            bsl::ut_given{} = []() noexcept {
+                bsl::carray const argv{test::CARRAY_INIT_STR_42_SPACE};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(args.get<bsl::safe_u32, 16>(bsl::to_umx(0)).is_invalid());
+                };
+            };
+
+            bsl::ut_given{} = []() noexcept {
+                bsl::carray const argv{test::CARRAY_INIT_STR_ARGS_POS};
+                bsl::arguments const args{bsl::to_umx(argv.size()), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(args.get<bsl::safe_u32, 16>(bsl::to_umx(0)) == bsl::to_u32(0x4));
+                    bsl::ut_check(args.get<bsl::safe_u32, 16>(bsl::to_umx(1)) == bsl::to_u32(0x8));
+                    bsl::ut_check(args.get<bsl::safe_u32, 16>(bsl::to_umx(2)) == bsl::to_u32(0x15));
+                    bsl::ut_check(args.get<bsl::safe_u32, 16>(bsl::to_umx(3)) == bsl::to_u32(0x16));
+                    bsl::ut_check(args.get<bsl::safe_u32, 16>(bsl::to_umx(4)) == bsl::to_u32(0x23));
+                    bsl::ut_check(args.get<bsl::safe_u32, 16>(bsl::to_umx(5)) == bsl::to_u32(0x42));
                 };
             };
         };

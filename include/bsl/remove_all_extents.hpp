@@ -68,7 +68,7 @@ namespace bsl
         using type = typename remove_all_extents<T>::type;
     };
 
-    template<typename T, bsl::uintmax N>
+    template<typename T, bsl::uintmx N>
     // This is needed to implement the type traits.
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, hicpp-avoid-c-arrays, modernize-avoid-c-arrays)
     struct remove_all_extents<T[N]> final

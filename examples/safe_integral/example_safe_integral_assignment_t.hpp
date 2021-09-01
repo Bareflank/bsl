@@ -34,7 +34,7 @@ namespace bsl
     inline void
     example_safe_integral_assignment_t() noexcept
     {
-        bsl::safe_int32 mut_val1{};
+        bsl::safe_i32 mut_val1{};
         constexpr auto val2{42_i32};
 
         mut_val1 = val2.get();

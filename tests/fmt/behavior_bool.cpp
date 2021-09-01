@@ -38,42 +38,6 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    bsl::ut_scenario{"bool with no formatting"} = []() noexcept {
-        bsl::ut_when{} = []() noexcept {
-            fmt_test::reset();
-            bsl::print() << true;
-            bsl::ut_then{} = []() noexcept {
-                bsl::ut_check(fmt_test::was_this_outputted("true"));
-            };
-        };
-
-        bsl::ut_when{} = []() noexcept {
-            fmt_test::reset();
-            bsl::print() << false;
-            bsl::ut_then{} = []() noexcept {
-                bsl::ut_check(fmt_test::was_this_outputted("false"));
-            };
-        };
-    };
-
-    bsl::ut_scenario{"bool with no formatting using fmt"} = []() noexcept {
-        bsl::ut_when{} = []() noexcept {
-            fmt_test::reset();
-            bsl::print() << bsl::fmt{bsl::nullops, true};
-            bsl::ut_then{} = []() noexcept {
-                bsl::ut_check(fmt_test::was_this_outputted("true"));
-            };
-        };
-
-        bsl::ut_when{} = []() noexcept {
-            fmt_test::reset();
-            bsl::print() << bsl::fmt{bsl::nullops, false};
-            bsl::ut_then{} = []() noexcept {
-                bsl::ut_check(fmt_test::was_this_outputted("false"));
-            };
-        };
-    };
-
     bsl::ut_scenario{"bool with formatting type b"} = []() noexcept {
         bsl::ut_when{} = []() noexcept {
             fmt_test::reset();

@@ -52,6 +52,11 @@
 *.out
 *.app
 
+# Rust
+include/bsl/constants.rs
+target/
+Cargo.lock
+
 # Others
 .vscode/
 build/

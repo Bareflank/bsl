@@ -35,10 +35,10 @@ namespace bsl
     inline void
     example_npos_overview() noexcept
     {
-        constexpr auto pos{6_umax};
+        constexpr auto pos{6_idx};
         constexpr bsl::string_view str{"Hello World"};
 
-        if constexpr (str.substr(pos, bsl::npos) == "World") {
+        if constexpr (str.substr(pos, bsl::safe_umx::max_value()) == "World") {
             bsl::print() << "success\n";
         }
         else {

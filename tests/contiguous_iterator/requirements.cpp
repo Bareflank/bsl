@@ -22,21 +22,12 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include "../array_init.hpp"
+
 #include <bsl/array.hpp>
 #include <bsl/contiguous_iterator.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/ut.hpp>
-
-namespace
-{
-    constexpr bsl::array TEST_INIT{
-        bsl::to_i32(4),
-        bsl::to_i32(8),
-        bsl::to_i32(15),
-        bsl::to_i32(16),
-        bsl::to_i32(23),
-        bsl::to_i32(42)};
-}
 
 /// <!-- description -->
 ///   @brief Main function for this unit test. If a call to bsl::ut_check() fails
@@ -51,19 +42,22 @@ main() noexcept -> bsl::exit_code
 {
     bsl::ut_scenario{"verify noexcept"} = []() noexcept {
         bsl::ut_given{} = []() noexcept {
-            bsl::contiguous_iterator mut_ci1{TEST_INIT.data(), TEST_INIT.size(), bsl::to_umax(0)};
-            bsl::contiguous_iterator mut_ci2{TEST_INIT.data(), TEST_INIT.size(), bsl::to_umax(0)};
-            bsl::contiguous_iterator const ci1{TEST_INIT.data(), TEST_INIT.size(), bsl::to_umax(0)};
-            bsl::contiguous_iterator const ci2{TEST_INIT.data(), TEST_INIT.size(), bsl::to_umax(0)};
+            bsl::contiguous_iterator mut_ci1{
+                test::ARRAY_INIT.data(), test::ARRAY_INIT.size(), bsl::to_idx(0)};
+            bsl::contiguous_iterator mut_ci2{
+                test::ARRAY_INIT.data(), test::ARRAY_INIT.size(), bsl::to_idx(0)};
+            bsl::contiguous_iterator const ci1{
+                test::ARRAY_INIT.data(), test::ARRAY_INIT.size(), bsl::to_idx(0)};
+            bsl::contiguous_iterator const ci2{
+                test::ARRAY_INIT.data(), test::ARRAY_INIT.size(), bsl::to_idx(0)};
             bsl::ut_then{} = []() noexcept {
-                static_assert(noexcept(
-                    bsl::contiguous_iterator{TEST_INIT.data(), TEST_INIT.size(), bsl::to_umax(0)}));
+                static_assert(noexcept(bsl::contiguous_iterator{
+                    test::ARRAY_INIT.data(), test::ARRAY_INIT.size(), bsl::to_idx(0)}));
 
                 static_assert(noexcept(mut_ci1.data()));
                 static_assert(noexcept(mut_ci1.size()));
                 static_assert(noexcept(mut_ci1.index()));
                 static_assert(noexcept(mut_ci1.empty()));
-                static_assert(noexcept(!!mut_ci1));
                 static_assert(noexcept(mut_ci1.is_end()));
                 static_assert(noexcept(mut_ci1.get_if()));
                 static_assert(noexcept(*mut_ci1));
@@ -78,7 +72,6 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(ci1.size()));
                 static_assert(noexcept(ci1.index()));
                 static_assert(noexcept(ci1.empty()));
-                static_assert(noexcept(!!ci1));
                 static_assert(noexcept(ci1.is_end()));
                 static_assert(noexcept(ci1.get_if()));
                 static_assert(noexcept(*ci1));

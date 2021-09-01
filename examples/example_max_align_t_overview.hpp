@@ -33,7 +33,7 @@ namespace bsl
     inline void
     example_max_align_t_overview() noexcept
     {
-        if constexpr (alignof(bsl::max_align_t) == alignof(bsl::uintmax)) {
+        if constexpr (alignof(bsl::max_align_t) == alignof(bsl::uintmx)) {
             bsl::print() << "success\n";
         }
         else {

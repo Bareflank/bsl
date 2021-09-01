@@ -36,9 +36,8 @@ namespace bsl
         constexpr bsl::string_view str{"Hello"};
         constexpr bsl::string_view::iterator_type iter{str.begin()};
 
-        auto const elem{*iter};
-        if (nullptr != elem.data) {
-            bsl::print() << "success: " << *elem.data << bsl::endl;
+        if ('H' == *iter) {
+            bsl::print() << "success: " << *iter << bsl::endl;
         }
         else {
             bsl::error() << "failure\n";

@@ -28,7 +28,6 @@
 #ifndef BSL_FMT_HPP
 #define BSL_FMT_HPP
 
-#include "details/fmt_impl_array.hpp"
 #include "details/fmt_impl_bool.hpp"
 #include "details/fmt_impl_char_type.hpp"
 #include "details/fmt_impl_cstr_type.hpp"
@@ -39,6 +38,7 @@
 #include "details/fmt_impl_void_pointer.hpp"
 #include "details/out.hpp"
 #include "enable_if.hpp"
+#include "expects.hpp"
 #include "fmt_options.hpp"
 #include "is_bool.hpp"
 #include "is_constant_evaluated.hpp"
@@ -362,18 +362,13 @@ namespace bsl
         ///   @param width a dynamic width which overrides the width field
         ///     in the format string (used to set the width field at runtime).
         ///
-        constexpr fmt(fmt_options const &ops, VAL_T const &val, safe_uintmax const &width) noexcept
+        constexpr fmt(fmt_options const &ops, VAL_T const &val, safe_umx const &width) noexcept
             : m_ops{ops}, m_val{val}
         {
-            constexpr safe_uintmax max_width{static_cast<bsl::uintmax>(999)};
+            constexpr safe_umx max_width{static_cast<bsl::uintmx>(999)};
 
-            if (unlikely(!width)) {
-                unlikely_invalid_argument_failure();
-                m_ops.set_width(max_width);
-                return;
-            }
-
-            if (width > max_width) {
+            expects(width.is_valid_and_checked());
+            if (unlikely(width > max_width)) {
                 unlikely_invalid_argument_failure();
                 m_ops.set_width(max_width);
                 return;
@@ -410,7 +405,7 @@ namespace bsl
         ///   @param width a dynamic width which overrides the width field
         ///     in the format string (used to set the width field at runtime).
         ///
-        constexpr fmt(cstr_type const str, VAL_T const &val, safe_uintmax const &width) noexcept
+        constexpr fmt(cstr_type const str, VAL_T const &val, safe_umx const &width) noexcept
             : fmt{fmt_options{str}, val, width}
         {}
 
@@ -506,7 +501,7 @@ namespace bsl
             return o;
         }
 
-        if constexpr (!o) {
+        if constexpr (o.empty()) {
             return o;
         }
 
@@ -561,7 +556,7 @@ namespace bsl
             return o;
         }
 
-        if constexpr (!o) {
+        if constexpr (o.empty()) {
             return o;
         }
 

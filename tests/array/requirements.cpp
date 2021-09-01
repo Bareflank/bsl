@@ -22,6 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include "../array_init.hpp"
+
 #include <bsl/array.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/discard.hpp>
@@ -30,7 +32,7 @@
 
 namespace
 {
-    constinit bsl::array const g_verify_constinit{true, false};
+    constinit bsl::array const g_verify_constinit{test::ARRAY_INIT};
 }
 
 /// <!-- description -->
@@ -50,12 +52,12 @@ main() noexcept -> bsl::exit_code
 
     bsl::ut_scenario{"verify noexcept"} = []() noexcept {
         bsl::ut_given{} = []() noexcept {
-            bsl::array mut_arr1{true, false};
-            bsl::array mut_arr2{true, false};
-            bsl::array const arr1{true, false};
-            bsl::array const arr2{true, false};
+            bsl::array mut_arr1{test::ARRAY_INIT};
+            bsl::array mut_arr2{test::ARRAY_INIT};
+            bsl::array const arr1{test::ARRAY_INIT};
+            bsl::array const arr2{test::ARRAY_INIT};
             bsl::ut_then{} = []() noexcept {
-                static_assert(noexcept(mut_arr1.at_if(bsl::to_umax(0))));
+                static_assert(noexcept(mut_arr1.at_if(bsl::to_idx(0))));
                 static_assert(noexcept(mut_arr1.front()));
                 static_assert(noexcept(mut_arr1.front_if()));
                 static_assert(noexcept(mut_arr1.back()));
@@ -63,18 +65,13 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(mut_arr1.data()));
                 static_assert(noexcept(mut_arr1.begin()));
                 static_assert(noexcept(mut_arr1.cbegin()));
-                static_assert(noexcept(mut_arr1.iter(bsl::to_umax(0))));
-                static_assert(noexcept(mut_arr1.citer(bsl::to_umax(0))));
                 static_assert(noexcept(mut_arr1.end()));
                 static_assert(noexcept(mut_arr1.cend()));
                 static_assert(noexcept(mut_arr1.rbegin()));
                 static_assert(noexcept(mut_arr1.crbegin()));
-                static_assert(noexcept(mut_arr1.riter(bsl::to_umax(0))));
-                static_assert(noexcept(mut_arr1.criter(bsl::to_umax(0))));
                 static_assert(noexcept(mut_arr1.rend()));
                 static_assert(noexcept(mut_arr1.crend()));
                 static_assert(noexcept(mut_arr1.empty()));
-                static_assert(noexcept(!!mut_arr1));
                 static_assert(noexcept(mut_arr1.size()));
                 static_assert(noexcept(mut_arr1.max_size()));
                 static_assert(noexcept(mut_arr1.size_bytes()));
@@ -82,7 +79,7 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(mut_arr1 != mut_arr2));
                 static_assert(noexcept(bsl::print() << mut_arr1));
 
-                static_assert(noexcept(arr1.at_if(bsl::to_umax(0))));
+                static_assert(noexcept(arr1.at_if(bsl::to_idx(0))));
                 static_assert(noexcept(arr1.front()));
                 static_assert(noexcept(arr1.front_if()));
                 static_assert(noexcept(arr1.back()));
@@ -90,18 +87,13 @@ main() noexcept -> bsl::exit_code
                 static_assert(noexcept(arr1.data()));
                 static_assert(noexcept(arr1.begin()));
                 static_assert(noexcept(arr1.cbegin()));
-                static_assert(noexcept(arr1.iter(bsl::to_umax(0))));
-                static_assert(noexcept(arr1.citer(bsl::to_umax(0))));
                 static_assert(noexcept(arr1.end()));
                 static_assert(noexcept(arr1.cend()));
                 static_assert(noexcept(arr1.rbegin()));
                 static_assert(noexcept(arr1.crbegin()));
-                static_assert(noexcept(arr1.riter(bsl::to_umax(0))));
-                static_assert(noexcept(arr1.criter(bsl::to_umax(0))));
                 static_assert(noexcept(arr1.rend()));
                 static_assert(noexcept(arr1.crend()));
                 static_assert(noexcept(arr1.empty()));
-                static_assert(noexcept(!!arr1));
                 static_assert(noexcept(arr1.size()));
                 static_assert(noexcept(arr1.max_size()));
                 static_assert(noexcept(arr1.size_bytes()));

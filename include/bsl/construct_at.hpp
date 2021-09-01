@@ -31,6 +31,7 @@
 #include "cstdint.hpp"
 #include "declval.hpp"
 #include "discard.hpp"
+#include "expects.hpp"
 #include "forward.hpp"
 #include "unlikely.hpp"
 
@@ -44,9 +45,11 @@
 ///   @return returns ptr
 ///
 [[maybe_unused]] constexpr auto
-operator new(bsl::uintmax const count, void *pmut_mut_ptr) noexcept -> void *
+operator new(bsl::uintmx const count, void *pmut_mut_ptr) noexcept -> void *
 {
-    bsl::discard(count);
+    bsl::expects(static_cast<bsl::uintmx>(0) != count);
+    bsl::expects(nullptr != pmut_mut_ptr);
+
     return pmut_mut_ptr;
 }
 
@@ -84,11 +87,7 @@ namespace std
     construct_at_impl(void *const pmut_ptr, ARGS &&...pudm_udm_a)    // --
         noexcept(noexcept(new (pmut_ptr) T{bsl::declval<ARGS>()...})) -> T *
     {
-        if (bsl::unlikely(nullptr == pmut_ptr)) {
-            bsl::unlikely_invalid_argument_failure();
-            return nullptr;
-        }
-
+        bsl::expects(nullptr != pmut_ptr);
         return new (pmut_ptr) T{bsl::forward<ARGS>(pudm_udm_a)...};
     }
 }
@@ -115,6 +114,7 @@ namespace bsl
         noexcept(noexcept(std::construct_at_impl<T, ARGS...>(pmut_ptr, bsl::declval<ARGS>()...)))
             -> T *
     {
+        expects(nullptr != pmut_ptr);
         return std::construct_at_impl<T, ARGS...>(pmut_ptr, bsl::forward<ARGS>(pudm_udm_a)...);
     }
 }

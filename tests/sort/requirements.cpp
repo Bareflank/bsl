@@ -22,6 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include "../array_init.hpp"
+
 #include <bsl/array.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/sort.hpp>
@@ -40,7 +42,7 @@ main() noexcept -> bsl::exit_code
 {
     bsl::ut_scenario{"verify noexcept"} = []() noexcept {
         bsl::ut_given{} = []() noexcept {
-            bsl::array mut_data{bsl::to_i32(4)};
+            bsl::array mut_data{test::ARRAY_INIT};
             bsl::ut_then{} = []() noexcept {
                 static_assert(noexcept(bsl::sort(mut_data)));
             };

@@ -37,16 +37,8 @@
 
 namespace bsl::details
 {
-    /// <!-- description -->
-    ///   @brief Used to tell the user during compile-time that an
-    ///     invalid positional argument has been provided to the code.
-    ///
-    inline void
-    invalid_positional_argument_index() noexcept
-    {}
-
     /** @brief defines the default base for getting an argument */
-    constexpr bsl::safe_int32 ARGUMENTS_DEFAULT_BASE{10};
+    constexpr bsl::safe_i32 ARGUMENTS_DEFAULT_BASE{10};
 
     /// @class bsl::details::arguments_impl
     ///
@@ -95,16 +87,10 @@ namespace bsl::details
         ///     this function will return an empty bsl::string_view.
         ///
         [[nodiscard]] static constexpr auto
-        get(span<cstr_type const> const &args, safe_uintmax const &pos) noexcept -> string_view
+        get(span<cstr_type const> const &args, safe_idx const &pos) noexcept -> string_view
         {
-            if (unlikely(!pos)) {
-                unlikely_invalid_argument_failure();
-                bsl::error() << "invalid pos" << pos << bsl::endl;
-                return {};
-            }
-
-            safe_uintmax mut_idx{};
-            for (safe_uintmax mut_i{}; mut_i < args.size(); ++mut_i) {
+            safe_idx mut_idx{};
+            for (safe_idx mut_i{}; mut_i < args.size(); ++mut_i) {
                 string_view const arg{*args.at_if(mut_i)};
 
                 if (arg.starts_with('-')) {
@@ -119,7 +105,6 @@ namespace bsl::details
                 return arg;
             }
 
-            invalid_positional_argument_index();
             return {};
         }
 
@@ -141,31 +126,25 @@ namespace bsl::details
         [[nodiscard]] static constexpr auto
         get(span<cstr_type const> const &args, string_view const &opt) noexcept -> string_view
         {
-            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-
             if (unlikely(opt.empty())) {
-                unlikely_invalid_argument_failure();
-                bsl::error() << "cannot request an empty optional argument\n";
                 return {};
             }
 
-            for (safe_uintmax mut_i{args.size()}; mut_i.is_pos(); --mut_i) {
-                string_view mut_arg{*args.at_if(mut_i - one)};
+            for (safe_idx mut_i{args.size().get()}; mut_i.is_pos(); --mut_i) {
+                string_view mut_arg{*args.at_if(mut_i - safe_idx::magic_1())};
 
                 if (!mut_arg.starts_with(opt)) {
                     continue;
                 }
 
-                mut_arg.remove_prefix(opt.length());
+                mut_arg.remove_prefix(safe_idx{opt.length().get()});
 
                 if (!mut_arg.starts_with('=')) {
-                    unlikely_invalid_argument_failure();
                     return {};
                 }
 
-                mut_arg.remove_prefix(one);
+                mut_arg.remove_prefix(safe_idx::magic_1());
                 if (mut_arg.empty()) {
-                    unlikely_invalid_argument_failure();
                     return {};
                 }
 
@@ -192,20 +171,23 @@ namespace bsl::details
     public:
         /// <!-- description -->
         ///   @brief Returns the requested positional argument as a
-        ///     bsl::safe_int8. If the provided "pos" is invalid,
-        ///     this function will return an invalid bsl::safe_int8.
+        ///     bsl::safe_i8. If the provided "pos" is invalid,
+        ///     this function will return an invalid bsl::safe_i8.
         ///
         /// <!-- inputs/outputs -->
         ///   @param args the list of arguments to get the argument from
         ///   @param pos the position of the positional argument to get.
         ///   @return Returns the requested positional argument as a
-        ///     bsl::safe_int8. If the provided "pos" is invalid,
-        ///     this function will return an invalid bsl::safe_int8.
+        ///     bsl::safe_i8. If the provided "pos" is invalid,
+        ///     this function will return an invalid bsl::safe_i8.
         ///
         [[nodiscard]] static constexpr auto
-        get(span<cstr_type const> const &args, safe_uintmax const &pos) noexcept -> bool
+        get(span<cstr_type const> const &args, safe_idx const &pos) noexcept -> bool
         {
             string_view const arg{arguments_impl<string_view, B>::get(args, pos)};
+            if (arg.empty()) {
+                return false;
+            }
 
             if (arg == "true") {
                 return true;
@@ -215,8 +197,8 @@ namespace bsl::details
                 return false;
             }
 
-            auto const val{from_chars<bsl::uint8>(arg.data(), safe_int32{B})};
-            if (!val) {
+            auto const val{from_chars<bsl::uint8>(arg, safe_i32{B})};
+            if (val.is_invalid()) {
                 return false;
             }
 
@@ -237,12 +219,10 @@ namespace bsl::details
         get(span<cstr_type const> const &args, string_view const &opt) noexcept -> bool
         {
             if (unlikely(opt.empty())) {
-                unlikely_invalid_argument_failure();
-                bsl::error() << "cannot request an empty optional argument\n";
                 return false;
             }
 
-            for (safe_uintmax mut_i{}; mut_i < args.size(); ++mut_i) {
+            for (safe_idx mut_i{}; mut_i < args.size(); ++mut_i) {
                 string_view const arg{*args.at_if(mut_i)};
 
                 if (arg == opt) {
@@ -275,27 +255,31 @@ namespace bsl::details
     public:
         /// <!-- description -->
         ///   @brief Returns the requested positional argument as a
-        ///     bsl::safe_int8. If the provided "pos" is invalid,
-        ///     this function will return an invalid bsl::safe_int8.
+        ///     bsl::safe_i8. If the provided "pos" is invalid,
+        ///     this function will return an invalid bsl::safe_i8.
         ///
         /// <!-- inputs/outputs -->
         ///   @param args the list of arguments to get the argument from
         ///   @param pos the position of the positional argument to get.
         ///   @return Returns the requested positional argument as a
-        ///     bsl::safe_int8. If the provided "pos" is invalid,
-        ///     this function will return an invalid bsl::safe_int8.
+        ///     bsl::safe_i8. If the provided "pos" is invalid,
+        ///     this function will return an invalid bsl::safe_i8.
         ///
         [[nodiscard]] static constexpr auto
-        get(span<cstr_type const> const &args, safe_uintmax const &pos) noexcept -> safe_integral<T>
+        get(span<cstr_type const> const &args, safe_idx const &pos) noexcept -> safe_integral<T>
         {
             string_view const arg{arguments_impl<string_view, B>::get(args, pos)};
-            return from_chars<T>(arg.data(), safe_int32{B});
+            if (arg.empty()) {
+                return safe_integral<T>::failure();
+            }
+
+            return from_chars<T>(arg, safe_i32{B});
         }
 
         /// <!-- description -->
         ///   @brief Returns the requested optional argument as a
-        ///     bsl::safe_int64. If the provided "opt" is invalid,
-        ///     this function will return an invalid bsl::safe_int64.
+        ///     bsl::safe_i64. If the provided "opt" is invalid,
+        ///     this function will return an invalid bsl::safe_i64.
         ///     Note that arguments are processed in reverse order,
         ///     providing the ability to override arguments on the
         ///     command line..
@@ -304,8 +288,8 @@ namespace bsl::details
         ///   @param args the list of arguments to get the argument from
         ///   @param opt the optional argument to get.
         ///   @return Returns the requested optional argument as a
-        ///     bsl::safe_int64. If the provided "opt" is invalid,
-        ///     this function will return an invalid bsl::safe_int64
+        ///     bsl::safe_i64. If the provided "opt" is invalid,
+        ///     this function will return an invalid bsl::safe_i64
         ///
         [[nodiscard]] static constexpr auto
         get(span<cstr_type const> const &args, string_view const &opt) noexcept -> safe_integral<T>
@@ -315,7 +299,7 @@ namespace bsl::details
                 return safe_integral<T>::failure();
             }
 
-            return from_chars<T>(arg.data(), safe_int32{B});
+            return from_chars<T>(arg, safe_i32{B});
         }
     };
 }

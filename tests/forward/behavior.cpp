@@ -34,7 +34,7 @@ namespace
 {
     template<typename T>
     [[nodiscard]] constexpr auto
-    detector(T &&pudm_udm_val) noexcept -> bsl::safe_int32
+    detector(T &&pudm_udm_val) noexcept -> bsl::safe_i32
     {
         if constexpr (bsl::is_const<bsl::remove_reference_t<T>>::value) {
             return bsl::to_i32(1);
@@ -53,7 +53,7 @@ namespace
 
     template<typename T>
     [[nodiscard]] constexpr auto
-    forwarder(T &&pudm_udm_val) noexcept -> bsl::safe_int32
+    forwarder(T &&pudm_udm_val) noexcept -> bsl::safe_i32
     {
         return detector(bsl::forward<T>(pudm_udm_val));
     }
@@ -72,14 +72,14 @@ namespace
     {
         bsl::ut_scenario{"exchange"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
-                bsl::safe_int32 const val{42};
+                bsl::safe_i32 const val{42};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(forwarder(val) == 1);
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::safe_int32 mut_val{42};
+                bsl::safe_i32 mut_val{42};
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(forwarder(mut_val) == 2);
                 };

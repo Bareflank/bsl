@@ -34,7 +34,7 @@ namespace bsl
     inline void
     example_char_traits_length() noexcept
     {
-        constexpr auto len{2_umax};
+        constexpr auto len{2_umx};
 
         if constexpr (bsl::char_traits<bsl::char_type>::length("42") == len) {
             bsl::print() << "success\n";

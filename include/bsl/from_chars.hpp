@@ -29,7 +29,10 @@
 #define BSL_FROM_CHARS_HPP
 
 #include "char_type.hpp"
+#include "ensures.hpp"
+#include "expects.hpp"
 #include "is_signed.hpp"
+#include "npos.hpp"
 #include "safe_integral.hpp"
 #include "string_view.hpp"
 #include "touch.hpp"
@@ -40,14 +43,6 @@ namespace bsl
     namespace details
     {
         /// <!-- description -->
-        ///   @brief Used to indicate an error in a constexpr when executing
-        ///     from_chars.
-        ///
-        inline void
-        invalid_dec_or_hex_integral() noexcept
-        {}
-
-        /// <!-- description -->
         ///   @brief Returns the index of the first character in the
         ///     string that is not whitespace.
         ///
@@ -57,9 +52,9 @@ namespace bsl
         ///     string that is not whitespace.
         ///
         [[nodiscard]] constexpr auto
-        from_chars_ignore_whitespace(string_view const &str) noexcept -> safe_uintmax
+        from_chars_ignore_whitespace(string_view const &str) noexcept -> safe_idx
         {
-            safe_uintmax mut_i{};
+            safe_idx mut_i{};
             for (; mut_i < str.length(); ++mut_i) {
                 char_type const digit{*str.at_if(mut_i)};
 
@@ -91,8 +86,7 @@ namespace bsl
             }
 
             if (unlikely(str.length() == mut_i)) {
-                details::invalid_dec_or_hex_integral();
-                return safe_uintmax::failure();
+                return npos;
             }
 
             return mut_i;
@@ -110,7 +104,7 @@ namespace bsl
         ///
         template<typename T>
         [[nodiscard]] constexpr auto
-        from_chars_parse_dec(string_view const &str, safe_uintmax const &idx) noexcept
+        from_chars_parse_dec(string_view const &str, safe_idx const &idx) noexcept
             -> safe_integral<T>
         {
             constexpr safe_integral<T> base10{static_cast<T>(10)};
@@ -129,7 +123,7 @@ namespace bsl
                 }
             }
 
-            for (safe_uintmax mut_i{mut_idx}; mut_i < str.length(); ++mut_i) {
+            for (safe_idx mut_i{mut_idx}; mut_i < str.length(); ++mut_i) {
                 safe_integral<T> const digit{static_cast<T>(*str.at_if(mut_i))};
 
                 constexpr safe_integral<T> lower_num{static_cast<T>('/')};
@@ -162,7 +156,10 @@ namespace bsl
                     bsl::touch();
                 }
 
-                details::invalid_dec_or_hex_integral();
+                return safe_integral<T>::failure();
+            }
+
+            if (unlikely(mut_val.is_poisoned())) {
                 return safe_integral<T>::failure();
             }
 
@@ -181,11 +178,10 @@ namespace bsl
         ///
         template<typename T>
         [[nodiscard]] constexpr auto
-        from_chars_parse_hex(string_view const &str, safe_uintmax const &idx) noexcept
+        from_chars_parse_hex(string_view const &str, safe_idx const &idx) noexcept
             -> safe_integral<T>
         {
             if constexpr (is_signed<T>::value) {
-                details::invalid_dec_or_hex_integral();
                 return safe_integral<T>::failure();
             }
 
@@ -194,7 +190,7 @@ namespace bsl
 
             safe_integral<T> mut_val{};
 
-            for (safe_uintmax mut_i{idx}; mut_i < str.length(); ++mut_i) {
+            for (safe_idx mut_i{idx}; mut_i < str.length(); ++mut_i) {
                 safe_integral<T> const digit{static_cast<T>(*str.at_if(mut_i))};
 
                 constexpr safe_integral<T> lower_num{static_cast<T>('/')};
@@ -250,7 +246,10 @@ namespace bsl
                     bsl::touch();
                 }
 
-                details::invalid_dec_or_hex_integral();
+                return safe_integral<T>::failure();
+            }
+
+            if (unlikely(mut_val.is_poisoned())) {
                 return safe_integral<T>::failure();
             }
 
@@ -306,38 +305,52 @@ namespace bsl
     ///
     template<typename T>
     [[maybe_unused]] constexpr auto
-    from_chars(string_view const &str, safe_int32 const &base) noexcept -> safe_integral<T>
+    from_chars(string_view const &str, safe_i32 const &base) noexcept -> safe_integral<T>
     {
-        constexpr safe_int32 base10{10};
-        constexpr safe_int32 base16{16};
+        constexpr safe_i32 base10{10};
+        constexpr safe_i32 base16{16};
+
+        expects(base.is_valid_and_checked());
 
         if (unlikely(str.empty())) {
-            unlikely_invalid_argument_failure();
             return safe_integral<T>::failure();
         }
 
         auto const idx{details::from_chars_ignore_whitespace(str)};
-        if (unlikely(idx.invalid())) {
-            unlikely_invalid_argument_failure();
+        if (unlikely(npos == idx)) {
             return safe_integral<T>::failure();
         }
 
+        safe_integral<T> mut_val{};
         switch (base.get()) {
             case base10.get(): {
-                return details::from_chars_parse_dec<T>(str, idx);
+                mut_val = details::from_chars_parse_dec<T>(str, idx);
+                break;
             }
 
             case base16.get(): {
-                return details::from_chars_parse_hex<T>(str, idx);
+                mut_val = details::from_chars_parse_hex<T>(str, idx);
+                break;
             }
 
             default: {
+                mut_val = safe_integral<T>::failure();
                 break;
             }
         }
 
-        details::invalid_dec_or_hex_integral();
-        return safe_integral<T>::failure();
+        /// NOTE:
+        /// - If the result is invalid because a conversion encountered an
+        ///   error, we simply return an error. If however no error has
+        ///   occurred, we ensure that the result is both valid and checked.
+        ///
+
+        if (unlikely(mut_val.is_invalid())) {
+            return safe_integral<T>::failure();
+        }
+
+        ensures(mut_val.is_valid_and_checked());
+        return mut_val;
     }
 }
 

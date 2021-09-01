@@ -43,27 +43,21 @@ main() noexcept -> bsl::exit_code
         };
 
         bsl::ut_given{} = []() noexcept {
-            constexpr bsl::safe_uintmax width{bsl::to_umax(0)};
+            constexpr bsl::safe_umx width{bsl::to_umx(0)};
             bsl::ut_when{} = [&]() noexcept {
                 bsl::print() << bsl::fmt{bsl::fmt_options{""}, true, width};
             };
         };
 
         bsl::ut_given{} = []() noexcept {
-            bsl::ut_when{} = []() noexcept {
-                bsl::print() << bsl::fmt{bsl::fmt_options{""}, true, bsl::safe_uintmax::failure()};
-            };
-        };
-
-        bsl::ut_given{} = []() noexcept {
-            constexpr bsl::safe_uintmax width{bsl::to_umax(42)};
+            constexpr bsl::safe_umx width{bsl::to_umx(42)};
             bsl::ut_when{} = [&]() noexcept {
                 bsl::print() << bsl::fmt{bsl::fmt_options{""}, true, width};
             };
         };
 
         bsl::ut_given{} = []() noexcept {
-            constexpr bsl::safe_uintmax width{bsl::to_umax(10000)};
+            constexpr bsl::safe_umx width{bsl::to_umx(10000)};
             bsl::ut_when{} = [&]() noexcept {
                 bsl::print() << bsl::fmt{bsl::fmt_options{""}, true, width};
             };
@@ -74,27 +68,21 @@ main() noexcept -> bsl::exit_code
         };
 
         bsl::ut_given{} = []() noexcept {
-            constexpr bsl::safe_uintmax width{bsl::to_umax(0)};
+            constexpr bsl::safe_umx width{bsl::to_umx(0)};
             bsl::ut_when{} = [&]() noexcept {
                 bsl::print() << bsl::fmt{"", true, width};
             };
         };
 
         bsl::ut_given{} = []() noexcept {
-            bsl::ut_when{} = []() noexcept {
-                bsl::print() << bsl::fmt{"", true, bsl::safe_uintmax::failure()};
-            };
-        };
-
-        bsl::ut_given{} = []() noexcept {
-            constexpr bsl::safe_uintmax width{bsl::to_umax(42)};
+            constexpr bsl::safe_umx width{bsl::to_umx(42)};
             bsl::ut_when{} = [&]() noexcept {
                 bsl::print() << bsl::fmt{"", true, width};
             };
         };
 
         bsl::ut_given{} = []() noexcept {
-            constexpr bsl::safe_uintmax width{bsl::to_umax(10000)};
+            constexpr bsl::safe_umx width{bsl::to_umx(10000)};
             bsl::ut_when{} = [&]() noexcept {
                 bsl::print() << bsl::fmt{"", true, width};
             };

@@ -33,13 +33,13 @@
 
 namespace bsl
 {
-    /// @brief helper alias template for the common case of bsl::uintmax
+    /// @brief helper alias template for the common case of bsl::uintmx
     ///
     /// <!-- template parameters -->
     ///   @tparam INTS the integer values that make up the sequence
     ///
-    template<bsl::uintmax... INTS>
-    using index_sequence = integer_sequence<bsl::uintmax, INTS...>;
+    template<bsl::uintmx... INTS>
+    using index_sequence = integer_sequence<bsl::uintmx, INTS...>;
 }
 
 #endif

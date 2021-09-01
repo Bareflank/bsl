@@ -57,10 +57,8 @@ namespace bsl
     constexpr void
     fmt_impl(out<T> const o, fmt_options const &ops, bool const b) noexcept
     {
-        constexpr safe_uint32 one{static_cast<bsl::uint32>(1)};
-        constexpr safe_uint32 zero{static_cast<bsl::uint32>(0)};
-        constexpr safe_uintmax size_of_true{static_cast<bsl::uintmax>(4)};
-        constexpr safe_uintmax size_of_false{static_cast<bsl::uintmax>(5)};
+        constexpr safe_umx size_of_true{static_cast<bsl::uintmx>(4)};
+        constexpr safe_umx size_of_false{static_cast<bsl::uintmx>(5)};
 
         if (is_constant_evaluated()) {
             return;
@@ -69,16 +67,22 @@ namespace bsl
         if (b) {
             switch (ops.type()) {
                 case fmt_type::fmt_type_b:
+                    [[fallthrough]];
                 case fmt_type::fmt_type_c:
+                    [[fallthrough]];
                 case fmt_type::fmt_type_d:
+                    [[fallthrough]];
                 case fmt_type::fmt_type_x: {
-                    details::fmt_impl_integral(o, ops, one);
+                    details::fmt_impl_integral(o, ops, safe_u32::magic_1());
                     break;
                 }
 
                 case fmt_type::fmt_type_s:
-                case fmt_type::fmt_type_default: {
-                    constexpr safe_uintmax len_true{size_of_true};
+                    [[fallthrough]];
+                case fmt_type::fmt_type_default:
+                    [[fallthrough]];
+                default: {
+                    constexpr auto len_true{size_of_true};
                     details::fmt_impl_align_pre(o, ops, len_true, true);
                     o.write_to_console("true");
                     details::fmt_impl_align_suf(o, ops, len_true, true);
@@ -89,16 +93,22 @@ namespace bsl
         else {
             switch (ops.type()) {
                 case fmt_type::fmt_type_b:
+                    [[fallthrough]];
                 case fmt_type::fmt_type_c:
+                    [[fallthrough]];
                 case fmt_type::fmt_type_d:
+                    [[fallthrough]];
                 case fmt_type::fmt_type_x: {
-                    details::fmt_impl_integral(o, ops, zero);
+                    details::fmt_impl_integral(o, ops, safe_u32::magic_0());
                     break;
                 }
 
                 case fmt_type::fmt_type_s:
-                case fmt_type::fmt_type_default: {
-                    constexpr safe_uintmax len_false{size_of_false};
+                    [[fallthrough]];
+                case fmt_type::fmt_type_default:
+                    [[fallthrough]];
+                default: {
+                    constexpr auto len_false{size_of_false};
                     details::fmt_impl_align_pre(o, ops, len_false, true);
                     o.write_to_console("false");
                     details::fmt_impl_align_suf(o, ops, len_false, true);
@@ -126,7 +136,7 @@ namespace bsl
             return o;
         }
 
-        if constexpr (!o) {
+        if constexpr (o.empty()) {
             return o;
         }
 

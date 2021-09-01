@@ -37,6 +37,6 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    static_assert(bsl::is_empty<bsl::in_place_index_t<static_cast<bsl::uintmax>(42)>>::value);
+    static_assert(bsl::is_empty<bsl::in_place_index_t<static_cast<bsl::uintmx>(42)>>::value);
     return bsl::ut_success();
 }

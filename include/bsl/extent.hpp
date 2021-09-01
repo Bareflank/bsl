@@ -46,7 +46,7 @@ namespace bsl
     ///   @tparam T the type to get the extent from
     ///   @tparam N the dimension of T to the the extent from
     ///
-    template<typename T, bsl::uintmax N = static_cast<bsl::uintmax>(0)>
+    template<typename T, bsl::uintmx N = static_cast<bsl::uintmx>(0)>
     class extent final : public details::extent_base<T, N>
     {};
 }

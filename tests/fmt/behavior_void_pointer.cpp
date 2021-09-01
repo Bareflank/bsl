@@ -46,6 +46,10 @@ main() noexcept -> bsl::exit_code
             bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("nullptr"));
             };
+
+            bsl::debug() << pmut_val;
+            bsl::alert() << pmut_val;
+            bsl::error() << pmut_val;
         };
 
         bsl::ut_when{} = []() noexcept {
@@ -55,6 +59,10 @@ main() noexcept -> bsl::exit_code
             bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("nullptr"));
             };
+
+            bsl::debug() << val;
+            bsl::alert() << val;
+            bsl::error() << val;
         };
 
         bsl::ut_when{} = []() noexcept {
@@ -66,6 +74,10 @@ main() noexcept -> bsl::exit_code
             bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("0x0000000000000042"));
             };
+
+            bsl::debug() << pmut_val;
+            bsl::alert() << pmut_val;
+            bsl::error() << pmut_val;
         };
 
         bsl::ut_when{} = []() noexcept {
@@ -77,6 +89,10 @@ main() noexcept -> bsl::exit_code
             bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("0x0000000000000042"));
             };
+
+            bsl::debug() << val;
+            bsl::alert() << val;
+            bsl::error() << val;
         };
     };
 

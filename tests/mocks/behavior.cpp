@@ -53,7 +53,7 @@ namespace
             bsl::ut_given_at_runtime{} = []() noexcept {
                 bsl::ut_when{} = []() noexcept {
                     fmt_test::reset();
-                    bsl::details::putc_stdout('h');
+                    bsl::details::redirected_put_char('h');
                     bsl::ut_then{} = []() noexcept {
                         bsl::ut_check(fmt_test::was_this_outputted("h"));
                         bsl::ut_check(!fmt_test::was_this_outputted("w"));
@@ -67,7 +67,7 @@ namespace
             bsl::ut_given_at_runtime{} = []() noexcept {
                 bsl::ut_when{} = []() noexcept {
                     fmt_test::reset();
-                    bsl::details::puts_stdout("hello");
+                    bsl::details::redirected_put_cstr("hello");
                     bsl::ut_then{} = []() noexcept {
                         bsl::ut_check(fmt_test::was_this_outputted("hello"));
                         bsl::ut_check(!fmt_test::was_this_outputted("w"));

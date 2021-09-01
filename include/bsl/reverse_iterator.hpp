@@ -74,10 +74,12 @@ namespace bsl
     public:
         /// @brief alias for: typename ITER::value_type
         using value_type = typename ITER::value_type;
-        /// @brief alias for: safe_uintmax
-        using size_type = safe_uintmax;
-        /// @brief alias for: safe_uintmax
-        using difference_type = safe_uintmax;
+        /// @brief alias for: safe_umx
+        using size_type = safe_umx;
+        /// @brief alias for: safe_umx
+        using difference_type = safe_umx;
+        /// @brief alias for: safe_idx
+        using index_type = safe_idx;
         /// @brief alias for: typename ITER::value_type &
         using reference_type = typename ITER::value_type &;
         /// @brief alias for: typename ITER::value_type const &
@@ -161,14 +163,14 @@ namespace bsl
         ///   @return Returns the iterator's current index
         ///
         [[nodiscard]] constexpr auto
-        index() const noexcept -> size_type
+        // NOLINTNEXTLINE(bsl-using-ident-unique-namespace)
+        index() const noexcept -> index_type
         {
             if (unlikely(m_i.index().is_zero())) {
-                return m_i.size();
+                return index_type{m_i.size().get()};
             }
 
-            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-            return m_i.index() - one;
+            return m_i.index() - index_type::magic_1();
         }
 
         /// <!-- description -->
@@ -185,15 +187,29 @@ namespace bsl
         }
 
         /// <!-- description -->
-        ///   @brief Returns !is_end()
-        ///   @include reverse_iterator/example_reverse_iterator_operator_bool.hpp
+        ///   @brief Returns data() == nullptr
+        ///   @include reverse_iterator/example_reverse_iterator_is_invalid.hpp
         ///
         /// <!-- inputs/outputs -->
-        ///   @return Returns !is_end()
+        ///   @return Returns data() == nullptr
         ///
-        [[nodiscard]] explicit constexpr operator bool() const noexcept
+        [[nodiscard]] constexpr auto
+        is_invalid() const noexcept -> bool
         {
-            return !this->is_end();
+            return this->data() == nullptr;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns data() != nullptr;
+        ///   @include reverse_iterator/example_reverse_iterator_is_valid.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns data() != nullptr;
+        ///
+        [[nodiscard]] constexpr auto
+        is_valid() const noexcept -> bool
+        {
+            return this->data() != nullptr;
         }
 
         /// <!-- description -->
@@ -231,8 +247,7 @@ namespace bsl
                 return nullptr;
             }
 
-            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-            return &m_i.data()[(m_i.index() - one).get()];
+            return &m_i.data()[(m_i.index() - index_type::magic_1()).get()];
         }
 
         /// <!-- description -->
@@ -257,8 +272,7 @@ namespace bsl
                 return nullptr;
             }
 
-            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-            return &m_i.data()[(m_i.index() - one).get()];
+            return &m_i.data()[(m_i.index() - index_type::magic_1()).get()];
         }
 
         /// <!-- description -->
@@ -379,7 +393,7 @@ namespace bsl
     [[nodiscard]] constexpr auto
     make_reverse_iterator(ITER const &i) noexcept -> reverse_iterator<ITER>
     {
-        return {i};
+        return reverse_iterator<ITER>{i};
     }
 }
 

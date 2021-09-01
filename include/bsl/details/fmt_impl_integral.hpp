@@ -65,14 +65,14 @@ namespace bsl
     constexpr void
     fmt_impl(out<OUT_T> const o, fmt_options const &ops, safe_integral<T> const &val) noexcept
     {
-        constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-        constexpr safe_uintmax size_of_error{static_cast<bsl::uintmax>(7)};
+        constexpr safe_umx size_of_error{static_cast<bsl::uintmx>(7)};
 
         if (is_constant_evaluated()) {
             return;
         }
 
-        if (unlikely(!val)) {
+        auto mut_val{val};
+        if (unlikely(mut_val.is_poisoned())) {
             details::fmt_impl_align_pre(o, ops, size_of_error, true);
             o.write_to_console("[error]");
             details::fmt_impl_align_suf(o, ops, size_of_error, true);
@@ -81,21 +81,53 @@ namespace bsl
 
         switch (ops.type()) {
             case fmt_type::fmt_type_b:
+                [[fallthrough]];
             case fmt_type::fmt_type_d:
+                [[fallthrough]];
             case fmt_type::fmt_type_x:
+                [[fallthrough]];
             case fmt_type::fmt_type_default: {
-                fmt_impl_integral(o, ops, val);
+                fmt_impl_integral(o, ops, mut_val);
                 break;
             }
 
             case fmt_type::fmt_type_c:
-            case fmt_type::fmt_type_s: {
-                details::fmt_impl_align_pre(o, ops, one, true);
-                o.write_to_console(static_cast<char_type>(val.get()));
-                details::fmt_impl_align_suf(o, ops, one, true);
+                [[fallthrough]];
+            case fmt_type::fmt_type_s:
+                [[fallthrough]];
+            default: {
+                details::fmt_impl_align_pre(o, ops, safe_umx::magic_1(), true);
+                o.write_to_console(static_cast<char_type>(mut_val.get()));
+                details::fmt_impl_align_suf(o, ops, safe_umx::magic_1(), true);
                 break;
             }
         }
+    }
+
+    /// <!-- description -->
+    ///   @brief This function is responsible for implementing bsl::fmt
+    ///     for integral types. For integral types with b, d, x and default,
+    ///     this will call fmt_impl_integral_out which does the bulk of
+    ///     the work. For c, this will output the integral as a character
+    ///     type.
+    ///
+    /// <!-- notes -->
+    ///   @note This function exists in the details folder because it is
+    ///     private to the BSL, but it does not exist in the details namespace
+    ///     as it can be overridden by the user to provide their own
+    ///     fmt support for their own types.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam OUT_T the type of out (i.e., debug, alert, etc)
+    ///   @param o the instance of out<T> to output to
+    ///   @param ops ops the fmt options used to format the output
+    ///   @param val the integral being outputted
+    ///
+    template<typename OUT_T>
+    constexpr void
+    fmt_impl(out<OUT_T> const o, fmt_options const &ops, safe_idx const &val) noexcept
+    {
+        fmt_impl(o, ops, safe_integral<bsl::uintmx>{val.get()});
     }
 
     /// <!-- description -->
@@ -130,53 +162,47 @@ namespace bsl
     ///     output type.
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam T1 the type of outputter provided
-    ///   @tparam T2 the type of integral to output
+    ///   @tparam OUT_T the type of outputter provided
+    ///   @tparam T the type of integral to output
     ///   @param o the instance of the outputter used to output the value.
     ///   @param val the integral to output
     ///   @return return o
     ///
-    template<typename T1, typename T2>
+    template<typename OUT_T, typename T>
     [[maybe_unused]] constexpr auto
-    operator<<(out<T1> const o, safe_integral<T2> const &val) noexcept -> out<T1>
+    operator<<(out<OUT_T> const o, safe_integral<T> const &val) noexcept -> out<OUT_T>
     {
         if (is_constant_evaluated()) {
-            if (unlikely(!val)) {
-                return o;
-            }
-
             return o;
         }
 
-        if constexpr (!o) {
+        if constexpr (o.empty()) {
             return o;
         }
 
-        if (unlikely(!val)) {
+        auto mut_val{val};
+        if (unlikely(mut_val.is_poisoned())) {
             o.write_to_console("[error]");
             return o;
         }
 
-        details::fmt_impl_integral_info<T2> const info{
-            details::get_integral_info<T2>(nullops, val)};
-
-        if (val.is_zero()) {
+        if (mut_val.is_zero()) {
             o.write_to_console('0');
+            return o;
         }
-        else {
-            if constexpr (is_signed<T2>::value) {
-                if (val.is_neg()) {
-                    o.write_to_console('-');
-                }
-                else {
-                    bsl::touch();
-                }
-            }
 
-            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-            for (safe_uintmax mut_i{info.digits}; mut_i.is_pos(); --mut_i) {
-                o.write_to_console(*info.buf.at_if(mut_i - one));
+        auto const info{details::get_integral_info(nullops, mut_val)};
+        if constexpr (is_signed<T>::value) {
+            if (mut_val.is_neg()) {
+                o.write_to_console('-');
             }
+            else {
+                bsl::touch();
+            }
+        }
+
+        for (safe_idx mut_i{info.digits}; mut_i.is_pos(); --mut_i) {
+            o.write_to_console(*info.buf.at_if((mut_i - safe_idx::magic_1()).get()));
         }
 
         return o;
@@ -187,17 +213,34 @@ namespace bsl
     ///     output type.
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam T1 the type of outputter provided
-    ///   @tparam T2 the type of integral to output
+    ///   @tparam OUT_T the type of outputter provided
     ///   @param o the instance of the outputter used to output the value.
     ///   @param val the integral to output
     ///   @return return o
     ///
-    template<typename T1, typename T2, enable_if_t<is_integral<T2>::value, bool> = true>
+    template<typename OUT_T>
     [[maybe_unused]] constexpr auto
-    operator<<(out<T1> const o, T2 const val) noexcept -> out<T1>
+    operator<<(out<OUT_T> const o, safe_idx const &val) noexcept -> out<OUT_T>
     {
-        return o << safe_integral<T2>(val);
+        return o << safe_integral<bsl::uintmx>{val.get()};
+    }
+
+    /// <!-- description -->
+    ///   @brief Outputs the provided integral to the provided
+    ///     output type.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @tparam OUT_T the type of outputter provided
+    ///   @tparam T the type of integral to output
+    ///   @param o the instance of the outputter used to output the value.
+    ///   @param val the integral to output
+    ///   @return return o
+    ///
+    template<typename OUT_T, typename T, enable_if_t<is_integral<T>::value, bool> = true>
+    [[maybe_unused]] constexpr auto
+    operator<<(out<OUT_T> const o, T const val) noexcept -> out<OUT_T>
+    {
+        return o << safe_integral<T>(val);
     }
 }
 

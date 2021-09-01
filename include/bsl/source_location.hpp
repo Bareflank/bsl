@@ -30,18 +30,21 @@
 
 #include "cstdint.hpp"
 #include "cstr_type.hpp"
+#include "discard.hpp"
 
 namespace bsl
 {
     namespace details
     {
+        /// @brief defines the type used to store a line number
+        using line_type = decltype(__builtin_LINE());
+
         /// @brief defines an invalid file.
         constexpr bsl::cstr_type INVALID_FILE{"unknown"};
         /// @brief defines an invalid function.
         constexpr bsl::cstr_type INVALID_FUNC{"unknown"};
         /// @brief defines an invalid line number.
-        constexpr decltype(__builtin_LINE()) INVALID_LINE{
-            static_cast<decltype(__builtin_LINE())>(-1)};
+        constexpr line_type INVALID_LINE{static_cast<line_type>(-1)};
     }
 
     /// <!-- description -->
@@ -219,6 +222,30 @@ namespace bsl
         /// @brief stores the line location of the bsl::source_location
         line_type m_line;
     };
+
+    /// <!-- description -->
+    ///   @brief This provides a less verbose version of
+    ///     bsl::source_location::current() to help reduce how large this
+    ///     code must be. They are equivalent, and should not produce any
+    ///     additional overhead in release mode.
+    ///   @include source_location/example_source_location_here.hpp
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param sloc the source_location object corresponding to
+    ///     the location of the call site.
+    ///   @return the source_location object corresponding to
+    ///     the location of the call site.
+    ///
+    [[nodiscard]] constexpr auto
+    here(source_location const &sloc = source_location::current()) noexcept -> source_location
+    {
+        if constexpr (BSL_RELEASE_MODE) {
+            bsl::discard(sloc);
+            return source_location{};
+        }
+
+        return sloc;
+    }
 }
 
 #endif

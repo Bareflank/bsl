@@ -60,6 +60,13 @@ namespace bsl
             return;
         }
 
+        if (unlikely(nullptr == str)) {
+            details::fmt_impl_align_pre(o, ops, {}, true);
+            o.write_to_console("[empty bsl::cstr_type]");
+            details::fmt_impl_align_suf(o, ops, {}, true);
+            return;
+        }
+
         auto const len{bsl::builtin_strlen(str)};
         details::fmt_impl_align_pre(o, ops, len, true);
         o.write_to_console(str);
@@ -81,14 +88,10 @@ namespace bsl
     operator<<(out<T> const o, cstr_type const str) noexcept -> out<T>
     {
         if (is_constant_evaluated()) {
-            if (unlikely(nullptr == str)) {
-                return o;
-            }
-
             return o;
         }
 
-        if constexpr (!o) {
+        if constexpr (o.empty()) {
             return o;
         }
 

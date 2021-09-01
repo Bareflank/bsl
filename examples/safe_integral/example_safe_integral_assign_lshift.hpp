@@ -41,7 +41,7 @@ namespace bsl
         constexpr auto expected{bsl::to_u32(val1.get() << val2.get())};
 
         mut_val <<= val2;
-        if (expected == mut_val) {
+        if (expected == mut_val.checked()) {
             bsl::print() << "success\n";
         }
         else {

@@ -30,16 +30,13 @@
 
 #include "char_traits.hpp"
 #include "contiguous_iterator.hpp"
-#include "likely.hpp"
+#include "ensures.hpp"
+#include "expects.hpp"
 #include "npos.hpp"
 #include "reverse_iterator.hpp"
 #include "safe_integral.hpp"
 #include "touch.hpp"
 #include "unlikely.hpp"
-
-// TODO:
-// - Need to finish implementing the find functions.
-//
 
 namespace bsl
 {
@@ -60,10 +57,12 @@ namespace bsl
     public:
         /// @brief alias for: CHAR_T const
         using value_type = CHAR_T const;
-        /// @brief alias for: safe_uintmax
-        using size_type = safe_uintmax;
-        /// @brief alias for: safe_uintmax
-        using difference_type = safe_uintmax;
+        /// @brief alias for: safe_umx
+        using size_type = safe_umx;
+        /// @brief alias for: safe_umx
+        using difference_type = safe_umx;
+        /// @brief alias for: safe_idx
+        using index_type = safe_idx;
         /// @brief alias for: CHAR_T const &
         using reference_type = CHAR_T const &;
         /// @brief alias for: CHAR_T const &
@@ -105,13 +104,8 @@ namespace bsl
         constexpr basic_string_view(pointer_type const s) noexcept
             : m_ptr{s}, m_count{TRAITS::length(s)}
         {
-            if (unlikely(nullptr == m_ptr)) {
-                unlikely_invalid_argument_failure();
-                *this = basic_string_view{};
-                return;
-            }
-
-            bsl::touch();
+            expects(nullptr != s);
+            expects(m_count.is_valid_and_checked());
         }
 
         /// <!-- description -->
@@ -127,19 +121,8 @@ namespace bsl
         constexpr basic_string_view(pointer_type const s, size_type const &count) noexcept
             : m_ptr{s}, m_count{count}
         {
-            if (unlikely(nullptr == m_ptr)) {
-                unlikely_invalid_argument_failure();
-                *this = basic_string_view{};
-                return;
-            }
-
-            if (unlikely(!m_count)) {
-                unlikely_invalid_argument_failure();
-                *this = basic_string_view{};
-                return;
-            }
-
-            bsl::touch();
+            expects(nullptr != s);
+            expects(m_count.is_valid_and_checked());
         }
 
         /// <!-- description -->
@@ -226,21 +209,16 @@ namespace bsl
         ///     this function returns a nullptr.
         ///
         [[nodiscard]] constexpr auto
-        at_if(size_type const &index) noexcept -> pointer_type
+        at_if(index_type const &index) noexcept -> pointer_type
         {
-            if (unlikely(!index)) {
-                unlikely_invalid_argument_failure();
+            expects(index.is_valid());
+
+            if (unlikely(index >= m_count)) {
                 return nullptr;
             }
 
-            if (likely(index < m_count)) {
-                // We are implementing std::array here, which is what this test
-                // wants you to use instead.
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
-                return &m_ptr[index.get()];
-            }
-
-            return nullptr;
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            return &m_ptr[index.get()];
         }
 
         /// <!-- description -->
@@ -256,21 +234,16 @@ namespace bsl
         ///     this function returns a nullptr.
         ///
         [[nodiscard]] constexpr auto
-        at_if(size_type const &index) const noexcept -> const_pointer_type
+        at_if(index_type const &index) const noexcept -> const_pointer_type
         {
-            if (unlikely(!index)) {
-                unlikely_invalid_argument_failure();
+            expects(index.is_valid());
+
+            if (unlikely(index >= m_count)) {
                 return nullptr;
             }
 
-            if (likely(index < m_count)) {
-                // We are implementing std::array here, which is what this test
-                // wants you to use instead.
-                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
-                return &m_ptr[index.get()];
-            }
-
-            return nullptr;
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            return &m_ptr[index.get()];
         }
 
         /// <!-- description -->
@@ -287,8 +260,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front_if() noexcept -> pointer_type
         {
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-            return this->at_if(zero);
+            return this->at_if({});
         }
 
         /// <!-- description -->
@@ -305,8 +277,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         front_if() const noexcept -> const_pointer_type
         {
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-            return this->at_if(zero);
+            return this->at_if({});
         }
 
         /// <!-- description -->
@@ -323,15 +294,19 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back_if() noexcept -> pointer_type
         {
-            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-
             if (unlikely(m_count.is_zero())) {
-                unlikely_precondition_failure();
-                return this->at_if(zero);
+                return nullptr;
             }
 
-            return this->at_if(m_count - one);
+            /// NOTE:
+            /// - We verify above that m_count is not zero. Since m_count
+            ///   is unsigned and never modified by this class after the
+            ///   constructor is executed, the following must be valid and
+            ///   so it is marked as checked.
+            ///
+
+            safe_idx const index{(m_count - size_type::magic_1()).checked().get()};
+            return this->at_if(index);
         }
 
         /// <!-- description -->
@@ -348,15 +323,19 @@ namespace bsl
         [[nodiscard]] constexpr auto
         back_if() const noexcept -> const_pointer_type
         {
-            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-
             if (unlikely(m_count.is_zero())) {
-                unlikely_precondition_failure();
-                return this->at_if(zero);
+                return nullptr;
             }
 
-            return this->at_if(m_count - one);
+            /// NOTE:
+            /// - We verify above that m_count is not zero. Since m_count
+            ///   is unsigned and never modified by this class after the
+            ///   constructor is executed, the following must be valid and
+            ///   so it is marked as checked.
+            ///
+
+            safe_idx const index{(m_count - size_type::magic_1()).checked().get()};
+            return this->at_if(index);
         }
 
         /// <!-- description -->
@@ -403,8 +382,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         begin() noexcept -> iterator_type
         {
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-            return iterator_type{m_ptr, m_count, zero};
+            return iterator_type{m_ptr, m_count, {}};
         }
 
         /// <!-- description -->
@@ -417,8 +395,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         begin() const noexcept -> const_iterator_type
         {
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-            return const_iterator_type{m_ptr, m_count, zero};
+            return const_iterator_type{m_ptr, m_count, {}};
         }
 
         /// <!-- description -->
@@ -431,50 +408,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         cbegin() const noexcept -> const_iterator_type
         {
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-            return const_iterator_type{m_ptr, m_count, zero};
-        }
-
-        /// <!-- description -->
-        ///   @brief Returns an iterator to the element "i" in the view.
-        ///   @include basic_string_view/example_basic_string_view_iter.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param i the element in the string to return an iterator for.
-        ///   @return Returns an iterator to the element "i" in the view.
-        ///
-        [[nodiscard]] constexpr auto
-        iter(size_type const &i) noexcept -> iterator_type
-        {
-            return iterator_type{m_ptr, m_count, i};
-        }
-
-        /// <!-- description -->
-        ///   @brief Returns an iterator to the element "i" in the view.
-        ///   @include basic_string_view/example_basic_string_view_iter.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param i the element in the string to return an iterator for.
-        ///   @return Returns an iterator to the element "i" in the view.
-        ///
-        [[nodiscard]] constexpr auto
-        iter(size_type const &i) const noexcept -> const_iterator_type
-        {
-            return const_iterator_type{m_ptr, m_count, i};
-        }
-
-        /// <!-- description -->
-        ///   @brief Returns an iterator to the element "i" in the view.
-        ///   @include basic_string_view/example_basic_string_view_iter.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param i the element in the string to return an iterator for.
-        ///   @return Returns an iterator to the element "i" in the view.
-        ///
-        [[nodiscard]] constexpr auto
-        citer(size_type const &i) const noexcept -> const_iterator_type
-        {
-            return const_iterator_type{m_ptr, m_count, i};
+            return const_iterator_type{m_ptr, m_count, {}};
         }
 
         /// <!-- description -->
@@ -491,7 +425,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         end() noexcept -> iterator_type
         {
-            return iterator_type{m_ptr, m_count, m_count};
+            return iterator_type{m_ptr, m_count, safe_idx{m_count.get()}};
         }
 
         /// <!-- description -->
@@ -508,7 +442,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         end() const noexcept -> const_iterator_type
         {
-            return const_iterator_type{m_ptr, m_count, m_count};
+            return const_iterator_type{m_ptr, m_count, safe_idx{m_count.get()}};
         }
 
         /// <!-- description -->
@@ -525,7 +459,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         cend() const noexcept -> const_iterator_type
         {
-            return const_iterator_type{m_ptr, m_count, m_count};
+            return const_iterator_type{m_ptr, m_count, safe_idx{m_count.get()}};
         }
 
         /// <!-- description -->
@@ -583,102 +517,6 @@ namespace bsl
         crbegin() const noexcept -> const_reverse_iterator_type
         {
             return const_reverse_iterator_type{this->cend()};
-        }
-
-        /// <!-- description -->
-        ///   @brief Returns a reverse iterator element "i" in the
-        ///     view. When accessing the iterator, the iterator will
-        ///     always return the element T[internal index - 1], providing
-        ///     access to the range [size() - 1, 0) while internally storing the
-        ///     range [size(), 1) with element 0 representing the end(). For more
-        ///     information, see the bsl::reverse_iterator documentation.
-        ///   @include basic_string_view/example_basic_string_view_riter.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param i the element in the string to return an iterator for.
-        ///   @return Returns a reverse iterator element "i" in the
-        ///     view.
-        ///
-        [[nodiscard]] constexpr auto
-        riter(size_type const &i) noexcept -> reverse_iterator_type
-        {
-            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-
-            if (unlikely(!i)) {
-                unlikely_invalid_argument_failure();
-                return reverse_iterator_type{this->iter(zero)};
-            }
-
-            if (likely(i < m_count)) {
-                return reverse_iterator_type{this->iter(i + one)};
-            }
-
-            return reverse_iterator_type{this->iter(zero)};
-        }
-
-        /// <!-- description -->
-        ///   @brief Returns a reverse iterator element "i" in the
-        ///     view. When accessing the iterator, the iterator will
-        ///     always return the element T[internal index - 1], providing
-        ///     access to the range [size() - 1, 0) while internally storing the
-        ///     range [size(), 1) with element 0 representing the end(). For more
-        ///     information, see the bsl::reverse_iterator documentation.
-        ///   @include basic_string_view/example_basic_string_view_riter.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param i the element in the string to return an iterator for.
-        ///   @return Returns a reverse iterator element "i" in the
-        ///     view.
-        ///
-        [[nodiscard]] constexpr auto
-        riter(size_type const &i) const noexcept -> const_reverse_iterator_type
-        {
-            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-
-            if (unlikely(!i)) {
-                unlikely_invalid_argument_failure();
-                return const_reverse_iterator_type{this->iter(zero)};
-            }
-
-            if (likely(i < m_count)) {
-                return const_reverse_iterator_type{this->iter(i + one)};
-            }
-
-            return const_reverse_iterator_type{this->iter(zero)};
-        }
-
-        /// <!-- description -->
-        ///   @brief Returns a reverse iterator element "i" in the
-        ///     view. When accessing the iterator, the iterator will
-        ///     always return the element T[internal index - 1], providing
-        ///     access to the range [size() - 1, 0) while internally storing the
-        ///     range [size(), 1) with element 0 representing the end(). For more
-        ///     information, see the bsl::reverse_iterator documentation.
-        ///   @include basic_string_view/example_basic_string_view_riter.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param i the element in the string to return an iterator for.
-        ///   @return Returns a reverse iterator element "i" in the
-        ///     view.
-        ///
-        [[nodiscard]] constexpr auto
-        criter(size_type const &i) const noexcept -> const_reverse_iterator_type
-        {
-            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-
-            if (unlikely(!i)) {
-                unlikely_invalid_argument_failure();
-                return const_reverse_iterator_type{this->iter(zero)};
-            }
-
-            if (likely(i < m_count)) {
-                return const_reverse_iterator_type{this->iter(i + one)};
-            }
-
-            return const_reverse_iterator_type{this->iter(zero)};
         }
 
         /// <!-- description -->
@@ -748,19 +586,33 @@ namespace bsl
         [[nodiscard]] constexpr auto
         empty() const noexcept -> bool
         {
-            return this->size().is_zero();
+            return m_count.is_zero();
         }
 
         /// <!-- description -->
         ///   @brief Returns data() != nullptr;
-        ///   @include basic_string_view/example_basic_string_view_operator_bool.hpp
+        ///   @include basic_string_view/example_basic_string_view_is_invalid.hpp
         ///
         /// <!-- inputs/outputs -->
         ///   @return Returns data() != nullptr;
         ///
-        [[nodiscard]] explicit constexpr operator bool() const noexcept
+        [[nodiscard]] constexpr auto
+        is_invalid() const noexcept -> bool
         {
-            return this->data() != nullptr;
+            return m_ptr == nullptr;
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns data() != nullptr;
+        ///   @include basic_string_view/example_basic_string_view_is_valid.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @return Returns data() != nullptr;
+        ///
+        [[nodiscard]] constexpr auto
+        is_valid() const noexcept -> bool
+        {
+            return m_ptr != nullptr;
         }
 
         /// <!-- description -->
@@ -777,6 +629,7 @@ namespace bsl
         [[nodiscard]] constexpr auto
         size() const noexcept -> size_type const &
         {
+            ensures(m_count.is_valid_and_checked());
             return m_count;
         }
 
@@ -794,7 +647,8 @@ namespace bsl
         [[nodiscard]] constexpr auto
         length() const noexcept -> size_type const &
         {
-            return this->size();
+            ensures(m_count.is_valid_and_checked());
+            return m_count;
         }
 
         /// <!-- description -->
@@ -807,8 +661,16 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         max_size() noexcept -> size_type
         {
-            constexpr safe_uintmax size_of_chart{static_cast<bsl::uintmax>(sizeof(CHAR_T))};
-            return size_type::max() / size_of_chart;
+            constexpr auto val{(size_type::max_value() / sizeof(CHAR_T)).checked()};
+
+            /// NOTE:
+            /// - An error is not possible because the denominator is
+            ///   always positive, so the result of max_size() is marked
+            ///   as checked.
+            ///
+
+            ensures(val.is_valid_and_checked());
+            return val;
         }
 
         /// <!-- description -->
@@ -821,8 +683,16 @@ namespace bsl
         [[nodiscard]] constexpr auto
         size_bytes() const noexcept -> size_type
         {
-            constexpr safe_uintmax size_of_chart{static_cast<bsl::uintmax>(sizeof(CHAR_T))};
-            return m_count * size_of_chart;
+            auto const val{(m_count * sizeof(CHAR_T)).checked()};
+
+            /// NOTE:
+            /// - An error is not possible because the denominator is
+            ///   always positive, so the result of max_size() is marked
+            ///   as checked.
+            ///
+
+            ensures(val.is_valid_and_checked());
+            return val;
         }
 
         /// <!-- description -->
@@ -837,20 +707,22 @@ namespace bsl
         ///   @return returns *this
         ///
         [[maybe_unused]] constexpr auto
-        remove_prefix(size_type const &n) noexcept -> basic_string_view &
+        remove_prefix(index_type const &n) noexcept -> basic_string_view &
         {
-            if (unlikely(!n)) {
-                unlikely_invalid_argument_failure();
+            expects(n.is_valid());
+
+            if (unlikely(n >= m_count)) {
                 *this = basic_string_view{};
                 return *this;
             }
 
-            if (likely(n < this->size())) {
-                *this = basic_string_view{this->at_if(n), this->size() - n};
-                return *this;
-            }
+            /// NOTE:
+            /// - We verify above that n must be less than m_count, which
+            ///   prevents the following from underflowing which is why it is
+            ///   marked as checked().
+            ///
 
-            *this = basic_string_view{};
+            *this = basic_string_view{this->at_if(n), (m_count - n.get()).checked()};
             return *this;
         }
 
@@ -866,20 +738,22 @@ namespace bsl
         ///   @return returns *this
         ///
         [[maybe_unused]] constexpr auto
-        remove_suffix(size_type const &n) noexcept -> basic_string_view &
+        remove_suffix(index_type const &n) noexcept -> basic_string_view &
         {
-            if (unlikely(!n)) {
-                unlikely_invalid_argument_failure();
+            expects(n.is_valid());
+
+            if (unlikely(n >= m_count)) {
                 *this = basic_string_view{};
                 return *this;
             }
 
-            if (likely(n < this->size())) {
-                *this = basic_string_view{this->front_if(), this->size() - n};
-                return *this;
-            }
+            /// NOTE:
+            /// - We verify above that n must be less than m_count, which
+            ///   prevents the following from underflowing which is why it is
+            ///   marked as checked().
+            ///
 
-            *this = basic_string_view{};
+            *this = basic_string_view{this->front_if(), (m_count - n.get()).checked()};
             return *this;
         }
 
@@ -903,139 +777,93 @@ namespace bsl
         ///     and ends at "pos" + "count".
         ///
         [[nodiscard]] constexpr auto
-        substr(size_type const &pos = {}, size_type const &count = npos) const noexcept
-            -> basic_string_view
+        substr(index_type const &pos = {}, size_type const &count = size_type::max_value())
+            const noexcept -> basic_string_view
         {
-            if (unlikely(!pos)) {
-                unlikely_invalid_argument_failure();
+            expects(pos.is_valid());
+            expects(count.is_valid_and_checked());
+
+            if (unlikely(pos >= m_count)) {
                 return basic_string_view{};
             }
 
-            if (unlikely(!count)) {
-                unlikely_invalid_argument_failure();
-                return basic_string_view{};
-            }
+            /// NOTE:
+            /// - The check above makes sure that the math below cannot
+            ///   underflow which is why it is marked as checked.
+            ///
 
-            if (likely(pos < this->size())) {
-                return basic_string_view{this->at_if(pos), count.min(this->size() - pos)};
-            }
-
-            return basic_string_view{};
+            auto const adjusted_count{(m_count - pos.get()).checked()};
+            return basic_string_view{this->at_if(pos), count.min(adjusted_count)};
         }
 
         /// <!-- description -->
-        ///   @brief Compares two strings.
-        ///   @include basic_string_view/example_basic_string_view_compare.hpp
+        ///   @brief Compares two strings. Calculates the minimum size between
+        ///     the two strings and compares up to this minimum. If these
+        ///     substrings are the same, returns true. Returns false
+        ///     otherwise. If either string is empty, also returns true.
+        ///   @include basic_string_view/example_basic_string_view_equals.hpp
         ///
         /// <!-- inputs/outputs -->
         ///   @param str the bsl::basic_string_view to compare with
-        ///   @return Returns the same results as std::strncmp
+        ///   @return Compares two strings. Calculates the minimum size between
+        ///     the two strings and compares up to this minimum. If these
+        ///     substrings are the same, returns true. Returns false
+        ///     otherwise. If either string is empty, also returns true.
         ///
         [[nodiscard]] constexpr auto
-        compare(basic_string_view const &str) const noexcept -> safe_int32
+        equals(basic_string_view const &str) const noexcept -> bool
         {
-            return TRAITS::compare(this->data(), str.data(), this->size().min(str.size()));
+            if (unlikely(this->empty())) {
+                return true;
+            }
+
+            if (unlikely(str.empty())) {
+                return true;
+            }
+
+            auto const count{m_count.min(str.size())};
+            for (safe_idx mut_i{}; mut_i < count; ++mut_i) {
+                if (*this->at_if(mut_i) != *str.at_if(mut_i)) {
+                    return false;
+                }
+
+                bsl::touch();
+            }
+
+            return true;
         }
 
         /// <!-- description -->
-        ///   @brief Same as substr(pos, count).compare(v)
-        ///   @include basic_string_view/example_basic_string_view_compare.hpp
+        ///   @brief Returns this->equals(basic_string_view{str})
+        ///   @include basic_string_view/example_basic_string_view_equals.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param str a pointer to a string to compare with "this"
+        ///   @return Returns this->equals(basic_string_view{str})
+        ///
+        [[nodiscard]] constexpr auto
+        equals(pointer_type const str) const noexcept -> bool
+        {
+            return this->equals(basic_string_view{str});
+        }
+
+        /// <!-- description -->
+        ///   @brief Returns this->substr(pos, count).equals(str)
+        ///   @include basic_string_view/example_basic_string_view_equals.hpp
         ///
         /// <!-- inputs/outputs -->
         ///   @param pos the starting position of "this" to compare from
         ///   @param count the number of characters of "this" to compare
         ///   @param str the bsl::basic_string_view to compare with
-        ///   @return Returns the same results as std::strncmp
+        ///   @return Returns this->substr(pos, count).equals(str);
         ///
         [[nodiscard]] constexpr auto
-        compare(                       // --
-            size_type const &pos,      // --
+        equals(                        // --
+            index_type const &pos,     // --
             size_type const &count,    // --
-            basic_string_view const &str) const noexcept -> safe_int32
+            basic_string_view const &str) const noexcept -> bool
         {
-            return this->substr(pos, count).compare(str);
-        }
-
-        /// <!-- description -->
-        ///   @brief Same as substr(pos1, count1).compare(v.substr(pos2, count2))
-        ///   @include basic_string_view/example_basic_string_view_compare.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param pos1 the starting position of "this" to compare from
-        ///   @param count1 the number of characters of "this" to compare
-        ///   @param str the bsl::basic_string_view to compare with
-        ///   @param pos2 the starting position of "v" to compare from
-        ///   @param count2 the number of characters of "v" to compare
-        ///   @return Returns the same results as std::strncmp
-        ///
-        [[nodiscard]] constexpr auto
-        compare(                             // --
-            size_type const &pos1,           // --
-            size_type const &count1,         // --
-            basic_string_view const &str,    // --
-            size_type const &pos2,           // --
-            size_type const &count2) const noexcept -> safe_int32
-        {
-            return this->substr(pos1, count1).compare(str.substr(pos2, count2));
-        }
-
-        /// <!-- description -->
-        ///   @brief Same as compare(basic_string_view{s})
-        ///   @include basic_string_view/example_basic_string_view_compare.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param str a pointer to a string to compare with "this"
-        ///   @return Returns the same results as std::strncmp
-        ///
-        [[nodiscard]] constexpr auto
-        compare(pointer_type const str) const noexcept -> safe_int32
-        {
-            return this->compare(basic_string_view{str});
-        }
-
-        /// <!-- description -->
-        ///   @brief Same as substr(pos, count).compare(basic_string_view{s})
-        ///   @include basic_string_view/example_basic_string_view_compare.hpp
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param pos the starting position of "this" to compare from
-        ///   @param count the number of characters of "this" to compare
-        ///   @param str a pointer to a string to compare with "this"
-        ///   @return Returns the same results as std::strncmp
-        ///
-        [[nodiscard]] constexpr auto
-        compare(size_type const &pos, size_type const &count, pointer_type const str) const noexcept
-            -> safe_int32
-        {
-            return this->substr(pos, count).compare(basic_string_view{str});
-        }
-
-        /// <!-- description -->
-        ///   @brief Same as substr(pos, count1).compare(basic_string_view{s, count2})
-        ///   @include basic_string_view/example_basic_string_view_compare.hpp
-        ///
-        /// <!-- notes -->
-        ///   @note Unlike the standard library version of this function, the
-        ///     BSL implements this function as the following to prevent
-        ///     potential corruption:
-        ///     compare(pos, count1, basic_string_view{s}, 0, count2)
-        ///
-        /// <!-- inputs/outputs -->
-        ///   @param pos the starting position of "this" to compare from
-        ///   @param count1 the number of characters of "this" to compare
-        ///   @param str a pointer to a string to compare with "this"
-        ///   @param count2 the number of characters of "s" to compare
-        ///   @return Returns the same results as std::strncmp
-        ///
-        [[nodiscard]] constexpr auto
-        compare(                        // --
-            size_type const &pos,       // --
-            size_type const &count1,    // --
-            pointer_type const str,     // --
-            size_type const &count2) const noexcept -> safe_int32
-        {
-            constexpr safe_uintmax zero{static_cast<bsl::uintmax>(0)};
-            return this->compare(pos, count1, basic_string_view{str}, zero, count2);
+            return this->substr(pos, count).equals(str);
         }
 
         /// <!-- description -->
@@ -1054,11 +882,11 @@ namespace bsl
                 return false;
             }
 
-            if (this->size() < str.size()) {
+            if (unlikely(m_count < str.size())) {
                 return false;
             }
 
-            return this->compare({}, str.size(), str) == 0;
+            return this->equals({}, str.size(), str);
         }
 
         /// <!-- description -->
@@ -1111,11 +939,17 @@ namespace bsl
                 return false;
             }
 
-            if (this->size() < str.size()) {
+            if (unlikely(m_count < str.size())) {
                 return false;
             }
 
-            return this->compare(this->size() - str.size(), str.size(), str) == 0;
+            /// NOTE:
+            /// - The above checks ensure that compare will never return
+            ///   an invalid result which is why it is marked as checked.
+            ///
+
+            safe_idx const pos{(m_count - str.size()).checked().get()};
+            return this->equals(pos, str.size(), str);
         }
 
         /// <!-- description -->
@@ -1161,31 +995,37 @@ namespace bsl
         ///   @param str the string to find the index of
         ///   @param pos the starting position to search from
         ///   @return Returns the index of the first occurrence of the provided
-        ///     string. If the string does not occur, bsl::npos is returned.
+        ///     string. If the string does not occur, bsl::npos is
+        ///     returned.
         ///
         [[nodiscard]] constexpr auto
-        find(basic_string_view const &str, size_type const &pos = {}) const noexcept -> size_type
+        find(basic_string_view const &str, index_type const &pos = {}) const noexcept -> index_type
         {
-            constexpr safe_uintmax one{static_cast<bsl::uintmax>(1)};
+            expects(pos.is_valid());
 
             auto const view{this->substr(pos)};
             if (view.empty()) {
-                unlikely_invalid_argument_failure();
-                return size_type::failure();
-            }
-
-            if (unlikely(str.empty())) {
-                unlikely_invalid_argument_failure();
-                return size_type::failure();
-            }
-
-            if (unlikely(str.length() > view.length())) {
                 return npos;
             }
 
-            auto const len{(view.length() - str.length()) + one};
-            for (size_type mut_i{}; mut_i < len; ++mut_i) {
-                if (view.compare(mut_i, npos, str) == 0) {
+            if (unlikely(str.empty())) {
+                return npos;
+            }
+
+            if (unlikely(view.length() < str.length())) {
+                return npos;
+            }
+
+            /// NOTE:
+            /// - We verify above that the input string's length is <= to
+            ///   this string's length after we have a view that takes into
+            ///   account the starting position. Since everything is unsigned,
+            ///   the math below must be valid so it is marked as checked.
+            ///
+
+            auto const len{((view.length() - str.length()) + size_type::magic_1()).checked()};
+            for (index_type mut_i{}; mut_i < len; ++mut_i) {
+                if (view.equals(mut_i, size_type::max_value(), str)) {
                     return mut_i + pos;
                 }
 
@@ -1209,15 +1049,16 @@ namespace bsl
         ///     returned.
         ///
         [[nodiscard]] constexpr auto
-        find(CHAR_T const ch, size_type const &pos = {}) const noexcept -> size_type
+        find(CHAR_T const ch, index_type const &pos = {}) const noexcept -> index_type
         {
+            expects(pos.is_valid());
+
             auto const view{this->substr(pos)};
             if (view.empty()) {
-                unlikely_invalid_argument_failure();
-                return size_type::failure();
+                return npos;
             }
 
-            for (size_type mut_i{}; mut_i < view.length(); ++mut_i) {
+            for (index_type mut_i{}; mut_i < view.length(); ++mut_i) {
                 if (*view.at_if(mut_i) == ch) {
                     return mut_i + pos;
                 }
@@ -1240,8 +1081,9 @@ namespace bsl
         ///     string. If the string does not occur, bsl::npos is returned.
         ///
         [[nodiscard]] constexpr auto
-        find(pointer_type const str, size_type const &pos = {}) const noexcept -> size_type
+        find(pointer_type const str, index_type const &pos = {}) const noexcept -> index_type
         {
+            expects(pos.is_valid());
             return this->find(basic_string_view{str}, pos);
         }
 
@@ -1253,10 +1095,8 @@ namespace bsl
     };
 
     /// <!-- description -->
-    ///   @brief Returns true if two strings have the same length (which is
-    ///     different from compare() which uses the minimum size between the
-    ///     two provided strings), and contain the same characters. Returns
-    ///     false otherwise.
+    ///   @brief If the two strings are the same length, returns
+    ///     lhs.equals(rhs). Otherwise returns false.
     ///   @include basic_string_view/example_basic_string_view_equals.hpp
     ///   @related bsl::basic_string_view
     ///
@@ -1265,10 +1105,8 @@ namespace bsl
     ///   @tparam TRAITS the traits class used to work with the string
     ///   @param lhs the left hand side of the operation
     ///   @param rhs the right hand side of the operation
-    ///   @return Returns true if two strings have the same length (which is
-    ///     different from compare() which uses the minimum size between the
-    ///     two provided strings), and contain the same characters. Returns
-    ///     false otherwise.
+    ///   @return If the two strings are the same length, returns
+    ///     lhs.equals(rhs). Otherwise returns false.
     ///
     template<typename CHAR_T, typename TRAITS>
     [[nodiscard]] constexpr auto
@@ -1276,22 +1114,19 @@ namespace bsl
         bsl::basic_string_view<CHAR_T, TRAITS> const &lhs,
         bsl::basic_string_view<CHAR_T, TRAITS> const &rhs) noexcept -> bool
     {
-        if (lhs.size() != rhs.size()) {
-            return false;
-        }
-
         if (lhs.empty()) {
             return rhs.empty();
         }
 
-        return lhs.compare(rhs) == 0;
+        if (lhs.length() != rhs.length()) {
+            return false;
+        }
+
+        return lhs.equals(rhs);
     }
 
     /// <!-- description -->
-    ///   @brief Returns true if two strings have the same length (which is
-    ///     different from compare() which uses the minimum size between the
-    ///     two provided strings), and contain the same characters. Returns
-    ///     false otherwise.
+    ///   @brief Returns lhs == bsl::basic_string_view<CHAR_T, TRAITS>{rhs}
     ///   @include basic_string_view/example_basic_string_view_equals.hpp
     ///   @related bsl::basic_string_view
     ///
@@ -1300,28 +1135,18 @@ namespace bsl
     ///   @tparam TRAITS the traits class used to work with the string
     ///   @param lhs the left hand side of the operation
     ///   @param rhs the right hand side of the operation
-    ///   @return Returns true if two strings have the same length (which is
-    ///     different from compare() which uses the minimum size between the
-    ///     two provided strings), and contain the same characters. Returns
-    ///     false otherwise.
+    ///   @return Returns lhs == bsl::basic_string_view<CHAR_T, TRAITS>{rhs}
     ///
     template<typename CHAR_T, typename TRAITS>
     [[nodiscard]] constexpr auto
     operator==(bsl::basic_string_view<CHAR_T, TRAITS> const &lhs, CHAR_T const *const rhs) noexcept
         -> bool
     {
-        if (nullptr == rhs) {
-            return !lhs;
-        }
-
         return lhs == bsl::basic_string_view<CHAR_T, TRAITS>{rhs};
     }
 
     /// <!-- description -->
-    ///   @brief Returns true if two strings have the same length (which is
-    ///     different from compare() which uses the minimum size between the
-    ///     two provided strings), and contain the same characters. Returns
-    ///     false otherwise.
+    ///   @brief Returns bsl::basic_string_view<CHAR_T, TRAITS>{lhs} == rhs
     ///   @include basic_string_view/example_basic_string_view_equals.hpp
     ///   @related bsl::basic_string_view
     ///
@@ -1330,28 +1155,18 @@ namespace bsl
     ///   @tparam TRAITS the traits class used to work with the string
     ///   @param lhs the left hand side of the operation
     ///   @param rhs the right hand side of the operation
-    ///   @return Returns true if two strings have the same length (which is
-    ///     different from compare() which uses the minimum size between the
-    ///     two provided strings), and contain the same characters. Returns
-    ///     false otherwise.
+    ///   @return Returns bsl::basic_string_view<CHAR_T, TRAITS>{lhs} == rhs
     ///
     template<typename CHAR_T, typename TRAITS>
     [[nodiscard]] constexpr auto
     operator==(CHAR_T const *const lhs, bsl::basic_string_view<CHAR_T, TRAITS> const &rhs) noexcept
         -> bool
     {
-        if (nullptr == lhs) {
-            return !rhs;
-        }
-
         return bsl::basic_string_view<CHAR_T, TRAITS>{lhs} == rhs;
     }
 
     /// <!-- description -->
-    ///   @brief Returns true if two strings are not the same length (which is
-    ///     different from compare() which uses the minimum size between the
-    ///     two provided strings), or contain different characters. Returns
-    ///     false otherwise.
+    ///   @brief Returns !(lhs == rhs)
     ///   @include basic_string_view/example_basic_string_view_not_equals.hpp
     ///   @related bsl::basic_string_view
     ///
@@ -1360,10 +1175,7 @@ namespace bsl
     ///   @tparam TRAITS the traits class used to work with the string
     ///   @param lhs the left hand side of the operation
     ///   @param rhs the right hand side of the operation
-    ///   @return Returns true if two strings are not the same length (which is
-    ///     different from compare() which uses the minimum size between the
-    ///     two provided strings), or contain different characters. Returns
-    ///     false otherwise.
+    ///   @return Returns !(lhs == rhs)
     ///
     template<typename CHAR_T, typename TRAITS>
     [[nodiscard]] constexpr auto
@@ -1375,10 +1187,7 @@ namespace bsl
     }
 
     /// <!-- description -->
-    ///   @brief Returns true if two strings are not the same length (which is
-    ///     different from compare() which uses the minimum size between the
-    ///     two provided strings), or contain different characters. Returns
-    ///     false otherwise.
+    ///   @brief Returns !(lhs == rhs)
     ///   @include basic_string_view/example_basic_string_view_not_equals.hpp
     ///   @related bsl::basic_string_view
     ///
@@ -1387,10 +1196,7 @@ namespace bsl
     ///   @tparam TRAITS the traits class used to work with the string
     ///   @param lhs the left hand side of the operation
     ///   @param rhs the right hand side of the operation
-    ///   @return Returns true if two strings are not the same length (which is
-    ///     different from compare() which uses the minimum size between the
-    ///     two provided strings), or contain different characters. Returns
-    ///     false otherwise.
+    ///   @return Returns !(lhs == rhs)
     ///
     template<typename CHAR_T, typename TRAITS>
     [[nodiscard]] constexpr auto
@@ -1401,10 +1207,7 @@ namespace bsl
     }
 
     /// <!-- description -->
-    ///   @brief Returns true if two strings are not the same length (which is
-    ///     different from compare() which uses the minimum size between the
-    ///     two provided strings), or contain different characters. Returns
-    ///     false otherwise.
+    ///   @brief Returns !(lhs == rhs)
     ///   @include basic_string_view/example_basic_string_view_not_equals.hpp
     ///   @related bsl::basic_string_view
     ///
@@ -1413,10 +1216,7 @@ namespace bsl
     ///   @tparam TRAITS the traits class used to work with the string
     ///   @param lhs the left hand side of the operation
     ///   @param rhs the right hand side of the operation
-    ///   @return Returns true if two strings are not the same length (which is
-    ///     different from compare() which uses the minimum size between the
-    ///     two provided strings), or contain different characters. Returns
-    ///     false otherwise.
+    ///   @return Returns !(lhs == rhs)
     ///
     template<typename CHAR_T, typename TRAITS>
     [[nodiscard]] constexpr auto

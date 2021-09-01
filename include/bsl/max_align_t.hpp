@@ -33,7 +33,7 @@
 namespace bsl
 {
     /// @brief Max scalar type alignment
-    using max_align_t = bsl::uintmax;
+    using max_align_t = bsl::uintmx;
 }
 
 #endif

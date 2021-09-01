@@ -36,10 +36,10 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    constexpr bsl::safe_int32 size{6};
+    constexpr bsl::safe_i32 size{6};
 
     static_assert(
-        bsl::make_integer_sequence<bsl::int32, size.get()>::size() == static_cast<bsl::uintmax>(6));
+        bsl::make_integer_sequence<bsl::int32, size.get()>::size() == static_cast<bsl::uintmx>(6));
     static_assert(bsl::make_integer_sequence<bsl::int32, size.get()>::min() == 0);
     static_assert(bsl::make_integer_sequence<bsl::int32, size.get()>::max() == 5);
 

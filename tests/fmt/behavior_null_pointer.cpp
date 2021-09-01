@@ -45,6 +45,10 @@ main() noexcept -> bsl::exit_code
             bsl::ut_then{} = []() noexcept {
                 bsl::ut_check(fmt_test::was_this_outputted("nullptr"));
             };
+
+            bsl::debug() << nullptr;
+            bsl::alert() << nullptr;
+            bsl::error() << nullptr;
         };
     };
 

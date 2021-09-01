@@ -40,322 +40,364 @@ namespace bsl
     [[nodiscard]] constexpr auto
     tests_shift() noexcept -> bsl::exit_code
     {
-        bsl::ut_scenario{"left shift assign"} = []() noexcept {
+        bsl::ut_scenario{"lshift assign"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42)};
-                bsl::safe_integral<T> mut_val2{static_cast<T>(1)};
+                auto mut_val1{bsl::safe_integral<T>::magic_1()};
+                auto const val2{bsl::safe_integral<T>::magic_1()};
                 bsl::ut_when{} = [&]() noexcept {
-                    mut_val1 <<= mut_val2;
+                    mut_val1 <<= val2;
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_val1 == static_cast<T>(42 * 2));
+                        bsl::ut_check(mut_val1 == bsl::safe_integral<T>::magic_2());
+                        bsl::ut_check(!mut_val1.is_invalid());
+                        bsl::ut_check(!mut_val1.is_unchecked());
                     };
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42)};
+                auto mut_val1{bsl::safe_integral<T>::failure()};
+                auto const val2{bsl::safe_integral<T>::magic_1()};
                 bsl::ut_when{} = [&]() noexcept {
-                    mut_val1 <<= static_cast<T>(1);
+                    mut_val1 <<= val2;
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_val1 == static_cast<T>(42 * 2));
+                        bsl::ut_check(mut_val1.is_invalid());
+                        bsl::ut_check(mut_val1.is_unchecked());
                     };
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42), true};
-                bsl::safe_integral<T> mut_val2{static_cast<T>(1)};
+            bsl::ut_given{} = []() noexcept {
+                auto mut_val1{bsl::safe_integral<T>::magic_1()};
+                auto const val2{bsl::safe_integral<T>::failure()};
                 bsl::ut_when{} = [&]() noexcept {
-                    mut_val1 <<= mut_val2;
+                    mut_val1 <<= val2;
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_val1.invalid());
+                        bsl::ut_check(mut_val1.is_invalid());
+                        bsl::ut_check(mut_val1.is_unchecked());
                     };
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42), true};
+            bsl::ut_given{} = []() noexcept {
+                auto mut_val1{bsl::safe_integral<T>::failure()};
+                auto const val2{bsl::safe_integral<T>::failure()};
                 bsl::ut_when{} = [&]() noexcept {
-                    mut_val1 <<= static_cast<T>(1);
+                    mut_val1 <<= val2;
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_val1.invalid());
-                    };
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42)};
-                bsl::safe_integral<T> mut_val2{static_cast<T>(1), true};
-                bsl::ut_when{} = [&]() noexcept {
-                    mut_val1 <<= mut_val2;
-                    bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_val1.invalid());
-                    };
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42), true};
-                bsl::safe_integral<T> mut_val2{static_cast<T>(1), true};
-                bsl::ut_when{} = [&]() noexcept {
-                    mut_val1 <<= mut_val2;
-                    bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_val1.invalid());
+                        bsl::ut_check(mut_val1.is_invalid());
+                        bsl::ut_check(mut_val1.is_unchecked());
                     };
                 };
             };
         };
 
-        bsl::ut_scenario{"left shift"} = []() noexcept {
+        bsl::ut_scenario{"lshift assign with value"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42)};
-                bsl::safe_integral<T> mut_val2{static_cast<T>(1)};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((mut_val1 << mut_val2) == static_cast<T>(42 * 2));
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::safe_integral<T> const val1{static_cast<T>(42)};
-                bsl::safe_integral<T> const val2{static_cast<T>(1)};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((val1 << val2) == static_cast<T>(42 * 2));
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42)};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((mut_val1 << static_cast<T>(1)) == static_cast<T>(42 * 2));
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::safe_integral<T> const val1{static_cast<T>(42)};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((val1 << static_cast<T>(1)) == static_cast<T>(42 * 2));
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42), true};
-                bsl::safe_integral<T> mut_val2{static_cast<T>(1)};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((mut_val1 << mut_val2).invalid());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> const val1{static_cast<T>(42), true};
-                bsl::safe_integral<T> const val2{static_cast<T>(1)};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((val1 << val2).invalid());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42), true};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((mut_val1 << static_cast<T>(1)).invalid());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> const val1{static_cast<T>(42), true};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((val1 << static_cast<T>(1)).invalid());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42)};
-                bsl::safe_integral<T> mut_val2{static_cast<T>(1), true};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((mut_val1 << mut_val2).invalid());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> const val1{static_cast<T>(42)};
-                bsl::safe_integral<T> const val2{static_cast<T>(1), true};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((val1 << val2).invalid());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42), true};
-                bsl::safe_integral<T> mut_val2{static_cast<T>(1), true};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((mut_val1 << mut_val2).invalid());
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> const val1{static_cast<T>(42), true};
-                bsl::safe_integral<T> const val2{static_cast<T>(1), true};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((val1 << val2).invalid());
-                };
-            };
-        };
-
-        bsl::ut_scenario{"right shift assign"} = []() noexcept {
-            bsl::ut_given{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42)};
-                bsl::safe_integral<T> mut_val2{static_cast<T>(1)};
+                auto mut_val1{bsl::safe_integral<T>::magic_1()};
+                auto const val2{static_cast<T>(1)};    // NOLINT
                 bsl::ut_when{} = [&]() noexcept {
-                    mut_val1 >>= mut_val2;
+                    mut_val1 <<= val2;
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_val1 == static_cast<T>(42 / 2));
+                        bsl::ut_check(mut_val1 == bsl::safe_integral<T>::magic_2());
+                        bsl::ut_check(!mut_val1.is_invalid());
+                        bsl::ut_check(!mut_val1.is_unchecked());
                     };
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42)};
+                auto mut_val1{bsl::safe_integral<T>::failure()};
+                auto const val2{static_cast<T>(1)};    // NOLINT
                 bsl::ut_when{} = [&]() noexcept {
-                    mut_val1 >>= static_cast<T>(1);
+                    mut_val1 <<= val2;
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_val1 == static_cast<T>(42 / 2));
-                    };
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42), true};
-                bsl::safe_integral<T> mut_val2{static_cast<T>(1)};
-                bsl::ut_when{} = [&]() noexcept {
-                    mut_val1 >>= mut_val2;
-                    bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_val1.invalid());
-                    };
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42), true};
-                bsl::ut_when{} = [&]() noexcept {
-                    mut_val1 >>= static_cast<T>(1);
-                    bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_val1.invalid());
-                    };
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42)};
-                bsl::safe_integral<T> mut_val2{static_cast<T>(1), true};
-                bsl::ut_when{} = [&]() noexcept {
-                    mut_val1 >>= mut_val2;
-                    bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_val1.invalid());
-                    };
-                };
-            };
-
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42), true};
-                bsl::safe_integral<T> mut_val2{static_cast<T>(1), true};
-                bsl::ut_when{} = [&]() noexcept {
-                    mut_val1 >>= mut_val2;
-                    bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_val1.invalid());
+                        bsl::ut_check(mut_val1.is_invalid());
+                        bsl::ut_check(mut_val1.is_unchecked());
                     };
                 };
             };
         };
 
-        bsl::ut_scenario{"right shift"} = []() noexcept {
+        bsl::ut_scenario{"lshift"} = []() noexcept {
             bsl::ut_given{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42)};
-                bsl::safe_integral<T> mut_val2{static_cast<T>(1)};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((mut_val1 >> mut_val2) == static_cast<T>(42 / 2));
-                };
-            };
-
-            bsl::ut_given{} = []() noexcept {
-                bsl::safe_integral<T> const val1{static_cast<T>(42)};
-                bsl::safe_integral<T> const val2{static_cast<T>(1)};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((val1 >> val2) == static_cast<T>(42 / 2));
+                auto const val1{bsl::safe_integral<T>::magic_1()};
+                auto const val2{bsl::safe_integral<T>::magic_1()};
+                bsl::ut_when{} = [&]() noexcept {
+                    auto const result{val1 << val2};
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(result == bsl::safe_integral<T>::magic_2());
+                        bsl::ut_check(!result.is_invalid());
+                        bsl::ut_check(!result.is_unchecked());
+                    };
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42)};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((mut_val1 >> static_cast<T>(1)) == static_cast<T>(42 / 2));
+                auto const val1{bsl::safe_integral<T>::failure()};
+                auto const val2{bsl::safe_integral<T>::magic_1()};
+                bsl::ut_when{} = [&]() noexcept {
+                    auto const result{val1 << val2};
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(result.is_invalid());
+                        bsl::ut_check(result.is_unchecked());
+                    };
                 };
             };
 
             bsl::ut_given{} = []() noexcept {
-                bsl::safe_integral<T> const val1{static_cast<T>(42)};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((val1 >> static_cast<T>(1)) == static_cast<T>(42 / 2));
+                auto const val1{bsl::safe_integral<T>::magic_1()};
+                auto const val2{bsl::safe_integral<T>::failure()};
+                bsl::ut_when{} = [&]() noexcept {
+                    auto const result{val1 << val2};
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(result.is_invalid());
+                        bsl::ut_check(result.is_unchecked());
+                    };
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42), true};
-                bsl::safe_integral<T> mut_val2{static_cast<T>(1)};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((mut_val1 >> mut_val2).invalid());
+            bsl::ut_given{} = []() noexcept {
+                auto const val1{bsl::safe_integral<T>::failure()};
+                auto const val2{bsl::safe_integral<T>::failure()};
+                bsl::ut_when{} = [&]() noexcept {
+                    auto const result{val1 << val2};
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(result.is_invalid());
+                        bsl::ut_check(result.is_unchecked());
+                    };
+                };
+            };
+        };
+
+        bsl::ut_scenario{"lshift with value"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                auto const val1{bsl::safe_integral<T>::magic_1()};
+                auto const val2{static_cast<T>(1)};    // NOLINT
+                bsl::ut_when{} = [&]() noexcept {
+                    auto const result{val1 << val2};
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(result == bsl::safe_integral<T>::magic_2());
+                        bsl::ut_check(!result.is_invalid());
+                        bsl::ut_check(!result.is_unchecked());
+                    };
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> const val1{static_cast<T>(42), true};
-                bsl::safe_integral<T> const val2{static_cast<T>(1)};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((val1 >> val2).invalid());
+            bsl::ut_given{} = []() noexcept {
+                auto const val1{static_cast<T>(1)};    // NOLINT
+                auto const val2{bsl::safe_integral<T>::magic_1()};
+                bsl::ut_when{} = [&]() noexcept {
+                    auto const result{val1 << val2};
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(result == bsl::safe_integral<T>::magic_2());
+                        bsl::ut_check(!result.is_invalid());
+                        bsl::ut_check(!result.is_unchecked());
+                    };
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42), true};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((mut_val1 >> static_cast<T>(1)).invalid());
+            bsl::ut_given{} = []() noexcept {
+                auto const val1{bsl::safe_integral<T>::failure()};
+                auto const val2{static_cast<T>(1)};    // NOLINT
+                bsl::ut_when{} = [&]() noexcept {
+                    auto const result{val1 << val2};
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(result.is_invalid());
+                        bsl::ut_check(result.is_unchecked());
+                    };
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> const val1{static_cast<T>(42), true};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((val1 >> static_cast<T>(1)).invalid());
+            bsl::ut_given{} = []() noexcept {
+                auto const val1{static_cast<T>(1)};    // NOLINT
+                auto const val2{bsl::safe_integral<T>::failure()};
+                bsl::ut_when{} = [&]() noexcept {
+                    auto const result{val1 << val2};
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(result.is_invalid());
+                        bsl::ut_check(result.is_unchecked());
+                    };
+                };
+            };
+        };
+
+        bsl::ut_scenario{"rshift assign"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                auto mut_val1{bsl::safe_integral<T>::magic_1()};
+                auto const val2{bsl::safe_integral<T>::magic_1()};
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_val1 >>= val2;
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_val1 == bsl::safe_integral<T>::magic_0());
+                        bsl::ut_check(!mut_val1.is_invalid());
+                        bsl::ut_check(!mut_val1.is_unchecked());
+                    };
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42)};
-                bsl::safe_integral<T> mut_val2{static_cast<T>(1), true};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((mut_val1 >> mut_val2).invalid());
+            bsl::ut_given{} = []() noexcept {
+                auto mut_val1{bsl::safe_integral<T>::failure()};
+                auto const val2{bsl::safe_integral<T>::magic_1()};
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_val1 >>= val2;
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_val1.is_invalid());
+                        bsl::ut_check(mut_val1.is_unchecked());
+                    };
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> const val1{static_cast<T>(42)};
-                bsl::safe_integral<T> const val2{static_cast<T>(1), true};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((val1 >> val2).invalid());
+            bsl::ut_given{} = []() noexcept {
+                auto mut_val1{bsl::safe_integral<T>::magic_1()};
+                auto const val2{bsl::safe_integral<T>::failure()};
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_val1 >>= val2;
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_val1.is_invalid());
+                        bsl::ut_check(mut_val1.is_unchecked());
+                    };
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> mut_val1{static_cast<T>(42), true};
-                bsl::safe_integral<T> mut_val2{static_cast<T>(1), true};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((mut_val1 >> mut_val2).invalid());
+            bsl::ut_given{} = []() noexcept {
+                auto mut_val1{bsl::safe_integral<T>::failure()};
+                auto const val2{bsl::safe_integral<T>::failure()};
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_val1 >>= val2;
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_val1.is_invalid());
+                        bsl::ut_check(mut_val1.is_unchecked());
+                    };
+                };
+            };
+        };
+
+        bsl::ut_scenario{"rshift assign with value"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                auto mut_val1{bsl::safe_integral<T>::magic_1()};
+                auto const val2{static_cast<T>(1)};    // NOLINT
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_val1 >>= val2;
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_val1 == bsl::safe_integral<T>::magic_0());
+                        bsl::ut_check(!mut_val1.is_invalid());
+                        bsl::ut_check(!mut_val1.is_unchecked());
+                    };
                 };
             };
 
-            bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::safe_integral<T> const val1{static_cast<T>(42), true};
-                bsl::safe_integral<T> const val2{static_cast<T>(1), true};
-                bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check((val1 >> val2).invalid());
+            bsl::ut_given{} = []() noexcept {
+                auto mut_val1{bsl::safe_integral<T>::failure()};
+                auto const val2{static_cast<T>(1)};    // NOLINT
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_val1 >>= val2;
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_val1.is_invalid());
+                        bsl::ut_check(mut_val1.is_unchecked());
+                    };
+                };
+            };
+        };
+
+        bsl::ut_scenario{"rshift"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                auto const val1{bsl::safe_integral<T>::magic_1()};
+                auto const val2{bsl::safe_integral<T>::magic_1()};
+                bsl::ut_when{} = [&]() noexcept {
+                    auto const result{val1 >> val2};
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(result == bsl::safe_integral<T>::magic_0());
+                        bsl::ut_check(!result.is_invalid());
+                        bsl::ut_check(!result.is_unchecked());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() noexcept {
+                auto const val1{bsl::safe_integral<T>::failure()};
+                auto const val2{bsl::safe_integral<T>::magic_1()};
+                bsl::ut_when{} = [&]() noexcept {
+                    auto const result{val1 >> val2};
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(result.is_invalid());
+                        bsl::ut_check(result.is_unchecked());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() noexcept {
+                auto const val1{bsl::safe_integral<T>::magic_1()};
+                auto const val2{bsl::safe_integral<T>::failure()};
+                bsl::ut_when{} = [&]() noexcept {
+                    auto const result{val1 >> val2};
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(result.is_invalid());
+                        bsl::ut_check(result.is_unchecked());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() noexcept {
+                auto const val1{bsl::safe_integral<T>::failure()};
+                auto const val2{bsl::safe_integral<T>::failure()};
+                bsl::ut_when{} = [&]() noexcept {
+                    auto const result{val1 >> val2};
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(result.is_invalid());
+                        bsl::ut_check(result.is_unchecked());
+                    };
+                };
+            };
+        };
+
+        bsl::ut_scenario{"rshift with value"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                auto const val1{bsl::safe_integral<T>::magic_1()};
+                auto const val2{static_cast<T>(1)};    // NOLINT
+                bsl::ut_when{} = [&]() noexcept {
+                    auto const result{val1 >> val2};
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(result == bsl::safe_integral<T>::magic_0());
+                        bsl::ut_check(!result.is_invalid());
+                        bsl::ut_check(!result.is_unchecked());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() noexcept {
+                auto const val1{static_cast<T>(1)};    // NOLINT
+                auto const val2{bsl::safe_integral<T>::magic_1()};
+                bsl::ut_when{} = [&]() noexcept {
+                    auto const result{val1 >> val2};
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(result == bsl::safe_integral<T>::magic_0());
+                        bsl::ut_check(!result.is_invalid());
+                        bsl::ut_check(!result.is_unchecked());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() noexcept {
+                auto const val1{bsl::safe_integral<T>::failure()};
+                auto const val2{static_cast<T>(1)};    // NOLINT
+                bsl::ut_when{} = [&]() noexcept {
+                    auto const result{val1 >> val2};
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(result.is_invalid());
+                        bsl::ut_check(result.is_unchecked());
+                    };
+                };
+            };
+
+            bsl::ut_given{} = []() noexcept {
+                auto const val1{static_cast<T>(1)};    // NOLINT
+                auto const val2{bsl::safe_integral<T>::failure()};
+                bsl::ut_when{} = [&]() noexcept {
+                    auto const result{val1 >> val2};
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(result.is_invalid());
+                        bsl::ut_check(result.is_unchecked());
+                    };
                 };
             };
         };
@@ -379,13 +421,13 @@ main() noexcept -> bsl::exit_code
     static_assert(bsl::tests_shift<bsl::uint16>() == bsl::ut_success());
     static_assert(bsl::tests_shift<bsl::uint32>() == bsl::ut_success());
     static_assert(bsl::tests_shift<bsl::uint64>() == bsl::ut_success());
-    static_assert(bsl::tests_shift<bsl::uintmax>() == bsl::ut_success());
+    static_assert(bsl::tests_shift<bsl::uintmx>() == bsl::ut_success());
 
     bsl::discard(bsl::tests_shift<bsl::uint8>());
     bsl::discard(bsl::tests_shift<bsl::uint16>());
     bsl::discard(bsl::tests_shift<bsl::uint32>());
     bsl::discard(bsl::tests_shift<bsl::uint64>());
-    bsl::discard(bsl::tests_shift<bsl::uintmax>());
+    bsl::discard(bsl::tests_shift<bsl::uintmx>());
 
     return bsl::ut_success();
 }

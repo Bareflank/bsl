@@ -34,7 +34,7 @@ namespace bsl
     example_fmt_width() noexcept
     {
         constexpr auto val{42_i32};
-        constexpr auto width{10_umax};
+        constexpr auto width{10_umx};
 
         bsl::print() << bsl::fmt{"<10", val} << bsl::endl;
         bsl::print() << bsl::fmt{">10", val} << bsl::endl;

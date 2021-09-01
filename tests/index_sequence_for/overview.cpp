@@ -36,9 +36,9 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    static_assert(bsl::index_sequence_for<void, bool>::size() == static_cast<bsl::uintmax>(2));
-    static_assert(bsl::index_sequence_for<void, bool>::min() == static_cast<bsl::uintmax>(0));
-    static_assert(bsl::index_sequence_for<void, bool>::max() == static_cast<bsl::uintmax>(1));
+    static_assert(bsl::index_sequence_for<void, bool>::size() == static_cast<bsl::uintmx>(2));
+    static_assert(bsl::index_sequence_for<void, bool>::min() == static_cast<bsl::uintmx>(0));
+    static_assert(bsl::index_sequence_for<void, bool>::max() == static_cast<bsl::uintmx>(1));
 
     return bsl::ut_success();
 }

@@ -28,8 +28,7 @@
 #ifndef BSL_DESTROY_AT_HPP
 #define BSL_DESTROY_AT_HPP
 
-#include "touch.hpp"
-#include "unlikely.hpp"
+#include "expects.hpp"
 
 namespace bsl
 {
@@ -48,12 +47,8 @@ namespace bsl
     constexpr void
     destroy_at(T *const pmut_ptr) noexcept(noexcept(pmut_ptr->T::~T()))
     {
-        if (unlikely(nullptr == pmut_ptr)) {
-            unlikely_invalid_argument_failure();
-        }
-        else {
-            pmut_ptr->T::~T();
-        }
+        expects(nullptr != pmut_ptr);
+        pmut_ptr->T::~T();
     }
 }
 

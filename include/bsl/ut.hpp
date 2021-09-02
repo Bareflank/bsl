@@ -28,24 +28,28 @@
 #ifndef BSL_UT_HPP
 #define BSL_UT_HPP
 
-#include "color.hpp"
-#include "debug.hpp"
-#include "dontcare_t.hpp"
-#include "exit_code.hpp"
-#include "source_location.hpp"
-#include "touch.hpp"
-#include "unlikely.hpp"
-#include "ut_cleanup.hpp"
-#include "ut_cleanup_at_runtime.hpp"
-#include "ut_given.hpp"
-#include "ut_given_at_runtime.hpp"
-#include "ut_scenario.hpp"
-#include "ut_then.hpp"
-#include "ut_then_at_runtime.hpp"
-#include "ut_when.hpp"
+#include "bsl/cstr_type.hpp"
+#include "bsl/debug.hpp"    // IWYU pragma: export
+#include "bsl/errc_type.hpp"
+#include "bsl/exit_code.hpp"    // IWYU pragma: export
+#include "bsl/safe_integral.hpp"
+#include "bsl/string_view.hpp"
+#include "bsl/touch.hpp"
+#include "bsl/unlikely.hpp"
+#include "bsl/ut_cleanup.hpp"               // IWYU pragma: export
+#include "bsl/ut_cleanup_at_runtime.hpp"    // IWYU pragma: export
+#include "bsl/ut_given.hpp"                 // IWYU pragma: export
+#include "bsl/ut_given_at_runtime.hpp"      // IWYU pragma: export
+#include "bsl/ut_scenario.hpp"              // IWYU pragma: export
+#include "bsl/ut_then.hpp"                  // IWYU pragma: export
+#include "bsl/ut_then_at_runtime.hpp"       // IWYU pragma: export
+#include "bsl/ut_when.hpp"                  // IWYU pragma: export
+
+// NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
+#include <stdio.h>
 
 #include <bsl/cstdlib.hpp>
-#include <bsl/enable_color.hpp>
+#include <bsl/enable_color.hpp>    // IWYU pragma: export
 
 #pragma clang diagnostic ignored "-Wunused-member-function"
 #pragma clang diagnostic ignored "-Wunneeded-member-function"
@@ -94,18 +98,18 @@ namespace bsl
     ut_required_step(bool const test, source_location const &sloc = here()) noexcept -> bool
     {
         if (unlikely(!test)) {                               // GRCOV_EXCLUDE_BR // NOLINT
-            auto const *const f{sloc.file_name()};           // GRCOV_EXCLUDE // NOLINT
             bsl::details::line_type const l{sloc.line()};    // GRCOV_EXCLUDE // NOLINT
-            auto const *const m{bsl::mag.data()};            // GRCOV_EXCLUDE // NOLINT
-            auto const *const y{bsl::ylw.data()};            // GRCOV_EXCLUDE // NOLINT
-            auto const *const c{bsl::cyn.data()};            // GRCOV_EXCLUDE // NOLINT
-            auto const *const r{bsl::rst.data()};            // GRCOV_EXCLUDE // NOLINT
+            bsl::cstr_type const f{sloc.file_name()};        // GRCOV_EXCLUDE // NOLINT
+            bsl::cstr_type const m{bsl::mag.data()};         // GRCOV_EXCLUDE // NOLINT
+            bsl::cstr_type const y{bsl::ylw.data()};         // GRCOV_EXCLUDE // NOLINT
+            bsl::cstr_type const c{bsl::cyn.data()};         // GRCOV_EXCLUDE // NOLINT
+            bsl::cstr_type const r{bsl::rst.data()};         // GRCOV_EXCLUDE // NOLINT
 
             ut_required_step_failed();                                  // GRCOV_EXCLUDE // NOLINT
             fprintf(stderr, "%s[REQUIRED STEP FAILED]%s\n", m, r);      // GRCOV_EXCLUDE // NOLINT
             fprintf(stderr, "  --> %s%s %s[%d]%s\n", y, f, c, l, r);    // GRCOV_EXCLUDE // NOLINT
 
-            exit(1);    // GRCOV_EXCLUDE // NOLINT
+            stdlib_fast_fail();    // GRCOV_EXCLUDE // NOLINT
         }
         else {
             bsl::touch();
@@ -179,18 +183,18 @@ namespace bsl
     ut_check(bool const test, source_location const &sloc = here()) noexcept -> bool
     {
         if (unlikely(!test)) {                               // GRCOV_EXCLUDE_BR
-            auto const *const f{sloc.file_name()};           // GRCOV_EXCLUDE // NOLINT
             bsl::details::line_type const l{sloc.line()};    // GRCOV_EXCLUDE // NOLINT
-            auto const *const m{bsl::mag.data()};            // GRCOV_EXCLUDE // NOLINT
-            auto const *const y{bsl::ylw.data()};            // GRCOV_EXCLUDE // NOLINT
-            auto const *const c{bsl::cyn.data()};            // GRCOV_EXCLUDE // NOLINT
-            auto const *const r{bsl::rst.data()};            // GRCOV_EXCLUDE // NOLINT
+            bsl::cstr_type const f{sloc.file_name()};        // GRCOV_EXCLUDE // NOLINT
+            bsl::cstr_type const m{bsl::mag.data()};         // GRCOV_EXCLUDE // NOLINT
+            bsl::cstr_type const y{bsl::ylw.data()};         // GRCOV_EXCLUDE // NOLINT
+            bsl::cstr_type const c{bsl::cyn.data()};         // GRCOV_EXCLUDE // NOLINT
+            bsl::cstr_type const r{bsl::rst.data()};         // GRCOV_EXCLUDE // NOLINT
 
             ut_check_failed();                                          // GRCOV_EXCLUDE // NOLINT
             fprintf(stderr, "%s[CHECK FAILED]%s\n", m, r);              // GRCOV_EXCLUDE // NOLINT
             fprintf(stderr, "  --> %s%s %s[%d]%s\n", y, f, c, l, r);    // GRCOV_EXCLUDE // NOLINT
 
-            exit(1);    // GRCOV_EXCLUDE // NOLINT
+            stdlib_fast_fail();    // GRCOV_EXCLUDE // NOLINT
         }
         else {
             bsl::touch();

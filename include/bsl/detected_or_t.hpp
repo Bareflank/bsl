@@ -28,7 +28,7 @@
 #ifndef BSL_DETECTED_OR_T_HPP
 #define BSL_DETECTED_OR_T_HPP
 
-#include "details/detector.hpp"
+#include "bsl/details/detector.hpp"    // IWYU pragma: export
 
 namespace bsl
 {

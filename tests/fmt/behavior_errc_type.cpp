@@ -24,7 +24,7 @@
 
 #include "../fmt_test.hpp"
 
-#include <bsl/debug.hpp>
+#include <bsl/errc_type.hpp>
 #include <bsl/ut.hpp>
 
 /// <!-- description -->

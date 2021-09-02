@@ -28,8 +28,8 @@
 #ifndef BSL_IS_INVOCABLE_HPP
 #define BSL_IS_INVOCABLE_HPP
 
-#include "bool_constant.hpp"
-#include "details/invoke_traits.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
+#include "bsl/details/invoke_traits.hpp"
 
 namespace bsl
 {

@@ -28,8 +28,9 @@
 #ifndef BSL_DISJUNCTION_HPP
 #define BSL_DISJUNCTION_HPP
 
-#include "conditional.hpp"
-#include "false_type.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
+#include "bsl/conditional.hpp"
+#include "bsl/false_type.hpp"
 
 namespace bsl
 {

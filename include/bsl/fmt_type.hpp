@@ -28,7 +28,7 @@
 #ifndef BSL_FMT_TYPE_HPP
 #define BSL_FMT_TYPE_HPP
 
-#include "cstdint.hpp"
+#include "bsl/cstdint.hpp"
 
 namespace bsl
 {

@@ -25,6 +25,7 @@
 #include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/extent.hpp>
+#include <bsl/safe_integral.hpp>
 
 namespace bsl
 {

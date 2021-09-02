@@ -28,10 +28,10 @@
 #ifndef BSL_CHAR_TRAITS_HPP
 #define BSL_CHAR_TRAITS_HPP
 
-#include "char_type.hpp"
-#include "cstring.hpp"
-#include "safe_integral.hpp"
-#include "touch.hpp"
+#include "bsl/char_type.hpp"
+#include "bsl/cstring.hpp"
+#include "bsl/safe_integral.hpp"
+#include "bsl/touch.hpp"
 
 namespace bsl
 {

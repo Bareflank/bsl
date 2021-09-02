@@ -23,7 +23,10 @@
 /// SOFTWARE.
 
 #include <bsl/convert.hpp>
-#include <bsl/discard.hpp>
+#include <bsl/cstdint.hpp>
+#include <bsl/details/out_char.hpp>
+#include <bsl/details/out_cstr.hpp>
+#include <bsl/details/out_line.hpp>
 #include <bsl/ut.hpp>
 
 namespace
@@ -163,11 +166,11 @@ namespace
         bsl::ut_scenario{"details checks"} = []() noexcept {
             bsl::ut_given_at_runtime{} = []() noexcept {
                 bsl::ut_then{} = []() noexcept {
-                    bsl::details::put_char('*');
-                    bsl::details::put_cstr("42");
-                    bsl::details::put_line(0);     // NOLINT
-                    bsl::details::put_line(42);    //NOLINT
-                    bsl::details::put_line(
+                    bsl::details::out_char('*');
+                    bsl::details::out_cstr("42");
+                    bsl::details::out_line(0);     // NOLINT
+                    bsl::details::out_line(42);    // NOLINT
+                    bsl::details::out_line(
                         static_cast<bsl::details::line_type>(0xFFFFFFFFFFFFFFFF));
                 };
             };

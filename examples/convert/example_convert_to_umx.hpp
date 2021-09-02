@@ -24,7 +24,6 @@
 
 #include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
-#include <bsl/discard.hpp>
 
 namespace bsl
 {

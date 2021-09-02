@@ -34,9 +34,9 @@
 #include "../struct_empty.hpp"
 #include "../union_empty.hpp"
 
-#include <bsl/cstddef.hpp>
 #include <bsl/cstdint.hpp>
 #include <bsl/is_floating_point.hpp>
+#include <bsl/nullptr_t.hpp>
 #include <bsl/reference_wrapper.hpp>
 #include <bsl/ut.hpp>
 

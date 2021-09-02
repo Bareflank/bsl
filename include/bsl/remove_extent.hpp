@@ -28,7 +28,7 @@
 #ifndef BSL_REMOVE_EXTENT_HPP
 #define BSL_REMOVE_EXTENT_HPP
 
-#include "cstdint.hpp"
+#include "bsl/cstdint.hpp"
 
 namespace bsl
 {

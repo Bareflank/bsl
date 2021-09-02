@@ -24,7 +24,6 @@
 
 #include "../fmt_test.hpp"
 
-#include <bsl/debug.hpp>
 #include <bsl/string_view.hpp>
 #include <bsl/ut.hpp>
 

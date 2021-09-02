@@ -28,7 +28,7 @@
 #ifndef BSL_FORWARD_HPP
 #define BSL_FORWARD_HPP
 
-#include "remove_reference.hpp"
+#include "bsl/remove_reference.hpp"
 
 namespace bsl
 {

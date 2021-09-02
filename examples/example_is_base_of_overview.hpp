@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include "example_class_base.hpp"
 #include "example_class_subclass.hpp"
 
 #include <bsl/debug.hpp>

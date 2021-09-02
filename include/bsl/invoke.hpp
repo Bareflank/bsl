@@ -28,8 +28,8 @@
 #ifndef BSL_INVOKE_HPP
 #define BSL_INVOKE_HPP
 
-#include "details/invoke_impl.hpp"
-#include "forward.hpp"
+#include "bsl/details/invoke_impl.hpp"
+#include "bsl/forward.hpp"
 
 namespace bsl
 {

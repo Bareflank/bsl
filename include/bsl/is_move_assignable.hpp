@@ -28,9 +28,9 @@
 #ifndef BSL_IS_MOVE_ASSIGNABLE_HPP
 #define BSL_IS_MOVE_ASSIGNABLE_HPP
 
-#include "add_lvalue_reference.hpp"
-#include "add_rvalue_reference.hpp"
-#include "bool_constant.hpp"
+#include "bsl/add_lvalue_reference.hpp"
+#include "bsl/add_rvalue_reference.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
 
 namespace bsl
 {

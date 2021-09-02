@@ -27,6 +27,7 @@
 #define BSL_ASSERT_FAST_FAILS false
 
 #include <bsl/ensures.hpp>
+#include <bsl/errc_type.hpp>
 #include <bsl/ut.hpp>
 
 /// <!-- description -->

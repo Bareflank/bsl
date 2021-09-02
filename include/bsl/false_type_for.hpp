@@ -28,7 +28,8 @@
 #ifndef BSL_FALSE_TYPE_FOR_HPP
 #define BSL_FALSE_TYPE_FOR_HPP
 
-#include "false_type.hpp"
+#include "bsl/false_type.hpp"
+#include "bsl/integral_constant.hpp"    // IWYU pragma: export
 
 namespace bsl
 {

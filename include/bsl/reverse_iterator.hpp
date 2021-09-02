@@ -28,8 +28,10 @@
 #ifndef BSL_REVERSE_ITERATOR_HPP
 #define BSL_REVERSE_ITERATOR_HPP
 
-#include "safe_integral.hpp"
-#include "unlikely.hpp"
+#include "bsl/safe_idx.hpp"
+#include "bsl/safe_integral.hpp"
+#include "bsl/unlikely.hpp"
+// IWYU pragma: no_include "bsl/contiguous_iterator.hpp"
 
 namespace bsl
 {

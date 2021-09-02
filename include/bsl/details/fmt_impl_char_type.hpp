@@ -27,8 +27,9 @@
 
 #include "../char_type.hpp"
 #include "../fmt_options.hpp"
-#include "../forward.hpp"
+#include "../fmt_type.hpp"
 #include "../is_constant_evaluated.hpp"
+#include "../safe_integral.hpp"
 #include "fmt_impl_align.hpp"
 #include "fmt_impl_integral_helpers.hpp"
 #include "out.hpp"

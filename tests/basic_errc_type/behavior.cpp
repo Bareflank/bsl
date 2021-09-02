@@ -22,8 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/basic_errc_type.hpp>
-#include <bsl/convert.hpp>
+#include <bsl/errc_type.hpp>
 #include <bsl/ut.hpp>
 
 namespace

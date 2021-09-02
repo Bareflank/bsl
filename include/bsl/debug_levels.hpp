@@ -28,7 +28,7 @@
 #ifndef BSL_DEBUG_LEVELS_HPP
 #define BSL_DEBUG_LEVELS_HPP
 
-#include "cstdint.hpp"
+#include "bsl/cstdint.hpp"
 
 namespace bsl
 {

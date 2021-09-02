@@ -28,7 +28,7 @@
 #ifndef BSL_INDEX_SEQUENCE_FOR_HPP
 #define BSL_INDEX_SEQUENCE_FOR_HPP
 
-#include "make_index_sequence.hpp"
+#include "bsl/make_index_sequence.hpp"
 
 namespace bsl
 {

@@ -28,7 +28,9 @@
 #ifndef BSL_EXTENT_HPP
 #define BSL_EXTENT_HPP
 
-#include "details/extent_base.hpp"
+#include "bsl/cstdint.hpp"
+#include "bsl/details/extent_base.hpp"
+#include "bsl/integral_constant.hpp"    // IWYU pragma: export
 
 namespace bsl
 {

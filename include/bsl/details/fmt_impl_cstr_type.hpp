@@ -29,6 +29,7 @@
 #include "../cstring.hpp"
 #include "../fmt_options.hpp"
 #include "../is_constant_evaluated.hpp"
+#include "../unlikely.hpp"
 #include "fmt_impl_align.hpp"
 #include "out.hpp"
 

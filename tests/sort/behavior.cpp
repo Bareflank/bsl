@@ -24,8 +24,8 @@
 
 #include "../array_init.hpp"
 
-#include <bsl/array.hpp>
 #include <bsl/convert.hpp>
+#include <bsl/safe_integral.hpp>
 #include <bsl/sort.hpp>
 #include <bsl/span.hpp>
 #include <bsl/ut.hpp>

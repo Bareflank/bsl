@@ -25,7 +25,7 @@
 #ifndef TESTS_ARRAY_INIT_HPP
 #define TESTS_ARRAY_INIT_HPP
 
-#include <bsl/array.hpp>
+#include <bsl/array.hpp>    // IWYU pragma: keep
 #include <bsl/convert.hpp>
 
 namespace test

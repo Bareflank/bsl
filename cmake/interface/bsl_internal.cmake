@@ -75,6 +75,9 @@ endif()
 
 target_include_directories(bsl_internal INTERFACE
     ${CMAKE_CURRENT_LIST_DIR}/../../include
+)
+
+target_include_directories(bsl_internal SYSTEM INTERFACE
     $<$<PLATFORM_ID:Linux>:${CMAKE_CURRENT_LIST_DIR}/../../include/bsl/platform/linux>
     $<$<PLATFORM_ID:Windows>:${CMAKE_CURRENT_LIST_DIR}/../../include/bsl/platform/windows>
 )

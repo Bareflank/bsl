@@ -28,8 +28,9 @@
 #ifndef BSL_IS_DETECTED_EXACT_HPP
 #define BSL_IS_DETECTED_EXACT_HPP
 
-#include "detected_t.hpp"
-#include "is_same.hpp"
+#include "bsl/detected_t.hpp"           // IWYU pragma: export
+#include "bsl/integral_constant.hpp"    // IWYU pragma: export
+#include "bsl/is_same.hpp"
 
 namespace bsl
 {

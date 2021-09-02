@@ -28,7 +28,7 @@
 #ifndef BSL_EXIT_CODE_HPP
 #define BSL_EXIT_CODE_HPP
 
-#include "cstdint.hpp"
+#include "bsl/cstdint.hpp"
 
 namespace bsl
 {

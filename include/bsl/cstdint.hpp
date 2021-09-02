@@ -28,11 +28,10 @@
 #ifndef BSL_CSTDINT_HPP
 #define BSL_CSTDINT_HPP
 
-#include "is_same.hpp"
+#include "bsl/is_same.hpp"
 
-// We are implementing cstdint
 // NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
-#include <stdint.h>
+#include <stdint.h>    // IWYU pragma: export
 
 namespace bsl
 {

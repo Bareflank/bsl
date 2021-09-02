@@ -22,6 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/safe_idx.hpp>
 #include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
 

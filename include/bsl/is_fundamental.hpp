@@ -28,10 +28,10 @@
 #ifndef BSL_IS_FUNDAMENTAL_HPP
 #define BSL_IS_FUNDAMENTAL_HPP
 
-#include "bool_constant.hpp"
-#include "is_arithmetic.hpp"
-#include "is_null_pointer.hpp"
-#include "is_void.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
+#include "bsl/is_arithmetic.hpp"
+#include "bsl/is_null_pointer.hpp"
+#include "bsl/is_void.hpp"
 
 namespace bsl
 {

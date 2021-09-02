@@ -23,6 +23,9 @@ if(BUILD_TESTS)
     include(CTest)
 endif()
 
+include(ProcessorCount)
+ProcessorCount(CMAKE_NUM_PROCESSORS)
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)

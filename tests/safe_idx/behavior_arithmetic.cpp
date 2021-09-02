@@ -28,6 +28,7 @@
 
 #include <bsl/numeric_limits.hpp>
 #include <bsl/safe_idx.hpp>
+#include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
 
 namespace bsl

@@ -24,7 +24,8 @@
 
 #include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
-#include <bsl/integer_sequence.hpp>
+#include <bsl/make_index_sequence.hpp>
+#include <bsl/safe_integral.hpp>
 
 namespace bsl
 {

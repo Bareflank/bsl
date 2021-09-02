@@ -28,6 +28,7 @@
 #include <bsl/forward.hpp>
 #include <bsl/is_lvalue_reference.hpp>
 #include <bsl/move.hpp>
+#include <bsl/remove_reference.hpp>
 
 namespace bsl
 {

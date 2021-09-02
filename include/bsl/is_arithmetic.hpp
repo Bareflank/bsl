@@ -28,10 +28,10 @@
 #ifndef BSL_IS_ARITHMETIC_HPP
 #define BSL_IS_ARITHMETIC_HPP
 
+#include "bsl/integral_constant.hpp"    // IWYU pragma: export
 #include "disjunction.hpp"
 #include "is_floating_point.hpp"
 #include "is_integral.hpp"
-#include "is_same.hpp"
 
 namespace bsl
 {

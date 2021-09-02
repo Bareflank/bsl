@@ -28,10 +28,10 @@
 #ifndef BSL_SWAP_HPP
 #define BSL_SWAP_HPP
 
-#include "enable_if.hpp"
-#include "is_movable.hpp"
-#include "is_nothrow_movable.hpp"
-#include "move.hpp"
+#include "bsl/enable_if.hpp"
+#include "bsl/is_movable.hpp"
+#include "bsl/is_nothrow_movable.hpp"
+#include "bsl/move.hpp"
 
 namespace bsl
 {

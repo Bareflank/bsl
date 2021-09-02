@@ -28,8 +28,8 @@
 #ifndef BSL_UT_GIVEN_HPP
 #define BSL_UT_GIVEN_HPP
 
-#include "cstr_type.hpp"
-#include "discard.hpp"
+#include "bsl/cstr_type.hpp"
+#include "bsl/discard.hpp"
 
 namespace bsl
 {

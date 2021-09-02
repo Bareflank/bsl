@@ -28,7 +28,7 @@
 #ifndef BSL_IS_DEFAULT_CONSTRUCTIBLE_HPP
 #define BSL_IS_DEFAULT_CONSTRUCTIBLE_HPP
 
-#include "bool_constant.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
 
 namespace bsl
 {

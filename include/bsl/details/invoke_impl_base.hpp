@@ -27,7 +27,6 @@
 
 #include "../conditional.hpp"
 #include "../decay.hpp"
-#include "../forward.hpp"
 #include "../is_base_of.hpp"
 #include "../is_member_function_pointer.hpp"
 #include "../is_member_object_pointer.hpp"

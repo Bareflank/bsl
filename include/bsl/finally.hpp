@@ -28,11 +28,11 @@
 #ifndef BSL_FINALLY_HPP
 #define BSL_FINALLY_HPP
 
-#include "discard.hpp"
-#include "dormant_t.hpp"
-#include "is_nothrow_invocable.hpp"
-#include "move.hpp"
-#include "touch.hpp"
+#include "bsl/discard.hpp"
+#include "bsl/dormant_t.hpp"    // IWYU pragma: export
+#include "bsl/is_nothrow_invocable.hpp"
+#include "bsl/move.hpp"
+#include "bsl/touch.hpp"
 
 namespace bsl
 {

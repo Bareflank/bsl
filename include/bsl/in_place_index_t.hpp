@@ -28,7 +28,7 @@
 #ifndef BSL_IN_PLACE_INDEX_T_HPP
 #define BSL_IN_PLACE_INDEX_T_HPP
 
-#include "cstdint.hpp"
+#include "bsl/cstdint.hpp"
 
 namespace bsl
 {

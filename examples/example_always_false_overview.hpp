@@ -22,9 +22,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/as_const.hpp>
+#include <bsl/always_false.hpp>
 #include <bsl/debug.hpp>
-#include <bsl/is_same.hpp>
 
 namespace bsl
 {

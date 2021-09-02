@@ -28,18 +28,17 @@
 #ifndef BSL_ARGUMENTS_HPP
 #define BSL_ARGUMENTS_HPP
 
-#include "convert.hpp"
-#include "cstdint.hpp"
-#include "cstr_type.hpp"
-#include "details/arguments_impl.hpp"
-#include "details/out.hpp"
-#include "ensures.hpp"
-#include "expects.hpp"
-#include "is_constant_evaluated.hpp"
-#include "safe_integral.hpp"
-#include "span.hpp"
-#include "string_view.hpp"
-#include "unlikely.hpp"
+#include "bsl/cstr_type.hpp"
+#include "bsl/details/arguments_impl.hpp"
+#include "bsl/details/out.hpp"
+#include "bsl/ensures.hpp"
+#include "bsl/expects.hpp"
+#include "bsl/safe_idx.hpp"
+#include "bsl/safe_integral.hpp"
+#include "bsl/span.hpp"
+#include "bsl/string_view.hpp"
+#include "bsl/touch.hpp"
+#include "bsl/unlikely.hpp"
 
 namespace bsl
 {
@@ -144,14 +143,6 @@ namespace bsl
         using pointer_type = cstr_type const *;
         /// @brief alias for: cstr_type const *
         using const_pointer_type = cstr_type const *;
-        /// @brief alias for: contiguous_iterator<cstr_type const>
-        using iterator_type = contiguous_iterator<cstr_type const>;
-        /// @brief alias for: contiguous_iterator<cstr_type const>
-        using const_iterator_type = contiguous_iterator<cstr_type const>;
-        /// @brief alias for: reverse_iterator<iterator>
-        using reverse_iterator_type = reverse_iterator<iterator_type>;
-        /// @brief alias for: reverse_iterator<const_iterator>
-        using const_reverse_iterator_type = reverse_iterator<const_iterator_type>;
 
         /// <!-- description -->
         ///   @brief Creates a bsl::arguments object given a provided argc

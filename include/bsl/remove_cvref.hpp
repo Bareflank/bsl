@@ -28,8 +28,8 @@
 #ifndef BSL_REMOVE_CVREF_HPP
 #define BSL_REMOVE_CVREF_HPP
 
-#include "remove_cv.hpp"
-#include "remove_reference.hpp"
+#include "bsl/remove_cv.hpp"
+#include "bsl/remove_reference.hpp"
 
 namespace bsl
 {

@@ -25,6 +25,7 @@
 #include <bsl/arguments.hpp>
 #include <bsl/array.hpp>
 #include <bsl/debug.hpp>
+#include <bsl/string_view.hpp>
 
 namespace bsl
 {

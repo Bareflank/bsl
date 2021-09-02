@@ -23,7 +23,12 @@
 /// SOFTWARE.
 
 #include <bsl/convert.hpp>
+#include <bsl/discard.hpp>
 #include <bsl/from_chars.hpp>
+#include <bsl/is_same.hpp>
+#include <bsl/is_signed.hpp>
+#include <bsl/safe_integral.hpp>
+#include <bsl/string_view.hpp>
 #include <bsl/ut.hpp>
 
 namespace

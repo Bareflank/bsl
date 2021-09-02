@@ -26,8 +26,8 @@
 #define BSL_DETAILS_FMT_IMPL_ERRC_TYPE_HPP
 
 #include "../errc_type.hpp"
-#include "../fmt_options.hpp"
 #include "../is_constant_evaluated.hpp"
+#include "fmt_impl_integral.hpp"    // IWYU pragma: keep
 #include "out.hpp"
 
 namespace bsl

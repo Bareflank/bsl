@@ -25,6 +25,8 @@
 #ifndef BSL_EXAMPLE_DETECTED_ALIAS_HPP
 #define BSL_EXAMPLE_DETECTED_ALIAS_HPP
 
+#include <bsl/declval.hpp>
+
 namespace bsl
 {
     /// @brief defines an alias for use with the detected types, which attempts

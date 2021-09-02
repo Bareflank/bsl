@@ -24,6 +24,7 @@
 
 #include "example_enum.hpp"
 
+#include <bsl/cstdint.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/is_same.hpp>
 #include <bsl/underlying_type.hpp>

@@ -30,7 +30,6 @@
 
 #include "../false_type.hpp"
 #include "../true_type.hpp"
-#include "../type_identity.hpp"
 #include "../void_t.hpp"
 
 namespace bsl::details

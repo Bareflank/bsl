@@ -28,15 +28,16 @@
 #ifndef BSL_BASIC_STRING_VIEW_HPP
 #define BSL_BASIC_STRING_VIEW_HPP
 
-#include "char_traits.hpp"
-#include "contiguous_iterator.hpp"
-#include "ensures.hpp"
-#include "expects.hpp"
-#include "npos.hpp"
-#include "reverse_iterator.hpp"
-#include "safe_integral.hpp"
-#include "touch.hpp"
-#include "unlikely.hpp"
+#include "bsl/char_traits.hpp"            // IWYU pragma: export
+#include "bsl/contiguous_iterator.hpp"    // IWYU pragma: export
+#include "bsl/ensures.hpp"
+#include "bsl/expects.hpp"
+#include "bsl/npos.hpp"                // IWYU pragma: export
+#include "bsl/reverse_iterator.hpp"    // IWYU pragma: export
+#include "bsl/safe_idx.hpp"
+#include "bsl/safe_integral.hpp"
+#include "bsl/touch.hpp"
+#include "bsl/unlikely.hpp"
 
 namespace bsl
 {

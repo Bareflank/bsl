@@ -24,6 +24,7 @@
 
 #include <bsl/convert.hpp>
 #include <bsl/max_align_t.hpp>
+#include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
 
 /// <!-- description -->

@@ -28,26 +28,28 @@
 #ifndef BSL_FMT_HPP
 #define BSL_FMT_HPP
 
-#include "details/fmt_impl_bool.hpp"
-#include "details/fmt_impl_char_type.hpp"
-#include "details/fmt_impl_cstr_type.hpp"
-#include "details/fmt_impl_errc_type.hpp"
-#include "details/fmt_impl_integral.hpp"
-#include "details/fmt_impl_null_pointer.hpp"
-#include "details/fmt_impl_string_view.hpp"
-#include "details/fmt_impl_void_pointer.hpp"
-#include "details/out.hpp"
-#include "enable_if.hpp"
-#include "expects.hpp"
-#include "fmt_options.hpp"
-#include "is_bool.hpp"
-#include "is_constant_evaluated.hpp"
-#include "is_integral.hpp"
-#include "is_null_pointer.hpp"
-#include "is_pointer.hpp"
-#include "is_same.hpp"
-#include "safe_integral.hpp"
-#include "unlikely.hpp"
+#include "bsl/char_type.hpp"
+#include "bsl/cstr_type.hpp"
+#include "bsl/details/fmt_impl_bool.hpp"            // IWYU pragma: export
+#include "bsl/details/fmt_impl_char_type.hpp"       // IWYU pragma: export
+#include "bsl/details/fmt_impl_cstr_type.hpp"       // IWYU pragma: export
+#include "bsl/details/fmt_impl_errc_type.hpp"       // IWYU pragma: export
+#include "bsl/details/fmt_impl_integral.hpp"        // IWYU pragma: export
+#include "bsl/details/fmt_impl_null_pointer.hpp"    // IWYU pragma: export
+#include "bsl/details/fmt_impl_string_view.hpp"     // IWYU pragma: export
+#include "bsl/details/fmt_impl_void_pointer.hpp"    // IWYU pragma: export
+#include "bsl/details/out.hpp"
+#include "bsl/enable_if.hpp"
+#include "bsl/expects.hpp"
+#include "bsl/fmt_options.hpp"    // IWYU pragma: export
+#include "bsl/is_bool.hpp"
+#include "bsl/is_constant_evaluated.hpp"
+#include "bsl/is_integral.hpp"
+#include "bsl/is_null_pointer.hpp"
+#include "bsl/is_pointer.hpp"
+#include "bsl/is_same.hpp"
+#include "bsl/safe_integral.hpp"
+#include "bsl/unlikely.hpp"
 
 namespace bsl
 {

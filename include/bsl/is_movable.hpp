@@ -28,10 +28,10 @@
 #ifndef BSL_IS_MOVABLE_HPP
 #define BSL_IS_MOVABLE_HPP
 
-#include "bool_constant.hpp"
-#include "conjunction.hpp"
-#include "is_move_assignable.hpp"
-#include "is_move_constructible.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
+#include "bsl/conjunction.hpp"
+#include "bsl/is_move_assignable.hpp"
+#include "bsl/is_move_constructible.hpp"
 
 namespace bsl
 {

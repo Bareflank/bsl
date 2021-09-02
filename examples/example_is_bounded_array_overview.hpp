@@ -23,7 +23,9 @@
 /// SOFTWARE.
 
 #include <bsl/convert.hpp>
+#include <bsl/debug.hpp>
 #include <bsl/is_bounded_array.hpp>
+#include <bsl/safe_integral.hpp>
 
 namespace bsl
 {

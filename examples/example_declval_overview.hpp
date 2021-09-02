@@ -24,6 +24,7 @@
 
 #include "example_class_nodefault.hpp"
 
+#include <bsl/debug.hpp>
 #include <bsl/declval.hpp>
 #include <bsl/is_same.hpp>
 

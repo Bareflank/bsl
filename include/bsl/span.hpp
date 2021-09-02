@@ -28,18 +28,21 @@
 #ifndef BSL_SPAN_HPP
 #define BSL_SPAN_HPP
 
-#include "array.hpp"
-#include "carray.hpp"
-#include "char_type.hpp"
-#include "contiguous_iterator.hpp"
-#include "details/out.hpp"
-#include "is_constant_evaluated.hpp"
-#include "is_pod.hpp"
-#include "is_same.hpp"
-#include "reverse_iterator.hpp"
-#include "safe_integral.hpp"
-#include "touch.hpp"
-#include "unlikely.hpp"
+#include "bsl/array.hpp"
+#include "bsl/carray.hpp"
+#include "bsl/char_type.hpp"
+#include "bsl/contiguous_iterator.hpp"    // IWYU pragma: export
+#include "bsl/details/out.hpp"
+#include "bsl/ensures.hpp"
+#include "bsl/expects.hpp"
+#include "bsl/is_constant_evaluated.hpp"
+#include "bsl/is_pod.hpp"
+#include "bsl/is_same.hpp"
+#include "bsl/reverse_iterator.hpp"    // IWYU pragma: export
+#include "bsl/safe_idx.hpp"
+#include "bsl/safe_integral.hpp"
+#include "bsl/touch.hpp"
+#include "bsl/unlikely.hpp"
 
 namespace bsl
 {

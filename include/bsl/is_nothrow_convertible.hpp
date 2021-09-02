@@ -28,13 +28,13 @@
 #ifndef BSL_IS_NOTHROW_CONVERTIBLE_HPP
 #define BSL_IS_NOTHROW_CONVERTIBLE_HPP
 
-#include "bool_constant.hpp"
-#include "conjunction.hpp"
-#include "declval.hpp"
-#include "false_type.hpp"
-#include "is_void.hpp"
-#include "true_type.hpp"
-#include "true_type_for.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
+#include "bsl/conjunction.hpp"
+#include "bsl/cstdint.hpp"
+#include "bsl/declval.hpp"
+#include "bsl/false_type.hpp"
+#include "bsl/is_void.hpp"
+#include "bsl/true_type_for.hpp"
 
 namespace bsl
 {

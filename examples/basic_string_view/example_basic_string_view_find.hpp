@@ -23,7 +23,9 @@
 /// SOFTWARE.
 
 #include <bsl/basic_string_view.hpp>
+#include <bsl/char_type.hpp>
 #include <bsl/debug.hpp>
+#include <bsl/safe_idx.hpp>
 
 namespace bsl
 {

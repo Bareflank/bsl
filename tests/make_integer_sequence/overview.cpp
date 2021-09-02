@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/make_integer_sequence.hpp>
+#include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
 
 /// <!-- description -->

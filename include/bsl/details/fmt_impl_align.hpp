@@ -25,9 +25,12 @@
 #ifndef BSL_DETAILS_FMT_IMPL_ALIGN_HPP
 #define BSL_DETAILS_FMT_IMPL_ALIGN_HPP
 
+#include "../fmt_align.hpp"
 #include "../fmt_options.hpp"
+#include "../safe_idx.hpp"
 #include "../safe_integral.hpp"
 #include "../touch.hpp"
+#include "out.hpp"
 
 namespace bsl::details
 {

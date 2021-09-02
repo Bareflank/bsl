@@ -28,9 +28,9 @@
 #ifndef BSL_INTEGER_SEQUENCE_HPP
 #define BSL_INTEGER_SEQUENCE_HPP
 
-#include "cstdint.hpp"
-#include "details/integer_sequence_max.hpp"
-#include "details/integer_sequence_min.hpp"
+#include "bsl/cstdint.hpp"
+#include "bsl/details/integer_sequence_max.hpp"
+#include "bsl/details/integer_sequence_min.hpp"
 
 namespace bsl
 {

@@ -28,10 +28,10 @@
 #ifndef BSL_IS_ONE_OF_HPP
 #define BSL_IS_ONE_OF_HPP
 
-#include "bool_constant.hpp"
-#include "disjunction.hpp"
-#include "is_same.hpp"
-#include "true_type.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
+#include "bsl/disjunction.hpp"
+#include "bsl/is_same.hpp"
+#include "bsl/true_type.hpp"
 
 namespace bsl
 {

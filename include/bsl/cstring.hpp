@@ -28,18 +28,15 @@
 #ifndef BSL_CSTRING_HPP
 #define BSL_CSTRING_HPP
 
-#include "char_type.hpp"
-#include "cstdint.hpp"
-#include "cstr_type.hpp"
-#include "discard.hpp"
-#include "ensures.hpp"
-#include "expects.hpp"
-#include "is_constant_evaluated.hpp"
-#include "is_trivial.hpp"
-#include "safe_idx.hpp"
-#include "safe_integral.hpp"
-#include "touch.hpp"
-#include "unlikely.hpp"
+#include "bsl/char_type.hpp"
+#include "bsl/cstr_type.hpp"
+#include "bsl/discard.hpp"
+#include "bsl/expects.hpp"
+#include "bsl/is_constant_evaluated.hpp"
+#include "bsl/is_trivial.hpp"
+#include "bsl/safe_idx.hpp"
+#include "bsl/safe_integral.hpp"
+#include "bsl/unlikely.hpp"
 
 // Notes: --
 // - In general, you should not use these functions as they are not

@@ -22,7 +22,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/color.hpp>
+#include <bsl/string_view.hpp>
 #include <bsl/ut.hpp>
 
 /// <!-- description -->

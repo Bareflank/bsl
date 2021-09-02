@@ -28,7 +28,7 @@
 #ifndef BSL_MAX_ALIGN_HPP
 #define BSL_MAX_ALIGN_HPP
 
-#include "cstdint.hpp"
+#include "bsl/cstdint.hpp"
 
 namespace bsl
 {

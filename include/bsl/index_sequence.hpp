@@ -28,8 +28,8 @@
 #ifndef BSL_INDEX_SEQUENCE_HPP
 #define BSL_INDEX_SEQUENCE_HPP
 
-#include "cstdint.hpp"
-#include "integer_sequence.hpp"
+#include "bsl/cstdint.hpp"
+#include "bsl/integer_sequence.hpp"
 
 namespace bsl
 {

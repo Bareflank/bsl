@@ -24,6 +24,7 @@
 
 #include <bsl/debug.hpp>
 #include <bsl/enable_if.hpp>
+#include <bsl/is_same.hpp>
 
 namespace bsl
 {

@@ -26,7 +26,8 @@
 
 #include <bsl/array.hpp>
 #include <bsl/convert.hpp>
-#include <bsl/npos.hpp>
+#include <bsl/safe_idx.hpp>
+#include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
 
 namespace
@@ -49,7 +50,7 @@ namespace
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(*mut_arr.at_if(bsl::to_idx(0)) == bsl::to_i32(42));
                     bsl::ut_check(mut_arr.at_if(bsl::to_idx(1)) == nullptr);
-                    bsl::ut_check(mut_arr.at_if(bsl::npos) == nullptr);
+                    bsl::ut_check(mut_arr.at_if(bsl::safe_idx::max_value()) == nullptr);
                 };
             };
 
@@ -63,7 +64,7 @@ namespace
                     bsl::ut_check(*mut_arr.at_if(bsl::to_idx(4)) == bsl::to_i32(23));
                     bsl::ut_check(*mut_arr.at_if(bsl::to_idx(5)) == bsl::to_i32(42));
                     bsl::ut_check(mut_arr.at_if(bsl::to_idx(6)) == nullptr);
-                    bsl::ut_check(mut_arr.at_if(bsl::npos) == nullptr);
+                    bsl::ut_check(mut_arr.at_if(bsl::safe_idx::max_value()) == nullptr);
                 };
             };
 
@@ -72,7 +73,7 @@ namespace
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(*arr.at_if(bsl::to_idx(0)) == bsl::to_i32(42));
                     bsl::ut_check(arr.at_if(bsl::to_idx(1)) == nullptr);
-                    bsl::ut_check(arr.at_if(bsl::npos) == nullptr);
+                    bsl::ut_check(arr.at_if(bsl::safe_idx::max_value()) == nullptr);
                 };
             };
 
@@ -86,7 +87,7 @@ namespace
                     bsl::ut_check(*arr.at_if(bsl::to_idx(4)) == bsl::to_i32(23));
                     bsl::ut_check(*arr.at_if(bsl::to_idx(5)) == bsl::to_i32(42));
                     bsl::ut_check(arr.at_if(bsl::to_idx(6)) == nullptr);
-                    bsl::ut_check(arr.at_if(bsl::npos) == nullptr);
+                    bsl::ut_check(arr.at_if(bsl::safe_idx::max_value()) == nullptr);
                 };
             };
         };

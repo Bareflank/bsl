@@ -28,7 +28,7 @@
 #ifndef BSL_MAKE_INTEGER_SEQUENCE_HPP
 #define BSL_MAKE_INTEGER_SEQUENCE_HPP
 
-#include "integer_sequence.hpp"
+#include "bsl/integer_sequence.hpp"
 
 namespace bsl
 {

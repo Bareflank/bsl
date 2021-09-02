@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/exchange.hpp>
+#include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
 
 namespace

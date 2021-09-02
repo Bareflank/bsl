@@ -23,9 +23,11 @@
 /// SOFTWARE.
 
 #include <bsl/convert.hpp>
-#include <bsl/fmt_options.hpp>
+#include <bsl/fmt_align.hpp>
+#include <bsl/fmt_sign.hpp>
+#include <bsl/fmt_type.hpp>
+#include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
-
 namespace
 {
     /// <!-- description -->

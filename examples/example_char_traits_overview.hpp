@@ -23,8 +23,10 @@
 /// SOFTWARE.
 
 #include <bsl/char_traits.hpp>
+#include <bsl/char_type.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
+#include <bsl/safe_integral.hpp>
 
 namespace bsl
 {

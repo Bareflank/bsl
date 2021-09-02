@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/convert.hpp>
+#include <bsl/errc_type.hpp>
 #include <bsl/ut.hpp>
 
 namespace

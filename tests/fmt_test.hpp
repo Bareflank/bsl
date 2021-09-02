@@ -30,14 +30,16 @@
 // NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
 #include <stdio.h>
 // NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
+#include <stdlib.h>
+// NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
 #include <string.h>
 
 #include <bsl/carray.hpp>
 #include <bsl/char_type.hpp>
 #include <bsl/cstdint.hpp>
-#include <bsl/cstdlib.hpp>
 #include <bsl/cstr_type.hpp>
-#include <bsl/cstring.hpp>
+#include <bsl/details/out_char.hpp>
+#include <bsl/details/out_cstr.hpp>
 #include <bsl/discard.hpp>
 
 namespace fmt_test
@@ -80,7 +82,7 @@ namespace fmt_test
     [[nodiscard]] inline auto
     was_this_outputted(bsl::cstr_type const str) noexcept -> bool
     {
-        if (bsl::builtin_strlen(str) != g_mut_fmt_test_num) {
+        if (strlen(str) != g_mut_fmt_test_num) {
             return false;
         }
 
@@ -97,7 +99,7 @@ namespace bsl::details
     ///   @param c the character to output to stdout
     ///
     inline void
-    redirected_put_char(bsl::char_type const c) noexcept
+    redirected_out_char(bsl::char_type const c) noexcept
     {
         bsl::uintmx const i{fmt_test::g_mut_fmt_test_num};                    // NOLINT
         if (auto *const pmut_ptr{fmt_test::g_mut_fmt_test_buf.at_if(i)}) {    // GRCOV_EXCLUDE_BR
@@ -120,10 +122,10 @@ namespace bsl::details
     ///   @param str the string to output to stdout
     ///
     inline void
-    redirected_put_cstr(bsl::cstr_type const str) noexcept
+    redirected_out_cstr(bsl::cstr_type const str) noexcept
     {
         for (bsl::uintmx mut_i{}; mut_i < strlen(str); ++mut_i) {    // NOLINT
-            redirected_put_char(str[mut_i]);
+            redirected_out_char(str[mut_i]);
         }
     }
 }

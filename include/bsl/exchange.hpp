@@ -28,8 +28,8 @@
 #ifndef BSL_EXCHANGE_HPP
 #define BSL_EXCHANGE_HPP
 
-#include "forward.hpp"
-#include "move.hpp"
+#include "bsl/forward.hpp"
+#include "bsl/move.hpp"
 
 namespace bsl
 {

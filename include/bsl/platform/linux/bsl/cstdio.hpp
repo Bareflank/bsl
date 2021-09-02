@@ -28,8 +28,38 @@
 #ifndef BSL_CSTDIO_HPP
 #define BSL_CSTDIO_HPP
 
-// We are implementing cstdio
+#include "bsl/char_type.hpp"
+
 // NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
 #include <stdio.h>
+
+#include <bsl/cstr_type.hpp>
+
+namespace bsl
+{
+    /// <!-- description -->
+    ///   @brief Output a character to stdout
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param c the character to output
+    ///
+    constexpr void
+    stdio_out_char(bsl::char_type const c) noexcept
+    {
+        return ::putchar(c);
+    }
+
+    /// <!-- description -->
+    ///   @brief Output a string to stdout
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @param str the string to output
+    ///
+    constexpr void
+    stdio_out_cstr(bsl::cstr_type const str) noexcept
+    {
+        return ::fputs(str, stdout);
+    }
+}
 
 #endif

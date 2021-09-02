@@ -26,6 +26,8 @@
 #include <bsl/array.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
+#include <bsl/safe_integral.hpp>
+#include <bsl/string_view.hpp>
 
 namespace bsl
 {

@@ -28,8 +28,9 @@
 #ifndef BSL_IS_DETECTED_HPP
 #define BSL_IS_DETECTED_HPP
 
-#include "details/detector.hpp"
-#include "nonesuch.hpp"
+#include "bsl/details/detector.hpp"     // IWYU pragma: export
+#include "bsl/integral_constant.hpp"    // IWYU pragma: export
+#include "bsl/nonesuch.hpp"
 
 namespace bsl
 {

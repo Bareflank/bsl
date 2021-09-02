@@ -25,11 +25,10 @@
 #ifndef BSL_INTEGER_HPP
 #define BSL_INTEGER_HPP
 
-#include "cstdint.hpp"
-#include "is_signed.hpp"
-#include "numeric_limits.hpp"
-#include "touch.hpp"
-#include "unlikely.hpp"
+#include "bsl/is_signed.hpp"
+#include "bsl/numeric_limits.hpp"
+#include "bsl/touch.hpp"
+#include "bsl/unlikely.hpp"
 
 namespace bsl
 {

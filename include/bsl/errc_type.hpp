@@ -28,9 +28,9 @@
 #ifndef BSL_ERRC_TYPE_HPP
 #define BSL_ERRC_TYPE_HPP
 
-#include "basic_errc_type.hpp"
-#include "cstdint.hpp"
-#include "is_pod.hpp"
+#include "bsl/basic_errc_type.hpp"    // IWYU pragma: export
+#include "bsl/cstdint.hpp"            // IWYU pragma: export
+#include "bsl/is_pod.hpp"
 
 namespace bsl
 {

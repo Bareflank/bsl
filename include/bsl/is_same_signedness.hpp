@@ -28,8 +28,8 @@
 #ifndef BSL_IS_SAME_SIGNEDNESS_HPP
 #define BSL_IS_SAME_SIGNEDNESS_HPP
 
-#include "bool_constant.hpp"
-#include "is_signed.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
+#include "bsl/is_signed.hpp"
 
 namespace bsl
 {

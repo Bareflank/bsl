@@ -24,7 +24,11 @@
 
 #include "../fmt_test.hpp"
 
-#include <bsl/debug.hpp>
+#include <bsl/cstr_type.hpp>
+#include <bsl/fmt_type.hpp>
+#include <bsl/is_signed.hpp>
+#include <bsl/safe_integral.hpp>
+#include <bsl/string_view.hpp>
 #include <bsl/ut.hpp>
 
 namespace

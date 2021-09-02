@@ -24,7 +24,6 @@
 
 #include <bsl/array.hpp>
 #include <bsl/debug.hpp>
-#include <bsl/span.hpp>
 
 namespace bsl
 {

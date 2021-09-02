@@ -28,7 +28,8 @@
 #ifndef BSL_STRING_VIEW_HPP
 #define BSL_STRING_VIEW_HPP
 
-#include "basic_string_view.hpp"
+#include "bsl/basic_string_view.hpp"    // IWYU pragma: export
+#include "bsl/char_type.hpp"            // IWYU pragma: export
 
 namespace bsl
 {

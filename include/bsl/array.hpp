@@ -28,15 +28,16 @@
 #ifndef BSL_ARRAY_HPP
 #define BSL_ARRAY_HPP
 
-#include "contiguous_iterator.hpp"
-#include "cstdint.hpp"
-#include "details/out.hpp"
-#include "ensures.hpp"
-#include "expects.hpp"
-#include "reverse_iterator.hpp"
-#include "safe_integral.hpp"
-#include "touch.hpp"
-#include "unlikely.hpp"
+#include "bsl/contiguous_iterator.hpp"    // IWYU pragma: export
+#include "bsl/details/out.hpp"
+#include "bsl/ensures.hpp"
+#include "bsl/expects.hpp"
+#include "bsl/is_constant_evaluated.hpp"
+#include "bsl/reverse_iterator.hpp"    // IWYU pragma: export
+#include "bsl/safe_idx.hpp"
+#include "bsl/safe_integral.hpp"
+#include "bsl/touch.hpp"
+#include "bsl/unlikely.hpp"
 
 namespace bsl
 {

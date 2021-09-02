@@ -28,25 +28,23 @@
 #ifndef BSL_DEBUG_HPP
 #define BSL_DEBUG_HPP
 
-#include "bool_constant.hpp"
-#include "char_type.hpp"
-#include "color.hpp"
-#include "conditional.hpp"
-#include "cstdint.hpp"
-#include "debug_levels.hpp"
-#include "details/out.hpp"
-#include "details/out_type_alert.hpp"
-#include "details/out_type_debug.hpp"
-#include "details/out_type_empty.hpp"
-#include "details/out_type_error.hpp"
-#include "details/out_type_print.hpp"
-#include "disjunction.hpp"
-#include "fmt.hpp"
-#include "is_constant_evaluated.hpp"
-#include "safe_integral.hpp"
-#include "source_location.hpp"
+#include "bsl/char_type.hpp"
+#include "bsl/color.hpp"    // IWYU pragma: export
+#include "bsl/conditional.hpp"
+#include "bsl/debug_levels.hpp"              // IWYU pragma: export
+#include "bsl/details/out.hpp"               // IWYU pragma: export
+#include "bsl/details/out_type_alert.hpp"    // IWYU pragma: export
+#include "bsl/details/out_type_debug.hpp"    // IWYU pragma: export
+#include "bsl/details/out_type_empty.hpp"    // IWYU pragma: export
+#include "bsl/details/out_type_error.hpp"    // IWYU pragma: export
+#include "bsl/details/out_type_print.hpp"    // IWYU pragma: export
+#include "bsl/disjunction.hpp"
+#include "bsl/fmt.hpp"    // IWYU pragma: export
+#include "bsl/is_constant_evaluated.hpp"
+#include "bsl/safe_idx.hpp"
+#include "bsl/safe_integral.hpp"
+#include "bsl/source_location.hpp"    // IWYU pragma: export
 
-#include <bsl/assert.hpp>
 #include <bsl/details/print_thread_id.hpp>
 
 namespace bsl

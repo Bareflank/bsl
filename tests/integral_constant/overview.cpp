@@ -23,7 +23,6 @@
 /// SOFTWARE.
 
 #include <bsl/cstdint.hpp>
-#include <bsl/integral_constant.hpp>
 #include <bsl/is_same.hpp>
 #include <bsl/ut.hpp>
 

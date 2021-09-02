@@ -28,8 +28,7 @@
 #ifndef BSL_IS_BASE_OF_HPP
 #define BSL_IS_BASE_OF_HPP
 
-#include "bool_constant.hpp"
-#include "remove_cv.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
 
 namespace bsl
 {

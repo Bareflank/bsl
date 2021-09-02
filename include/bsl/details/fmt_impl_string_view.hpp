@@ -26,9 +26,11 @@
 #define BSL_DETAILS_FMT_IMPL_STRING_VIEW_HPP
 
 #include "../basic_string_view.hpp"
+#include "../details/fmt_impl_align.hpp"
+#include "../details/out.hpp"
 #include "../fmt_options.hpp"
-#include "fmt_impl_align.hpp"
-#include "out.hpp"
+#include "../is_constant_evaluated.hpp"
+#include "../unlikely.hpp"
 
 namespace bsl
 {

@@ -25,8 +25,6 @@
 #ifndef BSL_DETAILS_INVOKE_IMPL_MOP_R_HPP
 #define BSL_DETAILS_INVOKE_IMPL_MOP_R_HPP
 
-#include "../forward.hpp"
-
 namespace bsl::details
 {
     /// @class bsl::details::invoke_impl_mop_r

@@ -32,16 +32,20 @@
 #include "../cstr_type.hpp"
 #include "../is_constant_evaluated.hpp"
 #include "../is_same.hpp"
-#include "out_type_alert.hpp"
-#include "out_type_debug.hpp"
-#include "out_type_empty.hpp"
-#include "out_type_error.hpp"
-#include "out_type_print.hpp"
-#include "put_char.hpp"
-#include "put_cstr.hpp"
+#include "out_char.hpp"
+#include "out_cstr.hpp"
 
 namespace bsl
 {
+    namespace details
+    {
+        class out_type_alert;
+        class out_type_debug;
+        class out_type_empty;
+        class out_type_error;
+        class out_type_print;
+    }
+
     /// @class bsl::out
     ///
     /// <!-- description -->
@@ -205,19 +209,19 @@ namespace bsl
             }
 
             if constexpr (is_print()) {
-                details::put_char(c);
+                details::out_char(c);
             }
 
             if constexpr (is_debug()) {
-                details::put_char(c);
+                details::out_char(c);
             }
 
             if constexpr (is_alert()) {
-                details::put_char(c);
+                details::out_char(c);
             }
 
             if constexpr (is_error()) {
-                details::put_char(c);
+                details::out_char(c);
             }
         }
 
@@ -237,19 +241,19 @@ namespace bsl
             }
 
             if constexpr (is_print()) {
-                details::put_cstr(str);
+                details::out_cstr(str);
             }
 
             if constexpr (is_debug()) {
-                details::put_cstr(str);
+                details::out_cstr(str);
             }
 
             if constexpr (is_alert()) {
-                details::put_cstr(str);
+                details::out_cstr(str);
             }
 
             if constexpr (is_error()) {
-                details::put_cstr(str);
+                details::out_cstr(str);
             }
         }
     };

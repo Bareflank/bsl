@@ -28,9 +28,9 @@
 #ifndef BSL_CARRAY_HPP
 #define BSL_CARRAY_HPP
 
-#include "cstdint.hpp"
-#include "touch.hpp"
-#include "unlikely.hpp"
+#include "bsl/cstdint.hpp"
+#include "bsl/touch.hpp"
+#include "bsl/unlikely.hpp"
 
 namespace bsl
 {

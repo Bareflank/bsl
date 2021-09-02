@@ -27,6 +27,9 @@
 #define BSL_ASSERT_FAST_FAILS false
 
 #include <bsl/convert.hpp>
+#include <bsl/numeric_limits.hpp>
+#include <bsl/safe_idx.hpp>
+#include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
 
 namespace

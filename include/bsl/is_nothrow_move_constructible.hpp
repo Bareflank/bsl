@@ -28,8 +28,8 @@
 #ifndef BSL_IS_NOTHROW_MOVE_CONSTRUCTIBLE_HPP
 #define BSL_IS_NOTHROW_MOVE_CONSTRUCTIBLE_HPP
 
-#include "add_rvalue_reference.hpp"
-#include "bool_constant.hpp"
+#include "bsl/add_rvalue_reference.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
 
 namespace bsl
 {

@@ -28,9 +28,9 @@
 #ifndef BSL_ADD_POINTER_HPP
 #define BSL_ADD_POINTER_HPP
 
-#include "cstdint.hpp"
-#include "remove_reference.hpp"
-#include "type_identity.hpp"
+#include "bsl/cstdint.hpp"
+#include "bsl/remove_reference.hpp"
+#include "bsl/type_identity.hpp"
 
 namespace bsl
 {

@@ -28,12 +28,16 @@
 #ifndef BSL_NUMERIC_LIMITS_HPP
 #define BSL_NUMERIC_LIMITS_HPP
 
-#include "char_type.hpp"
-#include "climits.hpp"
-#include "cstdint.hpp"
-#include "float_denorm_style.hpp"
-#include "float_round_style.hpp"
-#include "is_unsigned.hpp"
+#include "bsl/char_type.hpp"    // IWYU pragma: export
+#include "bsl/cstdint.hpp"
+#include "bsl/float_denorm_style.hpp"
+#include "bsl/float_round_style.hpp"
+#include "bsl/is_unsigned.hpp"
+
+// NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
+#include <limits.h>
+// NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
+#include <stdint.h>
 
 namespace bsl
 {

@@ -28,8 +28,8 @@
 #ifndef BSL_COMMON_TYPE_HPP
 #define BSL_COMMON_TYPE_HPP
 
-#include "decay.hpp"
-#include "declval.hpp"
+#include "bsl/decay.hpp"
+#include "bsl/declval.hpp"
 
 namespace bsl
 {

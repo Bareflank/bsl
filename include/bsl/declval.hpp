@@ -28,7 +28,7 @@
 #ifndef BSL_DECLVAL_HPP
 #define BSL_DECLVAL_HPP
 
-#include "add_rvalue_reference.hpp"
+#include "bsl/add_rvalue_reference.hpp"
 
 namespace bsl
 {

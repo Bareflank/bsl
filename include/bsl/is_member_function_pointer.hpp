@@ -28,9 +28,9 @@
 #ifndef BSL_IS_MEMBER_FUNCTION_POINTER_HPP
 #define BSL_IS_MEMBER_FUNCTION_POINTER_HPP
 
-#include "bool_constant.hpp"
-#include "false_type.hpp"
-#include "is_function.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
+#include "bsl/false_type.hpp"
+#include "bsl/is_function.hpp"
 
 namespace bsl
 {

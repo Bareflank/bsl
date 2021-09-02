@@ -28,7 +28,8 @@
 #ifndef BSL_COLOR_HPP
 #define BSL_COLOR_HPP
 
-#include "string_view.hpp"
+#include "bsl/cstr_type.hpp"
+#include "bsl/string_view.hpp"
 
 namespace bsl
 {

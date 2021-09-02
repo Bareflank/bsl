@@ -28,12 +28,12 @@
 #ifndef BSL_MOVE_IF_NOEXCEPT_HPP
 #define BSL_MOVE_IF_NOEXCEPT_HPP
 
-#include "conditional.hpp"
-#include "conjunction.hpp"
-#include "is_copy_constructible.hpp"
-#include "is_nothrow_move_constructible.hpp"
-#include "move.hpp"
-#include "negation.hpp"
+#include "bsl/conditional.hpp"
+#include "bsl/conjunction.hpp"
+#include "bsl/is_copy_constructible.hpp"
+#include "bsl/is_nothrow_move_constructible.hpp"
+#include "bsl/move.hpp"
+#include "bsl/negation.hpp"
 
 namespace bsl
 {

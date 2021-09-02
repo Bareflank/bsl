@@ -24,6 +24,7 @@
 
 #include <bsl/convert.hpp>
 #include <bsl/reference_wrapper.hpp>
+#include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
 
 // TODO: Remove the  from this test so that we can provide a pointer

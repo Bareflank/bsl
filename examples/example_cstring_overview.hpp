@@ -22,9 +22,9 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/convert.hpp>
+#include <bsl/cstring.hpp>
 #include <bsl/debug.hpp>
-#include <bsl/discard.hpp>
+#include <bsl/safe_integral.hpp>
 #include <bsl/string_view.hpp>
 
 namespace bsl

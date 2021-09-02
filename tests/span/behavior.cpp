@@ -26,10 +26,13 @@
 #include "../carray_init.hpp"
 
 #include <bsl/array.hpp>
+#include <bsl/carray.hpp>
 #include <bsl/convert.hpp>
-#include <bsl/is_const.hpp>
-#include <bsl/npos.hpp>
+#include <bsl/cstr_type.hpp>
+#include <bsl/safe_idx.hpp>
+#include <bsl/safe_integral.hpp>
 #include <bsl/span.hpp>
+#include <bsl/string_view.hpp>
 #include <bsl/ut.hpp>
 
 namespace

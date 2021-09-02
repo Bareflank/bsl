@@ -28,8 +28,9 @@
 #ifndef BSL_IS_LVALUE_REFERENCE_HPP
 #define BSL_IS_LVALUE_REFERENCE_HPP
 
-#include "false_type.hpp"
-#include "true_type.hpp"
+#include "bsl/false_type.hpp"
+#include "bsl/integral_constant.hpp"    // IWYU pragma: export
+#include "bsl/true_type.hpp"
 
 namespace bsl
 {

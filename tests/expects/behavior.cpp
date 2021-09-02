@@ -26,6 +26,7 @@
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define BSL_ASSERT_FAST_FAILS false
 
+#include <bsl/errc_type.hpp>
 #include <bsl/expects.hpp>
 #include <bsl/ut.hpp>
 

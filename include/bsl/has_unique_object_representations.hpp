@@ -28,8 +28,8 @@
 #ifndef BSL_HAS_UNIQUE_OBJECT_REPRESENTATION_HPP
 #define BSL_HAS_UNIQUE_OBJECT_REPRESENTATION_HPP
 
-#include "bool_constant.hpp"
-#include "remove_cvext.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
+#include "bsl/remove_cvext.hpp"
 
 namespace bsl
 {

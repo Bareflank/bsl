@@ -28,12 +28,12 @@
 #ifndef BSL_IS_OBJECT_HPP
 #define BSL_IS_OBJECT_HPP
 
-#include "bool_constant.hpp"
-#include "disjunction.hpp"
-#include "is_array.hpp"
-#include "is_class.hpp"
-#include "is_scalar.hpp"
-#include "is_union.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
+#include "bsl/disjunction.hpp"
+#include "bsl/is_array.hpp"
+#include "bsl/is_class.hpp"
+#include "bsl/is_scalar.hpp"
+#include "bsl/is_union.hpp"
 
 namespace bsl
 {

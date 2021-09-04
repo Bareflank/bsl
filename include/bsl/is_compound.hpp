@@ -28,8 +28,8 @@
 #ifndef BSL_IS_COMPOUND_HPP
 #define BSL_IS_COMPOUND_HPP
 
-#include "bool_constant.hpp"
-#include "is_fundamental.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
+#include "bsl/is_fundamental.hpp"
 
 namespace bsl
 {

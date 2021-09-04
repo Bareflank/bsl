@@ -28,7 +28,7 @@
 #ifndef BSL_NPOS_HPP
 #define BSL_NPOS_HPP
 
-#include "safe_idx.hpp"
+#include "bsl/safe_idx.hpp"
 
 namespace bsl
 {

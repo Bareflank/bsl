@@ -23,7 +23,6 @@
 /// SOFTWARE.
 
 #include <bsl/discard.hpp>
-#include <bsl/source_location.hpp>
 #include <bsl/ut.hpp>
 
 namespace

@@ -28,7 +28,7 @@
 #ifndef BSL_FLOATING_ROUND_STYLE_HPP
 #define BSL_FLOATING_ROUND_STYLE_HPP
 
-#include "cstdint.hpp"
+#include "bsl/cstdint.hpp"
 
 namespace bsl
 {

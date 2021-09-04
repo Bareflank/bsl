@@ -28,7 +28,7 @@
 #ifndef BSL_NEGATION_HPP
 #define BSL_NEGATION_HPP
 
-#include "bool_constant.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
 
 namespace bsl
 {

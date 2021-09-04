@@ -23,7 +23,9 @@
 /// SOFTWARE.
 
 #include <bsl/convert.hpp>
+#include <bsl/discard.hpp>
 #include <bsl/safe_idx.hpp>
+#include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
 
 namespace

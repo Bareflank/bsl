@@ -26,7 +26,7 @@
 #define BSL_DETAILS_FMT_IMPL_BOOL_HPP
 
 #include "../fmt_options.hpp"
-#include "../forward.hpp"
+#include "../fmt_type.hpp"
 #include "../is_constant_evaluated.hpp"
 #include "../safe_integral.hpp"
 #include "fmt_impl_align.hpp"

@@ -28,12 +28,12 @@
 #ifndef BSL_DECAY_HPP
 #define BSL_DECAY_HPP
 
-#include "add_pointer.hpp"
-#include "is_array.hpp"
-#include "is_function.hpp"
-#include "remove_cv.hpp"
-#include "remove_extent.hpp"
-#include "remove_reference.hpp"
+#include "bsl/add_pointer.hpp"
+#include "bsl/is_array.hpp"
+#include "bsl/is_function.hpp"
+#include "bsl/remove_cv.hpp"
+#include "bsl/remove_extent.hpp"
+#include "bsl/remove_reference.hpp"
 
 namespace bsl
 {

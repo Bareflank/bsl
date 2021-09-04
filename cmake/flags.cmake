@@ -34,6 +34,7 @@ list(APPEND BSL_WARNINGS
     -Wno-missing-variable-declarations
     -Wno-covered-switch-default
     -Wno-invalid-constexpr
+    -Wno-microsoft-include
     -fconstexpr-steps=134217728
 )
 

@@ -23,7 +23,6 @@
 /// SOFTWARE.
 
 #include <bsl/debug.hpp>
-#include <bsl/source_location.hpp>
 
 namespace bsl
 {

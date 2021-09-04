@@ -27,9 +27,6 @@
 
 #include "example_class_base.hpp"
 
-#include <bsl/move.hpp>
-#include <bsl/swap.hpp>
-
 namespace bsl
 {
     /// @class bsl::example_class_subclass

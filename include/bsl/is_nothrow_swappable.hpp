@@ -28,9 +28,9 @@
 #ifndef BSL_IS_NOTHROW_SWAPPABLE_HPP
 #define BSL_IS_NOTHROW_SWAPPABLE_HPP
 
-#include "add_lvalue_reference.hpp"
-#include "bool_constant.hpp"
-#include "is_nothrow_swappable_with.hpp"
+#include "bsl/add_lvalue_reference.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
+#include "bsl/is_nothrow_swappable_with.hpp"
 
 namespace bsl
 {

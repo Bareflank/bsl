@@ -28,19 +28,19 @@
 #ifndef BSL_SAFE_INTEGRAL_HPP
 #define BSL_SAFE_INTEGRAL_HPP
 
-#include "always_false.hpp"
-#include "cstdint.hpp"
-#include "enable_if.hpp"
-#include "integer.hpp"
-#include "is_integral.hpp"
-#include "is_same.hpp"
-#include "is_signed.hpp"
-#include "is_unsigned.hpp"
-#include "located_arg.hpp"
-#include "numeric_limits.hpp"
-#include "source_location.hpp"
-#include "touch.hpp"
-#include "unlikely.hpp"
+#include "bsl/always_false.hpp"
+#include "bsl/cstdint.hpp"    // IWYU pragma: export
+#include "bsl/enable_if.hpp"
+#include "bsl/integer.hpp"
+#include "bsl/is_integral.hpp"
+#include "bsl/is_same.hpp"
+#include "bsl/is_signed.hpp"
+#include "bsl/is_unsigned.hpp"
+#include "bsl/located_arg.hpp"    // IWYU pragma: export
+#include "bsl/numeric_limits.hpp"
+#include "bsl/source_location.hpp"
+#include "bsl/touch.hpp"
+#include "bsl/unlikely.hpp"
 
 #include <bsl/assert.hpp>
 

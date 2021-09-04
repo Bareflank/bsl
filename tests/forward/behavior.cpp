@@ -28,6 +28,7 @@
 #include <bsl/is_lvalue_reference.hpp>
 #include <bsl/is_rvalue_reference.hpp>
 #include <bsl/remove_reference.hpp>
+#include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
 
 namespace

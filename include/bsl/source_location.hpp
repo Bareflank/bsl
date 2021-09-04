@@ -28,9 +28,8 @@
 #ifndef BSL_SOURCE_LOCATION_HPP
 #define BSL_SOURCE_LOCATION_HPP
 
-#include "cstdint.hpp"
-#include "cstr_type.hpp"
-#include "discard.hpp"
+#include "bsl/cstr_type.hpp"
+#include "bsl/discard.hpp"
 
 namespace bsl
 {

@@ -28,8 +28,8 @@
 #ifndef BSL_SORT_HPP
 #define BSL_SORT_HPP
 
-#include "safe_integral.hpp"
-#include "swap.hpp"
+#include "bsl/safe_idx.hpp"
+#include "bsl/swap.hpp"
 
 namespace bsl
 {

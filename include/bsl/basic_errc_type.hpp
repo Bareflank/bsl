@@ -28,7 +28,7 @@
 #ifndef BSL_BASIC_ERRC_TYPE_HPP
 #define BSL_BASIC_ERRC_TYPE_HPP
 
-#include "cstdint.hpp"
+#include "bsl/cstdint.hpp"
 
 namespace bsl
 {

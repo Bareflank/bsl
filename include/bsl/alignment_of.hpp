@@ -28,7 +28,7 @@
 #ifndef BSL_ALIGNMENT_OF_HPP
 #define BSL_ALIGNMENT_OF_HPP
 
-#include "cstdint.hpp"
+#include "bsl/cstdint.hpp"
 
 namespace bsl
 {

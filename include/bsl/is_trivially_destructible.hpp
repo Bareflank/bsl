@@ -28,9 +28,9 @@
 #ifndef BSL_IS_TRIVIALLY_DESTRUCTIBLE_HPP
 #define BSL_IS_TRIVIALLY_DESTRUCTIBLE_HPP
 
-#include "bool_constant.hpp"
-#include "conjunction.hpp"
-#include "is_destructible.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
+#include "bsl/conjunction.hpp"
+#include "bsl/is_destructible.hpp"
 
 namespace bsl
 {

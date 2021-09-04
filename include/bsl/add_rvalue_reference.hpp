@@ -28,8 +28,8 @@
 #ifndef BSL_ADD_RVALUE_REFERENCE_HPP
 #define BSL_ADD_RVALUE_REFERENCE_HPP
 
-#include "cstdint.hpp"
-#include "type_identity.hpp"
+#include "bsl/cstdint.hpp"
+#include "bsl/type_identity.hpp"
 
 namespace bsl
 {

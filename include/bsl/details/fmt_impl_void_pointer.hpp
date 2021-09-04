@@ -27,6 +27,7 @@
 
 #include "../fmt_options.hpp"
 #include "../is_constant_evaluated.hpp"
+#include "../safe_integral.hpp"
 #include "fmt_impl_integral_helpers.hpp"
 #include "out.hpp"
 

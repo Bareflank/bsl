@@ -25,7 +25,6 @@
 #ifndef BSL_DETAILS_SWAPPABLE_TRAITS_HPP
 #define BSL_DETAILS_SWAPPABLE_TRAITS_HPP
 
-#include "../bool_constant.hpp"
 #include "../conjunction.hpp"
 #include "../declval.hpp"
 #include "../swap.hpp"

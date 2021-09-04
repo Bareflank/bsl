@@ -24,6 +24,7 @@
 
 #include <bsl/debug.hpp>
 #include <bsl/is_reference_wrapper.hpp>
+#include <bsl/reference_wrapper.hpp>
 
 namespace bsl
 {

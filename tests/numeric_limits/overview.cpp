@@ -24,6 +24,7 @@
 
 #include <limits>
 
+#include <bsl/cstdint.hpp>
 #include <bsl/numeric_limits.hpp>
 #include <bsl/ut.hpp>
 

@@ -28,9 +28,9 @@
 #ifndef BSL_IS_TRIVIALLY_COPY_CONSTRUCTIBLE_HPP
 #define BSL_IS_TRIVIALLY_COPY_CONSTRUCTIBLE_HPP
 
-#include "add_const.hpp"
-#include "add_lvalue_reference.hpp"
-#include "bool_constant.hpp"
+#include "bsl/add_const.hpp"
+#include "bsl/add_lvalue_reference.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
 
 namespace bsl
 {

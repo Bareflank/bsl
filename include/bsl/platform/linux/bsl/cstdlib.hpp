@@ -28,8 +28,19 @@
 #ifndef BSL_CSTDLIB_HPP
 #define BSL_CSTDLIB_HPP
 
-// We are implementing cstdlib
 // NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
 #include <stdlib.h>
+
+namespace bsl
+{
+    /// <!-- description -->
+    ///   @brief Immediately the application with a failure
+    ///
+    [[noreturn]] constexpr void
+    stdlib_fast_fail() noexcept
+    {
+        return ::exit(EXIT_FAILURE);
+    }
+}
 
 #endif

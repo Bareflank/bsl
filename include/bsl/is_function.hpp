@@ -28,11 +28,11 @@
 #ifndef BSL_IS_FUNCTION_HPP
 #define BSL_IS_FUNCTION_HPP
 
-#include "bool_constant.hpp"
-#include "conjunction.hpp"
-#include "is_const.hpp"
-#include "is_reference.hpp"
-#include "negation.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
+#include "bsl/conjunction.hpp"
+#include "bsl/is_const.hpp"
+#include "bsl/is_reference.hpp"
+#include "bsl/negation.hpp"
 
 namespace bsl
 {

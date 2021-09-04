@@ -28,8 +28,8 @@
 #ifndef BSL_RANK_HPP
 #define BSL_RANK_HPP
 
-#include "cstdint.hpp"
-#include "integral_constant.hpp"
+#include "bsl/cstdint.hpp"
+#include "bsl/integral_constant.hpp"    // IWYU pragma: export
 
 namespace bsl
 {

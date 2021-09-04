@@ -25,9 +25,13 @@
 #ifndef BSL_DETAILS_FMT_IMPL_INTEGRAL_HELPERS_HPP
 #define BSL_DETAILS_FMT_IMPL_INTEGRAL_HELPERS_HPP
 
+#include "../carray.hpp"
 #include "../char_type.hpp"
 #include "../fmt_options.hpp"
+#include "../fmt_sign.hpp"
+#include "../fmt_type.hpp"
 #include "../is_signed.hpp"
+#include "../safe_idx.hpp"
 #include "../safe_integral.hpp"
 #include "../touch.hpp"
 #include "fmt_impl_align.hpp"

@@ -28,15 +28,14 @@
 #ifndef BSL_FROM_CHARS_HPP
 #define BSL_FROM_CHARS_HPP
 
-#include "char_type.hpp"
-#include "ensures.hpp"
-#include "expects.hpp"
-#include "is_signed.hpp"
-#include "npos.hpp"
-#include "safe_integral.hpp"
-#include "string_view.hpp"
-#include "touch.hpp"
-#include "unlikely.hpp"
+#include "bsl/ensures.hpp"
+#include "bsl/expects.hpp"
+#include "bsl/is_signed.hpp"
+#include "bsl/safe_idx.hpp"
+#include "bsl/safe_integral.hpp"
+#include "bsl/string_view.hpp"
+#include "bsl/touch.hpp"
+#include "bsl/unlikely.hpp"
 
 namespace bsl
 {

@@ -25,10 +25,9 @@
 #ifndef BSL_LOCATED_ARG_HPP
 #define BSL_LOCATED_ARG_HPP
 
-#include "cstdint.hpp"
-#include "enable_if.hpp"
-#include "is_same.hpp"
-#include "source_location.hpp"
+#include "bsl/enable_if.hpp"
+#include "bsl/is_same.hpp"
+#include "bsl/source_location.hpp"    // IWYU pragma: export
 
 namespace bsl
 {

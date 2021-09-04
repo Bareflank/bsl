@@ -28,11 +28,12 @@
 #ifndef BSL_REFERENCE_WRAPPER_HPP
 #define BSL_REFERENCE_WRAPPER_HPP
 
-#include "addressof.hpp"
-#include "details/out.hpp"
-#include "forward.hpp"
-#include "invoke_result.hpp"
-#include "is_constant_evaluated.hpp"
+#include "bsl/addressof.hpp"
+#include "bsl/details/out.hpp"
+#include "bsl/forward.hpp"
+#include "bsl/invoke.hpp"
+#include "bsl/invoke_result.hpp"
+#include "bsl/is_constant_evaluated.hpp"
 
 namespace bsl
 {

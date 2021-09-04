@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/debug.hpp>
+#include <bsl/is_same.hpp>
 #include <bsl/safe_integral.hpp>
 
 namespace bsl

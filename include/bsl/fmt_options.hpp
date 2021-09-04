@@ -28,20 +28,19 @@
 #ifndef BSL_FMT_OPTIONS_HPP
 #define BSL_FMT_OPTIONS_HPP
 
-#include "char_type.hpp"
-#include "cstdint.hpp"
-#include "cstr_type.hpp"
-#include "cstring.hpp"
-#include "details/fmt_fsm.hpp"
-#include "ensures.hpp"
-#include "expects.hpp"
-#include "fmt_align.hpp"
-#include "fmt_sign.hpp"
-#include "fmt_type.hpp"
-#include "npos.hpp"
-#include "safe_integral.hpp"
-#include "touch.hpp"
-#include "unlikely.hpp"
+#include "bsl/char_type.hpp"
+#include "bsl/cstr_type.hpp"
+#include "bsl/cstring.hpp"
+#include "bsl/details/fmt_fsm.hpp"
+#include "bsl/ensures.hpp"
+#include "bsl/expects.hpp"
+#include "bsl/fmt_align.hpp"
+#include "bsl/fmt_sign.hpp"
+#include "bsl/fmt_type.hpp"
+#include "bsl/safe_idx.hpp"
+#include "bsl/safe_integral.hpp"
+#include "bsl/touch.hpp"
+#include "bsl/unlikely.hpp"
 
 // TODO
 // - Once Clang/LLVM supports C++20's consteval, we should determine if
@@ -728,7 +727,7 @@ namespace bsl
                 }
             }
 
-            mut_idx = npos;
+            mut_idx = safe_idx::max_value();
         }
     };
 

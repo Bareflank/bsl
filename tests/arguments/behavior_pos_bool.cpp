@@ -27,7 +27,6 @@
 #include <bsl/arguments.hpp>
 #include <bsl/carray.hpp>
 #include <bsl/convert.hpp>
-#include <bsl/cstr_type.hpp>
 #include <bsl/ut.hpp>
 
 namespace

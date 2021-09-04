@@ -28,10 +28,10 @@
 #ifndef BSL_IS_COPY_HPP
 #define BSL_IS_COPY_HPP
 
-#include "bool_constant.hpp"
-#include "conjunction.hpp"
-#include "is_copy_assignable.hpp"
-#include "is_copy_constructible.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
+#include "bsl/conjunction.hpp"
+#include "bsl/is_copy_assignable.hpp"
+#include "bsl/is_copy_constructible.hpp"
 
 namespace bsl
 {

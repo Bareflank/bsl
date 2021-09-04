@@ -22,9 +22,11 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
+#include <bsl/convert.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/safe_integral.hpp>
 #include <bsl/touch.hpp>
+#include <bsl/unlikely.hpp>
 
 namespace bsl
 {

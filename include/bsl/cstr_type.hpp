@@ -28,7 +28,7 @@
 #ifndef BSL_CSTR_TYPE_HPP
 #define BSL_CSTR_TYPE_HPP
 
-#include "char_type.hpp"
+#include "bsl/char_type.hpp"
 
 namespace bsl
 {

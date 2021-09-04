@@ -28,13 +28,13 @@
 #ifndef BSL_IS_SCALAR_HPP
 #define BSL_IS_SCALAR_HPP
 
-#include "bool_constant.hpp"
-#include "disjunction.hpp"
-#include "is_arithmetic.hpp"
-#include "is_enum.hpp"
-#include "is_member_pointer.hpp"
-#include "is_null_pointer.hpp"
-#include "is_pointer.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
+#include "bsl/disjunction.hpp"
+#include "bsl/is_arithmetic.hpp"
+#include "bsl/is_enum.hpp"
+#include "bsl/is_member_pointer.hpp"
+#include "bsl/is_null_pointer.hpp"
+#include "bsl/is_pointer.hpp"
 
 namespace bsl
 {

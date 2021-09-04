@@ -28,8 +28,8 @@
 #ifndef BSL_REMOVE_CVEXT_HPP
 #define BSL_REMOVE_CVEXT_HPP
 
-#include "remove_all_extents.hpp"
-#include "remove_cv.hpp"
+#include "bsl/remove_all_extents.hpp"
+#include "bsl/remove_cv.hpp"
 
 namespace bsl
 {

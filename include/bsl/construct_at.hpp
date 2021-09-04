@@ -28,12 +28,11 @@
 #ifndef BSL_CONSTRUCT_AT_HPP
 #define BSL_CONSTRUCT_AT_HPP
 
-#include "cstdint.hpp"
-#include "declval.hpp"
-#include "discard.hpp"
-#include "expects.hpp"
-#include "forward.hpp"
-#include "unlikely.hpp"
+#include "bsl/cstdint.hpp"
+#include "bsl/declval.hpp"
+#include "bsl/expects.hpp"
+#include "bsl/forward.hpp"
+// IWYU pragma: no_include <new>
 
 /// <!-- description -->
 ///   @brief This function implements the placement new operator. Note that

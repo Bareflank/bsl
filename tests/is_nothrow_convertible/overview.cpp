@@ -25,7 +25,6 @@
 #include "../class_empty.hpp"
 #include "../class_except.hpp"
 
-#include <bsl/is_convertible.hpp>
 #include <bsl/is_nothrow_convertible.hpp>
 #include <bsl/ut.hpp>
 

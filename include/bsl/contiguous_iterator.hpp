@@ -28,12 +28,11 @@
 #ifndef BSL_CONTIGUOUS_ITERATOR_HPP
 #define BSL_CONTIGUOUS_ITERATOR_HPP
 
-#include "ensures.hpp"
-#include "expects.hpp"
-#include "safe_idx.hpp"
-#include "safe_integral.hpp"
-#include "touch.hpp"
-#include "unlikely.hpp"
+#include "bsl/ensures.hpp"
+#include "bsl/expects.hpp"
+#include "bsl/safe_idx.hpp"
+#include "bsl/safe_integral.hpp"
+#include "bsl/unlikely.hpp"
 
 namespace bsl
 {

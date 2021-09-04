@@ -22,7 +22,6 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/source_location.hpp>
 #include <bsl/ut.hpp>
 
 namespace
@@ -56,7 +55,7 @@ namespace
                 bsl::ut_then{} = [&]() noexcept {
                     bsl::ut_check(sloc.file_name() != nullptr);
                     bsl::ut_check(sloc.function_name() != nullptr);
-                    bsl::ut_check(static_cast<bsl::source_location::line_type>(55) == sloc.line());
+                    bsl::ut_check(static_cast<bsl::source_location::line_type>(54) == sloc.line());
                 };
             };
         };

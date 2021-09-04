@@ -28,9 +28,9 @@
 #ifndef BSL_CONJUNCTION_HPP
 #define BSL_CONJUNCTION_HPP
 
-#include "bool_constant.hpp"
-#include "conditional.hpp"
-#include "true_type.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
+#include "bsl/conditional.hpp"
+#include "bsl/true_type.hpp"
 
 namespace bsl
 {

@@ -28,7 +28,8 @@
 #ifndef BSL_TRUE_TYPE_FOR_HPP
 #define BSL_TRUE_TYPE_FOR_HPP
 
-#include "true_type.hpp"
+#include "bsl/integral_constant.hpp"    // IWYU pragma: export
+#include "bsl/true_type.hpp"
 
 namespace bsl
 {

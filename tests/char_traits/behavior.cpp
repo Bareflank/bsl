@@ -23,9 +23,9 @@
 /// SOFTWARE.
 
 #include <bsl/char_traits.hpp>
+#include <bsl/char_type.hpp>
 #include <bsl/convert.hpp>
-#include <bsl/cstr_type.hpp>
-#include <bsl/npos.hpp>
+#include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
 
 namespace

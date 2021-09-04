@@ -28,14 +28,14 @@
 #ifndef BSL_IS_DESTRUCTIBLE_HPP
 #define BSL_IS_DESTRUCTIBLE_HPP
 
-#include "bool_constant.hpp"
-#include "details/is_destructible_type.hpp"
-#include "is_detected.hpp"
-#include "is_function.hpp"
-#include "is_reference.hpp"
-#include "is_unbounded_array.hpp"
-#include "is_void.hpp"
-#include "remove_all_extents.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
+#include "bsl/details/is_destructible_type.hpp"
+#include "bsl/is_detected.hpp"
+#include "bsl/is_function.hpp"
+#include "bsl/is_reference.hpp"
+#include "bsl/is_unbounded_array.hpp"
+#include "bsl/is_void.hpp"
+#include "bsl/remove_all_extents.hpp"
 
 namespace bsl
 {

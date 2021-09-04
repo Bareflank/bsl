@@ -28,11 +28,11 @@
 #ifndef BSL_IS_SIGNED_HPP
 #define BSL_IS_SIGNED_HPP
 
-#include "bool_constant.hpp"
-#include "char_type.hpp"
-#include "cstdint.hpp"
-#include "is_floating_point.hpp"
-#include "true_type.hpp"
+#include "bsl/bool_constant.hpp"    // IWYU pragma: export
+#include "bsl/char_type.hpp"
+#include "bsl/cstdint.hpp"
+#include "bsl/is_floating_point.hpp"
+#include "bsl/true_type.hpp"
 
 namespace bsl
 {

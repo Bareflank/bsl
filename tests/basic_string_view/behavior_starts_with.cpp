@@ -23,7 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/basic_string_view.hpp>
-#include <bsl/convert.hpp>
+#include <bsl/char_type.hpp>
 #include <bsl/ut.hpp>
 
 namespace

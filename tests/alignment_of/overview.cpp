@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/alignment_of.hpp>
+#include <bsl/cstdint.hpp>
 #include <bsl/ut.hpp>
 
 /// <!-- description -->

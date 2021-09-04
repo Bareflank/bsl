@@ -25,7 +25,8 @@
 #include "../fmt_test.hpp"
 
 #include <bsl/convert.hpp>
-#include <bsl/debug.hpp>
+#include <bsl/cstdint.hpp>
+#include <bsl/is_signed.hpp>
 #include <bsl/ut.hpp>
 
 namespace

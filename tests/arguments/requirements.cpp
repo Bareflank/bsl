@@ -27,7 +27,8 @@
 #include <bsl/arguments.hpp>
 #include <bsl/carray.hpp>
 #include <bsl/convert.hpp>
-#include <bsl/discard.hpp>
+#include <bsl/safe_integral.hpp>
+#include <bsl/string_view.hpp>
 #include <bsl/ut.hpp>
 
 /// <!-- description -->

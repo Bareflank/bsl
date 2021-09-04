@@ -23,6 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/is_swappable.hpp>
+#include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
 
 namespace bsl

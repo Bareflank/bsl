@@ -28,8 +28,9 @@
 #ifndef BSL_IS_MEMBER_OBJECT_POINTER_HPP
 #define BSL_IS_MEMBER_OBJECT_POINTER_HPP
 
-#include "is_member_function_pointer.hpp"
-#include "is_member_pointer.hpp"
+#include "bsl/integral_constant.hpp"    // IWYU pragma: export
+#include "bsl/is_member_function_pointer.hpp"
+#include "bsl/is_member_pointer.hpp"
 
 namespace bsl
 {

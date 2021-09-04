@@ -30,7 +30,11 @@ if(ENABLE_DOXYGEN)
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL CLANG_TIDY)
-    bf_find_program(CMAKE_CXX_CLANG_TIDY "clang-tidy" "https://clang.llvm.org/extra/clang-tidy/")
+    bf_find_program(CMAKE_CXX_CLANG_TIDY
+        "clang-tidy"
+        "https://clang.llvm.org/extra/clang-tidy/"
+    )
+
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL CODECOV)
@@ -52,5 +56,27 @@ if(CMAKE_BUILD_TYPE STREQUAL CODECOV)
     execute_process(COMMAND gcov --version OUTPUT_VARIABLE GCOV_OUTPUT)
     if(NOT GCOV_OUTPUT MATCHES "LLVM")
         message(FATAL_ERROR "gcov must be a symlink to, or rename of llvm-cov")
+    endif()
+endif()
+
+if(NOT TARGET iwyu)
+    find_program(IWYU_PATH "include-what-you-use")
+    if(IWYU_PATH)
+        find_package(PythonInterp)
+        if(NOT PYTHONINTERP_FOUND)
+            message(FATAL_ERROR "python is required for include-what-you-use")
+        endif()
+        add_custom_target(iwyu
+            COMMAND "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/iwyu_tool.py" -p "${CMAKE_BINARY_DIR}" -j ${CMAKE_NUM_PROCESSORS} --
+                    # -Xiwyu --no_comments
+                    -Xiwyu --quoted_includes_first
+                    -Xiwyu --cxx17ns
+                    -Xiwyu --no_fwd_decls
+                    -Xiwyu --check_also=${CMAKE_SOURCE_DIR}/*.hpp
+            COMMENT "Running include-what-you-use"
+            VERBATIM
+        )
+    else()
+        message(STATUS "${BF_COLOR_YLW}unable to locate 'include-what-you-use'${BF_COLOR_RST}")
     endif()
 endif()

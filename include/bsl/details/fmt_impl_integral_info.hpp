@@ -27,6 +27,7 @@
 
 #include "../carray.hpp"
 #include "../char_type.hpp"
+#include "../safe_idx.hpp"
 #include "../safe_integral.hpp"
 
 namespace bsl::details

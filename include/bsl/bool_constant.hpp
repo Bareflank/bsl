@@ -28,7 +28,7 @@
 #ifndef BSL_BOOL_CONSTANT_HPP
 #define BSL_BOOL_CONSTANT_HPP
 
-#include "integral_constant.hpp"
+#include "bsl/integral_constant.hpp"    // IWYU pragma: export
 
 namespace bsl
 {

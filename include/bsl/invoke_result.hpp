@@ -28,7 +28,7 @@
 #ifndef BSL_INVOKE_RESULT_HPP
 #define BSL_INVOKE_RESULT_HPP
 
-#include "details/invoke_traits.hpp"
+#include "bsl/details/invoke_traits.hpp"
 
 namespace bsl
 {

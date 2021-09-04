@@ -25,12 +25,12 @@
 #ifndef BSL_UNORDERED_MAP_HPP
 #define BSL_UNORDERED_MAP_HPP
 
-#include "details/unordered_map_node_type.hpp"
-#include "ensures.hpp"
-#include "is_copy_constructible.hpp"
-#include "is_default_constructible.hpp"
-#include "safe_integral.hpp"
-#include "touch.hpp"
+#include "bsl/details/unordered_map_node_type.hpp"
+#include "bsl/ensures.hpp"
+#include "bsl/is_copy_constructible.hpp"
+#include "bsl/is_default_constructible.hpp"
+#include "bsl/safe_integral.hpp"
+#include "bsl/touch.hpp"
 
 namespace bsl
 {

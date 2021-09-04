@@ -23,7 +23,7 @@
 /// SOFTWARE.
 
 #include <bsl/npos.hpp>
-#include <bsl/numeric_limits.hpp>
+#include <bsl/safe_idx.hpp>
 #include <bsl/ut.hpp>
 
 /// <!-- description -->
@@ -37,6 +37,6 @@
 [[nodiscard]] auto
 main() noexcept -> bsl::exit_code
 {
-    static_assert(bsl::npos == bsl::safe_umx::max_value());
+    static_assert(bsl::npos == bsl::safe_idx::max_value());
     return bsl::ut_success();
 }

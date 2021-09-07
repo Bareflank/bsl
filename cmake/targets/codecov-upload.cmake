@@ -23,7 +23,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/../colors.cmake)
 
 if(CMAKE_BUILD_TYPE STREQUAL CODECOV)
     if(DEFINED BSL_CODECOV_TOKEN)
-        if (ENABLE_BRANCH)
+        if(ENABLE_BRANCH)
             add_custom_target(codecov-upload
                 COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} cmake --build . --target unittest
                 COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} ${BF_GRCOV} . -s ${CMAKE_SOURCE_DIR} -t lcov -o ${CMAKE_BINARY_DIR}/codecov.info --ignore '/**' --branch --excl-line GRCOV_EXCLUDE --excl-br-line GRCOV_EXCLUDE_BR --excl-start GRCOV_EXCLUDE_START --excl-stop GRCOV_EXCLUDE_STOP

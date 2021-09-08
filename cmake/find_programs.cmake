@@ -19,6 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+include(${CMAKE_CURRENT_LIST_DIR}/colors.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/function/bf_find_program.cmake)
 
 if(ENABLE_CLANG_FORMAT)
@@ -77,6 +78,9 @@ if(NOT TARGET iwyu)
             VERBATIM
         )
     else()
-        message(STATUS "${BF_COLOR_YLW}unable to locate 'include-what-you-use'${BF_COLOR_RST}")
+        if(NOT IWYU_PATH_NOT_FOUND_MESSAGE)
+            message(STATUS "${BF_COLOR_YLW}unable to locate 'include-what-you-use'${BF_COLOR_RST}")
+        endif()
+        SET(IWYU_PATH_NOT_FOUND_MESSAGE ON CACHE BOOL "IWYU not found message" FORCE)
     endif()
 endif()

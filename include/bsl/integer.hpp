@@ -53,7 +53,6 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     builtin_add_overflow(T const lhs, T const rhs, T *const pmut_cst_res) noexcept -> bool
     {
         // This is how Clang presents the builtins, which we are required
@@ -79,7 +78,6 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     builtin_sub_overflow(T const lhs, T const rhs, T *const pmut_cst_res) noexcept -> bool
     {
         // This is how Clang presents the builtins, which we are required
@@ -105,7 +103,6 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     builtin_mul_overflow(T const lhs, T const rhs, T *const pmut_cst_res) noexcept -> bool
     {
         // This is how Clang presents the builtins, which we are required
@@ -133,21 +130,16 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     builtin_div_overflow(T const lhs, T const rhs, T *const pmut_cst_res) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
         if (unlikely(T{} == rhs)) {
             integral_overflow_underflow_wrap_error();
             return true;
         }
 
         if constexpr (is_signed<T>::value) {
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             if (numeric_limits<T>::min_value() == lhs) {
-                // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
                 constexpr T neg_one{static_cast<T>(-1)};
-                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 if (unlikely(neg_one == rhs)) {
                     integral_overflow_underflow_wrap_error();
                     return true;
@@ -160,7 +152,6 @@ namespace bsl
             }
         }
 
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         *pmut_cst_res = lhs / rhs;
         return false;
     }
@@ -179,21 +170,16 @@ namespace bsl
     ///
     template<typename T>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     builtin_mod_overflow(T const lhs, T const rhs, T *const pmut_cst_res) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
         if (unlikely(T{} == rhs)) {
             integral_overflow_underflow_wrap_error();
             return true;
         }
 
         if constexpr (is_signed<T>::value) {
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             if (numeric_limits<T>::min_value() == lhs) {
-                // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
                 constexpr T neg_one{static_cast<T>(-1)};
-                // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
                 if (unlikely(neg_one == rhs)) {
                     integral_overflow_underflow_wrap_error();
                     return true;
@@ -206,7 +192,6 @@ namespace bsl
             }
         }
 
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         *pmut_cst_res = lhs % rhs;
         return false;
     }

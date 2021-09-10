@@ -84,7 +84,6 @@ namespace bsl
         ///     this function returns a nullptr.
         ///
         [[nodiscard]] constexpr auto
-        // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
         at_if(index_type const &index) &noexcept -> pointer_type
         {
             if (unlikely(index >= N)) {
@@ -108,7 +107,6 @@ namespace bsl
         ///     this function returns a nullptr.
         ///
         [[nodiscard]] constexpr auto
-        // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
         at_if(index_type const &index) const &noexcept -> const_pointer_type
         {
             if (unlikely(index >= N)) {
@@ -172,14 +170,12 @@ namespace bsl
         [[nodiscard]] static constexpr auto
         size_bytes() noexcept -> size_type
         {
-            // NOLINTNEXTLINE(bsl-types-fixed-width-ints-arithmetic-check)
             return size_type{N} * sizeof(T);
         }
     };
 
     /// @brief deduction guideline for bsl::array
     template<typename T, typename... U>
-    // NOLINTNEXTLINE(bsl-types-fixed-width-ints-arithmetic-check, bsl-non-safe-integral-types-are-forbidden)
     carray(T, U...) noexcept->carray<T, static_cast<bsl::uintmx>(1) + sizeof...(U)>;
 
     /// <!-- description -->
@@ -200,7 +196,6 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator==(bsl::carray<T, N> const &lhs, bsl::carray<T, N> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
         for (bsl::uintmx mut_i{}; mut_i < lhs.size(); ++mut_i) {
             if (*lhs.at_if(mut_i) != *rhs.at_if(mut_i)) {
                 return false;

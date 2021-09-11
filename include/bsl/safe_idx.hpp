@@ -69,7 +69,6 @@ namespace bsl
     class safe_idx final
     {
         /// @brief stores the value of the integral
-        // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
         bsl::uintmx m_val;
         /// @brief stores whether or not the integral has been poisoned
         bool m_poisoned;
@@ -122,7 +121,6 @@ namespace bsl
         ///   @param val the value to set the bsl::safe_idx to
         ///
         template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
-        // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
         explicit constexpr safe_idx(U const val) noexcept    // --
             : m_val{val}, m_poisoned{}
         {}
@@ -205,7 +203,6 @@ namespace bsl
         ///
         template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
         [[maybe_unused]] constexpr auto
-        // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
         operator=(U const val) &noexcept -> safe_idx &
         {
             *this = safe_idx{val};
@@ -435,7 +432,6 @@ namespace bsl
                 bsl::touch();
             }
 
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
             return m_val > 0;
         }
 
@@ -460,7 +456,6 @@ namespace bsl
                 bsl::touch();
             }
 
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
             return 0 == m_val;
         }
 
@@ -532,7 +527,6 @@ namespace bsl
         ///
         template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
         [[maybe_unused]] constexpr auto
-        // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
         operator+=(U const rhs) &noexcept -> safe_idx &
         {
             this->update_poisoned(builtin_add_overflow(m_val, rhs, &m_val));
@@ -577,7 +571,6 @@ namespace bsl
         ///
         template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
         [[maybe_unused]] constexpr auto
-        // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
         operator-=(U const rhs) &noexcept -> safe_idx &
         {
             this->update_poisoned(builtin_sub_overflow(m_val, rhs, &m_val));
@@ -636,7 +629,6 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator==(located_arg<safe_idx> const &lhs, located_arg<safe_idx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
         return lhs.get().get(lhs.sloc()) == rhs.get().get(rhs.sloc());
     }
 
@@ -653,7 +645,6 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator==(located_arg<safe_idx> const &lhs, located_arg<safe_umx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
         return lhs.get().get(lhs.sloc()) == rhs.get().get(rhs.sloc());
     }
 
@@ -670,7 +661,6 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator==(located_arg<safe_umx> const &lhs, located_arg<safe_idx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
         return lhs.get().get(lhs.sloc()) == rhs.get().get(rhs.sloc());
     }
 
@@ -689,10 +679,8 @@ namespace bsl
     ///
     template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     operator==(located_arg<safe_idx> const &lhs, U const rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
         return lhs.get().get(lhs.sloc()) == rhs;
     }
 
@@ -711,10 +699,8 @@ namespace bsl
     ///
     template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     operator==(U const lhs, located_arg<safe_idx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
         return lhs == rhs.get().get(rhs.sloc());
     }
 
@@ -781,7 +767,6 @@ namespace bsl
     ///
     template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     operator!=(located_arg<safe_idx> const &lhs, U const rhs) noexcept -> bool
     {
         return !(lhs == rhs);
@@ -802,7 +787,6 @@ namespace bsl
     ///
     template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     operator!=(U const lhs, located_arg<safe_idx> const &rhs) noexcept -> bool
     {
         return !(lhs == rhs);
@@ -821,7 +805,6 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator<(located_arg<safe_idx> const &lhs, located_arg<safe_idx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs.get().get(lhs.sloc()) < rhs.get().get(rhs.sloc());
     }
 
@@ -838,7 +821,6 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator<(located_arg<safe_idx> const &lhs, located_arg<safe_umx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs.get().get(lhs.sloc()) < rhs.get().get(rhs.sloc());
     }
 
@@ -855,7 +837,6 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator<(located_arg<safe_umx> const &lhs, located_arg<safe_idx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs.get().get(lhs.sloc()) < rhs.get().get(rhs.sloc());
     }
 
@@ -874,10 +855,8 @@ namespace bsl
     ///
     template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     operator<(located_arg<safe_idx> const &lhs, U const rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs.get().get(lhs.sloc()) < rhs;
     }
 
@@ -896,10 +875,8 @@ namespace bsl
     ///
     template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     operator<(U const lhs, located_arg<safe_idx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs < rhs.get().get(rhs.sloc());
     }
 
@@ -916,7 +893,6 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator>(located_arg<safe_idx> const &lhs, located_arg<safe_idx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs.get().get(lhs.sloc()) > rhs.get().get(rhs.sloc());
     }
 
@@ -933,7 +909,6 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator>(located_arg<safe_idx> const &lhs, located_arg<safe_umx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs.get().get(lhs.sloc()) > rhs.get().get(rhs.sloc());
     }
 
@@ -950,7 +925,6 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator>(located_arg<safe_umx> const &lhs, located_arg<safe_idx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs.get().get(lhs.sloc()) > rhs.get().get(rhs.sloc());
     }
 
@@ -969,10 +943,8 @@ namespace bsl
     ///
     template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     operator>(located_arg<safe_idx> const &lhs, U const rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs.get().get(lhs.sloc()) > rhs;
     }
 
@@ -991,10 +963,8 @@ namespace bsl
     ///
     template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     operator>(U const lhs, located_arg<safe_idx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs > rhs.get().get(rhs.sloc());
     }
 
@@ -1011,7 +981,6 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator<=(located_arg<safe_idx> const &lhs, located_arg<safe_idx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs.get().get(lhs.sloc()) <= rhs.get().get(rhs.sloc());
     }
 
@@ -1028,7 +997,6 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator<=(located_arg<safe_idx> const &lhs, located_arg<safe_umx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs.get().get(lhs.sloc()) <= rhs.get().get(rhs.sloc());
     }
 
@@ -1045,7 +1013,6 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator<=(located_arg<safe_umx> const &lhs, located_arg<safe_idx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs.get().get(lhs.sloc()) <= rhs.get().get(rhs.sloc());
     }
 
@@ -1064,10 +1031,8 @@ namespace bsl
     ///
     template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     operator<=(located_arg<safe_idx> const &lhs, U const rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs.get().get(lhs.sloc()) <= rhs;
     }
 
@@ -1086,10 +1051,8 @@ namespace bsl
     ///
     template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     operator<=(U const lhs, located_arg<safe_idx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs <= rhs.get().get(rhs.sloc());
     }
 
@@ -1106,7 +1069,6 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator>=(located_arg<safe_idx> const &lhs, located_arg<safe_idx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs.get().get(lhs.sloc()) >= rhs.get().get(rhs.sloc());
     }
 
@@ -1123,7 +1085,6 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator>=(located_arg<safe_idx> const &lhs, located_arg<safe_umx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs.get().get(lhs.sloc()) >= rhs.get().get(rhs.sloc());
     }
 
@@ -1140,7 +1101,6 @@ namespace bsl
     [[nodiscard]] constexpr auto
     operator>=(located_arg<safe_umx> const &lhs, located_arg<safe_idx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs.get().get(lhs.sloc()) >= rhs.get().get(rhs.sloc());
     }
 
@@ -1159,10 +1119,8 @@ namespace bsl
     ///
     template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     operator>=(located_arg<safe_idx> const &lhs, U const rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs.get().get(lhs.sloc()) >= rhs;
     }
 
@@ -1181,10 +1139,8 @@ namespace bsl
     ///
     template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     operator>=(U const lhs, located_arg<safe_idx> const &rhs) noexcept -> bool
     {
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden, bsl-types-fixed-width-ints-arithmetic-check)
         return lhs >= rhs.get().get(rhs.sloc());
     }
 
@@ -1224,7 +1180,6 @@ namespace bsl
     ///
     template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     operator+(safe_idx const &lhs, U const rhs) noexcept -> safe_idx
     {
         return lhs + safe_idx{rhs};
@@ -1245,7 +1200,6 @@ namespace bsl
     ///
     template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     operator+(U const lhs, safe_idx const &rhs) noexcept -> safe_idx
     {
         return safe_idx{lhs} + rhs;
@@ -1283,7 +1237,6 @@ namespace bsl
     ///
     template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     operator-(safe_idx const &lhs, U const rhs) noexcept -> safe_idx
     {
         return lhs - safe_idx{rhs};
@@ -1304,7 +1257,6 @@ namespace bsl
     ///
     template<typename U, enable_if_t<is_same<bsl::uintmx, U>::value, bool> = true>
     [[nodiscard]] constexpr auto
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     operator-(U const lhs, safe_idx const &rhs) noexcept -> safe_idx
     {
         return safe_idx{lhs} - rhs;

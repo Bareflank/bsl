@@ -33,16 +33,12 @@
 namespace bsl
 {
     /// @brief defines the default verbose mode
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     constexpr bsl::uintmx CRITICAL_ONLY{static_cast<bsl::uintmx>(0)};
     /// @brief defines "-v" verbose mode
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     constexpr bsl::uintmx V{static_cast<bsl::uintmx>(1)};
     /// @brief defines "-vv" verbose mode
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     constexpr bsl::uintmx VV{static_cast<bsl::uintmx>(2)};
     /// @brief defines "-vvv" verbose mode
-    // NOLINTNEXTLINE(bsl-non-safe-integral-types-are-forbidden)
     constexpr bsl::uintmx VVV{static_cast<bsl::uintmx>(3)};
 
     /// <!-- description -->

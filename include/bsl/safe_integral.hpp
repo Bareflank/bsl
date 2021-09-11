@@ -533,10 +533,9 @@ namespace bsl
         template<typename O>
         explicit constexpr safe_integral(
             safe_integral<T> const &val, safe_integral<O> const &flags) noexcept    // --
-            : m_val{val.m_val}    // NOLINTNEXTLINE(bsl-boolean-operators-forbidden)
-            , m_poisoned{(val.m_poisoned) || (flags.is_invalid())}
-            // NOLINTNEXTLINE(bsl-boolean-operators-forbidden)
-            , m_unchecked{(val.m_unchecked) || (flags.is_unchecked())}
+            : m_val{val.m_val}
+            , m_poisoned{(val.m_poisoned) || (flags.is_invalid())}        // NOLINT
+            , m_unchecked{(val.m_unchecked) || (flags.is_unchecked())}    // NOLINT
         {}
 
         /// <!-- description -->
@@ -874,7 +873,6 @@ namespace bsl
             }
 
             this->verify_poison_has_been_checked(sloc);
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             return m_val > 0;
         }
 
@@ -904,7 +902,6 @@ namespace bsl
             }
 
             this->verify_poison_has_been_checked(sloc);
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             return m_val < 0;
         }
 
@@ -930,7 +927,6 @@ namespace bsl
             }
 
             this->verify_poison_has_been_checked(sloc);
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             return 0 == m_val;
         }
 
@@ -1000,7 +996,6 @@ namespace bsl
                 return true;
             }
 
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             return 0 == m_val;
         }
 
@@ -1022,7 +1017,6 @@ namespace bsl
                 return true;
             }
 
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             return 0 == m_val;
         }
 
@@ -1419,7 +1413,6 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed shift not supported");
             }
 
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             m_val <<= rhs.m_val;
             this->update_poisoned(rhs.is_invalid());
             this->mark_as_checked_if_valid();
@@ -1446,7 +1439,6 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed shift not supported");
             }
 
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             m_val <<= rhs;
             return *this;
         }
@@ -1466,7 +1458,6 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed shift not supported");
             }
 
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             m_val >>= rhs.m_val;
             this->update_poisoned(rhs.is_invalid());
             this->mark_as_checked_if_valid();
@@ -1493,7 +1484,6 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed shift not supported");
             }
 
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             m_val >>= rhs;
             return *this;
         }
@@ -1513,7 +1503,6 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed and not supported");
             }
 
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             m_val &= rhs.m_val;
             this->update_poisoned(rhs.is_invalid());
             this->mark_as_checked_if_valid();
@@ -1540,7 +1529,6 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed and not supported");
             }
 
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             m_val &= rhs;
             return *this;
         }
@@ -1560,7 +1548,6 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed or not supported");
             }
 
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             m_val |= rhs.m_val;
             this->update_poisoned(rhs.is_invalid());
             this->mark_as_checked_if_valid();
@@ -1587,7 +1574,6 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed or not supported");
             }
 
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             m_val |= rhs;
             return *this;
         }
@@ -1607,7 +1593,6 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed xor not supported");
             }
 
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             m_val ^= rhs.m_val;
             this->update_poisoned(rhs.is_invalid());
             this->mark_as_checked_if_valid();
@@ -1634,7 +1619,6 @@ namespace bsl
                 static_assert(always_false<value_type>(), "signed xor not supported");
             }
 
-            // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
             m_val ^= rhs;
             return *this;
         }
@@ -3433,7 +3417,6 @@ namespace bsl
             return safe_integral<T>::failure();
         }
 
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
         return safe_integral<T>{static_cast<T>(~mut_rhs.get())};
     }
 
@@ -3464,7 +3447,6 @@ namespace bsl
             return safe_integral<T>::failure();
         }
 
-        // NOLINTNEXTLINE(bsl-implicit-conversions-forbidden)
         return safe_integral<T>{static_cast<T>(-mut_rhs.get())};
     }
 

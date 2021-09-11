@@ -90,7 +90,7 @@ namespace bsl
     };
 
     /// @brief reduces the verbosity of bsl::dontcare_t
-    // NOLINTNEXTLINE(bsl-name-prefixes, bsl-verify-const, cppcoreguidelines-avoid-non-const-global-variables)
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
     inline dontcare_t dontcare{};
 }
 

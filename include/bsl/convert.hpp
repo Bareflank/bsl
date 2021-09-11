@@ -1143,7 +1143,6 @@ namespace bsl
 ///   @param str the literal to convert
 ///   @return Returns bsl::to_u8(str) using bsl::from_chars
 ///
-// NOLINTNEXTLINE(bsl-namespace-global)
 [[nodiscard]] constexpr auto operator""_u8(bsl::cstr_type const str) noexcept -> bsl::safe_u8
 {
     constexpr auto base10{bsl::to_i32(10)};
@@ -1182,7 +1181,6 @@ namespace bsl
 ///   @param str the literal to convert
 ///   @return Returns bsl::to_u16(str) using bsl::from_chars
 ///
-// NOLINTNEXTLINE(bsl-namespace-global)
 [[nodiscard]] constexpr auto operator""_u16(bsl::cstr_type const str) noexcept -> bsl::safe_u16
 {
     constexpr auto base10{bsl::to_i32(10)};
@@ -1222,7 +1220,6 @@ namespace bsl
 ///   @param str the literal to convert
 ///   @return Returns bsl::to_u32(str) using bsl::from_chars
 ///
-// NOLINTNEXTLINE(bsl-namespace-global)
 [[nodiscard]] constexpr auto operator""_u32(bsl::cstr_type const str) noexcept -> bsl::safe_u32
 {
     constexpr auto base10{bsl::to_i32(10)};
@@ -1262,7 +1259,6 @@ namespace bsl
 ///   @param str the literal to convert
 ///   @return Returns bsl::to_u64(str) using bsl::from_chars
 ///
-// NOLINTNEXTLINE(bsl-namespace-global)
 [[nodiscard]] constexpr auto operator""_u64(bsl::cstr_type const str) noexcept -> bsl::safe_u64
 {
     constexpr auto base10{bsl::to_i32(10)};
@@ -1302,7 +1298,6 @@ namespace bsl
 ///   @param str the literal to convert
 ///   @return Returns bsl::to_umx(str) using bsl::from_chars
 ///
-// NOLINTNEXTLINE(bsl-namespace-global)
 [[nodiscard]] constexpr auto operator""_umx(bsl::cstr_type const str) noexcept -> bsl::safe_umx
 {
     constexpr auto base10{bsl::to_i32(10)};
@@ -1342,7 +1337,6 @@ namespace bsl
 ///   @param str the literal to convert
 ///   @return Returns bsl::to_idx(str) using bsl::from_chars
 ///
-// NOLINTNEXTLINE(bsl-namespace-global)
 [[nodiscard]] constexpr auto operator""_idx(bsl::cstr_type const str) noexcept -> bsl::safe_idx
 {
     constexpr auto base10{bsl::to_i32(10)};
@@ -1382,7 +1376,6 @@ namespace bsl
 ///   @param str the literal to convert
 ///   @return Returns bsl::to_i8(str) using bsl::from_chars
 ///
-// NOLINTNEXTLINE(bsl-namespace-global)
 [[nodiscard]] constexpr auto operator""_i8(bsl::cstr_type const str) noexcept -> bsl::safe_i8
 {
     constexpr auto base10{bsl::to_i32(10)};
@@ -1411,7 +1404,6 @@ namespace bsl
 ///   @param str the literal to convert
 ///   @return Returns bsl::to_i16(str) using bsl::from_chars
 ///
-// NOLINTNEXTLINE(bsl-namespace-global)
 [[nodiscard]] constexpr auto operator""_i16(bsl::cstr_type const str) noexcept -> bsl::safe_i16
 {
     constexpr auto base10{bsl::to_i32(10)};
@@ -1440,7 +1432,6 @@ namespace bsl
 ///   @param str the literal to convert
 ///   @return Returns bsl::to_i32(str) using bsl::from_chars
 ///
-// NOLINTNEXTLINE(bsl-namespace-global)
 [[nodiscard]] constexpr auto operator""_i32(bsl::cstr_type const str) noexcept -> bsl::safe_i32
 {
     constexpr auto base10{bsl::to_i32(10)};
@@ -1469,7 +1460,6 @@ namespace bsl
 ///   @param str the literal to convert
 ///   @return Returns bsl::to_i64(str) using bsl::from_chars
 ///
-// NOLINTNEXTLINE(bsl-namespace-global)
 [[nodiscard]] constexpr auto operator""_i64(bsl::cstr_type const str) noexcept -> bsl::safe_i64
 {
     constexpr auto base10{bsl::to_i32(10)};

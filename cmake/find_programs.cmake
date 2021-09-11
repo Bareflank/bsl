@@ -31,6 +31,11 @@ if(ENABLE_DOXYGEN)
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL CLANG_TIDY)
+    bf_find_program(CMAKE_C_CLANG_TIDY
+        "clang-tidy"
+        "https://clang.llvm.org/extra/clang-tidy/"
+    )
+
     bf_find_program(CMAKE_CXX_CLANG_TIDY
         "clang-tidy"
         "https://clang.llvm.org/extra/clang-tidy/"

@@ -76,7 +76,7 @@ impl fmt::Display for SourceLocation
 
         let file = self.file();
         let line = self.line();
-        return write!(f, "  --> {}{} {}[{}]{}\n", ylw, file, cyn, line, rst);
+        return write!(f, "  --> {}{}{}:{}{}{}\n", ylw, file, rst, cyn, line, rst);
     }
 }
 

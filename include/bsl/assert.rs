@@ -35,7 +35,13 @@ use crate::SourceLocation;
 ///
 #[cfg(debug_assertions)]
 pub fn assert(msg: &str, sloc: SourceLocation) -> ! {
-    panic!("ASSERT: {} --> {} [{}]", msg, sloc.file(), sloc.line());
+    use crate::ylw;
+    use crate::cyn;
+    use crate::rst;
+
+    let file = sloc.file();
+    let line = sloc.line();
+    panic!("ASSERT: {} --> {}{}{}:{}{}{}\n", msg, ylw, file, rst, cyn, line, rst);
 }
 
 #[cfg(not(debug_assertions))]

@@ -105,9 +105,10 @@ namespace bsl
             bsl::cstr_type const c{bsl::cyn.data()};         // GRCOV_EXCLUDE // NOLINT
             bsl::cstr_type const r{bsl::rst.data()};         // GRCOV_EXCLUDE // NOLINT
 
-            ut_required_step_failed();                                  // GRCOV_EXCLUDE // NOLINT
-            fprintf(stderr, "%s[REQUIRED STEP FAILED]%s\n", m, r);      // GRCOV_EXCLUDE // NOLINT
-            fprintf(stderr, "  --> %s%s %s[%d]%s\n", y, f, c, l, r);    // GRCOV_EXCLUDE // NOLINT
+            ut_required_step_failed();                                // GRCOV_EXCLUDE // NOLINT
+            fprintf(stderr, "%s[REQUIRED STEP FAILED]%s\n", m, r);    // GRCOV_EXCLUDE // NOLINT
+            fprintf(
+                stderr, "  --> %s%s%s:%s%d%s\n", y, f, r, c, l, r);    // GRCOV_EXCLUDE // NOLINT
 
             stdlib_fast_fail();    // GRCOV_EXCLUDE // NOLINT
         }
@@ -190,9 +191,10 @@ namespace bsl
             bsl::cstr_type const c{bsl::cyn.data()};         // GRCOV_EXCLUDE // NOLINT
             bsl::cstr_type const r{bsl::rst.data()};         // GRCOV_EXCLUDE // NOLINT
 
-            ut_check_failed();                                          // GRCOV_EXCLUDE // NOLINT
-            fprintf(stderr, "%s[CHECK FAILED]%s\n", m, r);              // GRCOV_EXCLUDE // NOLINT
-            fprintf(stderr, "  --> %s%s %s[%d]%s\n", y, f, c, l, r);    // GRCOV_EXCLUDE // NOLINT
+            ut_check_failed();                                // GRCOV_EXCLUDE // NOLINT
+            fprintf(stderr, "%s[CHECK FAILED]%s\n", m, r);    // GRCOV_EXCLUDE // NOLINT
+            fprintf(
+                stderr, "  --> %s%s%s:%s%d%s\n", y, f, r, c, l, r);    // GRCOV_EXCLUDE // NOLINT
 
             stdlib_fast_fail();    // GRCOV_EXCLUDE // NOLINT
         }

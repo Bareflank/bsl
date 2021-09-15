@@ -214,12 +214,13 @@ namespace bsl
         }
 
         if constexpr (BSL_DEBUG_LEVEL != bsl::CRITICAL_ONLY) {
-            o << "  --> "                                              // --
-              << bsl::ylw << sloc.file_name() << bsl::rst              // --
-              << bsl::cyn << " [" << sloc.line() << ']' << bsl::rst    // --
-              << ": "                                                  // --
-              << sloc.function_name()                                  // --
-              << bsl::endl;                                            // --
+            o << "  --> "                                        // --
+              << bsl::ylw << sloc.file_name() << bsl::rst        // --
+              << ':'                                             // --
+              << bsl::cyn << sloc.line() << bsl::rst             // --
+              << ':'                                             // --
+              << bsl::mag << sloc.function_name() << bsl::rst    // --
+              << bsl::endl;                                      // --
         }
 
         return o;

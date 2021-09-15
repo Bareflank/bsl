@@ -123,12 +123,11 @@ namespace bsl
             bsl::discard(sloc);
         }
         else {
+
             if constexpr (ENABLE_COLOR) {
                 details::out_cstr("\033[1;91m");
             }
-
             details::out_cstr("ASSERT: ");
-
             if constexpr (ENABLE_COLOR) {
                 details::out_cstr("\033[0m");
             }
@@ -139,23 +138,31 @@ namespace bsl
             if constexpr (ENABLE_COLOR) {
                 details::out_cstr("\033[0;93m");
             }
-
             details::out_cstr(sloc.file_name());
-
-            if constexpr (ENABLE_COLOR) {
-                details::out_cstr("\033[0;96m");
-            }
-
-            details::out_cstr(" [");
-            details::out_line(sloc.line());
-            details::out_char(']');
-
             if constexpr (ENABLE_COLOR) {
                 details::out_cstr("\033[0m");
             }
 
-            details::out_cstr(": ");
+            details::out_char(':');
+
+            if constexpr (ENABLE_COLOR) {
+                details::out_cstr("\033[0;96m");
+            }
+            details::out_line(sloc.line());
+            if constexpr (ENABLE_COLOR) {
+                details::out_cstr("\033[0m");
+            }
+
+            details::out_char(':');
+
+            if constexpr (ENABLE_COLOR) {
+                details::out_cstr("\033[0;95m");
+            }
             details::out_cstr(sloc.function_name());
+            if constexpr (ENABLE_COLOR) {
+                details::out_cstr("\033[0m");
+            }
+
             details::out_cstr("\n\n");
 
             if constexpr (BSL_ASSERT_FAST_FAILS) {

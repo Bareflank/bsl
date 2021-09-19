@@ -26,6 +26,8 @@
 #include "../class_subclass.hpp"
 #include "../fmt_test.hpp"
 
+#include <bsl/convert.hpp>
+#include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
 
 namespace
@@ -64,9 +66,10 @@ namespace
 
         bsl::ut_scenario{"was_this_outputted"} = []() noexcept {
             bsl::ut_given_at_runtime{} = []() noexcept {
-                bsl::ut_when{} = []() noexcept {
+                constexpr auto len{5_umx};
+                bsl::ut_when{} = [&]() noexcept {
                     fmt_test::reset();
-                    bsl::details::redirected_out_cstr("hello");
+                    bsl::details::redirected_out_cstr("hello", len.get());
                     bsl::ut_then{} = []() noexcept {
                         bsl::ut_check(fmt_test::was_this_outputted("hello"));
                         bsl::ut_check(!fmt_test::was_this_outputted("w"));

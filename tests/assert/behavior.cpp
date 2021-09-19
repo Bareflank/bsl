@@ -41,6 +41,7 @@
 main() noexcept -> bsl::exit_code
 {
     bsl::ut_scenario{"assert"} = []() noexcept {
+        bsl::assert(nullptr, bsl::here());
         bsl::assert("this is an assert", bsl::here());
     };
 

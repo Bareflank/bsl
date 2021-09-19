@@ -33,6 +33,7 @@
 // NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
 #include <stdio.h>
 
+#include <bsl/cstdint.hpp>
 #include <bsl/cstr_type.hpp>
 
 namespace bsl
@@ -54,11 +55,12 @@ namespace bsl
     ///
     /// <!-- inputs/outputs -->
     ///   @param str the string to output
+    ///   @param len the total number of bytes to output
     ///
     constexpr void
-    stdio_out_cstr(bsl::cstr_type const str) noexcept
+    stdio_out_cstr(bsl::cstr_type const str, bsl::uintmx const len) noexcept
     {
-        return ::fputs(str, stdout);
+        return ::fprintf(stdout, "%*.*s", len, len, str);
     }
 }
 

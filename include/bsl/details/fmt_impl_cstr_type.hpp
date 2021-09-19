@@ -29,6 +29,7 @@
 #include "../cstring.hpp"
 #include "../fmt_options.hpp"
 #include "../is_constant_evaluated.hpp"
+#include "../safe_integral.hpp"
 #include "../unlikely.hpp"
 #include "fmt_impl_align.hpp"
 #include "out.hpp"
@@ -62,15 +63,16 @@ namespace bsl
         }
 
         if (unlikely(nullptr == str)) {
+            constexpr bsl::cstr_type msg{"[empty bsl::cstr_type]"};
             details::fmt_impl_align_pre(o, ops, {}, true);
-            o.write_to_console("[empty bsl::cstr_type]");
+            o.write_to_console(msg, builtin_strlen(msg).get());
             details::fmt_impl_align_suf(o, ops, {}, true);
             return;
         }
 
         auto const len{bsl::builtin_strlen(str)};
         details::fmt_impl_align_pre(o, ops, len, true);
-        o.write_to_console(str);
+        o.write_to_console(str, builtin_strlen(str).get());
         details::fmt_impl_align_suf(o, ops, len, true);
     }
 
@@ -97,11 +99,12 @@ namespace bsl
         }
 
         if (unlikely(nullptr == str)) {
-            o.write_to_console("[empty bsl::cstr_type]");
+            constexpr bsl::cstr_type msg{"[empty bsl::cstr_type]"};
+            o.write_to_console(msg, builtin_strlen(msg).get());
             return o;
         }
 
-        o.write_to_console(str);
+        o.write_to_console(str, builtin_strlen(str).get());
         return o;
     }
 }

@@ -47,6 +47,8 @@ namespace bsl
     [[maybe_unused]] constexpr auto
     operator<<(out<T> const o, void const *const ptr) noexcept -> out<T>
     {
+        constexpr safe_umx len_nullptr{static_cast<bsl::uintmx>(7)};
+
         if (is_constant_evaluated()) {
             return o;
         }
@@ -56,7 +58,7 @@ namespace bsl
         }
 
         if (nullptr == ptr) {
-            o.write_to_console("nullptr");
+            o.write_to_console("nullptr", len_nullptr.get());
         }
         else {
             // We must convert the pointer to an integer before we can use

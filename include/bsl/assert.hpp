@@ -163,7 +163,7 @@ namespace bsl
                 details::out_cstr("\033[0m");
             }
 
-            details::out_cstr("\n\n");
+            details::out_cstr("\n");
 
             if constexpr (BSL_ASSERT_FAST_FAILS) {
                 stdlib_fast_fail();    // GRCOV_EXCLUDE

@@ -25,9 +25,12 @@
 #include <bsl/add_const.hpp>
 #include <bsl/as_const.hpp>
 #include <bsl/convert.hpp>
+#include <bsl/move.hpp>
 #include <bsl/safe_integral.hpp>
 #include <bsl/unordered_map.hpp>
 #include <bsl/ut.hpp>
+
+#pragma clang diagnostic ignored "-Wself-assign-overloaded"
 
 namespace
 {
@@ -148,8 +151,8 @@ namespace
 
                     mut_map.at(false) = true;
                     bsl::ut_then{} = [&]() noexcept {
-                        bsl::ut_check(mut_map.at(true));
-                        bsl::ut_check(bsl::as_const(mut_map).at(true));
+                        bsl::ut_check(mut_map.at(false));
+                        bsl::ut_check(bsl::as_const(mut_map).at(false));
                     };
 
                     mut_map.at(true) = false;
@@ -179,22 +182,72 @@ namespace
                 bsl::ut_when{} = [&]() noexcept {
                     bsl::ut_then{} = [&]() noexcept {
                         bsl::ut_check(!bsl::as_const(mut_map).contains(true));
+                        bsl::ut_check(!bsl::as_const(mut_map).contains(false));
                     };
 
                     mut_map.at(true) = true;
                     bsl::ut_then{} = [&]() noexcept {
                         bsl::ut_check(bsl::as_const(mut_map).contains(true));
+                        bsl::ut_check(!bsl::as_const(mut_map).contains(false));
                     };
 
                     mut_map.at(false) = true;
                     bsl::ut_then{} = [&]() noexcept {
                         bsl::ut_check(bsl::as_const(mut_map).contains(true));
+                        bsl::ut_check(bsl::as_const(mut_map).contains(false));
                     };
 
                     mut_map.clear();
                     bsl::ut_then{} = [&]() noexcept {
                         bsl::ut_check(!bsl::as_const(mut_map).contains(true));
+                        bsl::ut_check(!bsl::as_const(mut_map).contains(false));
                     };
+                };
+            };
+        };
+
+        bsl::ut_scenario{"copy"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::unordered_map<bool, bool> mut_map1{};
+                bsl::unordered_map<bool, bool> mut_map2{};
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_map1.at(true) = true;
+                    mut_map2 = mut_map1;
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_map1.at(true));
+                        bsl::ut_check(mut_map2.at(true));
+                    };
+
+                    mut_map1.at(false) = true;
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_map1.at(false));
+                        bsl::ut_check(!mut_map2.at(false));
+                    };
+
+                    mut_map1 = mut_map1;
+                };
+            };
+        };
+
+        bsl::ut_scenario{"move"} = []() noexcept {
+            bsl::ut_given{} = []() noexcept {
+                bsl::unordered_map<bool, bool> mut_map1{};
+                bsl::unordered_map<bool, bool> mut_map2{};
+                bsl::ut_when{} = [&]() noexcept {
+                    mut_map1.at(true) = true;
+                    mut_map2 = bsl::move(mut_map1);
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(!mut_map1.at(true));
+                        bsl::ut_check(mut_map2.at(true));
+                    };
+
+                    mut_map1.at(false) = true;
+                    bsl::ut_then{} = [&]() noexcept {
+                        bsl::ut_check(mut_map1.at(false));
+                        bsl::ut_check(!mut_map2.at(false));
+                    };
+
+                    mut_map2 = bsl::move(mut_map2);
                 };
             };
         };

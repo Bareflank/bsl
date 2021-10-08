@@ -57,8 +57,8 @@ namespace bsl
     constexpr void
     fmt_impl(out<T> const o, fmt_options const &ops, bool const b) noexcept
     {
-        constexpr safe_umx size_of_true{static_cast<bsl::uintmx>(4)};
-        constexpr safe_umx size_of_false{static_cast<bsl::uintmx>(5)};
+        constexpr safe_umx len_true{static_cast<bsl::uintmx>(4)};
+        constexpr safe_umx len_false{static_cast<bsl::uintmx>(5)};
 
         if (is_constant_evaluated()) {
             return;
@@ -82,9 +82,8 @@ namespace bsl
                 case fmt_type::fmt_type_default:
                     [[fallthrough]];
                 default: {
-                    constexpr auto len_true{size_of_true};
                     details::fmt_impl_align_pre(o, ops, len_true, true);
-                    o.write_to_console("true");
+                    o.write_to_console("true", len_true.get());
                     details::fmt_impl_align_suf(o, ops, len_true, true);
                     break;
                 }
@@ -108,9 +107,8 @@ namespace bsl
                 case fmt_type::fmt_type_default:
                     [[fallthrough]];
                 default: {
-                    constexpr auto len_false{size_of_false};
                     details::fmt_impl_align_pre(o, ops, len_false, true);
-                    o.write_to_console("false");
+                    o.write_to_console("false", len_false.get());
                     details::fmt_impl_align_suf(o, ops, len_false, true);
                     break;
                 }
@@ -132,6 +130,9 @@ namespace bsl
     [[maybe_unused]] constexpr auto
     operator<<(out<T> const o, bool const b) noexcept -> out<T>
     {
+        constexpr safe_umx len_true{static_cast<bsl::uintmx>(4)};
+        constexpr safe_umx len_false{static_cast<bsl::uintmx>(5)};
+
         if (is_constant_evaluated()) {
             return o;
         }
@@ -141,10 +142,10 @@ namespace bsl
         }
 
         if (b) {
-            o.write_to_console("true");
+            o.write_to_console("true", len_true.get());
         }
         else {
-            o.write_to_console("false");
+            o.write_to_console("false", len_false.get());
         }
 
         return o;

@@ -108,7 +108,21 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param o the object being copied
         ///
-        constexpr unordered_map(unordered_map const &o) noexcept = delete;
+        constexpr unordered_map(unordered_map const &o) noexcept
+        {
+            if (this != &o) {
+                auto *pmut_mut_node{o.m_head};
+                while (nullptr != pmut_mut_node) {
+                    auto *pmut_mut_next{pmut_mut_node->next};
+
+                    this->at(pmut_mut_node->key) = pmut_mut_node->val;
+                    pmut_mut_node = pmut_mut_next;
+                }
+            }
+            else {
+                bsl::touch();
+            }
+        }
 
         /// <!-- description -->
         ///   @brief move constructor
@@ -116,7 +130,18 @@ namespace bsl
         /// <!-- inputs/outputs -->
         ///   @param mut_o the object being moved
         ///
-        constexpr unordered_map(unordered_map &&mut_o) noexcept = delete;
+        constexpr unordered_map(unordered_map &&mut_o) noexcept
+        {
+            if (this != &mut_o) {
+                m_head = mut_o.m_head;
+                m_size = mut_o.m_size;
+                mut_o.m_head = {};
+                mut_o.m_size = {};
+            }
+            else {
+                bsl::touch();
+            }
+        }
 
         /// <!-- description -->
         ///   @brief copy assignment
@@ -125,8 +150,24 @@ namespace bsl
         ///   @param o the object being copied
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(unordered_map const &o) &noexcept
-            -> unordered_map & = delete;
+        [[maybe_unused]] constexpr auto
+        operator=(unordered_map const &o) &noexcept -> unordered_map &
+        {
+            if (this != &o) {
+                auto *pmut_mut_node{o.m_head};
+                while (nullptr != pmut_mut_node) {
+                    auto *pmut_mut_next{pmut_mut_node->next};
+
+                    this->at(pmut_mut_node->key) = pmut_mut_node->val;
+                    pmut_mut_node = pmut_mut_next;
+                }
+            }
+            else {
+                bsl::touch();
+            }
+
+            return *this;
+        }
 
         /// <!-- description -->
         ///   @brief move assignment
@@ -135,8 +176,21 @@ namespace bsl
         ///   @param mut_o the object being moved
         ///   @return a reference to *this
         ///
-        [[maybe_unused]] constexpr auto operator=(unordered_map &&mut_o) &noexcept
-            -> unordered_map & = delete;
+        [[maybe_unused]] constexpr auto
+        operator=(unordered_map &&mut_o) &noexcept -> unordered_map &
+        {
+            if (this != &mut_o) {
+                m_head = mut_o.m_head;
+                m_size = mut_o.m_size;
+                mut_o.m_head = {};
+                mut_o.m_size = {};
+            }
+            else {
+                bsl::touch();
+            }
+
+            return *this;
+        }
 
         /// <!-- description -->
         ///   @brief Returns size() == 0

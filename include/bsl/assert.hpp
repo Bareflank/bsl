@@ -25,12 +25,15 @@
 #ifndef BSL_ASSERT_HPP
 #define BSL_ASSERT_HPP
 
+#include "bsl/char_type.hpp"
+#include "bsl/cstdint.hpp"
 #include "bsl/cstr_type.hpp"
 #include "bsl/details/out_char.hpp"
 #include "bsl/details/out_cstr.hpp"
 #include "bsl/details/out_line.hpp"
 #include "bsl/discard.hpp"
 #include "bsl/source_location.hpp"
+#include "bsl/touch.hpp"
 
 #include <bsl/cstdlib.hpp>
 
@@ -96,6 +99,35 @@
 
 namespace bsl
 {
+    namespace details
+    {
+        /// <!-- description -->
+        ///   @brief Returns the same result as std::strlen
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param str a pointer to a string to get the length of
+        ///   @return Returns the same result as std::strlen
+        ///
+        [[nodiscard]] constexpr auto
+        assert_strlen(cstr_type const str) noexcept -> bsl::uintmx
+        {
+            bsl::uintmx mut_len{};
+            while ('\0' != str[mut_len]) {
+                ++mut_len;
+            }
+
+            return mut_len;
+        }
+    }
+
+    /// <!-- description -->
+    ///   @brief Used to tell the user during compile-time that a
+    ///     contact violation has occurred.
+    ///
+    inline void
+    assert_contract_violation() noexcept
+    {}
+
 #if BSL_RELEASE_MODE
     constexpr void
 #else
@@ -123,47 +155,53 @@ namespace bsl
             bsl::discard(sloc);
         }
         else {
+            assert_contract_violation();
+            if (nullptr != str) {
+                if constexpr (ENABLE_COLOR) {
+                    details::out_cstr("\033[1;91m", details::assert_strlen("\033[1;91m"));
+                }
+                details::out_cstr("ASSERT: ", details::assert_strlen("ASSERT: "));
+                if constexpr (ENABLE_COLOR) {
+                    details::out_cstr("\033[0m", details::assert_strlen("\033[0m"));
+                }
 
-            if constexpr (ENABLE_COLOR) {
-                details::out_cstr("\033[1;91m");
-            }
-            details::out_cstr("ASSERT: ");
-            if constexpr (ENABLE_COLOR) {
-                details::out_cstr("\033[0m");
-            }
+                details::out_cstr(str, details::assert_strlen(str));
+                details::out_cstr("\n  --> ", details::assert_strlen("\n  --> "));
 
-            details::out_cstr(str);
-            details::out_cstr("\n  --> ");
+                if constexpr (ENABLE_COLOR) {
+                    details::out_cstr("\033[0;93m", details::assert_strlen("\033[1;93m"));
+                }
+                details::out_cstr(sloc.file_name(), details::assert_strlen(sloc.file_name()));
+                if constexpr (ENABLE_COLOR) {
+                    details::out_cstr("\033[0m", details::assert_strlen("\033[0m"));
+                }
 
-            if constexpr (ENABLE_COLOR) {
-                details::out_cstr("\033[0;93m");
-            }
-            details::out_cstr(sloc.file_name());
-            if constexpr (ENABLE_COLOR) {
-                details::out_cstr("\033[0m");
-            }
+                details::out_char(':');
 
-            details::out_char(':');
+                if constexpr (ENABLE_COLOR) {
+                    details::out_cstr("\033[0;96m", details::assert_strlen("\033[1;96m"));
+                }
+                details::out_line(sloc.line());
+                if constexpr (ENABLE_COLOR) {
+                    details::out_cstr("\033[0m", details::assert_strlen("\033[0m"));
+                }
 
-            if constexpr (ENABLE_COLOR) {
-                details::out_cstr("\033[0;96m");
-            }
-            details::out_line(sloc.line());
-            if constexpr (ENABLE_COLOR) {
-                details::out_cstr("\033[0m");
-            }
+                details::out_char(':');
 
-            details::out_char(':');
+                if constexpr (ENABLE_COLOR) {
+                    details::out_cstr("\033[0;95m", details::assert_strlen("\033[1;95m"));
+                }
+                details::out_cstr(
+                    sloc.function_name(), details::assert_strlen(sloc.function_name()));
+                if constexpr (ENABLE_COLOR) {
+                    details::out_cstr("\033[0m", details::assert_strlen("\033[0m"));
+                }
 
-            if constexpr (ENABLE_COLOR) {
-                details::out_cstr("\033[0;95m");
+                details::out_char('\n');
             }
-            details::out_cstr(sloc.function_name());
-            if constexpr (ENABLE_COLOR) {
-                details::out_cstr("\033[0m");
+            else {
+                bsl::touch();
             }
-
-            details::out_cstr("\n");
 
             if constexpr (BSL_ASSERT_FAST_FAILS) {
                 stdlib_fast_fail();    // GRCOV_EXCLUDE

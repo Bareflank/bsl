@@ -25,6 +25,7 @@
 #ifndef BSL_DETAILS_PUT_CSTR_STDERR_HPP
 #define BSL_DETAILS_PUT_CSTR_STDERR_HPP
 
+#include "../cstdint.hpp"
 #include "../cstr_type.hpp"
 
 #include <bsl/cstdio.hpp>    // IWYU pragma: keep
@@ -36,22 +37,24 @@ namespace bsl::details
     ///
     /// <!-- inputs/outputs -->
     ///   @param str the string to output to stdout
+    ///   @param len the total number of bytes to output
     ///
-    void redirected_out_cstr(cstr_type const str) noexcept;
+    void redirected_out_cstr(cstr_type const str, bsl::uintmx const len) noexcept;
 
     /// <!-- description -->
     ///   @brief Outputs a string to stdout.
     ///
     /// <!-- inputs/outputs -->
     ///   @param str the string to output to stdout
+    ///   @param len the total number of bytes to output
     ///
     constexpr void
-    out_cstr(cstr_type const str) noexcept
+    out_cstr(cstr_type const str, bsl::uintmx const len) noexcept
     {
 #ifdef REDIRECT_STDOUT
-        redirected_out_cstr(str);
+        redirected_out_cstr(str, len);
 #else
-        bsl::stdio_out_cstr(str);
+        bsl::stdio_out_cstr(str, len);
 #endif
     }
 }

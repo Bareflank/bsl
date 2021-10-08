@@ -37,10 +37,10 @@ namespace bsl
     ///   @brief Immediately the application with a failure
     ///
     [[noreturn]] constexpr void
-    stdlib_fast_fail() noexcept
-    {
-        return ::exit(EXIT_FAILURE);
-    }
+    stdlib_fast_fail() noexcept         // GRCOV_EXCLUDE
+    {                                   // GRCOV_EXCLUDE
+        return ::exit(EXIT_FAILURE);    // GRCOV_EXCLUDE
+    }                                   // GRCOV_EXCLUDE
 }
 
 #endif

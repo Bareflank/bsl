@@ -23,10 +23,10 @@
 /// SOFTWARE.
 
 #include <bsl/convert.hpp>
-#include <bsl/cstdint.hpp>
 #include <bsl/details/out_char.hpp>
 #include <bsl/details/out_cstr.hpp>
 #include <bsl/details/out_line.hpp>
+#include <bsl/safe_integral.hpp>
 #include <bsl/ut.hpp>
 
 namespace
@@ -167,7 +167,7 @@ namespace
             bsl::ut_given_at_runtime{} = []() noexcept {
                 bsl::ut_then{} = []() noexcept {
                     bsl::details::out_char('*');
-                    bsl::details::out_cstr("42");
+                    bsl::details::out_cstr("42", bsl::safe_umx::magic_2().get());
                     bsl::details::out_line(0);     // NOLINT
                     bsl::details::out_line(42);    // NOLINT
                     bsl::details::out_line(

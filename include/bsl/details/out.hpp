@@ -29,6 +29,7 @@
 #define BSL_OUT_HPP
 
 #include "../char_type.hpp"
+#include "../cstdint.hpp"
 #include "../cstr_type.hpp"
 #include "../is_constant_evaluated.hpp"
 #include "../is_same.hpp"
@@ -227,33 +228,33 @@ namespace bsl
 
         /// <!-- description -->
         ///   @brief Outputs a string to either stdout or stderr,
-        ///     depending on the bsl::out's label. The string must end in
-        ///     a '\0'.
+        ///     depending on the bsl::out's label.
         ///
         /// <!-- inputs/outputs -->
         ///   @param str the string to output
+        ///   @param len the total number of bytes to output
         ///
         static constexpr void
-        write_to_console(cstr_type const str) noexcept
+        write_to_console(cstr_type const str, bsl::uintmx const len) noexcept
         {
             if (is_constant_evaluated()) {
                 return;
             }
 
             if constexpr (is_print()) {
-                details::out_cstr(str);
+                details::out_cstr(str, len);
             }
 
             if constexpr (is_debug()) {
-                details::out_cstr(str);
+                details::out_cstr(str, len);
             }
 
             if constexpr (is_alert()) {
-                details::out_cstr(str);
+                details::out_cstr(str, len);
             }
 
             if constexpr (is_error()) {
-                details::out_cstr(str);
+                details::out_cstr(str, len);
             }
         }
     };

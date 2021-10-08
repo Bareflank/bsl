@@ -22,44 +22,33 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#ifndef BSL_DETAILS_FMT_IMPL_NULL_POINTER_HPP
-#define BSL_DETAILS_FMT_IMPL_NULL_POINTER_HPP
+#ifndef BSL_TYPENAME_HPP
+#define BSL_TYPENAME_HPP
 
-#include "../discard.hpp"
-#include "../is_constant_evaluated.hpp"
-#include "../nullptr_t.hpp"
-#include "../safe_integral.hpp"
-#include "out.hpp"
+#include <bsl/string_view.hpp>
 
 namespace bsl
 {
     /// <!-- description -->
-    ///   @brief Outputs the provided null pointer to the provided
-    ///     output type.
+    ///   @brief Returns a bsl::string_view containing the name of the
+    ///     the provided type.
     ///
     /// <!-- inputs/outputs -->
-    ///   @tparam T the type of outputter provided
-    ///   @param o the instance of the outputter used to output the value.
-    ///   @param ptr the null pointer to output
-    ///   @return return o
+    ///   @return Returns a bsl::string_view containing the name of the
+    ///     the provided type.
     ///
     template<typename T>
-    [[maybe_unused]] constexpr auto
-    operator<<(out<T> const o, bsl::nullptr_t const ptr) noexcept -> out<T>
+    [[nodiscard]] constexpr auto
+    type_name() noexcept -> auto
     {
-        bsl::discard(ptr);
-        constexpr safe_umx len_nullptr{static_cast<bsl::uintmx>(7)};
+        constexpr bsl::string_view prefix{"auto bsl::type_name() [T = "};
+        constexpr bsl::string_view suffix{"]"};
 
-        if (is_constant_evaluated()) {
-            return o;
-        }
+        bsl::string_view name{__PRETTY_FUNCTION__};
+        name.remove_prefix(bsl::to_idx(prefix.size()));
+        name.remove_suffix(bsl::to_idx(suffix.size()));
 
-        if constexpr (o.empty()) {
-            return o;
-        }
-
-        o.write_to_console("nullptr", len_nullptr.get());
-        return o;
+        return name;
     }
 }
 

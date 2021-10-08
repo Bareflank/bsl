@@ -307,12 +307,12 @@ namespace bsl::details
         if (ops.alternate_form()) {
             switch (ops.type()) {
                 case fmt_type::fmt_type_b: {
-                    o.write_to_console("0b");
+                    o.write_to_console("0b", safe_umx::magic_2().get());
                     break;
                 }
 
                 case fmt_type::fmt_type_x: {
-                    o.write_to_console("0x");
+                    o.write_to_console("0x", safe_umx::magic_2().get());
                     break;
                 }
 

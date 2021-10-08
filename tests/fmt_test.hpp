@@ -120,11 +120,12 @@ namespace bsl::details
     ///
     /// <!-- inputs/outputs -->
     ///   @param str the string to output to stdout
+    ///   @param len the total number of bytes to output
     ///
     inline void
-    redirected_out_cstr(bsl::cstr_type const str) noexcept
+    redirected_out_cstr(cstr_type const str, uintmx const len) noexcept
     {
-        for (bsl::uintmx mut_i{}; mut_i < strlen(str); ++mut_i) {    // NOLINT
+        for (bsl::uintmx mut_i{}; mut_i < len; ++mut_i) {    // NOLINT
             redirected_out_char(str[mut_i]);
         }
     }

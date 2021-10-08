@@ -54,11 +54,16 @@ namespace bsl
     ///
     /// <!-- inputs/outputs -->
     ///   @param str the string to output
+    ///   @param len the total number of bytes to output
     ///
     constexpr void
-    stdio_out_cstr(bsl::cstr_type const str) noexcept
+    stdio_out_cstr(bsl::cstr_type const str, bsl::uintmx const len) noexcept
     {
-        return ::fputs(str, stdout);
+        if (bsl::is_constant_evaluated()) {
+            return;
+        }
+
+        syscall::bf_debug_op_write_str_impl(str, len);
     }
 }
 

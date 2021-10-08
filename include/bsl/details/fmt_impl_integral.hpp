@@ -26,6 +26,8 @@
 #define BSL_DETAILS_FMT_IMPL_INTEGRAL_HPP
 
 #include "../char_type.hpp"
+#include "../cstr_type.hpp"
+#include "../cstring.hpp"
 #include "../enable_if.hpp"
 #include "../fmt_options.hpp"
 #include "../fmt_type.hpp"
@@ -74,8 +76,9 @@ namespace bsl
 
         auto mut_val{val};
         if (unlikely(mut_val.is_poisoned())) {
+            constexpr bsl::cstr_type msg{"[error]"};
             details::fmt_impl_align_pre(o, ops, size_of_error, true);
-            o.write_to_console("[error]");
+            o.write_to_console(msg, builtin_strlen(msg).get());
             details::fmt_impl_align_suf(o, ops, size_of_error, true);
             return;
         }
@@ -183,7 +186,8 @@ namespace bsl
 
         auto mut_val{val};
         if (unlikely(mut_val.is_poisoned())) {
-            o.write_to_console("[error]");
+            constexpr bsl::cstr_type msg{"[error]"};
+            o.write_to_console(msg, builtin_strlen(msg).get());
             return o;
         }
 

@@ -53,14 +53,15 @@ namespace bsl
     fmt_impl(out<T> const o, fmt_options const &ops, basic_string_view<CHAR_T> const &str) noexcept
     {
         if (unlikely(str.empty())) {
+            constexpr basic_string_view<CHAR_T> msg{"[empty bsl::string_view]"};
             details::fmt_impl_align_pre(o, ops, {}, true);
-            o.write_to_console("[empty bsl::string_view]");
+            o.write_to_console(msg.data(), msg.size().get());
             details::fmt_impl_align_suf(o, ops, {}, true);
             return;
         }
 
         details::fmt_impl_align_pre(o, ops, str.length(), true);
-        o.write_to_console(str.data());
+        o.write_to_console(str.data(), str.size().get());
         details::fmt_impl_align_suf(o, ops, str.length(), true);
     }
 
@@ -90,11 +91,12 @@ namespace bsl
         }
 
         if (unlikely(str.empty())) {
-            o.write_to_console("[empty bsl::string_view]");
+            constexpr basic_string_view<CHAR_T> msg{"[empty bsl::string_view]"};
+            o.write_to_console(msg.data(), msg.size().get());
             return o;
         }
 
-        o.write_to_console(str.data());
+        o.write_to_console(str.data(), str.size().get());
         return o;
     }
 }

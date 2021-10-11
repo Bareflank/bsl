@@ -74,7 +74,7 @@ if(NOT TARGET iwyu)
         endif()
         add_custom_target(iwyu
             COMMAND "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/utils/iwyu_tool.py" -p "${CMAKE_BINARY_DIR}" -j ${CMAKE_NUM_PROCESSORS} --
-                    # -Xiwyu --no_comments
+                    -Xiwyu --no_comments
                     -Xiwyu --quoted_includes_first
                     -Xiwyu --cxx17ns
                     -Xiwyu --no_fwd_decls

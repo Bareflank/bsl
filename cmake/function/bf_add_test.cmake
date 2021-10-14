@@ -27,7 +27,7 @@
 # NAME: The name of the test case to add
 #
 macro(bf_add_test NAME)
-    set(multiVal SOURCES INCLUDES SYSTEM_INCLUDES LIBRARIES DEFINES)
+    set(multiVal SOURCES INCLUDES SYSTEM_INCLUDES LIBRARIES DEFINES FLAGS)
     cmake_parse_arguments(ARG "" "" "${multiVal}" ${ARGN})
 
     file(RELATIVE_PATH REL_NAME ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_LIST_DIR})
@@ -44,6 +44,7 @@ macro(bf_add_test NAME)
     endif()
     target_compile_definitions(${REL_NAME}_${NAME} PRIVATE ${ARG_DEFINES})
     target_compile_options(${REL_NAME}_${NAME} PRIVATE -Wframe-larger-than=4294967295)
+    target_compile_options(${REL_NAME}_${NAME} PRIVATE ${ARG_FLAGS})
 
     add_test(${REL_NAME}_${NAME} ${REL_NAME}_${NAME})
 

@@ -27,8 +27,7 @@ use core::panic::Location;
 #[derive(Debug, Copy, Clone)]
 pub struct SourceLocation(&'static Location<'static>);
 
-impl SourceLocation
-{
+impl SourceLocation {
     #[track_caller]
     pub fn caller() -> SourceLocation {
         return SourceLocation {
@@ -44,7 +43,6 @@ impl SourceLocation
         self.0.line()
     }
 }
-
 
 /// <!-- description -->
 ///   @brief This provides a less verbose version of
@@ -67,12 +65,11 @@ pub fn here() -> SourceLocation {
 // Output
 // -----------------------------------------------------------------------------
 
-impl fmt::Display for SourceLocation
-{
+impl fmt::Display for SourceLocation {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        use crate::ylw;
         use crate::cyn;
         use crate::rst;
+        use crate::ylw;
 
         let file = self.file();
         let line = self.line();
@@ -87,15 +84,21 @@ impl fmt::Display for SourceLocation
 #[cfg(test)]
 mod test_source_location {
     use super::*;
-    use crate::*;
 
     #[test]
     fn source_location_general() {
-        debug!("{}", here());
-        debug!("{:?}", here());
-        debug!("{}", here().clone());
-        debug!("{}", SourceLocation::caller());
-        debug!("{}", SourceLocation::caller().file());
-        debug!("{}", SourceLocation::caller().line());
+        // NOTE:
+        // - the following test ensures 100% code coverage and can be removed
+        //   when the LLVM coverage bugs have been addressed. For some reason
+        //   when this is added, code coverage acts as expected.
+        let x = 10;
+        assert!(x == 10);
+
+        print!("{}", here());
+        print!("{:?}", here());
+        print!("{}", here().clone());
+        print!("{}", SourceLocation::caller());
+        print!("{}", SourceLocation::caller().file());
+        print!("{}", SourceLocation::caller().line());
     }
 }

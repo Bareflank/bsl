@@ -96,33 +96,82 @@ macro_rules! print {
     };
 }
 
+#[cfg(feature = "debug_level_v")]
+#[macro_export]
+macro_rules! print_v {
+    ($($arg:tt)*) => { $crate::print!("{}", format_args!($($arg)*)) };
+}
+
+#[cfg(feature = "debug_level_vv")]
+#[macro_export]
+macro_rules! print_vv {
+    ($($arg:tt)*) => { $crate::print!("{}", format_args!($($arg)*)) };
+}
+
+#[cfg(feature = "debug_level_vvv")]
+#[macro_export]
+macro_rules! print_vvv {
+    ($($arg:tt)*) => { $crate::print!("{}", format_args!($($arg)*)) };
+}
+
+#[cfg(not(feature = "debug_level_v"))]
+#[macro_export]
+macro_rules! print_v {
+    ($($arg:tt)*) => {};
+}
+
+#[cfg(not(feature = "debug_level_vv"))]
+#[macro_export]
+macro_rules! print_vv {
+    ($($arg:tt)*) => {};
+}
+
+#[cfg(not(feature = "debug_level_vvv"))]
+#[macro_export]
+macro_rules! print_vvv {
+    ($($arg:tt)*) => {};
+}
+
 // -----------------------------------------------------------------------------
 // Debug Macros
 // -----------------------------------------------------------------------------
 
+#[cfg(feature = "disable_color")]
 #[macro_export]
 macro_rules! debug {
     ($($arg:tt)*) => {
-        $crate::print!("{}DEBUG{}: {}\n", crate::bold_grn, format_args!($($arg)*), crate::rst)
+        $crate::print!("DEBUG");
+        print_thread_id!();
+        $crate::print!(": {}", format_args!($($arg)*));
+    };
+}
+
+#[cfg(not(feature = "disable_color"))]
+#[macro_export]
+macro_rules! debug {
+    ($($arg:tt)*) => {
+        $crate::print!("{}DEBUG{}", "\x1B[1;92m", "\x1B[0m");
+        print_thread_id!();
+        $crate::print!(": {}", format_args!($($arg)*));
     };
 }
 
 #[cfg(feature = "debug_level_v")]
 #[macro_export]
 macro_rules! debug_v {
-    ($($arg:tt)*) => { $crate::debug!(format_args!($($arg)*)) };
+    ($($arg:tt)*) => { $crate::debug!("{}", format_args!($($arg)*)) };
 }
 
 #[cfg(feature = "debug_level_vv")]
 #[macro_export]
 macro_rules! debug_vv {
-    ($($arg:tt)*) => { $crate::debug!(format_args!($($arg)*)) };
+    ($($arg:tt)*) => { $crate::debug!("{}", format_args!($($arg)*)) };
 }
 
 #[cfg(feature = "debug_level_vvv")]
 #[macro_export]
 macro_rules! debug_vvv {
-    ($($arg:tt)*) => { $crate::debug!(format_args!($($arg)*)) };
+    ($($arg:tt)*) => { $crate::debug!("{}", format_args!($($arg)*)) };
 }
 
 #[cfg(not(feature = "debug_level_v"))]
@@ -147,29 +196,42 @@ macro_rules! debug_vvv {
 // Alert Macros
 // -----------------------------------------------------------------------------
 
+#[cfg(feature = "disable_color")]
 #[macro_export]
 macro_rules! alert {
     ($($arg:tt)*) => {
-        $crate::print!("{}ALERT{}: {}\n", crate::bold_ylw, format_args!($($arg)*), crate::rst)
+        $crate::print!("ALERT");
+        print_thread_id!();
+        $crate::print!(": {}", format_args!($($arg)*));
+    };
+}
+
+#[cfg(not(feature = "disable_color"))]
+#[macro_export]
+macro_rules! alert {
+    ($($arg:tt)*) => {
+        $crate::print!("{}ALERT{}", "\x1B[1;93m", "\x1B[0m");
+        print_thread_id!();
+        $crate::print!(": {}", format_args!($($arg)*));
     };
 }
 
 #[cfg(feature = "debug_level_v")]
 #[macro_export]
 macro_rules! alert_v {
-    ($($arg:tt)*) => { $crate::alert!(format_args!($($arg)*)) };
+    ($($arg:tt)*) => { $crate::alert!("{}", format_args!($($arg)*)) };
 }
 
 #[cfg(feature = "debug_level_vv")]
 #[macro_export]
 macro_rules! alert_vv {
-    ($($arg:tt)*) => { $crate::alert!(format_args!($($arg)*)) };
+    ($($arg:tt)*) => { $crate::alert!("{}", format_args!($($arg)*)) };
 }
 
 #[cfg(feature = "debug_level_vvv")]
 #[macro_export]
 macro_rules! alert_vvv {
-    ($($arg:tt)*) => { $crate::alert!(format_args!($($arg)*)) };
+    ($($arg:tt)*) => { $crate::alert!("{}", format_args!($($arg)*)) };
 }
 
 #[cfg(not(feature = "debug_level_v"))]
@@ -194,10 +256,23 @@ macro_rules! alert_vvv {
 // Error Macros
 // -----------------------------------------------------------------------------
 
+#[cfg(feature = "disable_color")]
 #[macro_export]
 macro_rules! error {
     ($($arg:tt)*) => {
-        $crate::print!("{}ERROR{}: {}\n", crate::bold_red, format_args!($($arg)*), crate::rst)
+        $crate::print!("ERROR");
+        print_thread_id!();
+        $crate::print!(": {}", format_args!($($arg)*));
+    };
+}
+
+#[cfg(not(feature = "disable_color"))]
+#[macro_export]
+macro_rules! error {
+    ($($arg:tt)*) => {
+        $crate::print!("{}ERROR{}", "\x1B[1;91m", "\x1B[0m");
+        print_thread_id!();
+        $crate::print!(": {}", format_args!($($arg)*));
     };
 }
 

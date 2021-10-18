@@ -154,7 +154,7 @@ namespace bsl
         ///     application
         ///   @param argv the arguments passed to the application
         ///
-        constexpr arguments(size_type const &argc, value_type *const argv) noexcept
+        constexpr arguments(size_type const &argc, value_type *const argv) noexcept    // --
             : m_args{argv, argc}, m_count{}, m_i{}
         {
             expects(argc.is_valid_and_checked());
@@ -177,6 +177,20 @@ namespace bsl
 
             m_count = m_count.checked();
         }
+
+        /// <!-- description -->
+        ///   @brief Creates a bsl::arguments object given a provided argc
+        ///     and argv.
+        ///   @include arguments/example_arguments_constructor.hpp
+        ///
+        /// <!-- inputs/outputs -->
+        ///   @param argc the total number of arguments passed to the
+        ///     application
+        ///   @param argv the arguments passed to the application
+        ///
+        constexpr arguments(bsl::int32 const argc, value_type *const argv) noexcept    // --
+            : arguments{size_type{static_cast<bsl::uintmx>(argc)}, argv}
+        {}
 
         /// <!-- description -->
         ///   @brief Returns the provided argc, argv parameters as a span

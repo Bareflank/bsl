@@ -112,22 +112,22 @@ mod test_color {
     fn color_general() {
         assert!(bold_wht == if_color_enabled(bold_wht));
 
-        println!("{}blk{}", blk, rst);
-        println!("{}red{}", red, rst);
-        println!("{}grn{}", grn, rst);
-        println!("{}ylw{}", ylw, rst);
-        println!("{}blu{}", blu, rst);
-        println!("{}mag{}", mag, rst);
-        println!("{}cyn{}", cyn, rst);
-        println!("{}wht{}", wht, rst);
+        print!("{}blk{}\n", blk, rst);
+        print!("{}red{}\n", red, rst);
+        print!("{}grn{}\n", grn, rst);
+        print!("{}ylw{}\n", ylw, rst);
+        print!("{}blu{}\n", blu, rst);
+        print!("{}mag{}\n", mag, rst);
+        print!("{}cyn{}\n", cyn, rst);
+        print!("{}wht{}\n", wht, rst);
 
-        println!("{}bold_blk{}", bold_blk, rst);
-        println!("{}bold_red{}", bold_red, rst);
-        println!("{}bold_grn{}", bold_grn, rst);
-        println!("{}bold_ylw{}", bold_ylw, rst);
-        println!("{}bold_blu{}", bold_blu, rst);
-        println!("{}bold_mag{}", bold_mag, rst);
-        println!("{}bold_cyn{}", bold_cyn, rst);
-        println!("{}bold_wht{}", bold_wht, rst);
+        print!("{}bold_blk{}\n", bold_blk, rst);
+        print!("{}bold_red{}\n", bold_red, rst);
+        print!("{}bold_grn{}\n", bold_grn, rst);
+        print!("{}bold_ylw{}\n", bold_ylw, rst);
+        print!("{}bold_blu{}\n", bold_blu, rst);
+        print!("{}bold_mag{}\n", bold_mag, rst);
+        print!("{}bold_cyn{}\n", bold_cyn, rst);
+        print!("{}bold_wht{}\n", bold_wht, rst);
     }
 }

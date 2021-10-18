@@ -62,6 +62,21 @@ namespace
                     bsl::ut_check(args.get<bsl::safe_u64>(bsl::to_umx(5)) == bsl::to_u64(42));
                 };
             };
+
+            bsl::ut_given{} = []() noexcept {
+                bsl::carray const argv{test::CARRAY_INIT_STR_ARGS_POS};
+                bsl::arguments const args{bsl::to_i32(argv.size()).get(), argv.data()};
+                bsl::ut_then{} = [&]() noexcept {
+                    bsl::ut_check(args.get<bsl::safe_u64>(bsl::to_umx(0)) == bsl::to_u64(4));
+                    bsl::ut_check(args.get<bool>("-opt1"));
+                    bsl::ut_check(args.get<bsl::safe_u64>(bsl::to_umx(1)) == bsl::to_u64(8));
+                    bsl::ut_check(args.get<bsl::safe_u64>(bsl::to_umx(2)) == bsl::to_u64(15));
+                    bsl::ut_check(args.get<bsl::safe_u64>(bsl::to_umx(3)) == bsl::to_u64(16));
+                    bsl::ut_check(args.get<bool>("-opt2"));
+                    bsl::ut_check(args.get<bsl::safe_u64>(bsl::to_umx(4)) == bsl::to_u64(23));
+                    bsl::ut_check(args.get<bsl::safe_u64>(bsl::to_umx(5)) == bsl::to_u64(42));
+                };
+            };
         };
 
         bsl::ut_scenario{"args"} = []() noexcept {

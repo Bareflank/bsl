@@ -36,7 +36,7 @@
 //
 
 /// @brief Defines a C-style string type
-pub type CStrT = u8;
+pub type CStrT = *const u8;
 
 // -----------------------------------------------------------------------------
 // Unit Tests

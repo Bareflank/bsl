@@ -22,8 +22,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 use crate::Integer;
-use crate::SafeIntegral;
 use crate::SafeIdx;
+use crate::SafeIntegral;
 use crate::SafeUMx;
 
 pub trait IntoSafeIntegral {
@@ -51,8 +51,7 @@ where
     }
 }
 
-impl IntoSafeIntegral for SafeIdx
-{
+impl IntoSafeIntegral for SafeIdx {
     type Output = SafeUMx;
     fn into_safe_integral(self) -> Self::Output {
         if self.is_invalid() {

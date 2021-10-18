@@ -33,9 +33,7 @@
 /// <!-- inputs/outputs -->
 ///   @param arg the argument to ignore
 ///
-pub fn
-discard<T>(_arg: T)
-{}
+pub fn discard<T>(_arg: T) {}
 
 // -----------------------------------------------------------------------------
 // Unit Tests

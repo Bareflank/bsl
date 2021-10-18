@@ -21,15 +21,11 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-use crate::SourceLocation;
 use crate::SafeUMx;
+use crate::SourceLocation;
 use core::cmp;
 use core::fmt;
 use core::ops;
-
-Things to add to Rust code
-- assignment from T
-- all operators should work with uszie versions of SafeIntegral
 
 #[derive(Debug, Default, Copy, Clone)]
 pub struct SafeIdx {
@@ -67,8 +63,7 @@ impl SafeIdx {
     ///   @return Returns a new SafeIdx given a value and flags
     ///     from a SafeUMx.
     ///
-    pub fn new_with_flags_from(val: SafeUMx, sloc: SourceLocation) -> Self
-    {
+    pub fn new_from(val: SafeUMx, sloc: SourceLocation) -> Self {
         if val.is_invalid() {
             crate::assert("a safe_idx was poisoned", sloc);
         } else {
@@ -76,8 +71,8 @@ impl SafeIdx {
         }
 
         Self {
-            m_val: val.cdata_as_ref(),
-            m_poisoned: flags.is_invalid(),
+            m_val: *val.cdata_as_ref(),
+            m_poisoned: val.is_invalid(),
         }
     }
 
@@ -313,6 +308,14 @@ impl PartialEq<usize> for SafeIdx {
     }
 }
 
+impl PartialEq<SafeUMx> for SafeIdx {
+    #[track_caller]
+    fn eq(&self, rhs: &SafeUMx) -> bool {
+        let sloc = crate::here();
+        return self.get_with_sloc(sloc) == rhs.get_with_sloc(sloc);
+    }
+}
+
 impl PartialOrd for SafeIdx {
     #[track_caller]
     fn partial_cmp(&self, rhs: &Self) -> Option<cmp::Ordering> {
@@ -326,6 +329,14 @@ impl PartialOrd<usize> for SafeIdx {
     fn partial_cmp(&self, rhs: &usize) -> Option<cmp::Ordering> {
         let sloc = crate::here();
         return Some(self.get_with_sloc(sloc).cmp(rhs));
+    }
+}
+
+impl PartialOrd<SafeUMx> for SafeIdx {
+    #[track_caller]
+    fn partial_cmp(&self, rhs: &SafeUMx) -> Option<cmp::Ordering> {
+        let sloc = crate::here();
+        return Some(self.get_with_sloc(sloc).cmp(&rhs.get_with_sloc(sloc)));
     }
 }
 
@@ -526,33 +537,33 @@ mod safe_idx_tests {
         assert!(SafeIdx::new(1).is_valid());
 
         let val = SafeUMx::default();
-        assert!(SafeIdx::new_with_flags_from(val.get(), val, here()).is_valid());
+        assert!(SafeIdx::new_from(val, here()).is_valid());
         let val = SafeUMx::failure();
-        assert_panics!(SafeIdx::new_with_flags_from(*val.cdata_as_ref(), val, here()));
+        assert_panics!(SafeIdx::new_from(val, here()));
     }
 
     #[test]
     fn safe_idx_debug() {
-        println!("{}", SafeIdx::magic_1());
-        println!("{}", SafeIdx::max_value() + SafeIdx::magic_1());
-        println!("{:?}", SafeIdx::magic_1());
-        println!("{:?}", SafeIdx::max_value() + SafeIdx::magic_1());
-        println!("{:x?}", SafeIdx::magic_1());
-        println!("{:x?}", SafeIdx::max_value() + SafeIdx::magic_1());
-        println!("{:X?}", SafeIdx::magic_1());
-        println!("{:X?}", SafeIdx::max_value() + SafeIdx::magic_1());
-        println!("{:o}", SafeIdx::magic_1());
-        println!("{:o}", SafeIdx::max_value() + SafeIdx::magic_1());
-        println!("{:x}", SafeIdx::magic_1());
-        println!("{:x}", SafeIdx::max_value() + SafeIdx::magic_1());
-        println!("{:X}", SafeIdx::magic_1());
-        println!("{:X}", SafeIdx::max_value() + SafeIdx::magic_1());
-        println!("{:b}", SafeIdx::magic_1());
-        println!("{:b}", SafeIdx::max_value() + SafeIdx::magic_1());
-        println!("{:e}", SafeIdx::magic_1());
-        println!("{:e}", SafeIdx::max_value() + SafeIdx::magic_1());
-        println!("{:E}", SafeIdx::magic_1());
-        println!("{:E}", SafeIdx::max_value() + SafeIdx::magic_1());
+        print!("{}\n", SafeIdx::magic_1());
+        print!("{}\n", SafeIdx::max_value() + SafeIdx::magic_1());
+        print!("{:?}\n", SafeIdx::magic_1());
+        print!("{:?}\n", SafeIdx::max_value() + SafeIdx::magic_1());
+        print!("{:x?}\n", SafeIdx::magic_1());
+        print!("{:x?}\n", SafeIdx::max_value() + SafeIdx::magic_1());
+        print!("{:X?}\n", SafeIdx::magic_1());
+        print!("{:X?}\n", SafeIdx::max_value() + SafeIdx::magic_1());
+        print!("{:o}\n", SafeIdx::magic_1());
+        print!("{:o}\n", SafeIdx::max_value() + SafeIdx::magic_1());
+        print!("{:x}\n", SafeIdx::magic_1());
+        print!("{:x}\n", SafeIdx::max_value() + SafeIdx::magic_1());
+        print!("{:X}\n", SafeIdx::magic_1());
+        print!("{:X}\n", SafeIdx::max_value() + SafeIdx::magic_1());
+        print!("{:b}\n", SafeIdx::magic_1());
+        print!("{:b}\n", SafeIdx::max_value() + SafeIdx::magic_1());
+        print!("{:e}\n", SafeIdx::magic_1());
+        print!("{:e}\n", SafeIdx::max_value() + SafeIdx::magic_1());
+        print!("{:E}\n", SafeIdx::magic_1());
+        print!("{:E}\n", SafeIdx::max_value() + SafeIdx::magic_1());
     }
 
     #[test]
@@ -594,6 +605,8 @@ mod safe_idx_tests {
     fn safe_idx_get() {
         let val = SafeIdx::new(1);
         assert!(val.get() == 1);
+        let val = SafeIdx::max_value() + SafeIdx::magic_1();
+        assert_panics!(val.get());
     }
 
     #[test]
@@ -602,22 +615,23 @@ mod safe_idx_tests {
         assert_eq!(SafeIdx::magic_0().is_pos(), false);
         assert_eq!(SafeIdx::magic_1().is_zero(), false);
         assert_eq!(SafeIdx::magic_1().is_pos(), true);
+
+        let val = SafeIdx::max_value() + SafeIdx::magic_1();
+        assert_panics!(val.is_zero());
+        assert_panics!(val.is_pos());
     }
 
     #[test]
     fn safe_idx_failure() {
         assert_eq!(SafeIdx::magic_0().is_invalid(), false);
         assert_eq!(SafeIdx::magic_0().is_valid(), true);
-        assert_eq!(SafeIdx::magic_0().is_zero_or_invalid(), true);
 
         assert_eq!(SafeIdx::magic_1().is_invalid(), false);
         assert_eq!(SafeIdx::magic_1().is_valid(), true);
-        assert_eq!(SafeIdx::magic_1().is_zero_or_invalid(), false);
 
         let val = SafeIdx::max_value() + SafeIdx::magic_1();
         assert_eq!(val.is_invalid(), true);
         assert_eq!(val.is_valid(), false);
-        assert_eq!(val.is_zero_or_invalid(), true);
     }
 
     #[test]
@@ -639,6 +653,15 @@ mod safe_idx_tests {
         assert!(SafeIdx::magic_1() > SafeIdx::magic_0().get());
         assert!(SafeIdx::magic_1() >= SafeIdx::magic_0().get());
         assert!(SafeIdx::magic_1() >= SafeIdx::magic_1().get());
+
+        assert!(SafeIdx::magic_1() == SafeUMx::magic_1());
+        assert!(SafeIdx::magic_1() != SafeUMx::magic_2());
+        assert!(SafeIdx::magic_1() < SafeUMx::magic_2());
+        assert!(SafeIdx::magic_1() <= SafeUMx::magic_2());
+        assert!(SafeIdx::magic_1() <= SafeUMx::magic_1());
+        assert!(SafeIdx::magic_1() > SafeUMx::magic_0());
+        assert!(SafeIdx::magic_1() >= SafeUMx::magic_0());
+        assert!(SafeIdx::magic_1() >= SafeUMx::magic_1());
     }
 
     #[test]
@@ -703,4 +726,3 @@ mod safe_idx_tests {
         assert!((val - 1).is_invalid());
     }
 }
-

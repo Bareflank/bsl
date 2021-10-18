@@ -134,9 +134,7 @@
 #include "convert/example_convert_to_u8_unsafe.hpp"
 #include "convert/example_convert_to_umx.hpp"
 #include "convert/example_convert_to_umx_unsafe.hpp"
-// #include "debug/example_debug_alert.hpp"
 #include "debug/example_debug_debug.hpp"
-// #include "debug/example_debug_error.hpp"
 #include "debug/example_debug_hex.hpp"
 #include "debug/example_debug_print.hpp"
 #include "example_add_const_overview.hpp"
@@ -292,6 +290,7 @@
 #include "example_nullptr_t_overview.hpp"
 #include "example_numeric_limits_overview.hpp"
 #include "example_rank_overview.hpp"
+#include "example_readme_overview.hpp"
 #include "example_reference_wrapper_overview.hpp"
 #include "example_remove_all_extents_overview.hpp"
 #include "example_remove_const_overview.hpp"
@@ -452,8 +451,10 @@
 #include "span/example_span_size_bytes.hpp"
 #include "span/example_span_subspan.hpp"
 
+#include <bsl/cstdint.hpp>
 #include <bsl/cstr_type.hpp>
 #include <bsl/debug.hpp>
+#include <bsl/discard.hpp>
 #include <bsl/exit_code.hpp>
 
 namespace
@@ -482,12 +483,17 @@ namespace
 ///   @brief Provides the example's main function
 ///
 /// <!-- inputs/outputs -->
-///   @return 0 on success, non-0 on failure
+///   @param argc the total number of arguments given to main
+///   @param argv the arguments given to main
+///   @return Returns bsl::exit_success on success, bsl::exit_failure
+///     on failure.
 ///
 [[nodiscard]] auto
-main() noexcept -> bsl::exit_code
+main(bsl::int32 const argc, bsl::cstr_type const *const argv) noexcept -> bsl::exit_code
 {
     // clang-format off
+
+    bsl::discard(bsl::example_main(argc, argv));
 
     example(&bsl::example_add_const_overview, "example_add_const_overview");
     example(&bsl::example_add_lvalue_reference_overview, "example_add_lvalue_reference_overview");

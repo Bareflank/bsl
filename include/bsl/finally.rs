@@ -98,7 +98,9 @@ mod test_finally {
     #[test]
     fn finally_general() {
         let executed = Cell::new(false);
-        let func = || { executed.set(true); };
+        let func = || {
+            executed.set(true);
+        };
 
         executed.set(false);
         {

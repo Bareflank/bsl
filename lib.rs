@@ -22,8 +22,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+// NOTE:
+// - For now, if you want to run the tests, you will need to comment this
+//   out. Just make sure to put it back before checking in any changes.
+//   Not really sure how to set this up so that we have std for tests only,
+//   and no_std for regular use.
+//
+#![no_std]
+
 #[macro_use]
 extern crate static_assertions;
+
+#[cfg(not(feature = "custom_print_thread_id"))]
+#[allow(unused_macros)]
+#[doc(hidden)]
+macro_rules! print_thread_id {
+    ($($arg:tt)*) => {};
+}
 
 #[path = "include/bsl/touch.rs"]
 #[doc(hidden)]
@@ -86,6 +101,15 @@ pub use color::ylw;
 #[doc(hidden)]
 pub mod debug;
 
+#[macro_use]
+#[path = "include/bsl/debug_levels.rs"]
+#[doc(hidden)]
+pub mod debug_levels;
+pub use debug_levels::debug_level_is_at_least_v;
+pub use debug_levels::debug_level_is_at_least_vv;
+pub use debug_levels::debug_level_is_at_least_vvv;
+pub use debug_levels::debug_level_is_critical_only;
+
 #[path = "include/bsl/exit_code.rs"]
 #[doc(hidden)]
 pub mod exit_code;
@@ -144,6 +168,7 @@ pub use finally::Finally;
 #[path = "include/bsl/safe_integral.rs"]
 #[doc(hidden)]
 pub mod safe_integral;
+pub use safe_integral::make_safe;
 pub use safe_integral::SafeI16;
 pub use safe_integral::SafeI32;
 pub use safe_integral::SafeI64;
@@ -154,8 +179,6 @@ pub use safe_integral::SafeU32;
 pub use safe_integral::SafeU64;
 pub use safe_integral::SafeU8;
 pub use safe_integral::SafeUMx;
-pub use safe_integral::SafeUPt;
-pub use safe_integral::make_safe;
 #[path = "include/bsl/safe_idx.rs"]
 #[doc(hidden)]
 pub mod safe_idx;
@@ -169,22 +192,21 @@ pub use into_safe_integral::IntoSafeIntegral;
 #[path = "include/bsl/convert.rs"]
 #[doc(hidden)]
 pub mod convert;
-pub use convert::to_i8;
+pub use convert::merge_umx_with_u16;
+pub use convert::merge_umx_with_u32;
+pub use convert::merge_umx_with_u8;
 pub use convert::to_i16;
 pub use convert::to_i32;
 pub use convert::to_i64;
-pub use convert::to_u8;
-pub use convert::to_u8_unsafe;
+pub use convert::to_i8;
+pub use convert::to_idx;
 pub use convert::to_u16;
 pub use convert::to_u16_unsafe;
 pub use convert::to_u32;
 pub use convert::to_u32_unsafe;
 pub use convert::to_u64;
 pub use convert::to_u64_unsafe;
+pub use convert::to_u8;
+pub use convert::to_u8_unsafe;
 pub use convert::to_umx;
 pub use convert::to_umx_unsafe;
-pub use convert::to_upt;
-pub use convert::to_idx;
-pub use convert::merge_umx_with_u8;
-pub use convert::merge_umx_with_u16;
-pub use convert::merge_umx_with_u32;

@@ -28,11 +28,10 @@
 #ifndef BSL_CSTDIO_HPP
 #define BSL_CSTDIO_HPP
 
-#include "bsl/char_type.hpp"
-
 // NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
 #include <stdio.h>
 
+#include <bsl/char_type.hpp>
 #include <bsl/cstdint.hpp>
 #include <bsl/cstr_type.hpp>
 

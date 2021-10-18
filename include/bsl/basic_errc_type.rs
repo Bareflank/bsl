@@ -199,16 +199,16 @@ mod test_basic_errc_type {
 
     #[test]
     fn safe_integral_debug() {
-        println!("{}", BasicErrcType::<i32>::new(0));
-        println!("{:?}", BasicErrcType::<i32>::new(0));
-        println!("{:x?}", BasicErrcType::<i32>::new(0));
-        println!("{:X?}", BasicErrcType::<i32>::new(0));
-        println!("{:o}", BasicErrcType::<i32>::new(0));
-        println!("{:x}", BasicErrcType::<i32>::new(0));
-        println!("{:X}", BasicErrcType::<i32>::new(0));
-        println!("{:b}", BasicErrcType::<i32>::new(0));
-        println!("{:e}", BasicErrcType::<i32>::new(0));
-        println!("{:E}", BasicErrcType::<i32>::new(0));
+        print!("{}\n", BasicErrcType::<i32>::new(0));
+        print!("{:?}\n", BasicErrcType::<i32>::new(0));
+        print!("{:x?}\n", BasicErrcType::<i32>::new(0));
+        print!("{:X?}\n", BasicErrcType::<i32>::new(0));
+        print!("{:o}\n", BasicErrcType::<i32>::new(0));
+        print!("{:x}\n", BasicErrcType::<i32>::new(0));
+        print!("{:X}\n", BasicErrcType::<i32>::new(0));
+        print!("{:b}\n", BasicErrcType::<i32>::new(0));
+        print!("{:e}\n", BasicErrcType::<i32>::new(0));
+        print!("{:E}\n", BasicErrcType::<i32>::new(0));
     }
 
     #[test]

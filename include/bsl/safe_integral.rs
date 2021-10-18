@@ -32,300 +32,9 @@ use core::ops;
 /// @class bsl::safe_integral
 ///
 /// <!-- description -->
-///   @brief Provides a safe implementation of an integral type that
-///     adheres to AUTOSAR's requirement that an integral shall not
-///     overflow, wrap, divide by zero, etc.
-///   @include example_safe_integral_overview.hpp
-///
-/// <!-- notes -->
-///   @note A safe_integral requires that you check the validity of
-///     the integral before you use it. C and C++ do not enforce any
-///     rules with the use of integral types. Rust has the complete
-///     opposite where all operations are checked, and all behavior
-///     is defined and anything that violates this will result in a
-///     panic(). Both are terrible for critical systems as one is
-///     the wild west, and the other is slow at best, and at worst,
-///     is a ticking time bomb in debug mode, and is again, the wild
-///     west in release mode as all validation is disabled (or even
-///     worse, validation is re-enabled in release mode, in which case
-///     the code is slow again and could fast fail which is not allowed)
-///
-///     The difference with this implementation is that only certain
-///     operations require validation, and validation is only required
-///     at the time of use. SEI CERT defines the integer rules used by
-///     both MISRA and AUTOSAR. These rules ensure that optimizations
-///     due to UB are still possible and sane in release mode (unlike
-///     Rust which doesn't have UB for arithmetic), while still ensuring
-///     that arithmetic that would cause a problem are handled properly.
-///     https://wiki.sei.cmu.edu/confluence/pages/viewpage.action?pageId=87151979
-///
-///     The safe_integral implements these rules. For example, all
-///     arithmetic (+, -, *, /, %) must be checked. But all shift
-///     and binary operations are safe to use without the need for
-///     validation. Shift and binary operations are only allowed
-///     on unsigned integers while negation is only allowed on signed
-///     integers. In addition, like with Rust, implicit conversions
-///     from one integer type to another is not allowed. Everything
-///     must be explicit. The convert.hpp/convert.rs contains the
-///     APIs needed for handling safe conversions when needed, and
-///     any loss of data will result in a need to validate.
-///
-///     Validation rules can be seen in the unit tests, but they are
-///     as follows:
-///     - Newly created safe integrals do NOT need validation.
-///     - Shift, binary and compliment operations do NOT need validation.
-///     - Arithmetic requires validation.
-///     - Conversions that loss data require validation.
-///     - Safe conversions do NOT need validation.
-///
-///     Unlike Rust, validations only need to occur at the time of use,
-///     and not at the time of the operation. What this means is that
-///     you can overflow all day long, performing millions of operations.
-///     The compiler is smart enough to track the poison bit (i.e. carry)
-///     bit, removing most if not all of the overhead associated with
-///     the safe integral, meaning safety checks can be enabled in
-///     release mode because operations that never need to be checked
-///     completely optimize away the safe integral while operations that
-///     need validation can still optimize away the safe integral and
-///     simply track the carry bit as needed.
-///
-///     Once you attempt to read the value using get(), is_xxx(),
-///     or any of the rational operators like == and !=, you must
-///     check the integral before you use it. The safe integral in debug
-///     mode tracks whether or not the safe integral needs to be checked
-///     and whether or not you have actually performed this check before
-///     attempting to read the safe integral's internal value. If you
-///     fail to check before reading a safe integral that needs to be
-///     validated based on the SEI CERT rules, or if you attempt to read
-///     an invalid integral, a fast fail using assert will occur.
-///
-///     In release mode, all of the check validations are removed, and
-///     all assertions due to reading invalid integrals are also removed.
-///     The only thing that remains is software can still query the
-///     poisoned bit to ensuring the safe integral is valid. What this
-///     means is that in debug mode, this code ensures, when combined with
-///     good unit tests, that all of your code is properly checking for
-///     validation only when it is needed. Once release mode is turned on
-///     these validations remain and ensure that UB is never executed,
-///     allowing us to safely remove the assertions without having to
-///     simply "cross our fingers" like C, C++ and Rust do today, while
-///     still ensuring that optimizations around this logic are possible.
-///     We even have some binary analysis tests designed to ensure that
-///     we can manually inspect the resulting generated ASM to ensure
-///     optimizations are in fact occurring.
-///
-///     There are some tricks that are important when using the safe
-///     integrals. Any code that performs arithmetic must use the
-///     is_poisoned() function with a mutable variable. For example,
-///     @code
-///     auto mut_val{42_umx + 42_umx}:
-///     if (bsl::unlikely(mut_val.is_poisoned())) {
-///         return handle_error();
-///     }
-///     do_something(mut_val.get());
-///     @endcode
-///
-///     The above code performs some arithmetic, and then needs to read
-///     the results and pass it to do_something(). You cannot read the
-///     until you have told the safe_integral that you have performed
-///     the check, even if the safe_integral is valid, the check must
-///     be performed. When unit testing, if you fail to perform this
-///     check, a fast fail will occur telling you that you are missing
-///     a check. Remember though that not all operations require the
-///     safe integral to be checked. For example, if you use a shift,
-///     or binary operation, you can safely read the integer without
-///     checking (and should as the code can better be optimized by the
-///     compiler). Also, it should be noted that is_poisoned() will flip
-///     a bit in the safe_integral which means that it must be made
-///     mutable.
-///
-///     Sometimes, when you are given a safe integral as an input to a
-///     function, you need to determine what your contract will be. A
-///     wide contract would need to handle the situation where the
-///     integral is invalid and unchecked, but most inputs to a function
-///     are marked as a const. To handle this, you can do the following
-///     when implementing a wide contract:
-///     @code
-///     [[nodiscard]] constexpr auto
-///     foo(bsl::safe_umx const &val) noexcept -> bsl::errc_type
-///     {
-///         auto mut_val{val};
-///         if (bsl::unlikely(mut_val.is_poisoned())) {
-///             return handle_error();
-///         }
-///         do_something(mut_val.get());
-///     }
-///     @endcode
-///
-///     As seen above, we create a mutable version of the variable and
-///     then check (and use) the mutable version only. In release mode,
-///     the compiler will detect that there is no difference between the
-///     two and promote mut_val to a const and optimize as needed.
-///
-///     Another way to handle this case is to simply use a narrow contract
-///     as follows:
-///     @code
-///     constexpr void
-///     foo(bsl::safe_umx const &val) noexcept
-///     {
-///         bsl::expects(val.is_valid_and_checked());
-///         do_something(val.get());
-///     }
-///     @endcode
-///
-///     As seen above, with a narrow contract, you might even be able to
-///     remove the need to return an error. This basically states that
-///     this function expects that val has already been validated and
-///     that this function does not need to do this validation. This is
-///     really important because for most private functions, you do not
-///     want wide contracts. Doing so would result in every function
-///     being huge, and integrals being checked over and over and over
-///     for no reason. Proper unit testing is required to ensure that
-///     these contracts are in fact being adhered to, but in general,
-///     this is likely the best option for private interfaces while
-///     public interfaces should use a wide contract. Note that what
-///     defines a public vs private interface is not based on "public"
-///     vs "private" labels in a class, but rather who will be using the
-///     interface. An API that other people will use (like a library)
-///     should use a wide contract, or a syscall/hypercall interface
-///     should also use an infinitely wide contract. But classes (even with
-///     public APIs) that are private to your kernel, application, etc.
-///     should use narrow contracts.
-///
-///     To support narrow contracts, functions that return a safe integral
-///     should ensure their return value is always checked if arithmetic
-///     is performed. For example:
-///     @code
-///     [[nodiscard]] constexpr auto
-///     foo() noexcept -> bsl::safe_umx
-///     {
-///         auto mut_val{42_umx + 42_umx};
-///         if (bsl::unlikely(mut_val.is_poisoned())) {
-///             return safe_umx::failure();
-///         }
-///
-///         bsl::ensures(mut_val.is_valid_and_checked());
-///         return mut_val;
-///     }
-///     @endcode
-///
-///     In the example above, we are not ensuring that the return value
-///     is always valid. If an error occurs, we will still return
-///     failure(). But we are ensuring that if no error occurs, that the
-///     safe integral that we return will always be valid and checked.
-///     This means that software calling this function can leave the
-///     return value as const:
-///     @code
-///     [[nodiscard]] constexpr auto
-///     bar() noexcept -> bsl::safe_umx
-///     {
-///         auto const val{foo()};
-///         if (bsl::unlikely(val.is_invalid())) {
-///             return safe_umx::failure();
-///         }
-///
-///         do_something(val.get());
-///     }
-///     @endcode
-///
-///     In the example above, the bar function calls foo. Foo will either
-///     return failure(), or a valid and checked safe_umx. In this case,
-///     the bar function can leave the val variable as const and use the
-///     is_invalid()/is_valid() functions instead. If an error occurs,
-///     bar() can handle it without ever reading the value as it can't
-///     because doing so would lead to UB anyways. If no error occurs,
-///     val, by contract, is checked, so bar does not need to perform this
-///     check again. It can safely read the value without an issue.
-///
-///     The above pattern is used A LOT. The rule of thumb is, try to
-///     make ALL safe integrals const. To do this, all functions should
-///     either return failure() on an error, or valid and checked
-///     integrals on success. All function inputs (for private APIs)
-///     should expect valid and checked integrals. Doing so means that
-///     most, if not all safe integrals are marked const, and validation
-///     is done using is_invalid() instead of is_poisoned(), resulting
-///     in cleaner APIs and better optimized code.
-///
-///     You might have noticed that foo() performs math that will never
-///     be invalid. Even though arithmetic is performed, constants are
-///     being used, or some other constraint might have  occurred that
-///     prevents the branch in foo from ever being taken. You can see this
-///     in a unit test as you will never be able to trigger this branch no
-///     matter what input you provide the function. These situations can
-///     also occur a lot. To handle these, we provide the checked()
-///     function as follows:
-///     @code
-///     [[nodiscard]] constexpr auto
-///     foo() noexcept -> bsl::safe_umx
-///     {
-///         auto const val{(42_umx + 42_umx).checked()};
-///         return val;
-///     }
-///     @endcode
-///
-///     In the code above, since val will always be valid, we can safely
-///     use the checked() function, which returns a checked() version of
-///     the safe_integral that results from the arithmetic. Since the
-///     result is checked, foo() can now set val to const, as it has
-///     already been checked and doesn't need to be checked again. We
-///     also don't need the bsl::ensures() to enforce our contract. This
-///     is because the checked() function is doing this for use. If the
-///     result is actually invalid, the same assert() will trigger,
-///     meaning if you accidentally mark arithmetic that actually can
-///     become invalid as checked, the checked() function will detect this
-///     and yell at you the same way the bsl::ensures() statement would
-///     have.
-///
-///     If you look at the hypervisor repo, we rarely need mutable
-///     variables. Most safe integrals are IDs, or other values that
-///     are either failure(), or valid and checked, and so they are
-///     always const. Most functions use narrow contracts, meaning they
-///     always assume they are given valid and checked safe integrals,
-///     and they always ensure they return valid and safe integrals.
-///     This results in simple APIs and insanely optimized code, while
-///     allowing us to use runtime overflow checks in release mode as
-///     MISRA and AUTOSAR require without fast failing which is also
-///     not allowed.
-///
-///     Finally, there is one more thing to talk about, and that is
-///     indexes. For loops do a lot of math that WILL NEVER result in
-///     an invalid safe integral. For example
-///     @code
-///     for (bsl::safe_idx mut_i{}; mut_i < 5_umx; ++mut_i) {
-///         do_something(array.at_if(mut_i));
-///     }
-///     @endcode
-///
-///     The safe_idx implements a safe integral, but with a limited API.
-///     Unlike a safe integral, a safe_idx can only perform +, -, ++, --
-///     and the rational operators. Nothing else. But, as a result, you
-///     are not required to check the results of arithmetic. This is
-///     because most of the time, indexes will never overflow. Ever. In
-///     the example above, we loop from 0 to 5. This arithmetic is
-///     bounded and therefore will never overflow. As also shown above,
-///     you can mix a safe_idx with a safe_umx using the rational
-///     operators. This is because most size() and length() functions
-///     will return a safe_umx. If, however, you need to convert a safe
-///     integral into a safe_idx, it is allowed, but the conversion is
-///     checked for validity in debug mode to ensure that you are not
-///     creating an invalid safe_idx as that is not allowed. In fact,
-///     the safe_idx does not have a failure() function, nor does it
-///     have any of the checked or validation functions with the exception
-///     to is_invalid, which is needed internally for the above mentioned
-///     sanity checks (and sadly, AUTOSAR does not allow friend functions
-///     so is_invalid must be made public).
-///
-///     The point is, a safe_idx provides a very narrow contract. You
-///     can use it for for loops without having to check your arithmetic,
-///     and it is used to index into data structures which means these
-///     data structures will not accept invalid safe integrals (although
-///     that is the case for pretty much all of the BSL APIs with the
-///     exception to things like bsl::print() and friends which will
-///     output an error instead). The poisoned bit for a safe integral is
-///     still there, and likely is optimized out as it is almost never
-///     used outside of some rare situations, but as a result, the API
-///     is very limited, only really allowing you to use the safe_idx
-///     as an index and nothing more.
+///   @brief Please see safe_integral.hpp for a complete set of details as to
+///     what this class is, and how to use it. The C++ description still
+///     applies for Rust.
 ///
 /// <!-- template parameters -->
 ///   @tparam T the integral type to encapsulate.
@@ -362,7 +71,9 @@ where
     }
 
     #[cfg(not(debug_assertions))]
-    fn verify_poison_has_been_checked(_sloc: SourceLocation) {}
+    fn verify_poison_has_been_checked(&self, _sloc: SourceLocation) {
+        crate::discard(self);
+    }
 
     #[cfg(debug_assertions)]
     fn mark_as_unchecked(&mut self) {
@@ -370,7 +81,9 @@ where
     }
 
     #[cfg(not(debug_assertions))]
-    fn mark_as_unchecked() {}
+    fn mark_as_unchecked(&mut self) {
+        crate::discard(self);
+    }
 
     #[cfg(debug_assertions)]
     fn mark_as_checked_if_valid(&mut self) {
@@ -378,7 +91,9 @@ where
     }
 
     #[cfg(not(debug_assertions))]
-    fn mark_as_checked_if_valid() {}
+    fn mark_as_checked_if_valid(&mut self) {
+        crate::discard(self);
+    }
 }
 
 impl<T> SafeIntegral<T>
@@ -646,7 +361,31 @@ where
     pub fn get(&self) -> T {
         return self.get_with_sloc(crate::here());
     }
+}
 
+impl<T> SafeIntegral<T>
+where
+    T: Sized,
+{
+    /// <!-- description -->
+    ///   @brief Returns the value stored by the bsl::SafeIntegral.
+    ///     Attempting to get the value of an invalid SafeIntegral
+    ///     results in undefined behavior.
+    ///
+    /// <!-- inputs/outputs -->
+    ///   @return Returns the value stored by the bsl::SafeIntegral.
+    ///     Attempting to get the value of an invalid SafeIntegral
+    ///     results in undefined behavior.
+    ///
+    pub const fn get_unsafe(&self) -> &T {
+        return &self.m_val;
+    }
+}
+
+impl<T> SafeIntegral<T>
+where
+    T: Integer,
+{
     /// <!-- description -->
     ///   @brief Returns true if the SafeIntegral is positive.
     ///     Attempting to run is_pos on an invalid SafeIntegral
@@ -811,7 +550,6 @@ where
     pub fn checked(&self) -> Self {
         if self.m_poisoned {
             crate::assert("a poisoned SafeIntegral was read", crate::here());
-            return *self;
         }
 
         return Self {
@@ -1322,88 +1060,106 @@ where
 // Shift
 // -----------------------------------------------------------------------------
 
-impl<T> ops::ShlAssign<SafeIntegral<u32>> for SafeIntegral<T>
+impl<T> ops::ShlAssign<SafeIntegral<T>> for SafeIntegral<T>
 where
     T: UnsignedInteger,
 {
-    fn shl_assign(&mut self, rhs: SafeIntegral<u32>) {
-        self.m_val = self.m_val.shl_wrapping(rhs.m_val);
+    fn shl_assign(&mut self, rhs: SafeIntegral<T>) {
+        match rhs.m_val.into_u32() {
+            Some(v) => self.m_val = self.m_val.shl_wrapping(v),
+            None => *self = SafeIntegral::<T>::default(),
+        }
+
         self.update_poisoned(rhs.is_invalid());
         self.mark_as_checked_if_valid();
     }
 }
 
-impl<T> ops::ShlAssign<u32> for SafeIntegral<T>
+impl<T> ops::ShlAssign<T> for SafeIntegral<T>
 where
     T: UnsignedInteger,
 {
-    fn shl_assign(&mut self, rhs: u32) {
-        self.m_val = self.m_val.shl_wrapping(rhs);
+    fn shl_assign(&mut self, rhs: T) {
+        match rhs.into_u32() {
+            Some(v) => self.m_val = self.m_val.shl_wrapping(v),
+            None => *self = SafeIntegral::<T>::default(),
+        }
+
+        self.mark_as_checked_if_valid();
     }
 }
 
-impl<T> ops::Shl<SafeIntegral<u32>> for SafeIntegral<T>
+impl<T> ops::Shl<SafeIntegral<T>> for SafeIntegral<T>
 where
     T: UnsignedInteger,
 {
     type Output = SafeIntegral<T>;
-    fn shl(self, rhs: SafeIntegral<u32>) -> Self::Output {
+    fn shl(self, rhs: SafeIntegral<T>) -> Self::Output {
         let mut ret = self.clone();
         ret <<= rhs;
         return ret;
     }
 }
 
-impl<T> ops::Shl<u32> for SafeIntegral<T>
+impl<T> ops::Shl<T> for SafeIntegral<T>
 where
     T: UnsignedInteger,
 {
     type Output = SafeIntegral<T>;
-    fn shl(self, rhs: u32) -> Self::Output {
+    fn shl(self, rhs: T) -> Self::Output {
         let mut ret = self.clone();
         ret <<= rhs;
         return ret;
     }
 }
 
-impl<T> ops::ShrAssign<SafeIntegral<u32>> for SafeIntegral<T>
+impl<T> ops::ShrAssign<SafeIntegral<T>> for SafeIntegral<T>
 where
     T: UnsignedInteger,
 {
-    fn shr_assign(&mut self, rhs: SafeIntegral<u32>) {
-        self.m_val = self.m_val.shr_wrapping(rhs.m_val);
+    fn shr_assign(&mut self, rhs: SafeIntegral<T>) {
+        match rhs.m_val.into_u32() {
+            Some(v) => self.m_val = self.m_val.shr_wrapping(v),
+            None => *self = SafeIntegral::<T>::default(),
+        }
+
         self.update_poisoned(rhs.is_invalid());
         self.mark_as_checked_if_valid();
     }
 }
 
-impl<T> ops::ShrAssign<u32> for SafeIntegral<T>
+impl<T> ops::ShrAssign<T> for SafeIntegral<T>
 where
     T: UnsignedInteger,
 {
-    fn shr_assign(&mut self, rhs: u32) {
-        self.m_val = self.m_val.shr_wrapping(rhs);
+    fn shr_assign(&mut self, rhs: T) {
+        match rhs.into_u32() {
+            Some(v) => self.m_val = self.m_val.shr_wrapping(v),
+            None => *self = SafeIntegral::<T>::default(),
+        }
+
+        self.mark_as_checked_if_valid();
     }
 }
 
-impl<T> ops::Shr<SafeIntegral<u32>> for SafeIntegral<T>
+impl<T> ops::Shr<SafeIntegral<T>> for SafeIntegral<T>
 where
     T: UnsignedInteger,
 {
     type Output = SafeIntegral<T>;
-    fn shr(self, rhs: SafeIntegral<u32>) -> Self::Output {
+    fn shr(self, rhs: SafeIntegral<T>) -> Self::Output {
         let mut ret = self.clone();
         ret >>= rhs;
         return ret;
     }
 }
 
-impl<T> ops::Shr<u32> for SafeIntegral<T>
+impl<T> ops::Shr<T> for SafeIntegral<T>
 where
     T: UnsignedInteger,
 {
     type Output = SafeIntegral<T>;
-    fn shr(self, rhs: u32) -> Self::Output {
+    fn shr(self, rhs: T) -> Self::Output {
         let mut ret = self.clone();
         ret >>= rhs;
         return ret;
@@ -1780,26 +1536,26 @@ mod safe_integral_tests {
     where
         T: Integer,
     {
-        println!("{}", SafeIntegral::<T>::magic_1());
-        println!("{}", SafeIntegral::<T>::failure());
-        println!("{:?}", SafeIntegral::<T>::magic_1());
-        println!("{:?}", SafeIntegral::<T>::failure());
-        println!("{:x?}", SafeIntegral::<T>::magic_1());
-        println!("{:x?}", SafeIntegral::<T>::failure());
-        println!("{:X?}", SafeIntegral::<T>::magic_1());
-        println!("{:X?}", SafeIntegral::<T>::failure());
-        println!("{:o}", SafeIntegral::<T>::magic_1());
-        println!("{:o}", SafeIntegral::<T>::failure());
-        println!("{:x}", SafeIntegral::<T>::magic_1());
-        println!("{:x}", SafeIntegral::<T>::failure());
-        println!("{:X}", SafeIntegral::<T>::magic_1());
-        println!("{:X}", SafeIntegral::<T>::failure());
-        println!("{:b}", SafeIntegral::<T>::magic_1());
-        println!("{:b}", SafeIntegral::<T>::failure());
-        println!("{:e}", SafeIntegral::<T>::magic_1());
-        println!("{:e}", SafeIntegral::<T>::failure());
-        println!("{:E}", SafeIntegral::<T>::magic_1());
-        println!("{:E}", SafeIntegral::<T>::failure());
+        print!("{}\n", SafeIntegral::<T>::magic_1());
+        print!("{}\n", SafeIntegral::<T>::failure());
+        print!("{:?}\n", SafeIntegral::<T>::magic_1());
+        print!("{:?}\n", SafeIntegral::<T>::failure());
+        print!("{:x?}\n", SafeIntegral::<T>::magic_1());
+        print!("{:x?}\n", SafeIntegral::<T>::failure());
+        print!("{:X?}\n", SafeIntegral::<T>::magic_1());
+        print!("{:X?}\n", SafeIntegral::<T>::failure());
+        print!("{:o}\n", SafeIntegral::<T>::magic_1());
+        print!("{:o}\n", SafeIntegral::<T>::failure());
+        print!("{:x}\n", SafeIntegral::<T>::magic_1());
+        print!("{:x}\n", SafeIntegral::<T>::failure());
+        print!("{:X}\n", SafeIntegral::<T>::magic_1());
+        print!("{:X}\n", SafeIntegral::<T>::failure());
+        print!("{:b}\n", SafeIntegral::<T>::magic_1());
+        print!("{:b}\n", SafeIntegral::<T>::failure());
+        print!("{:e}\n", SafeIntegral::<T>::magic_1());
+        print!("{:e}\n", SafeIntegral::<T>::failure());
+        print!("{:E}\n", SafeIntegral::<T>::magic_1());
+        print!("{:E}\n", SafeIntegral::<T>::failure());
     }
 
     #[test]
@@ -1926,6 +1682,27 @@ mod safe_integral_tests {
         safe_integral_get_for_t::<u32>();
         safe_integral_get_for_t::<u64>();
         safe_integral_get_for_t::<usize>();
+    }
+
+    fn safe_integral_get_unsafe_for_t<T>()
+    where
+        T: Integer,
+    {
+        let val = SafeIntegral::new(T::magic_1());
+        assert!(*val.get_unsafe() == T::magic_1());
+    }
+
+    #[test]
+    fn safe_integral_get_unsafe() {
+        safe_integral_get_unsafe_for_t::<i8>();
+        safe_integral_get_unsafe_for_t::<i16>();
+        safe_integral_get_unsafe_for_t::<i32>();
+        safe_integral_get_unsafe_for_t::<i64>();
+        safe_integral_get_unsafe_for_t::<u8>();
+        safe_integral_get_unsafe_for_t::<u16>();
+        safe_integral_get_unsafe_for_t::<u32>();
+        safe_integral_get_unsafe_for_t::<u64>();
+        safe_integral_get_unsafe_for_t::<usize>();
     }
 
     fn safe_integral_is_queries_for_t<T>()
@@ -2393,32 +2170,32 @@ mod safe_integral_tests {
         T: UnsignedInteger,
     {
         let mut val = SafeIntegral::<T>::magic_1();
-        val <<= SafeIntegral::<u32>::magic_1();
+        val <<= SafeIntegral::<T>::magic_1();
         assert!(val == T::magic_2());
 
         let mut val = SafeIntegral::<T>::magic_1();
-        val <<= SafeIntegral::<u32>::max_value();
+        val <<= SafeIntegral::<T>::max_value();
         assert!(val.is_valid_and_checked());
 
         let val = SafeIntegral::<T>::magic_1();
-        assert!((val << SafeIntegral::<u32>::magic_1()) == T::magic_2());
+        assert!((val << SafeIntegral::<T>::magic_1()) == T::magic_2());
 
         let val = SafeIntegral::<T>::magic_1();
-        assert!((val << SafeIntegral::<u32>::max_value()).is_valid_and_checked());
+        assert!((val << SafeIntegral::<T>::max_value()).is_valid_and_checked());
 
         let mut val = SafeIntegral::<T>::magic_1();
-        val <<= u32::magic_1();
+        val <<= T::magic_1();
         assert!(val == T::magic_2());
 
         let mut val = SafeIntegral::<T>::magic_2();
-        val <<= u32::max_value();
+        val <<= T::max_value();
         assert!(val.is_valid_and_checked());
 
         let val = SafeIntegral::<T>::magic_1();
-        assert!((val << u32::magic_1()) == T::magic_2());
+        assert!((val << T::magic_1()) == T::magic_2());
 
         let val = SafeIntegral::<T>::magic_2();
-        assert!((val << u32::max_value()).is_valid_and_checked());
+        assert!((val << T::max_value()).is_valid_and_checked());
     }
 
     #[test]
@@ -2435,32 +2212,32 @@ mod safe_integral_tests {
         T: UnsignedInteger,
     {
         let mut val = SafeIntegral::<T>::magic_2();
-        val >>= SafeIntegral::<u32>::magic_1();
+        val >>= SafeIntegral::<T>::magic_1();
         assert!(val == T::magic_1());
 
         let mut val = SafeIntegral::<T>::magic_2();
-        val >>= SafeIntegral::<u32>::max_value();
+        val >>= SafeIntegral::<T>::max_value();
         assert!(val.is_valid_and_checked());
 
         let val = SafeIntegral::<T>::magic_2();
-        assert!((val >> SafeIntegral::<u32>::magic_1()) == T::magic_1());
+        assert!((val >> SafeIntegral::<T>::magic_1()) == T::magic_1());
 
         let val = SafeIntegral::<T>::magic_2();
-        assert!((val >> SafeIntegral::<u32>::max_value()).is_valid_and_checked());
+        assert!((val >> SafeIntegral::<T>::max_value()).is_valid_and_checked());
 
         let mut val = SafeIntegral::<T>::magic_2();
-        val >>= u32::magic_1();
+        val >>= T::magic_1();
         assert!(val == T::magic_1());
 
         let mut val = SafeIntegral::<T>::magic_2();
-        val >>= u32::max_value();
+        val >>= T::max_value();
         assert!(val.is_valid_and_checked());
 
         let val = SafeIntegral::<T>::magic_2();
-        assert!((val >> u32::magic_1()) == T::magic_1());
+        assert!((val >> T::magic_1()) == T::magic_1());
 
         let val = SafeIntegral::<T>::magic_2();
-        assert!((val >> u32::max_value()).is_valid_and_checked());
+        assert!((val >> T::max_value()).is_valid_and_checked());
     }
 
     #[test]
@@ -2989,69 +2766,69 @@ mod safe_integral_policy_tests {
     where
         T: UnsignedInteger,
     {
-        let val = SafeIntegral::<T>::magic_1() << SafeIntegral::<u32>::magic_1();
+        let val = SafeIntegral::<T>::magic_1() << SafeIntegral::<T>::magic_1();
         assert_eq!(val.is_checked(), true);
-        let val = SafeIntegral::<T>::magic_1() << u32::magic_1();
-        assert_eq!(val.is_checked(), true);
-        let mut val = SafeIntegral::<T>::magic_1();
-        val <<= SafeIntegral::<u32>::magic_1();
+        let val = SafeIntegral::<T>::magic_1() << T::magic_1();
         assert_eq!(val.is_checked(), true);
         let mut val = SafeIntegral::<T>::magic_1();
-        val <<= u32::magic_1();
+        val <<= SafeIntegral::<T>::magic_1();
+        assert_eq!(val.is_checked(), true);
+        let mut val = SafeIntegral::<T>::magic_1();
+        val <<= T::magic_1();
         assert_eq!(val.is_checked(), true);
 
-        let val = SafeIntegral::<T>::failure() << SafeIntegral::<u32>::magic_1();
+        let val = SafeIntegral::<T>::failure() << SafeIntegral::<T>::magic_1();
         assert_eq!(val.is_checked(), false);
         assert_eq!(val.is_valid(), false);
-        let val = SafeIntegral::<T>::magic_1() << SafeIntegral::<u32>::failure();
+        let val = SafeIntegral::<T>::magic_1() << SafeIntegral::<T>::failure();
         assert_eq!(val.is_checked(), false);
         assert_eq!(val.is_valid(), false);
-        let val = SafeIntegral::<T>::failure() << u32::magic_1();
+        let val = SafeIntegral::<T>::failure() << T::magic_1();
         assert_eq!(val.is_checked(), false);
         assert_eq!(val.is_valid(), false);
         let mut val = SafeIntegral::<T>::failure();
-        val <<= SafeIntegral::<u32>::magic_1();
+        val <<= SafeIntegral::<T>::magic_1();
         assert_eq!(val.is_checked(), false);
         assert_eq!(val.is_valid(), false);
         let mut val = SafeIntegral::<T>::magic_1();
-        val <<= SafeIntegral::<u32>::failure();
+        val <<= SafeIntegral::<T>::failure();
         assert_eq!(val.is_checked(), false);
         assert_eq!(val.is_valid(), false);
         let mut val = SafeIntegral::<T>::failure();
-        val <<= u32::magic_1();
+        val <<= T::magic_1();
         assert_eq!(val.is_checked(), false);
         assert_eq!(val.is_valid(), false);
 
-        let val = SafeIntegral::<T>::magic_1() >> SafeIntegral::<u32>::magic_1();
+        let val = SafeIntegral::<T>::magic_1() >> SafeIntegral::<T>::magic_1();
         assert_eq!(val.is_checked(), true);
-        let val = SafeIntegral::<T>::magic_1() >> u32::magic_1();
-        assert_eq!(val.is_checked(), true);
-        let mut val = SafeIntegral::<T>::magic_1();
-        val >>= SafeIntegral::<u32>::magic_1();
+        let val = SafeIntegral::<T>::magic_1() >> T::magic_1();
         assert_eq!(val.is_checked(), true);
         let mut val = SafeIntegral::<T>::magic_1();
-        val >>= u32::magic_1();
+        val >>= SafeIntegral::<T>::magic_1();
+        assert_eq!(val.is_checked(), true);
+        let mut val = SafeIntegral::<T>::magic_1();
+        val >>= T::magic_1();
         assert_eq!(val.is_checked(), true);
 
-        let val = SafeIntegral::<T>::failure() >> SafeIntegral::<u32>::magic_1();
+        let val = SafeIntegral::<T>::failure() >> SafeIntegral::<T>::magic_1();
         assert_eq!(val.is_checked(), false);
         assert_eq!(val.is_valid(), false);
-        let val = SafeIntegral::<T>::magic_1() >> SafeIntegral::<u32>::failure();
+        let val = SafeIntegral::<T>::magic_1() >> SafeIntegral::<T>::failure();
         assert_eq!(val.is_checked(), false);
         assert_eq!(val.is_valid(), false);
-        let val = SafeIntegral::<T>::failure() >> u32::magic_1();
+        let val = SafeIntegral::<T>::failure() >> T::magic_1();
         assert_eq!(val.is_checked(), false);
         assert_eq!(val.is_valid(), false);
         let mut val = SafeIntegral::<T>::failure();
-        val >>= SafeIntegral::<u32>::magic_1();
+        val >>= SafeIntegral::<T>::magic_1();
         assert_eq!(val.is_checked(), false);
         assert_eq!(val.is_valid(), false);
         let mut val = SafeIntegral::<T>::magic_1();
-        val >>= SafeIntegral::<u32>::failure();
+        val >>= SafeIntegral::<T>::failure();
         assert_eq!(val.is_checked(), false);
         assert_eq!(val.is_valid(), false);
         let mut val = SafeIntegral::<T>::failure();
-        val >>= u32::magic_1();
+        val >>= T::magic_1();
         assert_eq!(val.is_checked(), false);
         assert_eq!(val.is_valid(), false);
     }

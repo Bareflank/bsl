@@ -58,11 +58,11 @@ main(bsl::int32 const argc, bsl::cstr_type const *const argv) noexcept
     }
 
     for (bsl::safe_idx mut_i{}; mut_i < mut_arr.size(); ++mut_i) {
-        bsl::print() << " elem["                                    // --
-                        << mut_i                                       // --
-                        << "] == "                                     // --
-                        << bsl::fmt{"#010x", *mut_arr.at_if(mut_i)}    // --
-                        << bsl::endl;                                  // --
+        bsl::print() << "elem["                                    
+                     << mut_i                                       
+                     << "] == "                                     
+                     << bsl::fmt{"#010x", *mut_arr.at_if(mut_i)}    
+                     << bsl::endl;                                  
     }
 
     return bsl::exit_success;

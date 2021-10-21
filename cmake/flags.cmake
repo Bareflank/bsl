@@ -36,7 +36,7 @@ list(APPEND BSL_WARNINGS
     -Wno-invalid-constexpr
     -Wno-microsoft-include
     -Wno-unknown-warning-option
-    -fconstexpr-steps=134217728
+    -fconstexpr-steps=268435456
 )
 
 list(APPEND BSL_DOXYGEN_FLAGS

@@ -25,9 +25,9 @@
 #ifndef BSL_TYPENAME_HPP
 #define BSL_TYPENAME_HPP
 
-#include <bsl/string_view.hpp>
 #include <bsl/convert.hpp>
 #include <bsl/safe_idx.hpp>
+#include <bsl/string_view.hpp>
 
 namespace bsl
 {

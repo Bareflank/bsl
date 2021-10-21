@@ -89,6 +89,8 @@ pub trait Integer:
 
 pub trait SignedInteger: Integer + core::ops::Neg<Output = Self> {
     fn magic_neg_1() -> Self;
+    fn magic_neg_2() -> Self;
+    fn magic_neg_3() -> Self;
     fn neg_checked(self) -> Option<Self>;
 }
 
@@ -205,6 +207,12 @@ impl SignedInteger for i8 {
     fn magic_neg_1() -> Self {
         return -1;
     }
+    fn magic_neg_2() -> Self {
+        return -2;
+    }
+    fn magic_neg_3() -> Self {
+        return -3;
+    }
     fn neg_checked(self) -> Option<Self> {
         return self.checked_neg();
     }
@@ -303,6 +311,12 @@ impl Integer for i16 {
 impl SignedInteger for i16 {
     fn magic_neg_1() -> Self {
         return -1;
+    }
+    fn magic_neg_2() -> Self {
+        return -2;
+    }
+    fn magic_neg_3() -> Self {
+        return -3;
     }
     fn neg_checked(self) -> Option<Self> {
         return self.checked_neg();
@@ -411,6 +425,12 @@ impl Integer for i32 {
 impl SignedInteger for i32 {
     fn magic_neg_1() -> Self {
         return -1;
+    }
+    fn magic_neg_2() -> Self {
+        return -2;
+    }
+    fn magic_neg_3() -> Self {
+        return -3;
     }
     fn neg_checked(self) -> Option<Self> {
         return self.checked_neg();
@@ -528,6 +548,12 @@ impl Integer for i64 {
 impl SignedInteger for i64 {
     fn magic_neg_1() -> Self {
         return -1;
+    }
+    fn magic_neg_2() -> Self {
+        return -2;
+    }
+    fn magic_neg_3() -> Self {
+        return -3;
     }
     fn neg_checked(self) -> Option<Self> {
         return self.checked_neg();

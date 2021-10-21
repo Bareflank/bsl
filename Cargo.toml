@@ -1,6 +1,6 @@
 [package]
 name = "bsl"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2018"
 
 [lib]
@@ -15,3 +15,6 @@ debug_level_vv = []
 debug_level_vvv = []
 disable_color = []
 release_mode = []
+AuthenticAMD = []
+GenuineIntel = []
+custom_print_thread_id = []

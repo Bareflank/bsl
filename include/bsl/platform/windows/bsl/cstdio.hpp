@@ -28,11 +28,11 @@
 #ifndef BSL_CSTDIO_HPP
 #define BSL_CSTDIO_HPP
 
-#include "bsl/char_type.hpp"
-
 // NOLINTNEXTLINE(hicpp-deprecated-headers, modernize-deprecated-headers)
 #include <stdio.h>
 
+#include <bsl/char_type.hpp>
+#include <bsl/cstdint.hpp>
 #include <bsl/cstr_type.hpp>
 
 namespace bsl
@@ -59,11 +59,7 @@ namespace bsl
     constexpr void
     stdio_out_cstr(bsl::cstr_type const str, bsl::uintmx const len) noexcept
     {
-        if (bsl::is_constant_evaluated()) {
-            return;
-        }
-
-        syscall::bf_debug_op_write_str_impl(str, len);
+        return ::fprintf(stdout, "%*.*s", len, len, str);
     }
 }
 

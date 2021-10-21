@@ -22,23 +22,61 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 
-#include <bsl/add_const.hpp>
+#include <bsl/arguments.hpp>
+#include <bsl/array.hpp>
+#include <bsl/convert.hpp>
+#include <bsl/cstr_type.hpp>
 #include <bsl/debug.hpp>
-#include <bsl/is_same.hpp>
+#include <bsl/exit_code.hpp>
+#include <bsl/safe_idx.hpp>
+#include <bsl/safe_integral.hpp>
+#include <bsl/unlikely.hpp>
 
 namespace bsl
 {
     /// <!-- description -->
-    ///   @brief Provides the example's main function
+    ///   @brief Provides the example's main function (for the readme)
     ///
-    inline void
-    example_add_const_overview() noexcept
+    /// <!-- inputs/outputs -->
+    ///   @param argc the total number of arguments given to main
+    ///   @param argv the arguments given to main
+    ///   @return Returns bsl::exit_success on success, bsl::exit_failure
+    ///     on failure.
+    ///
+    [[nodiscard]] constexpr auto
+    example_main(bsl::int32 const argc, bsl::cstr_type const *const argv) noexcept -> bsl::exit_code
     {
-        if constexpr (bsl::is_same<bsl::add_const_t<bool>, bool const>::value) {
-            bsl::print() << "success\n";
+        constexpr auto num_expected_args{2_umx};
+        bsl::arguments const args{argc, argv};
+
+        if (args.size() < num_expected_args) {
+            bsl::error() << "Invalid number of args" << bsl::endl << bsl::here();
+            return bsl::exit_failure;
         }
-        else {
-            bsl::error() << "failure\n";
+
+        constexpr auto index_of_arg{1_umx};
+        auto const val{args.at<bsl::safe_i32>(index_of_arg)};
+
+        if (bsl::unlikely(val.is_invalid())) {
+            bsl::error() << "Invalid arg" << bsl::endl << bsl::here();
+            return bsl::exit_failure;
         }
+
+        constexpr auto size_of_arr{42_umx};
+        bsl::array<bsl::safe_i32, size_of_arr.get()> mut_arr{};
+
+        for (auto &mut_elem : mut_arr) {
+            mut_elem = val;
+        }
+
+        for (bsl::safe_idx mut_i{}; mut_i < mut_arr.size(); ++mut_i) {
+            bsl::print() << " elem["                                    // --
+                         << mut_i                                       // --
+                         << "] == "                                     // --
+                         << bsl::fmt{"#010x", *mut_arr.at_if(mut_i)}    // --
+                         << bsl::endl;                                  // --
+        }
+
+        return bsl::exit_success;
     }
 }

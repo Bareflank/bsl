@@ -22,51 +22,47 @@ Enjoy:
 ``` c++
 #include <bsl/arguments.hpp>
 #include <bsl/array.hpp>
-#include <bsl/as_const.hpp>
-#include <bsl/cstr_type.hpp>
 #include <bsl/convert.hpp>
+#include <bsl/cstr_type.hpp>
 #include <bsl/debug.hpp>
 #include <bsl/exit_code.hpp>
-#include <bsl/fmt.hpp>
+#include <bsl/safe_idx.hpp>
 #include <bsl/safe_integral.hpp>
 #include <bsl/unlikely.hpp>
 
 [[nodiscard]] auto
-main(bsl::int32 const argc, bsl::cstr_type const argv[]) noexcept -> bsl::exit_code
+main(bsl::int32 const argc, bsl::cstr_type const *const argv) noexcept
+    -> bsl::exit_code
 {
     constexpr auto num_expected_args{2_umx};
     bsl::arguments const args{argc, argv};
 
     if (args.size() < num_expected_args) {
-        bsl::error() << "This application expected 2 arguments\n";
+        bsl::error() << "Invalid number of args" << bsl::endl << bsl::here();
         return bsl::exit_failure;
     }
-
-    constexpr auto size_of_arr{42_umx};
-    bsl::array<bsl::safe_i32, size_of_arr.get()> arr{};
 
     constexpr auto index_of_arg{1_umx};
     auto const val{args.at<bsl::safe_i32>(index_of_arg)};
 
-    if (bsl::unlikely(!val)) {
-        bsl::error() << "Invalid argument\n";
+    if (bsl::unlikely(val.is_invalid())) {
+        bsl::error() << "Invalid arg" << bsl::endl << bsl::here();
         return bsl::exit_failure;
     }
 
-    for (auto const elem : arr) {
-        if (bsl::unlikely(nullptr == elem.data)) {
-            bsl::error() << "Impossible when using ranged loops.\n";
-            return bsl::exit_failure;
-        }
+    constexpr auto size_of_arr{42_umx};
+    bsl::array<bsl::safe_i32, size_of_arr.get()> mut_arr{};
 
-        *elem.data = val;
+    for (auto &mut_elem : mut_arr) {
+        mut_elem = val;
     }
 
-    for (auto const elem : bsl::as_const(arr)) {
-        bsl::print() << elem.index
-                     << " = "
-                     << bsl::fmt{"#010x", *elem.data}
-                     << bsl::endl;
+    for (bsl::safe_idx mut_i{}; mut_i < mut_arr.size(); ++mut_i) {
+        bsl::print() << " elem["                                    // --
+                        << mut_i                                       // --
+                        << "] == "                                     // --
+                        << bsl::fmt{"#010x", *mut_arr.at_if(mut_i)}    // --
+                        << bsl::endl;                                  // --
     }
 
     return bsl::exit_success;
@@ -145,7 +141,7 @@ tests() noexcept -> bsl::exit_code
             bsl::ut_when{} = [&]() noexcept {
                 data2 += data1;
                 bsl::ut_then{} = [&]() noexcept {
-                    bsl::ut_check(data2 == data1);
+                    bsl::ut_check(data2.checked() == data1);
                 };
             };
         };
@@ -168,10 +164,10 @@ main() noexcept -> bsl::exit_code
 
 Using this pattern, all unit tests will be executed at both compile-time and at runtime, allowing you to use things like code coverage tools to ensure complete coverage of your unit tests.
 
-If you think this is impossible in any real-world example, take a look at the [Bareflank Hypervisor](https://github.com/Bareflank/hypervisor). This is not a simple "Hello World" application, but instead is a hypervisor microkernel, complete with paging, ASM logic, etc. With a couple small exceptions (like virtual address to physical address conversions), all of the C++ code in this repro is tested at compile-time.
+If you think this is impossible in any real-world example, take a look at the [Bareflank Hypervisor](https://github.com/Bareflank/hypervisor). This is not a simple "Hello World" application, but instead is a hypervisor microkernel, complete with paging, ASM logic, etc. With a couple small exceptions (like virtual address to physical address conversions), all of the C++ code in this repro is tested at compile-time with 100% code coverage including branch coverage.
 
 ## **AUTOSAR Compliance**
-The BSL is mostly compliant with AUTOSAR, and in a lot of ways far exceeds the AUTOSAR rules. This means the BSL is one of the few, if not the only partial C++ libraries that is AUTOSAR compliant in open source. There are some rules that are not adhered to:
+The BSL is mostly compliant with AUTOSAR, and in a lot of ways far exceeds the AUTOSAR rules. This means the BSL is one of the few, if not the only partial C++ libraries in open source that is AUTOSAR compliant. There are some rules that are not adhered to:
 - The BSL uses C++20. Without C++20, constexpr unit testing would not be possible. AUTOSAR requires the use of C++14. The advantages of "constexpr everything" for safety far out-weight the disadvantages of needing an exception to this rule. To ensure as much compliance as possible, the BSL avoids most of the new features added with C++17 and C++20  and will wait until a new AUTOSAR/MISRA specification is available to provide proper guidance.
 - Since C++14 is not used, issues with things like `auto i{};` are fixed and therefor allowed. Two's compliment as well. This does not mean that all uses of `auto` are allowed as a number of rules still exist around `auto` that have nothing to do with the ambiguity issues with `auto i{};` in C++14.
 - Some user-defined literals are provided for initializing fixed-width integrals. How this is done to ensure there are no issues with initializing variables can be found in the [convert.hpp](https://github.com/Bareflank/bsl/blob/master/include/bsl/convert.hpp#L900) header file, but the short story is, it is absolutely possible to create safe user-defined literals if raw literals are used (instead of their cooked counterparts). Raw literals require the code to manually parse the literal's tokens and thanks to C++20's extensive support for constexpr, this is all possible at compile-time.
@@ -183,7 +179,6 @@ The BSL is mostly compliant with AUTOSAR, and in a lot of ways far exceeds the A
 [![Join the chat](https://img.shields.io/badge/chat-on%20Slack-brightgreen.svg)](https://bareflank.herokuapp.com/)
 
 The Bareflank Support Library provides a ton of useful resources to learn how to use the library including:
--   **Documentation**: <https://bareflank.github.io/bsl/>
 -   **Examples**: <https://github.com/Bareflank/bsl/tree/master/examples>
 -   **Unit Tests**: <https://github.com/Bareflank/bsl/tree/master/tests>
 

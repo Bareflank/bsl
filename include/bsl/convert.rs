@@ -19,6 +19,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 use crate::Integer;
+use crate::IntoSafeIntegral;
 use crate::SafeI16;
 use crate::SafeI32;
 use crate::SafeI64;
@@ -30,9 +31,7 @@ use crate::SafeU32;
 use crate::SafeU64;
 use crate::SafeU8;
 use crate::SafeUMx;
-use crate::SafeUPt;
 use crate::UnsignedInteger;
-use crate::IntoSafeIntegral;
 
 // -------------------------------------------------------------------------
 // predefined conversion functions
@@ -397,7 +396,7 @@ where
     P: IntoSafeIntegral<Output = SafeIntegral<T>>,
     T: Integer,
 {
-    return SafeIdx::new_with_flags_from(to_umx(other), crate::here());
+    return SafeIdx::new_from(to_umx(other), crate::here());
 }
 
 // -------------------------------------------------------------------------
@@ -461,8 +460,8 @@ where
 
 #[cfg(test)]
 mod test_convert {
-    use crate::*;
     use super::*;
+    use crate::*;
 
     #[test]
     fn convert_from_sfe_i8() {
@@ -486,6 +485,26 @@ mod test_convert {
         assert!(to_u32(SafeI8::magic_neg_1()).is_invalid());
         assert!(to_u64(SafeI8::magic_neg_1()).is_invalid());
         assert!(to_umx(SafeI8::magic_neg_1()).is_invalid());
+
+        assert!(to_i8(SafeI8::magic_neg_2()) == i8::magic_neg_2());
+        assert!(to_i16(SafeI8::magic_neg_2()) == i16::magic_neg_2());
+        assert!(to_i32(SafeI8::magic_neg_2()) == i32::magic_neg_2());
+        assert!(to_i64(SafeI8::magic_neg_2()) == i64::magic_neg_2());
+        assert!(to_u8(SafeI8::magic_neg_2()).is_invalid());
+        assert!(to_u16(SafeI8::magic_neg_2()).is_invalid());
+        assert!(to_u32(SafeI8::magic_neg_2()).is_invalid());
+        assert!(to_u64(SafeI8::magic_neg_2()).is_invalid());
+        assert!(to_umx(SafeI8::magic_neg_2()).is_invalid());
+
+        assert!(to_i8(SafeI8::magic_neg_3()) == i8::magic_neg_3());
+        assert!(to_i16(SafeI8::magic_neg_3()) == i16::magic_neg_3());
+        assert!(to_i32(SafeI8::magic_neg_3()) == i32::magic_neg_3());
+        assert!(to_i64(SafeI8::magic_neg_3()) == i64::magic_neg_3());
+        assert!(to_u8(SafeI8::magic_neg_3()).is_invalid());
+        assert!(to_u16(SafeI8::magic_neg_3()).is_invalid());
+        assert!(to_u32(SafeI8::magic_neg_3()).is_invalid());
+        assert!(to_u64(SafeI8::magic_neg_3()).is_invalid());
+        assert!(to_umx(SafeI8::magic_neg_3()).is_invalid());
 
         assert!(to_i8(SafeI8::magic_0()) == i8::magic_0());
         assert!(to_i16(SafeI8::magic_0()) == i16::magic_0());
@@ -1547,7 +1566,6 @@ mod test_convert {
         assert_panics!(to_idx(SafeU32::failure()));
         assert_panics!(to_idx(SafeU64::failure()));
         assert_panics!(to_idx(SafeUMx::failure()));
-        assert_panics!(to_idx(SafeUPt::failure()));
     }
 
     #[test]

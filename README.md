@@ -3,7 +3,7 @@
 ## **Description**
 The Bareflank Support Library (BSL) is a Rust 2018 and C++20, "constexpr everything", AUTOSAR compliant header-only library intended to support the development of critical systems applications. Although the BSL does not adhere to the Rust and C++ Standard Library specifications, it attempts to where possible, to ensure most of the APIs are as familiar as possible. Since a number of critical systems applications do not support dynamic memory or exceptions, the BSL uses neither, but is capable of supporting both if desired. Since AUTOSAR only support C++, the Rust code was written with the same AUTOSAR rules where applicable.
 
-With respect to testing, the BSL provides full unit testing with 100% code coverage. Futhermore, the C++ portion of the BSL is written entirely as a "constexpr", meaning APIs are unit tested both at compile-time and run-time. This allows us to ensure that the compiler's rules for constexpr and undefined behavior are leveraged to prove the C++ code does not invoke UB at runtime.
+With respect to testing, the BSL provides full unit testing with 100% code coverage. Futhermore, the C++ portion of the BSL is written entirely as a "constexpr", meaning APIs are unit tested both at compile-time and run-time. This allows us to ensure that the compiler's rules for constexpr and undefined behavior are leveraged to prove most of the C++ code does not invoke UB at runtime.
 
 ## **Quick start**
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/bareflank/bsl?color=brightgreen)
